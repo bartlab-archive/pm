@@ -1485,59 +1485,6 @@ exports.trace = trace;
 
 /***/ }),
 /* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var DI = function () {
-    _createClass(DI, null, [{
-        key: "$inject",
-        get: function get() {
-            return [];
-        }
-    }]);
-
-    function DI() {
-        var _this = this,
-            _arguments = arguments;
-
-        _classCallCheck(this, DI);
-
-        (this.constructor.$inject || []).forEach(function (item, index) {
-            _this[item] = _arguments[index];
-        });
-
-        return this.init();
-    }
-
-    _createClass(DI, [{
-        key: "init",
-        value: function init() {}
-    }], [{
-        key: "getDI",
-        value: function getDI() {
-            var _this2 = this;
-
-            return [].concat(this.$inject || [], [function () {
-                for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-                    args[_key] = arguments[_key];
-                }
-
-                return new (Function.prototype.bind.apply(_this2, [null].concat(args)))();
-            }]);
-        }
-    }]);
-
-    return DI;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (DI);
-
-/***/ }),
-/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1655,6 +1602,59 @@ TargetState.isDef = function (obj) {
 };
 exports.TargetState = TargetState;
 //# sourceMappingURL=targetState.js.map
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var DI = function () {
+    _createClass(DI, null, [{
+        key: "$inject",
+        get: function get() {
+            return [];
+        }
+    }]);
+
+    function DI() {
+        var _this = this,
+            _arguments = arguments;
+
+        _classCallCheck(this, DI);
+
+        (this.constructor.$inject || []).forEach(function (item, index) {
+            _this[item] = _arguments[index];
+        });
+
+        return this.init();
+    }
+
+    _createClass(DI, [{
+        key: "init",
+        value: function init() {}
+    }], [{
+        key: "getDI",
+        value: function getDI() {
+            var _this2 = this;
+
+            return [].concat(this.$inject || [], [function () {
+                for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+                    args[_key] = arguments[_key];
+                }
+
+                return new (Function.prototype.bind.apply(_this2, [null].concat(args)))();
+            }]);
+        }
+    }]);
+
+    return DI;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (DI);
 
 /***/ }),
 /* 10 */
@@ -2148,7 +2148,7 @@ var hof_1 = __webpack_require__(2);
 var trace_1 = __webpack_require__(7);
 var coreservices_1 = __webpack_require__(3);
 var rejectFactory_1 = __webpack_require__(14);
-var targetState_1 = __webpack_require__(9);
+var targetState_1 = __webpack_require__(8);
 var defaultOptions = {
     current: common_1.noop,
     transition: null,
@@ -2548,7 +2548,7 @@ __export(__webpack_require__(7));
 Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = __webpack_require__(0);
 var hof_1 = __webpack_require__(2);
-var targetState_1 = __webpack_require__(9);
+var targetState_1 = __webpack_require__(8);
 var pathNode_1 = __webpack_require__(28);
 /**
  * This class contains functions which convert TargetStates, Nodes and paths from one type to another.
@@ -2945,7 +2945,7 @@ var transitionHook_1 = __webpack_require__(15);
 var hookRegistry_1 = __webpack_require__(30);
 var hookBuilder_1 = __webpack_require__(45);
 var pathFactory_1 = __webpack_require__(19);
-var targetState_1 = __webpack_require__(9);
+var targetState_1 = __webpack_require__(8);
 var param_1 = __webpack_require__(11);
 var resolvable_1 = __webpack_require__(13);
 var resolveContext_1 = __webpack_require__(20);
@@ -6721,7 +6721,7 @@ var pathFactory_1 = __webpack_require__(19);
 var pathNode_1 = __webpack_require__(28);
 var transitionService_1 = __webpack_require__(31);
 var rejectFactory_1 = __webpack_require__(14);
-var targetState_1 = __webpack_require__(9);
+var targetState_1 = __webpack_require__(8);
 var param_1 = __webpack_require__(11);
 var glob_1 = __webpack_require__(17);
 var resolveContext_1 = __webpack_require__(20);
@@ -7589,7 +7589,7 @@ var predicates_1 = __webpack_require__(1);
 var urlMatcher_1 = __webpack_require__(22);
 var hof_1 = __webpack_require__(2);
 var urlRule_1 = __webpack_require__(49);
-var targetState_1 = __webpack_require__(9);
+var targetState_1 = __webpack_require__(8);
 /** @hidden */
 function appendBasePath(url, isHtml5, absolute, baseHref) {
     if (baseHref === '/')
@@ -25978,7 +25978,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_filters_module__ = __webpack_require__(100);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_services_module__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_pages_pages_module__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_common_mdi__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_common_mdi__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_app_run__ = __webpack_require__(98);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_app_config__ = __webpack_require__(97);
 
@@ -27844,7 +27844,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /** @module hooks */ /** */
 var predicates_1 = __webpack_require__(1);
 var coreservices_1 = __webpack_require__(3);
-var targetState_1 = __webpack_require__(9);
+var targetState_1 = __webpack_require__(8);
 /**
  * A [[TransitionHookFn]] that redirects to a different state or params
  *
@@ -28141,7 +28141,7 @@ __export(__webpack_require__(41));
 __export(__webpack_require__(42));
 __export(__webpack_require__(43));
 __export(__webpack_require__(44));
-__export(__webpack_require__(9));
+__export(__webpack_require__(8));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -62965,7 +62965,7 @@ module.exports = "toaster";
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_common_mdi__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_common_mdi__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_layouts_layout_blank_html__ = __webpack_require__(113);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_layouts_layout_blank_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_layouts_layout_blank_html__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_layouts_layout_default_html__ = __webpack_require__(114);
@@ -62990,59 +62990,63 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @property $stateProvider
  */
 
-var AppConfig = function (_MDI) {
-    _inherits(AppConfig, _MDI);
+var AppConfig = function (_MDII) {
+    _inherits(AppConfig, _MDII);
 
     function AppConfig() {
         _classCallCheck(this, AppConfig);
 
-        var _this = _possibleConstructorReturn(this, (AppConfig.__proto__ || Object.getPrototypeOf(AppConfig)).call(this));
-
-        console.log('AppConfig $stateProvider', _this._$stateProvider);
-        return _this;
+        return _possibleConstructorReturn(this, (AppConfig.__proto__ || Object.getPrototypeOf(AppConfig)).apply(this, arguments));
     }
 
     _createClass(AppConfig, [{
         key: 'init',
+
+        // constructor() {
+        //     super();
+        //
+        //     console.log('AppConfig $stateProvider', this._$stateProvider);
+        // }
+        //
+        // static get $inject() {
+        //     return ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
+        // }
+
         value: function init() {
             console.log('AppConfig', this);
+            console.log('AppConfig $stateProvider', this._$stateProvider);
 
-            this.$stateProvider
-
-            // app blank layout
-            .state('blank', {
-                abstract: true,
-                controller: __WEBPACK_IMPORTED_MODULE_3_layouts_layout_blank_controller__["a" /* default */],
-                template: __WEBPACK_IMPORTED_MODULE_1_layouts_layout_blank_html___default.a //'layouts/layout-blank.html'
-            })
-
-            // app default layout
-            .state('default', {
-                abstract: true,
-                // parent: 'blank',
-                // views: {
-                //     content: {
-                controller: __WEBPACK_IMPORTED_MODULE_4_layouts_layout_default_controller__["a" /* default */],
-                template: __WEBPACK_IMPORTED_MODULE_2_layouts_layout_default_html___default.a //'layouts/layout-default.html'
-                // }
-                // }
-
-            });
-
-            // set default routes when no path specified
-            this.$urlRouterProvider.when('', '/');
-            //$urlRouterProvider.when('/', '/main/index');
-
-            // always goto 404 if route not found
-            //$urlRouterProvider.otherwise('/');
-            this.$urlRouterProvider.otherwise('/404');
-
-            this.$locationProvider.html5Mode(true);
-        }
-    }], [{
-        key: '$inject',
-        get: function get() {
-            return ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
+            // this.$stateProvider
+            //
+            // // app blank layout
+            //     .state('blank', {
+            //         abstract: true,
+            //         controller: LayoutBlankController,
+            //         template: LayoutBlankTemplate //'layouts/layout-blank.html'
+            //     })
+            //
+            //     // app default layout
+            //     .state('default', {
+            //         abstract: true,
+            //         // parent: 'blank',
+            //         // views: {
+            //         //     content: {
+            //         controller: LayoutDefaultController,
+            //         template: LayoutDefaultTemplate //'layouts/layout-default.html'
+            //         // }
+            //         // }
+            //
+            //     });
+            //
+            // // set default routes when no path specified
+            // this.$urlRouterProvider.when('', '/');
+            // //$urlRouterProvider.when('/', '/main/index');
+            //
+            // // always goto 404 if route not found
+            // //$urlRouterProvider.otherwise('/');
+            // this.$urlRouterProvider.otherwise('/404');
+            //
+            // this.$locationProvider.html5Mode(true);
         }
     }]);
 
@@ -63056,7 +63060,7 @@ var AppConfig = function (_MDI) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_common_di__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_common_di__ = __webpack_require__(9);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -63132,7 +63136,7 @@ angular.module('app.filters', []).filter('joinBr', __WEBPACK_IMPORTED_MODULE_1_f
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_common_di__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_common_di__ = __webpack_require__(9);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -63200,7 +63204,7 @@ var JoinBrFilter = function (_DI) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_common_di__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_common_di__ = __webpack_require__(9);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -63236,14 +63240,14 @@ var LayoutBlankController = function (_DI) {
     return LayoutBlankController;
 }(__WEBPACK_IMPORTED_MODULE_0_common_di__["a" /* default */]);
 
-/* harmony default export */ __webpack_exports__["a"] = (LayoutBlankController);
+/* unused harmony default export */ var _unused_webpack_default_export = (LayoutBlankController);
 
 /***/ }),
 /* 103 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_common_di__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_common_di__ = __webpack_require__(9);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -63279,14 +63283,14 @@ var LayoutDefaultController = function (_DI) {
     return LayoutDefaultController;
 }(__WEBPACK_IMPORTED_MODULE_0_common_di__["a" /* default */]);
 
-/* harmony default export */ __webpack_exports__["a"] = (LayoutDefaultController);
+/* unused harmony default export */ var _unused_webpack_default_export = (LayoutDefaultController);
 
 /***/ }),
 /* 104 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_common_di__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_common_di__ = __webpack_require__(9);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -63331,7 +63335,7 @@ var MainIndexController = function (_DI) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_common_di__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_common_di__ = __webpack_require__(9);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -63487,7 +63491,7 @@ var MainLoginController = function (_DI) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_common_di__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_common_di__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index_main_index_controller__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_main_index_html__ = __webpack_require__(115);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_main_index_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__index_main_index_html__);
@@ -80867,48 +80871,90 @@ module.exports = __webpack_require__(62);
 /* 129 */,
 /* 130 */,
 /* 131 */,
-/* 132 */,
-/* 133 */
+/* 132 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * Module Dependency Injector
  */
-var MDI = function MDI() {
-    var _this = this;
-
-    _classCallCheck(this, MDI);
-
-    var injectProvider = function injectProvider(name) {
-        /**
-         * skip public properties
-         */
-        if (name.indexOf('_') !== 0) return;
-
-        var $injector = MDI.$injector;
-        var providerName = name.substr(1);
-
-        if ($injector && $injector.has(providerName)) {
-            console.log('injectProvider:', providerName);
-            _this[name] = $injector.get(providerName);
-            return _this[name];
+var MDI = function () {
+    _createClass(MDI, [{
+        key: 'proxyGetter',
+        value: function proxyGetter(target, name) {
+            return name in target ? target[name] : undefined;
         }
-    };
+    }]);
 
-    return new Proxy(this, {
-        get: function get(target, name) {
-            return name in target ? target[name] : injectProvider(name);
+    function MDI() {
+        var _this = this;
+
+        _classCallCheck(this, MDI);
+
+        return new Proxy(this, {
+            get: function get(target, name) {
+                return _this.proxyGetter(target, name);
+            }
+        });
+
+        // return this.init();
+    }
+
+    return MDI;
+}();
+
+var MDII = function (_MDI) {
+    _inherits(MDII, _MDI);
+
+    _createClass(MDII, [{
+        key: 'injectProvider',
+        value: function injectProvider(name) {
+            /**
+             * skip public properties
+             */
+            if (name.indexOf('_') !== 0) return;
+
+            var $injector = MDII.$injector;
+            var providerName = name.substr(1);
+
+            if ($injector && $injector.has(providerName)) {
+                console.log('injectProvider:', providerName);
+                this[name] = $injector.get(providerName);
+                return this[name];
+            }
         }
-    });
-};
+    }, {
+        key: 'proxyGetter',
+        value: function proxyGetter(target, name) {
+            return name in target ? target[name] : this.injectProvider(name);
+        }
+    }]);
 
-/* harmony default export */ __webpack_exports__["a"] = (MDI);
+    function MDII() {
+        var _ret;
+
+        _classCallCheck(this, MDII);
+
+        var _this2 = _possibleConstructorReturn(this, (MDII.__proto__ || Object.getPrototypeOf(MDII)).call(this));
+
+        return _ret = _this2.init(), _possibleConstructorReturn(_this2, _ret);
+    }
+
+    return MDII;
+}(MDI);
+
+/* harmony default export */ __webpack_exports__["a"] = (MDII);
 
 
-MDI.$injector = null;
+MDII.$injector = null;
 
 /***/ })
 /******/ ]);
