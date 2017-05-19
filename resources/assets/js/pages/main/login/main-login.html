@@ -1,0 +1,43 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-xs-12 col-md-4 col-md-offset-4">
+
+            <form ng-disabled="lock.state" id="login-form">
+                <div class="panel panel-default animated fadeInDown">
+                    <div class="panel-body">
+                        <h3>Login</h3>
+                        <hr>
+
+                        <div class="form-group" ng-class="{'has-error':vm.errors.email}">
+                            <input type="text" ng-model="login.email" class="form-control" name="email"
+                                   placeholder="E-mail">
+                            <div class="help-block help-block-error" ng-show="vm.errors.email"
+                                 ng-bind-html="vm.errors.email | joinBr"></div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error':errors.password}">
+                            <input type="password" ng-model="login.password" class="form-control"
+                                   name="password"
+                                   placeholder="Password">
+                            <div class="help-block help-block-error" ng-show="errors.password"
+                                 ng-bind-html="errors.password"></div>
+                        </div>
+                        <a ui-sref="reset" href>Forgot password?</a>
+
+                        <hr>
+                        <div class="text-center">
+                            <button ng-disabled="lock.state" type="submit" ng-click="vm.submit()"
+                                    class="btn btn-primary btn-block">Login
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+
+            <p class="text-center">
+                <a ui-sref="signup" href>Not registered yet? Sign up!</a>
+            </p>
+
+        </div>
+    </div>
+</div>
