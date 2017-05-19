@@ -1,4 +1,4 @@
-import DI from 'common/di';
+import MDI from 'common/mdi';
 import LayoutBlankTemplate from 'layouts/layout-blank.html';
 import LayoutDefaultTemplate from 'layouts/layout-default.html';
 import LayoutBlankController from 'layouts/layout-blank.controller';
@@ -7,10 +7,15 @@ import LayoutDefaultController from 'layouts/layout-default.controller';
 /**
  * @property $stateProvider
  */
-export default class AppConfig extends DI {
+export default class AppConfig extends MDI {
+    constructor() {
+        super();
+
+        console.log('AppConfig $stateProvider', this._$stateProvider);
+    }
 
     static get $inject() {
-        return ['$stateProvider', '$urlRouterProvider','$locationProvider'];
+        return ['$stateProvider', '$urlRouterProvider', '$locationProvider'];
     }
 
     init() {

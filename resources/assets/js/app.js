@@ -10,6 +10,7 @@ import 'filters.module';
 import 'services.module';
 import 'pages/pages.module';
 
+import MDI from 'common/mdi';
 import AppRun from 'app.run';
 import AppConfig from 'app.config';
 
@@ -29,6 +30,11 @@ angular
             'app.services'
         ]
     )
-    .config(()=> new AppConfig())
+
+    /**
+     * Export module injector
+     */
+    .config((['$injector', $injector => MDI.$injector = $injector]))
+    .config(() => new AppConfig())
     // .config(AppConfig.getDI())
     .run(AppRun.getDI());
