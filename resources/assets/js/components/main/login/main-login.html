@@ -5,27 +5,27 @@
             <form ng-disabled="lock.state" id="login-form">
                 <div class="panel panel-default animated fadeInDown">
                     <div class="panel-body">
-                        <h3>Login</h3>
+                        <h3>Sign in</h3>
                         <hr>
 
-                        <div class="form-group" ng-class="{'has-error':vm.errors.email}">
-                            <input type="text" ng-model="login.email" class="form-control" name="email"
+                        <div class="form-group" ng-class="{'has-error':$ctrl.errors.email}">
+                            <input type="text" ng-model="$ctrl.model.email" class="form-control" name="email"
                                    placeholder="E-mail">
-                            <div class="help-block help-block-error" ng-show="vm.errors.email"
-                                 ng-bind-html="vm.errors.email | joinBr"></div>
+                            <div class="help-block help-block-error" ng-show="$ctrl.errors.email"
+                                 ng-bind-html="$ctrl.errors.email | joinBr"></div>
                         </div>
-                        <div class="form-group" ng-class="{'has-error':errors.password}">
-                            <input type="password" ng-model="login.password" class="form-control"
+                        <div class="form-group" ng-class="{'has-error':$ctrl.errors.password}">
+                            <input type="password" ng-model="$ctrl.model.password" class="form-control"
                                    name="password"
                                    placeholder="Password">
-                            <div class="help-block help-block-error" ng-show="errors.password"
-                                 ng-bind-html="errors.password"></div>
+                            <div class="help-block help-block-error" ng-show="$ctrl.errors.password"
+                                 ng-bind-html="$ctrl.errors.password"></div>
                         </div>
                         <a ui-sref="reset" href>Forgot password?</a>
 
                         <hr>
                         <div class="text-center">
-                            <button ng-disabled="lock.state" type="submit" ng-click="vm.submit()"
+                            <button ng-disabled="lock.state" type="submit" ng-click="$ctrl.onSubmit()"
                                     class="btn btn-primary btn-block">Login
                             </button>
                         </div>

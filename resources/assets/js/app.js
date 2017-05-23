@@ -8,11 +8,10 @@ import 'angularjs-toaster';
 
 import 'filters.module';
 import 'services.module';
-import 'pages/pages.module';
+import 'components/components.module';
 
-import MDI from 'common/mdi';
-import AppRun from 'app.run';
-import AppConfig from 'app.config';
+import appRun from 'app.run';
+import appConfig from 'app.config';
 
 angular
     .module(
@@ -26,15 +25,10 @@ angular
             'toaster',
 
             'app.filters',
-            'app.pages',
+            'app.components',
             'app.services'
         ]
     )
 
-    /**
-     * Export module injector
-     */
-    .config((['$injector', $injector => MDI.$injector = $injector]))
-    .config(() => new AppConfig())
-    // .config(AppConfig.getDI())
-    .run(AppRun.getDI());
+    .config(appConfig)
+    .run(appRun);

@@ -1,5 +1,5 @@
 import 'angular';
-import JoinBrFilter from 'filters/joinBr.filter';
+import joinBrFilter from 'filters/joinBr.filter';
 
 angular.module('app.filters', [])
-    .filter('joinBr', JoinBrFilter.getDI());
+    .filter('joinBr', joinBrFilter);

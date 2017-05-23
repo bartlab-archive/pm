@@ -27,9 +27,9 @@ mix.js('resources/assets/js/app.js', 'public/js')
              ]
          },*/
         plugins: [
-            new ngAnnotatePlugin({
-                add: true,
-            })
+            // new ngAnnotatePlugin({
+            //     add: true,
+            // })
         ]
     })
 ;

@@ -1,0 +1,61 @@
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-xs-12 col-md-4 col-md-offset-4">
+
+            <form ng-disabled="lock.state" id="signup-form">
+                <div class="panel panel-default animated fadeInDown">
+
+                    <div class="panel-body">
+                        <h3>Sign up</h3>
+                        <hr/>
+
+                        <div class="form-group" ng-class="{'has-error':errors.full_name}">
+                            <input type="text" ng-model="signup.full_name" class="form-control" name="full_name"
+                                   placeholder="Full name">
+                            <div class="help-block help-block-error" ng-show="errors.full_name"
+                                 ng-bind-html="errors.full_name | joinBr"></div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error':errors.email}">
+                            <input type="text" ng-model="signup.email" class="form-control"
+                                   name="email"
+                                   placeholder="Email">
+                            <div class="help-block help-block-error" ng-show="errors.email"
+                                 ng-bind-html="errors.email | joinBr"></div>
+                        </div>
+
+                        <div class="form-group" ng-class="{'has-error':errors.password}">
+                            <input type="password" ng-model="signup.password" class="form-control" name="password"
+                                   placeholder="Password">
+                            <div class="help-block help-block-error" ng-show="errors.password"
+                                 ng-bind-html="errors.password | joinBr"></div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error':errors.repeat_passw}">
+                            <input type="password" ng-model="signup.repeat_passw" class="form-control"
+                                   name="repeat_passw"
+                                   placeholder="Repeat Password">
+                            <div class="help-block help-block-error" ng-show="errors.repeat_passw"
+                                 ng-bind-html="errors.repeat_passw | joinBr"></div>
+                        </div>
+
+
+                        <hr/>
+
+                        <div class="text-center">
+                            <button ng-disabled="lock.state" type="submit" ng-click="submit()"
+                                    class="btn btn-primary btn-block">
+                                Submit
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </form>
+
+            <p class="text-center">
+                <a ui-sref="login">Already have an account? Sign in!</a>
+            </p>
+
+        </div>
+    </div>
+</div>

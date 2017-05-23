@@ -12,10 +12,9 @@
 */
 
 Route::get('', function () {
-    return view('welcome');
+    return view('index');
 });
 
-
 Route::get('{all}', function () {
-    return view('welcome');
+    return view('index');
 });
