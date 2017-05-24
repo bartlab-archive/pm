@@ -25,7 +25,7 @@ Route::group(
     ],
     function () {
         Route::post('auth',function(){
-            return [];
+            return ['token'=>'1234567890'];
         });
 //        Route::post('auth', 'Auth\LoginController@login');
 //        Route::post('register', 'Auth\RegisterController@register');

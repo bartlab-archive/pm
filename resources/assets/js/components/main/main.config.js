@@ -22,45 +22,45 @@ export default function MainConfig($stateProvider) {
             }
         })
         .state('home', {
-            // data: {
-            //     access: '@'
-            // },
+            data: {
+                access: '@'
+            },
             parent: 'default',
             url: '/',
             views: {
                 content: {
-                    component: 'mainIndex',
+                    component: 'mainIndexComponent',
                 }
             }
         })
         .state('login', {
-            // data: {
-            //     access: '?',
-            // },
+            data: {
+                access: '?',
+            },
             url: '/login',
             parent: 'blank',
             views: {
                 content: {
-                    component: 'mainLogin',
+                    component: 'mainLoginComponent',
                 }
             }
         })
         .state('signup', {
-            // data: {
-            //     access: '?',
-            // },
+            data: {
+                access: '?',
+            },
             url: '/signup',
             parent: 'blank',
             views: {
                 content: {
-                    component: 'mainRegistration',
+                    component: 'mainRegistrationComponent',
                 }
             }
         })
         .state('reset', {
-            // data: {
-            //     access: '?',
-            // },
+            data: {
+                access: '?',
+            },
             url: '/reset',
             parent: 'blank',
             views: {
@@ -71,6 +71,6 @@ export default function MainConfig($stateProvider) {
         })
         .state('logout', {
             url: '/logout',
-            component: 'mainLogout'
+            component: 'mainLogoutComponent'
         });
 };

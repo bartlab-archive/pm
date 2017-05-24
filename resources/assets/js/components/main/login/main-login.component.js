@@ -1,7 +1,7 @@
 import MainLoginController from './main-login.controller';
 import MainLoginTemplate from './main-login.html';
 
-const mainIndexCompoent = {
+const mainIndexComponent = {
     controller: MainLoginController,
     template: MainLoginTemplate,
     bindings: {
@@ -9,4 +9,4 @@ const mainIndexCompoent = {
     }
 };
 
-export default mainIndexCompoent;
+export default mainIndexComponent;

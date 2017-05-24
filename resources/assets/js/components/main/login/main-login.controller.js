@@ -23,7 +23,9 @@ export default class MainLoginController {
     }
 
     onLogin(response) {
-        if (response.data.result) {
+        // console.log(response);
+
+        if (response.data.token) {
             this.toaster.pop({type: 'success', body: "Welcome!"});
 
             // update user data

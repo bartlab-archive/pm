@@ -1,9 +1,9 @@
 import MainRegistrationController from './main-registration.controller';
 import MainRegistrationTemplate from './main-registration.html';
 
-const mainRegistrationCompoent = {
+const mainRegistrationComponent = {
     controller: MainRegistrationController,
     template: MainRegistrationTemplate
 };
 
-export default mainRegistrationCompoent;
+export default mainRegistrationComponent;

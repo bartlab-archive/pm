@@ -15,7 +15,7 @@ export default function appConfig($stateProvider, $urlRouterProvider, $locationP
     $authProvider.baseUrl = '/';
     $authProvider.unlinkUrl = '/api/v1/auth/unlink/';
     $authProvider.tokenName = 'token';
-    $authProvider.tokenPrefix = 'satellizer';
+    $authProvider.tokenPrefix = '';
     $authProvider.tokenHeader = 'Authorization';
     $authProvider.tokenType = 'Bearer';
     $authProvider.storageType = 'localStorage';
