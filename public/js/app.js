@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 131);
+/******/ 	return __webpack_require__(__webpack_require__.s = 133);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -22200,7 +22200,7 @@ exports.TransitionService = TransitionService;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(59), __webpack_require__(130)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(59), __webpack_require__(132)(module)))
 
 /***/ }),
 /* 32 */
@@ -25916,14 +25916,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular_sanitize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_angular_sanitize__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__uirouter_angularjs__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__uirouter_angularjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__uirouter_angularjs__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_restangular__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_restangular__ = __webpack_require__(130);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_restangular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_restangular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_satellizer__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_satellizer__ = __webpack_require__(131);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_satellizer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_satellizer__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angularjs_toaster__ = __webpack_require__(94);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angularjs_toaster___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_angularjs_toaster__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_filters_module__ = __webpack_require__(114);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_services_module__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_filters_module__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_services_module__ = __webpack_require__(118);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_components_components_module__ = __webpack_require__(99);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_app_run__ = __webpack_require__(97);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_app_config__ = __webpack_require__(96);
@@ -62928,38 +62928,31 @@ function appConfig($stateProvider, $urlRouterProvider, $locationProvider, $authP
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
 /* harmony export (immutable) */ __webpack_exports__["a"] = appRun;
-appRun.$inject = ['$rootScope'];
 
-function appRun($rootScope) {
+
+appRun.$inject = ['$rootScope', '$auth', '$transitions'];
+
+function appRun($rootScope, $auth, $transitions) {
     $rootScope.isReady = false;
 
-    $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
-        $rootScope.toState = toState;
-        $rootScope.toStateParams = toStateParams;
+    $transitions.onStart({}, function (trans) {
+        // $rootScope.toState = toState;
+        // $rootScope.toStateParams = toStateParams;
+        var access = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.get(trans.$to(), 'data.access', false);
 
-        if (!$rootScope.isReady) {
-            event.preventDefault();
-            return false;
-        }
-
-        if (toState.data && toState.data.access) {
+        if (access) {
             /*Cancel going to the authenticated state and go back to landing*/
-            if (toState.data.access === '@' && !$auth.isAuthenticated()) {
-                event.preventDefault();
-                return $state.go('login');
+            if (access === '@' && !$auth.isAuthenticated()) {
+                return trans.router.stateService.target('login');
             }
 
             // if controller not require authorizing and has deny signed users flag then redirect
-            if (toState.data.access === '?' && $auth.isAuthenticated()) {
-                event.preventDefault();
-                return $state.go('home');
+            if (access === '?' && $auth.isAuthenticated()) {
+                return trans.router.stateService.target('home');
             }
-
-            // if (toState.data.access === 'admin' && !userService.isAdmin()) {
-            //     event.preventDefault();
-            //     return $state.go('home');
-            // }
         }
     });
 }
@@ -62971,13 +62964,13 @@ function appRun($rootScope) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(129);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
 
 
 
 window.$ = window.jQuery = __WEBPACK_IMPORTED_MODULE_1_jquery___default.a;
-__webpack_require__(118);
+__webpack_require__(120);
 
 /***/ }),
 /* 99 */
@@ -62986,13 +62979,15 @@ __webpack_require__(118);
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_components_main_main_module__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_components_main_main_module__ = __webpack_require__(113);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_components_layouts_layouts_module__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_components_projects_projects_module__ = __webpack_require__(154);
 
 
 
 
-angular.module('app.components', ['app.components.layouts', 'app.components.main']);
+
+angular.module('app.components', ['app.components.layouts', 'app.components.main', 'app.components.projects']);
 
 /***/ }),
 /* 100 */
@@ -63000,7 +62995,7 @@ angular.module('app.components', ['app.components.layouts', 'app.components.main
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__layout_blank_controller__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layout_blank_html__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layout_blank_html__ = __webpack_require__(122);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layout_blank_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__layout_blank_html__);
 
 
@@ -63042,7 +63037,7 @@ var LayoutBlankController = function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__layout_default_controller__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layout_default_html__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layout_default_html__ = __webpack_require__(123);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layout_default_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__layout_default_html__);
 
 
@@ -63120,7 +63115,7 @@ angular.module('app.components.layouts', []).config(__WEBPACK_IMPORTED_MODULE_1_
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_index_controller__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_index_html__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_index_html__ = __webpack_require__(124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_index_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_index_html__);
 
 
@@ -63151,7 +63146,7 @@ var MainIndexController = function MainIndexController() {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_login_controller__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_login_html__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_login_html__ = __webpack_require__(125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_login_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_login_html__);
 
 
@@ -63186,16 +63181,16 @@ var MainLoginController = function () {
     _createClass(MainLoginController, null, [{
         key: '$inject',
         get: function get() {
-            return ['toaster', '$auth', '$state'];
+            return ['$injector'];
         }
     }]);
 
-    function MainLoginController(toaster, $auth, $state) {
+    function MainLoginController($injector) {
         _classCallCheck(this, MainLoginController);
 
-        this.toaster = toaster;
-        this.$auth = $auth;
-        this.$state = $state;
+        this.toaster = $injector.get('toaster');
+        this.$auth = $injector.get('$auth');
+        this.$state = $injector.get('$state');
     }
 
     _createClass(MainLoginController, [{
@@ -63235,13 +63230,68 @@ var MainLoginController = function () {
     return MainLoginController;
 }();
 
-// MainLoginController.$inject = ['toaster', '$auth', '$state'];
-
-
 /* harmony default export */ __webpack_exports__["a"] = (MainLoginController);
 
 /***/ }),
 /* 110 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_logout_controller__ = __webpack_require__(111);
+
+
+var mainLogoutComponent = {
+    controller: __WEBPACK_IMPORTED_MODULE_0__main_logout_controller__["a" /* default */]
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (mainLogoutComponent);
+
+/***/ }),
+/* 111 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MainLogoutController = function () {
+    _createClass(MainLogoutController, null, [{
+        key: '$inject',
+        get: function get() {
+            return ['toaster', '$auth', '$state'];
+        }
+    }]);
+
+    function MainLogoutController(toaster, $auth, $state) {
+        _classCallCheck(this, MainLogoutController);
+
+        this.toaster = toaster;
+        this.$auth = $auth;
+        this.$state = $state;
+    }
+
+    _createClass(MainLogoutController, [{
+        key: '$onInit',
+        value: function $onInit() {
+            this.$auth.logout();
+
+            this.toaster.pop({
+                type: 'warning',
+                body: 'Logout'
+            });
+
+            this.$state.go('home');
+        }
+    }]);
+
+    return MainLogoutController;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (MainLogoutController);
+
+/***/ }),
+/* 112 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63255,7 +63305,7 @@ function MainConfig($stateProvider) {
         url: '/404',
         views: {
             content: {
-                component: 'main404'
+                component: 'main404Component'
             }
         }
     }).state('500', {
@@ -63263,7 +63313,7 @@ function MainConfig($stateProvider) {
         url: '/500',
         views: {
             content: {
-                component: 'main500'
+                component: 'main500Component'
             }
         }
     }).state('home', {
@@ -63307,7 +63357,7 @@ function MainConfig($stateProvider) {
         parent: 'blank',
         views: {
             content: {
-                component: 'mainReset'
+                component: 'mainResetComponent'
             }
         }
     }).state('logout', {
@@ -63317,17 +63367,20 @@ function MainConfig($stateProvider) {
 };
 
 /***/ }),
-/* 111 */
+/* 113 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_config__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_config__ = __webpack_require__(112);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_main_index_component__ = __webpack_require__(106);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__login_main_login_component__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__registration_main_registration_component__ = __webpack_require__(112);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__logout_main_logout_component__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__registration_main_registration_component__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__logout_main_logout_component__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__reset_main_reset_component__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__404_main_404_component__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__500_main_500_component__ = __webpack_require__(145);
 
 
 
@@ -63336,15 +63389,18 @@ function MainConfig($stateProvider) {
 
 
 
-angular.module('app.components.main', []).config(__WEBPACK_IMPORTED_MODULE_1__main_config__["a" /* default */]).component('mainIndexComponent', __WEBPACK_IMPORTED_MODULE_2__index_main_index_component__["a" /* default */]).component('mainLoginComponent', __WEBPACK_IMPORTED_MODULE_3__login_main_login_component__["a" /* default */]).component('mainRegistrationComponent', __WEBPACK_IMPORTED_MODULE_4__registration_main_registration_component__["a" /* default */]).component('mainLogoutComponent', __WEBPACK_IMPORTED_MODULE_5__logout_main_logout_component__["a" /* default */]);
+
+
+
+angular.module('app.components.main', []).config(__WEBPACK_IMPORTED_MODULE_1__main_config__["a" /* default */]).component('mainIndexComponent', __WEBPACK_IMPORTED_MODULE_2__index_main_index_component__["a" /* default */]).component('mainLoginComponent', __WEBPACK_IMPORTED_MODULE_3__login_main_login_component__["a" /* default */]).component('mainRegistrationComponent', __WEBPACK_IMPORTED_MODULE_4__registration_main_registration_component__["a" /* default */]).component('mainLogoutComponent', __WEBPACK_IMPORTED_MODULE_5__logout_main_logout_component__["a" /* default */]).component('mainResetComponent', __WEBPACK_IMPORTED_MODULE_6__reset_main_reset_component__["a" /* default */]).component('main500Component', __WEBPACK_IMPORTED_MODULE_8__500_main_500_component__["a" /* default */]).component('main404Component', __WEBPACK_IMPORTED_MODULE_7__404_main_404_component__["a" /* default */]);
 
 /***/ }),
-/* 112 */
+/* 114 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_registration_controller__ = __webpack_require__(113);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_registration_html__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_registration_controller__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_registration_html__ = __webpack_require__(126);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_registration_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_registration_html__);
 
 
@@ -63357,7 +63413,7 @@ var mainRegistrationComponent = {
 /* harmony default export */ __webpack_exports__["a"] = (mainRegistrationComponent);
 
 /***/ }),
-/* 113 */
+/* 115 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63465,20 +63521,20 @@ var MainRegistrationController = function MainRegistrationController() {
 /* harmony default export */ __webpack_exports__["a"] = (MainRegistrationController);
 
 /***/ }),
-/* 114 */
+/* 116 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_filters_joinBr_filter__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_filters_joinBr_filter__ = __webpack_require__(117);
 
 
 
 angular.module('app.filters', []).filter('joinBr', __WEBPACK_IMPORTED_MODULE_1_filters_joinBr_filter__["a" /* default */]);
 
 /***/ }),
-/* 115 */
+/* 117 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63494,7 +63550,7 @@ function joinBrFilter() {
 }
 
 /***/ }),
-/* 116 */
+/* 118 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63505,7 +63561,7 @@ function joinBrFilter() {
 angular.module('app.services', []);
 
 /***/ }),
-/* 117 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63626,7 +63682,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 118 */
+/* 120 */
 /***/ (function(module, exports) {
 
 /*!
@@ -66009,7 +66065,7 @@ if (typeof jQuery === 'undefined') {
 
 
 /***/ }),
-/* 119 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66023,9 +66079,9 @@ if (typeof jQuery === 'undefined') {
 
 
 
-var base64 = __webpack_require__(117)
-var ieee754 = __webpack_require__(125)
-var isArray = __webpack_require__(126)
+var base64 = __webpack_require__(119)
+var ieee754 = __webpack_require__(127)
+var isArray = __webpack_require__(128)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -67806,37 +67862,37 @@ function isnan (val) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(59)))
 
 /***/ }),
-/* 120 */
+/* 122 */
 /***/ (function(module, exports) {
 
 module.exports = "<div ui-view=\"content\"></div>";
 
 /***/ }),
-/* 121 */
-/***/ (function(module, exports) {
-
-module.exports = "<nav class=\"navbar navbar-inverse\">\n    <div class=\"container-fluid\">\n        <div class=\"navbar-header\">\n            <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\"\n                    aria-expanded=\"false\" aria-controls=\"navbar\">\n                <span class=\"sr-only\">Toggle navigation</span>\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n            </button>\n            <a class=\"navbar-brand\" href=\"#\">Project name</a>\n        </div>\n\n        <div id=\"navbar\" class=\"collapse navbar-collapse\">\n            <ul class=\"nav navbar-nav\">\n                <li class=\"active\"><a href=\"#\">Activity</a></li>\n                <li><a href=\"#\">Issues</a></li>\n                <li><a href=\"#\">Wiki</a></li>\n                <li><a href=\"#\">Files</a></li>\n                <li><a href=\"#\">Settings</a></li>\n            </ul>\n\n            <form class=\"navbar-form navbar-left\">\n                <div class=\"form-group\">\n                    <input type=\"text\" class=\"form-control\" placeholder=\"Search\">\n                </div>\n                <button type=\"submit\" class=\"btn btn-default\">Submit</button>\n            </form>\n            <ul class=\"nav navbar-nav navbar-right\">\n                <li class=\"dropdown\">\n                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Username <span class=\"caret\"></span></a>\n                    <ul class=\"dropdown-menu\">\n                        <li><a href=\"#\">Home</a></li>\n                        <li><a href=\"#\">My page</a></li>\n                        <li><a href=\"#\">Projects</a></li>\n                        <li><a href=\"#\">Administrator</a></li>\n                        <li role=\"separator\" class=\"divider\"></li>\n                        <li><a href=\"#\">Profile</a></li>\n                        <li><a href=\"#\">Settings</a></li>\n                        <li role=\"separator\" class=\"divider\"></li>\n                        <li><a href=\"#\">Logout</a></li>\n                    </ul>\n                </li>\n            </ul>\n        </div>\n\n    </div>\n</nav>\n\n<div ui-view=\"content\"></div>";
-
-/***/ }),
-/* 122 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-12 panel panel-default\">\n            <div class=\"panel-body\">Home page</div>\n        </div>\n    </div>\n</div>";
-
-/***/ }),
 /* 123 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-xs-12 col-md-4 col-md-offset-4\">\n\n            <form ng-disabled=\"lock.state\" id=\"login-form\">\n                <div class=\"panel panel-default animated fadeInDown\">\n                    <div class=\"panel-body\">\n                        <h3>Sign in</h3>\n                        <hr>\n\n                        <div class=\"form-group\" ng-class=\"{'has-error':$ctrl.errors.email}\">\n                            <input type=\"text\" ng-model=\"$ctrl.model.email\" class=\"form-control\" name=\"email\"\n                                   placeholder=\"E-mail\">\n                            <div class=\"help-block help-block-error\" ng-show=\"$ctrl.errors.email\"\n                                 ng-bind-html=\"$ctrl.errors.email | joinBr\"></div>\n                        </div>\n                        <div class=\"form-group\" ng-class=\"{'has-error':$ctrl.errors.password}\">\n                            <input type=\"password\" ng-model=\"$ctrl.model.password\" class=\"form-control\"\n                                   name=\"password\"\n                                   placeholder=\"Password\">\n                            <div class=\"help-block help-block-error\" ng-show=\"$ctrl.errors.password\"\n                                 ng-bind-html=\"$ctrl.errors.password\"></div>\n                        </div>\n                        <a ui-sref=\"reset\" href>Forgot password?</a>\n\n                        <hr>\n                        <div class=\"text-center\">\n                            <button ng-disabled=\"lock.state\" type=\"submit\" ng-click=\"$ctrl.onSubmit()\"\n                                    class=\"btn btn-primary btn-block\">Login\n                            </button>\n                        </div>\n\n                    </div>\n                </div>\n            </form>\n\n            <p class=\"text-center\">\n                <a ui-sref=\"signup\" href>Not registered yet? Sign up!</a>\n            </p>\n\n        </div>\n    </div>\n</div>";
+module.exports = "<nav class=\"navbar navbar-inverse\">\n    <div class=\"container-fluid\">\n        <div class=\"navbar-header\">\n            <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\"\n                    aria-expanded=\"false\" aria-controls=\"navbar\">\n                <span class=\"sr-only\">Toggle navigation</span>\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n            </button>\n            <a class=\"navbar-brand\" href=\"#\">Project name</a>\n        </div>\n\n        <div id=\"navbar\" class=\"collapse navbar-collapse\">\n            <ul class=\"nav navbar-nav\">\n                <li class=\"active\"><a href=\"#\">Activity</a></li>\n                <li><a href=\"#\">Issues</a></li>\n                <li><a href=\"#\">Wiki</a></li>\n                <li><a href=\"#\">Files</a></li>\n                <li><a href=\"#\">Settings</a></li>\n            </ul>\n\n            <form class=\"navbar-form navbar-left\">\n                <div class=\"form-group\">\n                    <input type=\"text\" class=\"form-control\" placeholder=\"Search\">\n                </div>\n                <button type=\"submit\" class=\"btn btn-default\">Submit</button>\n            </form>\n            <ul class=\"nav navbar-nav navbar-right\">\n                <li class=\"dropdown\">\n                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Username <span class=\"caret\"></span></a>\n                    <ul class=\"dropdown-menu\">\n                        <li><a ui-sref=\"home\">Home</a></li>\n                        <li><a href=\"#\">My page</a></li>\n                        <li><a ui-sref=\"projects.list\">Projects</a></li>\n                        <li><a href=\"#\">Administrator</a></li>\n                        <li role=\"separator\" class=\"divider\"></li>\n                        <li><a href=\"#\">Profile</a></li>\n                        <li><a href=\"#\">Settings</a></li>\n                        <li role=\"separator\" class=\"divider\"></li>\n                        <li><a ui-sref=\"logout\">Logout</a></li>\n                    </ul>\n                </li>\n            </ul>\n        </div>\n\n    </div>\n</nav>\n\n<div ui-view=\"content\"></div>";
 
 /***/ }),
 /* 124 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-xs-12 col-md-4 col-md-offset-4\">\n\n            <form ng-disabled=\"lock.state\" id=\"signup-form\">\n                <div class=\"panel panel-default animated fadeInDown\">\n\n                    <div class=\"panel-body\">\n                        <h3>Sign up</h3>\n                        <hr/>\n\n                        <div class=\"form-group\" ng-class=\"{'has-error':errors.full_name}\">\n                            <input type=\"text\" ng-model=\"signup.full_name\" class=\"form-control\" name=\"full_name\"\n                                   placeholder=\"Full name\">\n                            <div class=\"help-block help-block-error\" ng-show=\"errors.full_name\"\n                                 ng-bind-html=\"errors.full_name | joinBr\"></div>\n                        </div>\n                        <div class=\"form-group\" ng-class=\"{'has-error':errors.email}\">\n                            <input type=\"text\" ng-model=\"signup.email\" class=\"form-control\"\n                                   name=\"email\"\n                                   placeholder=\"Email\">\n                            <div class=\"help-block help-block-error\" ng-show=\"errors.email\"\n                                 ng-bind-html=\"errors.email | joinBr\"></div>\n                        </div>\n\n                        <div class=\"form-group\" ng-class=\"{'has-error':errors.password}\">\n                            <input type=\"password\" ng-model=\"signup.password\" class=\"form-control\" name=\"password\"\n                                   placeholder=\"Password\">\n                            <div class=\"help-block help-block-error\" ng-show=\"errors.password\"\n                                 ng-bind-html=\"errors.password | joinBr\"></div>\n                        </div>\n                        <div class=\"form-group\" ng-class=\"{'has-error':errors.repeat_passw}\">\n                            <input type=\"password\" ng-model=\"signup.repeat_passw\" class=\"form-control\"\n                                   name=\"repeat_passw\"\n                                   placeholder=\"Repeat Password\">\n                            <div class=\"help-block help-block-error\" ng-show=\"errors.repeat_passw\"\n                                 ng-bind-html=\"errors.repeat_passw | joinBr\"></div>\n                        </div>\n\n\n                        <hr/>\n\n                        <div class=\"text-center\">\n                            <button ng-disabled=\"lock.state\" type=\"submit\" ng-click=\"submit()\"\n                                    class=\"btn btn-primary btn-block\">\n                                Submit\n                            </button>\n                        </div>\n\n                    </div>\n\n                </div>\n            </form>\n\n            <p class=\"text-center\">\n                <a ui-sref=\"login\">Already have an account? Sign in!</a>\n            </p>\n\n        </div>\n    </div>\n</div>";
+module.exports = "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-12 \">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-body\">Home page</div>\n            </div>\n        </div>\n    </div>\n</div>";
 
 /***/ }),
 /* 125 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-xs-12 col-md-4 col-md-offset-4\">\n\n            <form id=\"login-form\">\n                <div class=\"panel panel-default animated fadeInDown\">\n                    <div class=\"panel-body\">\n                        <h3>Sign in</h3>\n                        <hr>\n\n                        <div class=\"form-group\" ng-class=\"{'has-error':$ctrl.errors.email}\">\n                            <input type=\"text\" ng-model=\"$ctrl.model.email\" class=\"form-control\" name=\"email\"\n                                   placeholder=\"E-mail\">\n                            <div class=\"help-block help-block-error\" ng-show=\"$ctrl.errors.email\"\n                                 ng-bind-html=\"$ctrl.errors.email | joinBr\"></div>\n                        </div>\n                        <div class=\"form-group\" ng-class=\"{'has-error':$ctrl.errors.password}\">\n                            <input type=\"password\" ng-model=\"$ctrl.model.password\" class=\"form-control\"\n                                   name=\"password\"\n                                   placeholder=\"Password\">\n                            <div class=\"help-block help-block-error\" ng-show=\"$ctrl.errors.password\"\n                                 ng-bind-html=\"$ctrl.errors.password\"></div>\n                        </div>\n                        <a ui-sref=\"reset\" href>Forgot password?</a>\n\n                        <hr>\n                        <div class=\"text-center\">\n                            <button type=\"submit\" ng-click=\"$ctrl.onSubmit()\"\n                                    class=\"btn btn-primary btn-block\">Login\n                            </button>\n                        </div>\n\n                    </div>\n                </div>\n            </form>\n\n            <p class=\"text-center\">\n                <a ui-sref=\"signup\" href>Not registered yet? Sign up!</a>\n            </p>\n\n        </div>\n    </div>\n</div>";
+
+/***/ }),
+/* 126 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-xs-12 col-md-4 col-md-offset-4\">\n\n            <form id=\"signup-form\">\n                <div class=\"panel panel-default animated fadeInDown\">\n\n                    <div class=\"panel-body\">\n                        <h3>Sign up</h3>\n                        <hr/>\n\n                        <div class=\"form-group\" ng-class=\"{'has-error':errors.full_name}\">\n                            <input type=\"text\" ng-model=\"signup.full_name\" class=\"form-control\" name=\"full_name\"\n                                   placeholder=\"Full name\">\n                            <div class=\"help-block help-block-error\" ng-show=\"errors.full_name\"\n                                 ng-bind-html=\"errors.full_name | joinBr\"></div>\n                        </div>\n                        <div class=\"form-group\" ng-class=\"{'has-error':errors.email}\">\n                            <input type=\"text\" ng-model=\"signup.email\" class=\"form-control\"\n                                   name=\"email\"\n                                   placeholder=\"Email\">\n                            <div class=\"help-block help-block-error\" ng-show=\"errors.email\"\n                                 ng-bind-html=\"errors.email | joinBr\"></div>\n                        </div>\n\n                        <div class=\"form-group\" ng-class=\"{'has-error':errors.password}\">\n                            <input type=\"password\" ng-model=\"signup.password\" class=\"form-control\" name=\"password\"\n                                   placeholder=\"Password\">\n                            <div class=\"help-block help-block-error\" ng-show=\"errors.password\"\n                                 ng-bind-html=\"errors.password | joinBr\"></div>\n                        </div>\n                        <div class=\"form-group\" ng-class=\"{'has-error':errors.repeat_passw}\">\n                            <input type=\"password\" ng-model=\"signup.repeat_passw\" class=\"form-control\"\n                                   name=\"repeat_passw\"\n                                   placeholder=\"Repeat Password\">\n                            <div class=\"help-block help-block-error\" ng-show=\"errors.repeat_passw\"\n                                 ng-bind-html=\"errors.repeat_passw | joinBr\"></div>\n                        </div>\n\n\n                        <hr/>\n\n                        <div class=\"text-center\">\n                            <button type=\"submit\" ng-click=\"submit()\"\n                                    class=\"btn btn-primary btn-block\">\n                                Submit\n                            </button>\n                        </div>\n\n                    </div>\n\n                </div>\n            </form>\n\n            <p class=\"text-center\">\n                <a ui-sref=\"login\">Already have an account? Sign in!</a>\n            </p>\n\n        </div>\n    </div>\n</div>";
+
+/***/ }),
+/* 127 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -67926,7 +67982,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 126 */
+/* 128 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -67937,7 +67993,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 127 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -78197,7 +78253,7 @@ return jQuery;
 
 
 /***/ }),
-/* 128 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -79658,7 +79714,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 129 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -80012,7 +80068,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var buffer;
         if (typeof module !== 'undefined' && module.exports) {
             try {
-                buffer = __webpack_require__(119).Buffer;
+                buffer = __webpack_require__(121).Buffer;
             }
             catch (err) {
             }
@@ -80623,7 +80679,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 130 */
+/* 132 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -80651,7 +80707,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 131 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(60);
@@ -80659,34 +80715,110 @@ module.exports = __webpack_require__(61);
 
 
 /***/ }),
-/* 132 */,
-/* 133 */,
 /* 134 */,
 /* 135 */,
 /* 136 */,
 /* 137 */,
 /* 138 */,
 /* 139 */,
-/* 140 */
+/* 140 */,
+/* 141 */,
+/* 142 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_logout_controller__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_404_controller__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_404_html__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_404_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_404_html__);
 
 
-var mainLogoutComponent = {
-    controller: __WEBPACK_IMPORTED_MODULE_0__main_logout_controller__["a" /* default */]
+
+var main404Component = {
+    controller: __WEBPACK_IMPORTED_MODULE_0__main_404_controller__["a" /* default */],
+    template: __WEBPACK_IMPORTED_MODULE_1__main_404_html___default.a
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (mainLogoutComponent);
+/* harmony default export */ __webpack_exports__["a"] = (main404Component);
 
 /***/ }),
-/* 141 */
+/* 143 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var Main404Controller = function Main404Controller() {
+  _classCallCheck(this, Main404Controller);
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Main404Controller);
+
+/***/ }),
+/* 144 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-md-offset-3 col-md-6 text-center\">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-body\">\n                    <h1>Error 404</h1>\n                    <p>Page not found</p>\n                    <hr>\n                    <a class=\"btn btn-default\" ui-sref=\"home\"><i class=\"fa fa-home\"></i> Home</a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>";
+
+/***/ }),
+/* 145 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_500_controller__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_500_html__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_500_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_500_html__);
+
+
+
+var main500Component = {
+    controller: __WEBPACK_IMPORTED_MODULE_0__main_500_controller__["a" /* default */],
+    template: __WEBPACK_IMPORTED_MODULE_1__main_500_html___default.a
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (main500Component);
+
+/***/ }),
+/* 146 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Main500Controller = function Main500Controller() {
+  _classCallCheck(this, Main500Controller);
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Main500Controller);
+
+/***/ }),
+/* 147 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-md-offset-3 col-md-6 text-center\">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-body\">\n                    <h1>Error 500</h1>\n                    <p>Server error</p>\n                    <hr>\n                    <a class=\"btn btn-default\" ui-sref=\"home\"><i class=\"fa fa-home\"></i> Home</a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>";
+
+/***/ }),
+/* 148 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_reset_controller__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_reset_html__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_reset_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_reset_html__);
+
+
+
+var mainResetComponent = {
+    controller: __WEBPACK_IMPORTED_MODULE_0__main_reset_controller__["a" /* default */],
+    template: __WEBPACK_IMPORTED_MODULE_1__main_reset_html___default.a
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (mainResetComponent);
+
+/***/ }),
+/* 149 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 // (function () {
@@ -80694,51 +80826,137 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 //
 //     angular
 //         .module('app.pages.main')
-//         .controller('MainLogoutController', MainLogoutController);
+//         .controller('MainResetController', MainResetController);
 //
 //     /* @ngInject */
-//     function MainLogoutController($auth, $state) {
+//     function MainResetController($scope, $window, $auth, $state, toaster, pageService, userService) {
+//
+//         // --- vars ---
+//
+//         $scope.email = '';
+//
+//         $scope.errors = {};
+//
+//         // --- methods ---
+//
+//         $scope.back = function () {
+//             $window.history.back();
+//         };
+//
+//         $scope.submit = function () {
+//             userService.reset($scope.email).then(
+//                 function (response) {
+//                     if (response.data[0].result) {
+//                         toaster.pop({type: 'success', body: "Confirm email was sent!"});
+//                     }
+//                     $scope.errors = response.data[0].errors;
+//                     console.log('empty errors => ' + $scope.errors);
+//                 }, function () {
+//                     toaster.pop({type: 'error', body: "User is not found!"});
+//                 }
+//             );
+//         };
 //
 //         // --- init ---
 //
-//         $auth.logout();
-//         $state.go('home');
+//         pageService.reset().addCrumb({name: 'Reset', path: 'reset'});
+//
 //     }
 // })();
 
-var MainLogoutController = function () {
-    _createClass(MainLogoutController, null, [{
-        key: '$inject',
-        get: function get() {
-            return ['toaster', '$auth', '$state'];
+var MainResetController = function MainResetController() {
+    _classCallCheck(this, MainResetController);
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (MainResetController);
+
+/***/ }),
+/* 150 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-xs-12 col-md-4 col-md-offset-4\">\n\n            <form>\n                <div class=\"panel panel-default animated fadeInDown\">\n                    <div class=\"panel-body\">\n                        <h3><i class=\"fa fa-key\"></i> Reset Password</h3>\n                        <hr>\n\n                        <div class=\"form-group\" ng-class=\"{'has-error':errors.email}\">\n                            <input type=\"text\" ng-model=\"email\" class=\"form-control\" name=\"email\"\n                                   placeholder=\"Email\">\n                            <div class=\"help-block help-block-error\" ng-show=\"errors.email\"\n                                 ng-bind-html=\"errors.email | joinBr\"></div>\n                        </div>\n\n                        <hr>\n                        <div class=\"text-center\">\n                            <button type=\"submit\" ng-click=\"submit()\"\n                                    class=\"btn btn-primary btn-block\">Send\n                            </button>\n                        </div>\n                    </div>\n\n                </div>\n            </form>\n\n            <p class=\"text-center\">\n                <a ui-sref=\"signup\">Not registered yet? Sign up!</a>\n            </p>\n            <p class=\"text-center\">\n                <a ui-sref=\"login\">Already have an account? Sign in!</a>\n            </p>\n\n        </div>\n    </div>\n</div>";
+
+/***/ }),
+/* 151 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__projects_list_controller__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projects_list_html__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projects_list_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__projects_list_html__);
+
+
+
+var projectsListComponent = {
+    controller: __WEBPACK_IMPORTED_MODULE_0__projects_list_controller__["a" /* default */],
+    template: __WEBPACK_IMPORTED_MODULE_1__projects_list_html___default.a
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (projectsListComponent);
+
+/***/ }),
+/* 152 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ProjectsListController = function ProjectsListController() {
+  _classCallCheck(this, ProjectsListController);
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (ProjectsListController);
+
+/***/ }),
+/* 153 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = ProjectsConfig;
+ProjectsConfig.$inject = ['$stateProvider'];
+
+function ProjectsConfig($stateProvider) {
+
+    $stateProvider.state('projects', {
+        abstract: true,
+        data: {
+            access: '@'
+        },
+        url: '/projects',
+        parent: 'default',
+        views: {
+            content: {
+                template: '<ui-view/>'
+            }
         }
-    }]);
+    }).state('projects.list', {
+        url: '',
+        component: 'projectsListComponent'
+    });
+}
+;
 
-    function MainLogoutController(toaster, $auth, $state) {
-        _classCallCheck(this, MainLogoutController);
+/***/ }),
+/* 154 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-        this.toaster = toaster;
-        this.$auth = $auth;
-        this.$state = $state;
-    }
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projects_config__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__list_projects_list_component__ = __webpack_require__(151);
 
-    _createClass(MainLogoutController, [{
-        key: '$onInit',
-        value: function $onInit() {
-            this.toaster.pop({
-                type: 'warning',
-                body: 'Logout'
-            });
 
-            this.$auth.logout();
-            this.$state.go('home');
-        }
-    }]);
 
-    return MainLogoutController;
-}();
 
-/* harmony default export */ __webpack_exports__["a"] = (MainLogoutController);
+
+angular.module('app.components.projects', []).config(__WEBPACK_IMPORTED_MODULE_1__projects_config__["a" /* default */]).component('projectsListComponent', __WEBPACK_IMPORTED_MODULE_2__list_projects_list_component__["a" /* default */]);
+
+/***/ }),
+/* 155 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-12 \">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-body\">projects list</div>\n            </div>\n        </div>\n    </div>\n</div>";
 
 /***/ })
 /******/ ]);

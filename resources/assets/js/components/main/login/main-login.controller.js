@@ -5,13 +5,13 @@ import _ from 'lodash';
 export default class MainLoginController {
 
     static get $inject() {
-        return ['toaster', '$auth', '$state'];
+        return ['$injector'];
     }
 
-    constructor(toaster, $auth, $state) {
-        this.toaster = toaster;
-        this.$auth = $auth;
-        this.$state = $state;
+    constructor($injector) {
+        this.toaster = $injector.get('toaster');
+        this.$auth = $injector.get('$auth');
+        this.$state = $injector.get('$state');
     }
 
     $onInit() {
@@ -41,5 +41,3 @@ export default class MainLoginController {
         this.errors = _.get(response, 'data.errors', {});
     }
 }
-
-// MainLoginController.$inject = ['toaster', '$auth', '$state'];

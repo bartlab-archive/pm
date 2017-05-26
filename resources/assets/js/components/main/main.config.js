@@ -8,7 +8,7 @@ export default function MainConfig($stateProvider) {
             url: '/404',
             views: {
                 content: {
-                    component: 'main404',
+                    component: 'main404Component',
                 }
             }
         })
@@ -17,7 +17,7 @@ export default function MainConfig($stateProvider) {
             url: '/500',
             views: {
                 content: {
-                    component: 'main500',
+                    component: 'main500Component',
                 }
             }
         })
@@ -65,7 +65,7 @@ export default function MainConfig($stateProvider) {
             parent: 'blank',
             views: {
                 content: {
-                    component: 'mainReset',
+                    component: 'mainResetComponent',
                 }
             }
         })

@@ -5,7 +5,7 @@ const mainIndexComponent = {
     controller: MainLoginController,
     template: MainLoginTemplate,
     bindings: {
-        login: '<'
+        model: '<'
     }
 };
 

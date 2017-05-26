@@ -1,34 +1,25 @@
-appRun.$inject = ['$rootScope'];
+import _ from 'lodash';
 
-export default function appRun($rootScope) {
+appRun.$inject = ['$rootScope', '$auth', '$transitions'];
+
+export default function appRun($rootScope, $auth, $transitions) {
     $rootScope.isReady = false;
 
-    $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
-        $rootScope.toState = toState;
-        $rootScope.toStateParams = toStateParams;
+    $transitions.onStart({}, function (trans) {
+        // $rootScope.toState = toState;
+        // $rootScope.toStateParams = toStateParams;
+        let access = _.get(trans.$to(), 'data.access', false);
 
-        if (!$rootScope.isReady) {
-            event.preventDefault();
-            return false;
-        }
-
-        if (toState.data && toState.data.access) {
+        if (access) {
             /*Cancel going to the authenticated state and go back to landing*/
-            if (toState.data.access === '@' && !$auth.isAuthenticated()) {
-                event.preventDefault();
-                return $state.go('login');
+            if (access === '@' && !$auth.isAuthenticated()) {
+                return trans.router.stateService.target('login');
             }
 
             // if controller not require authorizing and has deny signed users flag then redirect
-            if (toState.data.access === '?' && $auth.isAuthenticated()) {
-                event.preventDefault();
-                return $state.go('home');
+            if (access === '?' && $auth.isAuthenticated()) {
+                return trans.router.stateService.target('home');
             }
-
-            // if (toState.data.access === 'admin' && !userService.isAdmin()) {
-            //     event.preventDefault();
-            //     return $state.go('home');
-            // }
         }
     });
 }
