@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <div class="panel-title pull-left">{{ $ctrl.project.name }}</div>
+
+                    <div class="btn-toolbar" role="toolbar">
+                        <div class="btn-group pull-right" uib-dropdown>
+                            <a ui-sref="projects.new" id="split-button" type="button" class="btn btn-primary btn-sm">
+                                New sub-project
+                            </a>
+                            <a href="#" type="button" class="btn btn-default btn-sm">
+                                Make closed
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div ng-bind-html="$ctrl.project.description | nl2p"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

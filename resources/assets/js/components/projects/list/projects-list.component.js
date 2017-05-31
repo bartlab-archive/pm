@@ -3,7 +3,10 @@ import ProjectsListTemplate from './projects-list.html';
 
 const projectsListComponent = {
     controller: ProjectsListController,
-    template: ProjectsListTemplate
+    template: ProjectsListTemplate,
+    // bindings:{
+    //
+    // }
 };
 
 export default projectsListComponent;

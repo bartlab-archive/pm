@@ -24,16 +24,24 @@ Route::group(
 //        'middleware' => 'auth'
     ],
     function () {
-        Route::post('auth',function(Request $request){
+        Route::post('auth', function (Request $request) {
             $username = $request->input('email');
-            if ($user = \App\Models\User::where('login',$username)->first()){
-                return ['token'=>$user->hashed_password];
+            if ($user = \App\Models\User::where('login', $username)->first()) {
+                return ['token' => $user->hashed_password];
             }
             return [];
         });
 
-        Route::get('projects',function(){
-            return (new \App\Models\Project())->get();
+        Route::get('projects', function (Request $request) {
+            $list = \App\Models\Project::orderBy('name')->where('status', 1);
+            if ($request->input('closed')) {
+                $list->orWhere('status', 5);
+            }
+            return $list->get();
+        });
+
+        Route::get('projects/{identifier}', function ($identifier) {
+            return \App\Models\Project::where('identifier', $identifier)->first();
         });
 //        Route::post('auth', 'Auth\LoginController@login');
 //        Route::post('register', 'Auth\RegisterController@register');

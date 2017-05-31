@@ -5,34 +5,46 @@
                 <div class="panel-heading clearfix">
                     <div class="panel-title pull-left">Projects</div>
 
+                    <div class="btn-toolbar" role="toolbar">
+                        <div class="btn-group pull-right" uib-dropdown>
+                            <a ui-sref="projects.new" id="split-button" type="button" class="btn btn-primary btn-sm">
+                                New project
+                            </a>
+                            <a href="#" type="button" class="btn btn-default btn-sm">
+                                Issues
+                            </a>
+                            <a href="#" type="button" class="btn btn-default btn-sm">
+                                Time entries
+                            </a>
+                            <a href="#" type="button" class="btn btn-default btn-sm" ng-click="$ctrl.test()">
+                                Activity
+                            </a>
+                        </div>
 
-                    <div class="btn-group pull-right" uib-dropdown>
-                        <!--<button type="button" class="btn btn-default btn-sm" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">-->
-                            <!--Show closed-->
-                        <!--</button>-->
-
-                        <a ui-sref="projects.new" id="split-button" type="button" class="btn btn-default btn-sm">New project</a>
-                        <a type="button" class="btn btn-default btn-sm" uib-dropdown-toggle>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-                            <li role="menuitem"><a href="#">Issues</a></li>
-                            <li role="menuitem"><a href="#">Time entries</a></li>
-                            <li role="menuitem"><a href="#">Activity</a></li>
-                        </ul>
+                        <div class="btn-group pull-right" uib-dropdown>
+                            <button type="button" ng-change="$ctrl.load()" ng-model="$ctrl.showClosed"
+                                    class="btn btn-default btn-sm" uib-btn-checkbox btn-checkbox-true="1"
+                                    btn-checkbox-false="0">
+                                Show closed
+                            </button>
+                        </div>
                     </div>
-
-
                 </div>
                 <div class="panel-body">
                     <div class="list-group">
-                        <a href="#" class="list-group-item" ng-repeat="row in $ctrl.list">
+                        <a ui-sref="projects.info({ id:row.identifier })" class="list-group-item"
+                           ng-repeat="row in $ctrl.list">
+                            <span class="badge">0</span>
                             <h4 class="list-group-item-heading">{{ row.name }}</h4>
-                            <p class="list-group-item-text">{{ row.description }}</p>
+                            <div class="list-group-item-text" ng-bind-html="row.description | words: 50 | nl2p"></div>
+                            <p class="list-group-item-text" ng-if="row.homepage">{{ row.homepage }}</p>
+                            <span class="label label-success" ng-if="row.is_public">Public</span>
+                            <span class="label label-warning" ng-if="!row.is_public">Private</span>
+                            <span class="label label-default" ng-if="row.status == 5">Closed</span>
                         </a>
                     </div>
                 </div>
-                <div class="panel-footer">test</div>
+                <div class="panel-footer">Show {{ $ctrl.list.length || 0 }} projects in list</div>
             </div>
         </div>
     </div>

@@ -22,7 +22,11 @@ export default function ProjectsConfig($stateProvider) {
         })
         .state('projects.new', {
             url: '/new',
-            component: 'projectsNewComponent',
+            component: 'projectsEditComponent',
+        })
+        .state('projects.info', {
+            url: '/:id',
+            component: 'projectsInfoComponent',
         });
 }
 ;

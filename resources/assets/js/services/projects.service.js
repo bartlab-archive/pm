@@ -4,12 +4,16 @@ export default class ProjectsService {
         return ['$injector'];
     }
 
-    constructor($injector){
+    constructor($injector) {
         this.Restangular = $injector.get('Restangular');
     }
 
-    getList(){
-        return this.Restangular.all('projects').getList();
+    one(indifier){
+        return this.Restangular.all('projects').one(indifier).get();
+    }
+
+    getList(params) {
+        return this.Restangular.all('projects').getList(params);
     }
 
 }

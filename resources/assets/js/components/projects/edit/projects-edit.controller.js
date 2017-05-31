@@ -1,4 +1,4 @@
-export default class ProjectsNewController {
+export default class ProjectsEditController {
 
     static get $inject() {
         return ['$injector'];

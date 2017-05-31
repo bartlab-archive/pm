@@ -7,6 +7,7 @@ import 'satellizer';
 import 'angularjs-toaster';
 import 'ng-table';
 import 'angular-ui-bootstrap';
+import 'angular-loading-bar';
 
 import 'filters.module';
 import 'services.module';
@@ -29,6 +30,7 @@ angular
             'satellizer',
             'toaster',
             'ngTable',
+            'angular-loading-bar',
 
             'app.filters',
             'app.components',
