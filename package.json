@@ -22,6 +22,8 @@
     "restangular": "*",
     "satellizer": "*",
     "toastr": "*",
+    "ng-table": "*",
+    "angular-ui-bootstrap": "*",
     "angularjs-toaster": "*",
     "ng-annotate-webpack-plugin": "*"
   }

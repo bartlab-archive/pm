@@ -31,6 +31,10 @@ Route::group(
             }
             return [];
         });
+
+        Route::get('projects',function(){
+            return (new \App\Models\Project())->get();
+        });
 //        Route::post('auth', 'Auth\LoginController@login');
 //        Route::post('register', 'Auth\RegisterController@register');
 //        Route::post('reset', 'Auth\ForgotPasswordController@resetVerify');

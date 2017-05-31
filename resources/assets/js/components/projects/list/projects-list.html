@@ -2,7 +2,19 @@
     <div class="row">
         <div class="col-md-12 ">
             <div class="panel panel-default">
-                <div class="panel-body">projects list</div>
+                <div class="panel-heading">
+                    Projects
+
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item" ng-repeat="row in $ctrl.list">
+                            <h4 class="list-group-item-heading">{{ row.name }}</h4>
+                            <p class="list-group-item-text">{{ row.description }}</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="panel-footer">test</div>
             </div>
         </div>
     </div>
