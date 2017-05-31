@@ -2,8 +2,26 @@
     <div class="row">
         <div class="col-md-12 ">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    Projects
+                <div class="panel-heading clearfix">
+                    <div class="panel-title pull-left">Projects</div>
+
+
+                    <div class="btn-group pull-right" uib-dropdown>
+                        <!--<button type="button" class="btn btn-default btn-sm" uib-btn-checkbox btn-checkbox-true="1" btn-checkbox-false="0">-->
+                            <!--Show closed-->
+                        <!--</button>-->
+
+                        <a ui-sref="projects.new" id="split-button" type="button" class="btn btn-default btn-sm">New project</a>
+                        <a type="button" class="btn btn-default btn-sm" uib-dropdown-toggle>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
+                            <li role="menuitem"><a href="#">Issues</a></li>
+                            <li role="menuitem"><a href="#">Time entries</a></li>
+                            <li role="menuitem"><a href="#">Activity</a></li>
+                        </ul>
+                    </div>
+
 
                 </div>
                 <div class="panel-body">

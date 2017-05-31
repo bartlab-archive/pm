@@ -19,6 +19,10 @@ export default function ProjectsConfig($stateProvider) {
         .state('projects.list', {
             url: '',
             component: 'projectsListComponent',
+        })
+        .state('projects.new', {
+            url: '/new',
+            component: 'projectsNewComponent',
         });
 }
 ;
