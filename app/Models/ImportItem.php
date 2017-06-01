@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class ImportItem extends Model
 {
-    protected $table = 'projects';
+    protected $table = 'import_items';
 
     public $timestamps = false;
 }

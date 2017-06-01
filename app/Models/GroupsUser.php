@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class GroupsUser extends Model
 {
-    protected $table = 'projects';
+    protected $table = 'groups_users';
 
     public $timestamps = false;
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class Wiki extends Model
 {
-    protected $table = 'projects';
+    protected $table = 'wikis';
 
     public $timestamps = false;
 }
