@@ -1,6 +1,7 @@
 
 // Fonts
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+@import "node_modules/font-awesome/scss/font-awesome";
 
 // Variables
 @import "variables";
@@ -9,5 +10,6 @@
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "_spacing.scss";
 
+// plugins
 @import "node_modules/toastr/toastr";
 @import "node_modules/angular-loading-bar/build/loading-bar";

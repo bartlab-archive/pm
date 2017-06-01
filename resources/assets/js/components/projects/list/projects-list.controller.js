@@ -14,6 +14,7 @@ export default class ProjectsListController {
     }
 
     load() {
+        this.list = [];
         this.ProjectsService.getList({closed: this.showClosed}).then((response) => {
             this.list = response.data;
         });

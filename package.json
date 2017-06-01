@@ -26,6 +26,7 @@
     "angular-ui-bootstrap": "*",
     "angularjs-toaster": "*",
     "angular-loading-bar": "*",
-    "ng-annotate-webpack-plugin": "*"
+    "ng-annotate-webpack-plugin": "*",
+    "font-awesome":"*"
   }
 }

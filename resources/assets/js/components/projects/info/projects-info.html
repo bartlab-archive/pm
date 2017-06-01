@@ -8,16 +8,29 @@
                     <div class="btn-toolbar" role="toolbar">
                         <div class="btn-group pull-right" uib-dropdown>
                             <a ui-sref="projects.new" id="split-button" type="button" class="btn btn-primary btn-sm">
-                                New sub-project
+                                <i class="fa fa-plus"></i> New subproject
                             </a>
                             <a href="#" type="button" class="btn btn-default btn-sm">
-                                Make closed
+                                <i class="fa fa-times"></i> Close
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
-                    <div ng-bind-html="$ctrl.project.description | nl2p"></div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <h4>Overview</h4>
+                            <div ng-bind-html="$ctrl.project.description | nl2p"></div>
+                        </div>
+                        <div class="col-md-5">
+                            <h4>Spent time</h4>
+
+                            <h4>Members</h4>
+                            <h4>Issue tracking</h4>
+                            <h4>Subprojects</h4>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
