@@ -1,4 +1,31 @@
+
+
 export default class MainRegistrationController {
+    static get $inject() {
+      return ['$injector'];
+    }
+
+  constructor($injector) {
+    this.toaster = $injector.get('$mdToast');
+    this.$auth = $injector.get('$auth');
+    this.$state = $injector.get('$state');
+    this.languages = [
+      {
+        id: 1,
+        name: 'English'
+      },
+      {
+        id: 2,
+        name: 'Spanish'
+      },
+      {
+        id: 3,
+        name: 'Ukraine'
+      }
+    ];
+  }
+
+
 
 }
 
