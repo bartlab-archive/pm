@@ -62489,7 +62489,7 @@ module.exports = "toaster";
                     }
 
                     $rootScope.$emit('toaster-newToast', toasterId, this.toast.toastId);
-                    
+
                     return {
                         toasterId: toasterId,
                         toastId: this.toast.toastId
@@ -62707,7 +62707,7 @@ module.exports = "toaster";
                                             break;
                                         }
                                     }
-                                    
+
                                     if (dupFound) return;
                                 }
                             }
@@ -62867,8 +62867,8 @@ module.exports = "toaster";
                             $scope.click = function(event, toast, isCloseButton) {
                                 event.stopPropagation();
 
-                                var tapToDismiss = typeof toast.tapToDismiss === "boolean" 
-                                                        ? toast.tapToDismiss 
+                                var tapToDismiss = typeof toast.tapToDismiss === "boolean"
+                                                        ? toast.tapToDismiss
                                                         : $scope.config.tap;
                                 if (tapToDismiss === true || (toast.showCloseButton === true && isCloseButton === true)) {
                                     var removeToast = true;
@@ -80028,8 +80028,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /**
  * Satellizer 0.15.5
- * (c) 2016 Sahat Yalkabov 
- * License: MIT 
+ * (c) 2016 Sahat Yalkabov
+ * License: MIT
  */
 
 (function (global, factory) {

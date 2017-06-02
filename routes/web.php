@@ -17,4 +17,4 @@ Route::get('', function () {
 
 Route::get('{all}', function () {
     return view('index');
-});
+})->where('all', '.*');

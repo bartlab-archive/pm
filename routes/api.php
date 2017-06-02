@@ -27,6 +27,20 @@ Route::group(
 
         Route::post('auth', 'Auth\LoginController@login');
         Route::post('register', 'Auth\RegisterController@register');
+
+        Route::get('projects', function (Request $request) {
+            $list = \App\Models\Project::orderBy('name')->where('status', 1);
+            if ($request->input('closed')) {
+                $list->orWhere('status', 5);
+            }
+            return $list->get();
+        });
+
+        Route::get('projects/{identifier}', function ($identifier) {
+            return \App\Models\Project::where('identifier', $identifier)->first();
+        });
+//        Route::post('auth', 'Auth\LoginController@login');
+//        Route::post('register', 'Auth\RegisterController@register');
 //        Route::post('reset', 'Auth\ForgotPasswordController@resetVerify');
 //        Route::post('reset-confirmed', 'Auth\ResetPasswordController@resetConfirmed');
 //

@@ -1,11 +1,11 @@
 export default class MainLogoutController {
 
     static get $inject() {
-        return ['toaster', '$auth', '$state'];
+        return ['$mdToast', '$auth', '$state'];
     }
 
-    constructor(toaster, $auth, $state) {
-        this.toaster = toaster;
+    constructor($mdToast, $auth, $state) {
+        this.toaster = $mdToast;
         this.$auth = $auth;
         this.$state = $state;
     }
@@ -13,10 +13,10 @@ export default class MainLogoutController {
     $onInit() {
         this.$auth.logout();
 
-        this.toaster.pop({
-            type: 'warning',
-            body: 'Logout'
-        });
+        this.toaster.show(
+            this.toaster.simple()
+                .textContent('Logout')
+        );
 
         this.$state.go('home');
     }

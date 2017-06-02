@@ -9,7 +9,7 @@ export default class MainLoginController {
     }
 
     constructor($injector) {
-        this.toaster = $injector.get('toaster');
+        this.toaster = $injector.get('$mdToast');
         this.$auth = $injector.get('$auth');
         this.$state = $injector.get('$state');
     }
@@ -27,17 +27,20 @@ export default class MainLoginController {
         // console.log(response);
 
         if (response.data.token) {
-            this.toaster.pop({type: 'success', body: "Welcome!"});
+            this.toaster.show(
+                this.toaster.simple()
+                    .textContent('Welcome!')
+            );
 
             // update user data
             // userService.loadUser(true).then(function () {
             this.$state.go('home');
             // });
         } else {
-            this.toaster.pop({
-                type: 'error',
-                body: 'Whoops, your password or email are incorrect'
-            });
+            this.toaster.show(
+                this.toaster.simple()
+                    .textContent('Whoops, your password or email are incorrect')
+            );
         }
         this.errors = _.get(response, 'data.errors', {});
     }

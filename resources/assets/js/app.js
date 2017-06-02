@@ -4,11 +4,16 @@ import 'angular-sanitize';
 import '@uirouter/angularjs';
 import 'restangular';
 import 'satellizer';
-import 'angularjs-toaster';
+import 'ng-table';
+import 'angular-material';
+import 'angular-animate';
+import 'angular-aria';
 
 import 'filters.module';
 import 'services.module';
 import 'components/components.module';
+
+import ProjectsService from 'services/projects.service';
 
 import appRun from 'app.run';
 import appConfig from 'app.config';
@@ -18,17 +23,21 @@ angular
         'app',
         [
             'ngSanitize',
+            'ngAnimate',
+            'ngAria',
+            // 'ngMessages',
+            'ngMaterial',
 
             'ui.router',
             'restangular',
             'satellizer',
-            'toaster',
+            'ngTable',
 
             'app.filters',
             'app.components',
             'app.services'
         ]
     )
-
+    .service('ProjectsService', ProjectsService)
     .config(appConfig)
     .run(appRun);
