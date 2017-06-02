@@ -16,6 +16,7 @@ class ProjectsTrackers extends Migration
         Schema::create('projects_trackers', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
+            $table->increments('id');
             $table->integer('project_id')->default(0)->index('projects_trackers_project_id');
             $table->integer('tracker_id')->default(0);
 

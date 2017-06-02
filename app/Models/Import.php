@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -8,5 +8,15 @@ class Import extends Model
 {
     protected $table = 'imports';
 
-    public $timestamps = false;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
+    ];
 }

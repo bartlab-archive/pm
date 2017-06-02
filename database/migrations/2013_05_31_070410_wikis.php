@@ -14,6 +14,8 @@ class Wikis extends Migration
     public function up()
     {
         Schema::create('wikis', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+
             $table->increments('id')->unsigned();
             $table->integer('project_id')->index('wikis_project_id');
             $table->string('start_page', 255);
