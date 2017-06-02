@@ -25,5 +25,8 @@
     "angular-animate": "*",
     "angular-material": "*",
     "ng-annotate-webpack-plugin": "*"
+  },
+  "dependencies": {
+    "@uirouter/angularjs": "^1.0.3"
   }
 }
