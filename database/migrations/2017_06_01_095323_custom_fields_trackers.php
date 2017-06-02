@@ -16,6 +16,7 @@ class CustomFieldsTrackers extends Migration
         Schema::create('custom_fields_trackers', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
+            $table->increments('id');
             $table->integer('custom_field_id')->default(0);
             $table->integer('tracker_id')->default(0);
 

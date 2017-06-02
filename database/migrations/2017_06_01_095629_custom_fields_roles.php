@@ -16,6 +16,7 @@ class CustomFieldsRoles extends Migration
         Schema::create('custom_fields_roles', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
+            $table->increments('id');
             $table->integer('custom_field_id');
             $table->integer('role_id');
 

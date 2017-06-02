@@ -14,6 +14,8 @@ class OpenIdAuthenticationAssociations extends Migration
     public function up()
     {
         Schema::create('open_id_authentication_associations', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+
             $table->increments('id');
             $table->integer('issued')->nullable();
             $table->integer('lifetime')->nullable();

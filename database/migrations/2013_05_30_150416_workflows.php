@@ -14,6 +14,8 @@ class Workflows extends Migration
     public function up()
     {
         Schema::create('workflows', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+
             $table->increments('id');
             $table->integer('tracker_id')->default(0);
             $table->integer('old_status_id')->default(0)->index('index_workflows_on_old_status_id');
