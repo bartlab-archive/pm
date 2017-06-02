@@ -16,6 +16,7 @@ class QueriesRoles extends Migration
         Schema::create('queries_roles', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
+            $table->increments('id');
             $table->integer('query_id');
             $table->integer('role_id');
 

@@ -4,6 +4,7 @@ export default class ProjectsService {
         return ['$injector'];
     }
 
+
     constructor($injector) {
         this.Restangular = $injector.get('Restangular');
     }

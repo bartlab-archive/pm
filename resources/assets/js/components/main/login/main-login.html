@@ -1,11 +1,11 @@
 <md-card>
-    <md-toolbar>
-        <div layout="column" layout-padding layout-align="center center">
-            <div class="md-headline md-padding">Sign in</div>
-        </div>
-    </md-toolbar>
-    <md-card-content>
-        <form name="loginForm">
+    <form name="loginForm" ng-submit="$ctrl.onSubmit()">
+        <md-toolbar>
+            <div layout="column" layout-padding layout-align="center center">
+                <div class="md-headline md-padding">Sign in</div>
+            </div>
+        </md-toolbar>
+        <md-card-content>
             <md-input-container class="md-icon-float md-block">
                 <label>E-mail or name</label>
                 <input ng-model="$ctrl.model.email" type="text" required>
@@ -15,14 +15,15 @@
                 <label>Password</label>
                 <input ng-model="$ctrl.model.password" type="password" required>
             </md-input-container>
-        </form>
-    </md-card-content>
+        </md-card-content>
 
 
-    <md-card-actions layout="row" layout-align="center center">
-        <md-button class="md-raised md-primary" ng-click="$ctrl.onSubmit()" ng-disabled="loginForm.$invalid">Login
-        </md-button>
-    </md-card-actions>
+        <md-card-actions layout="row" layout-align="center center">
+            <md-button class="md-raised md-primary" type = "submit" ng-disabled="loginForm.$invalid">Login
+            </md-button>
+        </md-card-actions>
+    </form>
+
 </md-card>
 
 <p layout="row" layout-align="center center">

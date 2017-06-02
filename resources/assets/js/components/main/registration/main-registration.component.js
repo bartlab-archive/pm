@@ -1,5 +1,6 @@
 import MainRegistrationController from './main-registration.controller';
 import MainRegistrationTemplate from './main-registration.html';
+import './main-registration.scss';
 
 const mainRegistrationComponent = {
     controller: MainRegistrationController,

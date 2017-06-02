@@ -16,6 +16,7 @@ class ChangesetsIssues extends Migration
         Schema::create('changesets_issues', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
+            $table->increments('id');
             $table->integer('changeset_id');
             $table->integer('issue_id');
 

@@ -1,74 +1,65 @@
-<div class="container mt-3">
-    <div class="row">
-        <div class="col-xs-12 col-md-4 col-md-offset-4">
-
-            <form id="signup-form">
-                <div class="panel panel-default animated fadeInDown">
-
-                    <div class="panel-body">
-                        <h3>Sign up</h3>
-                        <hr/>
-
-
-                        <div class="form-group" ng-class="{'has-error': $ctrl.errors.login}">
-                            <input type="text" ng-model="$ctrl.signup.login" class="form-control" name="login"
-                                   placeholder="Login">
-                            <div class="help-block help-block-error" ng-show="$ctrl.errors.login"
-                                 ng-bind-html="$ctrl.errors.login | joinBr"></div>
-                        </div>
-                        <div class="form-group" ng-class="{'has-error': $ctrl.errors.first_name}">
-                            <input type="text" ng-model="$ctrl.signup.first_name" class="form-control" name="first_name"
-                                   placeholder="First name">
-                            <div class="help-block help-block-error" ng-show="$ctrl.errors.first_name"
-                                 ng-bind-html="$ctrl.errors.first_name | joinBr"></div>
-                        </div>
-                        <div class="form-group" ng-class="{'has-error': $ctrl.errors.last_name}">
-                            <input type="text" ng-model="$ctrl.signup.last_name" class="form-control" name="last_name"
-                                   placeholder="Last name">
-                            <div class="help-block help-block-error" ng-show="$ctrl.errors.last_name"
-                                 ng-bind-html="$ctrl.errors.last_name | joinBr"></div>
-                        </div>
-                        <div class="form-group" ng-class="{'has-error': $ctrl.errors.email}">
-                            <input type="text" ng-model="$ctrl.signup.email" class="form-control"
-                                   name="email"
-                                   placeholder="Email">
-                            <div class="help-block help-block-error" ng-show="$ctrl.errors.email"
-                                 ng-bind-html="$ctrl.errors.email | joinBr"></div>
-                        </div>
-
-                        <div class="form-group" ng-class="{'has-error': $ctrl.errors.password}">
-                            <input type="password" ng-model="$ctrl.signup.password" class="form-control" name="password"
-                                   placeholder="Password">
-                            <div class="help-block help-block-error" ng-show="$ctrl.errors.password"
-                                 ng-bind-html="$ctrl.errors.password | joinBr"></div>
-                        </div>
-                        <div class="form-group" ng-class="{'has-error': $ctrl.errors.repeat_passw}">
-                            <input type="password" ng-model="$ctrl.signup.repeat_passw" class="form-control"
-                                   name="repeat_passw"
-                                   placeholder="Repeat Password">
-                            <div class="help-block help-block-error" ng-show="$ctrl.errors.repeat_passw"
-                                 ng-bind-html="$ctrl.errors.repeat_passw | joinBr"></div>
-                        </div>
-
-
-                        <hr/>
-
-                        <div class="text-center">
-                            <button type="submit" ng-click="$ctrl.submit()"
-                                    class="btn btn-primary btn-block">
-                                Submit
-                            </button>
-                        </div>
-
-                    </div>
-
-                </div>
-            </form>
-
-            <p class="text-center">
-                <a ui-sref="login">Already have an account? Sign in!</a>
-            </p>
-
+<md-card>
+    <md-toolbar>
+        <div layout="column" layout-padding layout-align="center center">
+            <div class="md-headline md-padding">Sign up</div>
         </div>
-    </div>
-</div>
+    </md-toolbar>
+    <md-card-content>
+        <form name="RegistrationForm" ng-submit="$ctrl.submit()">
+            <md-input-container class="md-icon-float md-block">
+                <label>Login</label>
+                <input ng-model="$ctrl.model.login" type="text" required>
+            </md-input-container>
+
+            <md-input-container class="md-icon-float md-block">
+                <label>Password</label>
+                <input ng-model="$ctrl.model.password" type="password" required>
+            </md-input-container>
+
+            <md-input-container class="md-icon-float md-block">
+                <label>Repeat Password</label>
+                <input ng-model="$ctrl.model.repeatPassword" type="password" required>
+            </md-input-container>
+
+            <md-input-container class="md-icon-float md-block">
+                <label>First Name</label>
+                <input ng-model="$ctrl.model.firstName" type="text" required>
+            </md-input-container>
+
+            <md-input-container class="md-icon-float md-block">
+                <label>Last Name</label>
+                <input ng-model="$ctrl.model.lastName" type="text" required>
+            </md-input-container>
+
+            <md-input-container class="md-icon-float md-block">
+                <label>Email</label>
+                <input ng-model="$ctrl.model.email" type="email" required>
+            </md-input-container>
+
+            <md-input-container class="md-icon-float md-block">
+                <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.hideMail" aria-label="Hide my Email">
+                    Hide my Email
+                </md-checkbox>
+            </md-input-container>
+
+            <md-input-container class="md-icon-float md-block">
+                <label>Language</label>
+                <md-select ng-model="$ctrl.model.selectedLang">
+                    <md-option ng-value="language" ng-repeat="language in $ctrl.languages">{{ language.name }}</md-option>
+                </md-select>
+            </md-input-container>
+
+        </form>
+    </md-card-content>
+
+
+    <md-card-actions layout="row" layout-align="center center">
+        <md-button class="md-raised md-primary" type = "submit" ng-disabled="RegistrationForm.$invalid">Registration
+        </md-button>
+    </md-card-actions>
+</md-card>
+
+<p layout="row" layout-align="center center">
+    <a ui-sref="login" class="md-body-1">Already have an account? Sign in!</a>
+</p>
+

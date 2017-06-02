@@ -16,6 +16,7 @@ class GroupsUsers extends Migration
         Schema::create('groups_users', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
+            $table->increments('id');
             $table->integer('group_id');
             $table->integer('user_id');
 

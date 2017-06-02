@@ -16,6 +16,7 @@ class ChangesetParents extends Migration
         Schema::create('changeset_parents', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
+            $table->increments('id');
             $table->integer('changeset_id')->index('changeset_parents_changeset_ids');
             $table->integer('parent_id')->index('changeset_parents_parent_ids');
         });

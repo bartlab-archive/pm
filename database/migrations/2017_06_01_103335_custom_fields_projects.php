@@ -16,6 +16,7 @@ class CustomFieldsProjects extends Migration
         Schema::create('custom_fields_projects', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
+            $table->increments('id');
             $table->integer('custom_field_id')->default(0);
             $table->integer('project_id')->default(0);
 

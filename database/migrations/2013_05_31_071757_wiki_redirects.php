@@ -14,6 +14,8 @@ class WikiRedirects extends Migration
     public function up()
     {
         Schema::create('wiki_redirects', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+
             $table->increments('id');
             $table->integer('wiki_id')->index('index_wiki_redirects_on_wiki_id');
             $table->string('title', 255)->nullable();
