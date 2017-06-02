@@ -14,6 +14,7 @@ export default class MainLoginController {
         this.$state = $injector.get('$state');
     }
 
+
     $onInit() {
     }
 
