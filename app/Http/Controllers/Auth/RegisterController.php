@@ -4,63 +4,64 @@ namespace App\Http\Controllers\Auth;
 
 use App\models\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Setting;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
-    use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        $this->middleware('guest');
+        //TODO: take out check permission at middleware class
+        $this->permission(
+            Setting::where('name', Setting::setting_register_name)
+                ->first(['value'])
+                ->value
+        );
+    }
+
+    public function register(Request $request)
+    {
+        $this->validate($request, $this->rules(), $this->messages());
+
+        $request = $request->all();
+
+        $user = $this->create($request);
+        
+        
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * rules validation request params
      *
-     * @param  array $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @return array
      */
-    protected function validator(array $data)
+    protected function rules()
     {
-        return Validator::make($data, [
+        return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'login' => 'required|string|max:255',
-//            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6',
-        ]);
+            'language' => 'string'
+        ];
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * messages for rules validation
      *
-     * @param  array $data
-     * @return User
+     * @return array
+     */
+    protected function messages()
+    {
+        return [];
+    }
+
+    /**
+     * This method created new user in system
+     *
+     * @param array $data
+     * @return mixed
      */
     protected function create(array $data)
     {
@@ -71,8 +72,21 @@ class RegisterController extends Controller
             'firstname' => $data['first_name'],
             'lastname' => $data['last_name'],
             'salt' => $salt,
-//            'email' => $data['email'],
             'hashed_password' => sha1($salt . sha1($data['password']))
         ]);
+    }
+
+    protected function permission(int $register_status)
+    {
+        switch ($register_status) {
+            case 1:
+                //TODO: created logic by register status === Settings::self_registration_account_activation_by_email
+                break;
+            case 2:
+                //TODO: created logic by register status === Settings::self_registration_automatic_account_activation
+                break;
+            default:
+                abort(403);
+        }
     }
 }
