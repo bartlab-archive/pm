@@ -72,5 +72,9 @@ export default function MainConfig($stateProvider) {
         .state('logout', {
             url: '/logout',
             component: 'mainLogoutComponent'
+        })
+        .state('my-account', {
+            url: '/my-account',
+            component: 'myAccountComponent'
         });
 };

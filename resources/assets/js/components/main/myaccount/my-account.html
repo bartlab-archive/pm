@@ -1,0 +1,54 @@
+<md-card>
+    <md-toolbar>
+        <div layout="column" layout-padding layout-align="center center">
+            <div class="md-headline md-padding">My Account</div>
+        </div>
+    </md-toolbar>
+    <form name="AccountForm" ng-submit="$ctrl.submit()">
+    <div layout="row" layout-xs="column">
+        <div flex>
+            <md-card-content>
+                <md-input-container class="md-icon-float md-block">
+                    <label>First Name</label>
+                    <input ng-model="$ctrl.model.firstName" type="text" required>
+                </md-input-container>
+
+                <md-input-container class="md-icon-float md-block">
+                    <label>Last Name</label>
+                    <input ng-model="$ctrl.model.lastName" type="text" required>
+                </md-input-container>
+
+                <md-input-container class="md-icon-float md-block">
+                    <label>Email</label>
+                    <input ng-model="$ctrl.model.email" type="email" required>
+                </md-input-container>
+
+                <md-input-container class="md-icon-float md-block">
+                    <label>Language</label>
+                    <md-select ng-model="$ctrl.model.selectedLang" required>
+                        <md-option ng-value="language" ng-repeat="language in $ctrl.languages">{{ language.name }}</md-option>
+                    </md-select>
+                </md-input-container>
+            </md-card-content>
+        </div>
+        <div flex>
+            <md-card-content>
+                <md-input-container class="md-icon-float md-block">
+
+                </md-input-container>
+            </md-card-content>
+        </div>
+
+        <div flex>
+            <md-card-content>
+           </md-card-content>
+        </div>
+    </div>
+
+    </form>
+
+    <md-card-actions layout="row" layout-align="left">
+        <md-button class="md-raised md-primary" type = "submit" ng-disabled="RegistrationForm.$invalid">Save
+        </md-button>
+    </md-card-actions>
+</md-card>
