@@ -24,5 +24,8 @@
     "toastr": "*",
     "angularjs-toaster": "*",
     "ng-annotate-webpack-plugin": "*"
+  },
+  "dependencies": {
+    "@uirouter/angularjs": "^1.0.3"
   }
 }

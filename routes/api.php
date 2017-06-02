@@ -24,15 +24,9 @@ Route::group(
 //        'middleware' => 'auth'
     ],
     function () {
-        Route::post('auth',function(Request $request){
-            $username = $request->input('email');
-            if ($user = \App\Models\User::where('login',$username)->first()){
-                return ['token'=>$user->hashed_password];
-            }
-            return [];
-        });
-//        Route::post('auth', 'Auth\LoginController@login');
-//        Route::post('register', 'Auth\RegisterController@register');
+
+        Route::post('auth', 'Auth\LoginController@login');
+        Route::post('register', 'Auth\RegisterController@register');
 //        Route::post('reset', 'Auth\ForgotPasswordController@resetVerify');
 //        Route::post('reset-confirmed', 'Auth\ResetPasswordController@resetConfirmed');
 //

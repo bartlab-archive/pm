@@ -9,39 +9,52 @@
                         <h3>Sign up</h3>
                         <hr/>
 
-                        <div class="form-group" ng-class="{'has-error':errors.full_name}">
-                            <input type="text" ng-model="signup.full_name" class="form-control" name="full_name"
-                                   placeholder="Full name">
-                            <div class="help-block help-block-error" ng-show="errors.full_name"
-                                 ng-bind-html="errors.full_name | joinBr"></div>
+
+                        <div class="form-group" ng-class="{'has-error': $ctrl.errors.login}">
+                            <input type="text" ng-model="$ctrl.signup.login" class="form-control" name="login"
+                                   placeholder="Login">
+                            <div class="help-block help-block-error" ng-show="$ctrl.errors.login"
+                                 ng-bind-html="$ctrl.errors.login | joinBr"></div>
                         </div>
-                        <div class="form-group" ng-class="{'has-error':errors.email}">
-                            <input type="text" ng-model="signup.email" class="form-control"
+                        <div class="form-group" ng-class="{'has-error': $ctrl.errors.first_name}">
+                            <input type="text" ng-model="$ctrl.signup.first_name" class="form-control" name="first_name"
+                                   placeholder="First name">
+                            <div class="help-block help-block-error" ng-show="$ctrl.errors.first_name"
+                                 ng-bind-html="$ctrl.errors.first_name | joinBr"></div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': $ctrl.errors.last_name}">
+                            <input type="text" ng-model="$ctrl.signup.last_name" class="form-control" name="last_name"
+                                   placeholder="Last name">
+                            <div class="help-block help-block-error" ng-show="$ctrl.errors.last_name"
+                                 ng-bind-html="$ctrl.errors.last_name | joinBr"></div>
+                        </div>
+                        <div class="form-group" ng-class="{'has-error': $ctrl.errors.email}">
+                            <input type="text" ng-model="$ctrl.signup.email" class="form-control"
                                    name="email"
                                    placeholder="Email">
-                            <div class="help-block help-block-error" ng-show="errors.email"
-                                 ng-bind-html="errors.email | joinBr"></div>
+                            <div class="help-block help-block-error" ng-show="$ctrl.errors.email"
+                                 ng-bind-html="$ctrl.errors.email | joinBr"></div>
                         </div>
 
-                        <div class="form-group" ng-class="{'has-error':errors.password}">
-                            <input type="password" ng-model="signup.password" class="form-control" name="password"
+                        <div class="form-group" ng-class="{'has-error': $ctrl.errors.password}">
+                            <input type="password" ng-model="$ctrl.signup.password" class="form-control" name="password"
                                    placeholder="Password">
-                            <div class="help-block help-block-error" ng-show="errors.password"
-                                 ng-bind-html="errors.password | joinBr"></div>
+                            <div class="help-block help-block-error" ng-show="$ctrl.errors.password"
+                                 ng-bind-html="$ctrl.errors.password | joinBr"></div>
                         </div>
-                        <div class="form-group" ng-class="{'has-error':errors.repeat_passw}">
-                            <input type="password" ng-model="signup.repeat_passw" class="form-control"
+                        <div class="form-group" ng-class="{'has-error': $ctrl.errors.repeat_passw}">
+                            <input type="password" ng-model="$ctrl.signup.repeat_passw" class="form-control"
                                    name="repeat_passw"
                                    placeholder="Repeat Password">
-                            <div class="help-block help-block-error" ng-show="errors.repeat_passw"
-                                 ng-bind-html="errors.repeat_passw | joinBr"></div>
+                            <div class="help-block help-block-error" ng-show="$ctrl.errors.repeat_passw"
+                                 ng-bind-html="$ctrl.errors.repeat_passw | joinBr"></div>
                         </div>
 
 
                         <hr/>
 
                         <div class="text-center">
-                            <button type="submit" ng-click="submit()"
+                            <button type="submit" ng-click="$ctrl.submit()"
                                     class="btn btn-primary btn-block">
                                 Submit
                             </button>

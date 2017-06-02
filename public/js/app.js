@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 133);
+/******/ 	return __webpack_require__(__webpack_require__.s = 147);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -735,7 +735,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 /** */
 var hof_1 = __webpack_require__(2);
-var stateObject_1 = __webpack_require__(28);
+var stateObject_1 = __webpack_require__(29);
 var toStr = Object.prototype.toString;
 var tis = function (t) { return function (x) { return typeof (x) === t; }; };
 exports.isUndefined = tis('undefined');
@@ -1630,7 +1630,7 @@ var common_1 = __webpack_require__(0);
 var hof_1 = __webpack_require__(2);
 var predicates_1 = __webpack_require__(1);
 var coreservices_1 = __webpack_require__(3);
-var paramType_1 = __webpack_require__(26);
+var paramType_1 = __webpack_require__(27);
 /** @hidden */ var hasOwn = Object.prototype.hasOwnProperty;
 /** @hidden */ var isShorthand = function (cfg) {
     return ["value", "type", "squash", "array", "dynamic"].filter(hasOwn.bind(cfg || {})).length === 0;
@@ -2480,7 +2480,7 @@ __export(__webpack_require__(3));
 __export(__webpack_require__(16));
 __export(__webpack_require__(2));
 __export(__webpack_require__(1));
-__export(__webpack_require__(25));
+__export(__webpack_require__(26));
 __export(__webpack_require__(6));
 __export(__webpack_require__(7));
 //# sourceMappingURL=index.js.map
@@ -2496,7 +2496,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = __webpack_require__(0);
 var hof_1 = __webpack_require__(2);
 var targetState_1 = __webpack_require__(8);
-var pathNode_1 = __webpack_require__(27);
+var pathNode_1 = __webpack_require__(28);
 /**
  * This class contains functions which convert TargetStates, Nodes and paths from one type to another.
  */
@@ -2889,7 +2889,7 @@ var predicates_1 = __webpack_require__(1);
 var hof_1 = __webpack_require__(2);
 var interface_1 = __webpack_require__(11); // has or is using
 var transitionHook_1 = __webpack_require__(14);
-var hookRegistry_1 = __webpack_require__(29);
+var hookRegistry_1 = __webpack_require__(30);
 var hookBuilder_1 = __webpack_require__(45);
 var pathFactory_1 = __webpack_require__(18);
 var targetState_1 = __webpack_require__(8);
@@ -4065,1053 +4065,6 @@ exports.BaseLocationServices = BaseLocationServices;
 
 /***/ }),
 /* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * # Angular 1 types
- *
- * UI-Router core provides various Typescript types which you can use for code completion and validating parameter values, etc.
- * The customizations to the core types for Angular UI-Router are documented here.
- *
- * The optional [[$resolve]] service is also documented here.
- *
- * @module ng1
- * @preferred
- */
-/** for typedoc */
-var angular_1 = __webpack_require__(9);
-var core_1 = __webpack_require__(4);
-var views_1 = __webpack_require__(24);
-var templateFactory_1 = __webpack_require__(69);
-var stateProvider_1 = __webpack_require__(32);
-var onEnterExitRetain_1 = __webpack_require__(68);
-var locationServices_1 = __webpack_require__(66);
-var urlRouterProvider_1 = __webpack_require__(33);
-angular_1.ng.module("ui.router.angular1", []);
-var mod_init = angular_1.ng.module('ui.router.init', []);
-var mod_util = angular_1.ng.module('ui.router.util', ['ng', 'ui.router.init']);
-var mod_rtr = angular_1.ng.module('ui.router.router', ['ui.router.util']);
-var mod_state = angular_1.ng.module('ui.router.state', ['ui.router.router', 'ui.router.util', 'ui.router.angular1']);
-var mod_main = angular_1.ng.module('ui.router', ['ui.router.init', 'ui.router.state', 'ui.router.angular1']);
-var mod_cmpt = angular_1.ng.module('ui.router.compat', ['ui.router']); // tslint:disable-line
-var router = null;
-$uiRouter.$inject = ['$locationProvider'];
-/** This angular 1 provider instantiates a Router and exposes its services via the angular injector */
-function $uiRouter($locationProvider) {
-    // Create a new instance of the Router when the $uiRouterProvider is initialized
-    router = this.router = new core_1.UIRouter();
-    router.stateProvider = new stateProvider_1.StateProvider(router.stateRegistry, router.stateService);
-    // Apply ng1 specific StateBuilder code for `views`, `resolve`, and `onExit/Retain/Enter` properties
-    router.stateRegistry.decorator("views", views_1.ng1ViewsBuilder);
-    router.stateRegistry.decorator("onExit", onEnterExitRetain_1.getStateHookBuilder("onExit"));
-    router.stateRegistry.decorator("onRetain", onEnterExitRetain_1.getStateHookBuilder("onRetain"));
-    router.stateRegistry.decorator("onEnter", onEnterExitRetain_1.getStateHookBuilder("onEnter"));
-    router.viewService._pluginapi._viewConfigFactory('ng1', views_1.getNg1ViewConfigFactory());
-    var ng1LocationService = router.locationService = router.locationConfig = new locationServices_1.Ng1LocationServices($locationProvider);
-    locationServices_1.Ng1LocationServices.monkeyPatchPathParameterType(router);
-    // backwards compat: also expose router instance as $uiRouterProvider.router
-    router['router'] = router;
-    router['$get'] = $get;
-    $get.$inject = ['$location', '$browser', '$sniffer', '$rootScope', '$http', '$templateCache'];
-    function $get($location, $browser, $sniffer, $rootScope, $http, $templateCache) {
-        ng1LocationService._runtimeServices($rootScope, $location, $sniffer, $browser);
-        delete router['router'];
-        delete router['$get'];
-        return router;
-    }
-    return router;
-}
-var getProviderFor = function (serviceName) { return ['$uiRouterProvider', function ($urp) {
-        var service = $urp.router[serviceName];
-        service["$get"] = function () { return service; };
-        return service;
-    }]; };
-// This effectively calls $get() on `$uiRouterProvider` to trigger init (when ng enters runtime)
-runBlock.$inject = ['$injector', '$q', '$uiRouter'];
-function runBlock($injector, $q, $uiRouter) {
-    core_1.services.$injector = $injector;
-    core_1.services.$q = $q;
-    // The $injector is now available.
-    // Find any resolvables that had dependency annotation deferred
-    $uiRouter.stateRegistry.get()
-        .map(function (x) { return x.$$state().resolvables; })
-        .reduce(core_1.unnestR, [])
-        .filter(function (x) { return x.deps === "deferred"; })
-        .forEach(function (resolvable) { return resolvable.deps = $injector.annotate(resolvable.resolveFn); });
-}
-// $urlRouter service and $urlRouterProvider
-var getUrlRouterProvider = function (uiRouter) {
-    return uiRouter.urlRouterProvider = new urlRouterProvider_1.UrlRouterProvider(uiRouter);
-};
-// $state service and $stateProvider
-// $urlRouter service and $urlRouterProvider
-var getStateProvider = function () {
-    return core_1.extend(router.stateProvider, { $get: function () { return router.stateService; } });
-};
-watchDigests.$inject = ['$rootScope'];
-function watchDigests($rootScope) {
-    $rootScope.$watch(function () { core_1.trace.approximateDigests++; });
-}
-exports.watchDigests = watchDigests;
-mod_init.provider("$uiRouter", $uiRouter);
-mod_rtr.provider('$urlRouter', ['$uiRouterProvider', getUrlRouterProvider]);
-mod_util.provider('$urlService', getProviderFor('urlService'));
-mod_util.provider('$urlMatcherFactory', ['$uiRouterProvider', function () { return router.urlMatcherFactory; }]);
-mod_util.provider('$templateFactory', function () { return new templateFactory_1.TemplateFactory(); });
-mod_state.provider('$stateRegistry', getProviderFor('stateRegistry'));
-mod_state.provider('$uiRouterGlobals', getProviderFor('globals'));
-mod_state.provider('$transitions', getProviderFor('transitionService'));
-mod_state.provider('$state', ['$uiRouterProvider', getStateProvider]);
-mod_state.factory('$stateParams', ['$uiRouter', function ($uiRouter) { return $uiRouter.globals.params; }]);
-mod_main.factory('$view', function () { return router.viewService; });
-mod_main.service("$trace", function () { return core_1.trace; });
-mod_main.run(watchDigests);
-mod_util.run(['$urlMatcherFactory', function ($urlMatcherFactory) { }]);
-mod_state.run(['$state', function ($state) { }]);
-mod_rtr.run(['$urlRouter', function ($urlRouter) { }]);
-mod_init.run(runBlock);
-/** @hidden TODO: find a place to move this */
-exports.getLocals = function (ctx) {
-    var tokens = ctx.getTokens().filter(core_1.isString);
-    var tuples = tokens.map(function (key) {
-        var resolvable = ctx.getResolvable(key);
-        var waitPolicy = ctx.getPolicy(resolvable).async;
-        return [key, waitPolicy === 'NOWAIT' ? resolvable.promise : resolvable.data];
-    });
-    return tuples.reduce(core_1.applyPairs, {});
-};
-//# sourceMappingURL=services.js.map
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(4);
-function getNg1ViewConfigFactory() {
-    var templateFactory = null;
-    return function (path, view) {
-        templateFactory = templateFactory || core_1.services.$injector.get("$templateFactory");
-        return [new Ng1ViewConfig(path, view, templateFactory)];
-    };
-}
-exports.getNg1ViewConfigFactory = getNg1ViewConfigFactory;
-var hasAnyKey = function (keys, obj) {
-    return keys.reduce(function (acc, key) { return acc || core_1.isDefined(obj[key]); }, false);
-};
-/**
- * This is a [[StateBuilder.builder]] function for angular1 `views`.
- *
- * When the [[StateBuilder]] builds a [[StateObject]] object from a raw [[StateDeclaration]], this builder
- * handles the `views` property with logic specific to @uirouter/angularjs (ng1).
- *
- * If no `views: {}` property exists on the [[StateDeclaration]], then it creates the `views` object
- * and applies the state-level configuration to a view named `$default`.
- */
-function ng1ViewsBuilder(state) {
-    // Do not process root state
-    if (!state.parent)
-        return {};
-    var tplKeys = ['templateProvider', 'templateUrl', 'template', 'notify', 'async'], ctrlKeys = ['controller', 'controllerProvider', 'controllerAs', 'resolveAs'], compKeys = ['component', 'bindings', 'componentProvider'], nonCompKeys = tplKeys.concat(ctrlKeys), allViewKeys = compKeys.concat(nonCompKeys);
-    // Do not allow a state to have both state-level props and also a `views: {}` property.
-    // A state without a `views: {}` property can declare properties for the `$default` view as properties of the state.
-    // However, the `$default` approach should not be mixed with a separate `views: ` block.
-    if (core_1.isDefined(state.views) && hasAnyKey(allViewKeys, state)) {
-        throw new Error("State '" + state.name + "' has a 'views' object. " +
-            "It cannot also have \"view properties\" at the state level.  " +
-            "Move the following properties into a view (in the 'views' object): " +
-            (" " + allViewKeys.filter(function (key) { return core_1.isDefined(state[key]); }).join(", ")));
-    }
-    var views = {}, viewsObject = state.views || { "$default": core_1.pick(state, allViewKeys) };
-    core_1.forEach(viewsObject, function (config, name) {
-        // Account for views: { "": { template... } }
-        name = name || "$default";
-        // Account for views: { header: "headerComponent" }
-        if (core_1.isString(config))
-            config = { component: config };
-        // Make a shallow copy of the config object
-        config = core_1.extend({}, config);
-        // Do not allow a view to mix props for component-style view with props for template/controller-style view
-        if (hasAnyKey(compKeys, config) && hasAnyKey(nonCompKeys, config)) {
-            throw new Error("Cannot combine: " + compKeys.join("|") + " with: " + nonCompKeys.join("|") + " in stateview: '" + name + "@" + state.name + "'");
-        }
-        config.resolveAs = config.resolveAs || '$resolve';
-        config.$type = "ng1";
-        config.$context = state;
-        config.$name = name;
-        var normalized = core_1.ViewService.normalizeUIViewTarget(config.$context, config.$name);
-        config.$uiViewName = normalized.uiViewName;
-        config.$uiViewContextAnchor = normalized.uiViewContextAnchor;
-        views[name] = config;
-    });
-    return views;
-}
-exports.ng1ViewsBuilder = ng1ViewsBuilder;
-var id = 0;
-var Ng1ViewConfig = (function () {
-    function Ng1ViewConfig(path, viewDecl, factory) {
-        var _this = this;
-        this.path = path;
-        this.viewDecl = viewDecl;
-        this.factory = factory;
-        this.$id = id++;
-        this.loaded = false;
-        this.getTemplate = function (uiView, context) {
-            return _this.component ? _this.factory.makeComponentTemplate(uiView, context, _this.component, _this.viewDecl.bindings) : _this.template;
-        };
-    }
-    Ng1ViewConfig.prototype.load = function () {
-        var _this = this;
-        var $q = core_1.services.$q;
-        var context = new core_1.ResolveContext(this.path);
-        var params = this.path.reduce(function (acc, node) { return core_1.extend(acc, node.paramValues); }, {});
-        var promises = {
-            template: $q.when(this.factory.fromConfig(this.viewDecl, params, context)),
-            controller: $q.when(this.getController(context))
-        };
-        return $q.all(promises).then(function (results) {
-            core_1.trace.traceViewServiceEvent("Loaded", _this);
-            _this.controller = results.controller;
-            core_1.extend(_this, results.template); // Either { template: "tpl" } or { component: "cmpName" }
-            return _this;
-        });
-    };
-    /**
-     * Gets the controller for a view configuration.
-     *
-     * @returns {Function|Promise.<Function>} Returns a controller, or a promise that resolves to a controller.
-     */
-    Ng1ViewConfig.prototype.getController = function (context) {
-        var provider = this.viewDecl.controllerProvider;
-        if (!core_1.isInjectable(provider))
-            return this.viewDecl.controller;
-        var deps = core_1.services.$injector.annotate(provider);
-        var providerFn = core_1.isArray(provider) ? core_1.tail(provider) : provider;
-        var resolvable = new core_1.Resolvable("", providerFn, deps);
-        return resolvable.get(context);
-    };
-    return Ng1ViewConfig;
-}());
-exports.Ng1ViewConfig = Ng1ViewConfig;
-//# sourceMappingURL=views.js.map
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * @module common
- */ /** for typedoc */
-Object.defineProperty(exports, "__esModule", { value: true });
-var Queue = (function () {
-    function Queue(_items, _limit) {
-        if (_items === void 0) { _items = []; }
-        if (_limit === void 0) { _limit = null; }
-        this._items = _items;
-        this._limit = _limit;
-    }
-    Queue.prototype.enqueue = function (item) {
-        var items = this._items;
-        items.push(item);
-        if (this._limit && items.length > this._limit)
-            items.shift();
-        return item;
-    };
-    Queue.prototype.dequeue = function () {
-        if (this.size())
-            return this._items.splice(0, 1)[0];
-    };
-    Queue.prototype.clear = function () {
-        var current = this._items;
-        this._items = [];
-        return current;
-    };
-    Queue.prototype.size = function () {
-        return this._items.length;
-    };
-    Queue.prototype.remove = function (item) {
-        var idx = this._items.indexOf(item);
-        return idx > -1 && this._items.splice(idx, 1)[0];
-    };
-    Queue.prototype.peekTail = function () {
-        return this._items[this._items.length - 1];
-    };
-    Queue.prototype.peekHead = function () {
-        if (this.size())
-            return this._items[0];
-    };
-    return Queue;
-}());
-exports.Queue = Queue;
-//# sourceMappingURL=queue.js.map
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @coreapi
- * @module params
- */
-/** */
-var common_1 = __webpack_require__(0);
-var predicates_1 = __webpack_require__(1);
-/**
- * An internal class which implements [[ParamTypeDefinition]].
- *
- * A [[ParamTypeDefinition]] is a plain javascript object used to register custom parameter types.
- * When a param type definition is registered, an instance of this class is created internally.
- *
- * This class has naive implementations for all the [[ParamTypeDefinition]] methods.
- *
- * Used by [[UrlMatcher]] when matching or formatting URLs, or comparing and validating parameter values.
- *
- * #### Example:
- * ```js
- * var paramTypeDef = {
- *   decode: function(val) { return parseInt(val, 10); },
- *   encode: function(val) { return val && val.toString(); },
- *   equals: function(a, b) { return this.is(a) && a === b; },
- *   is: function(val) { return angular.isNumber(val) && isFinite(val) && val % 1 === 0; },
- *   pattern: /\d+/
- * }
- *
- * var paramType = new ParamType(paramTypeDef);
- * ```
- * @internalapi
- */
-var ParamType = (function () {
-    /**
-     * @param def  A configuration object which contains the custom type definition.  The object's
-     *        properties will override the default methods and/or pattern in `ParamType`'s public interface.
-     * @returns a new ParamType object
-     */
-    function ParamType(def) {
-        /** @inheritdoc */
-        this.pattern = /.*/;
-        /** @inheritdoc */
-        this.inherit = true;
-        common_1.extend(this, def);
-    }
-    // consider these four methods to be "abstract methods" that should be overridden
-    /** @inheritdoc */
-    ParamType.prototype.is = function (val, key) { return true; };
-    /** @inheritdoc */
-    ParamType.prototype.encode = function (val, key) { return val; };
-    /** @inheritdoc */
-    ParamType.prototype.decode = function (val, key) { return val; };
-    /** @inheritdoc */
-    ParamType.prototype.equals = function (a, b) { return a == b; };
-    ParamType.prototype.$subPattern = function () {
-        var sub = this.pattern.toString();
-        return sub.substr(1, sub.length - 2);
-    };
-    ParamType.prototype.toString = function () {
-        return "{ParamType:" + this.name + "}";
-    };
-    /** Given an encoded string, or a decoded object, returns a decoded object */
-    ParamType.prototype.$normalize = function (val) {
-        return this.is(val) ? val : this.decode(val);
-    };
-    /**
-     * Wraps an existing custom ParamType as an array of ParamType, depending on 'mode'.
-     * e.g.:
-     * - urlmatcher pattern "/path?{queryParam[]:int}"
-     * - url: "/path?queryParam=1&queryParam=2
-     * - $stateParams.queryParam will be [1, 2]
-     * if `mode` is "auto", then
-     * - url: "/path?queryParam=1 will create $stateParams.queryParam: 1
-     * - url: "/path?queryParam=1&queryParam=2 will create $stateParams.queryParam: [1, 2]
-     */
-    ParamType.prototype.$asArray = function (mode, isSearch) {
-        if (!mode)
-            return this;
-        if (mode === "auto" && !isSearch)
-            throw new Error("'auto' array mode is for query parameters only");
-        return new ArrayType(this, mode);
-    };
-    return ParamType;
-}());
-exports.ParamType = ParamType;
-/**
- * Wraps up a `ParamType` object to handle array values.
- * @internalapi
- */
-function ArrayType(type, mode) {
-    var _this = this;
-    // Wrap non-array value as array
-    function arrayWrap(val) {
-        return predicates_1.isArray(val) ? val : (predicates_1.isDefined(val) ? [val] : []);
-    }
-    // Unwrap array value for "auto" mode. Return undefined for empty array.
-    function arrayUnwrap(val) {
-        switch (val.length) {
-            case 0: return undefined;
-            case 1: return mode === "auto" ? val[0] : val;
-            default: return val;
-        }
-    }
-    // Wraps type (.is/.encode/.decode) functions to operate on each value of an array
-    function arrayHandler(callback, allTruthyMode) {
-        return function handleArray(val) {
-            if (predicates_1.isArray(val) && val.length === 0)
-                return val;
-            var arr = arrayWrap(val);
-            var result = common_1.map(arr, callback);
-            return (allTruthyMode === true) ? common_1.filter(result, function (x) { return !x; }).length === 0 : arrayUnwrap(result);
-        };
-    }
-    // Wraps type (.equals) functions to operate on each value of an array
-    function arrayEqualsHandler(callback) {
-        return function handleArray(val1, val2) {
-            var left = arrayWrap(val1), right = arrayWrap(val2);
-            if (left.length !== right.length)
-                return false;
-            for (var i = 0; i < left.length; i++) {
-                if (!callback(left[i], right[i]))
-                    return false;
-            }
-            return true;
-        };
-    }
-    ['encode', 'decode', 'equals', '$normalize'].forEach(function (name) {
-        var paramTypeFn = type[name].bind(type);
-        var wrapperFn = name === 'equals' ? arrayEqualsHandler : arrayHandler;
-        _this[name] = wrapperFn(paramTypeFn);
-    });
-    common_1.extend(this, {
-        dynamic: type.dynamic,
-        name: type.name,
-        pattern: type.pattern,
-        inherit: type.inherit,
-        is: arrayHandler(type.is.bind(type), true),
-        $arrayMode: mode
-    });
-}
-//# sourceMappingURL=paramType.js.map
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/** @module path */ /** for typedoc */
-var common_1 = __webpack_require__(0);
-var hof_1 = __webpack_require__(2);
-var param_1 = __webpack_require__(10);
-/**
- * @internalapi
- *
- * A node in a [[TreeChanges]] path
- *
- * For a [[TreeChanges]] path, this class holds the stateful information for a single node in the path.
- * Each PathNode corresponds to a state being entered, exited, or retained.
- * The stateful information includes parameter values and resolve data.
- */
-var PathNode = (function () {
-    function PathNode(stateOrNode) {
-        if (stateOrNode instanceof PathNode) {
-            var node = stateOrNode;
-            this.state = node.state;
-            this.paramSchema = node.paramSchema.slice();
-            this.paramValues = common_1.extend({}, node.paramValues);
-            this.resolvables = node.resolvables.slice();
-            this.views = node.views && node.views.slice();
-        }
-        else {
-            var state = stateOrNode;
-            this.state = state;
-            this.paramSchema = state.parameters({ inherit: false });
-            this.paramValues = {};
-            this.resolvables = state.resolvables.map(function (res) { return res.clone(); });
-        }
-    }
-    /** Sets [[paramValues]] for the node, from the values of an object hash */
-    PathNode.prototype.applyRawParams = function (params) {
-        var getParamVal = function (paramDef) { return [paramDef.id, paramDef.value(params[paramDef.id])]; };
-        this.paramValues = this.paramSchema.reduce(function (memo, pDef) { return common_1.applyPairs(memo, getParamVal(pDef)); }, {});
-        return this;
-    };
-    /** Gets a specific [[Param]] metadata that belongs to the node */
-    PathNode.prototype.parameter = function (name) {
-        return common_1.find(this.paramSchema, hof_1.propEq("id", name));
-    };
-    /**
-     * @returns true if the state and parameter values for another PathNode are
-     * equal to the state and param values for this PathNode
-     */
-    PathNode.prototype.equals = function (node, paramsFn) {
-        var diff = this.diff(node, paramsFn);
-        return diff && diff.length === 0;
-    };
-    /**
-     * Finds Params with different parameter values on another PathNode.
-     *
-     * Given another node (of the same state), finds the parameter values which differ.
-     * Returns the [[Param]] (schema objects) whose parameter values differ.
-     *
-     * Given another node for a different state, returns `false`
-     *
-     * @param node The node to compare to
-     * @param paramsFn A function that returns which parameters should be compared.
-     * @returns The [[Param]]s which differ, or null if the two nodes are for different states
-     */
-    PathNode.prototype.diff = function (node, paramsFn) {
-        if (this.state !== node.state)
-            return false;
-        var params = paramsFn ? paramsFn(this) : this.paramSchema;
-        return param_1.Param.changed(params, this.paramValues, node.paramValues);
-    };
-    /** Returns a clone of the PathNode */
-    PathNode.clone = function (node) {
-        return new PathNode(node);
-    };
-    return PathNode;
-}());
-exports.PathNode = PathNode;
-//# sourceMappingURL=pathNode.js.map
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var common_1 = __webpack_require__(0);
-var hof_1 = __webpack_require__(2);
-var glob_1 = __webpack_require__(16);
-var predicates_1 = __webpack_require__(1);
-/**
- * Internal representation of a UI-Router state.
- *
- * Instances of this class are created when a [[StateDeclaration]] is registered with the [[StateRegistry]].
- *
- * A registered [[StateDeclaration]] is augmented with a getter ([[StateDeclaration.$$state]]) which returns the corresponding [[StateObject]] object.
- *
- * This class prototypally inherits from the corresponding [[StateDeclaration]].
- * Each of its own properties (i.e., `hasOwnProperty`) are built using builders from the [[StateBuilder]].
- */
-var StateObject = (function () {
-    /** @deprecated use State.create() */
-    function StateObject(config) {
-        return StateObject.create(config || {});
-    }
-    /**
-     * Create a state object to put the private/internal implementation details onto.
-     * The object's prototype chain looks like:
-     * (Internal State Object) -> (Copy of State.prototype) -> (State Declaration object) -> (State Declaration's prototype...)
-     *
-     * @param stateDecl the user-supplied State Declaration
-     * @returns {StateObject} an internal State object
-     */
-    StateObject.create = function (stateDecl) {
-        stateDecl = StateObject.isStateClass(stateDecl) ? new stateDecl() : stateDecl;
-        var state = common_1.inherit(common_1.inherit(stateDecl, StateObject.prototype));
-        stateDecl.$$state = function () { return state; };
-        state.self = stateDecl;
-        state.__stateObjectCache = {
-            nameGlob: glob_1.Glob.fromString(state.name) // might return null
-        };
-        return state;
-    };
-    /**
-     * Returns true if the provided parameter is the same state.
-     *
-     * Compares the identity of the state against the passed value, which is either an object
-     * reference to the actual `State` instance, the original definition object passed to
-     * `$stateProvider.state()`, or the fully-qualified name.
-     *
-     * @param ref Can be one of (a) a `State` instance, (b) an object that was passed
-     *        into `$stateProvider.state()`, (c) the fully-qualified name of a state as a string.
-     * @returns Returns `true` if `ref` matches the current `State` instance.
-     */
-    StateObject.prototype.is = function (ref) {
-        return this === ref || this.self === ref || this.fqn() === ref;
-    };
-    /**
-     * @deprecated this does not properly handle dot notation
-     * @returns Returns a dot-separated name of the state.
-     */
-    StateObject.prototype.fqn = function () {
-        if (!this.parent || !(this.parent instanceof this.constructor))
-            return this.name;
-        var name = this.parent.fqn();
-        return name ? name + "." + this.name : this.name;
-    };
-    /**
-     * Returns the root node of this state's tree.
-     *
-     * @returns The root of this state's tree.
-     */
-    StateObject.prototype.root = function () {
-        return this.parent && this.parent.root() || this;
-    };
-    /**
-     * Gets the state's `Param` objects
-     *
-     * Gets the list of [[Param]] objects owned by the state.
-     * If `opts.inherit` is true, it also includes the ancestor states' [[Param]] objects.
-     * If `opts.matchingKeys` exists, returns only `Param`s whose `id` is a key on the `matchingKeys` object
-     *
-     * @param opts options
-     */
-    StateObject.prototype.parameters = function (opts) {
-        opts = common_1.defaults(opts, { inherit: true, matchingKeys: null });
-        var inherited = opts.inherit && this.parent && this.parent.parameters() || [];
-        return inherited.concat(common_1.values(this.params))
-            .filter(function (param) { return !opts.matchingKeys || opts.matchingKeys.hasOwnProperty(param.id); });
-    };
-    /**
-     * Returns a single [[Param]] that is owned by the state
-     *
-     * If `opts.inherit` is true, it also searches the ancestor states` [[Param]]s.
-     * @param id the name of the [[Param]] to return
-     * @param opts options
-     */
-    StateObject.prototype.parameter = function (id, opts) {
-        if (opts === void 0) { opts = {}; }
-        return (this.url && this.url.parameter(id, opts) ||
-            common_1.find(common_1.values(this.params), hof_1.propEq('id', id)) ||
-            opts.inherit && this.parent && this.parent.parameter(id));
-    };
-    StateObject.prototype.toString = function () {
-        return this.fqn();
-    };
-    return StateObject;
-}());
-/** Predicate which returns true if the object is an class with @State() decorator */
-StateObject.isStateClass = function (stateDecl) {
-    return predicates_1.isFunction(stateDecl) && stateDecl['__uiRouterState'] === true;
-};
-/** Predicate which returns true if the object is an internal [[StateObject]] object */
-StateObject.isState = function (obj) {
-    return predicates_1.isObject(obj['__stateObjectCache']);
-};
-exports.StateObject = StateObject;
-//# sourceMappingURL=stateObject.js.map
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @coreapi
- * @module transition
- */ /** for typedoc */
-var common_1 = __webpack_require__(0);
-var predicates_1 = __webpack_require__(1);
-var interface_1 = __webpack_require__(11); // has or is using
-var glob_1 = __webpack_require__(16);
-/**
- * Determines if the given state matches the matchCriteria
- *
- * @hidden
- *
- * @param state a State Object to test against
- * @param criterion
- * - If a string, matchState uses the string as a glob-matcher against the state name
- * - If an array (of strings), matchState uses each string in the array as a glob-matchers against the state name
- *   and returns a positive match if any of the globs match.
- * - If a function, matchState calls the function with the state and returns true if the function's result is truthy.
- * @returns {boolean}
- */
-function matchState(state, criterion) {
-    var toMatch = predicates_1.isString(criterion) ? [criterion] : criterion;
-    function matchGlobs(_state) {
-        var globStrings = toMatch;
-        for (var i = 0; i < globStrings.length; i++) {
-            var glob = new glob_1.Glob(globStrings[i]);
-            if ((glob && glob.matches(_state.name)) || (!glob && globStrings[i] === _state.name)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    var matchFn = (predicates_1.isFunction(toMatch) ? toMatch : matchGlobs);
-    return !!matchFn(state);
-}
-exports.matchState = matchState;
-/**
- * @internalapi
- * The registration data for a registered transition hook
- */
-var RegisteredHook = (function () {
-    function RegisteredHook(tranSvc, eventType, callback, matchCriteria, options) {
-        if (options === void 0) { options = {}; }
-        this.tranSvc = tranSvc;
-        this.eventType = eventType;
-        this.callback = callback;
-        this.matchCriteria = matchCriteria;
-        this.priority = options.priority || 0;
-        this.bind = options.bind || null;
-        this._deregistered = false;
-    }
-    /**
-     * Gets the matching [[PathNode]]s
-     *
-     * Given an array of [[PathNode]]s, and a [[HookMatchCriterion]], returns an array containing
-     * the [[PathNode]]s that the criteria matches, or `null` if there were no matching nodes.
-     *
-     * Returning `null` is significant to distinguish between the default
-     * "match-all criterion value" of `true` compared to a `() => true` function,
-     * when the nodes is an empty array.
-     *
-     * This is useful to allow a transition match criteria of `entering: true`
-     * to still match a transition, even when `entering === []`.  Contrast that
-     * with `entering: (state) => true` which only matches when a state is actually
-     * being entered.
-     */
-    RegisteredHook.prototype._matchingNodes = function (nodes, criterion) {
-        if (criterion === true)
-            return nodes;
-        var matching = nodes.filter(function (node) { return matchState(node.state, criterion); });
-        return matching.length ? matching : null;
-    };
-    /**
-     * Gets the default match criteria (all `true`)
-     *
-     * Returns an object which has all the criteria match paths as keys and `true` as values, i.e.:
-     *
-     * ```js
-     * {
-     *   to: true,
-     *   from: true,
-     *   entering: true,
-     *   exiting: true,
-     *   retained: true,
-     * }
-     */
-    RegisteredHook.prototype._getDefaultMatchCriteria = function () {
-        return common_1.map(this.tranSvc._pluginapi._getPathTypes(), function () { return true; });
-    };
-    /**
-     * Gets matching nodes as [[IMatchingNodes]]
-     *
-     * Create a IMatchingNodes object from the TransitionHookTypes that is roughly equivalent to:
-     *
-     * ```js
-     * let matches: IMatchingNodes = {
-     *   to:       _matchingNodes([tail(treeChanges.to)],   mc.to),
-     *   from:     _matchingNodes([tail(treeChanges.from)], mc.from),
-     *   exiting:  _matchingNodes(treeChanges.exiting,      mc.exiting),
-     *   retained: _matchingNodes(treeChanges.retained,     mc.retained),
-     *   entering: _matchingNodes(treeChanges.entering,     mc.entering),
-     * };
-     * ```
-     */
-    RegisteredHook.prototype._getMatchingNodes = function (treeChanges) {
-        var _this = this;
-        var criteria = common_1.extend(this._getDefaultMatchCriteria(), this.matchCriteria);
-        var paths = common_1.values(this.tranSvc._pluginapi._getPathTypes());
-        return paths.reduce(function (mn, pathtype) {
-            // STATE scope criteria matches against every node in the path.
-            // TRANSITION scope criteria matches against only the last node in the path
-            var isStateHook = pathtype.scope === interface_1.TransitionHookScope.STATE;
-            var path = treeChanges[pathtype.name] || [];
-            var nodes = isStateHook ? path : [common_1.tail(path)];
-            mn[pathtype.name] = _this._matchingNodes(nodes, criteria[pathtype.name]);
-            return mn;
-        }, {});
-    };
-    /**
-     * Determines if this hook's [[matchCriteria]] match the given [[TreeChanges]]
-     *
-     * @returns an IMatchingNodes object, or null. If an IMatchingNodes object is returned, its values
-     * are the matching [[PathNode]]s for each [[HookMatchCriterion]] (to, from, exiting, retained, entering)
-     */
-    RegisteredHook.prototype.matches = function (treeChanges) {
-        var matches = this._getMatchingNodes(treeChanges);
-        // Check if all the criteria matched the TreeChanges object
-        var allMatched = common_1.values(matches).every(common_1.identity);
-        return allMatched ? matches : null;
-    };
-    return RegisteredHook;
-}());
-exports.RegisteredHook = RegisteredHook;
-/** @hidden Return a registration function of the requested type. */
-function makeEvent(registry, transitionService, eventType) {
-    // Create the object which holds the registered transition hooks.
-    var _registeredHooks = registry._registeredHooks = (registry._registeredHooks || {});
-    var hooks = _registeredHooks[eventType.name] = [];
-    // Create hook registration function on the IHookRegistry for the event
-    registry[eventType.name] = hookRegistrationFn;
-    function hookRegistrationFn(matchObject, callback, options) {
-        if (options === void 0) { options = {}; }
-        var registeredHook = new RegisteredHook(transitionService, eventType, callback, matchObject, options);
-        hooks.push(registeredHook);
-        return function deregisterEventHook() {
-            registeredHook._deregistered = true;
-            common_1.removeFrom(hooks)(registeredHook);
-        };
-    }
-    return hookRegistrationFn;
-}
-exports.makeEvent = makeEvent;
-//# sourceMappingURL=hookRegistry.js.map
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @coreapi
- * @module transition
- */
-/** for typedoc */
-var interface_1 = __webpack_require__(11);
-var transition_1 = __webpack_require__(20);
-var hookRegistry_1 = __webpack_require__(29);
-var coreResolvables_1 = __webpack_require__(71);
-var redirectTo_1 = __webpack_require__(75);
-var onEnterExitRetain_1 = __webpack_require__(74);
-var resolve_1 = __webpack_require__(76);
-var views_1 = __webpack_require__(79);
-var updateGlobals_1 = __webpack_require__(77);
-var url_1 = __webpack_require__(78);
-var lazyLoad_1 = __webpack_require__(35);
-var transitionEventType_1 = __webpack_require__(46);
-var transitionHook_1 = __webpack_require__(14);
-var predicates_1 = __webpack_require__(1);
-var common_1 = __webpack_require__(0);
-var hof_1 = __webpack_require__(2);
-var ignoredTransition_1 = __webpack_require__(72);
-var invalidTransition_1 = __webpack_require__(73);
-/**
- * The default [[Transition]] options.
- *
- * Include this object when applying custom defaults:
- * let reloadOpts = { reload: true, notify: true }
- * let options = defaults(theirOpts, customDefaults, defaultOptions);
- */
-exports.defaultTransOpts = {
-    location: true,
-    relative: null,
-    inherit: false,
-    notify: true,
-    reload: false,
-    custom: {},
-    current: function () { return null; },
-    source: "unknown"
-};
-/**
- * This class provides services related to Transitions.
- *
- * - Most importantly, it allows global Transition Hooks to be registered.
- * - It allows the default transition error handler to be set.
- * - It also has a factory function for creating new [[Transition]] objects, (used internally by the [[StateService]]).
- *
- * At bootstrap, [[UIRouter]] creates a single instance (singleton) of this class.
- */
-var TransitionService = (function () {
-    /** @hidden */
-    function TransitionService(_router) {
-        /** @hidden */
-        this._transitionCount = 0;
-        /** @hidden The transition hook types, such as `onEnter`, `onStart`, etc */
-        this._eventTypes = [];
-        /** @hidden The registered transition hooks */
-        this._registeredHooks = {};
-        /** @hidden The  paths on a criteria object */
-        this._criteriaPaths = {};
-        this._router = _router;
-        this.$view = _router.viewService;
-        this._deregisterHookFns = {};
-        this._pluginapi = common_1.createProxyFunctions(hof_1.val(this), {}, hof_1.val(this), [
-            '_definePathType',
-            '_defineEvent',
-            '_getPathTypes',
-            '_getEvents',
-            'getHooks',
-        ]);
-        this._defineCorePaths();
-        this._defineCoreEvents();
-        this._registerCoreTransitionHooks();
-    }
-    /**
-     * Registers a [[TransitionHookFn]], called *while a transition is being constructed*.
-     *
-     * Registers a transition lifecycle hook, which is invoked during transition construction.
-     *
-     * This low level hook should only be used by plugins.
-     * This can be a useful time for plugins to add resolves or mutate the transition as needed.
-     * The Sticky States plugin uses this hook to modify the treechanges.
-     *
-     * ### Lifecycle
-     *
-     * `onCreate` hooks are invoked *while a transition is being constructed*.
-     *
-     * ### Return value
-     *
-     * The hook's return value is ignored
-     *
-     * @internalapi
-     * @param criteria defines which Transitions the Hook should be invoked for.
-     * @param callback the hook function which will be invoked.
-     * @param options the registration options
-     * @returns a function which deregisters the hook.
-     */
-    TransitionService.prototype.onCreate = function (criteria, callback, options) { return; };
-    /** @inheritdoc */
-    TransitionService.prototype.onBefore = function (criteria, callback, options) { return; };
-    /** @inheritdoc */
-    TransitionService.prototype.onStart = function (criteria, callback, options) { return; };
-    /** @inheritdoc */
-    TransitionService.prototype.onExit = function (criteria, callback, options) { return; };
-    /** @inheritdoc */
-    TransitionService.prototype.onRetain = function (criteria, callback, options) { return; };
-    /** @inheritdoc */
-    TransitionService.prototype.onEnter = function (criteria, callback, options) { return; };
-    /** @inheritdoc */
-    TransitionService.prototype.onFinish = function (criteria, callback, options) { return; };
-    /** @inheritdoc */
-    TransitionService.prototype.onSuccess = function (criteria, callback, options) { return; };
-    /** @inheritdoc */
-    TransitionService.prototype.onError = function (criteria, callback, options) { return; };
-    /**
-     * dispose
-     * @internalapi
-     */
-    TransitionService.prototype.dispose = function (router) {
-        common_1.values(this._registeredHooks).forEach(function (hooksArray) { return hooksArray.forEach(function (hook) {
-            hook._deregistered = true;
-            common_1.removeFrom(hooksArray, hook);
-        }); });
-    };
-    /**
-     * Creates a new [[Transition]] object
-     *
-     * This is a factory function for creating new Transition objects.
-     * It is used internally by the [[StateService]] and should generally not be called by application code.
-     *
-     * @param fromPath the path to the current state (the from state)
-     * @param targetState the target state (destination)
-     * @returns a Transition
-     */
-    TransitionService.prototype.create = function (fromPath, targetState) {
-        return new transition_1.Transition(fromPath, targetState, this._router);
-    };
-    /** @hidden */
-    TransitionService.prototype._defineCoreEvents = function () {
-        var Phase = interface_1.TransitionHookPhase;
-        var TH = transitionHook_1.TransitionHook;
-        var paths = this._criteriaPaths;
-        var NORMAL_SORT = false, REVERSE_SORT = true;
-        var ASYNCHRONOUS = false, SYNCHRONOUS = true;
-        this._defineEvent("onCreate", Phase.CREATE, 0, paths.to, NORMAL_SORT, TH.LOG_REJECTED_RESULT, TH.THROW_ERROR, SYNCHRONOUS);
-        this._defineEvent("onBefore", Phase.BEFORE, 0, paths.to);
-        this._defineEvent("onStart", Phase.RUN, 0, paths.to);
-        this._defineEvent("onExit", Phase.RUN, 100, paths.exiting, REVERSE_SORT);
-        this._defineEvent("onRetain", Phase.RUN, 200, paths.retained);
-        this._defineEvent("onEnter", Phase.RUN, 300, paths.entering);
-        this._defineEvent("onFinish", Phase.RUN, 400, paths.to);
-        this._defineEvent("onSuccess", Phase.SUCCESS, 0, paths.to, NORMAL_SORT, TH.LOG_REJECTED_RESULT, TH.LOG_ERROR, SYNCHRONOUS);
-        this._defineEvent("onError", Phase.ERROR, 0, paths.to, NORMAL_SORT, TH.LOG_REJECTED_RESULT, TH.LOG_ERROR, SYNCHRONOUS);
-    };
-    /** @hidden */
-    TransitionService.prototype._defineCorePaths = function () {
-        var STATE = interface_1.TransitionHookScope.STATE, TRANSITION = interface_1.TransitionHookScope.TRANSITION;
-        this._definePathType("to", TRANSITION);
-        this._definePathType("from", TRANSITION);
-        this._definePathType("exiting", STATE);
-        this._definePathType("retained", STATE);
-        this._definePathType("entering", STATE);
-    };
-    /** @hidden */
-    TransitionService.prototype._defineEvent = function (name, hookPhase, hookOrder, criteriaMatchPath, reverseSort, getResultHandler, getErrorHandler, synchronous) {
-        if (reverseSort === void 0) { reverseSort = false; }
-        if (getResultHandler === void 0) { getResultHandler = transitionHook_1.TransitionHook.HANDLE_RESULT; }
-        if (getErrorHandler === void 0) { getErrorHandler = transitionHook_1.TransitionHook.REJECT_ERROR; }
-        if (synchronous === void 0) { synchronous = false; }
-        var eventType = new transitionEventType_1.TransitionEventType(name, hookPhase, hookOrder, criteriaMatchPath, reverseSort, getResultHandler, getErrorHandler, synchronous);
-        this._eventTypes.push(eventType);
-        hookRegistry_1.makeEvent(this, this, eventType);
-    };
-    ;
-    /** @hidden */
-    TransitionService.prototype._getEvents = function (phase) {
-        var transitionHookTypes = predicates_1.isDefined(phase) ?
-            this._eventTypes.filter(function (type) { return type.hookPhase === phase; }) :
-            this._eventTypes.slice();
-        return transitionHookTypes.sort(function (l, r) {
-            var cmpByPhase = l.hookPhase - r.hookPhase;
-            return cmpByPhase === 0 ? l.hookOrder - r.hookOrder : cmpByPhase;
-        });
-    };
-    /**
-     * Adds a Path to be used as a criterion against a TreeChanges path
-     *
-     * For example: the `exiting` path in [[HookMatchCriteria]] is a STATE scoped path.
-     * It was defined by calling `defineTreeChangesCriterion('exiting', TransitionHookScope.STATE)`
-     * Each state in the exiting path is checked against the criteria and returned as part of the match.
-     *
-     * Another example: the `to` path in [[HookMatchCriteria]] is a TRANSITION scoped path.
-     * It was defined by calling `defineTreeChangesCriterion('to', TransitionHookScope.TRANSITION)`
-     * Only the tail of the `to` path is checked against the criteria and returned as part of the match.
-     *
-     * @hidden
-     */
-    TransitionService.prototype._definePathType = function (name, hookScope) {
-        this._criteriaPaths[name] = { name: name, scope: hookScope };
-    };
-    /** * @hidden */
-    TransitionService.prototype._getPathTypes = function () {
-        return this._criteriaPaths;
-    };
-    /** @hidden */
-    TransitionService.prototype.getHooks = function (hookName) {
-        return this._registeredHooks[hookName];
-    };
-    /** @hidden */
-    TransitionService.prototype._registerCoreTransitionHooks = function () {
-        var fns = this._deregisterHookFns;
-        fns.addCoreResolves = coreResolvables_1.registerAddCoreResolvables(this);
-        fns.ignored = ignoredTransition_1.registerIgnoredTransitionHook(this);
-        fns.invalid = invalidTransition_1.registerInvalidTransitionHook(this);
-        // Wire up redirectTo hook
-        fns.redirectTo = redirectTo_1.registerRedirectToHook(this);
-        // Wire up onExit/Retain/Enter state hooks
-        fns.onExit = onEnterExitRetain_1.registerOnExitHook(this);
-        fns.onRetain = onEnterExitRetain_1.registerOnRetainHook(this);
-        fns.onEnter = onEnterExitRetain_1.registerOnEnterHook(this);
-        // Wire up Resolve hooks
-        fns.eagerResolve = resolve_1.registerEagerResolvePath(this);
-        fns.lazyResolve = resolve_1.registerLazyResolveState(this);
-        // Wire up the View management hooks
-        fns.loadViews = views_1.registerLoadEnteringViews(this);
-        fns.activateViews = views_1.registerActivateViews(this);
-        // Updates global state after a transition
-        fns.updateGlobals = updateGlobals_1.registerUpdateGlobalState(this);
-        // After globals.current is updated at priority: 10000
-        fns.updateUrl = url_1.registerUpdateUrl(this);
-        // Lazy load state trees
-        fns.lazyLoad = lazyLoad_1.registerLazyLoadHook(this);
-    };
-    return TransitionService;
-}());
-exports.TransitionService = TransitionService;
-//# sourceMappingURL=transitionService.js.map
-
-/***/ }),
-/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -22200,7 +21153,1054 @@ exports.TransitionService = TransitionService;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(59), __webpack_require__(132)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(59), __webpack_require__(146)(module)))
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * # Angular 1 types
+ *
+ * UI-Router core provides various Typescript types which you can use for code completion and validating parameter values, etc.
+ * The customizations to the core types for Angular UI-Router are documented here.
+ *
+ * The optional [[$resolve]] service is also documented here.
+ *
+ * @module ng1
+ * @preferred
+ */
+/** for typedoc */
+var angular_1 = __webpack_require__(9);
+var core_1 = __webpack_require__(4);
+var views_1 = __webpack_require__(25);
+var templateFactory_1 = __webpack_require__(69);
+var stateProvider_1 = __webpack_require__(32);
+var onEnterExitRetain_1 = __webpack_require__(68);
+var locationServices_1 = __webpack_require__(66);
+var urlRouterProvider_1 = __webpack_require__(33);
+angular_1.ng.module("ui.router.angular1", []);
+var mod_init = angular_1.ng.module('ui.router.init', []);
+var mod_util = angular_1.ng.module('ui.router.util', ['ng', 'ui.router.init']);
+var mod_rtr = angular_1.ng.module('ui.router.router', ['ui.router.util']);
+var mod_state = angular_1.ng.module('ui.router.state', ['ui.router.router', 'ui.router.util', 'ui.router.angular1']);
+var mod_main = angular_1.ng.module('ui.router', ['ui.router.init', 'ui.router.state', 'ui.router.angular1']);
+var mod_cmpt = angular_1.ng.module('ui.router.compat', ['ui.router']); // tslint:disable-line
+var router = null;
+$uiRouter.$inject = ['$locationProvider'];
+/** This angular 1 provider instantiates a Router and exposes its services via the angular injector */
+function $uiRouter($locationProvider) {
+    // Create a new instance of the Router when the $uiRouterProvider is initialized
+    router = this.router = new core_1.UIRouter();
+    router.stateProvider = new stateProvider_1.StateProvider(router.stateRegistry, router.stateService);
+    // Apply ng1 specific StateBuilder code for `views`, `resolve`, and `onExit/Retain/Enter` properties
+    router.stateRegistry.decorator("views", views_1.ng1ViewsBuilder);
+    router.stateRegistry.decorator("onExit", onEnterExitRetain_1.getStateHookBuilder("onExit"));
+    router.stateRegistry.decorator("onRetain", onEnterExitRetain_1.getStateHookBuilder("onRetain"));
+    router.stateRegistry.decorator("onEnter", onEnterExitRetain_1.getStateHookBuilder("onEnter"));
+    router.viewService._pluginapi._viewConfigFactory('ng1', views_1.getNg1ViewConfigFactory());
+    var ng1LocationService = router.locationService = router.locationConfig = new locationServices_1.Ng1LocationServices($locationProvider);
+    locationServices_1.Ng1LocationServices.monkeyPatchPathParameterType(router);
+    // backwards compat: also expose router instance as $uiRouterProvider.router
+    router['router'] = router;
+    router['$get'] = $get;
+    $get.$inject = ['$location', '$browser', '$sniffer', '$rootScope', '$http', '$templateCache'];
+    function $get($location, $browser, $sniffer, $rootScope, $http, $templateCache) {
+        ng1LocationService._runtimeServices($rootScope, $location, $sniffer, $browser);
+        delete router['router'];
+        delete router['$get'];
+        return router;
+    }
+    return router;
+}
+var getProviderFor = function (serviceName) { return ['$uiRouterProvider', function ($urp) {
+        var service = $urp.router[serviceName];
+        service["$get"] = function () { return service; };
+        return service;
+    }]; };
+// This effectively calls $get() on `$uiRouterProvider` to trigger init (when ng enters runtime)
+runBlock.$inject = ['$injector', '$q', '$uiRouter'];
+function runBlock($injector, $q, $uiRouter) {
+    core_1.services.$injector = $injector;
+    core_1.services.$q = $q;
+    // The $injector is now available.
+    // Find any resolvables that had dependency annotation deferred
+    $uiRouter.stateRegistry.get()
+        .map(function (x) { return x.$$state().resolvables; })
+        .reduce(core_1.unnestR, [])
+        .filter(function (x) { return x.deps === "deferred"; })
+        .forEach(function (resolvable) { return resolvable.deps = $injector.annotate(resolvable.resolveFn); });
+}
+// $urlRouter service and $urlRouterProvider
+var getUrlRouterProvider = function (uiRouter) {
+    return uiRouter.urlRouterProvider = new urlRouterProvider_1.UrlRouterProvider(uiRouter);
+};
+// $state service and $stateProvider
+// $urlRouter service and $urlRouterProvider
+var getStateProvider = function () {
+    return core_1.extend(router.stateProvider, { $get: function () { return router.stateService; } });
+};
+watchDigests.$inject = ['$rootScope'];
+function watchDigests($rootScope) {
+    $rootScope.$watch(function () { core_1.trace.approximateDigests++; });
+}
+exports.watchDigests = watchDigests;
+mod_init.provider("$uiRouter", $uiRouter);
+mod_rtr.provider('$urlRouter', ['$uiRouterProvider', getUrlRouterProvider]);
+mod_util.provider('$urlService', getProviderFor('urlService'));
+mod_util.provider('$urlMatcherFactory', ['$uiRouterProvider', function () { return router.urlMatcherFactory; }]);
+mod_util.provider('$templateFactory', function () { return new templateFactory_1.TemplateFactory(); });
+mod_state.provider('$stateRegistry', getProviderFor('stateRegistry'));
+mod_state.provider('$uiRouterGlobals', getProviderFor('globals'));
+mod_state.provider('$transitions', getProviderFor('transitionService'));
+mod_state.provider('$state', ['$uiRouterProvider', getStateProvider]);
+mod_state.factory('$stateParams', ['$uiRouter', function ($uiRouter) { return $uiRouter.globals.params; }]);
+mod_main.factory('$view', function () { return router.viewService; });
+mod_main.service("$trace", function () { return core_1.trace; });
+mod_main.run(watchDigests);
+mod_util.run(['$urlMatcherFactory', function ($urlMatcherFactory) { }]);
+mod_state.run(['$state', function ($state) { }]);
+mod_rtr.run(['$urlRouter', function ($urlRouter) { }]);
+mod_init.run(runBlock);
+/** @hidden TODO: find a place to move this */
+exports.getLocals = function (ctx) {
+    var tokens = ctx.getTokens().filter(core_1.isString);
+    var tuples = tokens.map(function (key) {
+        var resolvable = ctx.getResolvable(key);
+        var waitPolicy = ctx.getPolicy(resolvable).async;
+        return [key, waitPolicy === 'NOWAIT' ? resolvable.promise : resolvable.data];
+    });
+    return tuples.reduce(core_1.applyPairs, {});
+};
+//# sourceMappingURL=services.js.map
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(4);
+function getNg1ViewConfigFactory() {
+    var templateFactory = null;
+    return function (path, view) {
+        templateFactory = templateFactory || core_1.services.$injector.get("$templateFactory");
+        return [new Ng1ViewConfig(path, view, templateFactory)];
+    };
+}
+exports.getNg1ViewConfigFactory = getNg1ViewConfigFactory;
+var hasAnyKey = function (keys, obj) {
+    return keys.reduce(function (acc, key) { return acc || core_1.isDefined(obj[key]); }, false);
+};
+/**
+ * This is a [[StateBuilder.builder]] function for angular1 `views`.
+ *
+ * When the [[StateBuilder]] builds a [[StateObject]] object from a raw [[StateDeclaration]], this builder
+ * handles the `views` property with logic specific to @uirouter/angularjs (ng1).
+ *
+ * If no `views: {}` property exists on the [[StateDeclaration]], then it creates the `views` object
+ * and applies the state-level configuration to a view named `$default`.
+ */
+function ng1ViewsBuilder(state) {
+    // Do not process root state
+    if (!state.parent)
+        return {};
+    var tplKeys = ['templateProvider', 'templateUrl', 'template', 'notify', 'async'], ctrlKeys = ['controller', 'controllerProvider', 'controllerAs', 'resolveAs'], compKeys = ['component', 'bindings', 'componentProvider'], nonCompKeys = tplKeys.concat(ctrlKeys), allViewKeys = compKeys.concat(nonCompKeys);
+    // Do not allow a state to have both state-level props and also a `views: {}` property.
+    // A state without a `views: {}` property can declare properties for the `$default` view as properties of the state.
+    // However, the `$default` approach should not be mixed with a separate `views: ` block.
+    if (core_1.isDefined(state.views) && hasAnyKey(allViewKeys, state)) {
+        throw new Error("State '" + state.name + "' has a 'views' object. " +
+            "It cannot also have \"view properties\" at the state level.  " +
+            "Move the following properties into a view (in the 'views' object): " +
+            (" " + allViewKeys.filter(function (key) { return core_1.isDefined(state[key]); }).join(", ")));
+    }
+    var views = {}, viewsObject = state.views || { "$default": core_1.pick(state, allViewKeys) };
+    core_1.forEach(viewsObject, function (config, name) {
+        // Account for views: { "": { template... } }
+        name = name || "$default";
+        // Account for views: { header: "headerComponent" }
+        if (core_1.isString(config))
+            config = { component: config };
+        // Make a shallow copy of the config object
+        config = core_1.extend({}, config);
+        // Do not allow a view to mix props for component-style view with props for template/controller-style view
+        if (hasAnyKey(compKeys, config) && hasAnyKey(nonCompKeys, config)) {
+            throw new Error("Cannot combine: " + compKeys.join("|") + " with: " + nonCompKeys.join("|") + " in stateview: '" + name + "@" + state.name + "'");
+        }
+        config.resolveAs = config.resolveAs || '$resolve';
+        config.$type = "ng1";
+        config.$context = state;
+        config.$name = name;
+        var normalized = core_1.ViewService.normalizeUIViewTarget(config.$context, config.$name);
+        config.$uiViewName = normalized.uiViewName;
+        config.$uiViewContextAnchor = normalized.uiViewContextAnchor;
+        views[name] = config;
+    });
+    return views;
+}
+exports.ng1ViewsBuilder = ng1ViewsBuilder;
+var id = 0;
+var Ng1ViewConfig = (function () {
+    function Ng1ViewConfig(path, viewDecl, factory) {
+        var _this = this;
+        this.path = path;
+        this.viewDecl = viewDecl;
+        this.factory = factory;
+        this.$id = id++;
+        this.loaded = false;
+        this.getTemplate = function (uiView, context) {
+            return _this.component ? _this.factory.makeComponentTemplate(uiView, context, _this.component, _this.viewDecl.bindings) : _this.template;
+        };
+    }
+    Ng1ViewConfig.prototype.load = function () {
+        var _this = this;
+        var $q = core_1.services.$q;
+        var context = new core_1.ResolveContext(this.path);
+        var params = this.path.reduce(function (acc, node) { return core_1.extend(acc, node.paramValues); }, {});
+        var promises = {
+            template: $q.when(this.factory.fromConfig(this.viewDecl, params, context)),
+            controller: $q.when(this.getController(context))
+        };
+        return $q.all(promises).then(function (results) {
+            core_1.trace.traceViewServiceEvent("Loaded", _this);
+            _this.controller = results.controller;
+            core_1.extend(_this, results.template); // Either { template: "tpl" } or { component: "cmpName" }
+            return _this;
+        });
+    };
+    /**
+     * Gets the controller for a view configuration.
+     *
+     * @returns {Function|Promise.<Function>} Returns a controller, or a promise that resolves to a controller.
+     */
+    Ng1ViewConfig.prototype.getController = function (context) {
+        var provider = this.viewDecl.controllerProvider;
+        if (!core_1.isInjectable(provider))
+            return this.viewDecl.controller;
+        var deps = core_1.services.$injector.annotate(provider);
+        var providerFn = core_1.isArray(provider) ? core_1.tail(provider) : provider;
+        var resolvable = new core_1.Resolvable("", providerFn, deps);
+        return resolvable.get(context);
+    };
+    return Ng1ViewConfig;
+}());
+exports.Ng1ViewConfig = Ng1ViewConfig;
+//# sourceMappingURL=views.js.map
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * @module common
+ */ /** for typedoc */
+Object.defineProperty(exports, "__esModule", { value: true });
+var Queue = (function () {
+    function Queue(_items, _limit) {
+        if (_items === void 0) { _items = []; }
+        if (_limit === void 0) { _limit = null; }
+        this._items = _items;
+        this._limit = _limit;
+    }
+    Queue.prototype.enqueue = function (item) {
+        var items = this._items;
+        items.push(item);
+        if (this._limit && items.length > this._limit)
+            items.shift();
+        return item;
+    };
+    Queue.prototype.dequeue = function () {
+        if (this.size())
+            return this._items.splice(0, 1)[0];
+    };
+    Queue.prototype.clear = function () {
+        var current = this._items;
+        this._items = [];
+        return current;
+    };
+    Queue.prototype.size = function () {
+        return this._items.length;
+    };
+    Queue.prototype.remove = function (item) {
+        var idx = this._items.indexOf(item);
+        return idx > -1 && this._items.splice(idx, 1)[0];
+    };
+    Queue.prototype.peekTail = function () {
+        return this._items[this._items.length - 1];
+    };
+    Queue.prototype.peekHead = function () {
+        if (this.size())
+            return this._items[0];
+    };
+    return Queue;
+}());
+exports.Queue = Queue;
+//# sourceMappingURL=queue.js.map
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * @coreapi
+ * @module params
+ */
+/** */
+var common_1 = __webpack_require__(0);
+var predicates_1 = __webpack_require__(1);
+/**
+ * An internal class which implements [[ParamTypeDefinition]].
+ *
+ * A [[ParamTypeDefinition]] is a plain javascript object used to register custom parameter types.
+ * When a param type definition is registered, an instance of this class is created internally.
+ *
+ * This class has naive implementations for all the [[ParamTypeDefinition]] methods.
+ *
+ * Used by [[UrlMatcher]] when matching or formatting URLs, or comparing and validating parameter values.
+ *
+ * #### Example:
+ * ```js
+ * var paramTypeDef = {
+ *   decode: function(val) { return parseInt(val, 10); },
+ *   encode: function(val) { return val && val.toString(); },
+ *   equals: function(a, b) { return this.is(a) && a === b; },
+ *   is: function(val) { return angular.isNumber(val) && isFinite(val) && val % 1 === 0; },
+ *   pattern: /\d+/
+ * }
+ *
+ * var paramType = new ParamType(paramTypeDef);
+ * ```
+ * @internalapi
+ */
+var ParamType = (function () {
+    /**
+     * @param def  A configuration object which contains the custom type definition.  The object's
+     *        properties will override the default methods and/or pattern in `ParamType`'s public interface.
+     * @returns a new ParamType object
+     */
+    function ParamType(def) {
+        /** @inheritdoc */
+        this.pattern = /.*/;
+        /** @inheritdoc */
+        this.inherit = true;
+        common_1.extend(this, def);
+    }
+    // consider these four methods to be "abstract methods" that should be overridden
+    /** @inheritdoc */
+    ParamType.prototype.is = function (val, key) { return true; };
+    /** @inheritdoc */
+    ParamType.prototype.encode = function (val, key) { return val; };
+    /** @inheritdoc */
+    ParamType.prototype.decode = function (val, key) { return val; };
+    /** @inheritdoc */
+    ParamType.prototype.equals = function (a, b) { return a == b; };
+    ParamType.prototype.$subPattern = function () {
+        var sub = this.pattern.toString();
+        return sub.substr(1, sub.length - 2);
+    };
+    ParamType.prototype.toString = function () {
+        return "{ParamType:" + this.name + "}";
+    };
+    /** Given an encoded string, or a decoded object, returns a decoded object */
+    ParamType.prototype.$normalize = function (val) {
+        return this.is(val) ? val : this.decode(val);
+    };
+    /**
+     * Wraps an existing custom ParamType as an array of ParamType, depending on 'mode'.
+     * e.g.:
+     * - urlmatcher pattern "/path?{queryParam[]:int}"
+     * - url: "/path?queryParam=1&queryParam=2
+     * - $stateParams.queryParam will be [1, 2]
+     * if `mode` is "auto", then
+     * - url: "/path?queryParam=1 will create $stateParams.queryParam: 1
+     * - url: "/path?queryParam=1&queryParam=2 will create $stateParams.queryParam: [1, 2]
+     */
+    ParamType.prototype.$asArray = function (mode, isSearch) {
+        if (!mode)
+            return this;
+        if (mode === "auto" && !isSearch)
+            throw new Error("'auto' array mode is for query parameters only");
+        return new ArrayType(this, mode);
+    };
+    return ParamType;
+}());
+exports.ParamType = ParamType;
+/**
+ * Wraps up a `ParamType` object to handle array values.
+ * @internalapi
+ */
+function ArrayType(type, mode) {
+    var _this = this;
+    // Wrap non-array value as array
+    function arrayWrap(val) {
+        return predicates_1.isArray(val) ? val : (predicates_1.isDefined(val) ? [val] : []);
+    }
+    // Unwrap array value for "auto" mode. Return undefined for empty array.
+    function arrayUnwrap(val) {
+        switch (val.length) {
+            case 0: return undefined;
+            case 1: return mode === "auto" ? val[0] : val;
+            default: return val;
+        }
+    }
+    // Wraps type (.is/.encode/.decode) functions to operate on each value of an array
+    function arrayHandler(callback, allTruthyMode) {
+        return function handleArray(val) {
+            if (predicates_1.isArray(val) && val.length === 0)
+                return val;
+            var arr = arrayWrap(val);
+            var result = common_1.map(arr, callback);
+            return (allTruthyMode === true) ? common_1.filter(result, function (x) { return !x; }).length === 0 : arrayUnwrap(result);
+        };
+    }
+    // Wraps type (.equals) functions to operate on each value of an array
+    function arrayEqualsHandler(callback) {
+        return function handleArray(val1, val2) {
+            var left = arrayWrap(val1), right = arrayWrap(val2);
+            if (left.length !== right.length)
+                return false;
+            for (var i = 0; i < left.length; i++) {
+                if (!callback(left[i], right[i]))
+                    return false;
+            }
+            return true;
+        };
+    }
+    ['encode', 'decode', 'equals', '$normalize'].forEach(function (name) {
+        var paramTypeFn = type[name].bind(type);
+        var wrapperFn = name === 'equals' ? arrayEqualsHandler : arrayHandler;
+        _this[name] = wrapperFn(paramTypeFn);
+    });
+    common_1.extend(this, {
+        dynamic: type.dynamic,
+        name: type.name,
+        pattern: type.pattern,
+        inherit: type.inherit,
+        is: arrayHandler(type.is.bind(type), true),
+        $arrayMode: mode
+    });
+}
+//# sourceMappingURL=paramType.js.map
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/** @module path */ /** for typedoc */
+var common_1 = __webpack_require__(0);
+var hof_1 = __webpack_require__(2);
+var param_1 = __webpack_require__(10);
+/**
+ * @internalapi
+ *
+ * A node in a [[TreeChanges]] path
+ *
+ * For a [[TreeChanges]] path, this class holds the stateful information for a single node in the path.
+ * Each PathNode corresponds to a state being entered, exited, or retained.
+ * The stateful information includes parameter values and resolve data.
+ */
+var PathNode = (function () {
+    function PathNode(stateOrNode) {
+        if (stateOrNode instanceof PathNode) {
+            var node = stateOrNode;
+            this.state = node.state;
+            this.paramSchema = node.paramSchema.slice();
+            this.paramValues = common_1.extend({}, node.paramValues);
+            this.resolvables = node.resolvables.slice();
+            this.views = node.views && node.views.slice();
+        }
+        else {
+            var state = stateOrNode;
+            this.state = state;
+            this.paramSchema = state.parameters({ inherit: false });
+            this.paramValues = {};
+            this.resolvables = state.resolvables.map(function (res) { return res.clone(); });
+        }
+    }
+    /** Sets [[paramValues]] for the node, from the values of an object hash */
+    PathNode.prototype.applyRawParams = function (params) {
+        var getParamVal = function (paramDef) { return [paramDef.id, paramDef.value(params[paramDef.id])]; };
+        this.paramValues = this.paramSchema.reduce(function (memo, pDef) { return common_1.applyPairs(memo, getParamVal(pDef)); }, {});
+        return this;
+    };
+    /** Gets a specific [[Param]] metadata that belongs to the node */
+    PathNode.prototype.parameter = function (name) {
+        return common_1.find(this.paramSchema, hof_1.propEq("id", name));
+    };
+    /**
+     * @returns true if the state and parameter values for another PathNode are
+     * equal to the state and param values for this PathNode
+     */
+    PathNode.prototype.equals = function (node, paramsFn) {
+        var diff = this.diff(node, paramsFn);
+        return diff && diff.length === 0;
+    };
+    /**
+     * Finds Params with different parameter values on another PathNode.
+     *
+     * Given another node (of the same state), finds the parameter values which differ.
+     * Returns the [[Param]] (schema objects) whose parameter values differ.
+     *
+     * Given another node for a different state, returns `false`
+     *
+     * @param node The node to compare to
+     * @param paramsFn A function that returns which parameters should be compared.
+     * @returns The [[Param]]s which differ, or null if the two nodes are for different states
+     */
+    PathNode.prototype.diff = function (node, paramsFn) {
+        if (this.state !== node.state)
+            return false;
+        var params = paramsFn ? paramsFn(this) : this.paramSchema;
+        return param_1.Param.changed(params, this.paramValues, node.paramValues);
+    };
+    /** Returns a clone of the PathNode */
+    PathNode.clone = function (node) {
+        return new PathNode(node);
+    };
+    return PathNode;
+}());
+exports.PathNode = PathNode;
+//# sourceMappingURL=pathNode.js.map
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var common_1 = __webpack_require__(0);
+var hof_1 = __webpack_require__(2);
+var glob_1 = __webpack_require__(16);
+var predicates_1 = __webpack_require__(1);
+/**
+ * Internal representation of a UI-Router state.
+ *
+ * Instances of this class are created when a [[StateDeclaration]] is registered with the [[StateRegistry]].
+ *
+ * A registered [[StateDeclaration]] is augmented with a getter ([[StateDeclaration.$$state]]) which returns the corresponding [[StateObject]] object.
+ *
+ * This class prototypally inherits from the corresponding [[StateDeclaration]].
+ * Each of its own properties (i.e., `hasOwnProperty`) are built using builders from the [[StateBuilder]].
+ */
+var StateObject = (function () {
+    /** @deprecated use State.create() */
+    function StateObject(config) {
+        return StateObject.create(config || {});
+    }
+    /**
+     * Create a state object to put the private/internal implementation details onto.
+     * The object's prototype chain looks like:
+     * (Internal State Object) -> (Copy of State.prototype) -> (State Declaration object) -> (State Declaration's prototype...)
+     *
+     * @param stateDecl the user-supplied State Declaration
+     * @returns {StateObject} an internal State object
+     */
+    StateObject.create = function (stateDecl) {
+        stateDecl = StateObject.isStateClass(stateDecl) ? new stateDecl() : stateDecl;
+        var state = common_1.inherit(common_1.inherit(stateDecl, StateObject.prototype));
+        stateDecl.$$state = function () { return state; };
+        state.self = stateDecl;
+        state.__stateObjectCache = {
+            nameGlob: glob_1.Glob.fromString(state.name) // might return null
+        };
+        return state;
+    };
+    /**
+     * Returns true if the provided parameter is the same state.
+     *
+     * Compares the identity of the state against the passed value, which is either an object
+     * reference to the actual `State` instance, the original definition object passed to
+     * `$stateProvider.state()`, or the fully-qualified name.
+     *
+     * @param ref Can be one of (a) a `State` instance, (b) an object that was passed
+     *        into `$stateProvider.state()`, (c) the fully-qualified name of a state as a string.
+     * @returns Returns `true` if `ref` matches the current `State` instance.
+     */
+    StateObject.prototype.is = function (ref) {
+        return this === ref || this.self === ref || this.fqn() === ref;
+    };
+    /**
+     * @deprecated this does not properly handle dot notation
+     * @returns Returns a dot-separated name of the state.
+     */
+    StateObject.prototype.fqn = function () {
+        if (!this.parent || !(this.parent instanceof this.constructor))
+            return this.name;
+        var name = this.parent.fqn();
+        return name ? name + "." + this.name : this.name;
+    };
+    /**
+     * Returns the root node of this state's tree.
+     *
+     * @returns The root of this state's tree.
+     */
+    StateObject.prototype.root = function () {
+        return this.parent && this.parent.root() || this;
+    };
+    /**
+     * Gets the state's `Param` objects
+     *
+     * Gets the list of [[Param]] objects owned by the state.
+     * If `opts.inherit` is true, it also includes the ancestor states' [[Param]] objects.
+     * If `opts.matchingKeys` exists, returns only `Param`s whose `id` is a key on the `matchingKeys` object
+     *
+     * @param opts options
+     */
+    StateObject.prototype.parameters = function (opts) {
+        opts = common_1.defaults(opts, { inherit: true, matchingKeys: null });
+        var inherited = opts.inherit && this.parent && this.parent.parameters() || [];
+        return inherited.concat(common_1.values(this.params))
+            .filter(function (param) { return !opts.matchingKeys || opts.matchingKeys.hasOwnProperty(param.id); });
+    };
+    /**
+     * Returns a single [[Param]] that is owned by the state
+     *
+     * If `opts.inherit` is true, it also searches the ancestor states` [[Param]]s.
+     * @param id the name of the [[Param]] to return
+     * @param opts options
+     */
+    StateObject.prototype.parameter = function (id, opts) {
+        if (opts === void 0) { opts = {}; }
+        return (this.url && this.url.parameter(id, opts) ||
+            common_1.find(common_1.values(this.params), hof_1.propEq('id', id)) ||
+            opts.inherit && this.parent && this.parent.parameter(id));
+    };
+    StateObject.prototype.toString = function () {
+        return this.fqn();
+    };
+    return StateObject;
+}());
+/** Predicate which returns true if the object is an class with @State() decorator */
+StateObject.isStateClass = function (stateDecl) {
+    return predicates_1.isFunction(stateDecl) && stateDecl['__uiRouterState'] === true;
+};
+/** Predicate which returns true if the object is an internal [[StateObject]] object */
+StateObject.isState = function (obj) {
+    return predicates_1.isObject(obj['__stateObjectCache']);
+};
+exports.StateObject = StateObject;
+//# sourceMappingURL=stateObject.js.map
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * @coreapi
+ * @module transition
+ */ /** for typedoc */
+var common_1 = __webpack_require__(0);
+var predicates_1 = __webpack_require__(1);
+var interface_1 = __webpack_require__(11); // has or is using
+var glob_1 = __webpack_require__(16);
+/**
+ * Determines if the given state matches the matchCriteria
+ *
+ * @hidden
+ *
+ * @param state a State Object to test against
+ * @param criterion
+ * - If a string, matchState uses the string as a glob-matcher against the state name
+ * - If an array (of strings), matchState uses each string in the array as a glob-matchers against the state name
+ *   and returns a positive match if any of the globs match.
+ * - If a function, matchState calls the function with the state and returns true if the function's result is truthy.
+ * @returns {boolean}
+ */
+function matchState(state, criterion) {
+    var toMatch = predicates_1.isString(criterion) ? [criterion] : criterion;
+    function matchGlobs(_state) {
+        var globStrings = toMatch;
+        for (var i = 0; i < globStrings.length; i++) {
+            var glob = new glob_1.Glob(globStrings[i]);
+            if ((glob && glob.matches(_state.name)) || (!glob && globStrings[i] === _state.name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    var matchFn = (predicates_1.isFunction(toMatch) ? toMatch : matchGlobs);
+    return !!matchFn(state);
+}
+exports.matchState = matchState;
+/**
+ * @internalapi
+ * The registration data for a registered transition hook
+ */
+var RegisteredHook = (function () {
+    function RegisteredHook(tranSvc, eventType, callback, matchCriteria, options) {
+        if (options === void 0) { options = {}; }
+        this.tranSvc = tranSvc;
+        this.eventType = eventType;
+        this.callback = callback;
+        this.matchCriteria = matchCriteria;
+        this.priority = options.priority || 0;
+        this.bind = options.bind || null;
+        this._deregistered = false;
+    }
+    /**
+     * Gets the matching [[PathNode]]s
+     *
+     * Given an array of [[PathNode]]s, and a [[HookMatchCriterion]], returns an array containing
+     * the [[PathNode]]s that the criteria matches, or `null` if there were no matching nodes.
+     *
+     * Returning `null` is significant to distinguish between the default
+     * "match-all criterion value" of `true` compared to a `() => true` function,
+     * when the nodes is an empty array.
+     *
+     * This is useful to allow a transition match criteria of `entering: true`
+     * to still match a transition, even when `entering === []`.  Contrast that
+     * with `entering: (state) => true` which only matches when a state is actually
+     * being entered.
+     */
+    RegisteredHook.prototype._matchingNodes = function (nodes, criterion) {
+        if (criterion === true)
+            return nodes;
+        var matching = nodes.filter(function (node) { return matchState(node.state, criterion); });
+        return matching.length ? matching : null;
+    };
+    /**
+     * Gets the default match criteria (all `true`)
+     *
+     * Returns an object which has all the criteria match paths as keys and `true` as values, i.e.:
+     *
+     * ```js
+     * {
+     *   to: true,
+     *   from: true,
+     *   entering: true,
+     *   exiting: true,
+     *   retained: true,
+     * }
+     */
+    RegisteredHook.prototype._getDefaultMatchCriteria = function () {
+        return common_1.map(this.tranSvc._pluginapi._getPathTypes(), function () { return true; });
+    };
+    /**
+     * Gets matching nodes as [[IMatchingNodes]]
+     *
+     * Create a IMatchingNodes object from the TransitionHookTypes that is roughly equivalent to:
+     *
+     * ```js
+     * let matches: IMatchingNodes = {
+     *   to:       _matchingNodes([tail(treeChanges.to)],   mc.to),
+     *   from:     _matchingNodes([tail(treeChanges.from)], mc.from),
+     *   exiting:  _matchingNodes(treeChanges.exiting,      mc.exiting),
+     *   retained: _matchingNodes(treeChanges.retained,     mc.retained),
+     *   entering: _matchingNodes(treeChanges.entering,     mc.entering),
+     * };
+     * ```
+     */
+    RegisteredHook.prototype._getMatchingNodes = function (treeChanges) {
+        var _this = this;
+        var criteria = common_1.extend(this._getDefaultMatchCriteria(), this.matchCriteria);
+        var paths = common_1.values(this.tranSvc._pluginapi._getPathTypes());
+        return paths.reduce(function (mn, pathtype) {
+            // STATE scope criteria matches against every node in the path.
+            // TRANSITION scope criteria matches against only the last node in the path
+            var isStateHook = pathtype.scope === interface_1.TransitionHookScope.STATE;
+            var path = treeChanges[pathtype.name] || [];
+            var nodes = isStateHook ? path : [common_1.tail(path)];
+            mn[pathtype.name] = _this._matchingNodes(nodes, criteria[pathtype.name]);
+            return mn;
+        }, {});
+    };
+    /**
+     * Determines if this hook's [[matchCriteria]] match the given [[TreeChanges]]
+     *
+     * @returns an IMatchingNodes object, or null. If an IMatchingNodes object is returned, its values
+     * are the matching [[PathNode]]s for each [[HookMatchCriterion]] (to, from, exiting, retained, entering)
+     */
+    RegisteredHook.prototype.matches = function (treeChanges) {
+        var matches = this._getMatchingNodes(treeChanges);
+        // Check if all the criteria matched the TreeChanges object
+        var allMatched = common_1.values(matches).every(common_1.identity);
+        return allMatched ? matches : null;
+    };
+    return RegisteredHook;
+}());
+exports.RegisteredHook = RegisteredHook;
+/** @hidden Return a registration function of the requested type. */
+function makeEvent(registry, transitionService, eventType) {
+    // Create the object which holds the registered transition hooks.
+    var _registeredHooks = registry._registeredHooks = (registry._registeredHooks || {});
+    var hooks = _registeredHooks[eventType.name] = [];
+    // Create hook registration function on the IHookRegistry for the event
+    registry[eventType.name] = hookRegistrationFn;
+    function hookRegistrationFn(matchObject, callback, options) {
+        if (options === void 0) { options = {}; }
+        var registeredHook = new RegisteredHook(transitionService, eventType, callback, matchObject, options);
+        hooks.push(registeredHook);
+        return function deregisterEventHook() {
+            registeredHook._deregistered = true;
+            common_1.removeFrom(hooks)(registeredHook);
+        };
+    }
+    return hookRegistrationFn;
+}
+exports.makeEvent = makeEvent;
+//# sourceMappingURL=hookRegistry.js.map
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * @coreapi
+ * @module transition
+ */
+/** for typedoc */
+var interface_1 = __webpack_require__(11);
+var transition_1 = __webpack_require__(20);
+var hookRegistry_1 = __webpack_require__(30);
+var coreResolvables_1 = __webpack_require__(71);
+var redirectTo_1 = __webpack_require__(75);
+var onEnterExitRetain_1 = __webpack_require__(74);
+var resolve_1 = __webpack_require__(76);
+var views_1 = __webpack_require__(79);
+var updateGlobals_1 = __webpack_require__(77);
+var url_1 = __webpack_require__(78);
+var lazyLoad_1 = __webpack_require__(35);
+var transitionEventType_1 = __webpack_require__(46);
+var transitionHook_1 = __webpack_require__(14);
+var predicates_1 = __webpack_require__(1);
+var common_1 = __webpack_require__(0);
+var hof_1 = __webpack_require__(2);
+var ignoredTransition_1 = __webpack_require__(72);
+var invalidTransition_1 = __webpack_require__(73);
+/**
+ * The default [[Transition]] options.
+ *
+ * Include this object when applying custom defaults:
+ * let reloadOpts = { reload: true, notify: true }
+ * let options = defaults(theirOpts, customDefaults, defaultOptions);
+ */
+exports.defaultTransOpts = {
+    location: true,
+    relative: null,
+    inherit: false,
+    notify: true,
+    reload: false,
+    custom: {},
+    current: function () { return null; },
+    source: "unknown"
+};
+/**
+ * This class provides services related to Transitions.
+ *
+ * - Most importantly, it allows global Transition Hooks to be registered.
+ * - It allows the default transition error handler to be set.
+ * - It also has a factory function for creating new [[Transition]] objects, (used internally by the [[StateService]]).
+ *
+ * At bootstrap, [[UIRouter]] creates a single instance (singleton) of this class.
+ */
+var TransitionService = (function () {
+    /** @hidden */
+    function TransitionService(_router) {
+        /** @hidden */
+        this._transitionCount = 0;
+        /** @hidden The transition hook types, such as `onEnter`, `onStart`, etc */
+        this._eventTypes = [];
+        /** @hidden The registered transition hooks */
+        this._registeredHooks = {};
+        /** @hidden The  paths on a criteria object */
+        this._criteriaPaths = {};
+        this._router = _router;
+        this.$view = _router.viewService;
+        this._deregisterHookFns = {};
+        this._pluginapi = common_1.createProxyFunctions(hof_1.val(this), {}, hof_1.val(this), [
+            '_definePathType',
+            '_defineEvent',
+            '_getPathTypes',
+            '_getEvents',
+            'getHooks',
+        ]);
+        this._defineCorePaths();
+        this._defineCoreEvents();
+        this._registerCoreTransitionHooks();
+    }
+    /**
+     * Registers a [[TransitionHookFn]], called *while a transition is being constructed*.
+     *
+     * Registers a transition lifecycle hook, which is invoked during transition construction.
+     *
+     * This low level hook should only be used by plugins.
+     * This can be a useful time for plugins to add resolves or mutate the transition as needed.
+     * The Sticky States plugin uses this hook to modify the treechanges.
+     *
+     * ### Lifecycle
+     *
+     * `onCreate` hooks are invoked *while a transition is being constructed*.
+     *
+     * ### Return value
+     *
+     * The hook's return value is ignored
+     *
+     * @internalapi
+     * @param criteria defines which Transitions the Hook should be invoked for.
+     * @param callback the hook function which will be invoked.
+     * @param options the registration options
+     * @returns a function which deregisters the hook.
+     */
+    TransitionService.prototype.onCreate = function (criteria, callback, options) { return; };
+    /** @inheritdoc */
+    TransitionService.prototype.onBefore = function (criteria, callback, options) { return; };
+    /** @inheritdoc */
+    TransitionService.prototype.onStart = function (criteria, callback, options) { return; };
+    /** @inheritdoc */
+    TransitionService.prototype.onExit = function (criteria, callback, options) { return; };
+    /** @inheritdoc */
+    TransitionService.prototype.onRetain = function (criteria, callback, options) { return; };
+    /** @inheritdoc */
+    TransitionService.prototype.onEnter = function (criteria, callback, options) { return; };
+    /** @inheritdoc */
+    TransitionService.prototype.onFinish = function (criteria, callback, options) { return; };
+    /** @inheritdoc */
+    TransitionService.prototype.onSuccess = function (criteria, callback, options) { return; };
+    /** @inheritdoc */
+    TransitionService.prototype.onError = function (criteria, callback, options) { return; };
+    /**
+     * dispose
+     * @internalapi
+     */
+    TransitionService.prototype.dispose = function (router) {
+        common_1.values(this._registeredHooks).forEach(function (hooksArray) { return hooksArray.forEach(function (hook) {
+            hook._deregistered = true;
+            common_1.removeFrom(hooksArray, hook);
+        }); });
+    };
+    /**
+     * Creates a new [[Transition]] object
+     *
+     * This is a factory function for creating new Transition objects.
+     * It is used internally by the [[StateService]] and should generally not be called by application code.
+     *
+     * @param fromPath the path to the current state (the from state)
+     * @param targetState the target state (destination)
+     * @returns a Transition
+     */
+    TransitionService.prototype.create = function (fromPath, targetState) {
+        return new transition_1.Transition(fromPath, targetState, this._router);
+    };
+    /** @hidden */
+    TransitionService.prototype._defineCoreEvents = function () {
+        var Phase = interface_1.TransitionHookPhase;
+        var TH = transitionHook_1.TransitionHook;
+        var paths = this._criteriaPaths;
+        var NORMAL_SORT = false, REVERSE_SORT = true;
+        var ASYNCHRONOUS = false, SYNCHRONOUS = true;
+        this._defineEvent("onCreate", Phase.CREATE, 0, paths.to, NORMAL_SORT, TH.LOG_REJECTED_RESULT, TH.THROW_ERROR, SYNCHRONOUS);
+        this._defineEvent("onBefore", Phase.BEFORE, 0, paths.to);
+        this._defineEvent("onStart", Phase.RUN, 0, paths.to);
+        this._defineEvent("onExit", Phase.RUN, 100, paths.exiting, REVERSE_SORT);
+        this._defineEvent("onRetain", Phase.RUN, 200, paths.retained);
+        this._defineEvent("onEnter", Phase.RUN, 300, paths.entering);
+        this._defineEvent("onFinish", Phase.RUN, 400, paths.to);
+        this._defineEvent("onSuccess", Phase.SUCCESS, 0, paths.to, NORMAL_SORT, TH.LOG_REJECTED_RESULT, TH.LOG_ERROR, SYNCHRONOUS);
+        this._defineEvent("onError", Phase.ERROR, 0, paths.to, NORMAL_SORT, TH.LOG_REJECTED_RESULT, TH.LOG_ERROR, SYNCHRONOUS);
+    };
+    /** @hidden */
+    TransitionService.prototype._defineCorePaths = function () {
+        var STATE = interface_1.TransitionHookScope.STATE, TRANSITION = interface_1.TransitionHookScope.TRANSITION;
+        this._definePathType("to", TRANSITION);
+        this._definePathType("from", TRANSITION);
+        this._definePathType("exiting", STATE);
+        this._definePathType("retained", STATE);
+        this._definePathType("entering", STATE);
+    };
+    /** @hidden */
+    TransitionService.prototype._defineEvent = function (name, hookPhase, hookOrder, criteriaMatchPath, reverseSort, getResultHandler, getErrorHandler, synchronous) {
+        if (reverseSort === void 0) { reverseSort = false; }
+        if (getResultHandler === void 0) { getResultHandler = transitionHook_1.TransitionHook.HANDLE_RESULT; }
+        if (getErrorHandler === void 0) { getErrorHandler = transitionHook_1.TransitionHook.REJECT_ERROR; }
+        if (synchronous === void 0) { synchronous = false; }
+        var eventType = new transitionEventType_1.TransitionEventType(name, hookPhase, hookOrder, criteriaMatchPath, reverseSort, getResultHandler, getErrorHandler, synchronous);
+        this._eventTypes.push(eventType);
+        hookRegistry_1.makeEvent(this, this, eventType);
+    };
+    ;
+    /** @hidden */
+    TransitionService.prototype._getEvents = function (phase) {
+        var transitionHookTypes = predicates_1.isDefined(phase) ?
+            this._eventTypes.filter(function (type) { return type.hookPhase === phase; }) :
+            this._eventTypes.slice();
+        return transitionHookTypes.sort(function (l, r) {
+            var cmpByPhase = l.hookPhase - r.hookPhase;
+            return cmpByPhase === 0 ? l.hookOrder - r.hookOrder : cmpByPhase;
+        });
+    };
+    /**
+     * Adds a Path to be used as a criterion against a TreeChanges path
+     *
+     * For example: the `exiting` path in [[HookMatchCriteria]] is a STATE scoped path.
+     * It was defined by calling `defineTreeChangesCriterion('exiting', TransitionHookScope.STATE)`
+     * Each state in the exiting path is checked against the criteria and returned as part of the match.
+     *
+     * Another example: the `to` path in [[HookMatchCriteria]] is a TRANSITION scoped path.
+     * It was defined by calling `defineTreeChangesCriterion('to', TransitionHookScope.TRANSITION)`
+     * Only the tail of the `to` path is checked against the criteria and returned as part of the match.
+     *
+     * @hidden
+     */
+    TransitionService.prototype._definePathType = function (name, hookScope) {
+        this._criteriaPaths[name] = { name: name, scope: hookScope };
+    };
+    /** * @hidden */
+    TransitionService.prototype._getPathTypes = function () {
+        return this._criteriaPaths;
+    };
+    /** @hidden */
+    TransitionService.prototype.getHooks = function (hookName) {
+        return this._registeredHooks[hookName];
+    };
+    /** @hidden */
+    TransitionService.prototype._registerCoreTransitionHooks = function () {
+        var fns = this._deregisterHookFns;
+        fns.addCoreResolves = coreResolvables_1.registerAddCoreResolvables(this);
+        fns.ignored = ignoredTransition_1.registerIgnoredTransitionHook(this);
+        fns.invalid = invalidTransition_1.registerInvalidTransitionHook(this);
+        // Wire up redirectTo hook
+        fns.redirectTo = redirectTo_1.registerRedirectToHook(this);
+        // Wire up onExit/Retain/Enter state hooks
+        fns.onExit = onEnterExitRetain_1.registerOnExitHook(this);
+        fns.onRetain = onEnterExitRetain_1.registerOnRetainHook(this);
+        fns.onEnter = onEnterExitRetain_1.registerOnEnterHook(this);
+        // Wire up Resolve hooks
+        fns.eagerResolve = resolve_1.registerEagerResolvePath(this);
+        fns.lazyResolve = resolve_1.registerLazyResolveState(this);
+        // Wire up the View management hooks
+        fns.loadViews = views_1.registerLoadEnteringViews(this);
+        fns.activateViews = views_1.registerActivateViews(this);
+        // Updates global state after a transition
+        fns.updateGlobals = updateGlobals_1.registerUpdateGlobalState(this);
+        // After globals.current is updated at priority: 10000
+        fns.updateUrl = url_1.registerUpdateUrl(this);
+        // Lazy load state trees
+        fns.lazyLoad = lazyLoad_1.registerLazyLoadHook(this);
+    };
+    return TransitionService;
+}());
+exports.TransitionService = TransitionService;
+//# sourceMappingURL=transitionService.js.map
 
 /***/ }),
 /* 32 */
@@ -22572,7 +22572,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @module core
  */ /** */
 var stateParams_1 = __webpack_require__(37);
-var queue_1 = __webpack_require__(25);
+var queue_1 = __webpack_require__(26);
 /**
  * Global router state
  *
@@ -22723,7 +22723,7 @@ var common_1 = __webpack_require__(0);
 var predicates_1 = __webpack_require__(1);
 var hof_1 = __webpack_require__(2);
 var coreservices_1 = __webpack_require__(3);
-var paramType_1 = __webpack_require__(26);
+var paramType_1 = __webpack_require__(27);
 /**
  * A registry for parameter types.
  *
@@ -22953,7 +22953,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */ /** */
 var urlMatcherFactory_1 = __webpack_require__(47);
 var urlRouter_1 = __webpack_require__(48);
-var transitionService_1 = __webpack_require__(30);
+var transitionService_1 = __webpack_require__(31);
 var view_1 = __webpack_require__(58);
 var stateRegistry_1 = __webpack_require__(43);
 var stateService_1 = __webpack_require__(44);
@@ -23490,7 +23490,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /** @module state */ /** for typedoc */
 var common_1 = __webpack_require__(0);
 var predicates_1 = __webpack_require__(1);
-var stateObject_1 = __webpack_require__(28);
+var stateObject_1 = __webpack_require__(29);
 var hof_1 = __webpack_require__(2);
 /** @internalapi */
 var StateQueueManager = (function () {
@@ -23754,11 +23754,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /** */
 var common_1 = __webpack_require__(0);
 var predicates_1 = __webpack_require__(1);
-var queue_1 = __webpack_require__(25);
+var queue_1 = __webpack_require__(26);
 var coreservices_1 = __webpack_require__(3);
 var pathFactory_1 = __webpack_require__(18);
-var pathNode_1 = __webpack_require__(27);
-var transitionService_1 = __webpack_require__(30);
+var pathNode_1 = __webpack_require__(28);
+var transitionService_1 = __webpack_require__(31);
 var rejectFactory_1 = __webpack_require__(13);
 var targetState_1 = __webpack_require__(8);
 var param_1 = __webpack_require__(10);
@@ -25916,14 +25916,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_angular_sanitize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_angular_sanitize__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__uirouter_angularjs__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__uirouter_angularjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__uirouter_angularjs__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_restangular__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_restangular__ = __webpack_require__(144);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_restangular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_restangular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_satellizer__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_satellizer__ = __webpack_require__(145);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_satellizer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_satellizer__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angularjs_toaster__ = __webpack_require__(94);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angularjs_toaster___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_angularjs_toaster__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_filters_module__ = __webpack_require__(116);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_services_module__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_filters_module__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_services_module__ = __webpack_require__(128);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_components_components_module__ = __webpack_require__(99);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_app_run__ = __webpack_require__(97);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_app_config__ = __webpack_require__(96);
@@ -26541,8 +26541,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var angular_1 = __webpack_require__(9);
 var angular_2 = __webpack_require__(5);
 var core_1 = __webpack_require__(4);
-var views_1 = __webpack_require__(24);
-var services_1 = __webpack_require__(23);
+var views_1 = __webpack_require__(25);
+var services_1 = __webpack_require__(24);
 exports.uiView = ['$view', '$animate', '$uiViewScroll', '$interpolate', '$q',
     function $ViewDirective($view, $animate, $uiViewScroll, $interpolate, $q) {
         function getRenderer(attrs, scope) {
@@ -26840,8 +26840,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core = __webpack_require__(4);
 exports.core = core;
 __export(__webpack_require__(4));
-__export(__webpack_require__(23));
 __export(__webpack_require__(24));
+__export(__webpack_require__(25));
 __export(__webpack_require__(32));
 __export(__webpack_require__(33));
 __webpack_require__(65);
@@ -27368,7 +27368,7 @@ angular_1.ng.module('ui.router.state')
 Object.defineProperty(exports, "__esModule", { value: true });
 /** @module ng1 */ /** */
 var core_1 = __webpack_require__(4);
-var services_1 = __webpack_require__(23);
+var services_1 = __webpack_require__(24);
 /**
  * This is a [[StateBuilder.builder]] function for angular1 `onEnter`, `onExit`,
  * `onRetain` callback hooks on a [[Ng1StateDeclaration]].
@@ -28025,7 +28025,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(10));
 __export(__webpack_require__(36));
 __export(__webpack_require__(37));
-__export(__webpack_require__(26));
+__export(__webpack_require__(27));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -28039,7 +28039,7 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 /** @module path */ /** for typedoc */
-__export(__webpack_require__(27));
+__export(__webpack_require__(28));
 __export(__webpack_require__(18));
 //# sourceMappingURL=index.js.map
 
@@ -28070,7 +28070,7 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(40));
-__export(__webpack_require__(28));
+__export(__webpack_require__(29));
 __export(__webpack_require__(41));
 __export(__webpack_require__(42));
 __export(__webpack_require__(43));
@@ -28104,12 +28104,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */ /** for typedoc */
 __export(__webpack_require__(11));
 __export(__webpack_require__(45));
-__export(__webpack_require__(29));
+__export(__webpack_require__(30));
 __export(__webpack_require__(13));
 __export(__webpack_require__(20));
 __export(__webpack_require__(14));
 __export(__webpack_require__(46));
-__export(__webpack_require__(30));
+__export(__webpack_require__(31));
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -62911,7 +62911,7 @@ function appConfig($stateProvider, $urlRouterProvider, $locationProvider, $authP
     $locationProvider.html5Mode(true);
 
     $authProvider.loginUrl = '/api/v1/auth';
-    $authProvider.signupUrl = '/api/v1/auth/signup';
+    $authProvider.signupUrl = '/api/v1/register';
     $authProvider.tokenRoot = 'data'; //compensates success response macro
     $authProvider.withCredentials = false;
     $authProvider.baseUrl = '/';
@@ -62928,7 +62928,7 @@ function appConfig($stateProvider, $urlRouterProvider, $locationProvider, $authP
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
 /* harmony export (immutable) */ __webpack_exports__["a"] = appRun;
 
@@ -62962,15 +62962,15 @@ function appRun($rootScope, $auth, $transitions) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(143);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
 
 
 
 window.$ = window.jQuery = __WEBPACK_IMPORTED_MODULE_1_jquery___default.a;
-__webpack_require__(120);
+__webpack_require__(130);
 
 /***/ }),
 /* 99 */
@@ -62979,9 +62979,9 @@ __webpack_require__(120);
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_components_main_main_module__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_components_main_main_module__ = __webpack_require__(117);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_components_layouts_layouts_module__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_components_projects_projects_module__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_components_projects_projects_module__ = __webpack_require__(125);
 
 
 
@@ -62995,7 +62995,7 @@ angular.module('app.components', ['app.components.layouts', 'app.components.main
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__layout_blank_controller__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layout_blank_html__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layout_blank_html__ = __webpack_require__(132);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layout_blank_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__layout_blank_html__);
 
 
@@ -63037,7 +63037,7 @@ var LayoutBlankController = function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__layout_default_controller__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layout_default_html__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layout_default_html__ = __webpack_require__(133);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layout_default_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__layout_default_html__);
 
 
@@ -63114,8 +63114,70 @@ angular.module('app.components.layouts', []).config(__WEBPACK_IMPORTED_MODULE_1_
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_index_controller__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_index_html__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_404_controller__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_404_html__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_404_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_404_html__);
+
+
+
+var main404Component = {
+    controller: __WEBPACK_IMPORTED_MODULE_0__main_404_controller__["a" /* default */],
+    template: __WEBPACK_IMPORTED_MODULE_1__main_404_html___default.a
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (main404Component);
+
+/***/ }),
+/* 107 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Main404Controller = function Main404Controller() {
+  _classCallCheck(this, Main404Controller);
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Main404Controller);
+
+/***/ }),
+/* 108 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_500_controller__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_500_html__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_500_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_500_html__);
+
+
+
+var main500Component = {
+    controller: __WEBPACK_IMPORTED_MODULE_0__main_500_controller__["a" /* default */],
+    template: __WEBPACK_IMPORTED_MODULE_1__main_500_html___default.a
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (main500Component);
+
+/***/ }),
+/* 109 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Main500Controller = function Main500Controller() {
+  _classCallCheck(this, Main500Controller);
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Main500Controller);
+
+/***/ }),
+/* 110 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_index_controller__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_index_html__ = __webpack_require__(136);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_index_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_index_html__);
 
 
@@ -63128,7 +63190,7 @@ var mainIndexComponent = {
 /* harmony default export */ __webpack_exports__["a"] = (mainIndexComponent);
 
 /***/ }),
-/* 107 */
+/* 111 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63141,12 +63203,12 @@ var MainIndexController = function MainIndexController() {
 /* harmony default export */ __webpack_exports__["a"] = (MainIndexController);
 
 /***/ }),
-/* 108 */
+/* 112 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_login_controller__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_login_html__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_login_controller__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_login_html__ = __webpack_require__(137);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_login_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_login_html__);
 
 
@@ -63155,18 +63217,18 @@ var mainIndexComponent = {
     controller: __WEBPACK_IMPORTED_MODULE_0__main_login_controller__["a" /* default */],
     template: __WEBPACK_IMPORTED_MODULE_1__main_login_html___default.a,
     bindings: {
-        login: '<'
+        model: '<'
     }
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (mainIndexComponent);
 
 /***/ }),
-/* 109 */
+/* 113 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -63233,11 +63295,11 @@ var MainLoginController = function () {
 /* harmony default export */ __webpack_exports__["a"] = (MainLoginController);
 
 /***/ }),
-/* 110 */
+/* 114 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_logout_controller__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_logout_controller__ = __webpack_require__(115);
 
 
 var mainLogoutComponent = {
@@ -63247,7 +63309,7 @@ var mainLogoutComponent = {
 /* harmony default export */ __webpack_exports__["a"] = (mainLogoutComponent);
 
 /***/ }),
-/* 111 */
+/* 115 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63291,7 +63353,7 @@ var MainLogoutController = function () {
 /* harmony default export */ __webpack_exports__["a"] = (MainLogoutController);
 
 /***/ }),
-/* 112 */
+/* 116 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63367,20 +63429,20 @@ function MainConfig($stateProvider) {
 };
 
 /***/ }),
-/* 113 */
+/* 117 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_config__ = __webpack_require__(112);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_main_index_component__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__login_main_login_component__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__registration_main_registration_component__ = __webpack_require__(114);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__logout_main_logout_component__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__reset_main_reset_component__ = __webpack_require__(148);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__404_main_404_component__ = __webpack_require__(142);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__500_main_500_component__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_config__ = __webpack_require__(116);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index_main_index_component__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__login_main_login_component__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__registration_main_registration_component__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__logout_main_logout_component__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__reset_main_reset_component__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__404_main_404_component__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__500_main_500_component__ = __webpack_require__(108);
 
 
 
@@ -63395,12 +63457,12 @@ function MainConfig($stateProvider) {
 angular.module('app.components.main', []).config(__WEBPACK_IMPORTED_MODULE_1__main_config__["a" /* default */]).component('mainIndexComponent', __WEBPACK_IMPORTED_MODULE_2__index_main_index_component__["a" /* default */]).component('mainLoginComponent', __WEBPACK_IMPORTED_MODULE_3__login_main_login_component__["a" /* default */]).component('mainRegistrationComponent', __WEBPACK_IMPORTED_MODULE_4__registration_main_registration_component__["a" /* default */]).component('mainLogoutComponent', __WEBPACK_IMPORTED_MODULE_5__logout_main_logout_component__["a" /* default */]).component('mainResetComponent', __WEBPACK_IMPORTED_MODULE_6__reset_main_reset_component__["a" /* default */]).component('main500Component', __WEBPACK_IMPORTED_MODULE_8__500_main_500_component__["a" /* default */]).component('main404Component', __WEBPACK_IMPORTED_MODULE_7__404_main_404_component__["a" /* default */]);
 
 /***/ }),
-/* 114 */
+/* 118 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_registration_controller__ = __webpack_require__(115);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_registration_html__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_registration_controller__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_registration_html__ = __webpack_require__(138);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_registration_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_registration_html__);
 
 
@@ -63413,15 +63475,88 @@ var mainRegistrationComponent = {
 /* harmony default export */ __webpack_exports__["a"] = (mainRegistrationComponent);
 
 /***/ }),
-/* 115 */
+/* 119 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var MainRegistrationController = function MainRegistrationController() {
-  _classCallCheck(this, MainRegistrationController);
-};
+
+
+var MainRegistrationController = function () {
+    _createClass(MainRegistrationController, null, [{
+        key: '$inject',
+        get: function get() {
+            return ['$injector'];
+        }
+    }]);
+
+    function MainRegistrationController($injector) {
+        _classCallCheck(this, MainRegistrationController);
+
+        this.$auth = $injector.get('$auth');
+        this.$state = $injector.get('$state');
+        this.toaster = $injector.get('toaster');
+
+        this.init();
+    }
+
+    _createClass(MainRegistrationController, [{
+        key: 'init',
+        value: function init() {
+            __WEBPACK_IMPORTED_MODULE_0_angular___default.a.extend(this, {
+                signup: {
+                    login: '',
+                    password: '',
+                    repeat_passw: '',
+                    first_name: '',
+                    last_name: '',
+                    email: ''
+                }
+            });
+        }
+    }, {
+        key: 'submit',
+        value: function submit() {
+            if (this.signup.password === this.signup.repeat_passw) {
+                if (this.signup.repeat_passw === '' || this.signup.password === '') {
+                    this.errors = {
+                        'repeat_passw': ['Repeat password is empty!'],
+                        'password': ['Password is empty!']
+                    };
+                } else if (this.signup.repeat_passw.length < 6) {
+                    this.errors = {
+                        'repeat_passw': ['The password must be at least 6 characters.'],
+                        'password': ['The password must be at least 6 characters.']
+                    };
+                } else {
+                    this.$auth.signup(this.signup).then(function (response) {
+                        if (response.data.result) {
+                            this.signup.auth_key = response.data.auth_key;
+                            toaster.pop({
+                                type: 'success',
+                                body: "Confirmation email was sent! Run to your inbox to check it out"
+                            });
+                            this.signHide = false;
+                            $state.go('login');
+                        }
+                        this.errors = response.data.errors;
+                    });
+                }
+            } else {
+                this.errors = {
+                    'repeat_passw': ['Repeat password is wrong!']
+                };
+            }
+        }
+    }]);
+
+    return MainRegistrationController;
+}();
 
 // (function () {
 //     'use strict';
@@ -63521,20 +63656,170 @@ var MainRegistrationController = function MainRegistrationController() {
 /* harmony default export */ __webpack_exports__["a"] = (MainRegistrationController);
 
 /***/ }),
-/* 116 */
+/* 120 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_reset_controller__ = __webpack_require__(121);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_reset_html__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_reset_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_reset_html__);
+
+
+
+var mainResetComponent = {
+    controller: __WEBPACK_IMPORTED_MODULE_0__main_reset_controller__["a" /* default */],
+    template: __WEBPACK_IMPORTED_MODULE_1__main_reset_html___default.a
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (mainResetComponent);
+
+/***/ }),
+/* 121 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+// (function () {
+//     'use strict';
+//
+//     angular
+//         .module('app.pages.main')
+//         .controller('MainResetController', MainResetController);
+//
+//     /* @ngInject */
+//     function MainResetController($scope, $window, $auth, $state, toaster, pageService, userService) {
+//
+//         // --- vars ---
+//
+//         $scope.email = '';
+//
+//         $scope.errors = {};
+//
+//         // --- methods ---
+//
+//         $scope.back = function () {
+//             $window.history.back();
+//         };
+//
+//         $scope.submit = function () {
+//             userService.reset($scope.email).then(
+//                 function (response) {
+//                     if (response.data[0].result) {
+//                         toaster.pop({type: 'success', body: "Confirm email was sent!"});
+//                     }
+//                     $scope.errors = response.data[0].errors;
+//                     console.log('empty errors => ' + $scope.errors);
+//                 }, function () {
+//                     toaster.pop({type: 'error', body: "User is not found!"});
+//                 }
+//             );
+//         };
+//
+//         // --- init ---
+//
+//         pageService.reset().addCrumb({name: 'Reset', path: 'reset'});
+//
+//     }
+// })();
+
+var MainResetController = function MainResetController() {
+    _classCallCheck(this, MainResetController);
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (MainResetController);
+
+/***/ }),
+/* 122 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__projects_list_controller__ = __webpack_require__(123);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projects_list_html__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projects_list_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__projects_list_html__);
+
+
+
+var projectsListComponent = {
+    controller: __WEBPACK_IMPORTED_MODULE_0__projects_list_controller__["a" /* default */],
+    template: __WEBPACK_IMPORTED_MODULE_1__projects_list_html___default.a
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (projectsListComponent);
+
+/***/ }),
+/* 123 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ProjectsListController = function ProjectsListController() {
+  _classCallCheck(this, ProjectsListController);
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (ProjectsListController);
+
+/***/ }),
+/* 124 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = ProjectsConfig;
+ProjectsConfig.$inject = ['$stateProvider'];
+
+function ProjectsConfig($stateProvider) {
+
+    $stateProvider.state('projects', {
+        abstract: true,
+        data: {
+            access: '@'
+        },
+        url: '/projects',
+        parent: 'default',
+        views: {
+            content: {
+                template: '<ui-view/>'
+            }
+        }
+    }).state('projects.list', {
+        url: '',
+        component: 'projectsListComponent'
+    });
+}
+;
+
+/***/ }),
+/* 125 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_filters_joinBr_filter__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projects_config__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__list_projects_list_component__ = __webpack_require__(122);
+
+
+
+
+
+angular.module('app.components.projects', []).config(__WEBPACK_IMPORTED_MODULE_1__projects_config__["a" /* default */]).component('projectsListComponent', __WEBPACK_IMPORTED_MODULE_2__list_projects_list_component__["a" /* default */]);
+
+/***/ }),
+/* 126 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_filters_joinBr_filter__ = __webpack_require__(127);
 
 
 
 angular.module('app.filters', []).filter('joinBr', __WEBPACK_IMPORTED_MODULE_1_filters_joinBr_filter__["a" /* default */]);
 
 /***/ }),
-/* 117 */
+/* 127 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63550,7 +63835,7 @@ function joinBrFilter() {
 }
 
 /***/ }),
-/* 118 */
+/* 128 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -63561,7 +63846,7 @@ function joinBrFilter() {
 angular.module('app.services', []);
 
 /***/ }),
-/* 119 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63682,7 +63967,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 120 */
+/* 130 */
 /***/ (function(module, exports) {
 
 /*!
@@ -66065,7 +66350,7 @@ if (typeof jQuery === 'undefined') {
 
 
 /***/ }),
-/* 121 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66079,9 +66364,9 @@ if (typeof jQuery === 'undefined') {
 
 
 
-var base64 = __webpack_require__(119)
-var ieee754 = __webpack_require__(127)
-var isArray = __webpack_require__(128)
+var base64 = __webpack_require__(129)
+var ieee754 = __webpack_require__(141)
+var isArray = __webpack_require__(142)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -67862,37 +68147,61 @@ function isnan (val) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(59)))
 
 /***/ }),
-/* 122 */
+/* 132 */
 /***/ (function(module, exports) {
 
 module.exports = "<div ui-view=\"content\"></div>";
 
 /***/ }),
-/* 123 */
+/* 133 */
 /***/ (function(module, exports) {
 
 module.exports = "<nav class=\"navbar navbar-inverse\">\n    <div class=\"container-fluid\">\n        <div class=\"navbar-header\">\n            <button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\"\n                    aria-expanded=\"false\" aria-controls=\"navbar\">\n                <span class=\"sr-only\">Toggle navigation</span>\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n                <span class=\"icon-bar\"></span>\n            </button>\n            <a class=\"navbar-brand\" href=\"#\">Project name</a>\n        </div>\n\n        <div id=\"navbar\" class=\"collapse navbar-collapse\">\n            <ul class=\"nav navbar-nav\">\n                <li class=\"active\"><a href=\"#\">Activity</a></li>\n                <li><a href=\"#\">Issues</a></li>\n                <li><a href=\"#\">Wiki</a></li>\n                <li><a href=\"#\">Files</a></li>\n                <li><a href=\"#\">Settings</a></li>\n            </ul>\n\n            <form class=\"navbar-form navbar-left\">\n                <div class=\"form-group\">\n                    <input type=\"text\" class=\"form-control\" placeholder=\"Search\">\n                </div>\n                <button type=\"submit\" class=\"btn btn-default\">Submit</button>\n            </form>\n            <ul class=\"nav navbar-nav navbar-right\">\n                <li class=\"dropdown\">\n                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Username <span class=\"caret\"></span></a>\n                    <ul class=\"dropdown-menu\">\n                        <li><a ui-sref=\"home\">Home</a></li>\n                        <li><a href=\"#\">My page</a></li>\n                        <li><a ui-sref=\"projects.list\">Projects</a></li>\n                        <li><a href=\"#\">Administrator</a></li>\n                        <li role=\"separator\" class=\"divider\"></li>\n                        <li><a href=\"#\">Profile</a></li>\n                        <li><a href=\"#\">Settings</a></li>\n                        <li role=\"separator\" class=\"divider\"></li>\n                        <li><a ui-sref=\"logout\">Logout</a></li>\n                    </ul>\n                </li>\n            </ul>\n        </div>\n\n    </div>\n</nav>\n\n<div ui-view=\"content\"></div>";
 
 /***/ }),
-/* 124 */
+/* 134 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-md-offset-3 col-md-6 text-center\">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-body\">\n                    <h1>Error 404</h1>\n                    <p>Page not found</p>\n                    <hr>\n                    <a class=\"btn btn-default\" ui-sref=\"home\"><i class=\"fa fa-home\"></i> Home</a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>";
+
+/***/ }),
+/* 135 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-md-offset-3 col-md-6 text-center\">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-body\">\n                    <h1>Error 500</h1>\n                    <p>Server error</p>\n                    <hr>\n                    <a class=\"btn btn-default\" ui-sref=\"home\"><i class=\"fa fa-home\"></i> Home</a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>";
+
+/***/ }),
+/* 136 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-12 \">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-body\">Home page</div>\n            </div>\n        </div>\n    </div>\n</div>";
 
 /***/ }),
-/* 125 */
+/* 137 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-xs-12 col-md-4 col-md-offset-4\">\n\n            <form id=\"login-form\">\n                <div class=\"panel panel-default animated fadeInDown\">\n                    <div class=\"panel-body\">\n                        <h3>Sign in</h3>\n                        <hr>\n\n                        <div class=\"form-group\" ng-class=\"{'has-error':$ctrl.errors.email}\">\n                            <input type=\"text\" ng-model=\"$ctrl.model.email\" class=\"form-control\" name=\"email\"\n                                   placeholder=\"E-mail\">\n                            <div class=\"help-block help-block-error\" ng-show=\"$ctrl.errors.email\"\n                                 ng-bind-html=\"$ctrl.errors.email | joinBr\"></div>\n                        </div>\n                        <div class=\"form-group\" ng-class=\"{'has-error':$ctrl.errors.password}\">\n                            <input type=\"password\" ng-model=\"$ctrl.model.password\" class=\"form-control\"\n                                   name=\"password\"\n                                   placeholder=\"Password\">\n                            <div class=\"help-block help-block-error\" ng-show=\"$ctrl.errors.password\"\n                                 ng-bind-html=\"$ctrl.errors.password\"></div>\n                        </div>\n                        <a ui-sref=\"reset\" href>Forgot password?</a>\n\n                        <hr>\n                        <div class=\"text-center\">\n                            <button type=\"submit\" ng-click=\"$ctrl.onSubmit()\"\n                                    class=\"btn btn-primary btn-block\">Login\n                            </button>\n                        </div>\n\n                    </div>\n                </div>\n            </form>\n\n            <p class=\"text-center\">\n                <a ui-sref=\"signup\" href>Not registered yet? Sign up!</a>\n            </p>\n\n        </div>\n    </div>\n</div>";
 
 /***/ }),
-/* 126 */
+/* 138 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-xs-12 col-md-4 col-md-offset-4\">\n\n            <form id=\"signup-form\">\n                <div class=\"panel panel-default animated fadeInDown\">\n\n                    <div class=\"panel-body\">\n                        <h3>Sign up</h3>\n                        <hr/>\n\n                        <div class=\"form-group\" ng-class=\"{'has-error':errors.full_name}\">\n                            <input type=\"text\" ng-model=\"signup.full_name\" class=\"form-control\" name=\"full_name\"\n                                   placeholder=\"Full name\">\n                            <div class=\"help-block help-block-error\" ng-show=\"errors.full_name\"\n                                 ng-bind-html=\"errors.full_name | joinBr\"></div>\n                        </div>\n                        <div class=\"form-group\" ng-class=\"{'has-error':errors.email}\">\n                            <input type=\"text\" ng-model=\"signup.email\" class=\"form-control\"\n                                   name=\"email\"\n                                   placeholder=\"Email\">\n                            <div class=\"help-block help-block-error\" ng-show=\"errors.email\"\n                                 ng-bind-html=\"errors.email | joinBr\"></div>\n                        </div>\n\n                        <div class=\"form-group\" ng-class=\"{'has-error':errors.password}\">\n                            <input type=\"password\" ng-model=\"signup.password\" class=\"form-control\" name=\"password\"\n                                   placeholder=\"Password\">\n                            <div class=\"help-block help-block-error\" ng-show=\"errors.password\"\n                                 ng-bind-html=\"errors.password | joinBr\"></div>\n                        </div>\n                        <div class=\"form-group\" ng-class=\"{'has-error':errors.repeat_passw}\">\n                            <input type=\"password\" ng-model=\"signup.repeat_passw\" class=\"form-control\"\n                                   name=\"repeat_passw\"\n                                   placeholder=\"Repeat Password\">\n                            <div class=\"help-block help-block-error\" ng-show=\"errors.repeat_passw\"\n                                 ng-bind-html=\"errors.repeat_passw | joinBr\"></div>\n                        </div>\n\n\n                        <hr/>\n\n                        <div class=\"text-center\">\n                            <button type=\"submit\" ng-click=\"submit()\"\n                                    class=\"btn btn-primary btn-block\">\n                                Submit\n                            </button>\n                        </div>\n\n                    </div>\n\n                </div>\n            </form>\n\n            <p class=\"text-center\">\n                <a ui-sref=\"login\">Already have an account? Sign in!</a>\n            </p>\n\n        </div>\n    </div>\n</div>";
+module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-xs-12 col-md-4 col-md-offset-4\">\n\n            <form id=\"signup-form\">\n                <div class=\"panel panel-default animated fadeInDown\">\n\n                    <div class=\"panel-body\">\n                        <h3>Sign up</h3>\n                        <hr/>\n\n\n                        <div class=\"form-group\" ng-class=\"{'has-error': $ctrl.errors.login}\">\n                            <input type=\"text\" ng-model=\"$ctrl.signup.login\" class=\"form-control\" name=\"login\"\n                                   placeholder=\"Login\">\n                            <div class=\"help-block help-block-error\" ng-show=\"$ctrl.errors.login\"\n                                 ng-bind-html=\"$ctrl.errors.login | joinBr\"></div>\n                        </div>\n                        <div class=\"form-group\" ng-class=\"{'has-error': $ctrl.errors.first_name}\">\n                            <input type=\"text\" ng-model=\"$ctrl.signup.first_name\" class=\"form-control\" name=\"first_name\"\n                                   placeholder=\"First name\">\n                            <div class=\"help-block help-block-error\" ng-show=\"$ctrl.errors.first_name\"\n                                 ng-bind-html=\"$ctrl.errors.first_name | joinBr\"></div>\n                        </div>\n                        <div class=\"form-group\" ng-class=\"{'has-error': $ctrl.errors.last_name}\">\n                            <input type=\"text\" ng-model=\"$ctrl.signup.last_name\" class=\"form-control\" name=\"last_name\"\n                                   placeholder=\"Last name\">\n                            <div class=\"help-block help-block-error\" ng-show=\"$ctrl.errors.last_name\"\n                                 ng-bind-html=\"$ctrl.errors.last_name | joinBr\"></div>\n                        </div>\n                        <div class=\"form-group\" ng-class=\"{'has-error': $ctrl.errors.email}\">\n                            <input type=\"text\" ng-model=\"$ctrl.signup.email\" class=\"form-control\"\n                                   name=\"email\"\n                                   placeholder=\"Email\">\n                            <div class=\"help-block help-block-error\" ng-show=\"$ctrl.errors.email\"\n                                 ng-bind-html=\"$ctrl.errors.email | joinBr\"></div>\n                        </div>\n\n                        <div class=\"form-group\" ng-class=\"{'has-error': $ctrl.errors.password}\">\n                            <input type=\"password\" ng-model=\"$ctrl.signup.password\" class=\"form-control\" name=\"password\"\n                                   placeholder=\"Password\">\n                            <div class=\"help-block help-block-error\" ng-show=\"$ctrl.errors.password\"\n                                 ng-bind-html=\"$ctrl.errors.password | joinBr\"></div>\n                        </div>\n                        <div class=\"form-group\" ng-class=\"{'has-error': $ctrl.errors.repeat_passw}\">\n                            <input type=\"password\" ng-model=\"$ctrl.signup.repeat_passw\" class=\"form-control\"\n                                   name=\"repeat_passw\"\n                                   placeholder=\"Repeat Password\">\n                            <div class=\"help-block help-block-error\" ng-show=\"$ctrl.errors.repeat_passw\"\n                                 ng-bind-html=\"$ctrl.errors.repeat_passw | joinBr\"></div>\n                        </div>\n\n\n                        <hr/>\n\n                        <div class=\"text-center\">\n                            <button type=\"submit\" ng-click=\"$ctrl.submit()\"\n                                    class=\"btn btn-primary btn-block\">\n                                Submit\n                            </button>\n                        </div>\n\n                    </div>\n\n                </div>\n            </form>\n\n            <p class=\"text-center\">\n                <a ui-sref=\"login\">Already have an account? Sign in!</a>\n            </p>\n\n        </div>\n    </div>\n</div>";
 
 /***/ }),
-/* 127 */
+/* 139 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-xs-12 col-md-4 col-md-offset-4\">\n\n            <form>\n                <div class=\"panel panel-default animated fadeInDown\">\n                    <div class=\"panel-body\">\n                        <h3><i class=\"fa fa-key\"></i> Reset Password</h3>\n                        <hr>\n\n                        <div class=\"form-group\" ng-class=\"{'has-error':errors.email}\">\n                            <input type=\"text\" ng-model=\"email\" class=\"form-control\" name=\"email\"\n                                   placeholder=\"Email\">\n                            <div class=\"help-block help-block-error\" ng-show=\"errors.email\"\n                                 ng-bind-html=\"errors.email | joinBr\"></div>\n                        </div>\n\n                        <hr>\n                        <div class=\"text-center\">\n                            <button type=\"submit\" ng-click=\"submit()\"\n                                    class=\"btn btn-primary btn-block\">Send\n                            </button>\n                        </div>\n                    </div>\n\n                </div>\n            </form>\n\n            <p class=\"text-center\">\n                <a ui-sref=\"signup\">Not registered yet? Sign up!</a>\n            </p>\n            <p class=\"text-center\">\n                <a ui-sref=\"login\">Already have an account? Sign in!</a>\n            </p>\n\n        </div>\n    </div>\n</div>";
+
+/***/ }),
+/* 140 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-12 \">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-body\">projects list</div>\n            </div>\n        </div>\n    </div>\n</div>";
+
+/***/ }),
+/* 141 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -67982,7 +68291,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 128 */
+/* 142 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -67993,7 +68302,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 129 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -78253,7 +78562,7 @@ return jQuery;
 
 
 /***/ }),
-/* 130 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -78265,7 +78574,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   /* global define, require */
   // https://github.com/umdjs/umd/blob/master/templates/returnExports.js
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(31), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(23), __webpack_require__(5)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -79714,7 +80023,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 131 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -80068,7 +80377,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var buffer;
         if (typeof module !== 'undefined' && module.exports) {
             try {
-                buffer = __webpack_require__(121).Buffer;
+                buffer = __webpack_require__(131).Buffer;
             }
             catch (err) {
             }
@@ -80679,7 +80988,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 132 */
+/* 146 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -80707,256 +81016,12 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 133 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(60);
 module.exports = __webpack_require__(61);
 
-
-/***/ }),
-/* 134 */,
-/* 135 */,
-/* 136 */,
-/* 137 */,
-/* 138 */,
-/* 139 */,
-/* 140 */,
-/* 141 */,
-/* 142 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_404_controller__ = __webpack_require__(143);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_404_html__ = __webpack_require__(144);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_404_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_404_html__);
-
-
-
-var main404Component = {
-    controller: __WEBPACK_IMPORTED_MODULE_0__main_404_controller__["a" /* default */],
-    template: __WEBPACK_IMPORTED_MODULE_1__main_404_html___default.a
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (main404Component);
-
-/***/ }),
-/* 143 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Main404Controller = function Main404Controller() {
-  _classCallCheck(this, Main404Controller);
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (Main404Controller);
-
-/***/ }),
-/* 144 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-md-offset-3 col-md-6 text-center\">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-body\">\n                    <h1>Error 404</h1>\n                    <p>Page not found</p>\n                    <hr>\n                    <a class=\"btn btn-default\" ui-sref=\"home\"><i class=\"fa fa-home\"></i> Home</a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>";
-
-/***/ }),
-/* 145 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_500_controller__ = __webpack_require__(146);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_500_html__ = __webpack_require__(147);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_500_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_500_html__);
-
-
-
-var main500Component = {
-    controller: __WEBPACK_IMPORTED_MODULE_0__main_500_controller__["a" /* default */],
-    template: __WEBPACK_IMPORTED_MODULE_1__main_500_html___default.a
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (main500Component);
-
-/***/ }),
-/* 146 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Main500Controller = function Main500Controller() {
-  _classCallCheck(this, Main500Controller);
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (Main500Controller);
-
-/***/ }),
-/* 147 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-md-offset-3 col-md-6 text-center\">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-body\">\n                    <h1>Error 500</h1>\n                    <p>Server error</p>\n                    <hr>\n                    <a class=\"btn btn-default\" ui-sref=\"home\"><i class=\"fa fa-home\"></i> Home</a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>";
-
-/***/ }),
-/* 148 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__main_reset_controller__ = __webpack_require__(149);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_reset_html__ = __webpack_require__(150);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__main_reset_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__main_reset_html__);
-
-
-
-var mainResetComponent = {
-    controller: __WEBPACK_IMPORTED_MODULE_0__main_reset_controller__["a" /* default */],
-    template: __WEBPACK_IMPORTED_MODULE_1__main_reset_html___default.a
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (mainResetComponent);
-
-/***/ }),
-/* 149 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-// (function () {
-//     'use strict';
-//
-//     angular
-//         .module('app.pages.main')
-//         .controller('MainResetController', MainResetController);
-//
-//     /* @ngInject */
-//     function MainResetController($scope, $window, $auth, $state, toaster, pageService, userService) {
-//
-//         // --- vars ---
-//
-//         $scope.email = '';
-//
-//         $scope.errors = {};
-//
-//         // --- methods ---
-//
-//         $scope.back = function () {
-//             $window.history.back();
-//         };
-//
-//         $scope.submit = function () {
-//             userService.reset($scope.email).then(
-//                 function (response) {
-//                     if (response.data[0].result) {
-//                         toaster.pop({type: 'success', body: "Confirm email was sent!"});
-//                     }
-//                     $scope.errors = response.data[0].errors;
-//                     console.log('empty errors => ' + $scope.errors);
-//                 }, function () {
-//                     toaster.pop({type: 'error', body: "User is not found!"});
-//                 }
-//             );
-//         };
-//
-//         // --- init ---
-//
-//         pageService.reset().addCrumb({name: 'Reset', path: 'reset'});
-//
-//     }
-// })();
-
-var MainResetController = function MainResetController() {
-    _classCallCheck(this, MainResetController);
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (MainResetController);
-
-/***/ }),
-/* 150 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container mt-3\">\n    <div class=\"row\">\n        <div class=\"col-xs-12 col-md-4 col-md-offset-4\">\n\n            <form>\n                <div class=\"panel panel-default animated fadeInDown\">\n                    <div class=\"panel-body\">\n                        <h3><i class=\"fa fa-key\"></i> Reset Password</h3>\n                        <hr>\n\n                        <div class=\"form-group\" ng-class=\"{'has-error':errors.email}\">\n                            <input type=\"text\" ng-model=\"email\" class=\"form-control\" name=\"email\"\n                                   placeholder=\"Email\">\n                            <div class=\"help-block help-block-error\" ng-show=\"errors.email\"\n                                 ng-bind-html=\"errors.email | joinBr\"></div>\n                        </div>\n\n                        <hr>\n                        <div class=\"text-center\">\n                            <button type=\"submit\" ng-click=\"submit()\"\n                                    class=\"btn btn-primary btn-block\">Send\n                            </button>\n                        </div>\n                    </div>\n\n                </div>\n            </form>\n\n            <p class=\"text-center\">\n                <a ui-sref=\"signup\">Not registered yet? Sign up!</a>\n            </p>\n            <p class=\"text-center\">\n                <a ui-sref=\"login\">Already have an account? Sign in!</a>\n            </p>\n\n        </div>\n    </div>\n</div>";
-
-/***/ }),
-/* 151 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__projects_list_controller__ = __webpack_require__(152);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projects_list_html__ = __webpack_require__(155);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projects_list_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__projects_list_html__);
-
-
-
-var projectsListComponent = {
-    controller: __WEBPACK_IMPORTED_MODULE_0__projects_list_controller__["a" /* default */],
-    template: __WEBPACK_IMPORTED_MODULE_1__projects_list_html___default.a
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (projectsListComponent);
-
-/***/ }),
-/* 152 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ProjectsListController = function ProjectsListController() {
-  _classCallCheck(this, ProjectsListController);
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (ProjectsListController);
-
-/***/ }),
-/* 153 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = ProjectsConfig;
-ProjectsConfig.$inject = ['$stateProvider'];
-
-function ProjectsConfig($stateProvider) {
-
-    $stateProvider.state('projects', {
-        abstract: true,
-        data: {
-            access: '@'
-        },
-        url: '/projects',
-        parent: 'default',
-        views: {
-            content: {
-                template: '<ui-view/>'
-            }
-        }
-    }).state('projects.list', {
-        url: '',
-        component: 'projectsListComponent'
-    });
-}
-;
-
-/***/ }),
-/* 154 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projects_config__ = __webpack_require__(153);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__list_projects_list_component__ = __webpack_require__(151);
-
-
-
-
-
-angular.module('app.components.projects', []).config(__WEBPACK_IMPORTED_MODULE_1__projects_config__["a" /* default */]).component('projectsListComponent', __WEBPACK_IMPORTED_MODULE_2__list_projects_list_component__["a" /* default */]);
-
-/***/ }),
-/* 155 */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-md-12 \">\n            <div class=\"panel panel-default\">\n                <div class=\"panel-body\">projects list</div>\n            </div>\n        </div>\n    </div>\n</div>";
 
 /***/ })
 /******/ ]);
