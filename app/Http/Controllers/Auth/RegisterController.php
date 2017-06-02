@@ -2,13 +2,23 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\EmailAddresses;
+use App\Models\Setting;
 use App\models\User;
 use App\Http\Controllers\Controller;
-use App\Setting;
 use Illuminate\Http\Request;
 
+/**
+ * Class RegisterController
+ * @package App\Http\Controllers\Auth
+ */
 class RegisterController extends Controller
 {
+    /**
+     * Checking administrator setting for registration
+     *
+     * RegisterController constructor.
+     */
     public function __construct()
     {
         //TODO: take out check permission at middleware class
@@ -19,19 +29,51 @@ class RegisterController extends Controller
         );
     }
 
+    /**
+     * Register user
+     *
+     * This method create user and user relationships
+     *
+     * @url protocol://ip:port/api/v1/register
+     * 
+     * @example Request $request {
+     *     "first_name": "test",
+     *     "last_name": "test",
+     *     "login": "dev",
+     *     "email": "test@mail.ua",
+     *     "password": "qwerty"
+     *}
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function register(Request $request)
     {
         $this->validate($request, $this->rules(), $this->messages());
 
-        $request = $request->all();
+        $salt = str_random(33);
 
-        $user = $this->create($request);
-        
-        
+        $user = User::create([
+            'login' => $request->input('login'),
+            'firstname' => $request->input('first_name'),
+            'lastname' => $request->input('last_name'),
+            'salt' => $salt,
+            'hashed_password' => sha1($salt . sha1($request->input('password')))
+        ]);
+
+        $user_email_address = EmailAddresses::create([
+            'user_id' => $user->id,
+            'address' => $request->input('email')
+        ]);
+
+        //TODO: условиться в данных отдаваех пользователю после валидной регистрации
+        return response()->json(['token' => sha1($user->hashed_password)], 201);
     }
 
     /**
-     * rules validation request params
+     * Rules validation request params
+     *
+     * This method returns rules for user registration and user relationships
      *
      * @return array
      */
@@ -48,7 +90,9 @@ class RegisterController extends Controller
     }
 
     /**
-     * messages for rules validation
+     * Messages for rules validation
+     *
+     * This method describes the text message for rules
      *
      * @return array
      */
@@ -58,34 +102,25 @@ class RegisterController extends Controller
     }
 
     /**
-     * This method created new user in system
+     * Permission registration
      *
-     * @param array $data
-     * @return mixed
+     * This method check administrator setting for registration
+     *
+     * @param int $register_status
      */
-    protected function create(array $data)
-    {
-        $salt = str_random(33);
-
-        return User::create([
-            'login' => $data['login'],
-            'firstname' => $data['first_name'],
-            'lastname' => $data['last_name'],
-            'salt' => $salt,
-            'hashed_password' => sha1($salt . sha1($data['password']))
-        ]);
-    }
-
     protected function permission(int $register_status)
     {
         switch ($register_status) {
-            case 1:
-                //TODO: created logic by register status === Settings::self_registration_account_activation_by_email
+            case Setting::self_registration_account_activation_by_email:
+                //TODO: уточнить логику для статуса настройки регистрации self_registration_account_activation_by_email
                 break;
-            case 2:
-                //TODO: created logic by register status === Settings::self_registration_automatic_account_activation
+            case Setting::self_registration_automatic_account_activation:
+                //TODO: уточнить логику для статуса настройки регистрации self_registration_automatic_account_activation
                 break;
             default:
+                /**
+                 * @internal forbidden registration by 
+                 */
                 abort(403);
         }
     }

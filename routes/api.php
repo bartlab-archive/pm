@@ -24,7 +24,7 @@ Route::group(
 //        'middleware' => 'auth'
     ],
     function () {
-        Route::post('auth', 'Auth\LoginController@login');
+        Route::post('login', 'Auth\LoginController@login');
         Route::post('register', 'Auth\RegisterController@register');
 
         Route::get('projects', function (Request $request) {
