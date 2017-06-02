@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -35,5 +37,21 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public function login(Request $request)
+    {
+        $username = $request->input('email');
+        if ($user = User::where('login', $username)->first()) {
+            $pass = $this->preparePassword($user, $request);
+            if ($pass === $user->hashed_password) {
+                return ['token' => sha1($user->hashed_password)];
+            }
+        }
+        return [];
+    }
+
+    protected function preparePassword($user, $request) {
+        return sha1($user->salt . sha1($request->input('password')));
     }
 }
