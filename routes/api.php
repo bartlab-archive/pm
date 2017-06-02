@@ -24,13 +24,8 @@ Route::group(
 //        'middleware' => 'auth'
     ],
     function () {
-        Route::post('auth', function (Request $request) {
-            $username = $request->input('email');
-            if ($user = \App\Models\User::where('login', $username)->first()) {
-                return ['token' => $user->hashed_password];
-            }
-            return [];
-        });
+        Route::post('login', 'Auth\LoginController@login');
+        Route::post('register', 'Auth\RegisterController@register');
 
         Route::get('projects', function (Request $request) {
             $list = \App\Models\Project::orderBy('name')->where('status', 1);
