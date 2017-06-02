@@ -64,7 +64,7 @@ class LoginController extends Controller
     protected function rules()
     {
         return [
-            'login' => 'required|string|email|max:255|exists:' . (new EmailAddresses())->getTable() . ',login',
+            'login' => 'required|string|max:255|exists:' . (new User())->getTable(),
             'password' => 'required|string|min:6'
         ];
     }
