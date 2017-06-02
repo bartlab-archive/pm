@@ -1,5 +1,5 @@
 import 'lodash';
-import jQuery from 'jquery';
+// import jQuery from 'jquery';
 
-window.$ = window.jQuery = jQuery;
-require('bootstrap-sass');
+// window.$ = window.jQuery = jQuery;
+// require('bootstrap-sass');

@@ -4,10 +4,10 @@ import 'angular-sanitize';
 import '@uirouter/angularjs';
 import 'restangular';
 import 'satellizer';
-import 'angularjs-toaster';
 import 'ng-table';
-import 'angular-ui-bootstrap';
-import 'angular-loading-bar';
+import 'angular-material';
+import 'angular-animate';
+import 'angular-aria';
 
 import 'filters.module';
 import 'services.module';
@@ -23,20 +23,21 @@ angular
         'app',
         [
             'ngSanitize',
+            'ngAnimate',
+            'ngAria',
+            // 'ngMessages',
+            'ngMaterial',
 
             'ui.router',
-            'ui.bootstrap',
             'restangular',
             'satellizer',
-            'toaster',
             'ngTable',
-            'angular-loading-bar',
 
             'app.filters',
             'app.components',
             'app.services'
         ]
     )
-    .service('ProjectsService',ProjectsService)
+    .service('ProjectsService', ProjectsService)
     .config(appConfig)
     .run(appRun);

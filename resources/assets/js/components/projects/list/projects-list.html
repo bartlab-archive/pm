@@ -2,35 +2,40 @@
     <div class="row">
         <div class="col-md-12 ">
             <div class="panel panel-default">
-                <div class="panel-heading clearfix">
-                    <div class="panel-title pull-left">Projects</div>
 
-                    <div class="btn-toolbar" role="toolbar">
-                        <div class="btn-group pull-right" uib-dropdown>
-                            <a ui-sref="projects.new" id="split-button" type="button" class="btn btn-primary btn-sm">
-                                <i class="fa fa-plus"></i> New project
-                            </a>
-                            <a href="#" type="button" class="btn btn-default btn-sm">
-                                Issues
-                            </a>
-                            <a href="#" type="button" class="btn btn-default btn-sm">
-                                Time entries
-                            </a>
-                            <a href="#" type="button" class="btn btn-default btn-sm" ng-click="$ctrl.test()">
-                                Activity
-                            </a>
-                        </div>
+                <div class="panel-body">
 
-                        <div class="btn-group pull-right" uib-dropdown>
-                            <button type="button" ng-change="$ctrl.load()" ng-model="$ctrl.showClosed"
-                                    class="btn btn-default btn-sm" uib-btn-checkbox btn-checkbox-true="1"
-                                    btn-checkbox-false="0">
-                                <i class="fa fa-filter"></i> Show closed
-                            </button>
+                    <div class="clearfix">
+                        <h4 class="pull-left">Projects</h4>
+
+                        <div class="btn-toolbar" role="toolbar">
+                            <div class="btn-group pull-right">
+                                <a ui-sref="projects.new" type="button" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-plus"></i> New project
+                                </a>
+                                <a href="#" type="button" class="btn btn-default btn-sm">
+                                    Issues
+                                </a>
+                                <a href="#" type="button" class="btn btn-default btn-sm">
+                                    Time entries
+                                </a>
+                                <a href="#" type="button" class="btn btn-default btn-sm">
+                                    Activity
+                                </a>
+                            </div>
+
+                            <div class="btn-group pull-right">
+                                <button type="button" ng-change="$ctrl.load()" ng-model="$ctrl.showClosed"
+                                        class="btn btn-default btn-sm" uib-btn-checkbox btn-checkbox-true="1"
+                                        btn-checkbox-false="0">
+                                    <i class="fa fa-filter"></i> Show closed
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="panel-body">
+
+                    <hr>
+
                     <div class="list-group">
                         <a ui-sref="projects.info({ id:row.identifier })" class="list-group-item"
                            ng-repeat="row in $ctrl.list">

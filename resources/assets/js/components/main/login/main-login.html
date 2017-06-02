@@ -1,43 +1,30 @@
-<div class="container mt-3">
-    <div class="row">
-        <div class="col-xs-12 col-md-4 col-md-offset-4">
-
-            <form id="login-form">
-                <div class="panel panel-default animated fadeInDown">
-                    <div class="panel-body">
-                        <h3>Sign in</h3>
-                        <hr>
-
-                        <div class="form-group" ng-class="{'has-error':$ctrl.errors.email}">
-                            <input type="text" ng-model="$ctrl.model.email" class="form-control" name="email"
-                                   placeholder="E-mail">
-                            <div class="help-block help-block-error" ng-show="$ctrl.errors.email"
-                                 ng-bind-html="$ctrl.errors.email | joinBr"></div>
-                        </div>
-                        <div class="form-group" ng-class="{'has-error':$ctrl.errors.password}">
-                            <input type="password" ng-model="$ctrl.model.password" class="form-control"
-                                   name="password"
-                                   placeholder="Password">
-                            <div class="help-block help-block-error" ng-show="$ctrl.errors.password"
-                                 ng-bind-html="$ctrl.errors.password"></div>
-                        </div>
-                        <a ui-sref="reset" href>Forgot password?</a>
-
-                        <hr>
-                        <div class="text-center">
-                            <button type="submit" ng-click="$ctrl.onSubmit()"
-                                    class="btn btn-primary btn-block">Login
-                            </button>
-                        </div>
-
-                    </div>
-                </div>
-            </form>
-
-            <p class="text-center">
-                <a ui-sref="signup" href>Not registered yet? Sign up!</a>
-            </p>
-
+<md-card>
+    <md-toolbar>
+        <div layout="column" layout-padding layout-align="center center">
+            <div class="md-headline md-padding">Sign in</div>
         </div>
-    </div>
-</div>
+    </md-toolbar>
+    <md-card-content>
+        <form name="loginForm">
+            <md-input-container class="md-icon-float md-block">
+                <label>E-mail or name</label>
+                <input ng-model="$ctrl.model.email" type="text" required>
+            </md-input-container>
+
+            <md-input-container class="md-icon-float md-block">
+                <label>Password</label>
+                <input ng-model="$ctrl.model.password" type="password" required>
+            </md-input-container>
+        </form>
+    </md-card-content>
+
+
+    <md-card-actions layout="row" layout-align="center center">
+        <md-button class="md-raised md-primary" ng-click="$ctrl.onSubmit()" ng-disabled="loginForm.$invalid">Login
+        </md-button>
+    </md-card-actions>
+</md-card>
+
+<p layout="row" layout-align="center center">
+    <a ui-sref="signup" href class="md-body-1">Not registered yet? Sign up!</a>
+</p>

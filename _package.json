@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "axios": "^0.15.3",
+    "bootstrap-sass": "^3.3.7",
     "cross-env": "^3.2.3",
     "jquery": "^3.1.1",
     "laravel-mix": "0.*",
@@ -20,10 +21,15 @@
     "@uirouter/angularjs": "*",
     "restangular": "*",
     "satellizer": "*",
+    "toastr": "*",
     "ng-table": "*",
-    "angular-aria": "*",
-    "angular-animate": "*",
-    "angular-material": "*",
-    "ng-annotate-webpack-plugin": "*"
+    "angular-ui-bootstrap": "*",
+    "angularjs-toaster": "*",
+    "angular-loading-bar": "*",
+    "angular-aria":"*",
+    "angular-animate":"*",
+    "angular-material":"*",
+    "ng-annotate-webpack-plugin": "*",
+    "font-awesome":"*"
   }
 }

@@ -1,15 +1,19 @@
 
 // Fonts
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
-@import "node_modules/font-awesome/scss/font-awesome";
+//@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+//@import "node_modules/font-awesome/scss/font-awesome";
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
 
 // Variables
-@import "variables";
+//@import "variables";
 
 // Bootstrap
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-@import "_spacing.scss";
+//@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+//@import "_spacing.scss";
 
+//angular material
+@import "node_modules/angular-material/angular-material.scss";
 // plugins
-@import "node_modules/toastr/toastr";
-@import "node_modules/angular-loading-bar/build/loading-bar";
+//@import "node_modules/toastr/toastr";
+//@import "node_modules/angular-loading-bar/build/loading-bar";
