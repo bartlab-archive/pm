@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\EmailAddresses;
 use App\Models\Setting;
-use App\models\User;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Models\UserPreference;
 use Illuminate\Http\Request;
@@ -71,7 +71,7 @@ class RegisterController extends Controller
         /**
          * Create user email relationship
          */
-        $user_email_address = EmailAddresses::create([
+        EmailAddresses::create([
             'user_id' => $user->id,
             'address' => $request->input('email')
         ]);
@@ -79,14 +79,12 @@ class RegisterController extends Controller
         /**
          * Create user preference relationship
          */
-        $user_preferences = UserPreference::create([
+        UserPreference::create([
             'user_id' => $user->id,
             'hide_mail' => $request->input('hide_email', 0)
         ]);
 
-
-        //TODO: условиться в данных отдаваех пользователю после валидной регистрации
-        return response()->json(['token' => sha1($user->hashed_password)], 201);
+        return response(null, 201);
     }
 
     /**
