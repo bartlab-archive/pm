@@ -6,6 +6,7 @@ use App\Models\EmailAddresses;
 use App\Models\Setting;
 use App\models\User;
 use App\Http\Controllers\Controller;
+use App\Models\UserPreference;
 use Illuminate\Http\Request;
 
 /**
@@ -35,13 +36,16 @@ class RegisterController extends Controller
      * This method create user and user relationships
      *
      * @url protocol://ip:port/api/v1/register
-     * 
+     *
      * @example Request $request {
      *     "first_name": "test",
      *     "last_name": "test",
      *     "login": "dev",
      *     "email": "test@mail.ua",
-     *     "password": "qwerty"
+     *     "password": "qwerty",
+     *     "repeat_password": "qwerty",
+     *     "lang": "ru",
+     *     "hide_email": "0"
      *}
      *
      * @param Request $request
@@ -53,6 +57,9 @@ class RegisterController extends Controller
 
         $salt = str_random(33);
 
+        /**
+         * Create new User
+         */
         $user = User::create([
             'login' => $request->input('login'),
             'firstname' => $request->input('first_name'),
@@ -61,10 +68,22 @@ class RegisterController extends Controller
             'hashed_password' => sha1($salt . sha1($request->input('password')))
         ]);
 
+        /**
+         * Create user email relationship
+         */
         $user_email_address = EmailAddresses::create([
             'user_id' => $user->id,
             'address' => $request->input('email')
         ]);
+
+        /**
+         * Create user preference relationship
+         */
+        $user_preferences = UserPreference::create([
+            'user_id' => $user->id,
+            'hide_mail' => $request->input('hide_email', 0)
+        ]);
+
 
         //TODO: условиться в данных отдаваех пользователю после валидной регистрации
         return response()->json(['token' => sha1($user->hashed_password)], 201);
@@ -82,10 +101,12 @@ class RegisterController extends Controller
         return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'login' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
+            'login' => 'required|string|max:255|unique:' . (new User())->getTable(),
+            'email' => 'required|string|email|max:255|unique:' . (new EmailAddresses())->getTable() . ',address',
             'password' => 'required|string|min:6',
-            'language' => 'string'
+            'repeat_password' => 'required|string|min:6|same:password',
+            'lang' => 'required|string|max:2',
+            'hide_email' => 'int|in:1,0'
         ];
     }
 
@@ -119,7 +140,7 @@ class RegisterController extends Controller
                 break;
             default:
                 /**
-                 * @internal forbidden registration by 
+                 * @internal forbidden registration by
                  */
                 abort(403);
         }
