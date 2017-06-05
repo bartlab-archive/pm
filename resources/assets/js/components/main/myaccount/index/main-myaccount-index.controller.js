@@ -1,6 +1,6 @@
 import angular from 'angular';
 
-export default class mainMyAccountController{
+export default class mainMyAccountIndexController{
   static get $inject() {
     return ['$injector'];
   }
