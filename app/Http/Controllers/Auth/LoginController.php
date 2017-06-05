@@ -7,6 +7,7 @@ use App\Models\EmailAddresses;
 use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 /**
  * Class LoginController
@@ -20,8 +21,8 @@ class LoginController extends Controller
      * @url protocol://ip:port/api/v1/login
      *
      * @example {
-     *     "email": "test@mail.ua",
-     *     "password": "qwerty"
+     *     "login": "user email" or "login",
+     *     "password": "user password"
      * }
      * 
      * @param Request $request
@@ -31,12 +32,20 @@ class LoginController extends Controller
     {
         $this->validate($request, $this->rules(), $this->messages());
 
-        $user = User::where('login', $request->input('login'))->first();
+        $login = $request->input('login', null);
+        $user_by_login = User::where('login', $login)->first();
+        $user_by_email = EmailAddresses::where('address', $login)->first();
+
+        if (is_null($user_by_login) && is_null($user_by_email)) {
+            return response()->json(['login' => 'The selected login is invalid.'], 422);
+        }
+
+        $user = $user_by_login ? $user_by_login : $user_by_email->user;
 
         $pass = $this->preparePassword($user, $request);
 
         if ($pass !== $user->hashed_password) {
-            return response(null, 400);
+            return response()->json(['password' => 'Invalid credentials.'], 422);
         }
 
         return response()->json(['token' => sha1($user->hashed_password)]);
@@ -49,7 +58,7 @@ class LoginController extends Controller
      * @param $request
      * @return string
      */
-    protected function preparePassword($user, $request)
+    protected function preparePassword(User $user, Request $request)
     {
         return sha1($user->salt . sha1($request->input('password')));
     }
@@ -58,13 +67,13 @@ class LoginController extends Controller
      * Rules validation request params
      *
      * This method returns rules for user authorization
-     *
+
      * @return array
      */
     protected function rules()
     {
         return [
-            'login' => 'required|string|max:255|exists:' . (new User())->getTable(),
+            'login' => 'required|string|max:255',
             'password' => 'required|string|min:6'
         ];
     }
