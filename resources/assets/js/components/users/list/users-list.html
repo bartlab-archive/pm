@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="panel panel-default">
+
+                <div class="panel-body">
+
+                    <div class="clearfix">
+                        <h4 class="pull-left">Projects</h4>
+
+                        <div class="btn-toolbar" role="toolbar">
+                            <div class="btn-group pull-right">
+                                <a ui-sref="projects.new" type="button" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-plus"></i> New project
+                                </a>
+                                <a href="#" type="button" class="btn btn-default btn-sm">
+                                    Issues
+                                </a>
+                                <a href="#" type="button" class="btn btn-default btn-sm">
+                                    Time entries
+                                </a>
+                                <a href="#" type="button" class="btn btn-default btn-sm">
+                                    Activity
+                                </a>
+                            </div>
+
+                            <div class="btn-group pull-right">
+                                <button type="button" ng-change="$ctrl.load()" ng-model="$ctrl.showClosed"
+                                        class="btn btn-default btn-sm" uib-btn-checkbox btn-checkbox-true="1"
+                                        btn-checkbox-false="0">
+                                    <i class="fa fa-filter"></i> Show closed
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="list-group">
+                        <a ui-sref="projects.info({ id:row.identifier })" class="list-group-item"
+                           ng-repeat="row in $ctrl.list">
+                            <span class="badge">0</span>
+                            <h4 class="list-group-item-heading">{{ row.name }}</h4>
+                            <div class="list-group-item-text" ng-bind-html="row.description | words: 50 | nl2p"></div>
+                            <p class="list-group-item-text" ng-if="row.homepage">{{ row.homepage }}</p>
+                            <span class="label label-success" ng-if="row.is_public">Public</span>
+                            <span class="label label-warning" ng-if="!row.is_public">Private</span>
+                            <span class="label label-default" ng-if="row.status == 5">Closed</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="panel-footer">Show {{ $ctrl.list.length || 0 }} projects in list</div>
+            </div>
+        </div>
+    </div>
+</div>

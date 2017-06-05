@@ -6,5 +6,6 @@ import 'components/projects/projects.module';
 angular.module('app.components', [
     'app.components.layouts',
     'app.components.main',
-    'app.components.projects'
+    'app.components.projects',
+    'app.components.users'
 ]);
