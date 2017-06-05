@@ -14,6 +14,8 @@ import 'filters.module';
 import 'services.module';
 import 'components/components.module';
 
+import ProjectsService from 'services/projects.service';
+
 import appRun from 'app.run';
 import appConfig from 'app.config';
 
