@@ -1,6 +1,4 @@
-import angular from 'angular';
-
-export default class mainMyAccountIndexController{
+export default class mainChangePasswordController{
   static get $inject() {
     return ['$injector'];
   }
@@ -9,9 +7,5 @@ export default class mainMyAccountIndexController{
     this.$auth = $injector.get('$auth');
     this.$state = $injector.get('$state');
     this.toaster = $injector.get('$mdToast');
-
-    this.LangugeService = $injector.get('LanguageService');
-
-    this.languages = this.LangugeService.Language;
   }
 }

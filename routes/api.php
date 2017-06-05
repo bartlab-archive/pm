@@ -24,8 +24,18 @@ Route::group(
 //        'middleware' => 'auth'
     ],
     function () {
-        Route::post('auth', 'Auth\LoginController@login');
-        Route::post('register', 'Auth\RegisterController@register');
+        Route::group(
+            [
+                'namespace' => 'Auth'
+            ],
+            function ()
+            {
+                Route::post('auth', 'LoginController@login');
+                Route::post('register', 'RegisterController@register');
+                Route::get('password-reset', 'ResetPasswordController@sendToken');
+                Route::post('password-reset', 'ResetPasswordController@reset');
+            }
+        );
 
         // projects
 
