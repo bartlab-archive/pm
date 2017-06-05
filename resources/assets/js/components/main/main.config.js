@@ -74,11 +74,12 @@ export default function MainConfig($stateProvider) {
             component: 'mainLogoutComponent'
         })
         .state('my-account', {
-          data: {
-            access: '@'
-          },
-          parent: 'default',
+            parent: 'default',
             url: '/my-account',
-            component: 'mainMyAccountComponent'
+            views: {
+            content: {
+              component: 'mainMyAccountComponent',
+                }
+            }
         });
 };

@@ -4,10 +4,10 @@
             <div class="md-headline md-padding">My Account</div>
         </div>
     </md-toolbar>
-    <form name="AccountForm" ng-submit="$ctrl.submit()" layout-align="center center">
+    <md-card-content>
+    <form name="AccountForm" ng-submit="$ctrl.submit()">
     <div layout="column">
         <div flex>
-            <md-card-content>
                 <md-input-container class="md-icon-float md-block">
                     <label>First Name</label>
                     <input ng-model="$ctrl.model.firstName" type="text" required>
@@ -29,10 +29,8 @@
                         <md-option ng-value="language" ng-repeat="language in $ctrl.languages">{{ language.name }}</md-option>
                     </md-select>
                 </md-input-container>
-            </md-card-content>
         </div>
         <div flex>
-            <md-card-content>
                 <p class="topUrl"><a ui-sref="emails">Emails</a><a ui-sref="change-password">Change password</a></p>
                 <md-input-container class="md-icon-float md-block">
                     <label>Email notifications</label>
@@ -49,8 +47,6 @@
                         I don't want to be notified of changes that I make myself
                     </md-checkbox>
                 </md-input-container>
-            </md-card-content>
-            <md-card-content>
                 <md-input-container class="md-icon-float md-block">
                     <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.hideMail" aria-label="Hide my Email">
                         Hide my Email
@@ -221,11 +217,9 @@
                         Warn me when leaving a page with unsaved text
                     </md-checkbox>
                 </md-input-container>
-            </md-card-content>
         </div>
 
         <div flex>
-            <md-card-content>
                 <md-input-container class="md-icon-float md-block">
                     <p>My account</p>
                     <p>Login: {{ $ctrl.model.login }}</p>
@@ -239,10 +233,10 @@
                     <p>{{ $ctrl.model.apiAccessKey }}</p>
                     <p>API access key created {{ $ctrl.model.apiAccessKeyCreated }} ago (<a ng-click="resetApiAccesKey()"> Reset </a>)</p>
                 </md-input-container>
-           </md-card-content>
         </div>
     </div>
     </form>
+    </md-card-content>
     <md-card-actions layout="row" layout-align="left">
         <md-button class="md-raised md-primary" type = "submit" ng-disabled="RegistrationForm.$invalid">Save
         </md-button>
