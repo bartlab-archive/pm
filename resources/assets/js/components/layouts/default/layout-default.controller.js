@@ -7,6 +7,14 @@ export default class LayoutDefaultController {
     constructor($injector) {
         this.$mdSidenav = $injector.get('$mdSidenav');
         this.$state = $injector.get('$state');
+
+        this.items = [
+            {url:'home',name:'Home',icon:'home'},
+            {url:'',name:'My page',icon:'person'},
+            {url:'projects.list',name:'Projects',icon:'work'},
+            {url:'',name:'Administration',icon:'apps'},
+            {url:'',name:'Help',icon:'help'}
+        ];
     }
 
     $onInit() {
@@ -26,5 +34,9 @@ export default class LayoutDefaultController {
 
     logout(){
         this.$state.go('logout');
+    }
+    gothoughmenu(route){
+        this.$state.go(route);
+        this.toggle();
     }
 }
