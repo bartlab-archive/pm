@@ -8,7 +8,21 @@ class EmailAddresses extends Model
 {
     protected $table = 'email_addresses';
 
-    public $timestamps = false;
+    public $timestamps = true;
+
+    /**
+     * The name of the "created on" column.
+     *
+     * @var string
+     */
+    const CREATED_AT = 'created_on';
+
+    /**
+     * The name of the "updated on" column.
+     *
+     * @var string
+     */
+    const UPDATED_AT = 'updated_on';
 
     /**
      * The attributes that are mass assignable.
@@ -16,11 +30,6 @@ class EmailAddresses extends Model
      * @var array
      */
     protected $guarded = ['id'];
-
-    protected $dates = [
-        'created_on',
-        'updated_on',
-    ];
 
     public function user()
     {

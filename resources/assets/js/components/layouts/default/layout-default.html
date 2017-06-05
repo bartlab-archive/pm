@@ -12,7 +12,7 @@
             </md-button>
             <md-menu-content width="4">
                 <md-menu-item>
-                    <md-button>
+                    <md-button ng-click="$ctrl.myAccount()">
                         <!--<md-icon></md-icon>-->
                         Profile
                     </md-button>
@@ -48,18 +48,31 @@
             </h1>
         </md-toolbar>
 
-        <md-content layout-margin>
+        <md-content>
             <md-list flex>
-                <md-icon>menu</md-icon>
-                <md-list-item class="md-3-line">
-                    <div class="md-list-item-text" layout="column">
-                        <a ui-sref="projects.list">123</a>
-                    </div>
+                <md-list-item class="md-2-line"  ng-click="null">
+                    <a ui-sref="home" class="md-list-item-text" layout="column">
+                        <div><md-icon>accessible</md-icon> Projects</div>
+                    </a>
+                </md-list-item>
+                <md-list-item class="md-2-line"  ng-click="null">
+                    <a ui-sref="projects.list" class="md-list-item-text" layout="column">
+                        <div><md-icon>accessible</md-icon> Help</div>
+                    </a>
+                </md-list-item>
+                <md-list-item class="md-2-line"  ng-click="null">
+                    <a ui-sref="home" class="md-list-item-text" layout="column">
+                        <div><md-icon>accessible</md-icon> My Page</div>
+                    </a>
+                </md-list-item>
+                <md-list-item class="md-2-line"  ng-click="null">
+                    <a ui-sref="home" class="md-list-item-text" layout="column">
+                        <div><md-icon>accessible</md-icon> Help</div>
+                    </a>
                 </md-list-item>
             </md-list>
         </md-content>
     </md-sidenav>
-
     <md-content flex layout-padding>
         <div ui-view="content"></div>
     </md-content>

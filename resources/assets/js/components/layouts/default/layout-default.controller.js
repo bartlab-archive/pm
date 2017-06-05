@@ -20,6 +20,10 @@ export default class LayoutDefaultController {
         $mdMenu.open(ev);
     };
 
+    myAccount() {
+        this.$state.go('my-account');
+    }
+
     logout(){
         this.$state.go('logout');
     }

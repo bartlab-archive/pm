@@ -24,7 +24,6 @@ Route::group(
 //        'middleware' => 'auth'
     ],
     function () {
-
         Route::post('auth', 'Auth\LoginController@login');
         Route::post('register', 'Auth\RegisterController@register');
 

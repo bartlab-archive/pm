@@ -2,77 +2,126 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\EmailAddresses;
+use App\Models\Setting;
 use App\models\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
+/**
+ * Class RegisterController
+ * @package App\Http\Controllers\Auth
+ */
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
-    use RegistersUsers;
-
     /**
-     * Where to redirect users after registration.
+     * Checking administrator setting for registration
      *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * RegisterController constructor.
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        //TODO: take out check permission at middleware class
+        $this->permission(
+            Setting::where('name', Setting::setting_register_name)
+                ->first(['value'])
+                ->value
+        );
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Register user
      *
-     * @param  array $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * This method create user and user relationships
+     *
+     * @url protocol://ip:port/api/v1/register
+     * 
+     * @example Request $request {
+     *     "first_name": "test",
+     *     "last_name": "test",
+     *     "login": "dev",
+     *     "email": "test@mail.ua",
+     *     "password": "qwerty"
+     *}
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    protected function validator(array $data)
+    public function register(Request $request)
     {
-        return Validator::make($data, [
+        $this->validate($request, $this->rules(), $this->messages());
+
+        $salt = str_random(33);
+
+        $user = User::create([
+            'login' => $request->input('login'),
+            'firstname' => $request->input('first_name'),
+            'lastname' => $request->input('last_name'),
+            'salt' => $salt,
+            'hashed_password' => sha1($salt . sha1($request->input('password')))
+        ]);
+
+        $user_email_address = EmailAddresses::create([
+            'user_id' => $user->id,
+            'address' => $request->input('email')
+        ]);
+
+        //TODO: условиться в данных отдаваех пользователю после валидной регистрации
+        return response()->json(['token' => sha1($user->hashed_password)], 201);
+    }
+
+    /**
+     * Rules validation request params
+     *
+     * This method returns rules for user registration and user relationships
+     *
+     * @return array
+     */
+    protected function rules()
+    {
+        return [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'login' => 'required|string|max:255',
-//            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6',
-        ]);
+            'language' => 'string'
+        ];
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Messages for rules validation
      *
-     * @param  array $data
-     * @return User
+     * This method describes the text message for rules
+     *
+     * @return array
      */
-    protected function create(array $data)
+    protected function messages()
     {
-        $salt = str_random(33);
+        return [];
+    }
 
-        return User::create([
-            'login' => $data['login'],
-            'firstname' => $data['first_name'],
-            'lastname' => $data['last_name'],
-            'salt' => $salt,
-//            'email' => $data['email'],
-            'hashed_password' => sha1($salt . sha1($data['password']))
-        ]);
+    /**
+     * Permission registration
+     *
+     * This method check administrator setting for registration
+     *
+     * @param int $register_status
+     */
+    protected function permission(int $register_status)
+    {
+        switch ($register_status) {
+            case Setting::self_registration_account_activation_by_email:
+                //TODO: уточнить логику для статуса настройки регистрации self_registration_account_activation_by_email
+                break;
+            case Setting::self_registration_automatic_account_activation:
+                //TODO: уточнить логику для статуса настройки регистрации self_registration_automatic_account_activation
+                break;
+            default:
+                /**
+                 * @internal forbidden registration by 
+                 */
+                abort(403);
+        }
     }
 }

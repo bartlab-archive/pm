@@ -8,8 +8,11 @@ import mainLogoutComponent from './logout/main-logout.component';
 import mainResetComponent from './reset/main-reset.component';
 import main404Component from './404/main-404.component';
 import main500Component from './500/main-500.component';
+import './myaccount/main-myaccount.module';
 
-angular.module('app.components.main', [])
+angular.module('app.components.main', [
+  'app.components.main.myaccount'
+])
     .config(MainConfig)
     .component('mainIndexComponent', mainIndexComponent)
     .component('mainLoginComponent', mainLoginComponent)
