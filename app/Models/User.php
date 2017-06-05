@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -37,6 +38,17 @@ class User extends Authenticatable
         return Token::where('action', 'session')->where('value', $token)->exists();
     }
 
+    public static function getUserByAccessToken(Request $request)
+    {
+        $auth_token = $request->header('Authorization');
+        $auth_token = explode(' ', $auth_token)[1];
+
+        return Token::where('action', 'session')
+            ->where('value', $auth_token)
+            ->first()
+            ->user;
+    }
+
     public function email()
     {
         return $this->hasOne(EmailAddresses::class);
@@ -50,5 +62,10 @@ class User extends Authenticatable
     public function preference()
     {
         return $this->hasOne(UserPreference::class);
+    }
+
+    public function session_token()
+    {
+        return $this->hasOne(Token::class);
     }
 }
