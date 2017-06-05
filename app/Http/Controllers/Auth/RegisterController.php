@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\EmailAddresses;
 use App\Models\Setting;
-use App\models\User;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Models\UserPreference;
 use Illuminate\Http\Request;
