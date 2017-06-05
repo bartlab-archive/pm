@@ -5,7 +5,7 @@ export default class ProjectsListController {
     }
 
     constructor($injector) {
-        this.ProjectsService = $injector.get('ProjectsService');
+        this.UsersService = $injector.get('UsersService');
     }
 
     $onInit() {
@@ -15,7 +15,7 @@ export default class ProjectsListController {
 
     load() {
         this.list = [];
-        this.ProjectsService.getList({closed: this.showClosed}).then((response) => {
+        this.UsersService.getList({closed: this.showClosed}).then((response) => {
             this.list = response.data;
         });
     }

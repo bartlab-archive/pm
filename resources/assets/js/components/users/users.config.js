@@ -27,6 +27,10 @@ export default function ProjectsConfig($stateProvider) {
         .state('users.info', {
             url: '/:id',
             component: 'usersInfoComponent',
+        })
+        .state('users.edit', {
+            url: '/:id/edit',
+            component: 'usersEditComponent',
         });
 }
 ;

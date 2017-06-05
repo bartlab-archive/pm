@@ -27,6 +27,8 @@ Route::group(
         Route::post('auth', 'Auth\LoginController@login');
         Route::post('register', 'Auth\RegisterController@register');
 
+        // projects
+
         Route::get('projects', function (Request $request) {
             $list = \App\Models\Project::orderBy('name')->where('status', 1);
             if ($request->input('closed')) {
@@ -37,6 +39,16 @@ Route::group(
 
         Route::get('projects/{identifier}', function ($identifier) {
             return \App\Models\Project::where('identifier', $identifier)->first();
+        });
+
+        // users
+
+        Route::get('users', function (Request $request) {
+            return \App\Models\User::orderBy('login')->get();
+        });
+
+        Route::get('users/{id}', function ($identifier) {
+            return \App\Models\User::where('id', $identifier)->first();
         });
 //        Route::post('auth', 'Auth\LoginController@login');
 //        Route::post('register', 'Auth\RegisterController@register');

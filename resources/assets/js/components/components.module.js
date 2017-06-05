@@ -2,6 +2,7 @@ import 'angular';
 import 'components/main/main.module';
 import 'components/layouts/layouts.module';
 import 'components/projects/projects.module';
+import 'components/users/users.module';
 
 angular.module('app.components', [
     'app.components.layouts',
