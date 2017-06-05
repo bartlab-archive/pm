@@ -9,11 +9,13 @@ import mainResetComponent from './reset/main-reset.component';
 import main404Component from './404/main-404.component';
 import main500Component from './500/main-500.component';
 import './myaccount/main-myaccount.module';
+import LanguageService from 'services/language.service';
 
 angular.module('app.components.main', [
   'app.components.main.myaccount'
 ])
     .config(MainConfig)
+    .service('LanguageService', LanguageService)
     .component('mainIndexComponent', mainIndexComponent)
     .component('mainLoginComponent', mainLoginComponent)
     .component('mainRegistrationComponent', mainRegistrationComponent)
