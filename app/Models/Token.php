@@ -8,7 +8,26 @@ class Token extends Model
 {
     protected $table = 'tokens';
 
-    public $timestamps = false;
+    /**
+     * Auto create timestamp
+     *
+     * @var bool
+     */
+    public $timestamps = true;
+
+    /**
+     * The name of the "created on" column.
+     *
+     * @var string
+     */
+    const CREATED_AT = 'created_on';
+
+    /**
+     * The name of the "updated on" column.
+     *
+     * @var string
+     */
+    const UPDATED_AT = 'updated_on';
 
     /**
      * The attributes that are mass assignable.
@@ -16,9 +35,4 @@ class Token extends Model
      * @var array
      */
     protected $guarded = ['id'];
-
-    protected $dates = [
-        'created_on',
-        'updated_on',
-    ];
 }

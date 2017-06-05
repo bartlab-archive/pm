@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\EmailAddresses;
+use App\Models\Token;
 use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -38,8 +39,14 @@ class LoginController extends Controller
         if ($pass !== $user->hashed_password) {
             return response(null, 400);
         }
+        
+        $token = Token::firstOrCreate([
+            'user_id' => $user->id,
+            'action' => 'session',
+            'value' => sha1($user->hashed_password)
+        ]);
 
-        return response()->json(['token' => sha1($user->hashed_password)]);
+        return response()->json(['token' => $token->value]);
     }
 
     /**
