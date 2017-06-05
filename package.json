@@ -10,23 +10,21 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "devDependencies": {
+    "@uirouter/angularjs": "*",
+    "angular": "^1.6.4",
+    "angular-animate": "*",
+    "angular-aria": "*",
+    "angular-material": "*",
+    "angular-sanitize": "^1.6.4",
     "axios": "^0.15.3",
     "cross-env": "^3.2.3",
     "jquery": "^3.1.1",
     "laravel-mix": "0.*",
     "lodash": "^4.17.4",
-    "angular": "^1.6.4",
-    "angular-sanitize": "^1.6.4",
-    "@uirouter/angularjs": "*",
+    "ng-annotate-webpack-plugin": "*",
+    "ng-table": "^4.0.0",
     "restangular": "*",
     "satellizer": "*",
-    "ng-table": "*",
-    "angular-aria": "*",
-    "angular-animate": "*",
-    "angular-material": "*",
-    "ng-annotate-webpack-plugin": "*"
-  },
-  "dependencies": {
-    "@uirouter/angularjs": "^1.0.3"
+    "angular-messages": "^1.6.4"
   }
 }
