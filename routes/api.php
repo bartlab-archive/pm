@@ -24,15 +24,8 @@ Route::group(
 //        'middleware' => 'auth'
     ],
     function () {
-        Route::group(
-            [
-                'prefix' => 'auth',
-                'namespace' => 'Auth'
-            ],
-            function () {
-                Route::post('login', 'LoginController@login');
-                Route::post('register', 'RegisterController@register');
-        });
+        Route::post('auth', 'Auth\LoginController@login');
+        Route::post('register', 'Auth\RegisterController@register');
 
         Route::get('projects', function (Request $request) {
             $list = \App\Models\Project::orderBy('name')->where('status', 1);
