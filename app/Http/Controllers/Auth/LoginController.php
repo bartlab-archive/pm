@@ -6,9 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\EmailAddresses;
 use App\Models\Token;
 use App\Models\User;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 /**
  * Class LoginController
@@ -19,7 +17,7 @@ class LoginController extends Controller
     /**
      * Authorization user in system
      *
-     * @url protocol://ip:port/api/v1/login
+     * @url protocol://ip:port/api/v1/auth
      *
      * @example {
      *     "login": "user email" or "login",
