@@ -12,7 +12,7 @@ export default class LayoutDefaultController {
             {url:'home',name:'Home',icon:'home'},
             {url:'',name:'My page',icon:'person'},
             {url:'projects.list',name:'Projects',icon:'work'},
-            {url:'',name:'Administration',icon:'apps'},
+            {url:'admin.index',name:'Administration',icon:'apps'},
             {url:'',name:'Help',icon:'help'}
         ];
     }
