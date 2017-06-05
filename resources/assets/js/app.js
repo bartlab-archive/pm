@@ -6,6 +6,7 @@ import 'restangular';
 import 'satellizer';
 import 'ng-table';
 import 'angular-material';
+import 'angular-messages';
 import 'angular-animate';
 import 'angular-aria';
 
@@ -25,7 +26,7 @@ angular
             'ngSanitize',
             'ngAnimate',
             'ngAria',
-            // 'ngMessages',
+            'ngMessages',
             'ngMaterial',
 
             'ui.router',
