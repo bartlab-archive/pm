@@ -10,8 +10,6 @@ angular.module('app.components', [
     'app.components.layouts',
     'app.components.main',
     'app.components.projects',
-    'app.components.users'
-    'app.components.projects',
     'app.components.my',
     'app.components.users',
     'app.components.admin'
