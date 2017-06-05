@@ -40,6 +40,9 @@ export default class MainRegistrationController {
                 first_name: '',
                 last_name: '',
                 email: ''
+            },
+            errors: {
+                repeat_passw: false
             }
         });
     }
@@ -76,7 +79,7 @@ export default class MainRegistrationController {
             }
         } else {
             this.errors = {
-                'repeat_passw': ['Repeat password is wrong!']
+                repeat_passw: true
             };
         }
     }
