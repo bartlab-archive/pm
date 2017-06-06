@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
+use App\Models\Token;
 use Closure;
 
 class Authenticate
@@ -16,10 +16,10 @@ class Authenticate
      */
     public function handle($request, Closure $next)
     {
-        $auth_token = $request->header('Authorization');
-        $auth_token = explode(' ', $auth_token);
-
-        if (!$auth_token || !isset($auth_token[1]) || !User::checkAuthToken($auth_token[1])) {
+        /**
+         * @todo create permission by authorization user
+         */
+        if (!Token::checkHeaderAuthToken($request)) {
             return abort(401);
         }
 

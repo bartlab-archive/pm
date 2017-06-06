@@ -33,12 +33,7 @@ class User extends Authenticatable
     
     protected $guarded = ['id'];
 
-    public static function checkAuthToken($token)
-    {
-        return Token::where('action', 'session')->where('value', $token)->exists();
-    }
-
-    public static function getUserByAccessToken(Request $request)
+    public static function userByHeaderAuthToken(Request $request)
     {
         $auth_token = $request->header('Authorization');
         $auth_token = explode(' ', $auth_token)[1];
@@ -48,7 +43,7 @@ class User extends Authenticatable
             ->first()
             ->user;
     }
-
+    
     public function email()
     {
         return $this->hasOne(EmailAddresses::class);
