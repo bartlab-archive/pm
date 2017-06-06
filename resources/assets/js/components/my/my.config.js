@@ -1,6 +1,6 @@
-MyConfig.$inject = ['$stateProvider'];
+myConfig.$inject = ['$stateProvider'];
 
-export default function MyConfig($stateProvider) {
+export default function myConfig($stateProvider) {
   $stateProvider
     .state('my', {
       abstract:true,

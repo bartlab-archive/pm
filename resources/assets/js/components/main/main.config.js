@@ -1,6 +1,6 @@
-MainConfig.$inject = ['$stateProvider'];
+mainConfig.$inject = ['$stateProvider'];
 
-export default function MainConfig($stateProvider) {
+export default function mainConfig($stateProvider) {
 
     $stateProvider
         .state('404', {

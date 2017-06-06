@@ -1,6 +1,6 @@
-ProjectsConfig.$inject = ['$stateProvider'];
+projectsConfig.$inject = ['$stateProvider'];
 
-export default function ProjectsConfig($stateProvider) {
+export default function projectsConfig($stateProvider) {
 
     $stateProvider
         .state('projects', {
