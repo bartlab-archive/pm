@@ -72,7 +72,7 @@ export default class UsersService {
     }
 
     getUserInfo() {
-      return this.Restangular.one('my').on('account').get();
+      return this.Restangular.one('my').one('account').get();
     }
 
 }
