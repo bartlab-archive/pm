@@ -1,4 +1,4 @@
-import Injectable from 'base/injectable';
+import InjectableBase from 'base/injectable.base';
 import _ from 'lodash';
 
 /**
@@ -8,7 +8,7 @@ import _ from 'lodash';
  * @property $auth
  * @property $transitions
  */
-export default class AppRun extends Injectable {
+export default class AppRun extends InjectableBase {
 
     static get $inject() {
         return ['$rootScope', '$auth', '$transitions'];

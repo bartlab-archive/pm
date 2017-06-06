@@ -1,13 +1,5 @@
-import angular from 'angular';
+import ControllerBase from 'base/controller.base';
 
-export default class mainMyAccountChangePasswordController{
-  static get $inject() {
-    return ['$injector'];
-  }
+export default class mainResetPasswordController extends ControllerBase {
 
-  constructor($injector) {
-    this.$auth = $injector.get('$auth');
-    this.$state = $injector.get('$state');
-    this.toaster = $injector.get('$mdToast');
-  }
 }

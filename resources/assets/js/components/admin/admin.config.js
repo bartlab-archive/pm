@@ -1,24 +1,34 @@
-adminConfig.$inject = ['$stateProvider'];
+import InjectableBase from 'base/injectable.base';
 
-export default function adminConfig($stateProvider) {
+/**
+ * Class AdminConfig
+ *
+ * @property $stateProvider
+ */
+export default class AdminConfig extends InjectableBase {
 
-    $stateProvider
-        .state('admin', {
-            abstract: true,
-            data: {
-                access: '@'
-            },
-            url: '/admin',
-            parent: 'default',
-            views: {
-                content: {
-                    template: '<ui-view/>'
+    static get $inject() {
+        return ['$stateProvider']
+    }
+
+    $onInit() {
+        this.$stateProvider
+            .state('admin', {
+                abstract: true,
+                data: {
+                    access: '@'
+                },
+                url: '/admin',
+                parent: 'default',
+                views: {
+                    content: {
+                        template: '<ui-view/>'
+                    }
                 }
-            }
-        })
-        .state('admin.index', {
-            url: '',
-            component: 'adminIndexComponent',
-        });
+            })
+            .state('admin.index', {
+                url: '',
+                component: 'adminIndexComponent',
+            });
+    }
 }
-;

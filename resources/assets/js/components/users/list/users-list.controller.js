@@ -1,11 +1,12 @@
-export default class ProjectsListController {
+import ControllerBase from 'base/controller.base';
+
+/**
+ * @property UsersService
+ */
+export default class ProjectsListController extends ControllerBase {
 
     static get $inject() {
-        return ['$injector'];
-    }
-
-    constructor($injector) {
-        this.UsersService = $injector.get('UsersService');
+        return ['UsersService'];
     }
 
     $onInit() {

@@ -1,4 +1,4 @@
-import Injectable from 'base/injectable';
+import InjectableBase from 'base/injectable.base';
 
 /**
  * Class AppConfig
@@ -10,7 +10,7 @@ import Injectable from 'base/injectable';
  * @property $authProvider
  * @property RestangularProvider
  */
-export default class AppConfig extends Injectable {
+export default class AppConfig extends InjectableBase {
 
     static get $inject() {
         return ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider', 'RestangularProvider'];
