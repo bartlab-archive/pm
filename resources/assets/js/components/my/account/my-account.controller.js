@@ -1,6 +1,6 @@
 import angular from 'angular';
 import PasswordTemplate from '../change-password/my-change-password.html';
-import mainChangePasswordController from '../change-password/my-change-password.controller';
+import myChangePasswordController from '../change-password/my-change-password.controller';
 
 
 export default class mainMyAccountIndexController {
@@ -35,7 +35,7 @@ export default class mainMyAccountIndexController {
         let config = {
             animation: animation,
             attachTo: this.element,
-            controller: mainChangePasswordController,
+            controller: myChangePasswordController,
             controllerAs: '$ctrl',
             template: PasswordTemplate,
             panelClass: 'change-password-dialog',
