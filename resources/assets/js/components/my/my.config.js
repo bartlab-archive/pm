@@ -15,14 +15,12 @@ export default function MyConfig($stateProvider) {
         }
       }
     })
-    .state('account', {
-      parent: 'my',
+    .state('my.account', {
       url: '/account',
       component: 'myAccountComponent',
     })
-    .state('change-password', {
-      parent: 'my',
-      url: '/change-password',
+    .state('my.change-password', {
+      url: '/password',
       component: 'myChangePasswordComponent',
     });
 
