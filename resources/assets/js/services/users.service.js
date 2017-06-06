@@ -7,7 +7,6 @@ export default class UsersService {
 
     constructor($injector) {
         this.Restangular = $injector.get('Restangular');
-        this.$auth = $injector.get('$auth');
     }
 
     one(indifier) {
@@ -73,8 +72,7 @@ export default class UsersService {
     }
 
     getUserInfo() {
-      return this.$auth.getUserInfo
-        .then(this.response = response);
+      return this.Restangular.one('my').on('account').get();
     }
 
 }
