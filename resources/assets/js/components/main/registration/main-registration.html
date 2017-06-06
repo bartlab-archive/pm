@@ -29,7 +29,8 @@
 
             <md-input-container class="md-icon-float md-block">
                 <label for="repeatPass">Repeat Password</label>
-                <input ng-model="$ctrl.signup.repeatPassword" id="repeatPass" name="repeatPass" minlength="6" type="password" required>
+                <input ng-model="$ctrl.signup.repeatPassword" id="repeatPass" name="repeatPass" minlength="6"
+                       type="password" required>
 
                 <div ng-messages="RegistrationForm.repeatPass.$error">
                     <div ng-message="minlength">The password must be at least 6 characters.</div>
@@ -39,7 +40,7 @@
 
             <md-input-container class="md-icon-float md-block">
                 <label>First Name</label>
-                <input ng-model="$ctrl.signup.firstName" name="firstName" type="text" required>
+                <input ng-model="$ctrl.signup.first_name" name="firstName" type="text" required>
 
                 <div ng-messages="RegistrationForm.firstName.$error">
                     <div ng-message="required">
@@ -50,7 +51,7 @@
 
             <md-input-container class="md-icon-float md-block">
                 <label>Last Name</label>
-                <input ng-model="$ctrl.signup.lastName" name="lastName" type="text" required>
+                <input ng-model="$ctrl.signup.last_name" name="lastName" type="text" required>
 
                 <div ng-messages="RegistrationForm.lastName.$error">
                     <div ng-message="required">
@@ -77,18 +78,22 @@
             <md-input-container class="md-icon-float md-block">
                 <label>Language</label>
                 <md-select ng-model="$ctrl.signup.selectedLang">
-                    <md-option ng-value="language" ng-repeat="language in $ctrl.languages">{{ language.name }}</md-option>
+                    <md-option ng-value="language" ng-repeat="language in $ctrl.languages">{{ language.name }}
+                    </md-option>
                 </md-select>
             </md-input-container>
 
+            <md-card-actions layout="row" layout-align="center center">
+                <md-button class="md-raised md-primary" type="submit"
+                           ng-disabled="RegistrationForm.$invalid">Registration
+                </md-button>
+
+                <!--<md-button ng-click="$ctrl.submit()" class="md-raised md-primary">Registration-->
+                <!--</md-button>-->
+            </md-card-actions>
+
         </form>
     </md-card-content>
-
-
-    <md-card-actions layout="row" layout-align="center center">
-        <md-button class="md-raised md-primary" type = "submit" ng-disabled="RegistrationForm.$invalid">Registration
-        </md-button>
-    </md-card-actions>
 </md-card>
 
 <p layout="row" layout-align="center center">
