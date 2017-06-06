@@ -10,10 +10,10 @@ export default class LayoutDefaultController {
 
         this.items = [
             {url:'home',name:'Home',icon:'home'},
-            {url:'',name:'My page',icon:'person'},
+            {url:'home',name:'My page',icon:'person'},
             {url:'projects.list',name:'Projects',icon:'work'},
             {url:'admin.index',name:'Administration',icon:'apps'},
-            {url:'',name:'Help',icon:'help'}
+            {url:'home',name:'Help',icon:'help'}
         ];
     }
 

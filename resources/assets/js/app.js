@@ -14,8 +14,8 @@ import 'filters.module';
 import 'services.module';
 import 'components/components.module';
 
-import appRun from 'app.run';
-import appConfig from 'app.config';
+import AppRun from 'app.run';
+import AppConfig from 'app.config';
 
 angular
     .module(
@@ -37,5 +37,5 @@ angular
             'app.services'
         ]
     )
-    .config(appConfig)
-    .run(appRun);
+    .config(AppConfig.inst())
+    .run(AppRun.inst());

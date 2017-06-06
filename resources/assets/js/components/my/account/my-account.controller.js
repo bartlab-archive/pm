@@ -1,5 +1,5 @@
 
-export default class mainMyAccountIndexController{
+export default class mainMyAccountController{
   static get $inject() {
     return ['$injector'];
   }
@@ -13,5 +13,6 @@ export default class mainMyAccountIndexController{
 
     this.languages = this.UserSevice.getLanguage();
 
+    this.user = this.UserSevice.getUserInfo();
   }
 }
