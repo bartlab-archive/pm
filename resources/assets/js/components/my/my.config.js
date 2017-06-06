@@ -19,9 +19,9 @@ export default function MyConfig($stateProvider) {
       url: '/account',
       component: 'myAccountComponent',
     })
-    .state('my.change-password', {
+    .state('my.password', {
       url: '/password',
-      component: 'myChangePasswordComponent',
+      component: 'myPasswordComponent',
     });
 
 }

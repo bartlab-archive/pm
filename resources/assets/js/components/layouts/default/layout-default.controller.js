@@ -29,7 +29,7 @@ export default class LayoutDefaultController {
     };
 
     myAccount() {
-        this.$state.go('my-account');
+        this.$state.go('my.account');
     }
 
     logout(){
