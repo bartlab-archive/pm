@@ -24,7 +24,18 @@ export default class MainRegistrationController {
             last_name: '',
             email: ''
         };
+        this.errors = {
+            passwordError: false
+        };
 
+    }
+
+    checkPassword() {
+        if (!_.isEmpty(this.signup.password) && !_.isEmpty(this.signup.repeatPassword)) {
+            if (this.signup.password !== this.signup.repeatPassword) {
+                this.errors.passwordError = true;
+            }
+        }
     }
 
     submit() {
