@@ -32,11 +32,6 @@ class User extends Authenticatable
     
     protected $guarded = ['id'];
 
-    public static function checkAuthToken($token)
-    {
-        return Token::where('action', 'session')->where('value', $token)->exists();
-    }
-
     public function email()
     {
         return $this->hasOne(EmailAddresses::class);

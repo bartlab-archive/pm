@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Token extends Model
 {
@@ -35,4 +36,16 @@ class Token extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    public static function checkHeaderAuthToken(Request $request)
+    {
+        $auth_token = $request->header('Authorization');
+        $auth_token = explode(' ', $auth_token);
+
+        if (!$auth_token || !isset($auth_token[1])) {
+            return false;
+        }
+
+        return Token::where('action', 'session')->where('value', $auth_token[1])->exists();
+    }
 }
