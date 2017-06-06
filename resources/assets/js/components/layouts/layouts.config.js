@@ -1,13 +1,25 @@
-layoutConfig.$inject = ['$stateProvider'];
+import Injecteble from 'base/injectable';
 
-export default function layoutConfig($stateProvider) {
-    $stateProvider
-        .state('blank', {
-            abstract: true,
-            component: 'layoutBlankComponent'
-        })
-        .state('default', {
-            abstract: true,
-            component: 'layoutDefaultComponent'
-        });
+/**
+ * Class LayoutConfig
+ *
+ * @property $stateProvider
+ */
+export default class LayoutConfig extends Injecteble {
+
+    static get $inject() {
+        return ['$stateProvider']
+    }
+
+    $onInit() {
+        this.$stateProvider
+            .state('blank', {
+                abstract: true,
+                component: 'layoutBlankComponent'
+            })
+            .state('default', {
+                abstract: true,
+                component: 'layoutDefaultComponent'
+            });
+    }
 }

@@ -1,36 +1,46 @@
-usersConfig.$inject = ['$stateProvider'];
+import Injecteble from 'base/injectable';
 
-export default function usersConfig($stateProvider) {
+/**
+ * Class UsersConfig
+ *
+ * @property $stateProvider
+ */
+export default class UsersConfig extends Injecteble {
 
-    $stateProvider
-        .state('users', {
-            abstract: true,
-            data: {
-                access: '@'
-            },
-            url: '/users',
-            parent: 'default',
-            views: {
-                content: {
-                    template: '<ui-view/>'
+    static get $inject() {
+        return ['$stateProvider'];
+    }
+
+    $onInit() {
+        this.$stateProvider
+            .state('users', {
+                abstract: true,
+                data: {
+                    access: '@'
+                },
+                url: '/users',
+                parent: 'default',
+                views: {
+                    content: {
+                        template: '<ui-view/>'
+                    }
                 }
-            }
-        })
-        .state('users.list', {
-            url: '',
-            component: 'usersListComponent',
-        })
-        .state('users.new', {
-            url: '/new',
-            component: 'usersEditComponent',
-        })
-        .state('users.info', {
-            url: '/:id',
-            component: 'usersInfoComponent',
-        })
-        .state('users.edit', {
-            url: '/:id/edit',
-            component: 'usersEditComponent',
-        });
+            })
+            .state('users.list', {
+                url: '',
+                component: 'usersListComponent',
+            })
+            .state('users.new', {
+                url: '/new',
+                component: 'usersEditComponent',
+            })
+            .state('users.info', {
+                url: '/:id',
+                component: 'usersInfoComponent',
+            })
+            .state('users.edit', {
+                url: '/:id/edit',
+                component: 'usersEditComponent',
+            });
+    }
 }
-;
