@@ -7,6 +7,6 @@ import usersInfoComponent from './info/users-info.component';
 
 angular.module('app.components.users', [])
     .config(usersConfig)
-    .component('usersListComponent', usersListComponent)
-    .component('usersEditComponent', usersEditComponent)
-    .component('usersInfoComponent', usersInfoComponent);
+    .component(usersListComponent.name, usersListComponent)
+    .component(usersEditComponent.name, usersEditComponent)
+    .component(usersInfoComponent.name, usersInfoComponent);

@@ -1,9 +1,8 @@
 import LayoutBlankController from './layout-blank.controller';
 import LayoutBlankTemplate from './layout-blank.html';
 
-const layoutBlankCompoent = {
+export default  {
+    name: 'layoutBlankComponent',
     controller: LayoutBlankController,
     template: LayoutBlankTemplate
 };
-
-export default layoutBlankCompoent;

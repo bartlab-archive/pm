@@ -1,12 +1,13 @@
+layoutConfig.$inject = ['$stateProvider'];
+
 export default function layoutConfig($stateProvider) {
     $stateProvider
         .state('blank', {
             abstract: true,
-            component: 'layoutBlank'
+            component: 'layoutBlankComponent'
         })
         .state('default', {
             abstract: true,
-            component: 'layoutDefault'
+            component: 'layoutDefaultComponent'
         });
 }
-layoutConfig.$inject = ['$stateProvider'];

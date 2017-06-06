@@ -10,5 +10,5 @@ angular.module('app.components.my', [])
   .config(myConfig)
   .service('LanguageService', LanguageService)
   .service('GetUserInfoService', GetUserInfoService)
-  .component('myAccountComponent', myAccountComponent)
-  .component('myPasswordComponent', myPasswordComponent);
+  .component(myAccountComponent.name, myAccountComponent)
+  .component(myPasswordComponent.name, myPasswordComponent);

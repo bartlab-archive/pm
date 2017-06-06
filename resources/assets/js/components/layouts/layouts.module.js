@@ -2,10 +2,10 @@ import 'angular';
 
 import layoutConfig from './layouts.config';
 
-import layoutBlankCompoent from './blank/layout-blank.component';
-import layoutDefaultCompoent from './default/layout-default.component';
+import layoutBlankComponent from './blank/layout-blank.component';
+import layoutDefaultComponent from './default/layout-default.component';
 
 angular.module('app.components.layouts', [])
     .config(layoutConfig)
-    .component('layoutBlank', layoutBlankCompoent)
-    .component('layoutDefault', layoutDefaultCompoent);
+    .component(layoutBlankComponent.name, layoutBlankComponent)
+    .component(layoutDefaultComponent.name, layoutDefaultComponent);

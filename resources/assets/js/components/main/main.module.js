@@ -13,10 +13,10 @@ import LanguageService from 'services/language.service';
 angular.module('app.components.main', [])
     .config(mainConfig)
     .service('LanguageService', LanguageService)
-    .component('mainIndexComponent', mainIndexComponent)
-    .component('mainLoginComponent', mainLoginComponent)
-    .component('mainRegistrationComponent', mainRegistrationComponent)
-    .component('mainLogoutComponent', mainLogoutComponent)
-    .component('mainResetComponent', mainResetComponent)
-    .component('main500Component', main500Component)
-    .component('main404Component', main404Component);
+    .component(mainIndexComponent.name, mainIndexComponent)
+    .component(mainLoginComponent.name, mainLoginComponent)
+    .component(mainRegistrationComponent.name, mainRegistrationComponent)
+    .component(mainLogoutComponent.name, mainLogoutComponent)
+    .component(mainResetComponent.name, mainResetComponent)
+    .component(main500Component.name, main500Component)
+    .component(main404Component.name, main404Component);

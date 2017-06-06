@@ -7,6 +7,6 @@ import projectsInfoComponent from './info/projects-info.component';
 
 angular.module('app.components.projects', [])
     .config(projectsConfig)
-    .component('projectsListComponent', projectsListComponent)
-    .component('projectsEditComponent', projectsEditComponent)
-    .component('projectsInfoComponent', projectsInfoComponent);
+    .component(projectsListComponent.name, projectsListComponent)
+    .component(projectsEditComponent.name, projectsEditComponent)
+    .component(projectsInfoComponent.name, projectsInfoComponent);

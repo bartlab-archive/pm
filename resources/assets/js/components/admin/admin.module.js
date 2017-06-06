@@ -5,4 +5,4 @@ import adminIndexComponent from './index/admin-index.component';
 
 angular.module('app.components.admin', [])
     .config(adminConfig)
-    .component('adminIndexComponent', adminIndexComponent);
+    .component(adminIndexComponent.name, adminIndexComponent);

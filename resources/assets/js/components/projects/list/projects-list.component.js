@@ -1,12 +1,8 @@
 import ProjectsListController from './projects-list.controller';
 import ProjectsListTemplate from './projects-list.html';
 
-const projectsListComponent = {
+export default  {
+    name: 'projectsListComponent',
     controller: ProjectsListController,
     template: ProjectsListTemplate,
-    // bindings:{
-    //
-    // }
 };
-
-export default projectsListComponent;
