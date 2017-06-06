@@ -57,20 +57,21 @@ export default function mainConfig($stateProvider) {
                 }
             }
         })
-        .state('reset', {
-            data: {
-                access: '?',
-            },
-            url: '/reset',
-            parent: 'blank',
-            views: {
-                content: {
-                    component: 'mainResetComponent',
-                }
-            }
-        })
         .state('logout', {
             url: '/logout',
             component: 'mainLogoutComponent'
-        });
+        })
+       .state('reset-password', {
+            data: {
+              access: '?',
+            },
+            url: '/reset-password',
+            parent: 'blank',
+            views: {
+              content: {
+                component: 'mainResetPasswordComponent',
+              }
+            }
+        })
+    ;
 };
