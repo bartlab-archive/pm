@@ -1,49 +1,85 @@
-appConfig.$inject = ['$rootScope', '$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider', 'RestangularProvider'];
+import Injectable from 'base/injectable';
 
-export default function appConfig($rootScope, $stateProvider, $urlRouterProvider, $locationProvider, $authProvider, RestangularProvider) {
-    // set default routes when no path specified
-    $urlRouterProvider.when('', '/');
-    // always goto 404 if route not found
-    $urlRouterProvider.otherwise('/404');
+/**
+ * Class AppConfig
+ *
+ * @property $rootScope
+ * @property $stateProvider
+ * @property $urlRouterProvider
+ * @property $locationProvider
+ * @property $authProvider
+ * @property RestangularProvider
+ */
+export default class AppConfig extends Injectable {
 
-    $locationProvider.html5Mode(true);
+    static get $inject() {
+        return ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider', 'RestangularProvider'];
+    }
 
-    $authProvider.loginUrl = '/api/v1/auth';
-    $authProvider.signupUrl = '/api/v1/register';
-    $authProvider.getUserInfo = '/api/v1/user-info';
-    $authProvider.tokenRoot = 'data';//compensates success response macro
-    $authProvider.withCredentials = false;
-    $authProvider.baseUrl = '/';
-    $authProvider.unlinkUrl = '/api/v1/auth/unlink/';
-    $authProvider.tokenName = 'token';
-    $authProvider.tokenPrefix = '';
-    $authProvider.tokenHeader = 'Authorization';
-    $authProvider.tokenType = 'Bearer';
-    $authProvider.storageType = 'localStorage';
+    $onInit() {
+        this.urlConfig();
+        this.localConfig();
+        this.authConfig();
+        this.restConfig();
+    }
 
-    RestangularProvider.setBaseUrl('/api/v1');
-    RestangularProvider.setDefaultHeaders({
-        'Content-Type': 'application/json'
-    });
-    RestangularProvider.setFullResponse(true);
-    RestangularProvider.setErrorInterceptor(function (response, deferred, responseHandler) {
+    urlConfig() {
+        // set default routes when no path specified
+        this.$urlRouterProvider.when('', '/');
+        // always goto 404 if route not found
+        this.$urlRouterProvider.otherwise('/404');
+    }
+
+    localConfig() {
+        // use HTML5 mode for url
+        this.$locationProvider.html5Mode(true);
+    }
+
+    authConfig() {
+        this.$authProvider.loginUrl = '/api/v1/auth';
+        this.$authProvider.signupUrl = '/api/v1/register';
+        this.$authProvider.getUserInfo = '/api/v1/user-info';
+        this.$authProvider.tokenRoot = 'data';//compensates success response macro
+        this.$authProvider.withCredentials = false;
+        this.$authProvider.baseUrl = '/';
+        this.$authProvider.unlinkUrl = '/api/v1/auth/unlink/';
+        this.$authProvider.tokenName = 'token';
+        this.$authProvider.tokenPrefix = '';
+        this.$authProvider.tokenHeader = 'Authorization';
+        this.$authProvider.tokenType = 'Bearer';
+        this.$authProvider.storageType = 'localStorage';
+    }
+
+    restConfig() {
+        this.RestangularProvider.setBaseUrl('/api/v1');
+        this.RestangularProvider.setDefaultHeaders({
+            'Content-Type': 'application/json'
+        });
+        this.RestangularProvider.setFullResponse(true);
+        this.RestangularProvider.setErrorInterceptor((...args) => this.errorInterceptor(...args));
+    }
+
+    errorInterceptor(response, deferred, responseHandler) {
         switch (response.status) {
             case 401:
-                $rootScope.$broadcast('authUnauthorized');
+                console.log('401');
+                // this.$rootScope.$broadcast('authUnauthorized');
                 break;
 
             case 403:
-                $rootScope.$broadcast('authForbidden');
+                console.log('403');
+                // this.$rootScope.$broadcast('authForbidden');
                 break;
 
             default:
+                // this.$rootScope.$broadcast('serverError');
                 console.log(response.statusText || 'Server error');
-                // toaster.show(
-                //     toaster.simple()
-                //         .textContent(response.statusText || 'Server error')
-                // );
+            // toaster.show(
+            //     toaster.simple()
+            //         .textContent(response.statusText || 'Server error')
+            // );
         }
 
         // return false;
-    });
+    }
 }
