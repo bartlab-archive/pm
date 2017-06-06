@@ -37,6 +37,18 @@ Route::group(
             }
         );
 
+        Route::group(
+            [
+                'prefix' => 'my',
+                'namespace' => 'My',
+                'middleware' => 'auth'
+            ],
+            function ()
+            {
+                Route::get('account', 'AccountController@show');
+            }
+        );
+
         // projects
 
         Route::get('projects', function (Request $request) {
