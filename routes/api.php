@@ -46,6 +46,8 @@ Route::group(
             function ()
             {
                 Route::get('account', 'AccountController@show');
+                Route::put('account', 'AccountController@update');
+                Route::put('password', 'AccountController@changePassword');
             }
         );
 

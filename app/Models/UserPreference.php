@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserPreference extends Model
 {
+    const OTHERS_FIELD_SYMBOL = ':';
+
     protected $table = 'user_preferences';
 
     public $timestamps = false;
@@ -16,6 +18,48 @@ class UserPreference extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * Parse others
+     *
+     * This method parses the others field
+     *
+     * @param UserPreference $preference
+     * @return array
+     */
+    public static function parseOthers(UserPreference $preference)
+    {
+        $others = yaml_parse($preference->others);
+        $result_others = [];
+
+        foreach ($others as $key => $other) {
+            $result_others[str_replace(self::OTHERS_FIELD_SYMBOL, '', $key)] = $other;
+        }
+
+        return $result_others;
+    }
+
+    /**
+     * Update others
+     *
+     * This method updates the others field generate valid serialize string
+     *
+     * @param UserPreference $preference
+     * @param array $others
+     * @return bool
+     */
+    public static function updateOthers(UserPreference $preference, array $others)
+    {
+        $update_others = [];
+
+        foreach ($others as $key => $other) {
+            $update_others[self::OTHERS_FIELD_SYMBOL . $key] = $other;
+        }
+
+        return $preference->update([
+            'others' => yaml_emit($others)
+        ]);
+    }
 
     public function user()
     {
