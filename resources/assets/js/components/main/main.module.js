@@ -10,7 +10,7 @@ import main404Component from './404/main-404.component';
 import main500Component from './500/main-500.component';
 
 angular.module('app.components.main', [])
-    .config(mainConfig)
+    .config(mainConfig.inst())
     .component(mainIndexComponent.name, mainIndexComponent)
     .component(mainLoginComponent.name, mainLoginComponent)
     .component(mainRegistrationComponent.name, mainRegistrationComponent)

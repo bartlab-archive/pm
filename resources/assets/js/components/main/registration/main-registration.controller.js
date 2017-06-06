@@ -32,9 +32,9 @@ export default class MainRegistrationController {
 
     checkPassword() {
         if (!_.isEmpty(this.signup.password) && !_.isEmpty(this.signup.repeatPassword)) {
-            if (this.signup.password !== this.signup.repeatPassword) {
-                this.errors.passwordError = true;
-            }
+            this.errors.passwordError = this.signup.password !== this.signup.repeatPassword;
+        } else {
+            this.errors.passwordError = false;
         }
     }
 
