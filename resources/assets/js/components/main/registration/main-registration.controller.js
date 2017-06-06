@@ -1,4 +1,5 @@
 import angular from 'angular';
+import * as _ from "lodash";
 
 export default class MainRegistrationController {
 
@@ -15,59 +16,32 @@ export default class MainRegistrationController {
 
         this.languages = this.UserSevice.getLanguage();
 
-        this.init();
-    }
+        this.signup = {
+            login: '',
+            password: '',
+            repeatPassword: '',
+            first_name: '',
+            last_name: '',
+            email: ''
+        };
 
-    init() {
-        angular.extend(this, {
-            signup: {
-                login: '',
-                password: '',
-                repeat_passw: '',
-                first_name: '',
-                last_name: '',
-                email: ''
-            },
-            errors: {
-                repeat_passw: false
-            }
-        });
     }
 
     submit() {
-        if (this.signup.password === this.signup.repeat_passw) {
-            if (this.signup.repeat_passw === '' || this.signup.password === '') {
-                this.errors = {
-                    'repeat_passw': ['Repeat password is empty!'],
-                    'password': ['Password is empty!']
-                };
-            }
-            else if (this.signup.repeat_passw.length < 6) {
-                this.errors = {
-                    'repeat_passw': ['The password must be at least 6 characters.'],
-                    'password': ['The password must be at least 6 characters.']
-                };
-            }
-            else {
-                this.$auth.signup(this.signup).then(
-                    function (response) {
-                        if (response.data.result) {
-                            this.signup.auth_key = response.data.auth_key;
-                            toaster.pop({
-                                type: 'success',
-                                body: "Confirmation email was sent! Run to your inbox to check it out"
-                            });
-                            this.signHide = false;
-                            $state.go('login');
-                        }
-                        this.errors = response.data.errors;
+        if (this.signup.password === this.signup.repeatPassword) {
+            console.log(this.signup);
+            this.$auth.signup(this.signup).then(
+                (response) => {
+                    console.log(response);
+                    if (_.get(response, 'data.token')) {
+                        this.signup.auth_key = response.data.token;
+
+                        this.toaster.success();
+
+                        // this.$state.go('login');
                     }
-                );
-            }
-        } else {
-            this.errors = {
-                repeat_passw: true
-            };
+                }
+            );
         }
     }
 }
