@@ -17,4 +17,6 @@ export default class ProjectsService {
         return this.Restangular.all('projects').getList(params);
     }
 
+
+
 }

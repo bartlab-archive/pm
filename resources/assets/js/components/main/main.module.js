@@ -8,11 +8,9 @@ import mainLogoutComponent from './logout/main-logout.component';
 import mainResetPasswordComponent from './reset-password/main-reset-password.component';
 import main404Component from './404/main-404.component';
 import main500Component from './500/main-500.component';
-import LanguageService from 'services/language.service';
 
 angular.module('app.components.main', [])
     .config(mainConfig)
-    .service('LanguageService', LanguageService)
     .component(mainIndexComponent.name, mainIndexComponent)
     .component(mainLoginComponent.name, mainLoginComponent)
     .component(mainRegistrationComponent.name, mainRegistrationComponent)
