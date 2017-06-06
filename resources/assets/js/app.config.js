@@ -10,7 +10,7 @@ export default function appConfig($stateProvider, $urlRouterProvider, $locationP
 
     $authProvider.loginUrl = '/api/v1/auth';
     $authProvider.signupUrl = '/api/v1/register';
-    $authProvider.getUserInfo = '/api/v1/user-info'
+    $authProvider.getUserInfo = '/api/v1/my/account';
     $authProvider.tokenRoot = 'data';//compensates success response macro
     $authProvider.withCredentials = false;
     $authProvider.baseUrl = '/';
