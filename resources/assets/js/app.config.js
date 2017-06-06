@@ -1,6 +1,6 @@
-appConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider', 'RestangularProvider'];
+appConfig.$inject = ['$rootScope', '$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider', 'RestangularProvider'];
 
-export default function appConfig($stateProvider, $urlRouterProvider, $locationProvider, $authProvider, RestangularProvider) {
+export default function appConfig($rootScope, $stateProvider, $urlRouterProvider, $locationProvider, $authProvider, RestangularProvider) {
     // set default routes when no path specified
     $urlRouterProvider.when('', '/');
     // always goto 404 if route not found
@@ -10,7 +10,7 @@ export default function appConfig($stateProvider, $urlRouterProvider, $locationP
 
     $authProvider.loginUrl = '/api/v1/auth';
     $authProvider.signupUrl = '/api/v1/register';
-    $authProvider.getUserInfo = '/api/v1/user-info'
+    $authProvider.getUserInfo = '/api/v1/user-info';
     $authProvider.tokenRoot = 'data';//compensates success response macro
     $authProvider.withCredentials = false;
     $authProvider.baseUrl = '/';
@@ -37,7 +37,11 @@ export default function appConfig($stateProvider, $urlRouterProvider, $locationP
                 break;
 
             default:
-                toaster.pop({type: 'error', body: response.statusText || 'Server error'});
+                console.log(response.statusText || 'Server error');
+                // toaster.show(
+                //     toaster.simple()
+                //         .textContent(response.statusText || 'Server error')
+                // );
         }
 
         // return false;

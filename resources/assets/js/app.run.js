@@ -5,6 +5,7 @@ appRun.$inject = ['$rootScope', '$auth', '$transitions'];
 export default function appRun($rootScope, $auth, $transitions) {
     $rootScope.isReady = false;
 
+    // check access for state
     $transitions.onStart({}, function (trans) {
         // $rootScope.toState = toState;
         // $rootScope.toStateParams = toStateParams;
@@ -21,5 +22,13 @@ export default function appRun($rootScope, $auth, $transitions) {
                 return trans.router.stateService.target('home');
             }
         }
+    });
+
+    $rootScope.$on('authUnauthorized', function () {
+        $state.go('login');
+    });
+
+    $rootScope.$on('authForbidden', function () {
+        $state.go('home');
     });
 }
