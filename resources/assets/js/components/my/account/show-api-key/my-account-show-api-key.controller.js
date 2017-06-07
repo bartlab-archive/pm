@@ -6,8 +6,8 @@ export default class myShowApiKeyController{
   constructor($injector) {
     this.UserService = $injector.get('UsersService');
 
-    this.UserService.getApiAccesKey().then((result) => {
-      this.apiKey = result;
+    this.UserService.getApiAccessKey().then((result) => {
+      this.apiKey = result.data.api_key;
     });
 
   }
