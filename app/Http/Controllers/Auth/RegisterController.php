@@ -23,11 +23,11 @@ class RegisterController extends Controller
     public function __construct()
     {
         //TODO: take out check permission at middleware class
-        $this->permission(
-            Setting::where('name', Setting::setting_register_name)
-                ->first(['value'])
-                ->value
-        );
+        $register_settings = Setting::where('name', Setting::setting_register_name)->first(['value']);
+
+        if ($register_settings) {
+            $this->permission($register_settings->value);
+        }
     }
 
     /**
@@ -110,7 +110,7 @@ class RegisterController extends Controller
             'password' => 'required|string|min:6',
             'repeat_password' => 'required|string|min:6|same:password',
             'lang' => 'required|string|max:2',
-            'hide_email' => 'int|in:1,0'
+            'hide_email' => 'boolean'
         ];
     }
 
