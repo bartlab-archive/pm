@@ -12,3 +12,7 @@ angular.module('app.components.projects', [])
     .component('projectsEditComponent', projectsEditComponent)
     .component('projectsInfoComponent', projectsInfoComponent)
     .component('projectsIssuesComponent', projectsIssuesComponent);
+    .config(ProjectsConfig.inst())
+    .component(projectsListComponent.name, projectsListComponent)
+    .component(projectsEditComponent.name, projectsEditComponent)
+    .component(projectsInfoComponent.name, projectsInfoComponent);

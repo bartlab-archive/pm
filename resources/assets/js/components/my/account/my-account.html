@@ -1,13 +1,12 @@
-<md-card>
-    <md-toolbar>
-        <div layout="column" layout-padding layout-align="center center">
-            <div class="md-headline md-padding">My Account</div>
-        </div>
+<form name="AccountForm" ng-submit="$ctrl.submit()">
+    <md-toolbar class="md-menu-toolbar">
+        <h2 layout-padding>My Account</h2>
     </md-toolbar>
-    <form name="AccountForm" ng-submit="$ctrl.submit()" layout-align="center center">
-    <div layout="column">
-        <div flex>
-            <md-card-content>
+    <div class="custom-panel" layout="column" layout-margin layout-padding>
+
+        <div layout="row" layout-margin layout-padding>
+
+            <div flex>
                 <md-input-container class="md-icon-float md-block">
                     <label>First Name</label>
                     <input ng-model="$ctrl.model.firstName" type="text" required>
@@ -26,61 +25,75 @@
                 <md-input-container class="md-icon-float md-block">
                     <label>Language</label>
                     <md-select ng-model="$ctrl.model.selectedLang" required>
-                        <md-option ng-value="language" ng-repeat="language in $ctrl.languages">{{ language.name }}</md-option>
+                        <md-option ng-value="language" ng-repeat="language in $ctrl.languages">
+                            {{language.name }}
+                        </md-option>
                     </md-select>
                 </md-input-container>
-            </md-card-content>
-        </div>
-        <div flex>
-            <md-card-content>
-                <p class="topUrl"><a ui-sref="emails">Emails</a><a ui-sref="change-password">Change password</a></p>
+
                 <md-input-container class="md-icon-float md-block">
                     <label>Email notifications</label>
-                        <md-select ng-model="$ctrl.model.EmailNotifications" required>
-                            <md-option value="selected">For any event on the selected projects only...</md-option>
-                            <md-option value="only_my_events">Only for things I watch or I'm involved in</md-option>
-                            <md-option value="only_assigned">Only for things I am assigned to</md-option>
-                            <md-option value="only_owner">Only for things I am the owner of</md-option>
-                            <md-option value="none">No events</md-option></select>
-                        </md-select>
+                    <md-select ng-model="$ctrl.model.EmailNotifications" required>
+                        <md-option value="selected">For any event on the selected projects only...
+                        </md-option>
+                        <md-option value="only_my_events">Only for things I watch or I'm involved in
+                        </md-option>
+                        <md-option value="only_assigned">Only for things I am assigned to</md-option>
+                        <md-option value="only_owner">Only for things I am the owner of</md-option>
+                        <md-option value="none">No events</md-option>
+                        </select>
+                    </md-select>
                 </md-input-container>
+
                 <md-input-container class="md-icon-float md-block">
-                    <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.noSelfNotified" aria-label="I don't want to be notified of changes that I make myself">
+                    <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.noSelfNotified"
+                                 aria-label="I don't want to be notified of changes that I make myself">
                         I don't want to be notified of changes that I make myself
                     </md-checkbox>
                 </md-input-container>
-            </md-card-content>
-            <md-card-content>
                 <md-input-container class="md-icon-float md-block">
-                    <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.hideMail" aria-label="Hide my Email">
+                    <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.hideMail"
+                                 aria-label="Hide my Email">
                         Hide my Email
                     </md-checkbox>
                 </md-input-container>
+
                 <md-input-container class="md-icon-float md-block">
                     <label>Time zone</label>
                     <md-select ng-model="$ctrl.model.timeZone" required>
                         <md-option value="American Samoa">(GMT-11:00) American Samoa</md-option>
-                        <md-option value="International Date Line West">(GMT-11:00) International Date Line West</md-option>
+                        <md-option value="International Date Line West">(GMT-11:00) International Date Line
+                            West
+                        </md-option>
                         <md-option value="Midway Island">(GMT-11:00) Midway Island</md-option>
                         <md-option value="Hawaii">(GMT-10:00) Hawaii</md-option>
                         <md-option value="Alaska">(GMT-09:00) Alaska</md-option>
-                        <md-option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp; Canada)</md-option>
+                        <md-option value="Pacific Time (US &amp; Canada)">(GMT-08:00) Pacific Time (US &amp;
+                            Canada)
+                        </md-option>
                         <md-option value="Tijuana">(GMT-08:00) Tijuana</md-option>
                         <md-option value="Arizona">(GMT-07:00) Arizona</md-option>
                         <md-option value="Mazatlan">(GMT-07:00) Mazatlan</md-option>
-                        <md-option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US &amp; Canada)</md-option>
+                        <md-option value="Mountain Time (US &amp; Canada)">(GMT-07:00) Mountain Time (US
+                            &amp; Canada)
+                        </md-option>
                         <md-option value="Central America">(GMT-06:00) Central America</md-option>
-                        <md-option value="Central Time (US &amp; Canada)">(GMT-06:00) Central Time (US &amp; Canada)</md-option>
+                        <md-option value="Central Time (US &amp; Canada)">(GMT-06:00) Central Time (US &amp;
+                            Canada)
+                        </md-option>
                         <md-option value="Guadalajara">(GMT-06:00) Guadalajara</md-option>
                         <md-option value="Mexico City">(GMT-06:00) Mexico City</md-option>
                         <md-option value="Monterrey">(GMT-06:00) Monterrey</md-option>
                         <md-option value="Saskatchewan">(GMT-06:00) Saskatchewan</md-option>
                         <md-option value="Bogota">(GMT-05:00) Bogota</md-option>
-                        <md-option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp; Canada)</md-option>
+                        <md-option value="Eastern Time (US &amp; Canada)">(GMT-05:00) Eastern Time (US &amp;
+                            Canada)
+                        </md-option>
                         <md-option value="Indiana (East)">(GMT-05:00) Indiana (East)</md-option>
                         <md-option value="Lima">(GMT-05:00) Lima</md-option>
                         <md-option value="Quito">(GMT-05:00) Quito</md-option>
-                        <md-option value="Atlantic Time (Canada)">(GMT-04:00) Atlantic Time (Canada)</md-option>
+                        <md-option value="Atlantic Time (Canada)">(GMT-04:00) Atlantic Time (Canada)
+                        </md-option>
                         <md-option value="Caracas">(GMT-04:00) Caracas</md-option>
                         <md-option value="Georgetown">(GMT-04:00) Georgetown</md-option>
                         <md-option value="La Paz">(GMT-04:00) La Paz</md-option>
@@ -217,34 +230,49 @@
                     </md-select>
                 </md-input-container>
                 <md-input-container class="md-icon-float md-block">
-                    <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.warnOnLeavingUnsaved" aria-label="Warn me when leaving a page with unsaved text">
+                    <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.warnOnLeavingUnsaved"
+                                 aria-label="Warn me when leaving a page with unsaved text">
                         Warn me when leaving a page with unsaved text
                     </md-checkbox>
                 </md-input-container>
-            </md-card-content>
-        </div>
 
-        <div flex>
-            <md-card-content>
+                <p class="topUrl">
+                    <a ui-sref="emails">Emails</a>
+                    <!--<a class="animation-target" ng-click="$ctrl.changePassword()">Change password</a>-->
+                    <!--<a ui-sref="my.change-password">Change password</a>-->
+                    <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.changePassword()">Change password
+                    </md-button>
+                </p>
+            </div>
+
+            <div flex layout-margin layout-padding>
                 <md-input-container class="md-icon-float md-block">
                     <p>My account</p>
                     <p>Login: {{ $ctrl.model.login }}</p>
                     <p>Created: {{ $ctrl.model.createdAt }}</p>
                     <p><b>Atom access key</b></p>
                     <hr>
-                    <p>Atom access key created {{ $ctrl.model.atomAccessKeyCreated }} ago (<a ng-click="resetAtomAccesKey()"> Reset </a>)</p>
+                    <p>Atom access key created {{ $ctrl.model.atomAccessKeyCreated }} ago (<a
+                            ng-click="resetAtomAccesKey()"> Reset </a>)</p>
                     <p><b>API access key</b></p>
                     <hr>
                     <p><a ng-click="showApiAccesKey()">Show</a></p>
                     <p>{{ $ctrl.model.apiAccessKey }}</p>
-                    <p>API access key created {{ $ctrl.model.apiAccessKeyCreated }} ago (<a ng-click="resetApiAccesKey()"> Reset </a>)</p>
+                    <p>API access key created {{ $ctrl.model.apiAccessKeyCreated }} ago (<a
+                            ng-click="resetApiAccesKey()"> Reset </a>)</p>
                 </md-input-container>
-           </md-card-content>
+            </div>
+
         </div>
+
+        <div layout="row" layout-align="end">
+            <md-button class="md-raised md-primary animation-target" type="submit" ng-disabled="RegistrationForm.$invalid">Save
+            </md-button>
+        </div>
+
     </div>
-    </form>
-    <md-card-actions layout="row" layout-align="left">
-        <md-button class="md-raised md-primary" type = "submit" ng-disabled="RegistrationForm.$invalid">Save
-        </md-button>
-    </md-card-actions>
-</md-card>
+
+</form>
+
+
+

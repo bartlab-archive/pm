@@ -7,6 +7,7 @@ import 'satellizer';
 // import 'ng-table';
 import 'md-data-table';
 import 'angular-material';
+import 'angular-messages';
 import 'angular-animate';
 import 'angular-aria';
 
@@ -14,6 +15,8 @@ import 'filters.module';
 import 'services.module';
 import 'components/components.module';
 
+import AppRun from 'app.run';
+import AppConfig from 'app.config';
 import ProjectsService from 'services/projects.service';
 import IssuesService from 'services/issues.service';
 
@@ -27,7 +30,7 @@ angular
             'ngSanitize',
             'ngAnimate',
             'ngAria',
-            // 'ngMessages',
+            'ngMessages',
             'ngMaterial',
 
             'ui.router',
@@ -41,6 +44,8 @@ angular
             'app.services'
         ]
     )
+    .config(AppConfig.inst())
+    .run(AppRun.inst());
     .service('ProjectsService', ProjectsService)
     .service('IssuesService', IssuesService)
     .config(appConfig)

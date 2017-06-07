@@ -1,7 +1,6 @@
 import MainLogoutController from './main-logout.controller';
 
-const mainLogoutComponent = {
+export default  {
+    name: 'mainLogoutComponent',
     controller: MainLogoutController,
 };
-
-export default mainLogoutComponent;

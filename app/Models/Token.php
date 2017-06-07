@@ -3,12 +3,32 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Token extends Model
 {
     protected $table = 'tokens';
 
-    public $timestamps = false;
+    /**
+     * Auto create timestamp
+     *
+     * @var bool
+     */
+    public $timestamps = true;
+
+    /**
+     * The name of the "created on" column.
+     *
+     * @var string
+     */
+    const CREATED_AT = 'created_on';
+
+    /**
+     * The name of the "updated on" column.
+     *
+     * @var string
+     */
+    const UPDATED_AT = 'updated_on';
 
     /**
      * The attributes that are mass assignable.
@@ -17,8 +37,20 @@ class Token extends Model
      */
     protected $guarded = ['id'];
 
-    protected $dates = [
-        'created_on',
-        'updated_on',
-    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public static function checkHeaderAuthToken(Request $request)
+    {
+        $auth_token = $request->header('Authorization');
+        $auth_token = explode(' ', $auth_token);
+
+        if (!$auth_token || !isset($auth_token[1])) {
+            return false;
+        }
+
+        return Token::where('action', 'session')->where('value', $auth_token[1])->exists();
+    }
 }

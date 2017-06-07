@@ -1,20 +1,16 @@
+import ControllerBase from 'base/controller.base';
 import _ from 'lodash';
 /**
  * MainLoginController class
+ *
+ * @property $mdToast
+ * @property $auth
+ * @property $state
  */
-export default class MainLoginController {
+export default class MainLoginController extends ControllerBase {
 
     static get $inject() {
-        return ['$injector'];
-    }
-
-    constructor($injector) {
-        this.toaster = $injector.get('$mdToast');
-        this.$auth = $injector.get('$auth');
-        this.$state = $injector.get('$state');
-    }
-
-    $onInit() {
+        return ['$mdToast', '$auth', '$state'];
     }
 
     onSubmit() {
@@ -23,11 +19,9 @@ export default class MainLoginController {
     }
 
     onLogin(response) {
-        // console.log(response);
-
         if (response.data.token) {
-            this.toaster.show(
-                this.toaster.simple()
+            this.$mdToast.show(
+                this.$mdToast.simple()
                     .textContent('Welcome!')
             );
 
@@ -36,11 +30,12 @@ export default class MainLoginController {
             this.$state.go('home');
             // });
         } else {
-            this.toaster.show(
-                this.toaster.simple()
+            this.$mdToast.show(
+                this.$mdToast.simple()
                     .textContent('Whoops, your password or email are incorrect')
             );
         }
+
         this.errors = _.get(response, 'data.errors', {});
     }
 }

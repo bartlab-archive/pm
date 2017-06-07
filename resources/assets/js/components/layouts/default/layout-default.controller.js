@@ -1,15 +1,23 @@
-export default class LayoutDefaultController {
+import ControllerBase from 'base/controller.base';
+
+/**
+ * @property $mdSidenav
+ * @property $state
+ */
+export default class LayoutDefaultController extends ControllerBase {
 
     static get $inject() {
-        return ['$injector'];
-    }
-
-    constructor($injector) {
-        this.$mdSidenav = $injector.get('$mdSidenav');
-        this.$state = $injector.get('$state');
+        return ['$mdSidenav', '$state'];
     }
 
     $onInit() {
+        this.items = [
+            {url: 'home', name: 'Home', icon: 'home'},
+            {url: 'home', name: 'My page', icon: 'person'},
+            {url: 'projects.list', name: 'Projects', icon: 'work'},
+            {url: 'admin.index', name: 'Administration', icon: 'apps'},
+            {url: 'home', name: 'Help', icon: 'help'}
+        ];
     }
 
     toggle() {
@@ -21,10 +29,15 @@ export default class LayoutDefaultController {
     };
 
     myAccount() {
-        this.$state.go('my-account');
+        this.$state.go('my.account');
     }
 
-    logout(){
+    logout() {
         this.$state.go('logout');
+    }
+
+    gothoughmenu(route) {
+        this.$state.go(route);
+        this.toggle();
     }
 }

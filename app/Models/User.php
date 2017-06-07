@@ -9,19 +9,39 @@ class User extends Authenticatable
 {
     protected $table = 'users';
 
-    public $timestamps = false;
+    /**
+     * Auto create timestamp
+     *
+     * @var bool
+     */
+    public $timestamps = true;
 
     /**
-     * The attributes that are mass assignable.
+     * The name of the "created on" column.
      *
-     * @var array
+     * @var string
      */
+    const CREATED_AT = 'created_on';
+
+    /**
+     * The name of the "updated on" column.
+     *
+     * @var string
+     */
+    const UPDATED_AT = 'updated_on';
+
     protected $guarded = ['id'];
 
-    protected $dates = [
-        'created_on',
-        'updated_on',
-    ];
+    public static function userByHeaderAuthToken(Request $request)
+    {
+        $auth_token = $request->header('Authorization');
+        $auth_token = explode(' ', $auth_token)[1];
+
+        return Token::where('action', 'session')
+            ->where('value', $auth_token)
+            ->first()
+            ->user;
+    }
 
     public function email()
     {
@@ -36,6 +56,11 @@ class User extends Authenticatable
     public function preference()
     {
         return $this->hasOne(UserPreference::class);
+    }
+
+    public function session_token()
+    {
+        return $this->hasOne(Token::class);
     }
 
     public function comments()

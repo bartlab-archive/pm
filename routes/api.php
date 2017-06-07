@@ -24,8 +24,32 @@ Route::group(
 //        'middleware' => 'auth'
     ],
     function () {
-        Route::post('auth', 'Auth\LoginController@login');
-        Route::post('register', 'Auth\RegisterController@register');
+        Route::group(
+            [
+                'namespace' => 'Auth'
+            ],
+            function ()
+            {
+                Route::post('auth', 'LoginController@login');
+                Route::post('register', 'RegisterController@register');
+                Route::get('password-reset', 'ResetPasswordController@sendToken');
+                Route::post('password-reset', 'ResetPasswordController@reset');
+            }
+        );
+
+        Route::group(
+            [
+                'prefix' => 'my',
+                'namespace' => 'My',
+                'middleware' => 'auth'
+            ],
+            function ()
+            {
+                Route::get('account', 'AccountController@show');
+            }
+        );
+
+        // projects
 
 
         Route::group(['prefix' => 'projects'], function (){
@@ -46,6 +70,16 @@ Route::group(
         Route::get('/issues', 'IssuesController@getIssues');
         Route::get('/issues/{id}', 'IssuesController@getIssue');
 
+
+        // users
+
+        Route::get('users', function (Request $request) {
+            return \App\Models\User::orderBy('login')->get();
+        });
+
+        Route::get('users/{id}', function ($identifier) {
+            return \App\Models\User::where('id', $identifier)->first();
+        });
 //        Route::post('auth', 'Auth\LoginController@login');
 //        Route::post('register', 'Auth\RegisterController@register');
 //        Route::post('reset', 'Auth\ForgotPasswordController@resetVerify');
