@@ -17,11 +17,14 @@ use Illuminate\Http\Request;
 //    return $request->user();
 //});
 
-
+/**
+ * Route group
+ *
+ * This route group contains the routes api version 1
+ */
 Route::group(
     [
-        'prefix' => 'v1',
-//        'middleware' => 'auth'
+        'prefix' => 'v1'
     ],
     function () {
         Route::group(
@@ -51,17 +54,17 @@ Route::group(
 
         // projects
 
-        Route::get('projects', function (Request $request) {
-            $list = \App\Models\Project::orderBy('name')->where('status', 1);
-            if ($request->input('closed')) {
-                $list->orWhere('status', 5);
+        Route::group(
+            [
+                'namespace' => 'Projects',
+                'middleware' => 'auth'
+            ],
+            function ()
+            {
+                Route::get('projects', 'ProjectController@index');
+                Route::get('projects/{identifier}', 'ProjectController@show');
             }
-            return $list->get();
-        });
-
-        Route::get('projects/{identifier}', function ($identifier) {
-            return \App\Models\Project::where('identifier', $identifier)->first();
-        });
+        );
 
         // users
 
