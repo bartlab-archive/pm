@@ -30,7 +30,7 @@
 
             <md-input-container class="md-icon-float md-block">
                 <label for="repeatPass">Repeat Password</label>
-                <input ng-model="$ctrl.signup.repeatPassword" id="repeatPass"
+                <input ng-model="$ctrl.signup.repeat_password" id="repeatPass"
                        ng-pattern="{{$ctrl.signup.password}}"
                        name="repeatPass" minlength="6"
                        type="password" required>
@@ -81,8 +81,8 @@
 
             <md-input-container class="md-icon-float md-block">
                 <label>Language</label>
-                <md-select ng-model="$ctrl.signup.selectedLang">
-                    <md-option ng-value="language" ng-repeat="language in $ctrl.languages">{{ language.name }}
+                <md-select ng-model="$ctrl.signup.lang">
+                    <md-option ng-value="language.id" ng-repeat="language in $ctrl.languages">{{ language.name }}
                     </md-option>
                 </md-select>
             </md-input-container>

@@ -1,3 +1,4 @@
+import successTemplate from './toaster-templates/toaster-success.html'
 
 export default class MaterialToastService {
 
@@ -11,13 +12,18 @@ export default class MaterialToastService {
     }
 
     success() {
+        this.showToaster(successTemplate);
+    }
+
+    error() {
+
+    }
+
+    showToaster(template, position = 'bottom right') {
         this.toaster.show({
-            position: 'bottom right',
-            template: '<md-toast>' +
-            '<div class="md-toast-content">' +
-            'This is a success preset' +
-            '</div>' +
-            '</md-toast>',
+            hideDelay: 170000,
+            position: position,
+            template: template,
             controllerAs: 'toast',
             bindToController: true
         });

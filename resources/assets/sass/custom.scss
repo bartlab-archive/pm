@@ -54,3 +54,28 @@ md-input-container {
   }
 }
 
+
+md-toast.notification {
+
+  &.success {
+
+    .md-toast-content {
+      background: #32CD32;
+    }
+  }
+
+  &.error {
+
+    .md-toast-content {
+      background: #FF0000;
+    }
+  }
+
+  .md-toast-content {
+    min-width: 300px;
+    color: white;
+    opacity: 0.7;
+  }
+
+}
+
