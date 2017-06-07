@@ -75,4 +75,8 @@ export default class UsersService {
       return this.Restangular.one('my').one('account').get();
     }
 
+    getApiAccesKey() {
+      return this.Restangular.one('my').one('api-key').get();
+    }
+
 }

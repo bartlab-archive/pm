@@ -4,8 +4,11 @@ export default class myShowApiKeyController{
   }
 
   constructor($injector) {
-    this.$auth = $injector.get('$auth');
-    this.$state = $injector.get('$state');
-    this.toaster = $injector.get('$mdToast');
+    this.UserService = $injector.get('UsersService');
+
+    this.UserService.getApiAccesKey().then((result) => {
+      this.apiKey = result;
+    });
+
   }
 }
