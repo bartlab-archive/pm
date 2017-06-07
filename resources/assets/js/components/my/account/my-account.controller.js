@@ -1,9 +1,9 @@
 import angular from 'angular';
 import ControllerBase from 'base/controller.base';
-import PasswordTemplate from './change-password/my-account-change-password.html';
-import myChangePasswordController from './change-password/my-account-change-password.controller';
-import myShowApiKeyTemplate from './show-api-key/my-account-show-api-key.html';
-import myShowApiKeyController from './show-api-key/my-account-show-api-key.controller';
+import PasswordTemplate from '../change-password/my-change-password.html';
+import myChangePasswordController from '../change-password/my-change-password.controller';
+import myShowApiKeyTemplate from './my-show-api-key.html';
+import myShowApiKeyController from './my-show-api-key.controller';
 
 /**
  * @property $auth
@@ -21,13 +21,11 @@ export default class mainMyAccountIndexController extends ControllerBase {
     $onInit() {
         this.user = this.UsersService.getUserInfo();
         this.languages = this.UsersService.getLanguage();
-        this.timeZone = this.UsersService.getTimeZone();
 
         this.element = angular.element(document.body);
     }
 
-    setMdPanelConfig(ctrl, tmpl, target) {
-
+    changePassword() {
         let position = this.$mdPanel.newPanelPosition()
             .absolute()
             .left()
@@ -35,40 +33,53 @@ export default class mainMyAccountIndexController extends ControllerBase {
 
         let animation = this.$mdPanel.newPanelAnimation();
         animation.duration(300);
-        animation.openFrom(target);
+        animation.openFrom('.animation-target');
         animation.withAnimation(this.$mdPanel.animation.SCALE);
 
-        this.config = {
+        // todo: move to self component
+        let config = {
             animation: animation,
             attachTo: this.element,
-            controller: ctrl,
+            controller: myChangePasswordController,
             controllerAs: '$ctrl',
-            template: tmpl,
+            template: PasswordTemplate,
             panelClass: 'change-password-dialog',
             position: position,
             trapFocus: true,
             clickOutsideToClose: true,
             clickEscapeToClose: true,
             hasBackdrop: true,
-        }
-    }
+        };
 
-    changePassword() {
-        this.setMdPanelConfig(myChangePasswordController, PasswordTemplate, '.animation-target');
-        this.$mdPanel.open(this.config);
+        this.$mdPanel.open(config);
     }
 
     showApiKey() {
-        this.setMdPanelConfig(myShowApiKeyController, myShowApiKeyTemplate, '.show-key');
-        this.$mdPanel.open(this.config);
-    }
+        let position = this._mdPanel.newPanelPosition()
+          .absolute()
+          .left()
+          .top();
 
-    resetApiKey() {
-        this.UsersService.resetApiAccesKey();
-    }
+        let animation = this._mdPanel.newPanelAnimation();
+        animation.duration(300);
+        animation.openFrom('.show-key');
+        animation.withAnimation(this._mdPanel.animation.SCALE);
 
-    resetAtomKey() {
-        this.UsersService.resetAtomAccesKey();
+        let config = {
+          animation: animation,
+          attachTo: this.element,
+          controller: myShowApiKeyController,
+          controllerAs: '$ctrl',
+          template: myShowApiKeyTemplate,
+          panelClass: 'change-password-dialog',
+          position: position,
+          trapFocus: true,
+          clickOutsideToClose: true,
+          clickEscapeToClose: true,
+          hasBackdrop: true,
+        };
+
+        this._mdPanel.open(config);
     }
 
 }

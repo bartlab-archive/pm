@@ -64,6 +64,7 @@ class RegisterController extends Controller
             'login' => $request->input('login'),
             'firstname' => $request->input('first_name'),
             'lastname' => $request->input('last_name'),
+            'language' => $request->input('lang'),
             'salt' => $salt,
             'hashed_password' => sha1($salt . sha1($request->input('password')))
         ]);
@@ -79,10 +80,15 @@ class RegisterController extends Controller
         /**
          * Create user preference relationship
          */
-        UserPreference::create([
+        $user_reference = UserPreference::create([
             'user_id' => $user->id,
             'hide_mail' => $request->input('hide_email', 0)
         ]);
+
+        /**
+         * Add the default serialized data
+         */
+        UserPreference::updateOthers($user_reference);
 
         return response(null, 201);
     }
