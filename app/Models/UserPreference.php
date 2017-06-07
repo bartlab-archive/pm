@@ -6,7 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserPreference extends Model
 {
+    /**
+     * Others field symbol in serialize data
+     */
     const OTHERS_FIELD_SYMBOL = ':';
+
+    /**
+     * Default others data for serialize data
+     */
+    const DEFAULT_OTHERS_DATA = [
+        'no_self_notified' => 1,
+        'comments_sorting' => 'asc',
+        'warn_on_leaving_unsaved' => 1,
+        'gantt_zoom' => 2,
+        'gantt_months' => 6
+    ];
 
     protected $table = 'user_preferences';
 
@@ -48,7 +62,7 @@ class UserPreference extends Model
      * @param array $others
      * @return bool
      */
-    public static function updateOthers(UserPreference $preference, array $others)
+    public static function updateOthers(UserPreference $preference, array $others = self::DEFAULT_OTHERS_DATA)
     {
         $update_others = [];
 

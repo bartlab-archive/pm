@@ -79,10 +79,15 @@ class RegisterController extends Controller
         /**
          * Create user preference relationship
          */
-        UserPreference::create([
+        $user_reference = UserPreference::create([
             'user_id' => $user->id,
             'hide_mail' => $request->input('hide_email', 0)
         ]);
+
+        /**
+         * Add the default serialized data
+         */
+        UserPreference::updateOthers($user_reference);
 
         return response(null, 201);
     }

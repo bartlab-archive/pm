@@ -32,8 +32,8 @@ Route::group(
             {
                 Route::post('auth', 'LoginController@login');
                 Route::post('register', 'RegisterController@register');
-                Route::get('password-reset', 'ResetPasswordController@sendToken');
-                Route::post('password-reset', 'ResetPasswordController@reset');
+                Route::post('password-reset', 'ResetPasswordController@sendToken');
+                Route::put('password-reset', 'ResetPasswordController@reset');
             }
         );
 
