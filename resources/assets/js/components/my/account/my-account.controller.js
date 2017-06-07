@@ -21,6 +21,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
     $onInit() {
         this.user = this.UsersService.getUserInfo();
         this.languages = this.UsersService.getLanguage();
+        this.timeZone = this.UsersService.getTimeZone();
 
         this.element = angular.element(document.body);
     }
