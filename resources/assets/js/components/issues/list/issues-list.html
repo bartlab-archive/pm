@@ -7,33 +7,51 @@
 <body>
 <h1>Test Data</h1>
 <div >
-    <table ng-table="$ctrl.test" class="table table-condensed table-bordered table-striped">
-        <tr>
-            <th>checkbox</th>
-            <th>id</th>
-            <th>tracker_id</th>
-            <th>priority_id</th>
-            <th>subject</th>
-            <th>assigned_to_id</th>
-            <th>updated_on</th>
-        </tr>
-        <tr ng-repeat="issue in $data track by $index">
-            <td><input type="checkbox"></td>
-            <td title="'#'">
-                <a href="/issues/{{ issue.id }}"></a>{{ issue.id }}
-            </td>
-            <td data-title="'Installation At'">
-                {{issue.tracker_id}}</td>
-            <td data-title="'Installation At'">
-                {{issue.priority_id}}</td>
-            <td data-title="'Installation At'">
-                <a href="/issues/{{ issue.id }}">{{issue.subject}}</a></td>
-            <td data-title="'Installation At'">
-                {{issue.firstname + ' ' + issue.lastname}}</td>
-            <td data-title="'Installation At'">
-                {{issue.updated_on}}</td>
-        </tr>
-    </table>
+    <mdt-table mdt-row="{
+                      data: $ctrl.issues,
+                      'column-keys': [
+                          'tracker_id',
+                          'priority_id',
+                          'firstname',
+                          'lastname'
+                         ]
+                      }">
+        <mdt-header-row>
+            <mdt-column align-rule="left">Dessert (100g serving)</mdt-column>
+            <mdt-column align-rule="right">Calories</mdt-column>
+            <mdt-column align-rule="right">Fat (g)</mdt-column>
+            <mdt-column align-rule="right">Carbs (g)</mdt-column>
+        </mdt-header-row>
+    </mdt-table>
+
+
+    <!--<table ng-table="$ctrl.test" class="table table-condensed table-bordered table-striped">-->
+        <!--<tr>-->
+            <!--<th>checkbox</th>-->
+            <!--<th>id</th>-->
+            <!--<th>tracker_id</th>-->
+            <!--<th>priority_id</th>-->
+            <!--<th>subject</th>-->
+            <!--<th>assigned_to_id</th>-->
+            <!--<th>updated_on</th>-->
+        <!--</tr>-->
+        <!--<tr ng-repeat="issue in $data track by $index">-->
+            <!--<td><input type="checkbox"></td>-->
+            <!--<td title="'#'">-->
+                <!--<a href="/issues/{{ issue.id }}"></a>{{ issue.id }}-->
+            <!--</td>-->
+            <!--<td data-title="'Installation At'">-->
+                <!--{{issue.tracker_id}}</td>-->
+            <!--<td data-title="'Installation At'">-->
+                <!--{{issue.priority_id}}</td>-->
+            <!--<td data-title="'Installation At'">-->
+                <!--<a href="/issues/{{ issue.id }}">{{issue.subject}}</a></td>-->
+            <!--<td data-title="'Installation At'">-->
+                <!--{{issue.firstname + ' ' + issue.lastname}}</td>-->
+            <!--<td data-title="'Installation At'">-->
+                <!--{{issue.updated_on}}</td>-->
+        <!--</tr>-->
+    <!--</table>-->
 </div>
 </body>
 </html>

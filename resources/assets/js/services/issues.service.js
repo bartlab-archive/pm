@@ -12,8 +12,8 @@ export default class IssuesService {
         return this.Restangular.one('issues').one(indifier).get();
     }
 
-    getListByProject(indifier) {
-        return this.Restangular.all('projects').one(indifier).one('issues').get();
+    getListByProject(indifier, params) {
+        return this.Restangular.all('projects/' + indifier + '/issues').getList(params);
     }
     getList(params) {
         return this.Restangular.all('issues').getList(params);

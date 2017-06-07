@@ -11,7 +11,7 @@ angular.module('app.components', [
     'app.components.layouts',
     'app.components.main',
     'app.components.projects',
-    'app.components.issues'
+    'app.components.issues',
     'app.components.projects',
     'app.components.my',
     'app.components.users',

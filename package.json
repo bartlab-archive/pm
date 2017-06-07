@@ -25,14 +25,10 @@
     "ng-table": "^4.0.0",
     "restangular": "*",
     "satellizer": "*",
-    "md-data-table": "*",
-    "angular-aria": "*",
-    "angular-animate": "*",
-    "angular-material": "*",
-    "ng-annotate-webpack-plugin": "*"
+    "md-data-table": "*"
   },
   "dependencies": {
-    "@uirouter/angularjs": "^1.0.3"
+    "@uirouter/angularjs": "^1.0.3",
     "angular-messages": "^1.6.4"
   }
 }

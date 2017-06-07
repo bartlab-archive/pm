@@ -1,12 +1,9 @@
-export default class IssuesEditController {
+import ControllerBase from 'base/controller.base';
+
+export default class IssuesEditController extends ControllerBase{
 
     static get $inject() {
-        return ['$injector'];
-    }
-
-    constructor($injector) {
-        this.IssuesService = $injector.get('IssuesService');
-        this.$stateParams = $injector.get('$stateParams');
+        return ['IssuesService', '$stateParams'];
     }
 
     $onInit() {
