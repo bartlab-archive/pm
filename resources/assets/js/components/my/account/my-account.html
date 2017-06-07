@@ -94,13 +94,13 @@
                     <p><b>Atom access key</b></p>
                     <hr>
                     <p>Atom access key created {{ $ctrl.model.atomAccessKeyCreated }} ago (<a
-                            ng-click="resetAtomAccesKey()"> Reset </a>)</p>
+                            ng-click="$ctrl.resetAtomKey()"> Reset </a>)</p>
                     <p><b>API access key</b></p>
                     <hr>
                     <p><a class="show-key" ng-click="$ctrl.showApiKey()">Show</a></p>
                     <p>{{ $ctrl.model.apiAccessKey }}</p>
                     <p>API access key created {{ $ctrl.model.apiAccessKeyCreated }} ago (<a
-                            ng-click="resetApiAccesKey()"> Reset </a>)</p>
+                            ng-click="$ctrl.resetApiKey()"> Reset </a>)</p>
                 </md-input-container>
             </div>
 

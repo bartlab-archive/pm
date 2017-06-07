@@ -233,4 +233,12 @@ export default class UsersService {
       return this.Restangular.one('my').one('api-key').get();
     }
 
+    resetApiAccesKey() {
+      return this.Restangular.one('my').one('api-key').put();
+    }
+
+    resetAtomAccesKey() {
+      return this.Restangular.one('my').one('rss-key').put();
+    }
+
 }

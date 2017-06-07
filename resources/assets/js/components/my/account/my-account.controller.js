@@ -63,4 +63,12 @@ export default class mainMyAccountIndexController extends ControllerBase {
         this.$mdPanel.open(this.config);
     }
 
+    resetApiKey() {
+        this.UsersService.resetApiAccesKey();
+    }
+
+    resetAtomKey() {
+        this.UsersService.resetAtomAccesKey();
+    }
+
 }
