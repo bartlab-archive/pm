@@ -14,7 +14,7 @@ export default class MainRegistrationController extends ControllerBase {
     }
 
     $onInit() {
-        this.languages = this.UserSevice.getLanguage();
+        this.languages = this.UsersService.getLanguage();
 
         this.signup = {
             login: '',

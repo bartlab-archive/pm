@@ -19,13 +19,14 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
     $onInit() {
-        this.user = this.UserSevice.getUserInfo();
-        this.languages = this.UserSevice.getLanguage();
+        this.user = this.UsersService.getUserInfo();
+        this.languages = this.UsersService.getLanguage();
 
         this.element = angular.element(document.body);
     }
 
-    changePassword() {
+    setMdPanelConfig(ctrl, tmpl, target) {
+
         let position = this.$mdPanel.newPanelPosition()
             .absolute()
             .left()
@@ -33,53 +34,32 @@ export default class mainMyAccountIndexController extends ControllerBase {
 
         let animation = this.$mdPanel.newPanelAnimation();
         animation.duration(300);
-        animation.openFrom('.animation-target');
+        animation.openFrom(target);
         animation.withAnimation(this.$mdPanel.animation.SCALE);
 
-        // todo: move to self component
-        let config = {
+        this.config = {
             animation: animation,
             attachTo: this.element,
-            controller: myChangePasswordController,
+            controller: ctrl,
             controllerAs: '$ctrl',
-            template: PasswordTemplate,
+            template: tmpl,
             panelClass: 'change-password-dialog',
             position: position,
             trapFocus: true,
             clickOutsideToClose: true,
             clickEscapeToClose: true,
             hasBackdrop: true,
-        };
+        }
+    }
 
-        this.$mdPanel.open(config);
+    changePassword() {
+        this.setMdPanelConfig(myChangePasswordController, PasswordTemplate, '.animation-target');
+        this.$mdPanel.open(this.config);
     }
 
     showApiKey() {
-        let position = this._mdPanel.newPanelPosition()
-          .absolute()
-          .left()
-          .top();
-
-        let animation = this._mdPanel.newPanelAnimation();
-        animation.duration(300);
-        animation.openFrom('.show-key');
-        animation.withAnimation(this._mdPanel.animation.SCALE);
-
-        let config = {
-          animation: animation,
-          attachTo: this.element,
-          controller: myShowApiKeyController,
-          controllerAs: '$ctrl',
-          template: myShowApiKeyTemplate,
-          panelClass: 'change-password-dialog',
-          position: position,
-          trapFocus: true,
-          clickOutsideToClose: true,
-          clickEscapeToClose: true,
-          hasBackdrop: true,
-        };
-
-        this._mdPanel.open(config);
+        this.setMdPanelConfig(myShowApiKeyController, myShowApiKeyTemplate, '.show-key');
+        this.$mdPanel.open(this.config);
     }
 
 }
