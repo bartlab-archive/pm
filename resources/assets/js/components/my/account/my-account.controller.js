@@ -1,9 +1,9 @@
 import angular from 'angular';
 import ControllerBase from 'base/controller.base';
-import PasswordTemplate from '../change-password/my-change-password.html';
-import myChangePasswordController from '../change-password/my-change-password.controller';
-import myShowApiKeyTemplate from './my-show-api-key.html';
-import myShowApiKeyController from './my-show-api-key.controller';
+import PasswordTemplate from './change-password/my-account-change-password.html';
+import myChangePasswordController from './change-password/my-account-change-password.controller';
+import myShowApiKeyTemplate from './show-api-key/my-account-show-api-key.html';
+import myShowApiKeyController from './show-api-key/my-account-show-api-key.controller';
 
 /**
  * @property $auth
