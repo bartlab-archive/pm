@@ -48,13 +48,32 @@
             </h1>
         </md-toolbar>
 
+
         <md-content>
             <md-list flex>
-                <md-list-item class="md-2-line" ng-repeat="item in $ctrl.items" ng-click = "$ctrl.gothoughmenu(item.url)">
-                    <div class="md-list-item-text menu-list-href" layout="column">
-                        <div><md-icon>{{ item.icon }}</md-icon> {{ item.name }}</div>
-                    </div>
-                </md-list-item>
+                <ul class="sidebar-list">
+                    <li ng-repeat="item in $ctrl.items" style="height:auto">
+                        <md-list-item class="md-2-line" ng-click="$ctrl.menuClick(item)">
+                            <div class="md-list-item-text menu-list-href" layout="column">
+                                <div>
+                                    <md-icon>{{ item.icon }}</md-icon>
+                                    {{ item.name }}
+                                </div>
+                            </div>
+                        </md-list-item>
+                        <div class="overflow-hidden">
+                            <md-list-item class="slide-down md-1-line"
+                                          ng-if="item.children && item.children.shown"
+                                          ng-repeat="child in item.children.items" ng-click="$ctrl.menuClick(child)">
+                                <div class=" slide-down md-list-item-text menu-list-href sidebar-list-item-child" layout="column">
+                                    <div>
+                                        <md-icon>{{ child.icon }}</md-icon>
+                                        {{ child.name }}
+                                    </div>
+                                </div>
+                            </md-list-item>
+                        </div>
+                </ul>
             </md-list>
         </md-content>
     </md-sidenav>
