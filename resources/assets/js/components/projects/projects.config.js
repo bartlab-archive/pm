@@ -27,6 +27,15 @@ export default function ProjectsConfig($stateProvider) {
         .state('projects.info', {
             url: '/:id',
             component: 'projectsInfoComponent',
+        })
+        .state('projects.issues', {
+            url: '/:id/issues',
+            component: 'projectsIssuesComponent',
+            data: {
+                access: '?'
+            },
         });
+
+
 }
 ;

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Test Data</h1>
+<div >
+    <table ng-table="$ctrl.test" class="table table-condensed table-bordered table-striped">
+        <tr>
+            <th>checkbox</th>
+            <th>id</th>
+            <th>tracker_id</th>
+            <th>priority_id</th>
+            <th>subject</th>
+            <th>assigned_to_id</th>
+        </tr>
+        <tr ng-repeat="issue in $data track by $index">
+            <td><input type="checkbox"></td>
+            <td title="'#'">
+                <a href="/issues/{{ issue.id }}"></a>{{ issue.id }}
+            </td>
+            <td data-title="'Installation At'">
+                {{issue.tracker_id}}</td>
+            <td data-title="'Installation At'">
+                {{issue.priority_id}}</td>
+            <td data-title="'Installation At'">
+                <a href="/issues/{{ issue.id }}">{{issue.subject}}</a></td>
+            <td data-title="'Installation At'">
+                {{issue.firstname + ' ' + issue.lastname}}</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

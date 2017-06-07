@@ -21,4 +21,9 @@ class Project extends Model
         'created_on',
         'updated_on',
     ];
+
+    public function issues()
+    {
+        return $this->hasMany(Issue::class);
+    }
 }

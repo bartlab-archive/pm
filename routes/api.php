@@ -27,17 +27,25 @@ Route::group(
         Route::post('auth', 'Auth\LoginController@login');
         Route::post('register', 'Auth\RegisterController@register');
 
-        Route::get('projects', function (Request $request) {
-            $list = \App\Models\Project::orderBy('name')->where('status', 1);
-            if ($request->input('closed')) {
-                $list->orWhere('status', 5);
-            }
-            return $list->get();
+
+        Route::group(['prefix' => 'projects'], function (){
+            Route::get('/', function (Request $request) {
+                $list = \App\Models\Project::orderBy('name')->where('status', 1);
+                if ($request->input('closed')) {
+                    $list->orWhere('status', 5);
+                }
+                return $list->get();
+            });
+            Route::get('{identifier}', function ($identifier) {
+                return \App\Models\Project::where('identifier', $identifier)->first();
+            });
+
+            Route::get('{identifier}/issues', 'ProjectsController@getIssues');
         });
 
-        Route::get('projects/{identifier}', function ($identifier) {
-            return \App\Models\Project::where('identifier', $identifier)->first();
-        });
+        Route::get('/issues', 'IssuesController@getIssues');
+        Route::get('/issues/{id}', 'IssuesController@getIssue');
+
 //        Route::post('auth', 'Auth\LoginController@login');
 //        Route::post('register', 'Auth\RegisterController@register');
 //        Route::post('reset', 'Auth\ForgotPasswordController@resetVerify');

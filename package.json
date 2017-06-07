@@ -20,7 +20,7 @@
     "@uirouter/angularjs": "*",
     "restangular": "*",
     "satellizer": "*",
-    "ng-table": "*",
+    "md-data-table": "*",
     "angular-aria": "*",
     "angular-animate": "*",
     "angular-material": "*",
