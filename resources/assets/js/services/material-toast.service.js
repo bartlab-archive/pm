@@ -21,7 +21,7 @@ export default class MaterialToastService {
 
     showToaster(template, position = 'bottom right') {
         this.toaster.show({
-            hideDelay: 170000,
+            hideDelay: 3000,
             position: position,
             template: template,
             controllerAs: 'toast',

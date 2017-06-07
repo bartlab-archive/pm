@@ -25,7 +25,8 @@ export default class MainRegistrationController extends ControllerBase {
             first_name: '',
             last_name: '',
             email: '',
-            lang: ''
+            lang: 'en',
+            hide_email: false
         };
     }
 
