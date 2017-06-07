@@ -24,3 +24,33 @@
     padding-right: 20px;
   }
 }
+
+md-input-container {
+
+  .custom-error-message {
+    font-size: 12px;
+    line-height: 14px;
+    color: rgb(221,44,0);
+    overflow: hidden;
+    -webkit-transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    opacity: 0;
+    margin-top: -50px;
+    padding-top: 5px;
+  }
+
+  .custom-messages {
+    position: relative;
+    -webkit-box-ordinal-group: 5;
+    -ms-flex-order: 4;
+    order: 4;
+    overflow: hidden;
+    clear: left;
+  }
+
+  .custom-error-message-show {
+    opacity: 1;
+    margin-top: 0;
+  }
+}
+

@@ -14,7 +14,7 @@ export default class MainRegistrationController extends ControllerBase {
     }
 
     $onInit() {
-        this.languages = this.UserSevice.getLanguage();
+        this.languages = this.UsersService.getLanguage();
 
         this.signup = {
             login: '',
@@ -24,19 +24,6 @@ export default class MainRegistrationController extends ControllerBase {
             last_name: '',
             email: ''
         };
-
-        this.errors = {
-            passwordError: false
-        };
-
-    }
-
-    checkPassword() {
-        if (!_.isEmpty(this.signup.password) && !_.isEmpty(this.signup.repeatPassword)) {
-            this.errors.passwordError = this.signup.password !== this.signup.repeatPassword;
-        } else {
-            this.errors.passwordError = false;
-        }
     }
 
     submit() {
