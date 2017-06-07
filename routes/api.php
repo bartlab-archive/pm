@@ -45,9 +45,13 @@ Route::group(
             ],
             function ()
             {
-                Route::get('account', 'AccountController@show');
-                Route::put('account', 'AccountController@update');
-                Route::put('password', 'AccountController@changePassword');
+                Route::get('account', 'Account\AccountController@show');
+                Route::put('account', 'Account\AccountController@update');
+                Route::put('password', 'ChangePassword\ChangePasswordController@changePassword');
+
+                Route::get('api-key', 'Keys\KeysController@showApiKey');
+                Route::put('api-key', 'Keys\KeysController@resetApiKey');
+                Route::put('rss-key', 'Keys\KeysController@resetAtomKey');
             }
         );
 

@@ -53,4 +53,36 @@ class Token extends Model
 
         return Token::where('action', 'session')->where('value', $auth_token[1])->exists();
     }
+
+    public static function apiKey(User $user)
+    {
+        return Token::where('user_id', $user->id)
+            ->where('action', 'api')
+            ->first();
+    }
+
+    public static function createApiKey(User $user)
+    {
+        return Token::create([
+            'action' => 'api',
+            'user_id' => $user->id,
+            'value' => sha1(str_random(33))
+        ]);
+    }
+
+    public static function atomKey(User $user)
+    {
+        return Token::where('user_id', $user->id)
+            ->where('action', 'feeds')
+            ->first();
+    }
+
+    public static function createAtomKey(User $user)
+    {
+        return Token::create([
+            'action' => 'feeds',
+            'user_id' => $user->id,
+            'value' => sha1(str_random(33))
+        ]);
+    }
 }

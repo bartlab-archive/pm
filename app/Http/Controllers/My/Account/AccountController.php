@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\My;
+namespace App\Http\Controllers\My\Account;
 
-
-use App\Http\Traits\PasswordTrait;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\EmailAddresses;
@@ -16,26 +14,10 @@ use Illuminate\Http\Request;
  *
  * @package App\Http\Controllers\My
  */
-class AccountController extends Controller
+class AccountController extends Controller implements IAccountController
 {
-    use PasswordTrait;
-
     /**
-     * Show
-     *
-     * This method passes the user info
-     *
-     * @example response {
-     *     "firstname": "Test",
-     *     "lastname": "Dev",
-     *     "login": "test",
-     *     "lang": "ru",
-     *     "created": "2017-06-06 10:44:00",
-     *     "email": "test@mail.ua",
-     *     "hide_email": "0",
-     *     "time_zone": "Kyiv",
-     * }
-     *
+     * @see IAccountController::show
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -72,10 +54,7 @@ class AccountController extends Controller
     }
 
     /**
-     * Update
-     *
-     * This method updates the user info
-     *
+     * @see IAccountController::update
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
@@ -88,7 +67,7 @@ class AccountController extends Controller
 
         $user = User::userByHeaderAuthToken($request);
 
-        $this->validate($request, $this->rules($user)['update'], $this->messages()['update']);
+        $this->validate($request, $this->rules($user), $this->messages());
 
         $user->update([
             'firstname' => $request->input('firstname'),
@@ -123,32 +102,6 @@ class AccountController extends Controller
     }
 
     /**
-     * Change Password
-     *
-     * This method creates new password the user
-     *
-     * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
-     */
-    public function changePassword(Request $request)
-    {
-        $this->validate($request, $this->rules()['change_password'], $this->messages()['change_password']);
-
-        $user = User::userByHeaderAuthToken($request);
-        $pass = $this->preparePassword($user, $request->input('password'));
-
-        if ($pass !== $user->hashed_password) {
-            return response()->json(['password' => 'Invalid credentials.'], 422);
-        }
-
-        $this->resetPassword($user, $request->input('new_password'));
-
-        $user->update(['passwd_changed_on' => date('Y-m-d H:i:s')]);
-
-        return response(null, 204);
-    }
-
-    /**
      * Rules
      *
      * This method returns rules the specific route
@@ -156,16 +109,17 @@ class AccountController extends Controller
      * @param User|null $user
      * @return array
      */
-    protected function rules(User $user = null)
+    protected function rules(User $user)
     {
-        $update = [
+        return [
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'email' => [
                 'required',
                 'string',
                 'email',
-                'max:255'
+                'max:255',
+                'email' => Rule::unique((new EmailAddresses())->getTable(), 'address')->ignore($user->id, 'user_id') //This rule validates the exists email address ignore user email
             ],
             'lang' => 'required|string|max:2',
             'hide_email' => 'required|boolean',
@@ -173,26 +127,6 @@ class AccountController extends Controller
             'comments_sorting' => 'required|string|in:asc,desc',
             'no_self_notified' => 'required|boolean',
             'warn_on_leaving_unsaved' => 'required|boolean'
-        ];
-
-        if ($user) {
-            /**
-             * Validate updated the email address
-             *
-             * This rule validates the exists email address ignore user email
-             */
-            $update['email'] = array_merge($update['email'], ['email' => Rule::unique((new EmailAddresses())->getTable(), 'address')->ignore($user->id, 'user_id')]);
-        }
-
-        $change_password = [
-            'password' => 'required|string',
-            'new_password' => 'required|string|min:6|different:password',
-            'confirm_new_password' => 'required|string|min:6|same:new_password'
-        ];
-
-        return [
-            'update' => $update,
-            'change_password' => $change_password
         ];
     }
 
@@ -205,9 +139,6 @@ class AccountController extends Controller
      */
     protected function messages()
     {
-        return [
-            'update' => [],
-            'change_password' => []
-        ];
+        return [];
     }
 }
