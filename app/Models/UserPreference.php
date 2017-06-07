@@ -17,9 +17,7 @@ class UserPreference extends Model
     const DEFAULT_OTHERS_DATA = [
         'no_self_notified' => 1,
         'comments_sorting' => 'asc',
-        'warn_on_leaving_unsaved' => 1,
-        'gantt_zoom' => 2,
-        'gantt_months' => 6
+        'warn_on_leaving_unsaved' => 1
     ];
 
     protected $table = 'user_preferences';
