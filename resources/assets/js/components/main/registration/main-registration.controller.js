@@ -6,50 +6,38 @@ import * as _ from "lodash";
  * @property $state
  * @property $mdToast
  * @property UsersService
+ * @property MaterialToastService
  */
 export default class MainRegistrationController extends ControllerBase {
 
     static get $inject() {
-        return ['$auth', '$state', '$mdToast', 'UsersService'];
+        return ['$auth', '$state', '$mdToast', 'UsersService', 'MaterialToastService'];
     }
 
     $onInit() {
-        this.languages = this.UserSevice.getLanguage();
+        this.languages = this.UsersService.getLanguage();
+        this.mdToast = this.MaterialToastService;
 
         this.signup = {
             login: '',
             password: '',
-            repeatPassword: '',
+            repeat_password: '',
             first_name: '',
             last_name: '',
-            email: ''
+            email: '',
+            lang: 'en',
+            hide_email: false
         };
-
-        this.errors = {
-            passwordError: false
-        };
-
-    }
-
-    checkPassword() {
-        if (!_.isEmpty(this.signup.password) && !_.isEmpty(this.signup.repeatPassword)) {
-            this.errors.passwordError = this.signup.password !== this.signup.repeatPassword;
-        } else {
-            this.errors.passwordError = false;
-        }
     }
 
     submit() {
-        if (this.signup.password === this.signup.repeatPassword) {
-            console.log(this.signup);
+        console.log(this.signup);
+        if (this.signup.password === this.signup.repeat_password) {
             this.$auth.signup(this.signup).then(
                 (response) => {
                     console.log(response);
-                    if (_.get(response, 'data.token')) {
-                        this.signup.auth_key = response.data.token;
-
-                        this.$mdToast.success();
-
+                    if (response && response.status === 201) {
+                        this.mdToast.success();
                         // this.$state.go('login');
                     }
                 }

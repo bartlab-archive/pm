@@ -17,31 +17,29 @@
                 </div>
             </md-input-container>
 
-            <md-input-container class="md-icon-float md-block" ng-class="{'md-input-invalid': $ctrl.errors.passwordError}">
+            <md-input-container class="md-icon-float md-block">
                 <label>Password</label>
                 <input ng-model="$ctrl.signup.password" minlength="6"
-                       ng-blur="$ctrl.checkPassword()"
                        name="password" type="password" required>
 
                 <div ng-messages="RegistrationForm.password.$error">
                     <div ng-message="minlength">The password must be at least 6 characters.</div>
                     <div ng-message="required">Password can't be blank!</div>
                 </div>
-                <div ng-if="$ctrl.errors.passwordError" style="opacity: 1; margin-top: 0px;"
-                     class="md-input-message-animation ng-scope">Passwords must match!</div>
             </md-input-container>
 
-            <md-input-container class="md-icon-float md-block" ng-class="{'md-input-invalid': $ctrl.errors.passwordError}">
+            <md-input-container class="md-icon-float md-block">
                 <label for="repeatPass">Repeat Password</label>
-                <input ng-model="$ctrl.signup.repeatPassword" id="repeatPass" name="repeatPass" minlength="6"
-                       ng-blur="$ctrl.checkPassword()" type="password" required>
+                <input ng-model="$ctrl.signup.repeat_password" id="repeatPass"
+                       ng-pattern="{{$ctrl.signup.password}}"
+                       name="repeatPass" minlength="6"
+                       type="password" required>
 
                 <div ng-messages="RegistrationForm.repeatPass.$error">
                     <div ng-message="minlength">The password must be at least 6 characters.</div>
                     <div ng-message="required">Password can't be blank!</div>
+                    <div ng-message-exp="['pattern']">Passwords must match!</div>
                 </div>
-                <div ng-if="$ctrl.errors.passwordError" style="opacity: 1; margin-top: 0px;"
-                     class="md-input-message-animation ng-scope">Passwords must match!</div>
             </md-input-container>
 
             <md-input-container class="md-icon-float md-block">
@@ -76,15 +74,15 @@
             </md-input-container>
 
             <md-input-container class="md-icon-float md-block">
-                <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.signup.hideMail" aria-label="Hide my Email">
+                <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.signup.hide_email" aria-label="Hide my Email">
                     Hide my Email
                 </md-checkbox>
             </md-input-container>
 
             <md-input-container class="md-icon-float md-block">
                 <label>Language</label>
-                <md-select ng-model="$ctrl.signup.selectedLang">
-                    <md-option ng-value="language" ng-repeat="language in $ctrl.languages">{{ language.name }}
+                <md-select ng-model="$ctrl.signup.lang">
+                    <md-option ng-value="language.id" ng-repeat="language in $ctrl.languages">{{ language.name }}
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -93,9 +91,6 @@
                 <md-button class="md-raised md-primary" type="submit"
                            ng-disabled="RegistrationForm.$invalid">Registration
                 </md-button>
-
-                <!--<md-button ng-click="$ctrl.submit()" class="md-raised md-primary">Registration-->
-                <!--</md-button>-->
             </md-card-actions>
 
         </form>
