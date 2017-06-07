@@ -1,12 +1,13 @@
-export default class UsersInfoController {
+import ControllerBase from 'base/controller.base';
+
+/**
+ * @property UsersService
+ * @property $stateParams
+ */
+export default class UsersInfoController extends ControllerBase {
 
     static get $inject() {
-        return ['$injector'];
-    }
-
-    constructor($injector) {
-        this.UsersService = $injector.get('UsersService');
-        this.$stateParams = $injector.get('$stateParams');
+        return ['UsersService', '$stateParams'];
     }
 
     $onInit() {

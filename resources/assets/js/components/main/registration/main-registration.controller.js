@@ -1,19 +1,19 @@
-import angular from 'angular';
+import ControllerBase from 'base/controller.base';
 import * as _ from "lodash";
 
-export default class MainRegistrationController {
+/**
+ * @property $auth
+ * @property $state
+ * @property $mdToast
+ * @property UsersService
+ */
+export default class MainRegistrationController extends ControllerBase {
 
     static get $inject() {
-        return ['$injector'];
+        return ['$auth', '$state', '$mdToast', 'UsersService'];
     }
 
-    constructor($injector) {
-
-        this.$auth = $injector.get('$auth');
-        this.$state = $injector.get('$state');
-        this.toaster = $injector.get('$mdToast');
-        this.UserSevice = $injector.get('UsersService');
-
+    $onInit() {
         this.languages = this.UserSevice.getLanguage();
 
         this.signup = {
@@ -25,6 +25,18 @@ export default class MainRegistrationController {
             email: ''
         };
 
+        this.errors = {
+            passwordError: false
+        };
+
+    }
+
+    checkPassword() {
+        if (!_.isEmpty(this.signup.password) && !_.isEmpty(this.signup.repeatPassword)) {
+            this.errors.passwordError = this.signup.password !== this.signup.repeatPassword;
+        } else {
+            this.errors.passwordError = false;
+        }
     }
 
     submit() {
@@ -36,7 +48,7 @@ export default class MainRegistrationController {
                     if (_.get(response, 'data.token')) {
                         this.signup.auth_key = response.data.token;
 
-                        this.toaster.success();
+                        this.$mdToast.success();
 
                         // this.$state.go('login');
                     }

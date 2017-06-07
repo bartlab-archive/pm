@@ -1,20 +1,21 @@
-export default class MainLogoutController {
+import ControllerBase from 'base/controller.base';
+
+/**
+ * @property $mdToast
+ * @property $auth
+ * @property $state
+ */
+export default class MainLogoutController extends ControllerBase {
 
     static get $inject() {
         return ['$mdToast', '$auth', '$state'];
     }
 
-    constructor($mdToast, $auth, $state) {
-        this.toaster = $mdToast;
-        this.$auth = $auth;
-        this.$state = $state;
-    }
-
     $onInit() {
         this.$auth.logout();
 
-        this.toaster.show(
-            this.toaster.simple()
+        this.$mdToast.show(
+            this.$mdToast.simple()
                 .textContent('Logout')
         );
 
