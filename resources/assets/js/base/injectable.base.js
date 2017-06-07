@@ -1,8 +1,6 @@
-export default class Injectable {
+import ObjectBase from 'base/object.base';
 
-    static get $inject() {
-        return [];
-    }
+export default class InjectableBase extends ObjectBase {
 
     /**
      * Constructor for .config() and .run()
@@ -18,15 +16,9 @@ export default class Injectable {
     }
 
     constructor(...args) {
-        const self = this.constructor;
+        super(...args);
 
-        args.forEach((arg, index) => {
-            if (index < self.$inject.length) {
-                this[self.$inject[index]] = arg;
-            }
-        });
-
-        return this.$onInit();
+        this.$onInit();
     }
 
     $onInit() {

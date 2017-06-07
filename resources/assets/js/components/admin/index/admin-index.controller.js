@@ -1,15 +1,5 @@
-export default class AdminIndexController {
+import ControllerBase from 'base/controller.base';
 
-    static get $inject() {
-        return ['$injector'];
-    }
-
-    constructor($injector) {
-
-    }
-
-    $onInit() {
-
-    }
+export default class AdminIndexController extends ControllerBase {
 
 }

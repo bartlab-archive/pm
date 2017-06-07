@@ -17,25 +17,31 @@
                 </div>
             </md-input-container>
 
-            <md-input-container class="md-icon-float md-block">
+            <md-input-container class="md-icon-float md-block" ng-class="{'md-input-invalid': $ctrl.errors.passwordError}">
                 <label>Password</label>
-                <input ng-model="$ctrl.signup.password" minlength="6" name="password" type="password" required>
+                <input ng-model="$ctrl.signup.password" minlength="6"
+                       ng-blur="$ctrl.checkPassword()"
+                       name="password" type="password" required>
 
                 <div ng-messages="RegistrationForm.password.$error">
                     <div ng-message="minlength">The password must be at least 6 characters.</div>
                     <div ng-message="required">Password can't be blank!</div>
                 </div>
+                <div ng-if="$ctrl.errors.passwordError" style="opacity: 1; margin-top: 0px;"
+                     class="md-input-message-animation ng-scope">Passwords must match!</div>
             </md-input-container>
 
-            <md-input-container class="md-icon-float md-block">
+            <md-input-container class="md-icon-float md-block" ng-class="{'md-input-invalid': $ctrl.errors.passwordError}">
                 <label for="repeatPass">Repeat Password</label>
                 <input ng-model="$ctrl.signup.repeatPassword" id="repeatPass" name="repeatPass" minlength="6"
-                       type="password" required>
+                       ng-blur="$ctrl.checkPassword()" type="password" required>
 
                 <div ng-messages="RegistrationForm.repeatPass.$error">
                     <div ng-message="minlength">The password must be at least 6 characters.</div>
                     <div ng-message="required">Password can't be blank!</div>
                 </div>
+                <div ng-if="$ctrl.errors.passwordError" style="opacity: 1; margin-top: 0px;"
+                     class="md-input-message-animation ng-scope">Passwords must match!</div>
             </md-input-container>
 
             <md-input-container class="md-icon-float md-block">

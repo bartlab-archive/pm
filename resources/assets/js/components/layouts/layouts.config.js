@@ -1,11 +1,11 @@
-import Injecteble from 'base/injectable';
+import InjectableBase from 'base/injectable.base';
 
 /**
  * Class LayoutConfig
  *
  * @property $stateProvider
  */
-export default class LayoutConfig extends Injecteble {
+export default class LayoutConfig extends InjectableBase {
 
     static get $inject() {
         return ['$stateProvider']

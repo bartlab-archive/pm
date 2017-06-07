@@ -1,12 +1,13 @@
-export default class ProjectsInfoController {
+import ControllerBase from 'base/controller.base';
+
+/**
+ * @property ProjectsService
+ * @property $stateParams
+ */
+export default class ProjectsInfoController extends ControllerBase {
 
     static get $inject() {
-        return ['$injector'];
-    }
-
-    constructor($injector) {
-        this.ProjectsService = $injector.get('ProjectsService');
-        this.$stateParams = $injector.get('$stateParams');
+        return ['ProjectsService', '$stateParams'];
     }
 
     $onInit() {

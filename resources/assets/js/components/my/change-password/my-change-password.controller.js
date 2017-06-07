@@ -1,11 +1,5 @@
-export default class myChangePasswordController{
-  static get $inject() {
-    return ['$injector'];
-  }
+import ControllerBase from 'base/controller.base';
 
-  constructor($injector) {
-    this.$auth = $injector.get('$auth');
-    this.$state = $injector.get('$state');
-    this.toaster = $injector.get('$mdToast');
-  }
+export default class myChangePasswordController extends ControllerBase {
+
 }

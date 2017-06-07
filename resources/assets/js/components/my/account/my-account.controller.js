@@ -1,22 +1,24 @@
 import angular from 'angular';
+import ControllerBase from 'base/controller.base';
 import PasswordTemplate from '../change-password/my-change-password.html';
 import myChangePasswordController from '../change-password/my-change-password.controller';
 import myShowApiKeyTemplate from './my-show-api-key.html';
 import myShowApiKeyController from './my-show-api-key.controller';
 
+/**
+ * @property $auth
+ * @property $state
+ * @property $mdToast
+ * @property $mdPanel
+ * @property UsersService
+ */
+export default class mainMyAccountIndexController extends ControllerBase {
 
-export default class mainMyAccountIndexController {
     static get $inject() {
-        return ['$injector'];
+        return ['$auth', '$state', '$mdToast', '$mdPanel', 'UsersService'];
     }
 
-    constructor($injector) {
-        this.$auth = $injector.get('$auth');
-        this.$state = $injector.get('$state');
-        this.toaster = $injector.get('$mdToast');
-        this._mdPanel = $injector.get('$mdPanel');
-        this.UserSevice = $injector.get('UsersService');
-
+    $onInit() {
         this.user = this.UserSevice.getUserInfo();
         this.languages = this.UserSevice.getLanguage();
 
@@ -24,16 +26,17 @@ export default class mainMyAccountIndexController {
     }
 
     changePassword() {
-        let position = this._mdPanel.newPanelPosition()
+        let position = this.$mdPanel.newPanelPosition()
             .absolute()
             .left()
             .top();
 
-        let animation = this._mdPanel.newPanelAnimation();
+        let animation = this.$mdPanel.newPanelAnimation();
         animation.duration(300);
         animation.openFrom('.animation-target');
-        animation.withAnimation(this._mdPanel.animation.SCALE);
+        animation.withAnimation(this.$mdPanel.animation.SCALE);
 
+        // todo: move to self component
         let config = {
             animation: animation,
             attachTo: this.element,
@@ -48,7 +51,7 @@ export default class mainMyAccountIndexController {
             hasBackdrop: true,
         };
 
-        this._mdPanel.open(config);
+        this.$mdPanel.open(config);
     }
 
     showApiKey() {
