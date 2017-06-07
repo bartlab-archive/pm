@@ -64,6 +64,7 @@ class RegisterController extends Controller
             'login' => $request->input('login'),
             'firstname' => $request->input('first_name'),
             'lastname' => $request->input('last_name'),
+            'language' => $request->input('lang'),
             'salt' => $salt,
             'hashed_password' => sha1($salt . sha1($request->input('password')))
         ]);
