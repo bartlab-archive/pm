@@ -32,7 +32,7 @@ class AccountController extends Controller implements IAccountController
             $account_info['firstname'] = $user->getAttribute('firstname');
             $account_info['lastname'] = $user->getAttribute('lastname');
             $account_info['login'] = $user->getAttribute('login');
-            $account_info['lang'] = $user->getAttribute('lang');
+            $account_info['lang'] = $user->getAttribute('language');
             $account_info['created'] = $user->getAttribute('created');
             $account_info['must_change_passwd'] = $user->getAttribute('must_change_passwd');
         }
@@ -42,7 +42,7 @@ class AccountController extends Controller implements IAccountController
         }
 
         if ($user_preference) {
-            $account_info['hide_email'] = $user_preference->getAttribute('hide_email');
+            $account_info['hide_mail'] = $user_preference->getAttribute('hide_mail');
             $account_info['time_zone'] = $user_preference->getAttribute('time_zone');
 
             $account_info = array_merge($account_info, UserPreference::parseOthers($user_preference));
