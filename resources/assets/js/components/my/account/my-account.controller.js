@@ -1,10 +1,3 @@
-import angular from 'angular';
-import ControllerBase from 'base/controller.base';
-import PasswordTemplate from './change-password/my-account-change-password.html';
-import myChangePasswordController from './change-password/my-account-change-password.controller';
-import myShowApiKeyTemplate from './show-api-key/my-account-show-api-key.html';
-import myShowApiKeyController from './show-api-key/my-account-show-api-key.controller';
-
 /**
  * @property $auth
  * @property $state
@@ -12,6 +5,15 @@ import myShowApiKeyController from './show-api-key/my-account-show-api-key.contr
  * @property $mdPanel
  * @property UsersService
  */
+import angular from 'angular';
+import ControllerBase from 'base/controller.base';
+import PasswordTemplate from './change-password/my-account-change-password.html';
+import myChangePasswordController from './change-password/my-account-change-password.controller';
+import myShowApiKeyTemplate from './show-api-key/my-account-show-api-key.html';
+import myShowApiKeyController from './show-api-key/my-account-show-api-key.controller';
+import * as _ from 'lodash';
+
+
 export default class mainMyAccountIndexController extends ControllerBase {
 
     static get $inject() {
@@ -19,7 +21,13 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
     $onInit() {
-        // this.user = this.UsersService.getUserInfo();
+        this.user = this.UsersService.getUserInfo().then((response)=>{
+          console.log(response);
+          if (response && response.status === 200) {
+            this.model = _.isEmpty(response.data) ? {} : response.data;
+          }
+        });
+
         this.languages = this.UsersService.getLanguage();
         this.timeZone = this.UsersService.getTimeZone();
 

@@ -9,12 +9,12 @@
             <div flex>
                 <md-input-container class="md-icon-float md-block">
                     <label>First Name</label>
-                    <input ng-model="$ctrl.model.firstName" type="text" required>
+                    <input ng-model="$ctrl.model.firstname" type="text" required>
                 </md-input-container>
 
                 <md-input-container class="md-icon-float md-block">
                     <label>Last Name</label>
-                    <input ng-model="$ctrl.model.lastName" type="text" required>
+                    <input ng-model="$ctrl.model.lastname" type="text" required>
                 </md-input-container>
 
                 <md-input-container class="md-icon-float md-block">
@@ -24,8 +24,8 @@
 
                 <md-input-container class="md-icon-float md-block">
                     <label>Language</label>
-                    <md-select ng-model="$ctrl.model.selectedLang" required>
-                        <md-option ng-value="language" ng-repeat="language in $ctrl.languages">
+                    <md-select ng-model="$ctrl.model.lang" required>
+                        <md-option ng-value="language.id" ng-repeat="language in $ctrl.languages">
                             {{language.name }}
                         </md-option>
                     </md-select>
@@ -46,13 +46,13 @@
                 </md-input-container>
 
                 <md-input-container class="md-icon-float md-block">
-                    <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.noSelfNotified"
+                    <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.no_self_notified"
                                  aria-label="I don't want to be notified of changes that I make myself">
                         I don't want to be notified of changes that I make myself
                     </md-checkbox>
                 </md-input-container>
                 <md-input-container class="md-icon-float md-block">
-                    <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.hideMail"
+                    <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.hide_mail"
                                  aria-label="Hide my Email">
                         Hide my Email
                     </md-checkbox>
@@ -60,7 +60,7 @@
 
                 <md-input-container class="md-icon-float md-block">
                     <label>Time zone</label>
-                    <md-select ng-model="$ctrl.model.selectedLang" required>
+                    <md-select ng-model="$ctrl.model.timezone" required>
                         <md-option ng-value="zone.value" ng-repeat="zone in $ctrl.timeZone">
                             {{ zone.name }}
                         </md-option>
@@ -68,13 +68,13 @@
                 </md-input-container>
                 <md-input-container class="md-icon-float md-block">
                     <label>Display comments</label>
-                    <md-select ng-model="$ctrl.model.commentSorting" required>
+                    <md-select ng-model="$ctrl.model.comments_sorting" required>
                         <md-option value="asc">In chronological order</md-option>
                         <md-option value="desc">In reverse chronological order</md-option>
                     </md-select>
                 </md-input-container>
                 <md-input-container class="md-icon-float md-block">
-                    <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.warnOnLeavingUnsaved"
+                    <md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.warn_on_leaving_unsaved"
                                  aria-label="Warn me when leaving a page with unsaved text">
                         Warn me when leaving a page with unsaved text
                     </md-checkbox>
@@ -90,7 +90,7 @@
                 <md-input-container class="md-icon-float md-block">
                     <p>My account</p>
                     <p>Login: {{ $ctrl.model.login }}</p>
-                    <p>Created: {{ $ctrl.model.createdAt }}</p>
+                    <p>Created: {{ $ctrl.model.created }}</p>
                     <p><b>Atom access key</b></p>
                     <hr>
                     <p>Atom access key created {{ $ctrl.model.atomAccessKeyCreated }} ago (<a
