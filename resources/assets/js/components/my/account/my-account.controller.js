@@ -37,7 +37,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
     setMdPanelConfig(ctrl, tmpl, target) {
-        this.model.update();
+
         let position = this.$mdPanel.newPanelPosition()
             .absolute()
             .center();
@@ -89,7 +89,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
     submit() {
-      this.model.update();
+      this.model.save();
     }
 
 }
