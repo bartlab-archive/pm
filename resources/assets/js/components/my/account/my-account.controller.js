@@ -24,18 +24,18 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
     $onInit() {
-        this.user = this.UsersService.getUserInfo().then((response)=>{
-          console.log(response);
-          if (response && response.status === 200) {
-            // this.model = _.isEmpty(response.data) ? {} : response.data;
+        this.user = this.UsersService.getUserInfo().then((response) => {
+            console.log(response);
+            if (response && response.status === 200) {
+                // this.model = _.isEmpty(response.data) ? {} : response.data;
 
-            if (!_.isEmpty(response.data)) {
-              this.model = response.data;
-              this.model.hide_mail = !!response.data.hide_mail;
-              this.model.no_self_notified = !!response.data.no_self_notified;
-              this.model.warn_on_leaving_unsaved = !!response.data.warn_on_leaving_unsaved;
+                if (!_.isEmpty(response.data)) {
+                    this.model = response.data;
+                    this.model.hide_mail = !!response.data.hide_mail;
+                    this.model.no_self_notified = !!response.data.no_self_notified;
+                    this.model.warn_on_leaving_unsaved = !!response.data.warn_on_leaving_unsaved;
+                }
             }
-          }
         });
 
         this.languages = this.UsersService.getLanguage();
@@ -55,7 +55,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
         animation.openFrom(target);
         animation.withAnimation(this.$mdPanel.animation.SCALE);
 
-        this.config = {
+        return {
             animation: animation,
             attachTo: this.element,
             controller: ctrl,
@@ -71,18 +71,21 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
     changePassword() {
-        this.setMdPanelConfig(myChangePasswordController, PasswordTemplate, '.animation-target');
-        this.$mdPanel.open(this.config);
+        this.$mdPanel.open(
+            this.setMdPanelConfig(myChangePasswordController, PasswordTemplate, '.animation-target')
+        );
     }
 
     showApiKey() {
-        this.setMdPanelConfig(myShowApiKeyController, myShowApiKeyTemplate, '.show-key');
-        this.$mdPanel.open(this.config);
+        this.$mdPanel.open(
+            this.setMdPanelConfig(myShowApiKeyController, myShowApiKeyTemplate, '.show-key')
+        );
     }
 
     addEmail() {
-      this.setMdPanelConfig(myAccountAddMailController, myAccountAddMailTemplate, '.show-add-mail');
-      this.$mdPanel.open(this.config);
+        this.$mdPanel.open(
+            this.setMdPanelConfig(myAccountAddMailController, myAccountAddMailTemplate, '.show-add-mail')
+        );
     }
 
     resetApiKey() {
