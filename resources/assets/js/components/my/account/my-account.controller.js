@@ -42,10 +42,10 @@ export default class mainMyAccountIndexController extends ControllerBase {
             .absolute()
             .center();
 
-        let animation = this.$mdPanel.newPanelAnimation();
-        animation.duration(300);
-        animation.openFrom(target);
-        animation.withAnimation(this.$mdPanel.animation.SCALE);
+        let animation = this.$mdPanel.newPanelAnimation()
+            .duration(300)
+            .openFrom(target)
+            .withAnimation(this.$mdPanel.animation.SCALE);
 
         return {
             animation: animation,
@@ -89,7 +89,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
     submit() {
-      this.model.save();
+        this.model.save();
     }
 
 }
