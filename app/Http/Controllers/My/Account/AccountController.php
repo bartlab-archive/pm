@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\My\Account;
 
 use App\Http\Controllers\Controller;
+use App\Models\Token;
 use App\Models\User;
 use App\Models\EmailAddresses;
 use App\Models\UserPreference;
@@ -33,8 +34,15 @@ class AccountController extends Controller implements IAccountController
             $account_info['lastname'] = $user->getAttribute('lastname');
             $account_info['login'] = $user->getAttribute('login');
             $account_info['lang'] = $user->getAttribute('language');
-            $account_info['created'] = $user->getAttribute('created');
+            $account_info['created'] = date($user->getAttribute('created_on'));
             $account_info['must_change_passwd'] = $user->getAttribute('must_change_passwd');
+            $account_info['mail_notification'] = $user->getAttribute('mail_notification');
+
+            $api_key = Token::apiKey($user);
+            $account_info['api_key_updated_on'] = $api_key ? date($api_key->updated_on) : null;
+
+            $atom_key = Token::atomKey($user);
+            $account_info['atom_key_updated_on'] = $atom_key ? date($atom_key->updated_on) : null;
         }
 
         if ($user_email_address) {
