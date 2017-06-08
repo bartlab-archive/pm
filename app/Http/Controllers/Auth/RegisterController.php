@@ -66,7 +66,8 @@ class RegisterController extends Controller
             'lastname' => $request->input('last_name'),
             'language' => $request->input('lang'),
             'salt' => $salt,
-            'hashed_password' => sha1($salt . sha1($request->input('password')))
+            'hashed_password' => sha1($salt . sha1($request->input('password'))),
+            'mail_notification' => 'only_my_events'
         ]);
 
         /**
