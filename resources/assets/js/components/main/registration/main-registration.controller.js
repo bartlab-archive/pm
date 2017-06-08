@@ -41,7 +41,9 @@ export default class MainRegistrationController extends ControllerBase {
                         // this.$state.go('login');
                     }
                 }
-            );
+            ).catch((error) => {
+
+            });
         }
     }
 }

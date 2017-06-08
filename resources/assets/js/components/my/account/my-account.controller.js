@@ -14,61 +14,60 @@ import myShowApiKeyController from './show-api-key/my-account-show-api-key.contr
  */
 export default class mainMyAccountIndexController extends ControllerBase {
 
-  static get $inject() {
-    return ['$auth', '$state', '$mdToast', '$mdPanel', 'UsersService'];
-  }
-
-  $onInit() {
-    this.user = this.UsersService.getUserInfo();
-    this.languages = this.UsersService.getLanguage();
-    this.timeZone = this.UsersService.getTimeZone();
-
-    this.element = angular.element(document.body);
-  }
-
-  setMdPanelConfig(ctrl, tmpl, target) {
-
-    let position = this.$mdPanel.newPanelPosition()
-      .absolute()
-      .left()
-      .top();
-
-    let animation = this.$mdPanel.newPanelAnimation();
-    animation.duration(300);
-    animation.openFrom(target);
-    animation.withAnimation(this.$mdPanel.animation.SCALE);
-
-    this.config = {
-      animation: animation,
-      attachTo: this.element,
-      controller: ctrl,
-      controllerAs: '$ctrl',
-      template: tmpl,
-      panelClass: 'change-password-dialog',
-      position: position,
-      trapFocus: true,
-      clickOutsideToClose: true,
-      clickEscapeToClose: true,
-      hasBackdrop: true,
+    static get $inject() {
+        return ['$auth', '$state', '$mdToast', '$mdPanel', 'UsersService'];
     }
-  }
 
-  changePassword() {
-    this.setMdPanelConfig(myChangePasswordController, PasswordTemplate, '.animation-target');
-    this.$mdPanel.open(this.config);
-  }
+    $onInit() {
+        this.user = this.UsersService.getUserInfo();
+        this.languages = this.UsersService.getLanguage();
+        this.timeZone = this.UsersService.getTimeZone();
 
-  showApiKey() {
-    this.setMdPanelConfig(myShowApiKeyController, myShowApiKeyTemplate, '.show-key');
-    this.$mdPanel.open(this.config);
-  }
+        this.element = angular.element(document.body);
+    }
 
-  resetApiKey() {
-    this.UsersService.resetApiAccessKey();
-  }
+    setMdPanelConfig(ctrl, tmpl, target) {
 
-  resetAtomKey() {
-    this.UsersService.resetAtomAccessKey();
-  }
+        let position = this.$mdPanel.newPanelPosition()
+            .absolute()
+            .center();
+
+        let animation = this.$mdPanel.newPanelAnimation();
+        animation.duration(300);
+        animation.openFrom(target);
+        animation.withAnimation(this.$mdPanel.animation.SCALE);
+
+        this.config = {
+            animation: animation,
+            attachTo: this.element,
+            controller: ctrl,
+            controllerAs: '$ctrl',
+            template: tmpl,
+            panelClass: 'change-password-dialog',
+            position: position,
+            trapFocus: true,
+            clickOutsideToClose: true,
+            clickEscapeToClose: true,
+            hasBackdrop: true,
+        }
+    }
+
+    changePassword() {
+        this.setMdPanelConfig(myChangePasswordController, PasswordTemplate, '.animation-target');
+        this.$mdPanel.open(this.config);
+    }
+
+    showApiKey() {
+        this.setMdPanelConfig(myShowApiKeyController, myShowApiKeyTemplate, '.show-key');
+        this.$mdPanel.open(this.config);
+    }
+
+    resetApiKey() {
+        this.UsersService.resetApiAccessKey();
+    }
+
+    resetAtomKey() {
+        this.UsersService.resetAtomAccessKey();
+    }
 
 }
