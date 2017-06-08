@@ -25,16 +25,8 @@ export default class mainMyAccountIndexController extends ControllerBase {
 
     $onInit() {
         this.user = this.UsersService.getUserInfo().then((response) => {
-            console.log(response);
-            if (response && response.status === 200) {
-                // this.model = _.isEmpty(response.data) ? {} : response.data;
-
-                if (!_.isEmpty(response.data)) {
-                    this.model = response.data;
-                    this.model.hide_mail = !!response.data.hide_mail;
-                    this.model.no_self_notified = !!response.data.no_self_notified;
-                    this.model.warn_on_leaving_unsaved = !!response.data.warn_on_leaving_unsaved;
-                }
+            if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
+                this.model = response.data;
             }
         });
 
@@ -45,7 +37,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
     setMdPanelConfig(ctrl, tmpl, target) {
-
+        this.model.update();
         let position = this.$mdPanel.newPanelPosition()
             .absolute()
             .center();
