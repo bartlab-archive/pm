@@ -6,18 +6,21 @@
     </md-card-header>
     <md-card-content>
         <mdt-table
+                table-card="{visible: true, title: 'Issues'}"
                 paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,50]}"
-                mdt-row-paginator="$ctrl.issues(page, pageSize)"
+                mdt-row-paginator="$ctrl.issues(page, pageSize, options)"
                 selectable-rows="true"
+                alternate-headers="'contextual'"
+                selected-row-callback="$ctrl.selectedRowCallback(rows)"
                 mdt-row="{
                 'table-row-id-key': 'id',
-            'column-keys': [
+                'column-keys': [
                 'id',
                 'tracker_id',
                 'status_id',
                 'priority_id',
                 'subject',
-                'firstname',
+                'full_name',
                 'updated_on'
             ]
         }">
@@ -31,15 +34,11 @@
                 <mdt-column align-rule="left" column-sort="true"><span>Assigned to</span></mdt-column>
                 <mdt-column align-rule="left" column-sort="true"><span>Updated</span></mdt-column>
             </mdt-header-row>
-            <mdt-custom-cell column-key="id">
-                    <a ng-href="/issues/{{value}}" target="_blank">{{ rowId }}</a>
+            <mdt-custom-cell column-key="id"><a ng-href="/issues/{{value}}" target="_blank">{{ rowId }}</a>
             </mdt-custom-cell>
-            <mdt-custom-cell column-key="subject">
-                    <a ng-href="/issues/{{ rowId }}" target="_blank">{{ value }}</a>
+            <mdt-custom-cell column-key="subject"><a ng-href="/issues/{{ rowId }}" target="_blank">{{ value }}</a>
             </mdt-custom-cell>
-            <mdt-custom-cell column-key="firstname">
-                <a ng-href="/user/{{ rowId }}" target="_blank">{{ $ctrl.getWithId(rowId).firstname + ' ' + $ctrl.getWithId(rowId).lastname }}</a>
-            </mdt-custom-cell>
+            <mdt-custom-cell column-key="full_name"><a ng-href="/user/{{ rowId }}" target="_blank">{{ value }}</a></mdt-custom-cell>
         </mdt-table>
     </md-card-content>
     <md-card-actions align="start">
