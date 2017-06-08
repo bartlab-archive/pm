@@ -1,11 +1,6 @@
-/**
- * @property $auth
- * @property $state
- * @property $mdToast
- * @property $mdPanel
- * @property UsersService
- */
 import angular from 'angular';
+import * as _ from 'lodash';
+
 import ControllerBase from 'base/controller.base';
 import PasswordTemplate from './change-password/my-account-change-password.html';
 import myChangePasswordController from './change-password/my-account-change-password.controller';
@@ -14,8 +9,13 @@ import myShowApiKeyController from './show-api-key/my-account-show-api-key.contr
 import myAccountAddMailController from './add-mail/my-account-add-mail.controller';
 import myAccountAddMailTemplate from './add-mail/my-account-add-mail.html';
 
-import * as _ from 'lodash';
-
+/**
+ * @property $auth
+ * @property $state
+ * @property $mdToast
+ * @property $mdPanel
+ * @property UsersService
+ */
 
 export default class mainMyAccountIndexController extends ControllerBase {
 
@@ -86,6 +86,10 @@ export default class mainMyAccountIndexController extends ControllerBase {
 
     resetAtomKey() {
         this.UsersService.resetAtomAccessKey();
+    }
+
+    submit() {
+      this.model.update();
     }
 
 }
