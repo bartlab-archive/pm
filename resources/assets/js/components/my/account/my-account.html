@@ -33,7 +33,7 @@
 
                 <md-input-container class="md-icon-float md-block">
                     <label>Email notifications</label>
-                    <md-select ng-model="$ctrl.model.EmailNotifications" required>
+                    <md-select ng-model="$ctrl.model.mail_notification" required>
                         <md-option value="selected">For any event on the selected projects only...
                         </md-option>
                         <md-option value="only_my_events">Only for things I watch or I'm involved in
@@ -60,7 +60,7 @@
 
                 <md-input-container class="md-icon-float md-block">
                     <label>Time zone</label>
-                    <md-select ng-model="$ctrl.model.timezone" required>
+                    <md-select ng-model="$ctrl.model.time_zone" required>
                         <md-option ng-value="zone.value" ng-repeat="zone in $ctrl.timeZone">
                             {{ zone.name }}
                         </md-option>
@@ -81,7 +81,7 @@
                 </md-input-container>
 
                 <p class="topUrl">
-                    <a ui-sref="emails">Emails</a>
+                    <a class="show-add-mail" ng-click="$ctrl.addEmail()">Emails</a>
                     <a class="animation-target" ng-click="$ctrl.changePassword()">Change password</a>
                 </p>
             </div>

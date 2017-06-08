@@ -11,6 +11,9 @@ import PasswordTemplate from './change-password/my-account-change-password.html'
 import myChangePasswordController from './change-password/my-account-change-password.controller';
 import myShowApiKeyTemplate from './show-api-key/my-account-show-api-key.html';
 import myShowApiKeyController from './show-api-key/my-account-show-api-key.controller';
+import myAccountAddMailController from './add-mail/my-account-add-mail.controller';
+import myAccountAddMailTemplate from './add-mail/my-account-add-mail.html';
+
 import * as _ from 'lodash';
 
 
@@ -24,7 +27,14 @@ export default class mainMyAccountIndexController extends ControllerBase {
         this.user = this.UsersService.getUserInfo().then((response)=>{
           console.log(response);
           if (response && response.status === 200) {
-            this.model = _.isEmpty(response.data) ? {} : response.data;
+            // this.model = _.isEmpty(response.data) ? {} : response.data;
+
+            if (!_.isEmpty(response.data)) {
+              this.model = response.data;
+              this.model.hide_mail = !!response.data.hide_mail;
+              this.model.no_self_notified = !!response.data.no_self_notified;
+              this.model.warn_on_leaving_unsaved = !!response.data.warn_on_leaving_unsaved;
+            }
           }
         });
 
@@ -68,6 +78,11 @@ export default class mainMyAccountIndexController extends ControllerBase {
     showApiKey() {
         this.setMdPanelConfig(myShowApiKeyController, myShowApiKeyTemplate, '.show-key');
         this.$mdPanel.open(this.config);
+    }
+
+    addEmail() {
+      this.setMdPanelConfig(myAccountAddMailController, myAccountAddMailTemplate, '.show-add-mail');
+      this.$mdPanel.open(this.config);
     }
 
     resetApiKey() {
