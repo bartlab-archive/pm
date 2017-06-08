@@ -1,3 +1,13 @@
+<md-list flex>
+    <md-list-item ng-repeat="row in $ctrl.list">
+        <div class="md-list-item-text" layout="column">
+            <h3>{{ row.name }}</h3>
+            <h4>{{ row.homepage }}</h4>
+            <p ng-bind-html="row.description | words: 50 | nl2p"></p>
+        </div>
+    </md-list-item>
+</md-list>
+
 <div class="container">
     <div class="row">
         <div class="col-md-12 ">

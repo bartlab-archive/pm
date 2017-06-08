@@ -1,4 +1,6 @@
 import InjectableBase from 'base/injectable.base';
+import myAccountComponent from './account/my-account.component';
+import myPasswordComponent from './password/my-password.component';
 
 /**
  * Class MyConfig
@@ -28,11 +30,11 @@ export default class MyConfig extends InjectableBase {
             })
             .state('my.account', {
                 url: '/account',
-                component: 'myAccountComponent',
+                component: myAccountComponent.name,
             })
             .state('my.password', {
                 url: '/password',
-                component: 'myPasswordComponent',
+                component: myPasswordComponent.name,
             });
     }
 }
