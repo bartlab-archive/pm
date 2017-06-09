@@ -8,14 +8,28 @@ export default class ProjectsIssuesController extends ControllerBase {
     }
 
     $onInit() {
+        this.topDirections = ['left', 'up'];
+        this.bottomDirections = ['down', 'right'];
+
+        this.isOpen = false;
+
+        this.availableModes = ['md-fling', 'md-scale'];
+        this.selectedMode = 'md-scale';
+
+        this.availableDirections = ['up', 'down', 'left', 'right'];
+        this.selectedDirection = 'right';
+
+
         const _this = this;
         _this.issues = paginatorCallback;
         function paginatorCallback(page, pageSize, opt) {
-            this.sortBy(opt.columnSort);
+            const sortBy = this.sortBy(opt.columnSort);
             const offset = (page - 1) * pageSize;
             const options = {
                 offset: offset,
-                limit: pageSize
+                limit: pageSize,
+                sortField: sortBy.field,
+                order: sortBy.sort
             };
             return _this.IssuesService.getListByProject(_this.$stateParams.id, options)
                 .then((response) => {

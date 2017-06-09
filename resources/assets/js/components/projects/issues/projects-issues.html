@@ -1,10 +1,33 @@
 <h1>Test Data</h1>
-<md-card>
-    <md-card-header>
-        <md-card-title>Title</md-card-title>
-        <md-card-subtitle>Subtitle</md-card-subtitle>
-    </md-card-header>
-    <md-card-content>
+    <md-content class="md-padding" layout-xs="column" layout="row">
+        <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">Card with image</span>
+                    <div class="lock-size" layout="row">
+                        <md-fab-speed-dial md-open="$ctrl.isOpen" md-direction="{{$ctrl.selectedDirection}}"
+                                           ng-class="$ctrl.selectedMode">
+                            <md-fab-trigger>
+                                <md-button aria-label="menu" class="md-fab md-warn">
+                                    <md-icon md-svg-src="/img/icons/menu.svg"></md-icon>
+                                </md-button>
+                            </md-fab-trigger>
+                            <md-fab-actions>
+                                <md-button aria-label="Twitter" class="md-fab md-raised md-mini">
+                                    <md-icon md-svg-src="/img/icons/twitter.svg" aria-label="Twitter"></md-icon>
+                                </md-button>
+                                <md-button aria-label="Facebook" class="md-fab md-raised md-mini">
+                                    <md-icon md-svg-src="/img/icons/facebook.svg" aria-label="Facebook"></md-icon>
+                                </md-button>
+                                <md-button aria-label="Google Hangout" class="md-fab md-raised md-mini">
+                                    <md-icon md-svg-src="/img/icons/hangout.svg" aria-label="Google Hangout"></md-icon>
+                                </md-button>
+
+                            </md-fab-actions>
+                        </md-fab-speed-dial>
+                    </div>
+                </md-card-title-text>
+            </md-card-title>
         <mdt-table
                 table-card="{visible: true, title: 'Issues'}"
                 paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,50]}"
@@ -40,11 +63,51 @@
             </mdt-custom-cell>
             <mdt-custom-cell column-key="full_name"><a ng-href="/user/{{ rowId }}" target="_blank">{{ value }}</a></mdt-custom-cell>
         </mdt-table>
-    </md-card-content>
-    <md-card-actions align="start">
+        </md-card>
+        <md-card  md-rowspan= md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch>
+        <div layout="column" layout-align="top center">
+            <p>
+                The left sidenav will 'lock open' on a medium (>=960px wide) device.
+            </p>
+            <p>
+                The right sidenav will focus on a specific child element.
+            </p>
 
-    </md-card-actions>
-    <md-card-footer>
-        Footer
-    </md-card-footer>
-</md-card>
+            <div>
+                <md-button ng-click="toggleLeft()"
+                           class="md-primary" hide-gt-md>
+                    Toggle left
+                </md-button>
+            </div>
+
+            <div>
+                <md-button ng-click="toggleRight()"
+                           ng-hide="isOpenRight()"
+                           class="md-primary">
+                    Toggle right
+                </md-button>
+            </div>
+        </div>
+
+        <div flex></div>
+        </md-card>
+    </md-content>
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+
+    <md-toolbar class="md-theme-light">
+        <h1 class="md-toolbar-tools">Sidenav Right</h1>
+    </md-toolbar>
+    <md-content layout-padding>
+        <form>
+            <md-input-container>
+                <label for="testInput">Test input</label>
+                <input type="text" id="testInput"
+                       ng-model="data" md-autofocus>
+            </md-input-container>
+        </form>
+        <md-button ng-click="close()" class="md-primary">
+            Close Sidenav Right
+        </md-button>
+    </md-content>
+
+</md-sidenav>

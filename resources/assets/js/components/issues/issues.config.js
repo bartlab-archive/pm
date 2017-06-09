@@ -6,7 +6,7 @@ export default function IssuesConfig($stateProvider) {
         .state('issues', {
             abstract: true,
             data: {
-                access: '?'
+                access: '@'
             },
             url: '/issues',
             parent: 'default',

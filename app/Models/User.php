@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Request;
 
 class User extends Authenticatable
 {
@@ -68,8 +69,8 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class, 'author_id', 'id');
     }
 
-    public function issue()
+    public function issues()
     {
-        return $this->hasMany(Comment::class, 'id', 'assigned_to_id');
+        return $this->hasMany(Issue::class, 'assigned_to_id', 'id');
     }
 }

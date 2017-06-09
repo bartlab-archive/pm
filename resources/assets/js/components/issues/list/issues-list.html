@@ -1,57 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 <h1>Test Data</h1>
-<div >
-    <mdt-table mdt-row="{
-                      data: $ctrl.issues,
-                      'column-keys': [
-                          'tracker_id',
-                          'priority_id',
-                          'firstname',
-                          'lastname'
-                         ]
-                      }">
-        <mdt-header-row>
-            <mdt-column align-rule="left">Dessert (100g serving)</mdt-column>
-            <mdt-column align-rule="right">Calories</mdt-column>
-            <mdt-column align-rule="right">Fat (g)</mdt-column>
-            <mdt-column align-rule="right">Carbs (g)</mdt-column>
-        </mdt-header-row>
-    </mdt-table>
+<md-content class="md-padding" layout-xs="column" layout="row">
+    <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+        <md-card-title>
+            <md-card-title-text>
+                <div class="lock-size" layout="row">
+                    <md-fab-speed-dial md-open="$ctrl.isOpen" md-direction="{{$ctrl.selectedDirection}}"
+                                       ng-class="$ctrl.selectedMode">
+                        <md-fab-trigger>
+                            <md-button aria-label="menu" class="md-fab md-warn">
+                                <md-icon md-svg-src="/img/icons/menu.svg"></md-icon>
+                            </md-button>
+                        </md-fab-trigger>
+                        <md-fab-actions>
+                            <md-button aria-label="Twitter" class="md-fab md-raised md-mini">
+                                <md-icon md-svg-src="/img/icons/twitter.svg" aria-label="Twitter"></md-icon>
+                            </md-button>
+                            <md-button aria-label="Facebook" class="md-fab md-raised md-mini">
+                                <md-icon md-svg-src="/img/icons/facebook.svg" aria-label="Facebook"></md-icon>
+                            </md-button>
+                            <md-button aria-label="Google Hangout" class="md-fab md-raised md-mini">
+                                <md-icon md-svg-src="/img/icons/hangout.svg" aria-label="Google Hangout"></md-icon>
+                            </md-button>
 
+                        </md-fab-actions>
+                    </md-fab-speed-dial>
+                </div>
+            </md-card-title-text>
+        </md-card-title>
+        <mdt-table
+                table-card="{visible: true, title: 'Issues'}"
+                paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,50]}"
+                mdt-row-paginator="$ctrl.issues(page, pageSize, options)"
+                selectable-rows="true"
+                alternate-headers="'contextual'"
+                selected-row-callback="$ctrl.selectedRowCallback(rows)"
+                mdt-row="{
+                'table-row-id-key': 'id',
+                'column-keys': [
+                'id',
+                'tracker_id',
+                'status_id',
+                'priority_id',
+                'subject',
+                'full_name',
+                'updated_on'
+            ]
+        }">
 
-    <!--<table ng-table="$ctrl.test" class="table table-condensed table-bordered table-striped">-->
-        <!--<tr>-->
-            <!--<th>checkbox</th>-->
-            <!--<th>id</th>-->
-            <!--<th>tracker_id</th>-->
-            <!--<th>priority_id</th>-->
-            <!--<th>subject</th>-->
-            <!--<th>assigned_to_id</th>-->
-            <!--<th>updated_on</th>-->
-        <!--</tr>-->
-        <!--<tr ng-repeat="issue in $data track by $index">-->
-            <!--<td><input type="checkbox"></td>-->
-            <!--<td title="'#'">-->
-                <!--<a href="/issues/{{ issue.id }}"></a>{{ issue.id }}-->
-            <!--</td>-->
-            <!--<td data-title="'Installation At'">-->
-                <!--{{issue.tracker_id}}</td>-->
-            <!--<td data-title="'Installation At'">-->
-                <!--{{issue.priority_id}}</td>-->
-            <!--<td data-title="'Installation At'">-->
-                <!--<a href="/issues/{{ issue.id }}">{{issue.subject}}</a></td>-->
-            <!--<td data-title="'Installation At'">-->
-                <!--{{issue.firstname + ' ' + issue.lastname}}</td>-->
-            <!--<td data-title="'Installation At'">-->
-                <!--{{issue.updated_on}}</td>-->
-        <!--</tr>-->
-    <!--</table>-->
-</div>
-</body>
-</html>
+            <mdt-header-row>
+                <mdt-column align-rule="left" column-sort="true"><span>#</span></mdt-column>
+                <mdt-column align-rule="left" column-sort="true"><span>Tracker</span></mdt-column>
+                <mdt-column align-rule="left" column-sort="true"><span>Status</span></mdt-column>
+                <mdt-column align-rule="left" column-sort="true"><span>Priority</span></mdt-column>
+                <mdt-column align-rule="left" column-sort="true"><span>Subject</span></mdt-column>
+                <mdt-column align-rule="left" column-sort="true"><span>Assigned to</span></mdt-column>
+                <mdt-column align-rule="left" column-sort="true"><span>Updated</span></mdt-column>
+            </mdt-header-row>
+            <mdt-custom-cell column-key="id"><a ng-href="/issues/{{value}}" target="_blank">{{ rowId }}</a>
+            </mdt-custom-cell>
+            <mdt-custom-cell column-key="subject"><a ng-href="/issues/{{ rowId }}" target="_blank">{{ value }}</a>
+            </mdt-custom-cell>
+            <mdt-custom-cell column-key="full_name"><a ng-href="/user/{{ rowId }}" target="_blank">{{ value }}</a></mdt-custom-cell>
+        </mdt-table>
+    </md-card>
+    <md-card  md-rowspan= md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch>
+    <div layout="column" layout-align="top center">
+        <p>
+            The left sidenav will 'lock open' on a medium (>=960px wide) device.
+        </p>
+        <p>
+            The right sidenav will focus on a specific child element.
+        </p>
+
+        <div>
+            <md-button ng-click="toggleLeft()"
+                       class="md-primary" hide-gt-md>
+                Toggle left
+            </md-button>
+        </div>
+
+        <div>
+            <md-button ng-click="toggleRight()"
+                       ng-hide="isOpenRight()"
+                       class="md-primary">
+                Toggle right
+            </md-button>
+        </div>
+    </div>
+
+    <div flex></div>
+    </md-card>
+</md-content>
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+
+    <md-toolbar class="md-theme-light">
+        <h1 class="md-toolbar-tools">Sidenav Right</h1>
+    </md-toolbar>
+    <md-content layout-padding>
+        <form>
+            <md-input-container>
+                <label for="testInput">Test input</label>
+                <input type="text" id="testInput"
+                       ng-model="data" md-autofocus>
+            </md-input-container>
+        </form>
+        <md-button ng-click="close()" class="md-primary">
+            Close Sidenav Right
+        </md-button>
+    </md-content>
+
+</md-sidenav>
