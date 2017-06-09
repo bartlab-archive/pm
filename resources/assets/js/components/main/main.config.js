@@ -1,4 +1,11 @@
 import InjectableBase from 'base/injectable.base';
+import mainIndexComponent from './index/main-index.component';
+import mainLoginComponent from './login/main-login.component';
+import mainRegistrationComponent from './registration/main-registration.component';
+import mainLogoutComponent from './logout/main-logout.component';
+import mainResetPasswordComponent from './reset-password/main-reset-password.component';
+import main404Component from './404/main-404.component';
+import main500Component from './500/main-500.component';
 
 /**
  * Class MainConfig
@@ -18,7 +25,7 @@ export default class MainConfig extends InjectableBase {
                 url: '/404',
                 views: {
                     content: {
-                        component: 'main404Component',
+                        component: main404Component.name
                     }
                 }
             })
@@ -27,7 +34,7 @@ export default class MainConfig extends InjectableBase {
                 url: '/500',
                 views: {
                     content: {
-                        component: 'main500Component',
+                        component: main500Component.name
                     }
                 }
             })
@@ -39,7 +46,7 @@ export default class MainConfig extends InjectableBase {
                 url: '/',
                 views: {
                     content: {
-                        component: 'mainIndexComponent',
+                        component: mainIndexComponent.name
                     }
                 }
             })
@@ -51,7 +58,7 @@ export default class MainConfig extends InjectableBase {
                 parent: 'blank',
                 views: {
                     content: {
-                        component: 'mainLoginComponent',
+                        component: mainLoginComponent.name
                     }
                 }
             })
@@ -63,13 +70,13 @@ export default class MainConfig extends InjectableBase {
                 parent: 'blank',
                 views: {
                     content: {
-                        component: 'mainRegistrationComponent',
+                        component: mainRegistrationComponent.name
                     }
                 }
             })
             .state('logout', {
                 url: '/logout',
-                component: 'mainLogoutComponent'
+                component: mainLogoutComponent.name
             })
             .state('reset-password', {
                 data: {
@@ -79,7 +86,7 @@ export default class MainConfig extends InjectableBase {
                 parent: 'blank',
                 views: {
                     content: {
-                        component: 'mainResetPasswordComponent',
+                        component: mainResetPasswordComponent.name
                     }
                 }
             });
