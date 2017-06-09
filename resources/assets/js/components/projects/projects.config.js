@@ -1,4 +1,7 @@
 import InjectableBase from 'base/injectable.base';
+import projectsListComponent from './list/projects-list.component';
+import projectsEditComponent from './edit/projects-edit.component';
+import projectsInfoComponent from './info/projects-info.component';
 
 /**
  * Class ProjectsConfig
@@ -28,15 +31,15 @@ export default class ProjectsConfig extends InjectableBase {
             })
             .state('projects.list', {
                 url: '',
-                component: 'projectsListComponent',
+                component: projectsListComponent.name,
             })
             .state('projects.new', {
                 url: '/new',
-                component: 'projectsEditComponent',
+                component: projectsEditComponent.name,
             })
             .state('projects.info', {
                 url: '/:id',
-                component: 'projectsInfoComponent',
+                component: projectsInfoComponent.name,
             });
     }
 }

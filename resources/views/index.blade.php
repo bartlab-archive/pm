@@ -10,7 +10,6 @@
         <title>PM</title>
     </head>
     <body>
-        <toaster-container toaster-options="{'time-out': 15000,'position-class': 'toast-bottom-right'}"></toaster-container>
         <div ui-view></div>
         <script src="/js/app.js"></script>
     </body>

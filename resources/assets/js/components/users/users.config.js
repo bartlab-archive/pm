@@ -1,4 +1,7 @@
 import InjectableBase from 'base/injectable.base';
+import usersListComponent from './list/users-list.component';
+import usersEditComponent from './edit/users-edit.component';
+import usersInfoComponent from './info/users-info.component';
 
 /**
  * Class UsersConfig
@@ -28,19 +31,19 @@ export default class UsersConfig extends InjectableBase {
             })
             .state('users.list', {
                 url: '',
-                component: 'usersListComponent',
+                component: usersListComponent.name,
             })
             .state('users.new', {
                 url: '/new',
-                component: 'usersEditComponent',
+                component: usersEditComponent.name,
             })
             .state('users.info', {
                 url: '/:id',
-                component: 'usersInfoComponent',
+                component: usersInfoComponent.name,
             })
             .state('users.edit', {
                 url: '/:id/edit',
-                component: 'usersEditComponent',
+                component: usersEditComponent.name,
             });
     }
 }

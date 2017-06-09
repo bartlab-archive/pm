@@ -1,4 +1,5 @@
 import InjectableBase from 'base/injectable.base';
+import adminIndexComponent from './index/admin-index.component';
 
 /**
  * Class AdminConfig
@@ -28,7 +29,7 @@ export default class AdminConfig extends InjectableBase {
             })
             .state('admin.index', {
                 url: '',
-                component: 'adminIndexComponent',
+                component: adminIndexComponent.name,
             });
     }
 }
