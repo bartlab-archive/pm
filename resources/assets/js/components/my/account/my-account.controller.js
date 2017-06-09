@@ -82,10 +82,12 @@ export default class mainMyAccountIndexController extends ControllerBase {
 
     resetApiKey() {
         this.UsersService.resetApiAccessKey();
+        this.model.api_key_updated_on = new Date();
     }
 
     resetAtomKey() {
         this.UsersService.resetAtomAccessKey();
+        this.model.atom_key_updated_on = new Date();
     }
 
     submit() {
