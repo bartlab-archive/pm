@@ -95,7 +95,7 @@ class AccountController extends Controller implements IAccountController
 
         if ($user_preference) {
             $user_preference->update([
-                'hide_email' => $request->input('hide_email'),
+                'hide_mail' => $request->input('hide_mail'),
                 'time_zone' => $request->input('time_zone')
             ]);
 
@@ -130,8 +130,8 @@ class AccountController extends Controller implements IAccountController
                 'email' => Rule::unique((new EmailAddresses())->getTable(), 'address')->ignore($user->id, 'user_id') //This rule validates the exists email address ignore user email
             ],
             'lang' => 'required|string|max:2',
-            'hide_email' => 'required|boolean',
-            'time_zone' => 'required|string',
+            'hide_mail' => 'required|boolean',
+            'time_zone' => 'string',
             'comments_sorting' => 'required|string|in:asc,desc',
             'no_self_notified' => 'required|boolean',
             'warn_on_leaving_unsaved' => 'required|boolean'
