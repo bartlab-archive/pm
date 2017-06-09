@@ -81,8 +81,8 @@
                 </md-input-container>
 
                 <p class="topUrl">
-                    <a class="show-add-mail" ng-click="$ctrl.addEmail()">Emails</a>
-                    <a class="animation-target" ng-click="$ctrl.changePassword()">Change password</a>
+                    <a class="show-add-mail" ng-click="$ctrl.addEmail($event)">Emails</a>
+                    <a class="animation-target" ng-click="$ctrl.changePassword($event)">Change password</a>
                 </p>
             </div>
 
@@ -97,7 +97,7 @@
                             ng-click="$ctrl.resetAtomKey()"> Reset </a>)</p>
                     <p><b>API access key</b></p>
                     <hr>
-                    <p><a class="show-key" ng-click="$ctrl.showApiKey()">Show</a></p>
+                    <p><a class="show-key" ng-click="$ctrl.showApiKey($event)">Show</a></p>
                     <p>API access key created {{ $ctrl.model.api_key_updated_on  | date: 'yyyy-MM-dd HH:mm:ss ' }} (<a
                             ng-click="$ctrl.resetApiKey()"> Reset </a>)</p>
                 </md-input-container>

@@ -4,7 +4,6 @@ export default class UsersService {
         return ['$injector'];
     }
 
-
     constructor($injector) {
         this.Restangular = $injector.get('Restangular');
     }

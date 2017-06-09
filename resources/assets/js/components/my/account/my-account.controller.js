@@ -2,12 +2,9 @@ import angular from 'angular';
 import * as _ from 'lodash';
 
 import ControllerBase from 'base/controller.base';
-import PasswordTemplate from './change-password/my-account-change-password.html';
-import myChangePasswordController from './change-password/my-account-change-password.controller';
-import myShowApiKeyTemplate from './show-api-key/my-account-show-api-key.html';
-import myShowApiKeyController from './show-api-key/my-account-show-api-key.controller';
-import myAccountAddMailController from './add-mail/my-account-add-mail.controller';
-import myAccountAddMailTemplate from './add-mail/my-account-add-mail.html';
+import myShowApiKeyComponent from 'components/my/show-api-key/my-show-api-key.component';
+import myAddMailComponent from 'components/my/add-mail/my-add-mail.component';
+import myChangePasswordComponent from 'components/my/change-password/my-change-password.component';
 
 /**
  * @property $auth
@@ -15,6 +12,10 @@ import myAccountAddMailTemplate from './add-mail/my-account-add-mail.html';
  * @property $mdToast
  * @property $mdPanel
  * @property UsersService
+ *
+ * @property user
+ * @property languages
+ * @property timeZone
  */
 
 export default class mainMyAccountIndexController extends ControllerBase {
@@ -32,11 +33,9 @@ export default class mainMyAccountIndexController extends ControllerBase {
 
         this.languages = this.UsersService.getLanguage();
         this.timeZone = this.UsersService.getTimeZone();
-
-        this.element = angular.element(document.body);
     }
 
-    setMdPanelConfig(ctrl, tmpl, target) {
+    setMdPanelConfig(component, target) {
 
         let position = this.$mdPanel.newPanelPosition()
             .absolute()
@@ -47,47 +46,55 @@ export default class mainMyAccountIndexController extends ControllerBase {
             .openFrom(target)
             .withAnimation(this.$mdPanel.animation.SCALE);
 
+        let ctrlConfig = [].concat(
+            component.controller.$inject || [],
+            [(...args) => {
+                let ctrl = new component.controller(...args);
+                ctrl.$onInit && ctrl.$onInit();
+                return ctrl;
+            }]
+        );
+
         return {
             animation: animation,
-            attachTo: this.element,
-            controller: ctrl,
+            attachTo: angular.element(document.body),
+            controller: ctrlConfig,
             controllerAs: '$ctrl',
-            template: tmpl,
-            panelClass: 'change-password-dialog',
+            template: component.template,
+            panelClass: 'modal-custom-dialog',
             position: position,
             trapFocus: true,
             clickOutsideToClose: true,
             clickEscapeToClose: true,
             hasBackdrop: true,
+            disableParentScroll: true,
         }
     }
 
-    changePassword() {
+    changePassword($event) {
         this.$mdPanel.open(
-            this.setMdPanelConfig(myChangePasswordController, PasswordTemplate, '.animation-target')
+            this.setMdPanelConfig(myChangePasswordComponent, $event.target)
         );
     }
 
-    showApiKey() {
+    showApiKey($event) {
         this.$mdPanel.open(
-            this.setMdPanelConfig(myShowApiKeyController, myShowApiKeyTemplate, '.show-key')
+            this.setMdPanelConfig(myShowApiKeyComponent, $event.target)
         );
     }
 
-    addEmail() {
+    addEmail($event) {
         this.$mdPanel.open(
-            this.setMdPanelConfig(myAccountAddMailController, myAccountAddMailTemplate, '.show-add-mail')
+            this.setMdPanelConfig(myAddMailComponent, $event.target)
         );
     }
 
     resetApiKey() {
         this.UsersService.resetApiAccessKey();
-        this.model.api_key_updated_on = new Date();
     }
 
     resetAtomKey() {
         this.UsersService.resetAtomAccessKey();
-        this.model.atom_key_updated_on = new Date();
     }
 
     submit() {
