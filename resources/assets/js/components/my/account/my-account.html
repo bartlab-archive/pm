@@ -1,12 +1,14 @@
 <form name="AccountForm" ng-submit="$ctrl.submit()">
-    <md-toolbar class="md-menu-toolbar">
-        <h2 layout-padding>My Account</h2>
-    </md-toolbar>
-    <div class="custom-panel" layout="column" layout-margin layout-padding>
+    <div layout="column" layout-align="center none">
 
-        <div layout="row" layout-xs="column" layout-sm="column" layout-margin layout-padding>
+        <md-card>
+            <md-card-header>
+                <md-card-header-text>
+                    <span class="md-title">My Account</span>
+                </md-card-header-text>
+            </md-card-header>
 
-            <div flex>
+            <md-card-content>
                 <md-input-container class="md-icon-float md-block">
                     <label>First Name</label>
                     <input ng-model="$ctrl.model.firstname" type="text" required>
@@ -79,37 +81,172 @@
                         Warn me when leaving a page with unsaved text
                     </md-checkbox>
                 </md-input-container>
+            </md-card-content>
+            <md-card-actions layout="row" layout-align="center center">
+                <md-button class="md-raised md-primary animation-target" type="submit"
+                           ng-disabled="RegistrationForm.$invalid">Save
+                </md-button>
+            </md-card-actions>
+        </md-card>
 
-                <p class="topUrl">
-                    <a class="show-add-mail" ng-click="$ctrl.addEmail($event)">Emails</a>
-                    <a class="animation-target" ng-click="$ctrl.changePassword($event)">Change password</a>
-                </p>
-            </div>
+        <md-card>
+            <md-card-header>
+                <md-card-header-text>
+                    <span class="md-title">Info</span>
+                </md-card-header-text>
+            </md-card-header>
+            <md-card-content>
+                <p>Login: {{ $ctrl.model.login }}</p>
+                <p>Created: {{ $ctrl.model.created }}</p>
+            </md-card-content>
 
-            <div flex layout-margin layout-padding>
-                <md-input-container class="md-icon-float md-block">
-                    <p>My account</p>
-                    <p>Login: {{ $ctrl.model.login }}</p>
-                    <p>Created: {{ $ctrl.model.created }}</p>
-                    <p><b>Atom access key</b></p>
-                    <hr>
-                    <p>Atom access key created {{ $ctrl.model.atom_key_updated_on | date: 'yyyy-MM-dd HH:mm:ss ' }} (<a
-                            ng-click="$ctrl.resetAtomKey()"> Reset </a>)</p>
-                    <p><b>API access key</b></p>
-                    <hr>
-                    <p><a class="show-key" ng-click="$ctrl.showApiKey($event)">Show</a></p>
-                    <p>API access key created {{ $ctrl.model.api_key_updated_on  | date: 'yyyy-MM-dd HH:mm:ss ' }} (<a
-                            ng-click="$ctrl.resetApiKey()"> Reset </a>)</p>
-                </md-input-container>
-            </div>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-title">Atom access key</span>
+                </md-card-title-text>
+            </md-card-title>
 
-        </div>
+            <md-card-content>
+                <p>Atom access key created {{ $ctrl.model.atom_key_updated_on | date: 'yyyy-MM-dd HH:mm:ss ' }}</p>
+                <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.resetAtomKey()">
+                    Reset
+                </md-button>
 
-        <div layout="row" layout-align="end">
-            <md-button class="md-raised md-primary animation-target" type="submit" ng-disabled="RegistrationForm.$invalid">Save
-            </md-button>
-        </div>
+            </md-card-content>
 
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-title">API access key</span>
+                </md-card-title-text>
+            </md-card-title>
+
+            <md-card-content>
+                <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.showApiKey($event)">
+                    Show
+                </md-button>
+                <p>API access key created {{ $ctrl.model.api_key_updated_on | date: 'yyyy-MM-dd HH:mm:ss ' }}</p>
+                <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.resetApiKey()">
+                    Reset
+                </md-button>
+
+            </md-card-content>
+        </md-card>
+
+        <!--<md-toolbar class="md-menu-toolbar">-->
+        <!--<h2 layout-padding>My Account</h2>-->
+        <!--</md-toolbar>-->
+        <!--<div class="custom-panel" layout="column" layout-margin layout-padding>-->
+
+        <!--<div layout="row" layout-xs="column" layout-sm="column" layout-margin layout-padding>-->
+
+        <!--<div flex>-->
+        <!--<md-input-container class="md-icon-float md-block">-->
+        <!--<label>First Name</label>-->
+        <!--<input ng-model="$ctrl.model.firstname" type="text" required>-->
+        <!--</md-input-container>-->
+
+        <!--<md-input-container class="md-icon-float md-block">-->
+        <!--<label>Last Name</label>-->
+        <!--<input ng-model="$ctrl.model.lastname" type="text" required>-->
+        <!--</md-input-container>-->
+
+        <!--<md-input-container class="md-icon-float md-block">-->
+        <!--<label>Email</label>-->
+        <!--<input ng-model="$ctrl.model.email" type="email" required>-->
+        <!--</md-input-container>-->
+
+        <!--<md-input-container class="md-icon-float md-block">-->
+        <!--<label>Language</label>-->
+        <!--<md-select ng-model="$ctrl.model.lang" required>-->
+        <!--<md-option ng-value="language.id" ng-repeat="language in $ctrl.languages">-->
+        <!--{{language.name }}-->
+        <!--</md-option>-->
+        <!--</md-select>-->
+        <!--</md-input-container>-->
+
+        <!--<md-input-container class="md-icon-float md-block">-->
+        <!--<label>Email notifications</label>-->
+        <!--<md-select ng-model="$ctrl.model.mail_notification" required>-->
+        <!--<md-option value="selected">For any event on the selected projects only...-->
+        <!--</md-option>-->
+        <!--<md-option value="only_my_events">Only for things I watch or I'm involved in-->
+        <!--</md-option>-->
+        <!--<md-option value="only_assigned">Only for things I am assigned to</md-option>-->
+        <!--<md-option value="only_owner">Only for things I am the owner of</md-option>-->
+        <!--<md-option value="none">No events</md-option>-->
+        <!--</select>-->
+        <!--</md-select>-->
+        <!--</md-input-container>-->
+
+        <!--<md-input-container class="md-icon-float md-block">-->
+        <!--<md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.no_self_notified"-->
+        <!--aria-label="I don't want to be notified of changes that I make myself">-->
+        <!--I don't want to be notified of changes that I make myself-->
+        <!--</md-checkbox>-->
+        <!--</md-input-container>-->
+        <!--<md-input-container class="md-icon-float md-block">-->
+        <!--<md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.hide_mail"-->
+        <!--aria-label="Hide my Email">-->
+        <!--Hide my Email-->
+        <!--</md-checkbox>-->
+        <!--</md-input-container>-->
+
+        <!--<md-input-container class="md-icon-float md-block">-->
+        <!--<label>Time zone</label>-->
+        <!--<md-select ng-model="$ctrl.model.time_zone" required>-->
+        <!--<md-option ng-value="zone.value" ng-repeat="zone in $ctrl.timeZone">-->
+        <!--{{ zone.name }}-->
+        <!--</md-option>-->
+        <!--</md-select>-->
+        <!--</md-input-container>-->
+        <!--<md-input-container class="md-icon-float md-block">-->
+        <!--<label>Display comments</label>-->
+        <!--<md-select ng-model="$ctrl.model.comments_sorting" required>-->
+        <!--<md-option value="asc">In chronological order</md-option>-->
+        <!--<md-option value="desc">In reverse chronological order</md-option>-->
+        <!--</md-select>-->
+        <!--</md-input-container>-->
+        <!--<md-input-container class="md-icon-float md-block">-->
+        <!--<md-checkbox class="md-primary" md-no-ink ng-model="$ctrl.model.warn_on_leaving_unsaved"-->
+        <!--aria-label="Warn me when leaving a page with unsaved text">-->
+        <!--Warn me when leaving a page with unsaved text-->
+        <!--</md-checkbox>-->
+        <!--</md-input-container>-->
+
+        <!--<p class="topUrl">-->
+        <!--<a class="show-add-mail" ng-click="$ctrl.addEmail($event)">Emails</a>-->
+        <!--<a class="animation-target" ng-click="$ctrl.changePassword($event)">Change password</a>-->
+        <!--</p>-->
+        <!--</div>-->
+
+        <!--<div flex layout-margin layout-padding>-->
+        <!--<md-input-container class="md-icon-float md-block">-->
+        <!--<p>My account</p>-->
+        <!--<p>Login: {{ $ctrl.model.login }}</p>-->
+        <!--<p>Created: {{ $ctrl.model.created }}</p>-->
+        <!--<p><b>Atom access key</b></p>-->
+        <!--<hr>-->
+        <!--<p>Atom access key created {{ $ctrl.model.atom_key_updated_on | date: 'yyyy-MM-dd HH:mm:ss '-->
+        <!--}} (<a-->
+        <!--ng-click="$ctrl.resetAtomKey()"> Reset </a>)</p>-->
+        <!--<p><b>API access key</b></p>-->
+        <!--<hr>-->
+        <!--<p><a class="show-key" ng-click="$ctrl.showApiKey($event)">Show</a></p>-->
+        <!--<p>API access key created {{ $ctrl.model.api_key_updated_on | date: 'yyyy-MM-dd HH:mm:ss '-->
+        <!--}} (<a-->
+        <!--ng-click="$ctrl.resetApiKey()"> Reset </a>)</p>-->
+        <!--</md-input-container>-->
+        <!--</div>-->
+
+        <!--</div>-->
+
+        <!--<div layout="row" layout-align="end">-->
+        <!--<md-button class="md-raised md-primary animation-target" type="submit"-->
+        <!--ng-disabled="RegistrationForm.$invalid">Save-->
+        <!--</md-button>-->
+        <!--</div>-->
+
+        <!--</div>-->
     </div>
 
 </form>

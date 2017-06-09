@@ -1,18 +1,20 @@
 my-account-component {
   md-card {
+    width: 100%;
     max-width: 600px;
-    padding: 3%;
+    //padding: 3%;
+    margin: 16px auto;
   }
-  a {
-    color: blue;
-    cursor: pointer;
-  }
-  .topUrl {
-    text-align: right;
-  }
-
-  .topUrl a {
-    padding: 10px;
-  }
+  //a {
+  //  color: blue;
+  //  cursor: pointer;
+  //}
+  //.topUrl {
+  //  text-align: right;
+  //}
+  //
+  //.topUrl a {
+  //  padding: 10px;
+  //}
 }
 
