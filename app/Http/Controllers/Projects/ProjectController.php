@@ -42,6 +42,17 @@ class ProjectController extends BaseController
         ]);
     }
 
+    public function show($identifier)
+    {
+        $project = Project::where('identifier', $identifier)->first();
+
+        if (is_null($project)) {
+            return response(null, 400);
+        }
+
+        return $project;
+    }
+
     protected function rules()
     {
         return [
