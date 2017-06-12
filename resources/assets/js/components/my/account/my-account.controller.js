@@ -21,7 +21,7 @@ import myChangePasswordComponent from 'components/my/change-password/my-change-p
 export default class mainMyAccountIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$auth', '$state', '$mdToast', '$mdDialog', 'UsersService'];
+        return ['$auth', '$state', '$mdToast', '$mdDialog', '$mdPanel', 'UsersService'];
     }
 
     $onInit() {
@@ -35,16 +35,8 @@ export default class mainMyAccountIndexController extends ControllerBase {
         this.timeZone = this.UsersService.getTimeZone();
     }
 
-    setMdPanelConfig(component) {
+    setMdDialogConfig(component, target) {
 
-        // let position = this.$mdDialog.newPanelPosition()
-        //     .absolute()
-        //     .center();
-        //
-        // let animation = this.$mdDialog.newPanelAnimation()
-        //     .duration(300)
-        //     .openFrom(target)
-        //     .withAnimation(this.$mdDialog.animation.SCALE);
 
         let ctrlConfig = [].concat(
             component.controller.$inject || [],
@@ -56,13 +48,10 @@ export default class mainMyAccountIndexController extends ControllerBase {
         );
 
         return {
-            // animation: animation,
-            // attachTo: angular.element(document.body),
             controller: ctrlConfig,
             controllerAs: '$ctrl',
             template: component.template,
             panelClass: 'modal-custom-dialog',
-            // position: position,
             parent:angular.element(document.body),
             trapFocus: true,
             clickOutsideToClose: true,
@@ -70,8 +59,49 @@ export default class mainMyAccountIndexController extends ControllerBase {
             escapeToClose: true,
             hasBackdrop: true,
             disableParentScroll: true,
+            openFrom: target,
+            closeTo: target
         }
     }
+
+
+    setMdPanelConfig(component, target) {
+
+      let position = this.$mdPanel.newPanelPosition()
+          .absolute()
+          .center();
+
+      let animation = this.$mdPanel.newPanelAnimation()
+          .duration(300)
+          .openFrom(target)
+          .withAnimation(this.$mdPanel.animation.SCALE);
+
+      let ctrlConfig = [].concat(
+        component.controller.$inject || [],
+        [(...args) => {
+          let ctrl = new component.controller(...args);
+          ctrl.$onInit && ctrl.$onInit();
+          return ctrl;
+        }]
+      );
+
+      return {
+        animation: animation,
+        attachTo: angular.element(document.body),
+        controller: ctrlConfig,
+        controllerAs: '$ctrl',
+        template: component.template,
+        panelClass: 'modal-custom-dialog',
+        position: position,
+        trapFocus: true,
+        clickOutsideToClose: true,
+        clickEscapeToClose: true,
+        escapeToClose: true,
+        hasBackdrop: true,
+        disableParentScroll: true,
+      }
+    }
+
 
     changePassword($event) {
         this.$mdPanel.open(
@@ -79,9 +109,9 @@ export default class mainMyAccountIndexController extends ControllerBase {
         );
     }
 
-    showApiKey() {
+    showApiKey($event) {
         this.$mdDialog.show(
-            this.setMdPanelConfig(myShowApiKeyComponent)
+            this.setMdDialogConfig(myShowApiKeyComponent, $event.target)
         );
     }
 

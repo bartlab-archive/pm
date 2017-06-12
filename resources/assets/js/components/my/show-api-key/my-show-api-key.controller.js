@@ -8,7 +8,7 @@ import ControllerBase from 'base/controller.base';
 export default class myShowApiKeyController extends ControllerBase {
 
     static get $inject() {
-        return ['UsersService'];
+        return ['UsersService', '$mdDialog'];
     }
 
     // constructor(...args){
@@ -22,5 +22,9 @@ export default class myShowApiKeyController extends ControllerBase {
             this.apiKey = _.get(result, 'data.api_key');
         });
 
+    }
+
+    close() {
+      this.$mdDialog.cancel();
     }
 }
