@@ -21,4 +21,14 @@ class Project extends Model
         'created_on',
         'updated_on',
     ];
+
+    public function issues()
+    {
+        return $this->hasMany(Issue::class);
+    }
+
+    public function trackers()
+    {
+        return $this->belongsToMany(Tracker::class, (new ProjectsTracker())->getTable());
+    }
 }
