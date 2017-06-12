@@ -5,6 +5,7 @@ namespace App\Http\Controllers\My\Keys;
 use App\Http\Controllers\Controller;
 use App\Models\Token;
 use App\Models\User;
+use App\Models\UserPreference;
 use Illuminate\Http\Request;
 
 /**
@@ -21,14 +22,13 @@ class KeysController extends Controller implements IKeysController
     public function showApiKey(Request $request)
     {
         $user = User::userByHeaderAuthToken($request);
-
         $user_api_key = Token::apiKey($user);
 
         if (is_null($user_api_key)) {
             $user_api_key = Token::createApiKey($user);
         }
 
-        return response()->json($this->buildResponse($user_api_key));
+        return response($this->buildResponse($user, $user_api_key));
     }
 
     /**
@@ -42,14 +42,13 @@ class KeysController extends Controller implements IKeysController
         $user_api_key = Token::apiKey($user);
 
         if (is_null($user_api_key)) {
-            Token::createApiKey($user);
-
-            return response(null, 204);
+            $user_api_key = Token::createApiKey($user);
+        } else {
+            $user_api_key->value = sha1(str_random(33));
+            $user_api_key->save();
         }
 
-        $user_api_key->update(['value' => sha1(str_random(33))]);
-
-        return response(null, 204);
+        return response($this->buildResponse($user, $user_api_key)['updated_on']);
     }
 
     /**
@@ -63,14 +62,13 @@ class KeysController extends Controller implements IKeysController
         $user_atom_key = Token::atomKey($user);
 
         if (is_null($user_atom_key)) {
-            Token::createAtomKey($user);
-
-            return response(null, 204);
+            $user_atom_key = Token::createAtomKey($user);
+        } else {
+            $user_atom_key->value = sha1(str_random(33));
+            $user_atom_key->save();
         }
 
-        $user_atom_key->update(['value' => sha1(str_random(33))]);
-
-        return response(null, 204);
+        return response($this->buildResponse($user, $user_atom_key)['updated_on']);
     }
 
     /**
@@ -78,14 +76,20 @@ class KeysController extends Controller implements IKeysController
      *
      * This method returns the key data
      *
-     * @param Token $model
+     * @param User $user
+     * @param Token $token
      * @return array
      */
-    protected function buildResponse(Token $model)
+    private function buildResponse(User $user, Token $token)
     {
+        $default_tz = \Config::get('app.timezone');
+        $user_preference = $user->preference;
+        $tz = UserPreference::TIME_ZONE_MAP[$user_preference->time_zone];
+        $format = 'Y-m-d H:i:s';
+
         return [
-            'api_key' => $model->value,
-            'updated_on' => date($model->updated_on)
+            'api_key' => $token->value,
+            'updated_on' => ($tz && $tz !== $default_tz) ? date_timezone_set(date_create($token->updated_on), timezone_open($tz))->format($format) : date($token->updated_on)
         ];
     }
 }
