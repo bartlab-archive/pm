@@ -11,7 +11,7 @@ export default class ProjectsListController extends ControllerBase {
     }
 
     $onInit() {
-        // this.showClosed = 0;
+        this.showClosed = 1;
         this.load();
     }
 

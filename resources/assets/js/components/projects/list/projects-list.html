@@ -1,11 +1,20 @@
-<div layout-padding class="md-whiteframe-z1" layout="column">
-    <md-list flex>
-        <md-list-item class="md-3-line" ng-repeat="row in $ctrl.list" ng-click="$ctrl.goto(row.identifier)">
+<div  layout="column" layout-margin>
+    <md-list flex class="md-whiteframe-2dp">
+        <md-list-item class="md-2-line" ng-repeat="row in $ctrl.list" ng-click="$ctrl.goto(row.identifier)">
             <div class="md-list-item-text" layout="column">
                 <h3>{{ row.name }}</h3>
-                <h4>{{ row.homepage }}</h4>
-                <p ng-bind-html="row.description | words: 50 | nl2p"></p>
+                <p>{{ row.homepage }}</p>
+
+                <!--<p ng-bind-html="row.description | words: 20"></p>-->
             </div>
+            <!--<md-button class="md-secondary md-icon-button">-->
+            <md-icon class="md-warn">star_rate</md-icon>
+            <md-icon ng-if="row.is_public">lock_open</md-icon>
+            <md-icon ng-if="!row.is_public">lock</md-icon>
+            <md-icon ng-if="row.status == 5">close</md-icon>
+            <!--</md-button>-->
+
+            <md-divider ng-if="!$last"></md-divider>
         </md-list-item>
     </md-list>
 </div>
