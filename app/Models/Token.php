@@ -37,21 +37,16 @@ class Token extends Model
      */
     protected $guarded = ['id'];
 
+    public static function existsToken(string $token, string $action = 'session')
+    {
+        return Token::where('action', $action)
+            ->where('value', $token)
+            ->exists();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public static function checkHeaderAuthToken(Request $request)
-    {
-        $auth_token = $request->header('Authorization');
-        $auth_token = explode(' ', $auth_token);
-
-        if (!$auth_token || !isset($auth_token[1])) {
-            return false;
-        }
-
-        return Token::where('action', 'session')->where('value', $auth_token[1])->exists();
     }
 
     public static function apiKey(User $user)
