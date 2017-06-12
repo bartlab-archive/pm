@@ -83,7 +83,8 @@ class RegisterController extends Controller
          */
         $user_reference = UserPreference::create([
             'user_id' => $user->id,
-            'hide_mail' => $request->input('hide_email', 0)
+            'hide_mail' => $request->input('hide_email', 0),
+            'time_zone' => \Config::get('app.timezone')
         ]);
 
         /**

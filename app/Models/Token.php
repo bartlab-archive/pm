@@ -37,6 +37,13 @@ class Token extends Model
      */
     protected $guarded = ['id'];
 
+    public static function existsToken(string $token, string $action = 'session')
+    {
+        return Token::where('action', $action)
+            ->where('value', $token)
+            ->exists();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
