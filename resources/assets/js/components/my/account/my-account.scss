@@ -4,17 +4,16 @@ my-account-component {
     max-width: 600px;
     //padding: 3%;
     margin: 16px auto;
+
+    .md-subheader{
+      background: #fff;
+    }
+
+    md-list-item{
+      &.md-no-proxy{
+        padding: 0;
+      }
+    }
   }
-  //a {
-  //  color: blue;
-  //  cursor: pointer;
-  //}
-  //.topUrl {
-  //  text-align: right;
-  //}
-  //
-  //.topUrl a {
-  //  padding: 10px;
-  //}
 }
 
