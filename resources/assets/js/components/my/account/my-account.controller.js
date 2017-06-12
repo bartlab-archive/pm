@@ -21,7 +21,7 @@ import myChangePasswordComponent from 'components/my/change-password/my-change-p
 export default class mainMyAccountIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$auth', '$state', '$mdToast', '$mdPanel', 'UsersService'];
+        return ['$auth', '$state', '$mdToast', '$mdDialog', 'UsersService'];
     }
 
     $onInit() {
@@ -35,16 +35,16 @@ export default class mainMyAccountIndexController extends ControllerBase {
         this.timeZone = this.UsersService.getTimeZone();
     }
 
-    setMdPanelConfig(component, target) {
+    setMdPanelConfig(component) {
 
-        let position = this.$mdPanel.newPanelPosition()
-            .absolute()
-            .center();
-
-        let animation = this.$mdPanel.newPanelAnimation()
-            .duration(300)
-            .openFrom(target)
-            .withAnimation(this.$mdPanel.animation.SCALE);
+        // let position = this.$mdDialog.newPanelPosition()
+        //     .absolute()
+        //     .center();
+        //
+        // let animation = this.$mdDialog.newPanelAnimation()
+        //     .duration(300)
+        //     .openFrom(target)
+        //     .withAnimation(this.$mdDialog.animation.SCALE);
 
         let ctrlConfig = [].concat(
             component.controller.$inject || [],
@@ -56,16 +56,18 @@ export default class mainMyAccountIndexController extends ControllerBase {
         );
 
         return {
-            animation: animation,
-            attachTo: angular.element(document.body),
+            // animation: animation,
+            // attachTo: angular.element(document.body),
             controller: ctrlConfig,
             controllerAs: '$ctrl',
             template: component.template,
             panelClass: 'modal-custom-dialog',
-            position: position,
+            // position: position,
+            parent:angular.element(document.body),
             trapFocus: true,
             clickOutsideToClose: true,
             clickEscapeToClose: true,
+            escapeToClose: true,
             hasBackdrop: true,
             disableParentScroll: true,
         }
@@ -77,9 +79,9 @@ export default class mainMyAccountIndexController extends ControllerBase {
         );
     }
 
-    showApiKey($event) {
-        this.$mdPanel.open(
-            this.setMdPanelConfig(myShowApiKeyComponent, $event.target)
+    showApiKey() {
+        this.$mdDialog.show(
+            this.setMdPanelConfig(myShowApiKeyComponent)
         );
     }
 
