@@ -17,11 +17,14 @@ use Illuminate\Http\Request;
 //    return $request->user();
 //});
 
-
+/**
+ * Route group
+ *
+ * This route group contains the routes api version 1
+ */
 Route::group(
     [
-        'prefix' => 'v1',
-//        'middleware' => 'auth'
+        'prefix' => 'v1'
     ],
     function () {
         Route::group(
@@ -53,25 +56,17 @@ Route::group(
 
         // projects
 
-
-        Route::group(['prefix' => 'projects'], function (){
-            Route::get('/', function (Request $request) {
-                $list = \App\Models\Project::orderBy('name')->where('status', 1);
-                if ($request->input('closed')) {
-                    $list->orWhere('status', 5);
-                }
-                return $list->get();
-            });
-            Route::get('{identifier}', function ($identifier) {
-                return \App\Models\Project::where('identifier', $identifier)->first();
-            });
-
-            Route::get('{identifier}/issues', 'ProjectsController@getIssues');
+        Route::get('projects', function (Request $request) {
+            $list = \App\Models\Project::orderBy('name')->where('status', 1);
+            if ($request->input('closed')) {
+                $list->orWhere('status', 5);
+            }
+            return $list->get();
         });
 
-        Route::get('/issues', 'IssuesController@getIssues');
-        Route::get('/issues/{id}', 'IssuesController@getIssue');
-
+        Route::get('projects/{identifier}', function ($identifier) {
+            return \App\Models\Project::where('identifier', $identifier)->first();
+        });
 
         // users
 

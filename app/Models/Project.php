@@ -26,4 +26,9 @@ class Project extends Model
     {
         return $this->hasMany(Issue::class);
     }
+
+    public function trackers()
+    {
+        return $this->belongsToMany(Tracker::class, (new ProjectsTracker())->getTable());
+    }
 }
