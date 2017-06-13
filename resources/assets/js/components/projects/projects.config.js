@@ -30,6 +30,20 @@ export default class ProjectsConfig extends InjectableBase {
                     }
                 }
             })
+            .state('projects-inner', {
+                abstract: true,
+                data: {
+                    access: '@'
+                },
+                url: '/projects',
+                parent: 'project',
+                views: {
+                    content: {
+                        template: '<ui-view/>'
+                    }
+                }
+            })
+
             .state('projects.list', {
                 url: '',
                 component: projectsListComponent.name,
@@ -38,7 +52,7 @@ export default class ProjectsConfig extends InjectableBase {
                 url: '/new',
                 component: projectsEditComponent.name,
             })
-            .state('projects.info', {
+            .state('projects-inner.info', {
                 url: '/:id',
                 component: projectsInfoComponent.name,
             })
