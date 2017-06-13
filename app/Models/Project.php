@@ -53,7 +53,6 @@ class Project extends Model
         return (int)(Auth::guest() ? false : $this->members()->where('user_id', Auth::user()->id)->exists());
     }
 
-
     /**
      * Method list
      */

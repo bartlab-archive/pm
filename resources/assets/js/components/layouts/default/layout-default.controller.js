@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 
 /**
@@ -23,7 +24,7 @@ export default class LayoutDefaultController extends ControllerBase {
         ];
 
         this.ProjectsService.getList().then((response) => {
-            this.projects = response.data
+            this.projects = _.filter(response.data, {is_my: 1});
         });
     }
 
@@ -51,5 +52,10 @@ export default class LayoutDefaultController extends ControllerBase {
     menuClick(item) {
         this.$state.go(item.url);
         this.toggle();
+    }
+
+    newProject() {
+        this.$state.go('projects.new');
+        this.toggle('right');
     }
 }

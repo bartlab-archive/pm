@@ -1,47 +1,8 @@
 layout-default-component {
-  .ng-enter.slide-down {
-    animation: 300ms open ease;
-  }
-
-  .slide-down.ng-leave {
-    animation: 300ms close ease;
-  }
-
-  @keyframes open {
-    From {
-      margin-bottom: -48px;
-    }
-    To {
-      margin-bottom: 0px;
-    }
-  }
-
-  @keyframes close {
-    From {
-      margin-bottom: 0px;
-    }
-    To {
-      margin-bottom: -48px;
-    }
-  }
-
-  .sidebar-list {
-    padding-left: 0;
-    margin: 0px
-  }
-
-  .overflow-hidden {
-    overflow: hidden;
-  }
-
-  .sidebar-list-item-child {
-    padding-left: 15px
-  }
-
+  .md-sidenav-right,
   .md-sidenav-left {
-    .menu-list-href {
-      text-decoration: none;
-      color: black;
+    .md-button.md-icon-button {
+      margin-left: -8px;
     }
   }
 }

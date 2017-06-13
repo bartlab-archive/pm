@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 
 /**
@@ -12,7 +13,7 @@ export default class ProjectsInfoController extends ControllerBase {
 
     $onInit() {
         this.ProjectsService.one(this.$stateParams.id).then((response) => {
-            this.project = response.data;
+            this.project = _.get(response, 'data', []);
         });
     }
 
