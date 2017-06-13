@@ -11,6 +11,7 @@ import 'angular-messages';
 import 'angular-animate';
 import 'angular-aria';
 
+import 'directives.module';
 import 'filters.module';
 import 'services.module';
 import 'components/components.module';
@@ -37,6 +38,7 @@ angular
             // 'ngTable',
             'mdDataTable',
 
+            'app.directives',
             'app.filters',
             'app.components',
             'app.services'

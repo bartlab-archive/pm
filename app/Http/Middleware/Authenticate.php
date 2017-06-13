@@ -19,7 +19,7 @@ class Authenticate
         /**
          * @todo create permission by authorization user
          */
-        if (!Token::checkHeaderAuthToken($request)) {
+        if (!$request->bearerToken()) {
             return abort(401);
         }
 

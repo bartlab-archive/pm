@@ -3,16 +3,31 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ResetsPasswords;
+use App\Http\Traits\PasswordTrait;
+use App\Models\EmailAddresses;
 use Illuminate\Http\Request;
 
+/**
+ * Class ResetPasswordController
+ *
+ * @package App\Http\Controllers\Auth
+ */
 class ResetPasswordController extends Controller
-{   
-    use ResetsPasswords;
+{
+    use PasswordTrait;
 
+    /**
+     * @todo not valid logic
+     */
+
+    /*
+     * Send token
+     *
+     * This method sends the invite on request email
+     */
     public function sendToken(Request $request)
     {
-
+        $this->validate($request, $this->rules()['send_token'], $this->messages()['send_token']);
     }
 
     public function reset(Request $request)
@@ -24,7 +39,7 @@ class ResetPasswordController extends Controller
     {
         return [
             'send_token' => [
-                'email' => ''
+                'email' => 'required|string|email|exists:' . (new EmailAddresses())->getTable() . ',address'
             ],
             'reset' => []
         ];

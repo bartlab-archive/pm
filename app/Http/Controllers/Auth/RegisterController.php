@@ -23,11 +23,11 @@ class RegisterController extends Controller
     public function __construct()
     {
         //TODO: take out check permission at middleware class
-        $this->permission(
-            Setting::where('name', Setting::setting_register_name)
-                ->first(['value'])
-                ->value
-        );
+        $register_settings = Setting::where('name', Setting::setting_register_name)->first(['value']);
+
+        if ($register_settings) {
+            $this->permission($register_settings->value);
+        }
     }
 
     /**
@@ -64,8 +64,10 @@ class RegisterController extends Controller
             'login' => $request->input('login'),
             'firstname' => $request->input('first_name'),
             'lastname' => $request->input('last_name'),
+            'language' => $request->input('lang'),
             'salt' => $salt,
-            'hashed_password' => sha1($salt . sha1($request->input('password')))
+            'hashed_password' => sha1($salt . sha1($request->input('password'))),
+            'mail_notification' => 'only_my_events'
         ]);
 
         /**
@@ -79,10 +81,15 @@ class RegisterController extends Controller
         /**
          * Create user preference relationship
          */
-        UserPreference::create([
+        $user_reference = UserPreference::create([
             'user_id' => $user->id,
             'hide_mail' => $request->input('hide_email', 0)
         ]);
+
+        /**
+         * Add the default serialized data
+         */
+        UserPreference::updateOthers($user_reference);
 
         return response(null, 201);
     }
@@ -104,7 +111,7 @@ class RegisterController extends Controller
             'password' => 'required|string|min:6',
             'repeat_password' => 'required|string|min:6|same:password',
             'lang' => 'required|string|max:2',
-            'hide_email' => 'int|in:1,0'
+            'hide_email' => 'boolean'
         ];
     }
 

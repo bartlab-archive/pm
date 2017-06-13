@@ -1,4 +1,7 @@
 import InjectableBase from 'base/injectable.base';
+import projectsListComponent from './list/projects-list.component';
+import projectsEditComponent from './edit/projects-edit.component';
+import projectsInfoComponent from './info/projects-info.component';
 
 /**
  * Class ProjectsConfig
@@ -28,11 +31,11 @@ export default class ProjectsConfig extends InjectableBase {
             })
             .state('projects.list', {
                 url: '',
-                component: 'projectsListComponent',
+                component: projectsListComponent.name,
             })
             .state('projects.new', {
                 url: '/new',
-                component: 'projectsEditComponent',
+                component: projectsEditComponent.name,
             })
             .state('projects.info', {
                 url: '/:id',
@@ -43,34 +46,4 @@ export default class ProjectsConfig extends InjectableBase {
                 component: 'projectsIssuesComponent',
             });
     }
-    // $stateProvider
-    //     .state('projects', {
-    //         abstract: true,
-    //         data: {
-    //             access: '@'
-    //         },
-    //         url: '/projects',
-    //         parent: 'default',
-    //         views: {
-    //             content: {
-    //                 template: '<ui-view/>'
-    //             }
-    //         }
-    //     })
-    //     .state('projects.list', {
-    //         url: '',
-    //         component: 'projectsListComponent',
-    //     })
-    //     .state('projects.new', {
-    //         url: '/new',
-    //         component: 'projectsEditComponent',
-    //     })
-    //     .state('projects.info', {
-    //         url: '/:id',
-    //         component: 'projectsInfoComponent',
-    //     })
-
-
-
 }
-;

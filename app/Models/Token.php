@@ -41,16 +41,4 @@ class Token extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public static function checkHeaderAuthToken(Request $request)
-    {
-        $auth_token = $request->header('Authorization');
-        $auth_token = explode(' ', $auth_token);
-
-        if (!$auth_token || !isset($auth_token[1])) {
-            return false;
-        }
-
-        return Token::where('action', 'session')->where('value', $auth_token[1])->exists();
-    }
 }

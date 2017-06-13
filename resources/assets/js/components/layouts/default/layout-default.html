@@ -6,6 +6,11 @@
 
         <h2 flex>MaybeWorks PM</h2>
 
+            <md-button  ng-click="$ctrl.toggle('right')">
+                My Projects
+            </md-button>
+
+
         <md-menu>
             <md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openUserMenu($mdMenu, $event)">
                 <md-icon>more_vert</md-icon>
@@ -36,7 +41,7 @@
 
 <section layout="row" flex>
     <md-sidenav class="md-sidenav-left" md-component-id="left"
-                md-disable-backdrop md-whiteframe="4">
+                 md-whiteframe="4">
 
         <md-toolbar class="md-theme-indigo">
 
@@ -48,17 +53,68 @@
             </h1>
         </md-toolbar>
 
+
         <md-content>
             <md-list flex>
-                <md-list-item class="md-2-line" ng-repeat="item in $ctrl.items" ng-click = "$ctrl.gothoughmenu(item.url)">
-                    <div class="md-list-item-text menu-list-href" layout="column">
-                        <div><md-icon>{{ item.icon }}</md-icon> {{ item.name }}</div>
-                    </div>
-                </md-list-item>
+                <ul class="sidebar-list">
+                    <li ng-repeat="item in $ctrl.items" style="height:auto">
+                        <md-list-item class="md-2-line" ng-click="$ctrl.menuClick(item)">
+                            <div class="md-list-item-text menu-list-href" layout="column">
+                                <div>
+                                    <md-icon>{{ item.icon }}</md-icon>
+                                    {{ item.name }}
+                                </div>
+                            </div>
+                        </md-list-item>
+                        <div class="overflow-hidden">
+                            <md-list-item class="slide-down md-1-line"
+                                          ng-if="item.children && item.children.shown"
+                                          ng-repeat="child in item.children.items" ng-click="$ctrl.menuClick(child)">
+                                <div class=" slide-down md-list-item-text menu-list-href sidebar-list-item-child" layout="column">
+                                    <div>
+                                        <md-icon>{{ child.icon }}</md-icon>
+                                        {{ child.name }}
+                                    </div>
+                                </div>
+                            </md-list-item>
+                        </div>
+                    </li>
+                </ul>
             </md-list>
         </md-content>
     </md-sidenav>
     <md-content flex layout-padding>
         <div ui-view="content"></div>
     </md-content>
+
+    <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+
+        <md-toolbar class="md-theme-light">
+            <h1 class="md-toolbar-tools">
+                <span>Projects</span>
+                <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggle('right')">
+                    <md-icon>menu</md-icon>
+                </md-button>
+            </h1>
+        </md-toolbar>
+        <md-content>
+
+            <md-list flex>
+                <ul class="sidebar-list">
+                    <li ng-repeat="project in $ctrl.projects" style="height:auto">
+                        <md-list-item class="md-1-line" ng-click="$ctrl.gotToProject(project.identifier)">
+                            <div class="md-list-item-text menu-list-href" layout="column">
+                                <div>
+                                    {{ project.name }}
+                                </div>
+                            </div>
+                        </md-list-item>
+                    </li>
+                </ul>
+            </md-list>
+        </md-content>
+
+    </md-sidenav>
+
+
 </section>
