@@ -10,7 +10,7 @@ export default class ProjectsWikiController extends ControllerBase {
   }
 
   $onInit() {
-
+    console.log(12);
   }
 
 }

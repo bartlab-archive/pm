@@ -35,7 +35,7 @@ export default class ProjectsConfig extends InjectableBase {
                 data: {
                     access: '@'
                 },
-                url: '/projects',
+                url: '/projects/:id',
                 parent: 'project',
                 views: {
                     content: {
@@ -53,12 +53,13 @@ export default class ProjectsConfig extends InjectableBase {
                 component: projectsEditComponent.name,
             })
             .state('projects-inner.info', {
-                url: '/:id',
+                url: '',
                 component: projectsInfoComponent.name,
             })
-            .state('projects.wiki', {
+            .state('wiki', {
+              parent: 'projects-inner',
               url: '/wiki',
-              component: projectsWikiComponent.name,
+              component: projectsWikiComponent.name
             });
     }
 }

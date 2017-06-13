@@ -6,6 +6,10 @@ import ControllerBase from 'base/controller.base';
  */
 export default class LayoutProjectController extends ControllerBase {
 
+  static get $inject() {
+    return ['$state'];
+  }
+
     $onInit() {
         this.items = [
             {url: 'home', name: 'Overview'},
@@ -16,12 +20,12 @@ export default class LayoutProjectController extends ControllerBase {
             {url: 'settings', name: 'Settings'}
         ];
 
-        this.currentNavItem = this.items[0].url;
+        this.currentNavItem = this.items.some(item => item.url === this.$state.current.name) ?
+          this.$state.current.name : this.items[0].url;
     }
 
     goto(url){
-        console.log(url);
-        // this.currentNavItem = url;
+      this.$state.go(url, {id: this.$state.params.id});
     }
 
 }
