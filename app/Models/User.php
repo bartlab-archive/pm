@@ -34,13 +34,10 @@ class User extends Authenticatable
 
     public static function userByHeaderAuthToken(Request $request)
     {
-        $auth_token = $request->header('Authorization');
-        $auth_token = explode(' ', $auth_token)[1];
-
-        return Token::where('action', 'session')
-            ->where('value', $auth_token)
-            ->first()
-            ->user;
+        return static::whereHas('session_token', function($q) use($request) {
+           $q->where('action', 'session')
+               ->where('value', $request->bearerToken());
+        })->first();
     }
     
     public function email()

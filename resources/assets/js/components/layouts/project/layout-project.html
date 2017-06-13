@@ -1,0 +1,6 @@
+<md-nav-bar md-selected-nav-item="$ctrl.currentNavItem" nav-bar-aria-label="navigation links">
+    <md-nav-item ng-repeat="item in $ctrl.items" md-nav-click="$ctrl.goto(item.url)" name="{{ item.url }}">
+        {{ item.name }}
+    </md-nav-item>
+</md-nav-bar>
+<div ui-view="content"></div>
