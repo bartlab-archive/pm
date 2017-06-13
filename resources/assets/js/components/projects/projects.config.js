@@ -2,6 +2,7 @@ import InjectableBase from 'base/injectable.base';
 import projectsListComponent from './list/projects-list.component';
 import projectsEditComponent from './edit/projects-edit.component';
 import projectsInfoComponent from './info/projects-info.component';
+import projectsWikiComponent from './wiki/projects-wiki.component';
 
 /**
  * Class ProjectsConfig
@@ -40,6 +41,10 @@ export default class ProjectsConfig extends InjectableBase {
             .state('projects.info', {
                 url: '/:id',
                 component: projectsInfoComponent.name,
+            })
+            .state('projects.wiki', {
+              url: '/wiki',
+              component: projectsWikiComponent.name,
             });
     }
 }
