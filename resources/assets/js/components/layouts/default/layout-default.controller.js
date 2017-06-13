@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 
 /**
@@ -23,7 +24,9 @@ export default class LayoutDefaultController extends ControllerBase {
         ];
 
         this.ProjectsService.getList().then((response) => {
-            this.projects = response.data
+            if (response.data) {
+                this.projects = _.filter(response.data, {is_my: true});
+            }
         });
     }
 
