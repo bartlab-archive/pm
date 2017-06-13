@@ -43,5 +43,12 @@ layout-default-component {
       text-decoration: none;
       color: black;
     }
+    position: fixed;
+  }
+  .md-sidenav-right {
+    position: fixed;
+  }
+  .main-toolbar {
+    position: fixed;top: 0;left: 0;z-index: 2;width: 100%;
   }
 }
