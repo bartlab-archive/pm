@@ -13,6 +13,7 @@ export default class LayoutDefaultController extends ControllerBase {
     $onInit() {
         this.items = [
             {url: 'home', name: 'Home', icon: 'home'},
+            {url: 'projects.list', name: 'Projects', icon: 'work'},
             {url: 'admin.index', name: 'Administration', icon: 'apps'},
             {url: 'home', name: 'My page', icon: 'person'},
             {url: 'home', name: 'Help', icon: 'help'}
@@ -33,7 +34,7 @@ export default class LayoutDefaultController extends ControllerBase {
     };
 
     gotToProject(id) {
-        this.$state.go('projects.info', {id: id});
+        this.$state.go('projects-inner.info', {id: id});
         this.toggle('right');
     }
 
