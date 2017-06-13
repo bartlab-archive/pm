@@ -8,12 +8,13 @@ import InjectableBase from 'base/injectable.base';
  * @property $urlRouterProvider
  * @property $locationProvider
  * @property $authProvider
+ * @property $mdThemingProvider
  * @property RestangularProvider
  */
 export default class AppConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider', 'RestangularProvider'];
+        return ['$mdThemingProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider', 'RestangularProvider'];
     }
 
     $onInit() {
@@ -21,6 +22,20 @@ export default class AppConfig extends InjectableBase {
         this.localConfig();
         this.authConfig();
         this.restConfig();
+        this.themeConfig();
+    }
+
+    themeConfig(){
+        this.$mdThemingProvider.theme('default')
+            .primaryPalette('blue-grey')
+            .accentPalette('blue');
+            // .warnPalette('red');
+
+        this.$mdThemingProvider.enableBrowserColor({
+            // theme: 'myTheme', // Default is 'default'
+            // palette: 'accent', // Default is 'primary', any basic material palette and extended palettes are available
+            // hue: '200' // Default is '800'
+        });
     }
 
     urlConfig() {
