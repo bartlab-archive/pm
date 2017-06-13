@@ -41,9 +41,6 @@ export default class ProjectsConfig extends InjectableBase {
             .state('projects.issues', {
                 url: '/:id/issues',
                 component: 'projectsIssuesComponent',
-                data: {
-                    access: '?'
-                },
             });
     }
     // $stateProvider

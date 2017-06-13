@@ -8,18 +8,6 @@ export default class IssuesListController extends ControllerBase {
     }
 
     $onInit() {
-        this.topDirections = ['left', 'up'];
-        this.bottomDirections = ['down', 'right'];
-
-        this.isOpen = false;
-
-        this.availableModes = ['md-fling', 'md-scale'];
-        this.selectedMode = 'md-scale';
-
-        this.availableDirections = ['up', 'down', 'left', 'right'];
-        this.selectedDirection = 'right';
-
-
         const _this = this;
         _this.issues = paginatorCallback;
         function paginatorCallback(page, pageSize, opt) {
@@ -50,12 +38,6 @@ export default class IssuesListController extends ControllerBase {
                 .hideDelay(3000)
         );
     };
-    getWithId(id) {
-        return _.find(this.data, function (item) {
-            return item.id === id;
-        });
-
-    }
 
     sortBy(options) {
         const fields = [

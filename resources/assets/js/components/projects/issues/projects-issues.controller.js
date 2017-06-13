@@ -4,43 +4,18 @@ import * as _ from "lodash";
 export default class ProjectsIssuesController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdToast', 'IssuesService', '$stateParams'];
+        return ['$mdToast', '$mdSidenav', 'IssuesService', '$stateParams'];
     }
 
     $onInit() {
-        this.topDirections = ['left', 'up'];
-        this.bottomDirections = ['down', 'right'];
-
-        this.isOpen = false;
-
-        this.availableModes = ['md-fling', 'md-scale'];
-        this.selectedMode = 'md-scale';
-
-        this.availableDirections = ['up', 'down', 'left', 'right'];
-        this.selectedDirection = 'right';
-
-
+        this.toggleLeft = this.buildDelayedToggler('left');
+        this.toggleRight = this.buildToggler('right');
+        this.isOpenRight = function(){
+            return this.$mdSidenav('right').isOpen();
+        };
         const _this = this;
-        _this.issues = paginatorCallback;
-        function paginatorCallback(page, pageSize, opt) {
-            const sortBy = this.sortBy(opt.columnSort);
-            const offset = (page - 1) * pageSize;
-            const options = {
-                offset: offset,
-                limit: pageSize,
-                sortField: sortBy.field,
-                order: sortBy.sort
-            };
-            return _this.IssuesService.getListByProject(_this.$stateParams.id, options)
-                .then((response) => {
-                    this.data = response.data;
-                    return {
-                        results: response.data,
-                        totalResultCount: response.headers('x-total')
-                    }
-                })
-                .catch(console.log);
-        }
+        _this.issues = this.paginatorCallback;
+
     }
 
     selectedRowCallback(rows){
@@ -50,11 +25,26 @@ export default class ProjectsIssuesController extends ControllerBase {
                 .hideDelay(3000)
         );
     };
-    getWithId(id) {
-        return _.find(this.data, function (item) {
-            return item.id === id;
-        });
 
+    paginatorCallback(page, pageSize, opt) {
+        const _this = this;
+        const sortBy = this.sortBy(opt.columnSort);
+        const offset = (page - 1) * pageSize;
+        const options = {
+            offset: offset,
+            limit: pageSize,
+            sortField: sortBy.field,
+            order: sortBy.sort
+        };
+        return _this.IssuesService.getListByProject(_this.$stateParams.id, options)
+            .then((response) => {
+                this.data = response.data;
+                return {
+                    results: response.data,
+                    totalResultCount: response.headers('x-total')
+                }
+            })
+            .catch(console.log);
     }
 
     sortBy(options) {
@@ -81,4 +71,41 @@ export default class ProjectsIssuesController extends ControllerBase {
         return result;
 
     }
+
+    buildDelayedToggler(navID) {
+        return this.debounce(function() {
+            this.$mdSidenav(navID)
+                .toggle();
+        }, 200);
+    }
+
+    buildToggler(navID) {
+        return function() {
+            this.$mdSidenav(navID)
+                .toggle();
+        };
+    }
+
+    close () {
+        this.$mdSidenav('right').close();
+    };
+
+    isOpenRight(){
+        return this.$mdSidenav('right').isOpen();
+    };
+
+    debounce(func, wait, context) {
+        let timer;
+
+        return function debounced() {
+            const context = this,
+                args = Array.prototype.slice.call(arguments);
+            $timeout.cancel(timer);
+            timer = $timeout(function() {
+                timer = undefined;
+                func.apply(context, args);
+            }, wait || 10);
+        };
+    }
+
 }

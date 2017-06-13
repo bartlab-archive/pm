@@ -4,28 +4,6 @@
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-headline">Card with image</span>
-                    <div class="lock-size" layout="row">
-                        <md-fab-speed-dial md-open="$ctrl.isOpen" md-direction="{{$ctrl.selectedDirection}}"
-                                           ng-class="$ctrl.selectedMode">
-                            <md-fab-trigger>
-                                <md-button aria-label="menu" class="md-fab md-warn">
-                                    <md-icon md-svg-src="/img/icons/menu.svg"></md-icon>
-                                </md-button>
-                            </md-fab-trigger>
-                            <md-fab-actions>
-                                <md-button aria-label="Twitter" class="md-fab md-raised md-mini">
-                                    <md-icon md-svg-src="/img/icons/twitter.svg" aria-label="Twitter"></md-icon>
-                                </md-button>
-                                <md-button aria-label="Facebook" class="md-fab md-raised md-mini">
-                                    <md-icon md-svg-src="/img/icons/facebook.svg" aria-label="Facebook"></md-icon>
-                                </md-button>
-                                <md-button aria-label="Google Hangout" class="md-fab md-raised md-mini">
-                                    <md-icon md-svg-src="/img/icons/hangout.svg" aria-label="Google Hangout"></md-icon>
-                                </md-button>
-
-                            </md-fab-actions>
-                        </md-fab-speed-dial>
-                    </div>
                 </md-card-title-text>
             </md-card-title>
         <mdt-table
@@ -56,6 +34,8 @@
                 <mdt-column align-rule="left" column-sort="true"><span>Subject</span></mdt-column>
                 <mdt-column align-rule="left" column-sort="true"><span>Assigned to</span></mdt-column>
                 <mdt-column align-rule="left" column-sort="true"><span>Updated</span></mdt-column>
+                <mdt-column align-rule="left" column-sort="true"><md-icon md-svg-icon="/img/icons/menu.svg" aria-label="More Options"></md-icon></mdt-column>
+
             </mdt-header-row>
             <mdt-custom-cell column-key="id"><a ng-href="/issues/{{value}}" target="_blank">{{ rowId }}</a>
             </mdt-custom-cell>
@@ -66,23 +46,9 @@
         </md-card>
         <md-card  md-rowspan= md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch>
         <div layout="column" layout-align="top center">
-            <p>
-                The left sidenav will 'lock open' on a medium (>=960px wide) device.
-            </p>
-            <p>
-                The right sidenav will focus on a specific child element.
-            </p>
-
             <div>
-                <md-button ng-click="toggleLeft()"
-                           class="md-primary" hide-gt-md>
-                    Toggle left
-                </md-button>
-            </div>
-
-            <div>
-                <md-button ng-click="toggleRight()"
-                           ng-hide="isOpenRight()"
+                <md-button ng-click="$ctrl.toggleRight()"
+                           ng-hide="$ctrl.isOpenRight()"
                            class="md-primary">
                     Toggle right
                 </md-button>
@@ -105,7 +71,7 @@
                        ng-model="data" md-autofocus>
             </md-input-container>
         </form>
-        <md-button ng-click="close()" class="md-primary">
+        <md-button ng-click="$ctrl.close()" class="md-primary">
             Close Sidenav Right
         </md-button>
     </md-content>
