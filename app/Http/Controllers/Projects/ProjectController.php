@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Projects;
 
 use App\Http\Controllers\Controller;
-use App\Models\Issue;
 use App\Models\Project;
 
 /**
@@ -48,11 +47,12 @@ class ProjectController extends Controller
      *         "lft": 7,
      *         "rgt": 8,
      *         "inherit_members": 0,
-     *         "default_version_id": null
+     *         "default_version_id": null,
+     *         ""
      *     },
      *     ...
      * ]
-     * 
+     *
      * @return mixed
      */
     public function index()
@@ -67,7 +67,7 @@ class ProjectController extends Controller
             $projects->orWhere('status', 5);
         }
 
-        return $projects->get();
+        return $projects->get()->makeVisible(['is_my']);
     }
 
     /**
@@ -96,7 +96,7 @@ class ProjectController extends Controller
      */
     public function show($identifier)
     {
-        return Project::where('identifier', $identifier)->firstOrFail();
+        return Project::projectByIdentifier($identifier);
     }
 
     /**
@@ -109,22 +109,7 @@ class ProjectController extends Controller
      */
     public function destroy($identifier)
     {
-        $project = Project::where('identifier', $identifier)->firstOrFail();
-
-        /**
-         * Destroy attach trackers
-         */
-        $project->trackers()->detach();
-
-        /**
-         * Destroy attach issues
-         */
-        Issue::destroy($project->issues->pluck('id')->toArray());
-
-        /**
-         * Destroy project
-         */
-        $project->delete();
+        Project::deleteProjectByIdentifier($identifier);
 
         return response(null, 204);
     }
