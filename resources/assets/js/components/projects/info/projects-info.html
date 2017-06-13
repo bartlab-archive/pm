@@ -1,38 +1,76 @@
-<div class="container">
-    <div class="row">
-        <div class="col-md-12 ">
-            <div class="panel panel-default">
-                <div class="panel-heading clearfix">
-                    <div class="panel-title pull-left">{{ $ctrl.project.name }}</div>
-
-                    <div class="btn-toolbar" role="toolbar">
-                        <div class="btn-group pull-right" uib-dropdown>
-                            <a ui-sref="projects.new" id="split-button" type="button" class="btn btn-primary btn-sm">
-                                <i class="fa fa-plus"></i> New subproject
-                            </a>
-                            <a href="#" type="button" class="btn btn-default btn-sm">
-                                <i class="fa fa-times"></i> Close
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-7">
-                            <h4>Overview</h4>
-                            <div ng-bind-html="$ctrl.project.description | nl2p"></div>
-                        </div>
-                        <div class="col-md-5">
-                            <h4>Spent time</h4>
-
-                            <h4>Members</h4>
-                            <h4>Issue tracking</h4>
-                            <h4>Subprojects</h4>
-                        </div>
-                    </div>
-
-                </div>
+<div layout-gt-sm="row" layout-margin-gt-sm>
+    <div flex-gt-sm="70" flex-offset-gt-sm="15" class="md-whiteframe-2dp">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button
+                        class="md-icon-button"
+                        aria-label="New project"
+                        ng-click="$ctrl.newProject()">
+                    <md-icon>add</md-icon>
+                </md-button>
+                <h2>Projects</h2>
+                <span flex></span>
+                <md-switch ng-model="$ctrl.showClosed" md-invert aria-label="Show closed"
+                           ng-change="$ctrl.load()"
+                           ng-true-value="1" ng-false-value="0">
+                    Show closed
+                </md-switch>
             </div>
-        </div>
+        </md-toolbar>
+
+        <md-list>
+            <md-list-item class="md-3-line" ng-repeat="row in $ctrl.list" ng-click="$ctrl.goto(row.identifier)">
+                <div class="md-list-item-text" layout="column">
+                    <h3>{{ row.name }}</h3>
+                    <p>{{ row.homepage }}</p>
+                    <p class="md-truncate" ng-bind-html="row.description | words: 50"></p>
+                </div>
+
+                <md-icon class="md-warn">star_rate</md-icon>
+                <md-icon>{{ row.is_public?'lock_open':'lock' }}</md-icon>
+                <md-icon ng-if="row.status == 5">close</md-icon>
+
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+        </md-list>
     </div>
 </div>
+
+<!--<div class="container">-->
+    <!--<div class="row">-->
+        <!--<div class="col-md-12 ">-->
+            <!--<div class="panel panel-default">-->
+                <!--<div class="panel-heading clearfix">-->
+                    <!--<div class="panel-title pull-left">{{ $ctrl.project.name }}</div>-->
+
+                    <!--<div class="btn-toolbar" role="toolbar">-->
+                        <!--<div class="btn-group pull-right" uib-dropdown>-->
+                            <!--<a ui-sref="projects.new" id="split-button" type="button" class="btn btn-primary btn-sm">-->
+                                <!--<i class="fa fa-plus"></i> New subproject-->
+                            <!--</a>-->
+                            <!--<a href="#" type="button" class="btn btn-default btn-sm">-->
+                                <!--<i class="fa fa-times"></i> Close-->
+                            <!--</a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="panel-body">-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-7">-->
+                            <!--<h4>Overview</h4>-->
+                            <!--<div ng-bind-html="$ctrl.project.description | nl2p"></div>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-5">-->
+                            <!--<h4>Spent time</h4>-->
+
+                            <!--<h4>Members</h4>-->
+                            <!--<h4>Issue tracking</h4>-->
+                            <!--<h4>Subprojects</h4>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

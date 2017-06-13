@@ -50,11 +50,7 @@ class Project extends Model
 
     public function getIsMyAttribute()
     {
-        if (Auth::guest()) {
-            return false;
-        }
-
-        return $this->members()->where('user_id', Auth::user()->id)->exists();
+        return (int)(Auth::guest() ? false : $this->members()->where('user_id', Auth::user()->id)->exists());
     }
 
 
