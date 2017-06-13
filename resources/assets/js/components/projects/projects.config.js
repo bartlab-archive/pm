@@ -55,7 +55,7 @@ export default class ProjectsConfig extends InjectableBase {
                 url: '/:id',
                 component: 'projectsInfoComponent',
             })
-            .state('projects.issues', {
+            .state('projects-inner.issues', {
                 url: '/:id/issues',
                 component: 'projectsIssuesComponent',
             });

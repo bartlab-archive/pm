@@ -7,8 +7,9 @@ export default class IssuesEditController extends ControllerBase{
     }
 
     $onInit() {
+        const _this = this;
         this.IssuesService.one(this.$stateParams.id).then((response) => {
-            this.issues = response.data;
+            _this.issue = response.data;
         });
     }
 

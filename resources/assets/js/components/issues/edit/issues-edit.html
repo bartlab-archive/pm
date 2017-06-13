@@ -1,17 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <h1>Test</h1>
-    <div>
-        <div>{{ $ctrl.issues }}</div>
-    </div>
-<div style="background-color: #ffffdd">
-    <hr>
-    <div><p>{{ $ctrl.issues.description }}</p></div>
-</div>
-</body>
-</html>
+<md-card>
+    <md-card-header>
+        <md-card-title>Feature #{{ $ctrl.issue.id }}</md-card-title>
+        <md-card-subtitle>Subtitle</md-card-subtitle>
+    </md-card-header>
+    <md-card-content>
+        <div class="short-desciption">
+            <img src="/img/icons/a2efce483d126b20e8a67a7c5c6070c7.jpg" alt="">
+            <p>
+                Added by {{ $ctrl.issue.author_id }}
+            </p>
+            <div>
+                <p>#{{ $ctrl.issue.id }}: {{ $ctrl.issue.subject }}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="info">
+            <div class="status">
+                <p>Status: {{ $ctrl.issue.status_id }}</p>
+            </div>
+            <div class="priority">
+                <p>Priority: {{ $ctrl.issue.priority_id }}</p>
+            </div>
+            <div class="assigned">
+                <p>Assigned: {{ $ctrl.issue.assigned_to_id }}</p>
+            </div>
+        </div>
+        <hr>
+        <div>
+            <h3>Description</h3>
+            <div>
+                <p>{{ $ctrl.issue.description }}</p>
+            </div>
+        </div>
+        <hr>
+    </md-card-content>
+    <md-card-footer>
+        Footer
+    </md-card-footer>
+</md-card>

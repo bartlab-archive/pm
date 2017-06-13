@@ -68,6 +68,11 @@ Route::group(
             return \App\Models\Project::where('identifier', $identifier)->first();
         });
 
+        Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
+
+        Route::get('issues/{id}', 'IssuesController@getIssue');
+        Route::get('issues', 'IssuesController@getIssues');
+
         // users
 
         Route::get('users', function (Request $request) {
