@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Auth;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -23,8 +26,12 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerPolicies();
+        $this->app['auth']->viaRequest('userAuth', function (Request $request) {
+            return User::userByHeaderAuthToken($request);
+        });
 
-        //
+        Auth::setDefaultDriver('user_auth');
+
+        $this->registerPolicies();
     }
 }

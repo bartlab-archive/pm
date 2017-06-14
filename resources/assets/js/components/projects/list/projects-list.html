@@ -10,7 +10,7 @@
                 </md-button>
                 <h2>Projects</h2>
                 <span flex></span>
-                <md-switch ng-model="$ctrl.showClosed" md-invert aria-label="Show closed"
+                <md-switch class="md-body-1" ng-model="$ctrl.showClosed" md-invert aria-label="Show closed"
                            ng-change="$ctrl.load()"
                            ng-true-value="1" ng-false-value="0">
                     Show closed
@@ -26,9 +26,9 @@
                     <p class="md-truncate" ng-bind-html="row.description | words: 50"></p>
                 </div>
 
-                <md-icon class="md-warn">star_rate</md-icon>
+                <md-icon class="md-warn" ng-if="row.is_my === 1">star_rate</md-icon>
                 <md-icon>{{ row.is_public?'lock_open':'lock' }}</md-icon>
-                <md-icon ng-if="row.status == 5">close</md-icon>
+                <md-icon ng-if="row.status === 5">close</md-icon>
 
                 <md-divider ng-if="!$last"></md-divider>
             </md-list-item>

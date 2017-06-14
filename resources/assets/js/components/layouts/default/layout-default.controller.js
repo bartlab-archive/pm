@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 
 /**
@@ -14,15 +15,17 @@ export default class LayoutDefaultController extends ControllerBase {
         this.items = [
             {url: 'home', name: 'Home', icon: 'home'},
             {url: 'projects.list', name: 'Projects', icon: 'work'},
+            {url: 'home', name: 'View all issues', icon: 'list'},
+            {url: 'home', name: 'Overall spent time', icon: 'timelapse'},
+            {url: 'home', name: 'Overall activity', icon: 'history'},
             {url: 'admin.index', name: 'Administration', icon: 'apps'},
             {url: 'home', name: 'My page', icon: 'person'},
             {url: 'home', name: 'Help', icon: 'help'}
         ];
 
-        this.ProjectsService.getList()
-            .then(response => this.projects = response.data)
-            .catch(console.log);
-
+        this.ProjectsService.getList().then((response) => {
+            this.projects = _.filter(response.data, {is_my: 1});
+        });
     }
 
     toggle(menu = 'left') {
@@ -47,12 +50,12 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     menuClick(item) {
-        if (item.hasOwnProperty('children')) {
-            item.children.shown = !item.children.shown;
-            console.log(this.projects);
-        } else {
-            this.$state.go(item.url);
-            this.toggle();
-        }
+        this.$state.go(item.url);
+        this.toggle();
+    }
+
+    newProject() {
+        this.$state.go('projects.new');
+        this.toggle('right');
     }
 }
