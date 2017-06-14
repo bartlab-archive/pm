@@ -1,7 +1,11 @@
-<div layout="column" layout-align="center center">
+<div layout="column"  class="modal-dialog" layout-align="center center">
     <md-toolbar>
-        <div layout="column" layout-padding layout-align="center center">
-            <div class="md-headline md-padding">Emails</div>
+        <div class="md-toolbar-tools">
+            <h2>Emails</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                <md-icon aria-label="Close dialog">clear</md-icon>
+            </md-button>
         </div>
     </md-toolbar>
 

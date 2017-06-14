@@ -12,6 +12,7 @@ import myChangePasswordComponent from 'components/my/change-password/my-change-p
  * @property $mdToast
  * @property $mdPanel
  * @property UsersService
+ * @property MaterialToastService
  *
  * @property user
  * @property languages
@@ -21,7 +22,7 @@ import myChangePasswordComponent from 'components/my/change-password/my-change-p
 export default class mainMyAccountIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$auth', '$state', '$mdToast', '$mdDialog', '$mdPanel', 'UsersService'];
+        return ['$auth', '$state', '$mdToast', '$mdDialog', 'UsersService', 'MaterialToastService'];
     }
 
     $onInit() {
@@ -33,6 +34,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
 
         this.languages = this.UsersService.getLanguage();
         this.timeZone = this.UsersService.getTimeZone();
+        this.mdToast = this.MaterialToastService;
     }
 
     setMdDialogConfig(component, target) {
@@ -65,47 +67,47 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
 
-    setMdPanelConfig(component, target) {
-
-      let position = this.$mdPanel.newPanelPosition()
-          .absolute()
-          .center();
-
-      let animation = this.$mdPanel.newPanelAnimation()
-          .duration(300)
-          .openFrom(target)
-          .withAnimation(this.$mdPanel.animation.SCALE);
-
-      let ctrlConfig = [].concat(
-        component.controller.$inject || [],
-        [(...args) => {
-          let ctrl = new component.controller(...args);
-          ctrl.$onInit && ctrl.$onInit();
-          return ctrl;
-        }]
-      );
-
-      return {
-        animation: animation,
-        attachTo: angular.element(document.body),
-        controller: ctrlConfig,
-        controllerAs: '$ctrl',
-        template: component.template,
-        panelClass: 'modal-custom-dialog',
-        position: position,
-        trapFocus: true,
-        clickOutsideToClose: true,
-        clickEscapeToClose: true,
-        escapeToClose: true,
-        hasBackdrop: true,
-        disableParentScroll: true,
-      }
-    }
+    // setMdPanelConfig(component, target) {
+    //
+    //   let position = this.$mdPanel.newPanelPosition()
+    //       .absolute()
+    //       .center();
+    //
+    //   let animation = this.$mdPanel.newPanelAnimation()
+    //       .duration(300)
+    //       .openFrom(target)
+    //       .withAnimation(this.$mdPanel.animation.SCALE);
+    //
+    //   let ctrlConfig = [].concat(
+    //     component.controller.$inject || [],
+    //     [(...args) => {
+    //       let ctrl = new component.controller(...args);
+    //       ctrl.$onInit && ctrl.$onInit();
+    //       return ctrl;
+    //     }]
+    //   );
+    //
+    //   return {
+    //     animation: animation,
+    //     attachTo: angular.element(document.body),
+    //     controller: ctrlConfig,
+    //     controllerAs: '$ctrl',
+    //     template: component.template,
+    //     panelClass: 'modal-custom-dialog',
+    //     position: position,
+    //     trapFocus: true,
+    //     clickOutsideToClose: true,
+    //     clickEscapeToClose: true,
+    //     escapeToClose: true,
+    //     hasBackdrop: true,
+    //     disableParentScroll: true,
+    //   }
+    // }
 
 
     changePassword($event) {
-        this.$mdPanel.open(
-            this.setMdPanelConfig(myChangePasswordComponent, $event.target)
+        this.$mdDialog.show(
+            this.setMdDialogConfig(myChangePasswordComponent, $event.target)
         );
     }
 
@@ -116,8 +118,8 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
     addEmail($event) {
-        this.$mdPanel.open(
-            this.setMdPanelConfig(myAddMailComponent, $event.target)
+        this.$mdDialog.show(
+            this.setMdDialogConfig(myAddMailComponent, $event.target)
         );
     }
 
@@ -130,7 +132,14 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
     submit() {
-        this.model.save();
+        this.model.save().then(
+          (response) => {
+            console.log(response);
+            if (response && response.status === 200) {
+              this.mdToast.success();
+            }
+          }
+        );
     }
 
 }
