@@ -124,11 +124,15 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
     resetApiKey() {
-        this.UsersService.resetApiAccessKey();
+        this.UsersService.resetApiAccessKey().then((response)=>{
+          this.model.api_key_updated_on = response.data;
+        });
     }
 
     resetAtomKey() {
-        this.UsersService.resetAtomAccessKey();
+        this.UsersService.resetAtomAccessKey().then((response)=>{
+          this.model.atom_key_updated_on = response.data;
+        });
     }
 
     submit() {
