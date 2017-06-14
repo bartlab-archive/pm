@@ -6,7 +6,12 @@
 
         <h2 flex>MaybeWorks PM</h2>
 
-        <!--<input type="text" placeholder="Search" flex>-->
+        <!--<input type="text" placeholder="Search" class="toolbar-input">-->
+        <div class="md-block toolbar-input-container">
+            <!--<label>Search for item</label>-->
+            <md-icon>search</md-icon>
+            <input type="text" placeholder="Search" class="toolbar-input">
+        </div>
 
         <md-button class="md-icon-button" ng-click="$ctrl.toggle('right')" aria-label="My Projects">
             <md-icon>work</md-icon>
