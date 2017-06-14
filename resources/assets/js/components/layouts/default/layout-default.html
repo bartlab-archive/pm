@@ -6,6 +6,12 @@
 
         <h2 flex>MaybeWorks PM</h2>
 
+        <!--<input type="text" placeholder="Search" flex>-->
+
+        <md-button class="md-icon-button" ng-click="$ctrl.toggle('right')" aria-label="My Projects">
+            <md-icon>work</md-icon>
+        </md-button>
+
         <md-menu>
             <md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openUserMenu($mdMenu, $event)">
                 <md-icon>more_vert</md-icon>
@@ -13,19 +19,20 @@
             <md-menu-content width="4">
                 <md-menu-item>
                     <md-button ng-click="$ctrl.myAccount()">
-                        <!--<md-icon></md-icon>-->
+                        <md-icon>account_circle</md-icon>
                         Profile
                     </md-button>
                 </md-menu-item>
                 <md-menu-item>
                     <md-button>
-                        <!--<md-icon></md-icon>-->
+                        <md-icon>settings</md-icon>
                         Settings
                     </md-button>
                 </md-menu-item>
                 <md-menu-divider></md-menu-divider>
                 <md-menu-item>
                     <md-button ng-click="$ctrl.logout()">
+                        <md-icon>exit_to_app</md-icon>
                         Logout
                     </md-button>
                 </md-menu-item>
@@ -35,11 +42,8 @@
 </md-toolbar>
 
 <section>
-    <md-sidenav class="md-sidenav-left" md-component-id="left"
-                md-disable-backdrop md-whiteframe="4">
-
-        <md-toolbar class="md-theme-indigo">
-
+    <md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4">
+        <md-toolbar>
             <h1 class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggle()">
                     <md-icon>menu</md-icon>
@@ -48,17 +52,43 @@
             </h1>
         </md-toolbar>
 
-        <md-content>
-            <md-list flex>
-                <md-list-item class="md-2-line" ng-repeat="item in $ctrl.items" ng-click = "$ctrl.gothoughmenu(item.url)">
-                    <div class="md-list-item-text menu-list-href" layout="column">
-                        <div><md-icon>{{ item.icon }}</md-icon> {{ item.name }}</div>
-                    </div>
-                </md-list-item>
-            </md-list>
-        </md-content>
+        <!--<md-content>-->
+        <md-list-item ng-repeat="item in $ctrl.items" ng-click="$ctrl.menuClick(item)">
+            <md-button class="md-icon-button">
+                <md-icon>{{ item.icon }}</md-icon>
+            </md-button>
+            <!--<div class="md-list-item-text">-->
+            {{ item.name }}
+            <!--</div>-->
+        </md-list-item>
+        <!--</md-content>-->
     </md-sidenav>
-    <md-content layout-padding>
-        <div ui-view="content"></div>
-    </md-content>
+
+    <!--<md-content flex>-->
+    <div ui-view="content"></div>
+    <!--</md-content>-->
+
+    <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+        <md-toolbar>
+            <h1 class="md-toolbar-tools">
+                <span>Projects</span>
+                <span flex></span>
+                <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.newProject()">
+                    <md-icon>add</md-icon>
+                </md-button>
+            </h1>
+        </md-toolbar>
+
+        <!--<md-content>-->
+        <md-list>
+            <md-list-item class="md-body-1" ng-repeat="project in $ctrl.projects"
+                          ng-click="$ctrl.gotToProject(project.identifier)">
+                <md-button class="md-icon-button">
+                    <md-icon>folder</md-icon>
+                </md-button>
+                {{ project.name }}
+            </md-list-item>
+        </md-list>
+        <!--</md-content>-->
+    </md-sidenav>
 </section>

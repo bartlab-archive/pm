@@ -45,6 +45,9 @@ return [
             'driver' => 'token',
             'provider' => 'users',
         ],
+        'user_auth' => [
+            'driver' => 'userAuth',
+        ],
     ],
 
     /*
@@ -67,7 +70,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\Models\User::class,
         ],
 
         // 'users' => [

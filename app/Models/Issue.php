@@ -22,4 +22,9 @@ class Issue extends Model
         'updated_on',
         'closed_on'
     ];
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 }

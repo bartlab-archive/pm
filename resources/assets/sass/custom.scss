@@ -82,3 +82,9 @@ md-toast.notification {
 
 }
 
+@media (max-width: $layout-breakpoint-sm) {
+  .layout-margin-gt-sm,
+  .layout-margin-gt-sm > * {
+    margin: 0;
+  }
+}
