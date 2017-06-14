@@ -10,7 +10,7 @@
             </md-card-title-text>
         </md-card-title>
 
-        <md-card-content class="md-body-1" ng-bind-html="($ctrl.project.description || '') | nl2p"></md-card-content>
+        <md-card-content class="md-body-1" markdown-to-html="$ctrl.project.description || ''"></md-card-content>
     </md-card>
 
     <div layout="column" flex>
@@ -27,7 +27,7 @@
             </md-card-content>
 
             <md-card-actions layout="row" layout-align="center center">
-                <md-button>View all issues</md-button>
+                <md-button ng-click="$ctrl.viewAllIssues()">View all issues</md-button>
             </md-card-actions>
         </md-card>
 

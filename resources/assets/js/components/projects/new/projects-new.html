@@ -1,0 +1,120 @@
+<form name="ProjectForm" ng-submit="$ctrl.submit()">
+    <div layout="row" layout-align="center start">
+        <md-card flex-gt-sm="70" flex-gt-md="50">
+            <md-card-header>
+                <md-card-header-text>
+                    <span class="md-title">New project</span>
+                </md-card-header-text>
+            </md-card-header>
+
+            <md-card-content>
+                <md-input-container class="md-block">
+                    <label>Name</label>
+                    <input ng-model="$ctrl.model.name" name="name" type="text" required>
+                    <div ng-messages="ProjectForm.name.$error">
+                        <div ng-message="required">
+                            Name can't be blank!
+                        </div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Description</label>
+                    <textarea ng-model="$ctrl.model.description" name="description"></textarea>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Identifier</label>
+                    <input ng-model="$ctrl.model.identifier" type="text" name="identifier" md-maxlength="100"
+                           ng-pattern="/^[a-z]([a-z0-9\-\_]+)?$/"
+                           required>
+                    <div class="md-caption">
+                        Length between 1 and 100 characters. Only lower case letters (a-z), numbers, dashes and
+                        underscores are allowed, must start with a lower case letter.
+                        Once saved, the identifier cannot be changed.
+                    </div>
+                    <div ng-messages="ProjectForm.identifier.$error">
+                        <div ng-message="required">Identifier can't be blank!</div>
+                        <div ng-message="pattern">Identifier is invalid</div>
+                        <div ng-message="md-maxlength">Identifier has to be less than 100 characters long.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Homepage</label>
+                    <input ng-model="$ctrl.model.homepage" name="homepage" type="text">
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <md-checkbox class="md-primary" ng-model="$ctrl.model.public" aria-label="Public">
+                        Public
+                    </md-checkbox>
+                </md-input-container>
+            </md-card-content>
+
+            <md-divider></md-divider>
+
+            <md-card-content>
+                <md-input-container class="md-block">
+                    <label>Subproject of</label>
+                    <md-select ng-model="$ctrl.model.parent">
+                        <md-option md-option-empty></md-option>
+                        <md-option ng-value="item.id" ng-repeat="item in $ctrl.projects">
+                            {{ item.name }}
+                        </md-option>
+                    </md-select>
+                    <!--<div class="md-errors-spacer"></div>-->
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <md-checkbox class="md-primary" ng-model="$ctrl.model.inherit_members" aria-label="Inherit members"
+                                 ng-disabled="!$ctrl.model.parent">
+                        Inherit members
+                    </md-checkbox>
+                </md-input-container>
+            </md-card-content>
+
+            <md-divider></md-divider>
+
+            <md-card-header>
+                <md-card-header-text>
+                    <span class="md-title">Modules</span>
+                </md-card-header-text>
+            </md-card-header>
+
+            <md-list class="md-padding">
+                <md-list-item ng-repeat="item in $ctrl.modules">
+                    <p> {{ item.name }} </p>
+                    <md-switch class="md-secondary" ng-model="$ctrl.model.module[item.id]"></md-switch>
+                </md-list-item>
+            </md-list>
+
+            <md-divider></md-divider>
+
+            <md-card-header>
+                <md-card-header-text>
+                    <span class="md-title">Trackers</span>
+                </md-card-header-text>
+            </md-card-header>
+
+            <md-list class="md-padding">
+                <md-list-item ng-repeat="item in $ctrl.trackers">
+                    <p> {{ item.name }} </p>
+                    <md-switch class="md-secondary" ng-model="$ctrl.model.trackers[item.id]"></md-switch>
+                </md-list-item>
+            </md-list>
+
+            <md-card-actions layout="row" layout-align="center center">
+                <md-button class="md-raised md-primary animation-target" type="submit"
+                           ng-disabled="ProjectForm.$invalid">
+                    Crate
+                </md-button>
+
+                <md-button ng-disabled="ProjectForm.$invalid" class="md-raised animation-target"
+                           ng-click="$ctrl.addEmail($event)">
+                    Create and continue
+                </md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
+</form>

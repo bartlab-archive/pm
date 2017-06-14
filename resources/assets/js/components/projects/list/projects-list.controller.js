@@ -7,7 +7,7 @@ import ControllerBase from 'base/controller.base';
 export default class ProjectsListController extends ControllerBase {
 
     static get $inject() {
-        return ['ProjectsService', '$state'];
+        return ['ProjectsService', '$state', '$showdown'];
     }
 
     $onInit() {
@@ -26,8 +26,12 @@ export default class ProjectsListController extends ControllerBase {
         this.$state.go('projects-inner.info', {id: identifier});
     }
 
-    newProject(){
+    newProject() {
         this.$state.go('projects.new');
+    }
+
+    makeHtml(text) {
+        return text ? this.$showdown.stripHtml(this.$showdown.makeHtml(text)) : '';
     }
 
 }
