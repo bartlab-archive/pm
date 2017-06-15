@@ -28,5 +28,8 @@
     "roboto-fontface": "*",
     "material-design-icons-iconfont": "*",
     "angular-messages": "^1.6.4"
+  },
+  "dependencies": {
+    "ng-showdown": "^1.1.0"
   }
 }

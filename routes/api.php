@@ -69,6 +69,7 @@ Route::group(
             {
                 Route::get('projects', 'ProjectController@index');
                 Route::get('projects/{identifier}', 'ProjectController@show');
+                Route::get('projects/{identifier}/news', 'ProjectController@getNews');
                 Route::delete('projects/{identifier}', 'ProjectController@destroy');
             }
         );

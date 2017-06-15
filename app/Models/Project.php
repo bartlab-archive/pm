@@ -47,7 +47,12 @@ class Project extends Model
     {
         return $this->hasMany(Member::class);
     }
-
+    
+	public function news ()
+	{
+		return $this->hasMany(News::class, 'project_id', 'id');
+	}
+    
     public function getIsMyAttribute()
     {
         return (int)(Auth::guest() ? false : $this->members()->where('user_id', Auth::user()->id)->exists());
@@ -84,4 +89,9 @@ class Project extends Model
          */
         return $project->delete();
     }
+    
+	public static function getNewsByProjectIdentifier($project_identifier)
+	{
+		return Project::projectByIdentifier($project_identifier)->news;
+	}
 }

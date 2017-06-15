@@ -37,4 +37,10 @@ export default class ProjectsService {
         });
     }
 
+    getNews(indifier, params) {
+
+        return this.Restangular.all('projects').one(indifier).one('news').getList();
+
+    }
+
 }

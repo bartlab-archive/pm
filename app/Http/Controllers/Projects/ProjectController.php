@@ -113,4 +113,10 @@ class ProjectController extends Controller
 
         return response(null, 204);
     }
+    
+    public function getNews($identifier) {
+    	
+    	return Project::getNewsByProjectIdentifier($identifier);
+    	
+	}
 }
