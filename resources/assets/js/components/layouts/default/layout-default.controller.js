@@ -23,8 +23,8 @@ export default class LayoutDefaultController extends ControllerBase {
             {url: 'home', name: 'Help', icon: 'help'}
         ];
 
-        this.ProjectsService.getList().then((response) => {
-            this.projects = _.filter(response.data, {is_my: 1});
+        this.ProjectsService.getMyList().then((response) => {
+            this.projects = response;
         });
     }
 

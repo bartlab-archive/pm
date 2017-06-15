@@ -22,13 +22,11 @@
     "laravel-mix": "0.*",
     "lodash": "^4.17.4",
     "ng-annotate-webpack-plugin": "*",
-    "ng-table": "^4.0.0",
     "restangular": "*",
     "satellizer": "*",
     "md-data-table": "*"
-  },
-  "dependencies": {
-    "@uirouter/angularjs": "^1.0.3",
-    "angular-messages": "^1.6.4"
+    "ng-showdown": "*",
+    "roboto-fontface": "*",
+    "material-design-icons-iconfont": "*",
   }
 }

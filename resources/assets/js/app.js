@@ -10,6 +10,7 @@ import 'angular-material';
 import 'angular-messages';
 import 'angular-animate';
 import 'angular-aria';
+import 'ng-showdown';
 
 import 'directives.module';
 import 'filters.module';
@@ -18,9 +19,6 @@ import 'components/components.module';
 
 import AppRun from 'app.run';
 import AppConfig from 'app.config';
-
-import ProjectsService from 'services/projects.service';
-import IssuesService from 'services/issues.service';
 
 angular
     .module(
@@ -35,6 +33,7 @@ angular
             'ui.router',
             'restangular',
             'satellizer',
+            'ng-showdown',
             // 'ngTable',
             'mdDataTable',
 
@@ -45,8 +44,4 @@ angular
         ]
     )
     .config(AppConfig.inst())
-    .run(AppRun.inst())
-    .service('ProjectsService', ProjectsService)
-    .service('IssuesService', IssuesService);
-    // .config(appConfig)
-    // .run(AppRun.inst());
+    .run(AppRun.inst());

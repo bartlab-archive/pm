@@ -1,6 +1,5 @@
-import ProjectsIssuesController from './projects-issues.controller.js';
+import ProjectsIssuesController from './projects-issues.controller';
 import ProjectsIssuesTemplate from './projects-issues.html';
-import './projects-issues.scss';
 
 export default {
     name: 'projectsIssuesComponent',
