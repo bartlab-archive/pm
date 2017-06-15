@@ -108,6 +108,6 @@ export default class ProjectsConfig extends InjectableBase {
             .state('projects.new', {
                 url: '/new',
                 component: projectsNewComponent.name,
-            });
+            })
     }
 }

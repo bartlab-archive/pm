@@ -23,6 +23,16 @@ class Issue extends Model
         'closed_on'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id', 'assigned_to_id');
+    }
+
+    public function author()
+    {
+        return $this->hasOne(User::class, 'id', 'author_id');
+    }
+
     public function project()
     {
         return $this->belongsTo(Project::class);

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Http\Request;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Request;
 
 class User extends Authenticatable
 {
@@ -29,7 +30,7 @@ class User extends Authenticatable
      * @var string
      */
     const UPDATED_AT = 'updated_on';
-    
+
     protected $guarded = ['id'];
 
     public static function userByHeaderAuthToken(Request $request)
@@ -39,7 +40,7 @@ class User extends Authenticatable
                ->where('value', $request->bearerToken());
         })->first();
     }
-    
+
     public function email()
     {
         return $this->hasOne(EmailAddresses::class);
@@ -58,5 +59,15 @@ class User extends Authenticatable
     public function session_token()
     {
         return $this->hasOne(Token::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'author_id', 'id');
+    }
+
+    public function issues()
+    {
+        return $this->hasMany(Issue::class, 'assigned_to_id', 'id');
     }
 }
