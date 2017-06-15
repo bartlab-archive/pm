@@ -12,6 +12,8 @@ import projectsNewsComponent from './news/projects-news.component';
 import projectsDocumentsComponent from './documents/projects-documents.component';
 import projectsFilesComponent from './files/projects-files.component';
 import projectsBoardsComponent from './boards/projects-boards.component';
+import projectsWikiEditComponent from './wiki/edit/projects-wiki-edit.component';
+import projectsWikiNewPageComponent from './wiki/new-page/projects-wiki-new-page.component';
 
 /**
  * Class ProjectsConfig
@@ -87,7 +89,7 @@ export default class ProjectsConfig extends InjectableBase {
             })
             .state('projects-inner.wiki', {
                 url: '/wiki',
-                component: projectsWikiComponent.name,
+                abstract: true,
             })
             .state('projects-inner.news', {
                 url: '/news',
@@ -108,6 +110,18 @@ export default class ProjectsConfig extends InjectableBase {
             .state('projects.new', {
                 url: '/new',
                 component: projectsNewComponent.name,
+            })
+            .state('projects-inner.wiki.index', {
+                url: '',
+                component: projectsWikiComponent.name,
+            })
+            .state('projects-inner.wiki.edit', {
+                url: '/{id:[A-z0-9,./?;:|]+}/edit',
+                component: projectsWikiEditComponent.name,
+            })
+            .state('projects-inner.wiki.new-page', {
+                url: '/{id:[A-z0-9,./?;:|]+}',
+                component: projectsWikiNewPageComponent.name,
             });
     }
 }
