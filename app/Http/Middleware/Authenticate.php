@@ -2,9 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Token;
-use App\Models\User;
 use Closure;
+use Auth;
 
 class Authenticate
 {
@@ -20,9 +19,8 @@ class Authenticate
         /**
          * @todo create permission by authorization user
          */
-        $token = $request->bearerToken();
 
-        if (!$token || !Token::existsToken($token, 'session') || !User::userByHeaderAuthToken($request)) {
+        if (Auth::guest()) {
             return abort(401);
         }
 
