@@ -10,7 +10,7 @@ class Project extends Model
     protected $table = 'projects';
 
     protected $appends = ['is_my'];
-    protected $hidden = ['is_my'];
+//    protected $hidden = ['is_my'];
 
     public $timestamps = false;
 

@@ -72,7 +72,17 @@ Route::group(
                 Route::get('projects/{identifier}/news', 'ProjectController@getNews');
                 Route::delete('projects/{identifier}', 'ProjectController@destroy');
             }
-        );
+            return $list->get();
+        });
+
+        //Route::get('projects/{identifier}', function ($identifier) {
+        //    return \App\Models\Project::where('identifier', $identifier)->first();
+       // });
+
+        Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
+
+        Route::get('issues/{id}', 'IssuesController@getIssue');
+        Route::get('issues', 'IssuesController@getIssues');
 
         // users
 
