@@ -29,5 +29,4 @@ angular.module('app.components.projects', [])
     .component(projectsNewsComponent.name, projectsNewsComponent)
     .component(projectsDocumentsComponent.name, projectsDocumentsComponent)
     .component(projectsFilesComponent.name, projectsFilesComponent)
-    .component(projectsBoardsComponent.name, projectsBoardsComponent)
-    .component(projectsIssuesComponent.name, projectsIssuesComponent);
+    .component(projectsBoardsComponent.name, projectsBoardsComponent);
