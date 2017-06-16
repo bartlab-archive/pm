@@ -7,8 +7,6 @@ use Auth;
 
 class Project extends Model
 {
-    protected $table = 'test';
-
     protected $appends = ['is_my'];
     protected $hidden = ['is_my'];
 

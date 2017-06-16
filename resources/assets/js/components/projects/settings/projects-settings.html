@@ -84,9 +84,25 @@
             </md-tab>
 
             <md-tab label="Members">
-                <md-content class="md-padding">
-                    Members
-                </md-content>
+                <!--<md-content class="md-padding">-->
+                    <mdt-table
+                            paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,50]}"
+                            mdt-row-paginator="$ctrl.paginatorCallback(page, pageSize)"
+                            mdt-row-paginator-error-message="Error happened during loading nutritions."
+                            mdt-row="{
+                                'table-row-id-key': 'id',
+                                'column-keys': [
+                                    'first_name',
+                                    'last_name'
+                                ]
+                            }">
+                        <mdt-header-row>
+                            <mdt-column align-rule="left"><span>User / Group</span></mdt-column>
+                            <mdt-column align-rule="right"><span>Roles</span></mdt-column>
+                            <mdt-column align-rule="right"><span></span></mdt-column>
+                        </mdt-header-row>
+                    </mdt-table>
+                <!--</md-content>-->
             </md-tab>
 
             <md-tab label="Versions">
