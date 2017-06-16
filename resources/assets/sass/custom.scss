@@ -58,8 +58,13 @@ md-input-container {
     opacity: 1;
     margin-top: 0;
   }
-}
 
+  .md-caption {
+    color: grey;
+    padding-top: 5px;
+    display: inline;
+  }
+}
 
 md-toast.notification {
 

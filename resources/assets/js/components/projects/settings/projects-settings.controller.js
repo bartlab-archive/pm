@@ -3,12 +3,13 @@ import ControllerBase from 'base/controller.base';
 
 /**
  * @property ProjectsService
+ * @property UsersService
  * @property $stateParams
  */
 export default class ProjectsSettingsController extends ControllerBase {
 
     static get $inject() {
-        return ['ProjectsService','$stateParams'];
+        return ['ProjectsService', 'UsersService', '$stateParams'];
     }
 
     $onInit() {
@@ -27,4 +28,16 @@ export default class ProjectsSettingsController extends ControllerBase {
             this.projects = response.data;
         });
     }
+
+    paginatorCallback(page, pageSize) {
+        let offset = (page - 1) * pageSize;
+
+        return this.UsersService.getList().then(function (response) {
+            return {
+                results: response.data,
+                totalResultCount: response.data.length
+            }
+        });
+    }
+
 }

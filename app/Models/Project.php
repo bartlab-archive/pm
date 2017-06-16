@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Http\Traits\NestedTreeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
 
 class Project extends Model
 {
+    use NestedTreeTrait;
+    
     protected $table = 'projects';
 
     protected $appends = ['is_my'];
@@ -47,7 +50,37 @@ class Project extends Model
     {
         return $this->hasMany(Member::class);
     }
+    
+	public function news()
+	{
+		return $this->hasMany(News::class, 'project_id', 'id');
+	}
 
+    public function versions()
+    {
+        return $this->hasMany(Version::class);
+    }
+
+    public function issue_categories()
+    {
+        return $this->hasMany(IssueCategory::class);
+    }
+
+    public function repositories()
+    {
+        return $this->hasMany(Repository::class);
+    }
+
+    public function boards()
+    {
+        return $this->hasMany(Board::class);
+    }
+
+    public function enabled_modules()
+    {
+        return $this->hasMany(EnabledModule::class);
+    }
+    
     public function getIsMyAttribute()
     {
         return (int)(Auth::guest() ? false : $this->members()->where('user_id', Auth::user()->id)->exists());
@@ -62,12 +95,12 @@ class Project extends Model
      */
     public static function projectByIdentifier(string $identifier)
     {
-        return Project::where('identifier', $identifier)->firstOrFail();
+        return static::where('identifier', $identifier)->firstOrFail();
     }
 
     public static function deleteProjectByIdentifier(string $identifier)
     {
-        $project = Project::where('identifier', $identifier)->firstOrFail();
+        $project = static::where('identifier', $identifier)->firstOrFail();
 
         /**
          * Destroy attach trackers
@@ -84,4 +117,9 @@ class Project extends Model
          */
         return $project->delete();
     }
+    
+	public static function getNewsByProjectIdentifier($project_identifier)
+	{
+		return static::projectByIdentifier($project_identifier)->news;
+	}
 }

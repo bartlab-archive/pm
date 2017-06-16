@@ -6,10 +6,8 @@ export default class ProjectsService {
         return ['$injector'];
     }
 
-    constructor($injector) {
-        this.Restangular = $injector.get('Restangular');
-
-        this.modules = [
+    get modules() {
+        return [
             {id: 'issue_tracking', name: 'Issue tracking'},
             {id: 'time_tracking', name: 'Time tracking '},
             {id: 'news', name: 'News'},
@@ -21,6 +19,10 @@ export default class ProjectsService {
             {id: 'calendar', name: 'Calendar'},
             {id: 'gantt', name: 'Gantt'},
         ];
+    }
+
+    constructor($injector) {
+        this.Restangular = $injector.get('Restangular');
     }
 
     one(indifier) {
@@ -35,6 +37,12 @@ export default class ProjectsService {
         return this.getList().then((response) => {
             return _.filter(response.data, {is_my: 1});
         });
+    }
+
+    getNews(indifier, params) {
+
+        return this.Restangular.all('projects').one(indifier).one('news').getList();
+
     }
 
 }
