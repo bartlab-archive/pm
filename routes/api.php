@@ -71,8 +71,8 @@ Route::group(
                 Route::get('projects/{identifier}', 'ProjectController@show');
                 Route::get('projects/{identifier}/news', 'ProjectController@getNews');
                 Route::delete('projects/{identifier}', 'ProjectController@destroy');
-            }
-            return $list->get();
+//            }
+//            return $list->get();
         });
 
         //Route::get('projects/{identifier}', function ($identifier) {
