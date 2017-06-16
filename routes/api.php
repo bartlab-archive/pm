@@ -70,16 +70,11 @@ Route::group(
                 Route::get('projects', 'ProjectController@index');
                 Route::get('projects/{identifier}', 'ProjectController@show');
                 Route::get('projects/{identifier}/news', 'ProjectController@getNews');
+                Route::post('projects', 'ProjectController@create');
+                Route::put('projects/{identifier}', 'ProjectController@update');
                 Route::delete('projects/{identifier}', 'ProjectController@destroy');
-//            }
-//            return $list->get();
+                Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
         });
-
-        //Route::get('projects/{identifier}', function ($identifier) {
-        //    return \App\Models\Project::where('identifier', $identifier)->first();
-       // });
-
-        Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
 
         Route::get('issues/{id}', 'IssuesController@getIssue');
         Route::get('issues', 'IssuesController@getIssues');

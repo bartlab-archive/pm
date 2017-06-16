@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Projects;
 
 use App\Http\Controllers\Controller;
+use App\Models\EnabledModule;
 use App\Models\Project;
+use App\Models\Tracker;
+use Illuminate\Http\Request;
 
 /**
  * Class ProjectController
@@ -97,6 +100,75 @@ class ProjectController extends Controller
     public function show($identifier)
     {
         return Project::projectByIdentifier($identifier);
+    }
+
+    public function create(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|string',
+            'identifier' => 'required|string|between:1,100|unique:' . (new Project())->getTable(),
+            'description' => 'string',
+            'homepage' => 'url',
+            'is_public' => 'boolean',
+            'parent_id' => 'int|exists:' . (new Project())->getTable() . ',id',
+            'inherit_members' => 'boolean',
+            'custom_field_values' => 'string',
+
+            'enabled_module_names' => 'array',
+            'enabled_module_names.*' => 'in:' . implode(',', EnabledModule::ENABLED_MODULES_NAME),
+
+            'tracker_ids' => 'array',
+            'tracker_ids.*' => 'int|exists:' . (new Tracker())->getTable() . ',id'
+        ], []);
+
+        $project = Project::create([
+            'name' => $request->input('name'),
+            'identifier' => $request->input('identifier'),
+            'description' => $request->input('description', ''),
+            'homepage' => $request->input('homepage', ''),
+            'is_public' => $request->input('is_public', 1),
+            'parent_id' => $request->input('parent_id'),
+            'inherit_members' => $request->input('inherit_members', 0)
+        ]);
+
+//        if ($project->parent_id) {
+            Project::refreshNestedTree();
+//        }
+
+        return response($project, 201);
+    }
+
+    public function update(Request $request, $identifier)
+    {
+        $this->validate($request, [
+            'name' => 'required|string',
+            'description' => 'string',
+            'homepage' => 'url',
+            'is_public' => 'boolean',
+            'parent_id' => 'int|exists:' . (new Project())->getTable() . ',id',
+            'inherit_members' => 'boolean',
+            'custom_field_values' => 'string',
+
+            'enabled_module_names' => 'array',
+            'enabled_module_names.*' => 'in:' . implode(',', EnabledModule::ENABLED_MODULES_NAME),
+
+            'tracker_ids' => 'array',
+            'tracker_ids.*' => 'int|exists:' . (new Tracker())->getTable() . ',id'
+        ], []);
+
+        $project = Project::projectByIdentifier($identifier);
+
+        $project->update([
+            'name' => $request->input('name'),
+            'identifier' => $request->input('identifier'),
+            'description' => $request->input('description'),
+            'homepage' => $request->input('homepage'),
+            'is_public' => $request->input('is_public'),
+            'parent_id' => $request->input('parent_id'),
+            'inherit_members' => $request->input('inherit_members')
+        ]);
+
+        return $project;
     }
 
     /**
