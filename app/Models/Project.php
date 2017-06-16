@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use App\Http\Traits\NestedTreeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
 
 class Project extends Model
 {
+    use NestedTreeTrait;
+    
+    protected $table = 'projects';
+
     protected $appends = ['is_my'];
     protected $hidden = ['is_my'];
 
@@ -23,47 +28,6 @@ class Project extends Model
         'created_on',
         'updated_on',
     ];
-
-    /**
-     * @param null $p_id
-     * @param int $count
-     * @return int|mixed
-     */
-    public static function refreshNestedTree($p_id = null, $count = 0)
-    {
-        $list = Project::where('parent_id',$p_id)->get();
-        $parent = Project::where('id',$p_id)->first();
-        $count += $parent ? count($list) : 0;
-
-        $rgt = null;
-
-        foreach ($list as $n => $project) {
-            $lft = $parent ? $parent->rgt : $rgt + 1;
-
-            $count += static::refreshNestedTree($project->id, $count);
-
-            $project->rgt = $rgt ? $rgt + ($count * 2) + 2 : ($count * 2) + ($parent ? $parent->rgt - 1 : $project->lft + 1);
-            $project->lft = $lft;
-
-            $rgt = $project->rgt;
-            $project->save();
-        }
-
-        return $list->count();
-    }
-
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $last_project = static::orderBy('id', 'desc')->first();
-
-            $model->lft = $model->lft ? $model->lft : $last_project ? $last_project->rgt + 1 : 1;
-            $model->rgt = $model->rgt ? $model->rgt : $last_project ? $last_project->rgt + 2 : 2;
-        });
-    }
 
     /**
      * Relationship list
@@ -106,12 +70,12 @@ class Project extends Model
      */
     public static function projectByIdentifier(string $identifier)
     {
-        return Project::where('identifier', $identifier)->firstOrFail();
+        return static::where('identifier', $identifier)->firstOrFail();
     }
 
     public static function deleteProjectByIdentifier(string $identifier)
     {
-        $project = Project::where('identifier', $identifier)->firstOrFail();
+        $project = static::where('identifier', $identifier)->firstOrFail();
 
         /**
          * Destroy attach trackers
@@ -131,6 +95,6 @@ class Project extends Model
     
 	public static function getNewsByProjectIdentifier($project_identifier)
 	{
-		return Project::projectByIdentifier($project_identifier)->news;
+		return static::projectByIdentifier($project_identifier)->news;
 	}
 }

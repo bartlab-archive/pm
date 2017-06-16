@@ -64,7 +64,8 @@ class ProjectController extends Controller
 
         $this->validate($request, ['closed' => 'boolean']);
 
-        $projects = Project::orderBy('name')->where('status', 1);
+        $projects = Project::orderBy('name')
+            ->where('status', 1);
 
         if ($request->input('closed')) {
             $projects->orWhere('status', 5);
@@ -124,16 +125,12 @@ class ProjectController extends Controller
         $project = Project::create([
             'name' => $request->input('name'),
             'identifier' => $request->input('identifier'),
-            'description' => $request->input('description', ''),
-            'homepage' => $request->input('homepage', ''),
+            'description' => $request->input('description'),
+            'homepage' => $request->input('homepage'),
             'is_public' => $request->input('is_public', 1),
             'parent_id' => $request->input('parent_id'),
             'inherit_members' => $request->input('inherit_members', 0)
         ]);
-
-//        if ($project->parent_id) {
-            Project::refreshNestedTree();
-//        }
 
         return response($project, 201);
     }
