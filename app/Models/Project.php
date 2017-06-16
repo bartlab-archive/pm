@@ -75,6 +75,11 @@ class Project extends Model
     {
         return $this->hasMany(Board::class);
     }
+
+    public function enabled_modules()
+    {
+        return $this->hasMany(EnabledModule::class);
+    }
     
     public function getIsMyAttribute()
     {

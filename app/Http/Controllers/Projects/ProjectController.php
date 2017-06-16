@@ -107,7 +107,12 @@ class ProjectController extends Controller
      */
     public function show($identifier)
     {
-        return Project::projectByIdentifier($identifier);
+        $project = Project::projectByIdentifier($identifier);
+
+        $project->setAttribute('trackers', $project->trackers);
+        $project->setAttribute('enabled_modules', $project->enabled_modules);
+
+        return $project;
     }
 
     public function create(Request $request)
