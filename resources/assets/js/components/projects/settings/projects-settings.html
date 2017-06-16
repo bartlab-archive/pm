@@ -1,5 +1,5 @@
 <div layout="row" layout-align="center start">
-    <md-card flex-gt-sm="70" flex-gt-md="50">
+    <md-card flex-gt-sm="70" flex-gt-md="50" flex-xs="100" flex-sm="100">
 
         <md-card-header>
             <md-card-header-text>
@@ -80,40 +80,82 @@
                             <md-switch class="md-secondary" ng-model="$ctrl.model.module[item.id]"></md-switch>
                         </md-list-item>
                     </md-list>
+
+                    <div layout-align="center center" layout="row">
+                        <md-button class="md-raised md-primary animation-target">
+                            Save
+                        </md-button>
+                    </div>
                 </md-content>
             </md-tab>
 
             <md-tab label="Members">
-                <!--<md-content class="md-padding">-->
-                    <mdt-table
-                            paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,50]}"
-                            mdt-row-paginator="$ctrl.paginatorCallback(page, pageSize)"
-                            mdt-row-paginator-error-message="Error happened during loading nutritions."
-                            mdt-row="{
-                                'table-row-id-key': 'id',
-                                'column-keys': [
-                                    'first_name',
-                                    'last_name'
-                                ]
-                            }">
-                        <mdt-header-row>
-                            <mdt-column align-rule="left"><span>User / Group</span></mdt-column>
-                            <mdt-column align-rule="right"><span>Roles</span></mdt-column>
-                            <mdt-column align-rule="right"><span></span></mdt-column>
-                        </mdt-header-row>
-                    </mdt-table>
-                <!--</md-content>-->
+                <md-content class="md-padding">
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-repeat="item in $ctrl.members" ng-click="null">
+                            <div class="md-list-item-text">
+                                <h3>{{ item.name }}</h3>
+                                <p>{{ item.role }}</p>
+                            </div>
+                            <md-button class="md-secondary md-icon-button" ng-click="null">
+                                <md-icon>delete</md-icon>
+                            </md-button>
+                        </md-list-item>
+                    </md-list>
+
+                    <div layout-align="center center" layout="row">
+                        <md-button class="md-raised md-primary animation-target">
+                            New member
+                        </md-button>
+                    </div>
+                </md-content>
             </md-tab>
 
             <md-tab label="Versions">
                 <md-content class="md-padding">
-                    Versions
+                    <md-list>
+                        <md-list-item class="md-3-line" ng-repeat="item in $ctrl.versions" ng-click="null">
+                            <div class="md-list-item-text">
+                                <h3>{{ item.name }}</h3>
+                                <h4>{{ item.sharing }}</h4>
+                                <p>{{ item.status }}</p>
+                            </div>
+                            <md-button class="md-secondary md-icon-button" ng-click="null">
+                                <md-icon>delete</md-icon>
+                            </md-button>
+                        </md-list-item>
+                    </md-list>
+
+                    <div layout-align="center center" layout="row">
+                        <md-button class="md-raised md-primary animation-target">
+                            New version
+                        </md-button>
+                        <md-button class="md-raised animation-target">
+                            Close completed versions
+                        </md-button>
+                    </div>
                 </md-content>
             </md-tab>
 
             <md-tab label="Issue categories">
                 <md-content class="md-padding">
-                    Issue categories
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-repeat="item in $ctrl.issuesCategories" ng-click="null">
+                            <div class="md-list-item-text">
+                                <h3>{{ item.name }}</h3>
+                                <p>{{ item.assignee }}</p>
+                            </div>
+                            <md-button class="md-secondary md-icon-button" ng-click="null">
+                                <md-icon>delete</md-icon>
+                            </md-button>
+                        </md-list-item>
+                    </md-list>
+
+                    <div layout-align="center center" layout="row">
+                        <md-button class="md-raised md-primary animation-target">
+                            New category
+                        </md-button>
+                    </div>
                 </md-content>
             </md-tab>
 
@@ -136,6 +178,9 @@
                                        ng-disabled="WikiForm.$invalid">
                                 Save
                             </md-button>
+                            <md-button class="md-raised animation-target">
+                                Delete
+                            </md-button>
                         </div>
                     </form>
                 </md-content>
@@ -143,19 +188,68 @@
 
             <md-tab label="Repositories">
                 <md-content class="md-padding">
-                    Repositories
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-repeat="item in $ctrl.repositories" ng-click="null">
+                            <div class="md-list-item-text">
+                                <h3>{{ item.identifier }}</h3>
+                                <p>{{ item.scm }}</p>
+                            </div>
+                            <md-button class="md-secondary md-icon-button" ng-click="null">
+                                <md-icon>delete</md-icon>
+                            </md-button>
+                        </md-list-item>
+                    </md-list>
+
+                    <div layout-align="center center" layout="row">
+                        <md-button class="md-raised md-primary animation-target">
+                            New repository
+                        </md-button>
+                    </div>
                 </md-content>
             </md-tab>
 
             <md-tab label="Forums">
                 <md-content class="md-padding">
-                    Forums
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-repeat="item in $ctrl.forums" ng-click="null">
+                            <div class="md-list-item-text">
+                                <h3>{{ item.name }}</h3>
+                                <p>{{ item.description }}</p>
+                            </div>
+                            <md-button class="md-secondary md-icon-button" ng-click="null">
+                                <md-icon>delete</md-icon>
+                            </md-button>
+                        </md-list-item>
+                    </md-list>
+
+                    <div layout-align="center center" layout="row">
+                        <md-button class="md-raised md-primary animation-target">
+                            New forum
+                        </md-button>
+                    </div>
                 </md-content>
             </md-tab>
 
             <md-tab label="Activities (time tracking)">
                 <md-content class="md-padding">
-                    Activities (time tracking)
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-repeat="item in $ctrl.activities" ng-click="null">
+                            <div class="md-list-item-text">
+                                <h3>{{ item.name }}</h3>
+                                <p>System Activity</p>
+                            </div>
+                            <md-switch class="md-secondary"></md-switch>
+                        </md-list-item>
+                    </md-list>
+
+                    <div layout-align="center center" layout="row">
+                        <md-button class="md-raised md-primary animation-target">
+                            Save
+                        </md-button>
+                        <md-button class="md-raised animation-target">
+                            Reset
+                        </md-button>
+                    </div>
                 </md-content>
             </md-tab>
         </md-tabs>

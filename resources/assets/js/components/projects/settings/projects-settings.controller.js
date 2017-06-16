@@ -27,17 +27,89 @@ export default class ProjectsSettingsController extends ControllerBase {
         this.ProjectsService.getList().then((response) => {
             this.projects = response.data;
         });
-    }
 
-    paginatorCallback(page, pageSize) {
-        let offset = (page - 1) * pageSize;
+        this.members = [
+            {name: 'developer', role: 'manager'},
+            {name: 'developer', role: 'manager'}
+        ];
 
-        return this.UsersService.getList().then(function (response) {
-            return {
-                results: response.data,
-                totalResultCount: response.data.length
+        this.issuesCategories = [
+            {name: 'category 1', assignee: 'developer'},
+            {name: 'category 2', assignee: 'developer'}
+        ];
+
+        this.versions = [
+            {
+                name: 'version 1',
+                date: '06/16/2017',
+                description: 'description',
+                status: 'open',
+                sharing: 'Not shared',
+                wiki: 'wiki',
+            },
+            {
+                name: 'version 2',
+                date: '06/16/2017',
+                description: 'description',
+                status: 'open',
+                sharing: 'Not shared',
+                wiki: 'wiki',
             }
-        });
+        ];
+
+        this.repositories = [
+            {
+                scm: 'Filesystem',
+                main: true,
+                identifier: 'identifier 1',
+                root: '/tmp',
+                encoding: 'UTF-8'
+            },
+            {
+                scm: 'Filesystem',
+                main: true,
+                identifier: 'identifier 2',
+                root: '/tmp',
+                encoding: 'UTF-8'
+            }
+        ];
+
+        this.forums = [
+            {
+                name:'Board 1',
+                description:'description',
+                parent:''
+            },
+            {
+                name:'Board 2',
+                description:'description',
+                parent:''
+            }
+        ];
+
+        this.activities = [
+            {
+                name:'Architech',
+                system:true,
+                active:true
+            },
+            {
+                name:'Develop',
+                system:true,
+                active:true
+            },
+        ];
     }
+
+    // paginatorCallback(page, pageSize) {
+    //     let offset = (page - 1) * pageSize;
+    //
+    //     return this.UsersService.getList().then(function (response) {
+    //         return {
+    //             results: response.data,
+    //             totalResultCount: response.data.length
+    //         }
+    //     });
+    // }
 
 }
