@@ -65,7 +65,14 @@ class ProjectController extends Controller
         $this->validate($request, ['closed' => 'boolean']);
 
         $projects = Project::orderBy('name')
-            ->where('status', 1);
+            ->where('status', 1)
+            ->with([
+                'members',
+                'versions',
+                'issue_categories',
+                'repositories',
+                'boards',
+            ]);
 
         if ($request->input('closed')) {
             $projects->orWhere('status', 5);

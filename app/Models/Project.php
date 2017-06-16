@@ -51,10 +51,30 @@ class Project extends Model
         return $this->hasMany(Member::class);
     }
     
-	public function news ()
+	public function news()
 	{
 		return $this->hasMany(News::class, 'project_id', 'id');
 	}
+
+    public function versions()
+    {
+        return $this->hasMany(Version::class);
+    }
+
+    public function issue_categories()
+    {
+        return $this->hasMany(IssueCategory::class);
+    }
+
+    public function repositories()
+    {
+        return $this->hasMany(Repository::class);
+    }
+
+    public function boards()
+    {
+        return $this->hasMany(Board::class);
+    }
     
     public function getIsMyAttribute()
     {
