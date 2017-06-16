@@ -20,4 +20,10 @@ class WikiPage extends Model
     protected $dates = [
         'created_on',
     ];
+
+    public function content()
+    {
+        return $this->hasOne(WikiContent::class, 'page_id');
+    }
+
 }

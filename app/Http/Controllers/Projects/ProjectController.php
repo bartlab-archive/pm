@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Projects;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use Illuminate\Http\Request;
+use Auth;
 
 /**
  * Class ProjectController
@@ -112,5 +114,24 @@ class ProjectController extends Controller
         Project::deleteProjectByIdentifier($identifier);
 
         return response(null, 204);
+    }
+
+    protected function getWikiPageMarkDown($identifier)
+    {
+        $user_projects = Auth::user()->projects;
+
+        $project = $user_projects->where('identifier', $identifier)->first();
+
+        if (is_null($project)) {
+            abort(403);
+        }
+
+        $wiki_content = $project->wiki
+            ->page()
+            ->with('content')
+            ->first()
+            ->toArray();
+
+        return response()->json(array_merge($wiki_content['content'], ['title' => $wiki_content['title']]));
     }
 }

@@ -60,17 +60,19 @@ Route::group(
 
         // projects
 
-        Route::get('projects', function (Request $request) {
-            $list = \App\Models\Project::orderBy('name')->where('status', 1);
-            if ($request->input('closed')) {
-                $list->orWhere('status', 5);
+        Route::group(
+            [
+                'namespace' => 'Projects',
+                'middleware' => 'auth'
+            ],
+            function ()
+            {
+                Route::get('projects', 'ProjectController@index');
+                Route::get('projects/{identifier}', 'ProjectController@show');
+                Route::get('projects/{identifier}/wiki', 'ProjectController@getWikiPageMarkDown');
+                Route::delete('projects/{identifier}', 'ProjectController@destroy');
             }
-            return $list->get();
-        });
-
-        Route::get('projects/{identifier}', function ($identifier) {
-            return \App\Models\Project::where('identifier', $identifier)->first();
-        });
+        );
 
         Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
 

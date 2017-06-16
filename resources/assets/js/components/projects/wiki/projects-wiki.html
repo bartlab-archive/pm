@@ -8,23 +8,31 @@
                     New wiki page
                 </md-button>
                 <md-button class="md-raised md-primary animation-target md-secondary"
-                           ng-click="$ctrl.resetAtomKey()">
+                           ng-click="$ctrl.goToEdit()">
                     Edit
                 </md-button>
                 <md-button class="md-raised md-primary animation-target md-secondary"
-                           ng-click="$ctrl.resetAtomKey()">
+                           ng-click="$ctrl.watchPage()">
                     Watch
                 </md-button>
                 <md-button class="md-raised md-primary animation-target md-secondary"
-                           ng-click="$ctrl.resetAtomKey()">
+                           ng-click="$ctrl.deletePage()">
                     Delete
                 </md-button>
                 <md-button class="md-raised md-primary animation-target md-secondary"
-                           ng-click="$ctrl.resetAtomKey()">
+                           ng-click="$ctrl.showHistory()">
                     History
                 </md-button>
             </md-list-item>
         </md-list>
         <md-card-content class="md-body-1" markdown-to-html="$ctrl.markdown || ''"></md-card-content>
+        <md-list>
+            <md-list-item>
+                <md-button class="md-raised md-primary animation-target md-secondary"
+                           ng-click="$ctrl.addFile($event)">
+                    Add File
+                </md-button>
+            </md-list-item>
+        </md-list>
     </md-card>
 </div>

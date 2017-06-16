@@ -48,6 +48,11 @@ class Project extends Model
         return $this->hasMany(Member::class);
     }
 
+    public function wiki()
+    {
+        return $this->hasOne(Wiki::class);
+    }
+
     public function getIsMyAttribute()
     {
         return (int)(Auth::guest() ? false : $this->members()->where('user_id', Auth::user()->id)->exists());

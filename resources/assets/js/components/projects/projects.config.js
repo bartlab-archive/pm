@@ -116,7 +116,7 @@ export default class ProjectsConfig extends InjectableBase {
                 component: projectsWikiComponent.name,
             })
             .state('projects-inner.wiki.edit', {
-                url: '/{id:[A-z0-9,./?;:|]+}/edit',
+                url: '/{name:[A-z0-9,./?;:|]+}/edit',
                 component: projectsWikiEditComponent.name,
             })
             .state('projects-inner.wiki.new-page', {

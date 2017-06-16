@@ -8,7 +8,11 @@ export default class WikiService {
     this.Restangular = $injector.get('Restangular');
   }
 
-  getStartPageWiki() {
-    return this.Restangular.one('wiki').one('start-page').get();
+  getStartPageWiki(indetifire) {
+    return this.Restangular
+      .one('projects')
+      .one(indetifire)
+      .one('wiki')
+      .get();
   }
 }

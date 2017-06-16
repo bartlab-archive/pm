@@ -8,13 +8,15 @@ import ControllerBase from 'base/controller.base';
 export default class ProjectsWikiController extends ControllerBase {
 
   static get $inject() {
-    return ['$state', '$mdDialog', 'WikiService'];
+    return ['$state', '$mdDialog', 'WikiService', '$stateParams'];
   }
 
   $onInit() {
-   this.WikiService.getStartPageWiki().then((response) => {
+   this.WikiService.getStartPageWiki(this.$stateParams.id).then((response) => {
       if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
-        this.markdown = response.data;
+        this.data = response.data;
+        console.log(this.data);
+        this.markdown = this.data.text;
       }
     });
   }
@@ -52,6 +54,13 @@ export default class ProjectsWikiController extends ControllerBase {
     this.$mdDialog.show(
       this.setMdDialogConfig(projectsWikiNewComponent, $event.target)
     );
+  }
+
+  goToEdit() {
+    if(this.data) {
+      this.$state.go('projects-inner.wiki.edit', {name : this.data.title});
+    }
+
   }
 
 }
