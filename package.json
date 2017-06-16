@@ -24,9 +24,9 @@
     "ng-annotate-webpack-plugin": "*",
     "restangular": "*",
     "satellizer": "*",
+    "md-data-table": "*",
     "ng-showdown": "*",
     "roboto-fontface": "*",
-    "material-design-icons-iconfont": "*",
-    "angular-messages": "^1.6.4"
+    "material-design-icons-iconfont": "*"
   }
 }

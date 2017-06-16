@@ -1,0 +1,180 @@
+<div class="main">
+    <md-card class="content">
+        <md-card-header>
+            <md-card-title><h3>Feature #{{ $ctrl.issue.id }}</h3></md-card-title>
+            <md-card-subtitle>
+                <md-button>Edit</md-button>
+            </md-card-subtitle>
+        </md-card-header>
+        <md-card-content class="content">
+            <div class="short-desciption">
+                <img src="/img/icons/a2efce483d126b20e8a67a7c5c6070c7.jpg" alt="">
+                <p>
+                    <a href="/issues/{{ $ctrl.issue.id }}">Feature #{{ $ctrl.issue.id }}</a>: {{ $ctrl.issue.subject }}
+                </p>
+                <br>
+                <p>
+                    Added by {{ $ctrl.issue.author_id + ' ' + $ctrl.issue.created_on}}
+                </p>
+            </div>
+            <hr>
+            <div class="info">
+                <div class="status">
+                    <p>Status: {{ $ctrl.issue.statusText }}</p>
+                    <p>Start data: {{ $ctrl.issue.start_date }}</p>
+                </div>
+                <div class="priority">
+                    <p>Priority: {{ $ctrl.issue.priority_id }}</p>
+                    <p>End data: {{ $ctrl.issue.closed_on }}</p>
+                </div>
+                <div class="assigned">
+                    <p>Assigned: {{ $ctrl.issue.assigned_to_id }}</p>
+                    <p>Progress:
+                        <md-progress-linear class="progress" md-mode="determinate"
+                                            value="{{$ctrl.issue.done_ratio}}"></md-progress-linear>
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <h3>Description</h3>
+                <div markdown-to-html="$ctrl.issue.description || ''">
+                </div>
+            </div>
+            <hr>
+            <div class="subtasks">
+                <h3>Subtasks</h3>
+            </div>
+            <hr>
+            <div class="related">
+                <h3>Related tasks</h3>
+            </div>
+        </md-card-content>
+    </md-card>
+</div>
+<md-card class="task-description">
+    <md-card-header>
+        <md-card-title><h3>Tasks</h3></md-card-title>
+    </md-card-header>
+    <md-card-content class="content">
+        <div>
+            <p><a href="/issues">View All Tasks</a></p>
+            <p><a href="/issues">Short description</a></p>
+            <p><a href="/issues">Import</a></p>
+        </div>
+        <div>
+            <h3>Observers(*)</h3>
+        </div>
+    </md-card-content>
+</md-card>
+<div class="edit">
+    <md-card>
+
+        <md-card-header>
+            <md-card-title>Title</md-card-title>
+            <md-card-subtitle>Subtitle</md-card-subtitle>
+        </md-card-header>
+        <md-card-content>
+            <fieldset>
+                <div layout-gt-sm="row">
+                    <div layout="row" layout-align="space-between center">
+                        <span>Project</span>
+                        <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
+                            <md-option value="axe">Axe</md-option>
+                            <md-option value="sword">Sword</md-option>
+                            <md-option value="wand">Wand</md-option>
+                            <md-option value="pen">Pen?</md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div layout-gt-sm="row">
+                    <div layout="row" layout-align="space-between center">
+                        <span>Tracker</span>
+                        <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
+                            <md-option value="axe">Axe</md-option>
+                            <md-option value="sword">Sword</md-option>
+                            <md-option value="wand">Wand</md-option>
+                            <md-option value="pen">Pen?</md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Subject</label>
+                        <input ng-model="$ctrl.issue.subject">
+                    </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block">
+                        <label>Description</label>
+                        <textarea ng-model="$ctrl.issue.description" rows="5" cols="100" md-select-on-focus></textarea>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <div layout="row" layout-align="space-between center">
+                        <span>What is your favorite weapon?</span>
+                        <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
+                            <md-option value="axe">Axe</md-option>
+                            <md-option value="sword">Sword</md-option>
+                            <md-option value="wand">Wand</md-option>
+                            <md-option value="pen">Pen?</md-option>
+                        </md-select>
+                    </div>
+                    <div layout="row" layout-align="space-between center">
+                        <span>What is your favorite weapon?</span>
+                        <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
+                            <md-option value="axe">Axe</md-option>
+                            <md-option value="sword">Sword</md-option>
+                            <md-option value="wand">Wand</md-option>
+                            <md-option value="pen">Pen?</md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div layout-gt-sm="row">
+                    <div layout="row" layout-align="space-between center">
+                        <span>What is your favorite weapon?</span>
+                        <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
+                            <md-option value="axe">Axe</md-option>
+                            <md-option value="sword">Sword</md-option>
+                            <md-option value="wand">Wand</md-option>
+                            <md-option value="pen">Pen?</md-option>
+                        </md-select>
+                    </div>
+                    <div layout="row" layout-align="space-between center">
+                        <span>What is your favorite weapon?</span>
+                        <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
+                            <md-option value="axe">Axe</md-option>
+                            <md-option value="sword">Sword</md-option>
+                            <md-option value="wand">Wand</md-option>
+                            <md-option value="pen">Pen?</md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div layout-gt-sm="row">
+                    <div layout="row" layout-align="space-between center">
+                        <span>What is your favorite weapon?</span>
+                        <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
+                            <md-option value="axe">Axe</md-option>
+                            <md-option value="sword">Sword</md-option>
+                            <md-option value="wand">Wand</md-option>
+                            <md-option value="pen">Pen?</md-option>
+                        </md-select>
+                    </div>
+                    <div layout="row" layout-align="space-between center">
+                        <span>What is your favorite weapon?</span>
+                        <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
+                            <md-option value="axe">Axe</md-option>
+                            <md-option value="sword">Sword</md-option>
+                            <md-option value="wand">Wand</md-option>
+                            <md-option value="pen">Pen?</md-option>
+                        </md-select>
+                    </div>
+                </div>
+            </fieldset>
+        </md-card-content>
+        <md-card-footer>
+            Footer
+        </md-card-footer>
+    </md-card>
+</div>
