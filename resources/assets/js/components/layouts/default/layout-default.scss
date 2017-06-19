@@ -1,4 +1,5 @@
 layout-default-component {
+
   .md-sidenav-right,
   .md-sidenav-left {
     .md-button.md-icon-button {
@@ -6,9 +7,7 @@ layout-default-component {
     }
     position: fixed;
   }
-  .md-sidenav-right {
-    position: fixed;
-  }
+
   .main-toolbar {
     position :fixed;
     top: 0;
@@ -16,7 +15,9 @@ layout-default-component {
     width: 100%;
     background-color:inherit;
   }
-  md-backdrop.md-sidenav-backdrop {
+
+  md-backdrop {
     position: fixed;
   }
+
 }

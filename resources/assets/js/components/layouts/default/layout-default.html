@@ -42,7 +42,7 @@
 </md-toolbar>
 
 <section>
-    <md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4">
+    <md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4" md-disable-scroll-target="body">
         <md-toolbar>
             <h1 class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggle()">
@@ -68,7 +68,7 @@
     <div ui-view="content"></div>
     <!--</md-content>-->
 
-    <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+    <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right" md-disable-scroll-target="body">
         <md-toolbar>
             <h1 class="md-toolbar-tools">
                 <span>Projects</span>
