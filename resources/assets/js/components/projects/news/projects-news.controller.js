@@ -6,7 +6,7 @@ export default class ProjectsNewsController extends ControllerBase {
     }
 
     $onInit() {
-        console.log(this.$stateParams);
+
         this.ProjectsService.getNews(this.$stateParams.id, {})
             .then((response) => {
             this.news = response.data

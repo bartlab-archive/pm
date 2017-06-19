@@ -75,7 +75,11 @@ Route::group(
                 Route::delete('projects/{identifier}', 'ProjectController@destroy');
                 Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
         });
-
+		
+        Route::get('news', 'NewsController@getNews');
+        Route::get('news/{id}', 'NewsController@getOneNews');
+        
+        
         Route::get('issues/{id}', 'IssuesController@getIssue');
         Route::get('issues', 'IssuesController@getIssues');
 
