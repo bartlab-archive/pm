@@ -8,17 +8,18 @@ import ControllerBase from 'base/controller.base';
 export default class ProjectsWikiController extends ControllerBase {
 
   static get $inject() {
-    return ['$state', '$mdDialog', 'WikiService', '$stateParams'];
+    return ['$state', '$mdDialog', 'WikiService', '$stateParams', '$mdToast', 'MaterialToastService'];
   }
 
   $onInit() {
    this.WikiService.getStartPageWiki(this.$stateParams.id).then((response) => {
       if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
         this.data = response.data;
-        console.log(this.data);
-        this.markdown = this.data.text;
       }
     });
+
+   this.editMode = false;
+   this.mdToast = this.MaterialToastService;
   }
 
   setMdDialogConfig(component, target) {
@@ -58,9 +59,23 @@ export default class ProjectsWikiController extends ControllerBase {
 
   goToEdit() {
     if(this.data) {
-      this.$state.go('projects-inner.wiki.edit', {name : this.data.title});
+      this.editMode = true;
+      // this.$state.go('projects-inner.wiki.edit', {name : this.data.title});
     }
 
+  }
+
+  submit() {
+    this.data.save().then( (response) => {
+      if (response && response.status === 200) {
+        this.editMode = false;
+        this.mdToast.success();
+      }
+    });
+  }
+
+  cancel() {
+    this.editMode = false;
   }
 
 }

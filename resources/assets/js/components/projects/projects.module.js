@@ -15,7 +15,6 @@ import projectsDocumentsComponent from './documents/projects-documents.component
 import projectsFilesComponent from './files/projects-files.component';
 import projectsBoardsComponent from './boards/projects-boards.component';
 import projectsWikiNewComponent from './wiki-new/projects-wiki-new.component';
-import projectsWikiEditComponent from './wiki/edit/projects-wiki-edit.component';
 import projectsWikiNewPageComponent from './wiki/new-page/projects-wiki-new-page.component';
 
 angular.module('app.components.projects', [])
@@ -34,5 +33,4 @@ angular.module('app.components.projects', [])
     .component(projectsFilesComponent.name, projectsFilesComponent)
     .component(projectsBoardsComponent.name, projectsBoardsComponent)
     .component(projectsWikiNewComponent.name, projectsWikiNewComponent)
-    .component(projectsWikiEditComponent.name, projectsWikiEditComponent)
     .component(projectsWikiNewPageComponent.name, projectsWikiNewPageComponent);

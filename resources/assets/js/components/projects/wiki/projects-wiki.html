@@ -1,5 +1,5 @@
 <div layout="column" layout-align="center none">
-    <md-card>
+    <md-card ng-if="!$ctrl.editMode">
 
         <md-list>
             <md-list-item>
@@ -25,7 +25,7 @@
                 </md-button>
             </md-list-item>
         </md-list>
-        <md-card-content class="md-body-1" markdown-to-html="$ctrl.markdown || ''"></md-card-content>
+        <md-card-content class="md-body-1" markdown-to-html="$ctrl.data.text || ''"></md-card-content>
         <md-list>
             <md-list-item>
                 <md-button class="md-raised md-primary animation-target md-secondary"
@@ -35,4 +35,29 @@
             </md-list-item>
         </md-list>
     </md-card>
+
+    <form ng-if="$ctrl.editMode" name="EditWikiForm" ng-submit="$ctrl.submit()">
+        <div layout="column" layout-align="center none">
+            <md-card>
+                <md-input-container flex layout-padding>
+                <textarea name="editor" ng-model="$ctrl.data.text" required>
+                </textarea>
+                    <div ng-messages="EditWikiForm.editor.$error">
+                        <div ng-message="required">
+                            Wiki can't be blank!
+                        </div>
+                    </div>
+                </md-input-container>
+
+                <md-card-actions layout="row" layout-align="center center">
+                    <md-button class="md-raised md-primary animation-target" type="submit"
+                               ng-disabled="EditWikiForm.$invalid">Save
+                    </md-button>
+                    <md-button class="md-raised animation-target" ng-click="$ctrl.cancel()">
+                        Cancel
+                    </md-button>
+                </md-card-actions>
+            </md-card>
+        </div>
+    </form>
 </div>

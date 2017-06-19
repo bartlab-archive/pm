@@ -21,7 +21,7 @@ export default class LayoutProjectController extends ControllerBase {
             {url: 'projects-inner.issues.calendar', name: 'Calendar'},
             {url: 'projects-inner.news', name: 'News'},
             {url: 'projects-inner.documents', name: 'Documents'},
-            {url: 'projects-inner.wiki', name: 'Wiki'},
+            {url: 'projects-inner.wiki.index', name: 'Wiki'},
             {url: 'projects-inner.boards', name: 'Forums'},
             {url: 'projects-inner.files', name: 'Files'},
             {url: 'projects-inner.settings', name: 'Settings'}

@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Projects;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\Wiki;
+use App\Models\WikiPage;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Validation\Rule;
 
 /**
  * Class ProjectController
@@ -116,7 +119,7 @@ class ProjectController extends Controller
         return response(null, 204);
     }
 
-    protected function getWikiPageMarkDown($identifier)
+    protected function getWikiPageMarkDown($identifier, $page_title = null)
     {
         $user_projects = Auth::user()->projects;
 
@@ -128,10 +131,69 @@ class ProjectController extends Controller
 
         $wiki_content = $project->wiki
             ->page()
-            ->with('content')
-            ->first()
-            ->toArray();
+            ->with('content');
+
+        if ($page_title) {
+            $wiki_content->where('title', $page_title);
+        } else {
+            $wiki_content->where('parent_id', null);
+        }
+
+        $wiki_content->first()->toArray();
+
+        return response()->json(array_merge(is_null($wiki_content['content']) ? [] : $wiki_content['content'] , ['title' => $wiki_content['title']]));
+    }
+
+    protected function setWikiPageMarkDown(Request $request, $project_identifier, $wiki_id)
+    {
+        $user_projects = Auth::user()->projects;
+        $project = $user_projects->where('identifier', $project_identifier)->first();
+
+        if (is_null($project)) {
+            abort(403);
+        }
+
+        $wiki_content = $project->wiki
+            ->page()
+            ->with(['content' => function ($q) use($wiki_id) {
+                $q->where('id', $wiki_id);
+            }])
+            ->firstOrFail();
+
+
+        $wiki_content->content->update([
+            'text' => $request->input('text')
+        ]);
+
+        $wiki_content = $wiki_content->toArray();
 
         return response()->json(array_merge($wiki_content['content'], ['title' => $wiki_content['title']]));
+    }
+
+    protected function addNewWiki(Request $request, $project_identifier)
+    {
+        $project = Auth::user()->projects()->where('identifier', $project_identifier)->firstOrFail();
+        $wiki = $project->wiki;
+
+        $this->validate($request, [
+            'title' => [
+                'required',
+                Rule::unique((new WikiPage())->getTable(), 'title')->where('wiki_id', $wiki->id)
+            ],
+            'text' => 'required|string'
+        ], []);
+
+        $new_page = $wiki->page()->create([
+            'title' => $request->input('title'),
+            'parent_id' => $wiki->page->id
+        ]);
+
+        $new_page_content = $new_page->content()->create([
+            'author_id' => Auth::user()->id,
+            'text' => $request->input('text'),
+            'version' => 1
+        ]);
+
+        return response()->json(array_merge($new_page_content->toArray(), ['title' => $new_page->title]), 201);
     }
 }
