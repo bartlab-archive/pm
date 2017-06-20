@@ -18,4 +18,8 @@ export default class IssuesService {
     getList(params) {
         return this.Restangular.all('issues').getList(params);
     }
+
+    update(indifier, params) {
+        return this.Restangular.one('issues/' + indifier + '/update' ).one(indifier).post(params);
+    }
 }
