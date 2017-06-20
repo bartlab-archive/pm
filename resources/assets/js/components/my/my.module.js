@@ -6,6 +6,7 @@ import myPasswordComponent from './password/my-password.component';
 import myShowApiKeyComponent from './show-api-key/my-show-api-key.component';
 import myAddMailComponent from './add-mail/my-add-mail.component';
 import myChangePasswordComponent from './change-password/my-change-password.component';
+import myPageComponent from './page/my-page.component';
 
 angular.module('app.components.my', [])
     .config(MyConfig.inst())
@@ -13,4 +14,5 @@ angular.module('app.components.my', [])
     .component(myPasswordComponent.name, myPasswordComponent)
     .component(myShowApiKeyComponent.name, myShowApiKeyComponent)
     .component(myAddMailComponent.name, myAddMailComponent)
-    .component(myChangePasswordComponent.name, myChangePasswordComponent);
+    .component(myChangePasswordComponent.name, myChangePasswordComponent)
+    .component(myPageComponent.name, myPageComponent);
