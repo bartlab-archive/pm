@@ -82,6 +82,7 @@ Route::group(
         
         Route::get('issues/{id}', 'IssuesController@getIssue');
         Route::get('issues', 'IssuesController@getIssues');
+        Route::post('issues/{id}/update', 'IssuesController@postUpdate');
 
         // users
 
