@@ -94,6 +94,7 @@ Route::group(
                 Route::put('projects/{identifier}', 'ProjectController@update');
                 Route::delete('projects/{identifier}', 'ProjectController@destroy');
                 Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
+                Route::get('projects/{projectId}/attachments', 'Projects\AttachmentController@index');
         });
 		
         Route::get('news', 'NewsController@getNews');

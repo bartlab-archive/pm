@@ -85,7 +85,11 @@ class Project extends Model
     {
         return $this->hasOne(Wiki::class);
     }
-
+    
+    public function attachments(){
+        return $this->morphMany(Attachment::class, 'container');
+    }
+    
     public function getIsMyAttribute()
     {
         return (int)(Auth::guest() ? false : $this->members()->where('user_id', Auth::user()->id)->exists());
