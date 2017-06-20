@@ -7,10 +7,11 @@ export default class IssuesEditController extends ControllerBase{
     }
 
     $onInit() {
-        const _this = this;
         this.IssuesService.one(this.$stateParams.id).then((response) => {
-            _this.issue = response.data;
-            _this.issue.statusText = this.statusText(_this.issue.status_id);
+            this.issue = response.data;
+            this.issue.statusText = this.statusText(this.issue.status_id);
+            this.edit_issue = this.issue;
+            console.log(this.issue);
         });
     }
 
@@ -21,4 +22,16 @@ export default class IssuesEditController extends ControllerBase{
                 break;
         }
     }
+
+    openEditForm(){
+        this.editIsOpen = true;
+    }
+
+    updateIssue(){
+        console.log(this.issue);
+        this.IssueService.update(this.$stateParams.id, this.edit_issue).then((response) => {
+            console.log(response);
+        })
+    }
+
 }

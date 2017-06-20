@@ -1,5 +1,5 @@
-<div layout-gt-sm="row" flex-gt-sm="70" flex-offset-gt-sm="15" layout-align="center start">
-    <md-card flex>
+<div layout="row" layout-align="center start">
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
         <md-card-title>
             <md-card-title-text>
                 <span class="md-headline">Overview</span>
@@ -12,36 +12,71 @@
 
         <md-card-content class="md-body-1" markdown-to-html="$ctrl.project.description || ''"></md-card-content>
     </md-card>
+</div>
 
-    <div layout="column" flex>
-        <md-card flex>
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-headline">Issue tracking</span>
-                </md-card-title-text>
-            </md-card-title>
+<div layout="row" layout-align="center start">
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">Issue tracking</span>
+            </md-card-title-text>
+        </md-card-title>
 
-            <md-card-content class="md-body-1">
-                <p>Feature:</p>
-                <p>Bug:</p>
-            </md-card-content>
+        <md-card-content class="md-body-1">
+            <p>Feature:</p>
+            <p>Bug:</p>
+        </md-card-content>
 
-            <md-card-actions layout="row" layout-align="center center">
-                <md-button ng-click="$ctrl.viewAllIssues()">View all issues</md-button>
-            </md-card-actions>
-        </md-card>
+        <md-card-actions layout="row" layout-align="center center">
+            <md-button ng-click="$ctrl.viewAllIssues()">View all issues</md-button>
+            <md-button ng-click="$ctrl.calendar()">Calendar</md-button>
+            <md-button ng-click="$ctrl.gantt()">Gantt</md-button>
+        </md-card-actions>
+    </md-card>
+</div>
 
-        <md-card flex>
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-headline">Members</span>
-                </md-card-title-text>
-            </md-card-title>
+<div layout="row" layout-align="center start">
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">Members</span>
+            </md-card-title-text>
+        </md-card-title>
 
-            <md-card-content class="md-body-1">
-                <p>Manager:</p>
-                <p>Developer:</p>
-            </md-card-content>
-        </md-card>
-    </div>
+        <md-card-content class="md-body-1">
+            <p>Manager:</p>
+            <p>Developer:</p>
+        </md-card-content>
+    </md-card>
+</div>
+
+<div layout="row" layout-align="center start">
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">Latest news</span>
+            </md-card-title-text>
+        </md-card-title>
+
+        <md-card-content class="md-body-1">
+
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="center center">
+            <md-button ng-click="$ctrl.viewAllNews()">View all news</md-button>
+        </md-card-actions>
+    </md-card>
+</div>
+
+<div layout="row" layout-align="center start">
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">Subprojects</span>
+            </md-card-title-text>
+        </md-card-title>
+
+        <md-card-content class="md-body-1">
+
+        </md-card-content>
+    </md-card>
 </div>

@@ -80,9 +80,25 @@ Route::group(
         );
 
         Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
+        Route::group(
+            [
+                'namespace' => 'Projects',
+                'middleware' => 'auth'
+            ],
+            function ()
+            {
+                Route::get('projects', 'ProjectController@index');
+                Route::get('projects/{identifier}', 'ProjectController@show');
+                Route::get('projects/{identifier}/news', 'ProjectController@getNews');
+                Route::post('projects', 'ProjectController@create');
+                Route::put('projects/{identifier}', 'ProjectController@update');
+                Route::delete('projects/{identifier}', 'ProjectController@destroy');
+                Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
+        });
 
         Route::get('issues/{id}', 'IssuesController@getIssue');
         Route::get('issues', 'IssuesController@getIssues');
+        Route::post('issues/{id}/update', 'IssuesController@postUpdate');
 
         // users
 

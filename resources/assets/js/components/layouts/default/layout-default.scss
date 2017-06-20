@@ -5,6 +5,19 @@ layout-default-component {
     .md-button.md-icon-button {
       margin-left: -8px;
     }
+    position: fixed;
+  }
+
+  .main-toolbar {
+    position :fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color:inherit;
+  }
+
+  md-backdrop {
+    position: fixed;
   }
 
   .toolbar-input-container {
@@ -13,8 +26,8 @@ layout-default-component {
     .toolbar-input {
       &:focus {
         outline: none;
-        background: rgb(255,255,255);
-        fill: rgb(255,255,255);
+        background: rgb(255, 255, 255);
+        fill: rgb(255, 255, 255);
       }
 
       padding: 0 35px;
@@ -22,8 +35,8 @@ layout-default-component {
       height: 32px;
       border: 0;
       border-radius: 0;
-      background: rgba(255,255,255,0.87);
-      fill: rgba(255,255,255,0.87);
+      background: rgba(255, 255, 255, 0.87);
+      fill: rgba(255, 255, 255, 0.87);
     }
 
     .material-icons {

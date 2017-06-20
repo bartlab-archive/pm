@@ -45,5 +45,10 @@ class IssuesController extends Controller
         return response()->json($result);
     }
 
+    public function postUpdate(Request $request)
+    {
+        dd($request);
+    }
+
 
 }

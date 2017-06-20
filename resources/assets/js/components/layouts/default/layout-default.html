@@ -1,14 +1,12 @@
 <md-toolbar class="md-hue-2">
-    <div class="md-toolbar-tools">
+    <div class="md-toolbar-tools main-toolbar">
         <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggle()">
             <md-icon>menu</md-icon>
         </md-button>
 
         <h2 flex>MaybeWorks PM</h2>
 
-        <!--<input type="text" placeholder="Search" class="toolbar-input">-->
         <div class="md-block toolbar-input-container">
-            <!--<label>Search for item</label>-->
             <md-icon>search</md-icon>
             <input type="text" placeholder="Search" class="toolbar-input">
         </div>
@@ -47,7 +45,7 @@
 </md-toolbar>
 
 <section>
-    <md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4">
+    <md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4" md-disable-scroll-target="body">
         <md-toolbar>
             <h1 class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggle()">
@@ -57,23 +55,17 @@
             </h1>
         </md-toolbar>
 
-        <!--<md-content>-->
         <md-list-item ng-repeat="item in $ctrl.items" ng-click="$ctrl.menuClick(item)">
             <md-button class="md-icon-button">
                 <md-icon>{{ item.icon }}</md-icon>
             </md-button>
-            <!--<div class="md-list-item-text">-->
             {{ item.name }}
-            <!--</div>-->
         </md-list-item>
-        <!--</md-content>-->
     </md-sidenav>
 
-    <!--<md-content flex>-->
     <div ui-view="content"></div>
-    <!--</md-content>-->
 
-    <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+    <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right" md-disable-scroll-target="body">
         <md-toolbar>
             <h1 class="md-toolbar-tools">
                 <span>Projects</span>
@@ -84,7 +76,6 @@
             </h1>
         </md-toolbar>
 
-        <!--<md-content>-->
         <md-list>
             <md-list-item class="md-body-1" ng-repeat="project in $ctrl.projects"
                           ng-click="$ctrl.gotToProject(project.identifier)">
@@ -94,6 +85,5 @@
                 {{ project.name }}
             </md-list-item>
         </md-list>
-        <!--</md-content>-->
     </md-sidenav>
 </section>

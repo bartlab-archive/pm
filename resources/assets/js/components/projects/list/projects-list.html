@@ -1,5 +1,5 @@
-<div layout-gt-sm="row" layout-margin-gt-sm>
-    <div flex-gt-sm="70" flex-offset-gt-sm="15" class="md-whiteframe-2dp">
+<div layout-gt-sm="row" layout-align="center start">
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <md-button
@@ -23,7 +23,7 @@
                 <div class="md-list-item-text" layout="column">
                     <h3>{{ row.name }}</h3>
                     <p>{{ row.homepage }}</p>
-                    <p class="md-truncate" ng-bind="$ctrl.makeHtml(row.description) | words: 50"></p>
+                    <p class="md-truncate" ng-bind-html="$ctrl.makeHtml(row.description) | words: 50"></p>
                 </div>
 
                 <md-icon class="md-warn" ng-if="row.is_my === 1">star_rate</md-icon>
@@ -33,5 +33,12 @@
                 <md-divider ng-if="!$last"></md-divider>
             </md-list-item>
         </md-list>
-    </div>
+
+        <md-card-actions layout="row" layout-align="center center">
+            <md-button ng-click="null">
+                <md-icon>rss_feed</md-icon>
+                Atom
+            </md-button>
+        </md-card-actions>
+    </md-card>
 </div>
