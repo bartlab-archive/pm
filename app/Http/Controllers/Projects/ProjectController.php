@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Validation\Rule;
 use App\Models\Tracker;
-use Illuminate\Http\Request;
 
 /**
  * Class ProjectController
