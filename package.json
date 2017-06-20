@@ -27,6 +27,7 @@
     "md-data-table": "*",
     "ng-showdown": "*",
     "roboto-fontface": "*",
-    "material-design-icons-iconfont": "*"
+    "material-design-icons-iconfont": "*",
+    "angular-messages": "^1.6.4"
   }
 }
