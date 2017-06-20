@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Attachment extends Model
 {
+    const PROJECT_TYPE = 'Project';
+    
     protected $table = 'attachments';
 
     public $timestamps = false;
@@ -24,5 +26,10 @@ class Attachment extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    public function attachmentable()
+    {
+        return $this->morphTo('container');
     }
 }
