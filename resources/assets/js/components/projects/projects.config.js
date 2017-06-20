@@ -12,7 +12,7 @@ import projectsNewsComponent from './news/projects-news.component';
 import projectsDocumentsComponent from './documents/projects-documents.component';
 import projectsFilesComponent from './files/projects-files.component';
 import projectsBoardsComponent from './boards/projects-boards.component';
-import projectsWikiNewPageComponent from './wiki/new-page/projects-wiki-new-page.component';
+import projectsWikiPageComponent from './wiki/page/projects-wiki-page.component';
 
 /**
  * Class ProjectsConfig
@@ -114,13 +114,9 @@ export default class ProjectsConfig extends InjectableBase {
                 url: '',
                 component: projectsWikiComponent.name,
             })
-            .state('projects-inner.wiki.name', {
+            .state('projects-inner.wiki.page', {
                 url: '/{name:[A-z0-9,./?;:|]+}',
-                component: projectsWikiComponent.name,
-            })
-            .state('projects-inner.wiki.new-page', {
-                url: '/{id:[A-z0-9,./?;:|]+}',
-                component: projectsWikiNewPageComponent.name,
+                component: projectsWikiPageComponent.name,
             });
     }
 }

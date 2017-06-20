@@ -139,12 +139,12 @@ class ProjectController extends Controller
             $wiki_content->where('parent_id', null);
         }
 
-        $wiki_content->first()->toArray();
+        $wiki_content = $wiki_content->first()->toArray();
 
         return response()->json(array_merge(is_null($wiki_content['content']) ? [] : $wiki_content['content'] , ['title' => $wiki_content['title']]));
     }
 
-    protected function setWikiPageMarkDown(Request $request, $project_identifier, $wiki_id)
+    protected function setWikiPageMarkDown(Request $request, $project_identifier, $wiki_id, $name = null)
     {
         $user_projects = Auth::user()->projects;
         $project = $user_projects->where('identifier', $project_identifier)->first();
@@ -153,14 +153,20 @@ class ProjectController extends Controller
             abort(403);
         }
 
-        $wiki_content = $project->wiki
-            ->page()
+        $wiki_content = $project->wiki->page();
+
+        if ($name) {
+            $wiki_content->where('title', $wiki_id);
+            $wiki_id = $name;
+        } else {
+            $wiki_content->where('id', $wiki_id);
+        }
+
+        $wiki_content = $wiki_content
             ->with(['content' => function ($q) use($wiki_id) {
                 $q->where('id', $wiki_id);
             }])
             ->firstOrFail();
-
-
         $wiki_content->content->update([
             'text' => $request->input('text')
         ]);
@@ -185,7 +191,7 @@ class ProjectController extends Controller
 
         $new_page = $wiki->page()->create([
             'title' => $request->input('title'),
-            'parent_id' => $wiki->page->id
+            'parent_id' => $wiki->page->first()->id
         ]);
 
         $new_page_content = $new_page->content()->create([

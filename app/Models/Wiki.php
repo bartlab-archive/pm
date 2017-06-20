@@ -23,6 +23,6 @@ class Wiki extends Model
 
     public function page()
     {
-        return $this->hasOne(WikiPage::class);
+        return $this->hasMany(WikiPage::class);
     }
 }

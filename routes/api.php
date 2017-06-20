@@ -73,6 +73,7 @@ Route::group(
                 Route::get('projects/{identifier}/wiki/{page_title}', 'ProjectController@getWikiPageMarkDown');
                 Route::delete('projects/{identifier}', 'ProjectController@destroy');
                 Route::put('projects/{identifier}/wiki/{id}', 'ProjectController@setWikiPageMarkDown');
+                Route::put('projects/{identifier}/wiki/{name}/{id}', 'ProjectController@setWikiPageMarkDown');
                 Route::post('projects/{identifier}/new-page', 'ProjectController@addNewWiki');
             }
         );
