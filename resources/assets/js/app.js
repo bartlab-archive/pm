@@ -4,11 +4,13 @@ import 'angular-sanitize';
 import '@uirouter/angularjs';
 import 'restangular';
 import 'satellizer';
-import 'ng-table';
+// import 'ng-table';
+import 'md-data-table';
 import 'angular-material';
 import 'angular-messages';
 import 'angular-animate';
 import 'angular-aria';
+import 'ng-showdown';
 
 import 'directives.module';
 import 'filters.module';
@@ -31,7 +33,9 @@ angular
             'ui.router',
             'restangular',
             'satellizer',
-            'ngTable',
+            'ng-showdown',
+            // 'ngTable',
+            'mdDataTable',
 
             'app.directives',
             'app.filters',

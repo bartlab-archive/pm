@@ -18,12 +18,12 @@ export default class LayoutDefaultController extends ControllerBase {
             {url: 'home', name: 'Overall spent time', icon: 'timelapse'},
             {url: 'home', name: 'Overall activity', icon: 'history'},
             {url: 'admin.index', name: 'Administration', icon: 'apps'},
-            {url: 'home', name: 'My page', icon: 'person'},
-            {url: 'home', name: 'Help', icon: 'help'}
+            {url: 'my.page', name: 'My page', icon: 'person'},
+            // {url: 'home', name: 'Help', icon: 'help'}
         ];
 
-        this.ProjectsService.getList().then((response) => {
-            this.projects = _.filter(response.data, {is_my: 1});
+        this.ProjectsService.getMyList().then((response) => {
+            this.projects = response;
         });
     }
 

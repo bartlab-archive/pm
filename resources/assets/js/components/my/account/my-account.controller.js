@@ -1,9 +1,10 @@
 import angular from 'angular';
+import * as _ from 'lodash';
+
 import ControllerBase from 'base/controller.base';
-import PasswordTemplate from '../change-password/my-change-password.html';
-import myChangePasswordController from '../change-password/my-change-password.controller';
-import myShowApiKeyTemplate from './my-show-api-key.html';
-import myShowApiKeyController from './my-show-api-key.controller';
+import myShowApiKeyComponent from 'components/my/show-api-key/my-show-api-key.component';
+import myAddMailComponent from 'components/my/add-mail/my-add-mail.component';
+import myChangePasswordComponent from 'components/my/change-password/my-change-password.component';
 
 /**
  * @property $auth
@@ -11,75 +12,138 @@ import myShowApiKeyController from './my-show-api-key.controller';
  * @property $mdToast
  * @property $mdPanel
  * @property UsersService
+ * @property MaterialToastService
+ *
+ * @property user
+ * @property languages
+ * @property timeZone
  */
+
 export default class mainMyAccountIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$auth', '$state', '$mdToast', '$mdPanel', 'UsersService'];
+        return ['$auth', '$state', '$mdToast', '$mdDialog', 'UsersService', 'MaterialToastService'];
     }
 
     $onInit() {
-        this.user = this.UsersService.getUserInfo();
-        this.languages = this.UsersService.getLanguage();
+        this.user = this.UsersService.getUserInfo().then((response) => {
+            if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
+                this.model = response.data;
+            }
+        });
 
-        this.element = angular.element(document.body);
+        this.languages = this.UsersService.getLanguage();
+        this.timeZone = this.UsersService.getTimeZone();
+        this.mdToast = this.MaterialToastService;
     }
 
-    changePassword() {
-        let position = this.$mdPanel.newPanelPosition()
-            .absolute()
-            .left()
-            .top();
+    setMdDialogConfig(component, target) {
 
-        let animation = this.$mdPanel.newPanelAnimation();
-        animation.duration(300);
-        animation.openFrom('.animation-target');
-        animation.withAnimation(this.$mdPanel.animation.SCALE);
 
-        // todo: move to self component
-        let config = {
-            animation: animation,
-            attachTo: this.element,
-            controller: myChangePasswordController,
+        let ctrlConfig = [].concat(
+            component.controller.$inject || [],
+            [(...args) => {
+                let ctrl = new component.controller(...args);
+                ctrl.$onInit && ctrl.$onInit();
+                return ctrl;
+            }]
+        );
+
+        return {
+            controller: ctrlConfig,
             controllerAs: '$ctrl',
-            template: PasswordTemplate,
-            panelClass: 'change-password-dialog',
-            position: position,
+            template: component.template,
+            panelClass: 'modal-custom-dialog',
+            parent:angular.element(document.body),
             trapFocus: true,
             clickOutsideToClose: true,
             clickEscapeToClose: true,
+            escapeToClose: true,
             hasBackdrop: true,
-        };
-
-        this.$mdPanel.open(config);
+            disableParentScroll: true,
+            openFrom: target,
+            closeTo: target
+        }
     }
 
-    showApiKey() {
-        let position = this._mdPanel.newPanelPosition()
-          .absolute()
-          .left()
-          .top();
 
-        let animation = this._mdPanel.newPanelAnimation();
-        animation.duration(300);
-        animation.openFrom('.show-key');
-        animation.withAnimation(this._mdPanel.animation.SCALE);
+    // setMdPanelConfig(component, target) {
+    //
+    //   let position = this.$mdPanel.newPanelPosition()
+    //       .absolute()
+    //       .center();
+    //
+    //   let animation = this.$mdPanel.newPanelAnimation()
+    //       .duration(300)
+    //       .openFrom(target)
+    //       .withAnimation(this.$mdPanel.animation.SCALE);
+    //
+    //   let ctrlConfig = [].concat(
+    //     component.controller.$inject || [],
+    //     [(...args) => {
+    //       let ctrl = new component.controller(...args);
+    //       ctrl.$onInit && ctrl.$onInit();
+    //       return ctrl;
+    //     }]
+    //   );
+    //
+    //   return {
+    //     animation: animation,
+    //     attachTo: angular.element(document.body),
+    //     controller: ctrlConfig,
+    //     controllerAs: '$ctrl',
+    //     template: component.template,
+    //     panelClass: 'modal-custom-dialog',
+    //     position: position,
+    //     trapFocus: true,
+    //     clickOutsideToClose: true,
+    //     clickEscapeToClose: true,
+    //     escapeToClose: true,
+    //     hasBackdrop: true,
+    //     disableParentScroll: true,
+    //   }
+    // }
 
-        let config = {
-          animation: animation,
-          attachTo: this.element,
-          controller: myShowApiKeyController,
-          controllerAs: '$ctrl',
-          template: myShowApiKeyTemplate,
-          panelClass: 'change-password-dialog',
-          position: position,
-          trapFocus: true,
-          clickOutsideToClose: true,
-          clickEscapeToClose: true,
-          hasBackdrop: true,
-        };
 
-        this._mdPanel.open(config);
+    changePassword($event) {
+        this.$mdDialog.show(
+            this.setMdDialogConfig(myChangePasswordComponent, $event.target)
+        );
+    }
+
+    showApiKey($event) {
+        this.$mdDialog.show(
+            this.setMdDialogConfig(myShowApiKeyComponent, $event.target)
+        );
+    }
+
+    addEmail($event) {
+        this.$mdDialog.show(
+            this.setMdDialogConfig(myAddMailComponent, $event.target)
+        );
+    }
+
+    resetApiKey() {
+        this.UsersService.resetApiAccessKey().then((response)=>{
+          this.model.api_key_updated_on = response.data;
+        });
+    }
+
+    resetAtomKey() {
+        this.UsersService.resetAtomAccessKey().then((response)=>{
+          this.model.atom_key_updated_on = response.data;
+        });
+    }
+
+    submit() {
+        this.model.save().then(
+          (response) => {
+            console.log(response);
+            if (response && response.status === 200) {
+              this.mdToast.success();
+            }
+          }
+        );
     }
 
 }

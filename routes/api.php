@@ -48,9 +48,13 @@ Route::group(
             ],
             function ()
             {
-                Route::get('account', 'AccountController@show');
-                Route::put('account', 'AccountController@update');
-                Route::put('password', 'AccountController@changePassword');
+                Route::get('account', 'Account\AccountController@show');
+                Route::put('account', 'Account\AccountController@update');
+                Route::put('password', 'ChangePassword\ChangePasswordController@changePassword');
+
+                Route::get('api-key', 'Keys\KeysController@showApiKey');
+                Route::put('api-key', 'Keys\KeysController@resetApiKey');
+                Route::put('rss-key', 'Keys\KeysController@resetAtomKey');
             }
         );
 
@@ -65,9 +69,16 @@ Route::group(
             {
                 Route::get('projects', 'ProjectController@index');
                 Route::get('projects/{identifier}', 'ProjectController@show');
+                Route::get('projects/{identifier}/news', 'ProjectController@getNews');
+                Route::post('projects', 'ProjectController@create');
+                Route::put('projects/{identifier}', 'ProjectController@update');
                 Route::delete('projects/{identifier}', 'ProjectController@destroy');
-            }
-        );
+                Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
+        });
+
+        Route::get('issues/{id}', 'IssuesController@getIssue');
+        Route::get('issues', 'IssuesController@getIssues');
+        Route::post('issues/{id}/update', 'IssuesController@postUpdate');
 
         // users
 

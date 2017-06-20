@@ -1,0 +1,12 @@
+<md-content>
+    <md-list flex>
+        <md-list-item class="md-3-line" ng-repeat="item in $ctrl.news" ng-click="null">
+            <div class="md-list-item-text" layout="column">
+                <h3>{{ item.title }}</h3>
+                <h4>{{ item.summary }}</h4>
+                <p>{{ item.description }}</p>
+            </div>
+        </md-list-item>
+        <md-divider ></md-divider>
+    </md-list>
+</md-content>

@@ -23,7 +23,7 @@
                 <div class="md-list-item-text" layout="column">
                     <h3>{{ row.name }}</h3>
                     <p>{{ row.homepage }}</p>
-                    <p class="md-truncate" ng-bind-html="row.description | words: 50"></p>
+                    <p class="md-truncate" ng-bind="$ctrl.makeHtml(row.description) | words: 50"></p>
                 </div>
 
                 <md-icon class="md-warn" ng-if="row.is_my === 1">star_rate</md-icon>

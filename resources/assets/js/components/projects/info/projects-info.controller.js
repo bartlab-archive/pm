@@ -4,11 +4,12 @@ import ControllerBase from 'base/controller.base';
 /**
  * @property ProjectsService
  * @property $stateParams
+ * @property $state
  */
 export default class ProjectsInfoController extends ControllerBase {
 
     static get $inject() {
-        return ['ProjectsService', '$stateParams'];
+        return ['ProjectsService', '$state', '$stateParams'];
     }
 
     $onInit() {
@@ -17,4 +18,7 @@ export default class ProjectsInfoController extends ControllerBase {
         });
     }
 
+    viewAllIssues(){
+        this.$state.go('projects-inner.issues.index');
+    }
 }

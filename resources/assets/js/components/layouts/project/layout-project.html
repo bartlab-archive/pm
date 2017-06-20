@@ -1,28 +1,30 @@
-<md-nav-bar md-selected-nav-item="$ctrl.currentNavItem" nav-bar-aria-label="Project navigation links">
-    <md-menu>
-        <md-button
-                aria-label="New object"
-                ng-click="$ctrl.openNewObjectMenu($mdMenu, $event)">
-            <md-icon>add</md-icon>
-        </md-button>
+<md-content>
+    <md-nav-bar md-selected-nav-item="$ctrl.currentNavItem" nav-bar-aria-label="Project navigation links">
+        <md-menu>
+            <md-button
+                    aria-label="New object"
+                    ng-click="$ctrl.openNewObjectMenu($mdMenu, $event)">
+                <md-icon>add</md-icon>
+            </md-button>
 
-        <md-menu-content width="4">
-            <md-menu-item ng-repeat="item in $ctrl.newItems">
-                <md-button>{{ item }}</md-button>
-            </md-menu-item>
+            <md-menu-content width="4">
+                <md-menu-item ng-repeat="item in $ctrl.newItems">
+                    <md-button>{{ item }}</md-button>
+                </md-menu-item>
 
-            <md-divider></md-divider>
+                <md-divider></md-divider>
 
-            <md-menu-item>
-                <md-button>New subproject</md-button>
-            </md-menu-item>
-        </md-menu-content>
-    </md-menu>
+                <md-menu-item>
+                    <md-button>New subproject</md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
 
-    <!--<md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">-->
-    <md-nav-item ng-repeat="item in $ctrl.items" md-nav-click="$ctrl.goto(item.url)" name="{{ item.url }}">
-        {{ item.name }}
-    </md-nav-item>
-</md-nav-bar>
+        <!--<md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">-->
+        <md-nav-item ng-repeat="item in $ctrl.items" md-nav-click="$ctrl.goto(item.url)" name="{{ item.url }}">
+            {{ item.name }}
+        </md-nav-item>
+    </md-nav-bar>
+</md-content>
 
 <div ui-view="content"></div>

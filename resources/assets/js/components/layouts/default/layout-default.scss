@@ -20,4 +20,31 @@ layout-default-component {
     position: fixed;
   }
 
+  .toolbar-input-container {
+    position: relative;
+
+    .toolbar-input {
+      &:focus {
+        outline: none;
+        background: rgb(255,255,255);
+        fill: rgb(255,255,255);
+      }
+
+      padding: 0 35px;
+      font-size: 70%;
+      height: 32px;
+      border: 0;
+      border-radius: 0;
+      background: rgba(255,255,255,0.87);
+      fill: rgba(255,255,255,0.87);
+    }
+
+    .material-icons {
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      color: #ccc !important;
+    }
+  }
+
 }

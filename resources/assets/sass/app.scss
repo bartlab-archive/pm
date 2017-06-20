@@ -2,8 +2,10 @@
 // Fonts
 //@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
 //@import "node_modules/font-awesome/scss/font-awesome";
-@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
-@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+//@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
+//@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+@import "../../../node_modules/roboto-fontface/css/roboto/sass/roboto-fontface";
+@import "../../../node_modules/material-design-icons-iconfont/dist/material-design-icons";
 
 // Variables
 //@import "variables";

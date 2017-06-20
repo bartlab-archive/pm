@@ -1,0 +1,203 @@
+<div class="main">
+    <md-card class="content">
+        <md-card-header>
+            <md-card-title><h3>Feature #{{ $ctrl.issue.id }}</h3></md-card-title>
+            <md-card-subtitle>
+                <md-button ng-click="$ctrl.openEditForm()">Test</md-button>
+            </md-card-subtitle>
+        </md-card-header>
+        <md-card-content class="content">
+            <div class="short-desciption">
+                <img src="/img/icons/a2efce483d126b20e8a67a7c5c6070c7.jpg" alt="">
+                <p>
+                    <a href="/issues/{{ $ctrl.issue.id }}">Feature #{{ $ctrl.issue.id }}</a>: {{ $ctrl.issue.subject }}
+                </p>
+                <br>
+                <p>
+                    Added by {{ $ctrl.issue.author_id + ' ' + $ctrl.issue.created_on}}
+                </p>
+            </div>
+            <hr>
+            <div class="info">
+                <div class="status">
+                    <p>Status: {{ $ctrl.issue.statusText }}</p>
+                    <p>Start data: {{ $ctrl.issue.start_date }}</p>
+                </div>
+                <div class="priority">
+                    <p>Priority: {{ $ctrl.issue.priority_id }}</p>
+                    <p>End data: {{ $ctrl.issue.closed_on }}</p>
+                </div>
+                <div class="assigned">
+                    <p>Assigned: {{ $ctrl.issue.assigned_to_id }}</p>
+                    <p>Progress:
+                        <md-progress-linear class="progress" md-mode="determinate"
+                                            value="{{$ctrl.issue.done_ratio}}"></md-progress-linear>
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <h3>Description</h3>
+                <div markdown-to-html="$ctrl.issue.description || ''">
+                </div>
+            </div>
+            <hr>
+            <div class="subtasks">
+                <h3>Subtasks</h3>
+            </div>
+            <hr>
+            <div class="related">
+                <h3>Related tasks</h3>
+            </div>
+        </md-card-content>
+    </md-card>
+</div>
+<md-card class="task-description">
+    <md-card-header>
+        <md-card-title><h3>Tasks</h3></md-card-title>
+    </md-card-header>
+    <md-card-content class="content">
+        <div>
+            <p><a href="/issues">View All Tasks</a></p>
+            <p><a href="/issues">Short description</a></p>
+            <p><a href="/issues">Import</a></p>
+        </div>
+        <div>
+            <h3>Observers(*)</h3>
+        </div>
+    </md-card-content>
+</md-card>
+<div class="edit" ng-if="$ctrl.editIsOpen">
+    <md-card>
+        <form action="" method="post">
+        <md-card-header>
+            <md-card-title>Title</md-card-title>
+            <md-card-subtitle>Subtitle</md-card-subtitle>
+        </md-card-header>
+        <md-card-content>
+            <fieldset>
+                <div layout-gt-sm="row">
+                    <div layout="row" layout-align="space-between center">
+                        <span>Project</span>
+                        <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
+                            <md-option value="axe">Axe</md-option>
+                            <md-option value="sword">Sword</md-option>
+                            <md-option value="wand">Wand</md-option>
+                            <md-option value="pen">Pen?</md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div layout-gt-sm="row">
+                    <div layout="row" layout-align="space-between center">
+                        <span>Tracker</span>
+                        <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
+                            <md-option value="axe">Axe</md-option>
+                            <md-option value="sword">Sword</md-option>
+                            <md-option value="wand">Wand</md-option>
+                            <md-option value="pen">Pen?</md-option>
+                        </md-select>
+                    </div>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Subject</label>
+                        <input ng-model="$ctrl.edit_issue.subject">
+                    </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block">
+                        <label>Description</label>
+                        <textarea ng-model="$ctrl.edit_issue.description" rows="5" cols="100" md-select-on-focus></textarea>
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <div style="width:15%">
+                        <div layout="row" layout-align="space-between center">
+                            <span>Status</span>
+                            <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
+                                <md-option value="axe">Axe</md-option>
+                                <md-option value="sword">Sword</md-option>
+                                <md-option value="wand">Wand</md-option>
+                                <md-option value="pen">Pen?</md-option>
+                            </md-select>
+                        </div>
+                        <div layout="row" layout-align="space-between center">
+                            <span>Priority</span>
+                            <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
+                                <md-option value="axe">Axe</md-option>
+                                <md-option value="sword">Sword</md-option>
+                                <md-option value="wand">Wand</md-option>
+                                <md-option value="pen">Pen?</md-option>
+                            </md-select>
+                        </div>
+                        <div layout="row" layout-align="space-between center">
+                            <span>Assigned to</span>
+                            <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
+                                <md-option value="axe">Axe</md-option>
+                                <md-option value="sword">Sword</md-option>
+                                <md-option value="wand">Wand</md-option>
+                                <md-option value="pen">Pen?</md-option>
+                            </md-select>
+                        </div>
+                        <div layout="row" layout-align="space-between center">
+                            <md-input-container>
+                                <label>Estimated hours</label>
+                                <input name="postalCode" ng-model="$ctrl.edit_issue.estimated_hours" placeholder="0" required
+                                       ng-pattern="/^[0-9]{5}$/" md-maxlength="5">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div style="margin-left: 15%;width:15%">
+                        <div layout="row" layout-align="space-between center">
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Parent task</label>
+                                <input ng-model="$ctrl.edit_issue.parent_id">
+                            </md-input-container>
+                        </div>
+                        <div layout="row" layout-align="space-between center">
+                            <md-input-container>
+                                <label>Start date</label>
+                                <md-datepicker ng-model="$ctrl.edit_issue.start_date"></md-datepicker>
+                            </md-input-container>
+                        </div>
+                        <div layout="row" layout-align="space-between center">
+                            <md-input-container>
+                                <label>End date</label>
+                                <md-datepicker ng-model="$ctrl.edit_issue.closed_on"></md-datepicker>
+                            </md-input-container>
+                        </div>
+                        <div layout="row" layout-align="space-between center">
+                                <span>Done ratio</span>
+                                <md-select ng-model="$ctrl.edit_issue.done_ratio" class="md-no-underline">
+                                    <md-option value="0">0%</md-option>
+                                    <md-option value="10">10%</md-option>
+                                    <md-option value="20">20%</md-option>
+                                    <md-option value="30">30%</md-option>
+                                    <md-option value="40">40%</md-option>
+                                    <md-option value="50">50%</md-option>
+                                    <md-option value="60">60%</md-option>
+                                    <md-option value="70">70%</md-option>
+                                    <md-option value="80">80%</md-option>
+                                    <md-option value="90">90%</md-option>
+                                    <md-option value="100">100%</md-option>
+                                </md-select>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block">
+                        <label>Notes</label>
+                        <textarea rows="5" cols="100" md-select-on-focus></textarea>
+                    </md-input-container>
+                </div>
+            </fieldset>
+        </md-card-content>
+        <md-card-footer>
+            <md-button ng-click="$ctrl.updateIssue()" type="submit" md-no-ink class="md-primary">Save</md-button>
+        </md-card-footer>
+        </form>
+    </md-card>
+</div>

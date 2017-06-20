@@ -1,0 +1,33 @@
+<div layout="column"  class="modal-dialog" layout-align="center center">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Emails</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                <md-icon aria-label="Close dialog">clear</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <div class="popup-content">
+
+        <form name="AddEmail" ng-submit="$ctrl.onSubmit()">
+
+            <md-card-content>
+                <md-input-container class="md-icon-float md-block">
+                    <label>Add email adress</label>
+                    <input ng-model="$ctrl.model.password" type="email" required>
+                </md-input-container>
+            </md-card-content>
+
+
+            <md-card-actions layout="row" layout-align="center center">
+                <md-button class="md-raised md-primary" type = "submit">
+                    Add
+                </md-button>
+            </md-card-actions>
+        </form>
+
+    </div>
+
+</div>

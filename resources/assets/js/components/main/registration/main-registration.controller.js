@@ -38,10 +38,12 @@ export default class MainRegistrationController extends ControllerBase {
                     console.log(response);
                     if (response && response.status === 201) {
                         this.mdToast.success();
-                        // this.$state.go('login');
+                        this.$state.go('login');
                     }
                 }
-            );
+            ).catch((error) => {
+
+            });
         }
     }
 }

@@ -21,4 +21,9 @@ class Comment extends Model
         'created_on',
         'updated_on',
     ];
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'author_id');
+    }
 }
