@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tracker;
 use Illuminate\Http\Request;
 use App\Models\Issue;
 use App\Models\User;
@@ -48,6 +49,19 @@ class IssuesController extends Controller
     public function postUpdate(Request $request)
     {
         dd($request);
+    }
+
+    public function infoEdit($id, $project_id)
+    {
+        $projects = \App\Models\Project::orderBy('name')->where('status', 1)->select('name', 'id')->get()->toArray();
+        $trackers = Tracker::select('id', 'name')->get()->toArray();
+//        $users_id = Issue::where('project_id', $project_id)->select('assigned_to_id', 'author_id')->distinct()->get()->toArray();
+
+        $result = [];
+        $result['rackers'] = $trackers;
+        $result['projects'] = $projects;
+
+        return response()->json([$result], 200);
     }
 
 

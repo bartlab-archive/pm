@@ -34,7 +34,7 @@ export default class ProjectsIssuesController extends ControllerBase {
             sortField: sortBy.field,
             order: sortBy.sort
         };
-        return this.IssuesService.getListByProject(_this.$stateParams.id, options)
+        return this.IssuesService.getListByProject(this.$stateParams.id, options)
             .then((response) => {
                 this.data = response.data;
                 return {
