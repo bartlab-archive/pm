@@ -21,4 +21,16 @@ export default class ProjectsInfoController extends ControllerBase {
     viewAllIssues(){
         this.$state.go('projects-inner.issues.index');
     }
+
+    calendar(){
+        this.$state.go('projects-inner.issues.calendar');
+    }
+
+    gantt(){
+        this.$state.go('projects-inner.issues.gantt');
+    }
+
+    viewAllNews(){
+        this.$state.go('projects-inner.news');
+    }
 }
