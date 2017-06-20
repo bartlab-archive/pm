@@ -9,7 +9,7 @@ use Auth;
 class Project extends Model
 {
     use NestedTreeTrait;
-    
+
     protected $table = 'projects';
 
     protected $appends = ['is_my'];
@@ -50,7 +50,7 @@ class Project extends Model
     {
         return $this->hasMany(Member::class);
     }
-    
+
 	public function news()
 	{
 		return $this->hasMany(News::class, 'project_id', 'id');
@@ -80,7 +80,12 @@ class Project extends Model
     {
         return $this->hasMany(EnabledModule::class);
     }
-    
+
+    public function wiki()
+    {
+        return $this->hasOne(Wiki::class);
+    }
+
     public function getIsMyAttribute()
     {
         return (int)(Auth::guest() ? false : $this->members()->where('user_id', Auth::user()->id)->exists());
@@ -117,7 +122,7 @@ class Project extends Model
          */
         return $project->delete();
     }
-    
+
 	public static function getNewsByProjectIdentifier($project_identifier)
 	{
 		return static::projectByIdentifier($project_identifier)->news;

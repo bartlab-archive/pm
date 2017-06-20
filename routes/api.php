@@ -69,6 +69,26 @@ Route::group(
             {
                 Route::get('projects', 'ProjectController@index');
                 Route::get('projects/{identifier}', 'ProjectController@show');
+                Route::get('projects/{identifier}/wiki', 'ProjectController@getWikiPageMarkDown');
+                Route::get('projects/{identifier}/wiki/all', 'ProjectController@getAllWikiPage');
+                Route::get('projects/{identifier}/wiki/{page_title}', 'ProjectController@getWikiPageMarkDown');
+                Route::delete('projects/{identifier}', 'ProjectController@destroy');
+                Route::put('projects/{identifier}/wiki/{id}', 'ProjectController@setWikiPageMarkDown');
+                Route::put('projects/{identifier}/wiki/{name}/{id}', 'ProjectController@setWikiPageMarkDown');
+                Route::post('projects/{identifier}/new-page', 'ProjectController@addNewWiki');
+            }
+        );
+
+        Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
+        Route::group(
+            [
+                'namespace' => 'Projects',
+                'middleware' => 'auth'
+            ],
+            function ()
+            {
+                Route::get('projects', 'ProjectController@index');
+                Route::get('projects/{identifier}', 'ProjectController@show');
                 Route::get('projects/{identifier}/news', 'ProjectController@getNews');
                 Route::post('projects', 'ProjectController@create');
                 Route::put('projects/{identifier}', 'ProjectController@update');

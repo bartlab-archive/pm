@@ -16,4 +16,13 @@ class Wiki extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * relationships
+     */
+
+    public function page()
+    {
+        return $this->hasMany(WikiPage::class);
+    }
 }
