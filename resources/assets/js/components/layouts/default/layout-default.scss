@@ -5,6 +5,19 @@ layout-default-component {
     .md-button.md-icon-button {
       margin-left: -8px;
     }
+    position: fixed;
+  }
+
+  .main-toolbar {
+    position :fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color:inherit;
+  }
+
+  md-backdrop {
+    position: fixed;
   }
 
   .toolbar-input-container {
