@@ -1,10 +1,12 @@
 import ControllerBase from 'base/controller.base';
 import * as _ from 'lodash';
 
+import projectsWikiNewComponent from '../../wiki-new/projects-wiki-new.component';
+
 export default class ProjectsWikiPageController extends ControllerBase {
 
   static get $inject() {
-    return ['$state', 'WikiService', 'MaterialToastService', '$mdToast', '$stateParams'];
+    return ['$state', 'WikiService', 'MaterialToastService', '$mdToast', '$stateParams', '$mdDialog'];
   }
 
   $onInit() {
@@ -33,6 +35,41 @@ export default class ProjectsWikiPageController extends ControllerBase {
 
   cancel() {
     this.editMode = false;
+  }
+
+  setMdDialogConfig(component, target) {
+
+
+    let ctrlConfig = [].concat(
+      component.controller.$inject || [],
+      [(...args) => {
+        let ctrl = new component.controller(...args);
+        ctrl.$onInit && ctrl.$onInit();
+        return ctrl;
+      }]
+    );
+
+    return {
+      controller: ctrlConfig,
+      controllerAs: '$ctrl',
+      template: component.template,
+      panelClass: 'modal-custom-dialog',
+      parent:angular.element(document.body),
+      trapFocus: true,
+      clickOutsideToClose: true,
+      clickEscapeToClose: true,
+      escapeToClose: true,
+      hasBackdrop: true,
+      disableParentScroll: true,
+      openFrom: target,
+      closeTo: target
+    }
+  }
+
+  newWikiPage($event) {
+    this.$mdDialog.show(
+      this.setMdDialogConfig(projectsWikiNewComponent, $event.target)
+    );
   }
 
 }

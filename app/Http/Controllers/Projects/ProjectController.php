@@ -206,7 +206,8 @@ class ProjectController extends Controller
     protected function getAllWikiPage(Request $request, $project_identifier)
     {
         $project = Auth::user()->projects()->where('identifier', $project_identifier)->firstOrFail();
-        $wiki = $project->wiki;
+
+        $wiki = $project->wiki->page()->with('content')->get();
 
         return $wiki;
     }

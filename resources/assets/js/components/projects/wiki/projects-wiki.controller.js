@@ -18,6 +18,13 @@ export default class ProjectsWikiController extends ControllerBase {
       }
     });
 
+   this.WikiService.getAllWikiPage(this.$stateParams.id).then((response) => {
+     if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
+       this.pageList = response.data;
+       console.log(this.pageList);
+     }
+   });
+
    this.editMode = false;
    this.mdToast = this.MaterialToastService;
   }

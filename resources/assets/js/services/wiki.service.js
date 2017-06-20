@@ -32,4 +32,13 @@ export default class WikiService {
       .one('new-page')
       .post(null, params);
   }
+
+  getAllWikiPage(indetifire) {
+    return this.Restangular
+      .one('projects')
+      .one(indetifire)
+      .one('wiki')
+      .one('all')
+      .get();
+  }
 }

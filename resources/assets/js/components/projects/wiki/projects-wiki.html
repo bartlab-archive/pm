@@ -1,6 +1,5 @@
 <div layout="column" layout-align="center none">
     <md-card ng-if="!$ctrl.editMode">
-
         <md-list>
             <md-list-item>
                 <md-button class="md-raised md-primary animation-target md-secondary"
@@ -35,9 +34,7 @@
             </md-list-item>
         </md-list>
     </md-card>
-
     <form ng-if="$ctrl.editMode" name="EditWikiForm" ng-submit="$ctrl.submit()">
-        <div layout="column" layout-align="center none">
             <md-card>
                 <md-input-container flex layout-padding>
                 <textarea name="editor" ng-model="$ctrl.data.text" required>
@@ -58,6 +55,10 @@
                     </md-button>
                 </md-card-actions>
             </md-card>
-        </div>
     </form>
+    <md-card>
+        <p class="md-padding" ng-repeat="page in $ctrl.pageList">
+            {{ page.title }}
+        <p>
+    </md-card>
 </div>
