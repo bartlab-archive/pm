@@ -202,4 +202,12 @@ class ProjectController extends Controller
 
         return response()->json(array_merge($new_page_content->toArray(), ['title' => $new_page->title]), 201);
     }
+
+    protected function getAllWikiPage(Request $request, $project_identifier)
+    {
+        $project = Auth::user()->projects()->where('identifier', $project_identifier)->firstOrFail();
+        $wiki = $project->wiki;
+
+        return $wiki;
+    }
 }
