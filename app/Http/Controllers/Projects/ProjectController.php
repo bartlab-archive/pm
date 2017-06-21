@@ -7,6 +7,7 @@ use App\Models\EnabledModule;
 use App\Models\Project;
 use App\Models\Wiki;
 use App\Models\WikiPage;
+use App\Services\ProjectsService;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Validation\Rule;
@@ -19,6 +20,14 @@ use App\Models\Tracker;
  */
 class ProjectController extends Controller
 {
+
+    protected $projectsService;
+
+    public function __construct(ProjectsService $projectsService)
+    {
+        $this->projectsService = $projectsService;
+    }
+
     /**
      * Index
      *
@@ -64,25 +73,8 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-//        $request = request();
-
         $this->validate($request, ['closed' => 'boolean']);
-
-        $projects = Project::orderBy('name')
-            ->where('status', 1)
-            ->with([
-                'members',
-                'versions',
-                'issue_categories',
-                'repositories',
-                'boards',
-            ]);
-
-        if ($request->input('closed')) {
-            $projects->orWhere('status', 5);
-        }
-
-        return $projects->get()->makeVisible(['is_my']);
+        return $this->projectsService->all($request);
     }
 
     /**
@@ -111,23 +103,21 @@ class ProjectController extends Controller
      */
     public function show($identifier)
     {
-        $project = Project::projectByIdentifier($identifier);
-
-        $project->setAttribute('trackers', $project->trackers);
-        $project->setAttribute('enabled_modules', $project->enabled_modules);
-
-        return $project;
+        if ($project = $this->projectsService->one($identifier)) {
+            return $project;
+        }
+        abort(404);
     }
 
     public function create(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|string',
-            'identifier' => 'required|string|between:1,100|unique:' . (new Project())->getTable(),
+            'identifier' => 'required|string|between:1,100|unique:' . Project::getTableName(),
             'description' => 'string',
             'homepage' => 'url',
             'is_public' => 'boolean',
-            'parent_id' => 'int|exists:' . (new Project())->getTable() . ',id',
+            'parent_id' => 'int|exists:' . Project::getTableName() . ',id',
             'inherit_members' => 'boolean',
             'custom_field_values' => 'string',
 
@@ -135,7 +125,7 @@ class ProjectController extends Controller
             'enabled_module_names.*' => 'in:' . implode(',', EnabledModule::ENABLED_MODULES_NAME),
 
             'tracker_ids' => 'array',
-            'tracker_ids.*' => 'int|exists:' . (new Tracker())->getTable() . ',id'
+            'tracker_ids.*' => 'int|exists:' . Project::getTableName() . ',id'
         ], []);
 
         $project = Project::create([

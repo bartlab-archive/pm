@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Http\Traits\NestedTreeTrait;
-use Illuminate\Database\Eloquent\Model;
 use Auth;
 
-class Project extends Model
+class Project extends BaseModel
 {
     use NestedTreeTrait;
+
+    const ACTIVE_STATUS = '1';
+    const CLOSED_STATUS = '5';
+    const ARCHIVED_STATUS = '9';
 
     protected $table = 'projects';
 
