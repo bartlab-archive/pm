@@ -28,9 +28,9 @@
         </md-card-content>
 
         <md-card-actions layout="row" layout-align="center center">
-            <md-button ng-click="$ctrl.viewAllIssues()">View all issues</md-button>
-            <md-button ng-click="$ctrl.calendar()">Calendar</md-button>
-            <md-button ng-click="$ctrl.gantt()">Gantt</md-button>
+            <md-button ui-sref="projects-inner.issues.index">View all issues</md-button>
+            <md-button ui-sref="projects-inner.issues.calendar">Calendar</md-button>
+            <md-button ui-sref="projects-inner.issues.gantt">Gantt</md-button>
         </md-card-actions>
     </md-card>
 </div>
@@ -62,7 +62,7 @@
 
         </md-card-content>
         <md-card-actions layout="row" layout-align="center center">
-            <md-button ng-click="$ctrl.viewAllNews()">View all news</md-button>
+            <md-button ui-sref="projects-inner.news">View all news</md-button>
         </md-card-actions>
     </md-card>
 </div>
