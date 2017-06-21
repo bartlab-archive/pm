@@ -74,7 +74,7 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         $this->validate($request, ['closed' => 'boolean']);
-        return $this->projectsService->all($request);
+        return $this->projectsService->all($request->get('closed'));
     }
 
     /**
