@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\Projects;
 
 use App\Http\Controllers\Controller;
-use App\Models\EnabledModule;
+use App\Http\Requests\CreateProjectRequest;
+use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
-use App\Models\Wiki;
 use App\Models\WikiPage;
 use App\Services\ProjectsService;
 use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Validation\Rule;
-use App\Models\Tracker;
 
 /**
  * Class ProjectController
@@ -109,69 +108,14 @@ class ProjectController extends Controller
         abort(404);
     }
 
-    public function create(Request $request)
+    public function create(CreateProjectRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required|string',
-            'identifier' => 'required|string|between:1,100|unique:' . Project::getTableName(),
-            'description' => 'string',
-            'homepage' => 'url',
-            'is_public' => 'boolean',
-            'parent_id' => 'int|exists:' . Project::getTableName() . ',id',
-            'inherit_members' => 'boolean',
-            'custom_field_values' => 'string',
-
-            'enabled_module_names' => 'array',
-            'enabled_module_names.*' => 'in:' . implode(',', EnabledModule::ENABLED_MODULES_NAME),
-
-            'tracker_ids' => 'array',
-            'tracker_ids.*' => 'int|exists:' . Project::getTableName() . ',id'
-        ], []);
-
-        $project = Project::create([
-            'name' => $request->input('name'),
-            'identifier' => $request->input('identifier'),
-            'description' => $request->input('description'),
-            'homepage' => $request->input('homepage'),
-            'is_public' => $request->input('is_public', 1),
-            'parent_id' => $request->input('parent_id'),
-            'inherit_members' => $request->input('inherit_members', 0)
-        ]);
-
-        return response($project, 201);
+        return response($this->projectsService->create($request->all()), 201);
     }
 
-    public function update(Request $request, $identifier)
+    public function update(UpdateProjectRequest $request, $identifier)
     {
-        $this->validate($request, [
-            'name' => 'required|string',
-            'description' => 'string',
-            'homepage' => 'url',
-            'is_public' => 'boolean',
-            'parent_id' => 'int|exists:' . (new Project())->getTable() . ',id',
-            'inherit_members' => 'boolean',
-            'custom_field_values' => 'string',
-
-            'enabled_module_names' => 'array',
-            'enabled_module_names.*' => 'in:' . implode(',', EnabledModule::ENABLED_MODULES_NAME),
-
-            'tracker_ids' => 'array',
-            'tracker_ids.*' => 'int|exists:' . (new Tracker())->getTable() . ',id'
-        ], []);
-
-        $project = Project::projectByIdentifier($identifier);
-
-        $project->update([
-            'name' => $request->input('name'),
-            'identifier' => $request->input('identifier'),
-            'description' => $request->input('description'),
-            'homepage' => $request->input('homepage'),
-            'is_public' => $request->input('is_public'),
-            'parent_id' => $request->input('parent_id'),
-            'inherit_members' => $request->input('inherit_members')
-        ]);
-
-        return $project;
+        return $this->projectsService->update($identifier, $request->all());
     }
 
     /**

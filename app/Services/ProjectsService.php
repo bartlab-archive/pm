@@ -31,6 +31,17 @@ class ProjectsService
             ->with(['trackers', 'enabled_modules'])->first();
     }
 
+    public function create($data){
+        return Project::create($data);
+    }
+    
+    public function update($identifier, $data)
+    {
+        $project = Project::whereIdentifier($identifier)->firstOrFail();
+        $project->update($data);
+        return $project;
+    }
+
     public function getAttachments($projectId)
     {
         $project = Project::find($projectId)->first();
