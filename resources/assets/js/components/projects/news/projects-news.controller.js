@@ -9,9 +9,9 @@ export default class ProjectsNewsController extends ControllerBase {
 
         this.ProjectsService.getNews(this.$stateParams.id, {})
             .then((response) => {
-            this.news = response.data
+                this.news = response.data
 
-        })
+            })
             .catch(console.log);
 
     }

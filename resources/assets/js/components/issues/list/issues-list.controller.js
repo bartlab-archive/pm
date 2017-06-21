@@ -1,4 +1,3 @@
-
 import ControllerBase from 'base/controller.base';
 
 export default class IssuesListController extends ControllerBase {
@@ -31,10 +30,10 @@ export default class IssuesListController extends ControllerBase {
         }
     }
 
-    selectedRowCallback(rows){
+    selectedRowCallback(rows) {
         this.$mdToast.show(
             this.$mdToast.simple()
-                .content('Selected row id(s): '+rows)
+                .content('Selected row id(s): ' + rows)
                 .hideDelay(3000)
         );
     };
@@ -54,8 +53,7 @@ export default class IssuesListController extends ControllerBase {
             sort: ''
         };
         options.forEach(function (item, i, options) {
-            if(options[i].sort != false)
-            {
+            if (options[i].sort != false) {
                 result.field = fields[i];
                 result.sort = options[i].sort;
             }

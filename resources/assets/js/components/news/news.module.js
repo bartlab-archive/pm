@@ -7,4 +7,4 @@ import newsListComponent from './list/news-list.component';
 angular.module('app.components.news', [])
     .config(NewsConfig)
     .component('newsEditComponent', newsEditComponent)
-    .component('newsListComponent',  newsListComponent);
+    .component('newsListComponent', newsListComponent);

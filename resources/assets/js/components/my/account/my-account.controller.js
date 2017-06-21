@@ -51,7 +51,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
             controllerAs: '$ctrl',
             template: component.template,
             panelClass: 'modal-custom-dialog',
-            parent:angular.element(document.body),
+            parent: angular.element(document.body),
             trapFocus: true,
             clickOutsideToClose: true,
             clickEscapeToClose: true,
@@ -121,25 +121,25 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
     resetApiKey() {
-        this.UsersService.resetApiAccessKey().then((response)=>{
-          this.model.api_key_updated_on = response.data;
+        this.UsersService.resetApiAccessKey().then((response) => {
+            this.model.api_key_updated_on = response.data;
         });
     }
 
     resetAtomKey() {
-        this.UsersService.resetAtomAccessKey().then((response)=>{
-          this.model.atom_key_updated_on = response.data;
+        this.UsersService.resetAtomAccessKey().then((response) => {
+            this.model.atom_key_updated_on = response.data;
         });
     }
 
     submit() {
         this.model.save().then(
-          (response) => {
-            console.log(response);
-            if (response && response.status === 200) {
-              this.mdToast.success();
+            (response) => {
+                console.log(response);
+                if (response && response.status === 200) {
+                    this.mdToast.success();
+                }
             }
-          }
         );
     }
 

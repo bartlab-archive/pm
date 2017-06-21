@@ -1,6 +1,6 @@
 import ControllerBase from 'base/controller.base';
 
-export default class NewsEditController extends ControllerBase{
+export default class NewsEditController extends ControllerBase {
 
     static get $inject() {
         return ['NewsService', '$stateParams'];
@@ -12,7 +12,6 @@ export default class NewsEditController extends ControllerBase{
             this.news = response.data;
             console.log(response.data);
         });
-
 
 
     }

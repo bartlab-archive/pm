@@ -70,68 +70,15 @@
 <div class="edit" ng-if="$ctrl.editIsOpen">
     <md-card>
         <form action="" method="post">
-        <md-card-header>
-            <md-card-title>Title</md-card-title>
-            <md-card-subtitle>Subtitle</md-card-subtitle>
-        </md-card-header>
-        <md-card-content>
-            <fieldset>
-                <div layout-gt-sm="row">
-                    <div layout="row" layout-align="space-between center">
-                        <span>Project</span>
-                        <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
-                            <md-option value="axe">Axe</md-option>
-                            <md-option value="sword">Sword</md-option>
-                            <md-option value="wand">Wand</md-option>
-                            <md-option value="pen">Pen?</md-option>
-                        </md-select>
-                    </div>
-                </div>
-                <div layout-gt-sm="row">
-                    <div layout="row" layout-align="space-between center">
-                        <span>Tracker</span>
-                        <md-select ng-model="$ctrl.edit_issue.tracker_id" placeholder="Weapon" class="md-no-underline">
-                            <md-option value="4">Feature</md-option>
-                            <md-option value="6">Bug</md-option>
-                        </md-select>
-                    </div>
-                </div>
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>Subject</label>
-                        <input ng-model="$ctrl.edit_issue.subject">
-                    </md-input-container>
-                </div>
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-block">
-                        <label>Description</label>
-                        <textarea ng-model="$ctrl.edit_issue.description" rows="5" cols="100" md-select-on-focus></textarea>
-                    </md-input-container>
-                </div>
-
-                <div layout-gt-sm="row">
-                    <div style="width:15%">
+            <md-card-header>
+                <md-card-title>Title</md-card-title>
+                <md-card-subtitle>Subtitle</md-card-subtitle>
+            </md-card-header>
+            <md-card-content>
+                <fieldset>
+                    <div layout-gt-sm="row">
                         <div layout="row" layout-align="space-between center">
-                            <span>Status</span>
-                            <md-select ng-model="$ctrl.edit_issue.status_id" placeholder="Status" class="md-no-underline">
-                                <md-option value="1">New</md-option>
-                                <md-option value="2">In progress</md-option>
-                                <md-option value="3">Resolved</md-option>
-                                <md-option value="4">Feedback</md-option>
-                                <md-option value="5">Closed</md-option>
-                                <md-option value="6">Rejected</md-option>
-                            </md-select>
-                        </div>
-                        <div layout="row" layout-align="space-between center">
-                            <span>Priority</span>
-                            <md-select ng-model="$ctrl.edit_issue.priority_id" placeholder="Priority" class="md-no-underline">
-                                <md-option value="1">Low</md-option>
-                                <md-option value="2">Normal</md-option>
-                                <md-option value="3">High</md-option>
-                            </md-select>
-                        </div>
-                        <div layout="row" layout-align="space-between center">
-                            <span>Assigned to</span>
+                            <span>Project</span>
                             <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
                                 <md-option value="axe">Axe</md-option>
                                 <md-option value="sword">Sword</md-option>
@@ -139,34 +86,92 @@
                                 <md-option value="pen">Pen?</md-option>
                             </md-select>
                         </div>
+                    </div>
+                    <div layout-gt-sm="row">
                         <div layout="row" layout-align="space-between center">
-                            <md-input-container>
-                                <label>Estimated hours</label>
-                                <input type="number" name="postalCode" ng-model="$ctrl.edit_issue.estimated_hours" placeholder="0" required
-                                       ng-pattern="/^[0-9]{5}$/" md-maxlength="5">
-                            </md-input-container>
+                            <span>Tracker</span>
+                            <md-select ng-model="$ctrl.edit_issue.tracker_id" placeholder="Weapon"
+                                       class="md-no-underline">
+                                <md-option value="4">Feature</md-option>
+                                <md-option value="6">Bug</md-option>
+                            </md-select>
                         </div>
                     </div>
-                    <div style="margin-left: 15%;width:15%">
-                        <div layout="row" layout-align="space-between center">
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label>Parent task</label>
-                                <input ng-model="$ctrl.edit_issue.parent_id">
-                            </md-input-container>
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Subject</label>
+                            <input ng-model="$ctrl.edit_issue.subject">
+                        </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block">
+                            <label>Description</label>
+                            <textarea ng-model="$ctrl.edit_issue.description" rows="5" cols="100"
+                                      md-select-on-focus></textarea>
+                        </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="row">
+                        <div style="width:15%">
+                            <div layout="row" layout-align="space-between center">
+                                <span>Status</span>
+                                <md-select ng-model="$ctrl.edit_issue.status_id" placeholder="Status"
+                                           class="md-no-underline">
+                                    <md-option value="1">New</md-option>
+                                    <md-option value="2">In progress</md-option>
+                                    <md-option value="3">Resolved</md-option>
+                                    <md-option value="4">Feedback</md-option>
+                                    <md-option value="5">Closed</md-option>
+                                    <md-option value="6">Rejected</md-option>
+                                </md-select>
+                            </div>
+                            <div layout="row" layout-align="space-between center">
+                                <span>Priority</span>
+                                <md-select ng-model="$ctrl.edit_issue.priority_id" placeholder="Priority"
+                                           class="md-no-underline">
+                                    <md-option value="1">Low</md-option>
+                                    <md-option value="2">Normal</md-option>
+                                    <md-option value="3">High</md-option>
+                                </md-select>
+                            </div>
+                            <div layout="row" layout-align="space-between center">
+                                <span>Assigned to</span>
+                                <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
+                                    <md-option value="axe">Axe</md-option>
+                                    <md-option value="sword">Sword</md-option>
+                                    <md-option value="wand">Wand</md-option>
+                                    <md-option value="pen">Pen?</md-option>
+                                </md-select>
+                            </div>
+                            <div layout="row" layout-align="space-between center">
+                                <md-input-container>
+                                    <label>Estimated hours</label>
+                                    <input type="number" name="postalCode" ng-model="$ctrl.edit_issue.estimated_hours"
+                                           placeholder="0" required
+                                           ng-pattern="/^[0-9]{5}$/" md-maxlength="5">
+                                </md-input-container>
+                            </div>
                         </div>
-                        <div layout="row" layout-align="space-between center">
-                            <md-input-container>
-                                <label>Start date</label>
-                                <md-datepicker ng-model="$ctrl.edit_issue.start_date"></md-datepicker>
-                            </md-input-container>
-                        </div>
-                        <div layout="row" layout-align="space-between center">
-                            <md-input-container>
-                                <label>End date</label>
-                                <md-datepicker ng-model="$ctrl.edit_issue.closed_on"></md-datepicker>
-                            </md-input-container>
-                        </div>
-                        <div layout="row" layout-align="space-between center">
+                        <div style="margin-left: 15%;width:15%">
+                            <div layout="row" layout-align="space-between center">
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label>Parent task</label>
+                                    <input ng-model="$ctrl.edit_issue.parent_id">
+                                </md-input-container>
+                            </div>
+                            <div layout="row" layout-align="space-between center">
+                                <md-input-container>
+                                    <label>Start date</label>
+                                    <md-datepicker ng-model="$ctrl.edit_issue.start_date"></md-datepicker>
+                                </md-input-container>
+                            </div>
+                            <div layout="row" layout-align="space-between center">
+                                <md-input-container>
+                                    <label>End date</label>
+                                    <md-datepicker ng-model="$ctrl.edit_issue.closed_on"></md-datepicker>
+                                </md-input-container>
+                            </div>
+                            <div layout="row" layout-align="space-between center">
                                 <span>Done ratio</span>
                                 <md-select ng-model="$ctrl.edit_issue.done_ratio" class="md-no-underline">
                                     <md-option value="0">0%</md-option>
@@ -181,23 +186,23 @@
                                     <md-option value="90">90%</md-option>
                                     <md-option value="100">100%</md-option>
                                 </md-select>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </fieldset>
-            <br>
-            <fieldset>
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-block">
-                        <label>Notes</label>
-                        <textarea rows="5" cols="100" md-select-on-focus></textarea>
-                    </md-input-container>
-                </div>
-            </fieldset>
-        </md-card-content>
-        <md-card-footer>
-            <md-button ng-click="$ctrl.updateIssue()" md-no-ink class="md-primary">Save</md-button>
-        </md-card-footer>
+                </fieldset>
+                <br>
+                <fieldset>
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block">
+                            <label>Notes</label>
+                            <textarea rows="5" cols="100" md-select-on-focus></textarea>
+                        </md-input-container>
+                    </div>
+                </fieldset>
+            </md-card-content>
+            <md-card-footer>
+                <md-button ng-click="$ctrl.updateIssue()" md-no-ink class="md-primary">Save</md-button>
+            </md-card-footer>
         </form>
     </md-card>
 </div>

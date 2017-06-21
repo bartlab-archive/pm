@@ -25,6 +25,6 @@ export default class myShowApiKeyController extends ControllerBase {
     }
 
     cancel() {
-      this.$mdDialog.cancel();
+        this.$mdDialog.cancel();
     }
 }
