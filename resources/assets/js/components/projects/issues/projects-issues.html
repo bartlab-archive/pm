@@ -1,11 +1,10 @@
-<h1>Test Data</h1>
-    <md-content class="md-padding" layout-xs="column" layout="row">
-        <md-card class="issues-table" md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-headline">Card with image</span>
-                </md-card-title-text>
-            </md-card-title>
+<div layout="row" layout-align="center start">
+    <md-card flex-xs="100" flex-sm="100" flex-md="100" flex-gt-md="90">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">Issues</span>
+            </md-card-title-text>
+        </md-card-title>
         <mdt-table
                 table-card="{visible: true, title: 'Issues'}"
                 paginated-rows="{isEnabled: true, rowsPerPageValues: [5,10,20,50]}"
@@ -34,18 +33,16 @@
                 <mdt-column align-rule="left" column-sort="true"><span>Subject</span></mdt-column>
                 <mdt-column align-rule="left" column-sort="true"><span>Assigned to</span></mdt-column>
                 <mdt-column align-rule="left" column-sort="true"><span>Updated</span></mdt-column>
-                <mdt-column align-rule="left" column-sort="true"><md-icon md-svg-icon="/img/icons/menu.svg" aria-label="More Options"></md-icon></mdt-column>
+                <mdt-column align-rule="left" column-sort="true">
+                    <md-icon md-svg-icon="/img/icons/menu.svg" aria-label="More Options"></md-icon>
+                </mdt-column>
 
             </mdt-header-row>
-            <mdt-custom-cell column-key="id"><a ng-href="/issues/{{value}}" >{{ rowId }}</a>
+            <mdt-custom-cell column-key="id"><a ng-href="/issues/{{value}}">{{ rowId }}</a>
             </mdt-custom-cell>
             <mdt-custom-cell column-key="subject"><a ng-href="/issues/{{ rowId }}">{{ value }}</a>
             </mdt-custom-cell>
             <mdt-custom-cell column-key="full_name"><a ng-href="/user/{{ rowId }}">{{ value }}</a></mdt-custom-cell>
         </mdt-table>
-        </md-card>
-        <md-card  md-rowspan= md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch>
-        </md-card>
-    </md-content>
-
-</md-sidenav>
+    </md-card>
+</div>

@@ -12,8 +12,6 @@ import myChangePasswordComponent from 'components/my/change-password/my-change-p
  * @property $mdToast
  * @property $mdPanel
  * @property UsersService
- * @property MaterialToastService
- *
  * @property user
  * @property languages
  * @property timeZone
@@ -22,7 +20,7 @@ import myChangePasswordComponent from 'components/my/change-password/my-change-p
 export default class mainMyAccountIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$auth', '$state', '$mdToast', '$mdDialog', 'UsersService', 'MaterialToastService'];
+        return ['$auth', '$state', '$mdToast', '$mdDialog', 'UsersService'];
     }
 
     $onInit() {
@@ -34,7 +32,6 @@ export default class mainMyAccountIndexController extends ControllerBase {
 
         this.languages = this.UsersService.getLanguage();
         this.timeZone = this.UsersService.getTimeZone();
-        this.mdToast = this.MaterialToastService;
     }
 
     setMdDialogConfig(component, target) {
