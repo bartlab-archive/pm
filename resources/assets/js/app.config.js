@@ -30,7 +30,7 @@ export default class AppConfig extends InjectableBase {
         this.$mdThemingProvider.theme('default')
             .primaryPalette('blue-grey')
             .accentPalette('deep-orange');
-        // .warnPalette('red');
+            // .warnPalette('red');
 
         this.$mdThemingProvider.enableBrowserColor({
             // theme: 'myTheme', // Default is 'default'

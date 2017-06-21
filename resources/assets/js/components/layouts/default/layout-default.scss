@@ -8,12 +8,16 @@ layout-default-component {
     position: fixed;
   }
 
-  .main-toolbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: inherit;
+  > md-toolbar {
+    z-index: 10;
+
+    > .md-toolbar-tools {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: inherit;
+    }
   }
 
   md-backdrop {
