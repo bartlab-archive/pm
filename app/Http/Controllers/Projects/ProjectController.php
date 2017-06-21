@@ -62,9 +62,9 @@ class ProjectController extends Controller
      *
      * @return mixed
      */
-    public function index()
+    public function index(Request $request)
     {
-        $request = request();
+//        $request = request();
 
         $this->validate($request, ['closed' => 'boolean']);
 
