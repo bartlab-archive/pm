@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Validation\Rule;
 use App\Models\Tracker;
-use Illuminate\Http\Request;
+//use Illuminate\Http\Request;
 
 /**
  * Class ProjectController
@@ -284,7 +284,7 @@ class ProjectController extends Controller
         return response()->json(array_merge($new_page_content->toArray(), ['title' => $new_page->title]), 201);
     }
 
-    protected function getAllWikiPage(Request $request, $project_identifier)
+    protected function getAllWikiPage($project_identifier)
     {
         $project = Auth::user()->projects()->where('identifier', $project_identifier)->firstOrFail();
 

@@ -21,7 +21,6 @@ export default class ProjectsWikiController extends ControllerBase {
    this.WikiService.getAllWikiPage(this.$stateParams.id).then((response) => {
      if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
        this.pageList = response.data;
-       console.log(this.pageList);
      }
    });
 
@@ -83,6 +82,10 @@ export default class ProjectsWikiController extends ControllerBase {
 
   cancel() {
     this.editMode = false;
+  }
+
+  goto(name) {
+    this.$state.go('projects-inner.wiki.page', {name : name});
   }
 
 }

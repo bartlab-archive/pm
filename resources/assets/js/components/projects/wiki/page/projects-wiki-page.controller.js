@@ -16,6 +16,13 @@ export default class ProjectsWikiPageController extends ControllerBase {
       }
     });
 
+    this.WikiService.getAllWikiPage(this.$stateParams.id).then((response) => {
+      if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
+        this.pageList = response.data;
+      }
+    });
+
+
     this.editMode = false;
     this.mdToast = this.MaterialToastService;
   }
@@ -70,6 +77,10 @@ export default class ProjectsWikiPageController extends ControllerBase {
     this.$mdDialog.show(
       this.setMdDialogConfig(projectsWikiNewComponent, $event.target)
     );
+  }
+
+  goto(name) {
+    this.$state.go('projects-inner.wiki.page', {name : name});
   }
 
 }
