@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
  *
  * @package App\Http\Controllers\Projects
  */
-class ProjectController extends Controller
+class ProjectsController extends Controller
 {
 
     protected $projectsService;

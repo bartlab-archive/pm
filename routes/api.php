@@ -66,12 +66,12 @@ Route::group(
             ],
             function ()
             {
-                Route::get('projects', 'ProjectController@index');
-                Route::get('projects/{identifier}', 'ProjectController@show');
+                Route::get('projects', 'ProjectsController@index');
+                Route::get('projects/{identifier}', 'ProjectsController@show');
                 Route::get('projects/{identifier}/wiki', 'WikiController@getWikiPageMarkDown');
                 Route::get('projects/{identifier}/wiki/all', 'WikiController@getAllWikiPage');
                 Route::get('projects/{identifier}/wiki/{page_title}', 'WikiController@getWikiPageMarkDown');
-                Route::delete('projects/{identifier}', 'ProjectController@destroy');
+                Route::delete('projects/{identifier}', 'ProjectsController@destroy');
                 Route::put('projects/{identifier}/wiki/{id}', 'WikiController@setWikiPageMarkDown');
                 Route::put('projects/{identifier}/wiki/{name}/{id}', 'WikiController@setWikiPageMarkDown');
                 Route::post('projects/{identifier}/new-page', 'WikiController@addNewWiki');
@@ -85,13 +85,13 @@ Route::group(
             ],
             function ()
             {
-                Route::get('projects', 'ProjectController@index');
-                Route::get('projects/{identifier}', 'ProjectController@show');
+                Route::get('projects', 'ProjectsController@index');
+                Route::get('projects/{identifier}', 'ProjectsController@show');
                 Route::get('projects/{identifier}/news', 'WikiController@getNews');
-                Route::post('projects', 'ProjectController@create');
-                Route::put('projects/{identifier}', 'ProjectController@update');
-                Route::delete('projects/{identifier}', 'ProjectController@destroy');
-                Route::get('projects/{identifier}/issues', 'ProjectController@getIssues');
+                Route::post('projects', 'ProjectsController@create');
+                Route::put('projects/{identifier}', 'ProjectsController@update');
+                Route::delete('projects/{identifier}', 'ProjectsController@destroy');
+                Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
                 Route::get('projects/{projectId}/attachments', 'Projects\AttachmentController@index');
         });
 		
