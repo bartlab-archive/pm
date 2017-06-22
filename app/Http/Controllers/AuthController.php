@@ -2,23 +2,32 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Http\Requests\Auth\AuthLoginRequest;
 use App\Http\Requests\Auth\AuthRegisterRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\ResetPasswordSendTokenRequest;
-use App\Interfaces\IAuthService;
+use App\Interfaces\AuthServiceInterface;
+use App\Interfaces\UsersServiceInterface;
 
 class AuthController extends Controller
 {
     /**
-     * @var IAuthService
+     * @var AuthServiceInterface
      */
     protected $authService;
 
-    public function __construct(IAuthService $authService)
+    /**
+     * @var UsersServiceInterface
+     */
+    protected $usersService;
+
+    public function __construct(
+        AuthServiceInterface $authService,
+        UsersServiceInterface $usersService
+    )
     {
         $this->authService = $authService;
+        $this->usersService = $usersService;
     }
 
     /**
@@ -49,14 +58,14 @@ class AuthController extends Controller
      * @url protocol://ip:port/api/v1/register
      *
      * @example Request $request {
-     *     "first_name": "test",
-     *     "last_name": "test",
+     *     "firstName": "test",
+     *     "lastName": "test",
      *     "login": "dev",
      *     "email": "test@mail.ua",
      *     "password": "qwerty",
-     *     "repeat_password": "qwerty",
+     *     "repeatPassword": "qwerty",
      *     "lang": "ru",
-     *     "hide_email": "0"
+     *     "hideEmail": "0"
      *}
      *
      * @param AuthRegisterRequest $request
@@ -64,7 +73,7 @@ class AuthController extends Controller
      */
     public function register(AuthRegisterRequest $request)
     {
-        $this->authService->register($request);
+        $this->usersService->register($request->all());
 
         return response(null, 201);
     }

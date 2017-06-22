@@ -36,13 +36,14 @@ class User extends Authenticatable
 
     protected $guarded = ['id'];
 
-    public static function userByHeaderAuthToken(Request $request)
-    {
-        return static::whereHas('session_token', function($q) use($request) {
-           $q->where('action', 'session')
-               ->where('value', $request->bearerToken());
-        })->first();
-    }
+    protected $hidden = [
+        'id',
+        'hashed_password',
+        'auth_source_id',
+        'type',
+        'identity_url',
+        'salt'
+    ];
 
     public function email()
     {

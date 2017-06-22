@@ -102,10 +102,6 @@ class Project extends Model
     }
 
     /**
-     * Method list
-     */
-
-    /**
      * @param string $identifier
      */
     public static function projectByIdentifier(string $identifier)
