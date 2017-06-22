@@ -6,17 +6,15 @@ import * as _ from "lodash";
  * @property $state
  * @property $mdToast
  * @property UsersService
- * @property MaterialToastService
  */
 export default class MainRegistrationController extends ControllerBase {
 
     static get $inject() {
-        return ['$auth', '$state', '$mdToast', 'UsersService', 'MaterialToastService'];
+        return ['$auth', '$state', '$mdToast', 'UsersService'];
     }
 
     $onInit() {
         this.languages = this.UsersService.getLanguage();
-        this.mdToast = this.MaterialToastService;
 
         this.signup = {
             login: '',

@@ -2,13 +2,19 @@
 
 namespace App\Models;
 
-use App\Http\Traits\NestedTreeTrait;
-use Illuminate\Database\Eloquent\Model;
+use App\Traits\NestedTreeTrait;
+use App\Traits\ModelTrait;
 use Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
     use NestedTreeTrait;
+    use ModelTrait;
+
+    const ACTIVE_STATUS = '1';
+    const CLOSED_STATUS = '5';
+    const ARCHIVED_STATUS = '9';
 
     protected $table = 'projects';
 
@@ -85,7 +91,11 @@ class Project extends Model
     {
         return $this->hasOne(Wiki::class);
     }
-
+    
+    public function attachments(){
+        return $this->morphMany(Attachment::class, 'container');
+    }
+    
     public function getIsMyAttribute()
     {
         return (int)(Auth::guest() ? false : $this->members()->where('user_id', Auth::user()->id)->exists());
@@ -115,6 +125,7 @@ class Project extends Model
         /**
          * Destroy attach issues
          */
+        $project->issues()->delete();
         Issue::destroy($project->issues->pluck('id')->toArray());
 
         /**

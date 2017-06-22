@@ -1,6 +1,6 @@
 NewsConfig.$inject = ['$stateProvider'];
 
-export default function NewsConfig($stateProvider)  {
+export default function NewsConfig($stateProvider) {
 
     $stateProvider
         .state('news', {

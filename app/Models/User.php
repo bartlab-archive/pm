@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\ModelTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
 
 class User extends Authenticatable
 {
+    use ModelTrait;
+
     protected $table = 'users';
 
     /**

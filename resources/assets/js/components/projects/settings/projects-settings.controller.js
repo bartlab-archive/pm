@@ -76,27 +76,27 @@ export default class ProjectsSettingsController extends ControllerBase {
 
         this.forums = [
             {
-                name:'Board 1',
-                description:'description',
-                parent:''
+                name: 'Board 1',
+                description: 'description',
+                parent: ''
             },
             {
-                name:'Board 2',
-                description:'description',
-                parent:''
+                name: 'Board 2',
+                description: 'description',
+                parent: ''
             }
         ];
 
         this.activities = [
             {
-                name:'Architech',
-                system:true,
-                active:true
+                name: 'Architech',
+                system: true,
+                active: true
             },
             {
-                name:'Develop',
-                system:true,
-                active:true
+                name: 'Develop',
+                system: true,
+                active: true
             },
         ];
     }

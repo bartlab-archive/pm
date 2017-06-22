@@ -8,7 +8,8 @@ export default class IssuesService {
     constructor($injector) {
         this.Restangular = $injector.get('Restangular');
     }
-    one(indifier){
+
+    one(indifier) {
         console.log(123);
         return this.Restangular.one('issues').one(indifier).get();
     }
@@ -16,13 +17,16 @@ export default class IssuesService {
     getListByProject(indifier, params) {
         return this.Restangular.all('projects/' + indifier + '/issues').getList(params);
     }
+
     getList(params) {
         return this.Restangular.all('issues').getList(params);
     }
+
     postUpdate(id, params) {
-        return this.Restangular.one('issues/' + id + '/update' ).post(params);
+        return this.Restangular.one('issues/' + id + '/update').post(params);
     }
-    getInfo(id, project_id){
+
+    getInfo(id, project_id) {
         return this.Restangular.one('issues/' + id + '/infoedit').getList(project_id);
     }
 }

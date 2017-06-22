@@ -26,7 +26,7 @@ export default class LayoutConfig extends InjectableBase {
             })
             .state('project', {
                 abstract: true,
-                parent:'default',
+                parent: 'default',
                 views: {
                     content: {
                         component: layoutProjectComponent.name

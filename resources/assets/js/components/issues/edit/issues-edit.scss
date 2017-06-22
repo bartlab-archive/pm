@@ -1,42 +1,46 @@
-.main{
+.main {
   width: 80%;
-  margin-right: 10px!important;
+  margin-right: 10px !important;
   margin-left: 10px;
   //float:left;
 }
-.task-description{
+
+.task-description {
   margin-top: 20px;
-  margin-right: 10px!important;
+  margin-right: 10px !important;
   margin-left: 10px;
 }
-.status p{
+
+.status p {
   display: inline-block;
   padding-right: 170px;
 }
 
-.priority p{
+.priority p {
   display: inline-block;
   padding-right: 170px;
 }
 
-.assigned p{
+.assigned p {
   display: inline-block;
   padding-right: 170px;
 }
-.short-desciption p{
+
+.short-desciption p {
   margin: 5px 5px;
   display: inline-block;
 }
 
-.short-desciption img{
+.short-desciption img {
   float: left;
   display: inline-block;
 }
-.content{
-  margin-top: 0px!important;
+
+.content {
+  margin-top: 0px !important;
 }
 
-.edit{
+.edit {
   margin-top: 30px;
   width: 80%;
 }

@@ -29,14 +29,14 @@ Route::group(
     function () {
         Route::group(
             [
-                'namespace' => 'Auth'
+//                'namespace' => 'Auth'
             ],
             function ()
             {
-                Route::post('auth', 'LoginController@login');
-                Route::post('register', 'RegisterController@register');
-                Route::post('password-reset', 'ResetPasswordController@sendToken');
-                Route::put('password-reset', 'ResetPasswordController@reset');
+                Route::post('auth', 'AuthController@login');
+                Route::post('register', 'AuthController@register');
+                Route::post('password-reset', 'AuthController@sendResetPasswordToken');
+                Route::put('password-reset', 'AuthController@resetPassword');
             }
         );
 
@@ -62,38 +62,37 @@ Route::group(
 
         Route::group(
             [
-                'namespace' => 'Projects',
-                'middleware' => 'auth'
+                'middleware' => ['auth']
             ],
             function ()
             {
-                Route::get('projects', 'ProjectController@index');
-                Route::get('projects/{identifier}', 'ProjectController@show');
-                Route::get('projects/{identifier}/wiki', 'ProjectController@getWikiPageMarkDown');
-                Route::get('projects/{identifier}/wiki/all', 'ProjectController@getAllWikiPage');
-                Route::get('projects/{identifier}/wiki/{page_title}', 'ProjectController@getWikiPageMarkDown');
-                Route::delete('projects/{identifier}', 'ProjectController@destroy');
-                Route::put('projects/{identifier}/wiki/{id}', 'ProjectController@setWikiPageMarkDown');
-                Route::put('projects/{identifier}/wiki/{name}/{id}', 'ProjectController@setWikiPageMarkDown');
-                Route::post('projects/{identifier}/new-page', 'ProjectController@addNewWiki');
+                Route::get('projects', 'ProjectsController@index');
+                Route::get('projects/{identifier}', 'ProjectsController@show');
+                Route::get('projects/{identifier}/wiki', 'WikiController@getWikiPageMarkDown');
+                Route::get('projects/{identifier}/wiki/all', 'WikiController@getAllWikiPage');
+                Route::get('projects/{identifier}/wiki/{page_title}', 'WikiController@getWikiPageMarkDown');
+                Route::delete('projects/{identifier}', 'ProjectsController@destroy');
+                Route::put('projects/{identifier}/wiki/{id}', 'WikiController@setWikiPageMarkDown');
+                Route::put('projects/{identifier}/wiki/{name}/{id}', 'WikiController@setWikiPageMarkDown');
+                Route::post('projects/{identifier}/new-page', 'WikiController@addNewWiki');
             }
         );
 
         Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
         Route::group(
             [
-                'namespace' => 'Projects',
-                'middleware' => 'auth'
+//                'middleware' => ['auth']
             ],
             function ()
             {
-                Route::get('projects', 'ProjectController@index');
-                Route::get('projects/{identifier}', 'ProjectController@show');
-                Route::get('projects/{identifier}/news', 'ProjectController@getNews');
-                Route::post('projects', 'ProjectController@create');
-                Route::put('projects/{identifier}', 'ProjectController@update');
-                Route::delete('projects/{identifier}', 'ProjectController@destroy');
+                Route::get('projects', 'ProjectsController@index');
+                Route::get('projects/{identifier}', 'ProjectsController@show');
+                Route::get('projects/{identifier}/news', 'WikiController@getNews');
+                Route::post('projects', 'ProjectsController@create');
+                Route::put('projects/{identifier}', 'ProjectsController@update');
+                Route::delete('projects/{identifier}', 'ProjectsController@destroy');
                 Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
+                Route::get('projects/{projectId}/attachments', 'Projects\AttachmentController@index');
         });
 		
         Route::get('news', 'NewsController@getNews');

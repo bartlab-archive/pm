@@ -1,3 +1,4 @@
+import 'angular';
 import InjectableBase from 'base/injectable.base';
 
 /**
@@ -25,7 +26,7 @@ export default class AppConfig extends InjectableBase {
         this.themeConfig();
     }
 
-    themeConfig(){
+    themeConfig() {
         this.$mdThemingProvider.theme('default')
             .primaryPalette('blue-grey')
             .accentPalette('deep-orange');
@@ -71,30 +72,5 @@ export default class AppConfig extends InjectableBase {
             'Content-Type': 'application/json'
         });
         this.RestangularProvider.setFullResponse(true);
-        this.RestangularProvider.setErrorInterceptor((...args) => this.errorInterceptor(...args));
-    }
-
-    errorInterceptor(response, deferred, responseHandler) {
-        switch (response.status) {
-            case 401:
-                console.log('401');
-                // this.$rootScope.$broadcast('authUnauthorized');
-                break;
-
-            case 403:
-                console.log('403');
-                // this.$rootScope.$broadcast('authForbidden');
-                break;
-
-            default:
-                // this.$rootScope.$broadcast('serverError');
-                console.log(response.statusText || 'Server error');
-            // toaster.show(
-            //     toaster.simple()
-            //         .textContent(response.statusText || 'Server error')
-            // );
-        }
-
-        // return false;
     }
 }

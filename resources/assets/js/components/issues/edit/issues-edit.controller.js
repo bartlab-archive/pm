@@ -1,7 +1,6 @@
-
 import ControllerBase from 'base/controller.base';
 
-export default class IssuesEditController extends ControllerBase{
+export default class IssuesEditController extends ControllerBase {
 
     static get $inject() {
         return ['IssuesService', '$stateParams'];
@@ -15,7 +14,7 @@ export default class IssuesEditController extends ControllerBase{
         });
     }
 
-    statusText(id){
+    statusText(id) {
         switch (id) {
             case 5:
                 return 'Closed';
@@ -23,7 +22,7 @@ export default class IssuesEditController extends ControllerBase{
         }
     }
 
-    openEditForm(){
+    openEditForm() {
         this.editIsOpen = true;
         this.info = {};
         this.IssuesService.getInfo(this.$stateParams.id, this.edit_issue.project_id).then((response) => {
@@ -32,7 +31,7 @@ export default class IssuesEditController extends ControllerBase{
         });
     }
 
-    updateIssue(){
+    updateIssue() {
         this.IssuesService.postUpdate(this.$stateParams.id, this.edit_issue).then((response) => {
             console.log(response);
         });

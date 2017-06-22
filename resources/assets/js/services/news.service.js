@@ -8,7 +8,8 @@ export default class NewsService {
     constructor($injector) {
         this.Restangular = $injector.get('Restangular');
     }
-    one(indifier){
+
+    one(indifier) {
         return this.Restangular.one('news').one(indifier).get();
     }
 

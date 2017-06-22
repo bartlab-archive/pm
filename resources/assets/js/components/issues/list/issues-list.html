@@ -60,10 +60,12 @@
             </mdt-custom-cell>
             <mdt-custom-cell column-key="subject"><a ng-href="/issues/{{ rowId }}" target="_blank">{{ value }}</a>
             </mdt-custom-cell>
-            <mdt-custom-cell column-key="full_name"><a ng-href="/user/{{ rowId }}" target="_blank">{{ value }}</a></mdt-custom-cell>
+            <mdt-custom-cell column-key="full_name"><a ng-href="/user/{{ rowId }}" target="_blank">{{ value }}</a>
+            </mdt-custom-cell>
         </mdt-table>
     </md-card>
-    <md-card  md-rowspan= md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch>
+    <md-card md-rowspan=md-theme="{{ showDarkTheme ?
+    'dark-purple' : 'default' }}" md-theme-watch>
     <div layout="column" layout-align="top center">
         <p>
             The left sidenav will 'lock open' on a medium (>=960px wide) device.

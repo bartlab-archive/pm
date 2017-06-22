@@ -12,8 +12,6 @@ import myChangePasswordComponent from 'components/my/change-password/my-change-p
  * @property $mdToast
  * @property $mdPanel
  * @property UsersService
- * @property MaterialToastService
- *
  * @property user
  * @property languages
  * @property timeZone
@@ -22,7 +20,7 @@ import myChangePasswordComponent from 'components/my/change-password/my-change-p
 export default class mainMyAccountIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$auth', '$state', '$mdToast', '$mdDialog', 'UsersService', 'MaterialToastService'];
+        return ['$auth', '$state', '$mdToast', '$mdDialog', 'UsersService'];
     }
 
     $onInit() {
@@ -34,7 +32,6 @@ export default class mainMyAccountIndexController extends ControllerBase {
 
         this.languages = this.UsersService.getLanguage();
         this.timeZone = this.UsersService.getTimeZone();
-        this.mdToast = this.MaterialToastService;
     }
 
     setMdDialogConfig(component, target) {
@@ -54,7 +51,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
             controllerAs: '$ctrl',
             template: component.template,
             panelClass: 'modal-custom-dialog',
-            parent:angular.element(document.body),
+            parent: angular.element(document.body),
             trapFocus: true,
             clickOutsideToClose: true,
             clickEscapeToClose: true,
@@ -124,25 +121,25 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
     resetApiKey() {
-        this.UsersService.resetApiAccessKey().then((response)=>{
-          this.model.api_key_updated_on = response.data;
+        this.UsersService.resetApiAccessKey().then((response) => {
+            this.model.api_key_updated_on = response.data;
         });
     }
 
     resetAtomKey() {
-        this.UsersService.resetAtomAccessKey().then((response)=>{
-          this.model.atom_key_updated_on = response.data;
+        this.UsersService.resetAtomAccessKey().then((response) => {
+            this.model.atom_key_updated_on = response.data;
         });
     }
 
     submit() {
         this.model.save().then(
-          (response) => {
-            console.log(response);
-            if (response && response.status === 200) {
-              this.mdToast.success();
+            (response) => {
+                console.log(response);
+                if (response && response.status === 200) {
+                    this.mdToast.success();
+                }
             }
-          }
         );
     }
 

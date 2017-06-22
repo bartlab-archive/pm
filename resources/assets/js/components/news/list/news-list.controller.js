@@ -1,10 +1,9 @@
-
 import ControllerBase from 'base/controller.base';
 
 export default class NewsListController extends ControllerBase {
 
     static get $inject() {
-        return ['NewsService', '$state','$stateParams'];
+        return ['NewsService', '$state', '$stateParams'];
     }
 
     $onInit() {
@@ -16,6 +15,7 @@ export default class NewsListController extends ControllerBase {
             })
             .catch(console.log);
     }
+
     goToNews(id) {
         this.$state.go('news.edit', {id: id});
     }

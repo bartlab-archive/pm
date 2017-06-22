@@ -10,17 +10,17 @@ export default class ProjectsIssuesController extends ControllerBase {
     $onInit() {
         this.toggleLeft = this.buildDelayedToggler('left');
         this.toggleRight = this.buildToggler('right');
-        this.isOpenRight = function(){
+        this.isOpenRight = function () {
             return this.$mdSidenav('right').isOpen();
         };
         this.issues = this.paginatorCallback;
 
     }
 
-    selectedRowCallback(rows){
+    selectedRowCallback(rows) {
         this.$mdToast.show(
             this.$mdToast.simple()
-                .content('Selected row id(s): '+rows)
+                .content('Selected row id(s): ' + rows)
                 .hideDelay(3000)
         );
     };
@@ -36,9 +36,9 @@ export default class ProjectsIssuesController extends ControllerBase {
         };
         return this.IssuesService.getListByProject(this.$stateParams.id, options)
             .then((response) => {
-                this.data = response.data;
+                this.data = response.data[0].issues;
                 return {
-                    results: response.data,
+                    results: response.data[0].issues,
                     totalResultCount: response.headers('x-total')
                 }
             })
@@ -60,8 +60,7 @@ export default class ProjectsIssuesController extends ControllerBase {
             sort: ''
         };
         options.forEach(function (item, i, options) {
-            if(options[i].sort != false)
-            {
+            if (options[i].sort != false) {
                 result.field = fields[i];
                 result.sort = options[i].sort;
             }
@@ -71,24 +70,24 @@ export default class ProjectsIssuesController extends ControllerBase {
     }
 
     buildDelayedToggler(navID) {
-        return this.debounce(function() {
+        return this.debounce(function () {
             this.$mdSidenav(navID)
                 .toggle();
         }, 200);
     }
 
     buildToggler(navID) {
-        return function() {
+        return function () {
             this.$mdSidenav(navID)
                 .toggle();
         };
     }
 
-    close () {
+    close() {
         this.$mdSidenav('right').close();
     };
 
-    isOpenRight(){
+    isOpenRight() {
         return this.$mdSidenav('right').isOpen();
     };
 
@@ -99,7 +98,7 @@ export default class ProjectsIssuesController extends ControllerBase {
             const context = this,
                 args = Array.prototype.slice.call(arguments);
             $timeout.cancel(timer);
-            timer = $timeout(function() {
+            timer = $timeout(function () {
                 timer = undefined;
                 func.apply(context, args);
             }, wait || 10);
