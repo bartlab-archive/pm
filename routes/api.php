@@ -29,14 +29,14 @@ Route::group(
     function () {
         Route::group(
             [
-                'namespace' => 'Auth'
+//                'namespace' => 'Auth'
             ],
             function ()
             {
-                Route::post('auth', 'LoginController@login');
-                Route::post('register', 'RegisterController@register');
-                Route::post('password-reset', 'ResetPasswordController@sendToken');
-                Route::put('password-reset', 'ResetPasswordController@reset');
+                Route::post('auth', 'AuthController@login');
+                Route::post('register', 'AuthController@register');
+                Route::post('password-reset', 'AuthController@sendResetPasswordToken');
+                Route::put('password-reset', 'AuthController@resetPassword');
             }
         );
 
