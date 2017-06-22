@@ -6,6 +6,7 @@ use App\Http\Requests\Projects\CreateProjectRequest;
 use App\Http\Requests\Projects\IndexProjectRequest;
 use App\Http\Requests\Projects\UpdateProjectRequest;
 use App\Services\ProjectsService;
+use Illuminate\Http\Request;
 
 /**
  * Class ProjectController
@@ -133,6 +134,13 @@ class ProjectController extends Controller
     {
         $this->projectsService->delete($identifier);
         return response(null, 204);
+    }
+    
+    public function getIssues($identifier, Request $request)
+    {
+    	$result = $this->projectsService->getIssues($identifier, $request);
+    	
+    	return response()->json($result['projects'])->header('X-Total', $result['total']);
     }
 
    
