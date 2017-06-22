@@ -16,11 +16,11 @@
                 'table-row-id-key': 'id',
                 'column-keys': [
                 'id',
-                'tracker_id',
+                'trackers.name',
                 'status_id',
                 'priority_id',
                 'subject',
-                'full_name',
+                'user.id',
                 'updated_on'
             ]
         }">
@@ -42,7 +42,7 @@
             </mdt-custom-cell>
             <mdt-custom-cell column-key="subject"><a ng-href="/issues/{{ rowId }}">{{ value }}</a>
             </mdt-custom-cell>
-            <mdt-custom-cell column-key="full_name"><a ng-href="/user/{{ rowId }}">{{ value }}</a></mdt-custom-cell>
+            <mdt-custom-cell column-key="user.id"><a ng-href="/user/{{ value }}">{{ value }}</a></mdt-custom-cell>
         </mdt-table>
     </md-card>
 </div>

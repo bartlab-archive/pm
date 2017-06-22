@@ -93,7 +93,7 @@ Route::group(
                 Route::post('projects', 'ProjectController@create');
                 Route::put('projects/{identifier}', 'ProjectController@update');
                 Route::delete('projects/{identifier}', 'ProjectController@destroy');
-                Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
+                Route::get('projects/{identifier}/issues', 'ProjectController@getIssues');
                 Route::get('projects/{projectId}/attachments', 'Projects\AttachmentController@index');
         });
 		
