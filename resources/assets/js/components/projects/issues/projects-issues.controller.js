@@ -36,9 +36,9 @@ export default class ProjectsIssuesController extends ControllerBase {
         };
         return this.IssuesService.getListByProject(this.$stateParams.id, options)
             .then((response) => {
-                this.data = response.data;
+                this.data = response.data[0].issues;
                 return {
-                    results: response.data,
+                    results: response.data[0].issues,
                     totalResultCount: response.headers('x-total')
                 }
             })

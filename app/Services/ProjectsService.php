@@ -71,4 +71,22 @@ class ProjectsService
         }
         return collect();
     }
+	
+    public function getIssues($identifier, $request)
+    {
+    	return [
+    		    'projects' => Project::where('identifier', $identifier)
+		                            ->with(array('issues.user', 'issues.trackers',
+			                            'issues' => function($query) use ($request){
+		                            	$query->limit($request->limit);
+		                            	$query->offset($request->offset);
+		                            	if(!empty($request->sortField)) {
+				                            $query->orderBy($request->sortField, $request->order);
+			                            }
+		                            }))
+		                            ->get()
+		                            ->toArray(),
+		        'total' =>Project::where('identifier', $identifier)->first()->issues()->count()
+	           ];
+    }
 }
