@@ -1,29 +1,35 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tolik
- * Date: 19.06.17
- * Time: 17:27
- */
+
 
 
 namespace App\Http\Controllers;
 
-use App\Models\News;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Project;
-use Illuminate\Support\Facades\DB;
+use App\Models\News;
+use App\Services\NewsService;
 
 class NewsController extends Controller
 {
-	public function getNews()
+	protected $newsService;
+	
+	public function __construct(NewsService $newsService)
 	{
-		return News::all();
+		$this->newsService = $newsService;
 	}
 	
-	public function getOneNews($id)
+	public function index()
 	{
-		return News::findOrFail($id);
+		return $this->newsService->all();
+	}
+	
+	
+	public function show($identifier)
+	{
+		if ($news = $this->newsService->one($identifier)) {
+			return $news;
+		}
+		abort(404);
 	}
 	
 }

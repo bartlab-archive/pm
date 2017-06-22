@@ -59,51 +59,58 @@ Route::group(
         );
 
         // projects
-
+	            
         Route::group(
             [
-                'middleware' => ['auth']
+                'middleware' => 'auth',
+	            'prefix' => 'projects'
+	            
             ],
             function ()
             {
-                Route::get('projects', 'ProjectsController@index');
-                Route::get('projects/{identifier}', 'ProjectsController@show');
-                Route::get('projects/{identifier}/wiki', 'WikiController@getWikiPageMarkDown');
-                Route::get('projects/{identifier}/wiki/all', 'WikiController@getAllWikiPage');
-                Route::get('projects/{identifier}/wiki/{page_title}', 'WikiController@getWikiPageMarkDown');
-                Route::delete('projects/{identifier}', 'ProjectsController@destroy');
-                Route::put('projects/{identifier}/wiki/{id}', 'WikiController@setWikiPageMarkDown');
-                Route::put('projects/{identifier}/wiki/{name}/{id}', 'WikiController@setWikiPageMarkDown');
-                Route::post('projects/{identifier}/new-page', 'WikiController@addNewWiki');
-            }
-        );
-
-        Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
-        Route::group(
-            [
-//                'middleware' => ['auth']
-            ],
-            function ()
-            {
-                Route::get('projects', 'ProjectsController@index');
-                Route::get('projects/{identifier}', 'ProjectsController@show');
-                Route::get('projects/{identifier}/news', 'WikiController@getNews');
-                Route::post('projects', 'ProjectsController@create');
-                Route::put('projects/{identifier}', 'ProjectsController@update');
-                Route::delete('projects/{identifier}', 'ProjectsController@destroy');
-                Route::get('projects/{identifier}/issues', 'ProjectsController@getIssues');
-                Route::get('projects/{projectId}/attachments', 'Projects\AttachmentController@index');
+	            Route::get('/', 'ProjectsController@index');
+	            Route::get('/{identifier}', 'ProjectsController@show');
+	            Route::post('/', 'ProjectsController@create');
+	            Route::put('/{identifier}', 'ProjectsController@update');
+	            Route::delete('/{identifier}', 'ProjectsController@destroy');
+	            Route::get('/{identifier}/issues', 'ProjectsController@getIssues');
+	            
+	            Route::get('/{identifier}/news', 'WikiController@getNews');
+	            Route::put('/{identifier}/wiki/{id}', 'WikiController@setWikiPageMarkDown');
+	            Route::get('/{identifier}/wiki', 'WikiController@getWikiPageMarkDown');
+	            Route::get('/{identifier}/wiki/all', 'WikiController@getAllWikiPage');
+	            Route::post('/{identifier}/new-page', 'WikiController@addNewWiki');
+	            Route::get('/{identifier}/wiki/{page_title}', 'WikiController@getWikiPageMarkDown');
+	            Route::put('/{identifier}/wiki/{name}/{id}', 'WikiController@setWikiPageMarkDown');
+	            
+                Route::get('/{projectId}/attachments', 'AttachmentController@index');
+	            
         });
+        
+	    Route::group(
+		    [
+			    'middleware' => 'auth',
+			    'prefix' => 'news'
 		
-        Route::get('news', 'NewsController@getNews');
-        Route::get('news/{id}', 'NewsController@getOneNews');
-        
-        
-        Route::get('issues/{id}', 'IssuesController@getIssue');
-        Route::get('issues', 'IssuesController@getIssues');
-        Route::post('issues/{id}/update', 'IssuesController@postUpdate');
-        Route::get('issues/{id}/infoedit/{project_id}', 'IssuesController@infoEdit');
-
+		    ],
+		    function () {
+			    Route::get('/', 'NewsController@getNews');
+			    Route::get('/{id}', 'NewsController@getOneNews');
+		    });
+	
+	    Route::group(
+		    [
+			    'middleware' => 'auth',
+			    'prefix' => 'issues'
+		
+		    ],
+		    function () {
+			    Route::get('/{id}', 'IssuesController@getIssue');
+			    Route::get('/', 'IssuesController@getIssues');
+			    Route::post('/{id}/update', 'IssuesController@postUpdate');
+			    Route::get('/{id}/infoedit/{project_id}', 'IssuesController@infoEdit');
+		    });
+	    
         // users
 
         Route::get('users', function (Request $request) {
