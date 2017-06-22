@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
-use App\Http\Traits\NestedTreeTrait;
+use App\Traits\NestedTreeTrait;
+use App\Traits\ModelTrait;
 use Auth;
+use Illuminate\Database\Eloquent\Model;
 
-class Project extends BaseModel
+class Project extends Model
 {
     use NestedTreeTrait;
+    use ModelTrait;
 
     const ACTIVE_STATUS = '1';
     const CLOSED_STATUS = '5';
@@ -122,6 +125,7 @@ class Project extends BaseModel
         /**
          * Destroy attach issues
          */
+        $project->issues()->delete();
         Issue::destroy($project->issues->pluck('id')->toArray());
 
         /**

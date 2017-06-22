@@ -31,15 +31,36 @@ class ProjectsService
             ->with(['trackers', 'enabled_modules'])->first();
     }
 
-    public function create($data){
+    public function create($data)
+    {
         return Project::create($data);
     }
-    
+
     public function update($identifier, $data)
     {
         $project = Project::whereIdentifier($identifier)->firstOrFail();
         $project->update($data);
         return $project;
+    }
+
+    public function delete($identifier)
+    {
+        $project = Project::whereIdentifier($identifier)->firstOrFail();
+
+        /**
+         * Destroy attach trackers
+         */
+        $project->trackers()->detach();
+
+        /**
+         * Destroy attach issues
+         */
+        $project->issues()->delete();
+
+        /**
+         * Destroy project
+         */
+        return $project->delete();
     }
 
     public function getAttachments($projectId)

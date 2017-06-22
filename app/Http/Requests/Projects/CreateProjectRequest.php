@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Projects;
 
 use App\Models\EnabledModule;
 use App\Models\Project;

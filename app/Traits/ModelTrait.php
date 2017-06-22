@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Traits;
 
-use Illuminate\Database\Eloquent\Model;
-
-class BaseModel extends Model
+trait ModelTrait
 {
     public static function getTableName()
     {
         return (new static)->getTable();
     }
-
 }

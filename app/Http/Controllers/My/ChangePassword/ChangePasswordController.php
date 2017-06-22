@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\My\ChangePassword;
 
 use App\Http\Controllers\Controller;
-use App\Http\Traits\PasswordTrait;
+use App\Traits\PasswordTrait;
 use App\Models\User;
 use Illuminate\Http\Request;
 

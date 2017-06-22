@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Traits\PasswordTrait;
+use App\Traits\PasswordTrait;
 use App\Models\EmailAddresses;
 use Illuminate\Http\Request;
 

@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Projects;
+namespace App\Http\Controllers;
 
 use App\Services\ProjectsService;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class AttachmentController extends Controller
 {
