@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class EmailAddresses extends Model
 {
+    use ModelTrait;
+
     protected $table = 'email_addresses';
 
     public $timestamps = true;
