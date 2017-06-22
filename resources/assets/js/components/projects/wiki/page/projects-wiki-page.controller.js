@@ -6,7 +6,7 @@ import projectsWikiNewComponent from '../../wiki-new/projects-wiki-new.component
 export default class ProjectsWikiPageController extends ControllerBase {
 
   static get $inject() {
-    return ['$state', 'WikiService', 'MaterialToastService', '$mdToast', '$stateParams', '$mdDialog'];
+    return ['$state', 'WikiService', '$mdToast', '$stateParams', '$mdDialog'];
   }
 
   $onInit() {
@@ -24,7 +24,6 @@ export default class ProjectsWikiPageController extends ControllerBase {
 
 
     this.editMode = false;
-    this.mdToast = this.MaterialToastService;
   }
 
   submit() {

@@ -8,7 +8,7 @@ import ControllerBase from 'base/controller.base';
 export default class ProjectsWikiController extends ControllerBase {
 
   static get $inject() {
-    return ['$state', '$mdDialog', 'WikiService', '$stateParams', '$mdToast', 'MaterialToastService'];
+    return ['$state', '$mdDialog', 'WikiService', '$stateParams', '$mdToast'];
   }
 
   $onInit() {
@@ -25,7 +25,6 @@ export default class ProjectsWikiController extends ControllerBase {
    });
 
    this.editMode = false;
-   this.mdToast = this.MaterialToastService;
   }
 
   setMdDialogConfig(component, target) {
