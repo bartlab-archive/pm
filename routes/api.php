@@ -84,7 +84,7 @@ Route::group(
             function () {
                 Route::get('/{id}', 'IssuesController@getIssue');
                 Route::get('/', 'IssuesController@getIssues');
-                Route::post('/{id}/update', 'IssuesController@postUpdate');
+                Route::put('/{id}', 'IssuesController@postUpdate');
                 Route::get('/{id}/infoedit/{project_id}', 'IssuesController@infoEdit');
             }
         );

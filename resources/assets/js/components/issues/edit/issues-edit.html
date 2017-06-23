@@ -14,7 +14,7 @@
                 </p>
                 <br>
                 <p>
-                    Added by {{ $ctrl.issue.author_id + ' ' + $ctrl.issue.created_on}}
+                    Added by {{ $ctrl.issue.author.firstname + ' ' + $ctrl.issue.author.lastname + ' ' + $ctrl.issue.created_on}}
                 </p>
             </div>
             <hr>
@@ -28,7 +28,7 @@
                     <p>End data: {{ $ctrl.issue.closed_on }}</p>
                 </div>
                 <div class="assigned">
-                    <p>Assigned: {{ $ctrl.issue.assigned_to_id }}</p>
+                    <p>Assigned: {{ $ctrl.issue.user.firstname + ' ' + $ctrl.issue.user.lastname }}</p>
                     <p>Progress:
                         <md-progress-linear class="progress" md-mode="determinate"
                                             value="{{$ctrl.issue.done_ratio}}"></md-progress-linear>
@@ -79,11 +79,8 @@
                     <div layout-gt-sm="row">
                         <div layout="row" layout-align="space-between center">
                             <span>Project</span>
-                            <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
-                                <md-option value="axe">Axe</md-option>
-                                <md-option value="sword">Sword</md-option>
-                                <md-option value="wand">Wand</md-option>
-                                <md-option value="pen">Pen?</md-option>
+                            <md-select ng-model="$ctrl.edit_issue.project_id" class="md-no-underline">
+                                <md-option  ng-repeat="data in $ctrl.info.projects" value="{{ data.id }}">{{ data.name }}</md-option>
                             </md-select>
                         </div>
                     </div>
@@ -136,11 +133,8 @@
                             </div>
                             <div layout="row" layout-align="space-between center">
                                 <span>Assigned to</span>
-                                <md-select ng-model="weapon" placeholder="Weapon" class="md-no-underline">
-                                    <md-option value="axe">Axe</md-option>
-                                    <md-option value="sword">Sword</md-option>
-                                    <md-option value="wand">Wand</md-option>
-                                    <md-option value="pen">Pen?</md-option>
+                                <md-select ng-model="$ctrl.edit_issue.assigned_to_id" class="md-no-underline">
+                                    <md-option ng-repeat="data in $ctrl.info.users" value="{{ data.id }}">{{ data.firstname + ' ' + data.lastname }}</md-option>
                                 </md-select>
                             </div>
                             <div layout="row" layout-align="space-between center">
