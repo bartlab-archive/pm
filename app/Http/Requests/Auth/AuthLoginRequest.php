@@ -24,10 +24,10 @@ class AuthLoginRequest extends FormRequest
      */
     public function rules()
     {
-        Validator::extend('authorize.login', '\App\Http\Requests\Auth\AuthCustomValidator@authorizeLoginRule');
-        Validator::replacer('authorize.login', '\App\Http\Requests\Auth\AuthCustomValidator@authorizeLoginMessage');
-        Validator::extend('authorize.password', '\App\Http\Requests\Auth\AuthCustomValidator@authorizePasswordRule');
-        Validator::replacer('authorize.password', '\App\Http\Requests\Auth\AuthCustomValidator@authorizePasswordMessage');
+        Validator::extend('authorize.login', '\App\Validators\AuthCustomValidator@authorizeLoginRule');
+        Validator::replacer('authorize.login', '\App\Validators\AuthCustomValidator@authorizeLoginMessage');
+        Validator::extend('authorize.password', '\App\Validators\AuthCustomValidator@authorizePasswordRule');
+        Validator::replacer('authorize.password', '\App\Validators\AuthCustomValidator@authorizePasswordMessage');
 
         return [
             'login' => 'required|string|max:255|authorize.login',

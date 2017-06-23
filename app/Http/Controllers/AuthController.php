@@ -46,7 +46,7 @@ class AuthController extends BaseController
      */
     public function login(AuthLoginRequest $request)
     {
-        $token = $this->authService->session($request->all());
+        $token = $this->authService->session($request->input('login'));
 
         return response()->json(['token' => $token->value]);
     }
@@ -81,7 +81,7 @@ class AuthController extends BaseController
 
     public function sendResetPasswordToken(ResetPasswordSendTokenRequest $request)
     {
-        $token = $this->authService->sendResetPasswordToken($request->all());
+        $token = $this->authService->sendResetPasswordToken($request->input('email'));
 
         return response()->json(['reset_password_token' => $token->value]);
     }

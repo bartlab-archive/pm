@@ -5,17 +5,34 @@ namespace App\Services;
 
 use App\Interfaces\TokenServiceInterface;
 use App\Interfaces\UsersServiceInterface;
-use App\Traits\PasswordTrait;
 use App\Interfaces\AuthServiceInterface;
 use App\Models\Token;
 
 class AuthService implements AuthServiceInterface
 {
+    /**
+     * @var TokenServiceInterface
+     */
+    protected $tokenService;
+
+    /**
+     * @var UsersServiceInterface
+     */
+    protected $usersService;
+
+    public function __construct(
+        TokenServiceInterface $tokenService,
+        UsersServiceInterface $usersService
+    )
+    {
+        $this->tokenService = $tokenService;
+        $this->usersService = $usersService;
+    }
 
     public function session(string $login): Token
     {
-        return app(TokenServiceInterface::class)->one(
-            app(UsersServiceInterface::class)->userByLoginOrEmail($login),
+        return $this->tokenService->one(
+            $this->usersService->userByLoginOrEmail($login),
             Token::SESSION_TOKEN_ACTION
         );
     }
@@ -26,20 +43,21 @@ class AuthService implements AuthServiceInterface
          * @TODO send message in email address
          */
 
-        return app(TokenServiceInterface::class)->one(
-            app(UsersServiceInterface::class)->userByLoginOrEmail($email),
+        return $this->tokenService->one(
+            $this->usersService->userByLoginOrEmail($email),
             Token::PASSWORD_RESET_TOKEN_ACTION
         );
     }
 
     public function resetPassword(array $data): bool
     {
-        $user = app(UsersServiceInterface::class)
-            ->userByToken(array_get($data, 'reset_password_token'), Token::PASSWORD_RESET_TOKEN_ACTION);
+        $user = $this->usersService->userByToken(
+            array_get($data, 'reset_password_token'),
+            Token::PASSWORD_RESET_TOKEN_ACTION
+        );
 
-        app(UsersServiceInterface::class)
-            ->resetPassword($user, array_get($data, 'password'));
+        $this->usersService->resetPassword($user, array_get($data, 'password'));
 
-        return app(TokenServiceInterface::class)->destroy($user, Token::PASSWORD_RESET_TOKEN_ACTION);
+        return $this->tokenService->destroy($user, Token::PASSWORD_RESET_TOKEN_ACTION);
     }
 }
