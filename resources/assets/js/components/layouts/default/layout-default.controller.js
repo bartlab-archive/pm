@@ -14,7 +14,7 @@ export default class LayoutDefaultController extends ControllerBase {
         this.items = [
             {url: 'home', name: 'Home', icon: 'home'},
             {url: 'projects.list', name: 'Projects', icon: 'work'},
-            {url: 'home', name: 'View all issues', icon: 'list'},
+            {url: 'issues.list', name: 'View all issues', icon: 'list'},
             {url: 'home', name: 'Overall spent time', icon: 'timelapse'},
             {url: 'home', name: 'Overall activity', icon: 'history'},
             {url: 'admin.index', name: 'Administration', icon: 'apps'},
