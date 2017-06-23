@@ -9,11 +9,10 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface TokenServiceInterface
 {
-    public function firstOrCreate(User $user, string $action, string $value): Token;
 
-    public function one(User $user, string $action, string $value): Token;
+    public function one(User $user, string $action): Token;
 
-    public function create(User $user, string $action, string $value): Token;
+    public function create(User $user, string $action, string $value = null): Token;
 
     public function all(User $user): Collection;
 }

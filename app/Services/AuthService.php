@@ -27,7 +27,7 @@ class AuthService implements AuthServiceInterface
         }
 
         return app('App\Interfaces\TokenServiceInterface')
-            ->firstOrCreate($user, Token::SESSION_TOKEN_ACTION, sha1($user->hashed_password));
+            ->one($user, Token::SESSION_TOKEN_ACTION);
     }
 
     public function sendResetPasswordToken(array $data): Token
@@ -40,7 +40,7 @@ class AuthService implements AuthServiceInterface
             ->getUserByLoginOrEmail(array_get($data, 'email'));
 
         return app('App\Interfaces\TokenServiceInterface')
-            ->firstOrCreate($user, Token::PASSWORD_RESET_TOKEN_ACTION, sha1($user->hashed_password));
+            ->one($user, Token::PASSWORD_RESET_TOKEN_ACTION);
     }
 
     public function resetPassword(array $data): bool

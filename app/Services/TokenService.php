@@ -10,29 +10,20 @@ use Illuminate\Database\Eloquent\Collection;
 
 class TokenService implements TokenServiceInterface
 {
-    public function firstOrCreate(User $user, string $action, string $value): Token
+
+    public function one(User $user, string $action): Token
     {
         return $user->tokens()
-            ->firstOrCreate([
-                'action' => $action,
-                'value' => $value
-            ]);
+                ->where('action', $action)
+                ->first() ?? $this->create($user, $action);
     }
 
-    public function one(User $user, string $action, string $value): Token
-    {
-        return $user->tokens()
-            ->where('action', $action)
-            ->where('value', $value)
-            ->first();
-    }
-
-    public function create(User $user, string $action, string $value): Token
+    public function create(User $user, string $action, string $value = null): Token
     {
         return $user->tokens()
             ->create([
                 'action' => $action,
-                'value' => $value
+                'value' => $value ?? str_random(33)
             ]);
     }
 
