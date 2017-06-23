@@ -40,8 +40,8 @@ angular
 
             'app.directives',
             'app.filters',
-            'app.components',
-            'app.services'
+            'app.services',
+            'app.components'
         ]
     )
     .config(AppConfig.inst())

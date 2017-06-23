@@ -45,7 +45,7 @@ class AuthController extends Controller
      */
     public function login(AuthLoginRequest $request)
     {
-        $token = $this->authService->login($request);
+        $token = $this->authService->login($request->all());
 
         return response()->json(['token' => $token->value]);
     }
@@ -85,14 +85,14 @@ class AuthController extends Controller
          * @TODO PROCESS SENDING MESSAGE DEVELOPMENT IN BEANSTALKD
          */
 
-        $token = $this->authService->sendResetPasswordToken($request);
+        $token = $this->authService->sendResetPasswordToken($request->all());
 
         return response()->json(['reset_password_token' => $token->value]);
     }
 
     public function resetPassword(ResetPasswordRequest $request)
     {
-        $this->authService->resetPassword($request);
+        $this->authService->resetPassword($request->all());
 
         return response(null, 202);
     }

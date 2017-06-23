@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Token;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -37,8 +38,8 @@ class AuthServiceProvider extends ServiceProvider
 
     public static function userByAuthToken($token)
     {
-        return User::whereHas('session_token', function($q) use($token) {
-            $q->where('action', 'session')
+        return User::whereHas('tokens', function($q) use($token) {
+            $q->where('action', Token::SESSION_TOKEN_ACTION)
                 ->where('value', $token);
         })->first();
     }

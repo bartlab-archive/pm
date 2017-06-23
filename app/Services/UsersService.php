@@ -7,7 +7,6 @@ use App\Models\User;
 
 class UsersService implements UsersServiceInterface
 {
-
     public function register(array $data)
     {
         $salt = str_random(33);
@@ -26,6 +25,15 @@ class UsersService implements UsersServiceInterface
         app('App\Services\UserPreferenceService')->create($user, $data);
 
         return $user;
+    }
+
+    public function getUserByLoginOrEmail(string $login)
+    {
+        return User::where('login', $login)
+            ->orWhereHas('email', function ($q) use($login) {
+                $q->where('address', $login);
+            })
+            ->first();
     }
 
 }

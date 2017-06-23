@@ -3,66 +3,53 @@
 namespace App\Services;
 
 
-use App\Models\UserPreference;
 use App\Traits\PasswordTrait;
 use App\Interfaces\AuthServiceInterface;
-use App\Models\EmailAddresses;
 use App\Models\Token;
-use App\Models\User;
-use Illuminate\Http\Request;
 
 class AuthService implements AuthServiceInterface
 {
     use PasswordTrait;
 
-    public function login(Request $request): Token
+    public function login(array $data): Token
     {
-        $login = $request->input('login');
-        $user_by_login = User::where('login', $login)->first();
-        $user_by_email = EmailAddresses::where('address', $login)->first();
+        $user = app('App\Interfaces\UsersServiceInterface')
+            ->getUserByLoginOrEmail(array_get($data, 'login'));
 
-        if (is_null($user_by_login) && is_null($user_by_email)) {
+        if (is_null($user)) {
             abort(400, 'The selected login is invalid.');
         }
 
-        $user = $user_by_login ? $user_by_login : $user_by_email->user;
-
-        $pass = $this->preparePassword($user, $request->input('password'));
+        $pass = $this->preparePassword($user, array_get($data, 'password'));
 
         if ($pass !== $user->hashed_password) {
             abort(400, 'Invalid credentials');
         }
 
-        return Token::firstOrCreate([
-            'user_id' => $user->id,
-            'action' => 'session',
-            'value' => sha1($user->hashed_password)
-        ]);
+        return app('App\Interfaces\TokenServiceInterface')
+            ->one($user, Token::SESSION_TOKEN_ACTION);
     }
 
-    public function sendResetPasswordToken(Request $request): Token
+    public function sendResetPasswordToken(array $data): Token
     {
         /**
          * @TODO SEND MESSAGE BY EMAIL
-         * @TODO PROCESS SENDING MESSAGE DEVELOPMENT IN BEANSTALKD
          */
 
-        $user = EmailAddresses::where('address', $request->input('email'))->firstOrFail()->user;
+        $user = app('App\Interfaces\UsersServiceInterface')
+            ->getUserByLoginOrEmail(array_get($data, 'email'));
 
-        return Token::firstOrCreate([
-            'user_id' => $user->id,
-            'action' => 'reset_password',
-            'value' => sha1($user->hashed_password)
-        ]);
+        return app('App\Interfaces\TokenServiceInterface')
+            ->one($user, Token::PASSWORD_RESET_TOKEN_ACTION);
     }
 
-    public function resetPassword(Request $request): bool
+    public function resetPassword(array $data): bool
     {
-        $token = Token::where('value', $request->input('token'))
-            ->where('action', 'reset_password')
+        $token = Token::where('value', array_get($data, 'token'))
+            ->where('action', Token::PASSWORD_RESET_TOKEN_ACTION)
             ->firstOrFail();
 
-        $this->reset($token->user, $request->input('password'));
+        $this->reset($token->user, array_get($data, 'password'));
 
         return $token->delete();
     }
