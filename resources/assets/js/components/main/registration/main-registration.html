@@ -14,7 +14,7 @@
 
                 <div ng-messages="$ctrl.registrationForm.login.$error">
                     <div ng-message="required">Login can't be blank</div>
-                    <div ng-message="server">{{ $ctrl.errors.login | joinBr }}</div>
+                    <div ng-message="server" ng-bind-html="$ctrl.errors.login | join"></div>
                 </div>
             </md-input-container>
 
@@ -26,7 +26,7 @@
                 <div ng-messages="$ctrl.registrationForm.password.$error">
                     <div ng-message="minlength">The password must be at least 6 characters.</div>
                     <div ng-message="required">Password can't be blank!</div>
-                    <div ng-message="server">{{ $ctrl.errors.password | joinBr }}</div>
+                    <div ng-message="server" ng-bind-html="$ctrl.errors.password | join"></div>
                 </div>
             </md-input-container>
 
@@ -41,7 +41,7 @@
                     <div ng-message="minlength">The password must be at least 6 characters.</div>
                     <div ng-message="required">Password can't be blank!</div>
                     <div ng-message-exp="['pattern']">Passwords must match!</div>
-                    <div ng-message="server">{{ $ctrl.errors.repeatPassword | joinBr }}</div>
+                    <div ng-message="server" ng-bind-html="$ctrl.errors.repeatPassword | join"></div>
                 </div>
             </md-input-container>
 
@@ -52,7 +52,7 @@
 
                 <div ng-messages="$ctrl.registrationForm.firstName.$error">
                     <div ng-message="required">First name can't be blank</div>
-                    <div ng-message="server">{{ $ctrl.errors.firstName | joinBr }}</div>
+                    <div ng-message="server" ng-bind-html="$ctrl.errors.firstName | join"></div>
                 </div>
             </md-input-container>
 
@@ -63,7 +63,7 @@
 
                 <div ng-messages="$ctrl.registrationForm.lastName.$error">
                     <div ng-message="required">Last name can't be blank</div>
-                    <div ng-message="server">{{ $ctrl.errors.lastName | joinBr }}</div>
+                    <div ng-message="server" ng-bind-html="$ctrl.errors.lastName | join"></div>
                 </div>
             </md-input-container>
 
@@ -74,7 +74,7 @@
 
                 <div ng-messages="$ctrl.registrationForm.email.$error">
                     <div ng-message-exp="['required', 'pattern']">Email is invalid</div>
-                    <div ng-message="server">{{ $ctrl.errors.email | joinBr }}</div>
+                    <div ng-message="server" ng-bind-html="$ctrl.errors.email | join"></div>
                 </div>
             </md-input-container>
 
@@ -84,7 +84,7 @@
                     Hide my Email
                 </md-checkbox>
                 <div ng-messages="$ctrl.registrationForm.hideEmail.$error">
-                    <div ng-message="server">{{ $ctrl.errors.hideEmail | joinBr }}</div>
+                    <div ng-message="server" ng-bind-html="$ctrl.errors.hideEmail | join"></div>
                 </div>
             </md-input-container>
 
@@ -95,7 +95,7 @@
                     </md-option>
                 </md-select>
                 <div ng-messages="$ctrl.registrationForm.lang.$error">
-                    <div ng-message="server">{{ $ctrl.errors.lang | joinBr }}</div>
+                    <div ng-message="server" ng-bind-html="$ctrl.errors.lang | join"></div>
                 </div>
             </md-input-container>
 
