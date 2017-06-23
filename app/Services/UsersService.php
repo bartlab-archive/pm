@@ -21,19 +21,39 @@ class UsersService implements UsersServiceInterface
             'mail_notification' => 'only_my_events'
         ]);
 
-        app('App\Services\EmailAddressesService')->create($user, $data);
-        app('App\Services\UserPreferenceService')->create($user, $data);
+        app(EmailAddressesService::class)->create($user, $data);
+        app(UserPreferenceService::class)->create($user, $data);
 
         return $user;
     }
 
-    public function getUserByLoginOrEmail(string $login)
+    public function userByLoginOrEmail(string $login)
     {
         return User::where('login', $login)
             ->orWhereHas('email', function ($q) use($login) {
                 $q->where('address', $login);
             })
             ->first();
+    }
+
+    public function userByToken(string $token, string $action)
+    {
+        return User::whereHas('tokens', function($q) use($token, $action) {
+            $q->where('action', $action)
+                ->where('value', $token);
+        })->first();
+    }
+
+    public function preparePassword(User $user, $password): string
+    {
+        return sha1($user->salt . sha1($password));
+    }
+
+    public function resetPassword(User $user, $new_password): bool
+    {
+        $user->hashed_password = sha1($user->salt . sha1($new_password));
+
+        return $user->save();
     }
 
 }

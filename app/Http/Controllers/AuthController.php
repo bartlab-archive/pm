@@ -8,8 +8,9 @@ use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\ResetPasswordSendTokenRequest;
 use App\Interfaces\AuthServiceInterface;
 use App\Interfaces\UsersServiceInterface;
+use Illuminate\Routing\Controller as BaseController;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
     /**
      * @var AuthServiceInterface
@@ -80,11 +81,6 @@ class AuthController extends Controller
 
     public function sendResetPasswordToken(ResetPasswordSendTokenRequest $request)
     {
-        /**
-         * @TODO SEND MESSAGE BY EMAIL
-         * @TODO PROCESS SENDING MESSAGE DEVELOPMENT IN BEANSTALKD
-         */
-
         $token = $this->authService->sendResetPasswordToken($request->all());
 
         return response()->json(['reset_password_token' => $token->value]);
@@ -94,6 +90,6 @@ class AuthController extends Controller
     {
         $this->authService->resetPassword($request->all());
 
-        return response(null, 202);
+        return response(null, 200);
     }
 }

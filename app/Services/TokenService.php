@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Collection;
 
 class TokenService implements TokenServiceInterface
 {
-
     public function one(User $user, string $action): Token
     {
         return $user->tokens()
@@ -23,12 +22,19 @@ class TokenService implements TokenServiceInterface
         return $user->tokens()
             ->create([
                 'action' => $action,
-                'value' => $value ?? str_random(33)
+                'value' => $value ?? sha1(str_random(33))
             ]);
     }
 
     public function all(User $user): Collection
     {
         return $user->tokens;
+    }
+
+    public function destroy(User $user, string $action): bool
+    {
+        return $user->tokens()
+            ->where('action', $action)
+            ->delete();
     }
 }
