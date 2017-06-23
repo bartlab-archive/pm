@@ -1,5 +1,5 @@
 <md-card>
-    <form name="loginForm" ng-submit="$ctrl.onSubmit()">
+    <form name="$ctrl.loginForm" ng-submit="$ctrl.submit()">
         <md-toolbar>
             <div layout="column" layout-padding layout-align="center center">
                 <div class="md-headline md-padding">Sign in</div>
@@ -8,18 +8,29 @@
         <md-card-content>
             <md-input-container class="md-icon-float md-block">
                 <label>E-mail or name</label>
-                <input ng-model="$ctrl.model.login" type="text" required>
+                <input ng-model="$ctrl.model.login" name="login" type="text" required
+                       ng-change="$ctrl.change('login')">
+
+                <div ng-messages="$ctrl.loginForm.login.$error">
+                    <div ng-message="server" ng-bind-html="$ctrl.errors.login | join"></div>
+                </div>
             </md-input-container>
 
             <md-input-container class="md-icon-float md-block">
                 <label>Password</label>
-                <input ng-model="$ctrl.model.password" type="password" required>
+                <input ng-model="$ctrl.model.password" name="password" type="password" required
+                       ng-change="$ctrl.change('password')">
+
+                <div ng-messages="$ctrl.loginForm.password.$error">
+                    <div ng-message="server" ng-bind-html="$ctrl.errors.password | join"></div>
+                </div>
             </md-input-container>
         </md-card-content>
 
 
         <md-card-actions layout="row" layout-align="center center">
-            <md-button class="md-raised md-primary" type="submit" ng-disabled="loginForm.$invalid">Login
+            <md-button class="md-raised md-primary" type="submit" ng-disabled="$ctrl.loginForm.$invalid">
+                Login
             </md-button>
         </md-card-actions>
     </form>

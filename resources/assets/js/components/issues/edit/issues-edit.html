@@ -14,7 +14,8 @@
                 </p>
                 <br>
                 <p>
-                    Added by {{ $ctrl.issue.author.firstname + ' ' + $ctrl.issue.author.lastname + ' ' + $ctrl.issue.created_on}}
+                    Added by {{ $ctrl.issue.author.firstname + ' ' + $ctrl.issue.author.lastname + ' ' +
+                    $ctrl.issue.created_on}}
                 </p>
             </div>
             <hr>
@@ -80,7 +81,9 @@
                         <div layout="row" layout-align="space-between center">
                             <span>Project</span>
                             <md-select ng-model="$ctrl.edit_issue.project_id" class="md-no-underline">
-                                <md-option  ng-repeat="data in $ctrl.info.projects" value="{{ data.id }}">{{ data.name }}</md-option>
+                                <md-option ng-repeat="data in $ctrl.info.projects" value="{{ data.id }}">{{ data.name
+                                    }}
+                                </md-option>
                             </md-select>
                         </div>
                     </div>
@@ -134,7 +137,9 @@
                             <div layout="row" layout-align="space-between center">
                                 <span>Assigned to</span>
                                 <md-select ng-model="$ctrl.edit_issue.assigned_to_id" class="md-no-underline">
-                                    <md-option ng-repeat="data in $ctrl.info.users" value="{{ data.id }}">{{ data.firstname + ' ' + data.lastname }}</md-option>
+                                    <md-option ng-repeat="data in $ctrl.info.users" value="{{ data.id }}">{{
+                                        data.firstname + ' ' + data.lastname }}
+                                    </md-option>
                                 </md-select>
                             </div>
                             <div layout="row" layout-align="space-between center">

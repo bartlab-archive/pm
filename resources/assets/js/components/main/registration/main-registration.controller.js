@@ -34,29 +34,34 @@ export default class MainRegistrationController extends ControllerBase {
     submit() {
         if (this.registrationForm.$valid) {
             this.$auth.signup(this.signup)
-                .then((response) => {
-                        if (_.get(response, 'status') === 201) {
-                            this.$mdToast.show(
-                                this.$mdToast.simple().textContent('Registration success')
-                            );
-                            this.$state.go('login');
-                        }
-                    }
-                )
-                .catch((error) => {
-                    if (_.get(error, 'status') === 500) {
-                        this.$mdToast.show(
-                            this.$mdToast.simple().textContent('Server error')
-                        );
-                    } else {
-                        this.errors = _.get(error, 'data', {});
-                        for (let field in this.errors) {
-                            if (this.registrationForm.hasOwnProperty(field)) {
-                                this.registrationForm[field].$setValidity('server', false);
-                            }
-                        }
-                    }
-                });
+                .then((response) => this.onRegister(response))
+                .catch((response) => this.onError(response));
+        }
+    }
+
+    onRegister(response) {
+        if (_.get(response, 'status') === 201) {
+            this.$mdToast.show(
+                this.$mdToast.simple()
+                    .textContent('Registration success')
+            );
+            this.$state.go('login');
+        }
+    }
+
+    onError(response) {
+        if (_.get(response, 'status') === 500) {
+            this.$mdToast.show(
+                this.$mdToast.simple()
+                    .textContent('Server error')
+            );
+        } else {
+            this.errors = _.get(response, 'data', {});
+            for (let field in this.errors) {
+                if (this.registrationForm.hasOwnProperty(field)) {
+                    this.registrationForm[field].$setValidity('server', false);
+                }
+            }
         }
     }
 
