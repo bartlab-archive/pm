@@ -74,7 +74,7 @@ Route::group(
 	            Route::delete('/{identifier}', 'ProjectsController@destroy');
 	            Route::get('/{identifier}/issues', 'ProjectsController@getIssues');
 	            
-	            Route::get('/{identifier}/news', 'WikiController@getNews');
+	            Route::get('/{identifier}/news', 'NewsController@getProjectNews');
 	            Route::put('/{identifier}/wiki/{id}', 'WikiController@setWikiPageMarkDown');
 	            Route::get('/{identifier}/wiki', 'WikiController@getWikiPageMarkDown');
 	            Route::get('/{identifier}/wiki/all', 'WikiController@getAllWikiPage');
@@ -93,8 +93,8 @@ Route::group(
 		
 		    ],
 		    function () {
-			    Route::get('/', 'NewsController@getNews');
-			    Route::get('/{id}', 'NewsController@getOneNews');
+			    Route::get('/', 'NewsController@index');
+			    Route::get('/{id}', 'NewsController@show');
 		    });
 	
 	    Route::group(

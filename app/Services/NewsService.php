@@ -22,4 +22,9 @@ class NewsService
 		return News::whereIdentifier($identifier)->first();
 	}
 	
+	public function allByProjectId(int $id)
+	{
+		return News::where('project_id', $id)->get();
+	}
+	
 }
