@@ -11,25 +11,25 @@ use App\Models\Token;
 
 class AuthService implements AuthServiceInterface
 {
-    use PasswordTrait;
 
-    public function login(array $data): Token
+    public function session(string $login): Token
     {
         return app(TokenServiceInterface::class)->one(
-            app(UsersServiceInterface::class)->userByLoginOrEmail(array_get($data, 'login')),
+            app(UsersServiceInterface::class)->userByLoginOrEmail($login),
             Token::SESSION_TOKEN_ACTION
         );
     }
 
-    public function sendResetPasswordToken(array $data): Token
+    public function sendResetPasswordToken(string $email): Token
     {
         /**
          * @TODO send message in email address
          */
 
         return app(TokenServiceInterface::class)->one(
-            app(UsersServiceInterface::class)->userByLoginOrEmail(array_get($data, 'email')),
-            Token::PASSWORD_RESET_TOKEN_ACTION);
+            app(UsersServiceInterface::class)->userByLoginOrEmail($email),
+            Token::PASSWORD_RESET_TOKEN_ACTION
+        );
     }
 
     public function resetPassword(array $data): bool

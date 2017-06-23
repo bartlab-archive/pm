@@ -46,7 +46,7 @@ class AuthController extends BaseController
      */
     public function login(AuthLoginRequest $request)
     {
-        $token = $this->authService->login($request->all());
+        $token = $this->authService->session($request->all());
 
         return response()->json(['token' => $token->value]);
     }

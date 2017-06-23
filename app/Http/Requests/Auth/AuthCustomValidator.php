@@ -19,11 +19,11 @@ class AuthCustomValidator
 
     public function authorizePasswordRule($attribute, $value): bool
     {
-        if (is_null($user = app(UsersServiceInterface::class)->userByLoginOrEmail(request('login')))) {
+        if (!$user = app(UsersServiceInterface::class)->userByLoginOrEmail(request('login'))) {
             return true;
         }
 
-        return app('App\Interfaces\UsersServiceInterface')
+        return app(UsersServiceInterface::class)
                 ->preparePassword($user, $value) === $user->hashed_password;
     }
 
