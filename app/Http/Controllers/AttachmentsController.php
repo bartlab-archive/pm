@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ProjectsService;
 use Illuminate\Http\Request;
 
-class AttachmentController extends Controller
+class AttachmentsController extends Controller
 {
     public function __construct(ProjectsService $projectsService)
     {
@@ -15,6 +15,6 @@ class AttachmentController extends Controller
     public function index(Request $request)
     {
         $this->validate($request, ['project_id' => 'numeric']);
-        return $this->projectsService->getAttachments($request->only('project_id'));
+        return $this->projectsService->getAttachments($request->identifier);
     }
 }

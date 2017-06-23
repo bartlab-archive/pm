@@ -63,9 +63,9 @@ class ProjectsService
         return $project->delete();
     }
 
-    public function getAttachments($projectId)
+    public function getAttachments($identifier)
     {
-        $project = Project::find($projectId)->first();
+        $project = Project::whereIdentifier($identifier)->first();
         if ($project) {
             return $project->attachments;
         }
