@@ -8,14 +8,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\News;
 use App\Services\NewsService;
+use App\Services\ProjectsService;
 
 class NewsController extends Controller
 {
 	protected $newsService;
+	protected $projectsService;
 	
-	public function __construct(NewsService $newsService)
+	public function __construct(NewsService $newsService, ProjectsService $projectsService)
 	{
 		$this->newsService = $newsService;
+		$this->projectsService = $projectsService;
 	}
 	
 	public function index()
@@ -24,12 +27,18 @@ class NewsController extends Controller
 	}
 	
 	
-	public function show($identifier)
+	public function show($id)
 	{
-		if ($news = $this->newsService->one($identifier)) {
+		if ($news = $this->newsService->one($id)) {
 			return $news;
 		}
 		abort(404);
+	}
+	
+	public function getProjectNews($project_identifier)
+	{
+		$id = $this->projectsService->one($project_identifier)->id;
+		return $this->newsService->allByProjectId($id);
 	}
 	
 }
