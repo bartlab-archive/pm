@@ -10,11 +10,4 @@ angular.module('app.services', [])
     .service('UsersService', UsersService)
     .service('NewsService', NewsService)
     .service('WikiService', WikiService)
-    .service('IssuesService', IssuesService)
-    .provider('IssuesServiceProvider', function () {
-        this.$get = ["IssuesService", function (IssuesService) {
-            return IssuesService;
-        }];
-
-        return this;
-    });
+    .service('IssuesService', IssuesService);
