@@ -26,14 +26,14 @@ class AuthRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
             'login' => 'required|string|max:255|unique:' . User::getTableName(),
             'email' => 'required|string|email|max:255|unique:' . EmailAddresses::getTableName() . ',address',
             'password' => 'required|string|min:6',
-            'repeat_password' => 'required|string|min:6|same:password',
+            'repeatPassword' => 'required|string|min:6|same:password',
             'lang' => 'required|string|max:2',
-            'hide_email' => 'boolean'
+            'hideEmail' => 'boolean'
         ];
     }
 }

@@ -43,18 +43,17 @@ Route::group(
         Route::group(
             [
                 'prefix' => 'my',
-                'namespace' => 'My',
+//                'namespace' => 'My',
                 'middleware' => 'auth'
             ],
             function ()
             {
-                Route::get('account', 'Account\AccountController@show');
-                Route::put('account', 'Account\AccountController@update');
-                Route::put('password', 'ChangePassword\ChangePasswordController@changePassword');
-
-                Route::get('api-key', 'Keys\KeysController@showApiKey');
-                Route::put('api-key', 'Keys\KeysController@resetApiKey');
-                Route::put('rss-key', 'Keys\KeysController@resetAtomKey');
+                Route::get('account', 'AccountController@show');
+                Route::put('account', 'AccountController@update');
+                Route::put('password', 'AccountController@changePassword');
+                Route::get('api-key', 'AccountController@showApiKey');
+                Route::put('api-key', 'AccountController@resetApiKey');
+                Route::put('rss-key', 'AccountController@resetAtomKey');
             }
         );
 
@@ -120,28 +119,5 @@ Route::group(
         Route::get('users/{id}', function ($identifier) {
             return \App\Models\User::where('id', $identifier)->first();
         });
-//        Route::post('auth', 'Auth\LoginController@login');
-//        Route::post('register', 'Auth\RegisterController@register');
-//        Route::post('reset', 'Auth\ForgotPasswordController@resetVerify');
-//        Route::post('reset-confirmed', 'Auth\ResetPasswordController@resetConfirmed');
-//
-//        Route::group(['middleware' => 'jwt.auth'], function() {
-//            Route::post('test', function (Request $request) {
-//                return json_encode($request->toArray());
-//            });
-//            Route::get('test', function (Request $request) {
-//                return json_encode($request->toArray());
-//            });
-//            Route::get('401', function (Request $request) {
-//                return response(json_encode([]), 401);
-//            });
-//            Route::get('403', function (Request $request) {
-//                return response(json_encode([]), 403);
-//            });
-//            Route::get('500', function (Request $request) {
-//                return response(json_encode([]), 500);
-//            });
-//            Route::resource('users', 'UserController', ['only' => ['index', 'store']]);
-//        });
     }
 );
