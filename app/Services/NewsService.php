@@ -17,9 +17,9 @@ class NewsService
 		return News::all();
 	}
 	
-	public function one($identifier)
+	public function one($id)
 	{
-		return News::whereIdentifier($identifier)->first();
+		return News::find($id);
 	}
 	
 	public function allByProjectId(int $id)
