@@ -10,6 +10,9 @@ class Token extends Model
 {
     use ModelTrait;
 
+    const SESSION_TOKEN_ACTION = 'session';
+    const PASSWORD_RESET_TOKEN_ACTION = 'reset_password';
+
     protected $table = 'tokens';
 
     /**

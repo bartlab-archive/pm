@@ -60,9 +60,9 @@ class User extends Authenticatable
         return $this->hasOne(UserPreference::class);
     }
 
-    public function session_token()
+    public function tokens()
     {
-        return $this->hasOne(Token::class);
+        return $this->hasMany(Token::class);
     }
 
     public function comments()
