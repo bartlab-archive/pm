@@ -9,8 +9,9 @@ use Illuminate\Http\Request;
 use App\Models\News;
 use App\Services\NewsService;
 use App\Services\ProjectsService;
+use Illuminate\Routing\Controller as BaseController;
 
-class NewsController extends Controller
+class NewsController extends BaseController
 {
 	protected $newsService;
 	protected $projectsService;

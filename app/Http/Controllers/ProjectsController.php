@@ -6,6 +6,7 @@ use App\Http\Requests\Projects\CreateProjectRequest;
 use App\Http\Requests\Projects\IndexProjectRequest;
 use App\Http\Requests\Projects\UpdateProjectRequest;
 use App\Services\ProjectsService;
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 
 /**
@@ -13,7 +14,7 @@ use Illuminate\Http\Request;
  *
  * @package App\Http\Controllers\Projects
  */
-class ProjectsController extends Controller
+class ProjectsController extends BaseController
 {
 
     protected $projectsService;

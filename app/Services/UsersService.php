@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Interfaces\UsersServiceInterface;
+
 use App\Models\User;
 
-class UsersService implements UsersServiceInterface
+class UsersService
 {
     protected $emailAddressesService;
     protected $preferenceService;

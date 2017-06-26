@@ -31,24 +31,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(
-            AuthServiceInterface::class,
-            AuthService::class
-        );
-
-        $this->app->bind(
-            UsersServiceInterface::class,
-            UsersService::class
-        );
-
-        $this->app->bind(
-            AccountServiceInterface::class,
-            AccountService::class
-        );
-
-        $this->app->bind(
-            TokenServiceInterface::class,
-            TokenService::class
-        );
+        //
     }
 }

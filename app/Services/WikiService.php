@@ -4,12 +4,13 @@ namespace App\Services;
 
 use App\Http\Requests\WikiRequest;
 use App\Models\Project;
+use App\Models\WikiContent;
 use App\Models\WikiPage;
 use Auth;
 
 class WikiService
 {
-    public function getWikiPageMarkDown($identifier, $page_title = null)
+    public function getWikiPageMarkDown($identifier, $page_title = null): WikiContent
     {
         $user_projects = Auth::user()->projects;
 
@@ -29,7 +30,7 @@ class WikiService
             $wiki_content->where('parent_id', null);
         }
 
-        $wiki_content = $wiki_content->first()->toArray();
+        $wiki_content = $wiki_content->first();
 
         return response()->json(array_merge(is_null($wiki_content['content']) ? [] : $wiki_content['content'] , ['title' => $wiki_content['title']]));
     }

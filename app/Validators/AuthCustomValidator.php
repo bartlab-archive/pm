@@ -3,16 +3,16 @@
 namespace App\Validators;
 
 
-use App\Interfaces\UsersServiceInterface;
+use App\Services\UsersService;
 
 class AuthCustomValidator
 {
     /**
-     * @var UsersServiceInterface
+     * @var UsersService
      */
     protected $usersService;
 
-    public function __construct(UsersServiceInterface $usersService)
+    public function __construct(UsersService $usersService)
     {
         $this->usersService = $usersService;
     }

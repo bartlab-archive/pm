@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\IssuesService;
+use Illuminate\Routing\Controller as BaseController;
 
-class IssuesController extends Controller
+class IssuesController extends BaseController
 {
 	protected $issueService;
 	

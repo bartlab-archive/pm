@@ -6,25 +6,25 @@ use App\Http\Requests\Auth\AuthLoginRequest;
 use App\Http\Requests\Auth\AuthRegisterRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\ResetPasswordSendTokenRequest;
-use App\Interfaces\AuthServiceInterface;
-use App\Interfaces\UsersServiceInterface;
+use App\Services\AuthService;
+use App\Services\UsersService;
 use Illuminate\Routing\Controller as BaseController;
 
 class AuthController extends BaseController
 {
     /**
-     * @var AuthServiceInterface
+     * @var AuthService
      */
     protected $authService;
 
     /**
-     * @var UsersServiceInterface
+     * @var UsersService
      */
     protected $usersService;
 
     public function __construct(
-        AuthServiceInterface $authService,
-        UsersServiceInterface $usersService
+        AuthService $authService,
+        UsersService $usersService
     )
     {
         $this->authService = $authService;

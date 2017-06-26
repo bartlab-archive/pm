@@ -3,26 +3,23 @@
 namespace App\Services;
 
 
-use App\Interfaces\TokenServiceInterface;
-use App\Interfaces\UsersServiceInterface;
-use App\Interfaces\AuthServiceInterface;
 use App\Models\Token;
 
-class AuthService implements AuthServiceInterface
+class AuthService
 {
     /**
-     * @var TokenServiceInterface
+     * @var TokenService
      */
     protected $tokenService;
 
     /**
-     * @var UsersServiceInterface
+     * @var UsersService
      */
     protected $usersService;
 
     public function __construct(
-        TokenServiceInterface $tokenService,
-        UsersServiceInterface $usersService
+        TokenService $tokenService,
+        UsersService $usersService
     )
     {
         $this->tokenService = $tokenService;

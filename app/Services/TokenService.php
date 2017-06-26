@@ -3,12 +3,11 @@
 namespace App\Services;
 
 
-use App\Interfaces\TokenServiceInterface;
 use App\Models\Token;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
-class TokenService implements TokenServiceInterface
+class TokenService
 {
     public function one(User $user, string $action): Token
     {

@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+
+
 use App\Http\Requests\WikiRequest;
 use App\Http\Requests\WikiUpdateRequest;
 use App\Services\WikiService;
+use Illuminate\Routing\Controller as BaseController;
 
-class WikiController extends Controller
+class WikiController extends BaseController
 {
     protected $WikiService;
 
