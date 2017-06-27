@@ -20,5 +20,12 @@ class NewsService
 	{
 		return News::where('project_id', $id)->get();
 	}
+	public function update($id, $data)
+	{
+		$news = News::find($id);
+		$news->update($data);
+		return $news;
+	}
+	
 	
 }

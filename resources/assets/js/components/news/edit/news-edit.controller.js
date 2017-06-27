@@ -3,18 +3,24 @@ import ControllerBase from 'base/controller.base';
 export default class NewsEditController extends ControllerBase {
 
     static get $inject() {
-        return ['NewsService', '$stateParams'];
+        return ['NewsService', '$stateParams', '$state'];
     }
 
     $onInit() {
 
         this.NewsService.one(this.$stateParams.id).then((response) => {
             this.news = response.data;
-            console.log(response.data);
         });
 
 
     }
+    sendresponse()
+    {
+        this.news.save().then((response) => {
+            if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
+                this.$state.go('news.list');
+            }
+        })
 
-
+    }
 }
