@@ -34,14 +34,10 @@ class WikiService
         return response()->json(array_merge(is_null($wiki_content['content']) ? [] : $wiki_content['content'] , ['title' => $wiki_content['title']]));
     }
 
-    public function setWikiPageMarkDown(array $request, $project_identifier, $wiki_id, $name = null)
+    public function setWikiPageMarkDown($request, $project_identifier, $wiki_id, $name = null)
     {
         $user_projects = Auth::user()->projects;
         $project = $user_projects->where('identifier', $project_identifier)->first();
-
-        if (is_null($project)) {
-            abort(403);
-        }
 
         $wiki_content = $project->wiki->page();
 
@@ -51,15 +47,16 @@ class WikiService
         } else {
             $wiki_content->where('id', $wiki_id);
         }
-
         $wiki_content = $wiki_content
-            ->with(['content' => function ($q) use($wiki_id) {
+            ->with(['content' => function ($q) use ($wiki_id) {
                 $q->where('id', $wiki_id);
             }])
             ->firstOrFail();
         $wiki_content->content->update([
             'text' => array_get($request, 'text')
         ]);
+
+
 
         $wiki_content = $wiki_content->toArray();
 
@@ -78,7 +75,7 @@ class WikiService
 
         $new_page_content = $new_page->content()->create([
             'author_id' => Auth::user()->id,
-            'text' => $request->input('text'),
+            'text' => array_get($request, 'text'),
             'version' => 1
         ]);
 

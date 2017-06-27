@@ -30,6 +30,10 @@ class WikiRequest extends FormRequest
         $project = Auth::user()->projects()->where('identifier', $this->route('identifier'))->firstOrFail();
         $wiki = $project->wiki;
 
+        if (is_null($project)) {
+           abort(403);
+        }
+
         return [
             'title' => [
                 'required',

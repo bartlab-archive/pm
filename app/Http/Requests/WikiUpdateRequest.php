@@ -24,7 +24,6 @@ class WikiUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string',
             'text' => 'required|string',
         ];
     }

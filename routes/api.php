@@ -59,7 +59,6 @@ Route::group(
                 Route::put('/{identifier}/wiki/{name}/{id}', 'WikiController@setWikiPageMarkDown');
 
                 Route::get('/{projectId}/attachments', 'AttachmentController@index');
-
             }
         );
 
