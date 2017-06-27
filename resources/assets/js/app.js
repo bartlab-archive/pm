@@ -4,6 +4,7 @@ import 'angular-sanitize';
 import '@uirouter/angularjs';
 import 'restangular';
 import 'satellizer';
+import 'angular-moment';
 // import 'ng-table';
 import 'md-data-table';
 import 'angular-material';
@@ -30,6 +31,7 @@ angular
             'ngAria',
             'ngMessages',
             'ngMaterial',
+            'angularMoment',
 
             'ui.router',
             'restangular',

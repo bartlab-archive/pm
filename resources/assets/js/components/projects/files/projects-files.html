@@ -8,7 +8,15 @@
         <md-card-title>
             <md-card-title-text>
                 <span class="md-headline">{{ row.filename }}</span>
+                <span class="md-subhead"><b>Date:</b> {{ row.created_on | amDateFormat:'MM.DD.YYYY HH:mm' }}</span>
+                <span class="md-subhead"><b>Size:</b> {{ row.filesize | bytesToSizeUnitsFilter }}</span>
+                <span class="md-subhead"><b>Downloads:</b> {{ row.downloads }}</span>
+                <span class="md-subhead"><b>MD5:</b> {{ row.digest }}</span>
             </md-card-title-text>
         </md-card-title>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button>Download</md-button>
+            <md-button>Delete</md-button>
+        </md-card-actions>
     </md-card>
 </div>
