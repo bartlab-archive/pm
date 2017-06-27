@@ -124,6 +124,7 @@ class WikiTest extends TestCase
 
         $response
             ->assertStatus(401);
+
     }
 
 
