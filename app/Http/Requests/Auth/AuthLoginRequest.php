@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Validator;
 
 class AuthLoginRequest extends FormRequest
 {
@@ -23,9 +24,14 @@ class AuthLoginRequest extends FormRequest
      */
     public function rules()
     {
+        Validator::extend('authorize.login', '\App\Validators\AuthCustomValidator@authorizeLoginRule');
+        Validator::replacer('authorize.login', '\App\Validators\AuthCustomValidator@authorizeLoginMessage');
+        Validator::extend('authorize.password', '\App\Validators\AuthCustomValidator@authorizePasswordRule');
+        Validator::replacer('authorize.password', '\App\Validators\AuthCustomValidator@authorizePasswordMessage');
+
         return [
-            'login' => 'required|string|max:255',
-            'password' => 'required|string|min:6'
+            'login' => 'required|string|max:255|authorize.login',
+            'password' => 'required|string|min:6|authorize.password'
         ];
     }
 }

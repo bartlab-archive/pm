@@ -5,12 +5,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewsUpdateRequest;
 use Illuminate\Http\Request;
-use App\Models\News;
 use App\Services\NewsService;
 use App\Services\ProjectsService;
+use Illuminate\Routing\Controller as BaseController;
 
-class NewsController extends Controller
+class NewsController extends BaseController
 {
 	protected $newsService;
 	protected $projectsService;
@@ -39,6 +40,10 @@ class NewsController extends Controller
 	{
 		$id = $this->projectsService->one($project_identifier)->id;
 		return $this->newsService->allByProjectId($id);
+	}
+	public function update(NewsUpdateRequest $request, $id)
+	{
+		return $this->newsService->update($id, $request->all());
 	}
 	
 }

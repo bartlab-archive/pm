@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ChagePasswordRequest;
+
+use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\UpdateRequest;
-use App\Interfaces\AccountServiceInterface;
+use App\Services\AccountService;
+use Illuminate\Routing\Controller as BaseController;
 
 /**
  * Class AccountController
  */
-class AccountController extends Controller
+class AccountController extends BaseController
 {
 
     /**
-     * @var AccountServiceInterface
+     * @var AccountService
      */
     protected $accountService;
 
-    public function __construct(AccountServiceInterface $accountService)
+    public function __construct(AccountService $accountService)
     {
         $this->accountService = $accountService;
     }
@@ -32,7 +34,7 @@ class AccountController extends Controller
         $this->accountService->update($request->all());
     }
 
-    public function changePassword(ChagePasswordRequest $request)
+    public function changePassword(ChangePasswordRequest $request)
     {
         $this->accountService->changePassword($request->all());
 

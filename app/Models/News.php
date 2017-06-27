@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\ModelTrait;
 class News extends Model
 {
+	use ModelTrait;
+	
     protected $table = 'news';
 
     public $timestamps = false;

@@ -6,24 +6,25 @@ use App\Http\Requests\Auth\AuthLoginRequest;
 use App\Http\Requests\Auth\AuthRegisterRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\ResetPasswordSendTokenRequest;
-use App\Interfaces\AuthServiceInterface;
-use App\Interfaces\UsersServiceInterface;
+use App\Services\AuthService;
+use App\Services\UsersService;
+use Illuminate\Routing\Controller as BaseController;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
     /**
-     * @var AuthServiceInterface
+     * @var AuthService
      */
     protected $authService;
 
     /**
-     * @var UsersServiceInterface
+     * @var UsersService
      */
     protected $usersService;
 
     public function __construct(
-        AuthServiceInterface $authService,
-        UsersServiceInterface $usersService
+        AuthService $authService,
+        UsersService $usersService
     )
     {
         $this->authService = $authService;
@@ -45,7 +46,7 @@ class AuthController extends Controller
      */
     public function login(AuthLoginRequest $request)
     {
-        $token = $this->authService->login($request->all());
+        $token = $this->authService->session($request->input('login'));
 
         return response()->json(['token' => $token->value]);
     }
@@ -80,12 +81,7 @@ class AuthController extends Controller
 
     public function sendResetPasswordToken(ResetPasswordSendTokenRequest $request)
     {
-        /**
-         * @TODO SEND MESSAGE BY EMAIL
-         * @TODO PROCESS SENDING MESSAGE DEVELOPMENT IN BEANSTALKD
-         */
-
-        $token = $this->authService->sendResetPasswordToken($request->all());
+        $token = $this->authService->sendResetPasswordToken($request->input('email'));
 
         return response()->json(['reset_password_token' => $token->value]);
     }
@@ -94,6 +90,6 @@ class AuthController extends Controller
     {
         $this->authService->resetPassword($request->all());
 
-        return response(null, 202);
+        return response(null, 200);
     }
 }

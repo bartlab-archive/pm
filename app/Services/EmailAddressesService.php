@@ -6,7 +6,6 @@ use App\Models\User;
 
 class EmailAddressesService
 {
-
     public function create(User $user, array $data)
     {
         return $user->email()->create([

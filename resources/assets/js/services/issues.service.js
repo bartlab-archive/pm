@@ -23,7 +23,7 @@ export default class IssuesService {
     }
 
     postUpdate(id, params) {
-        return this.Restangular.one('issues/' + id + '/update').post(params);
+        return this.Restangular.one('issues').one(id).put(null, params);
     }
 
     getInfo(id, project_id) {

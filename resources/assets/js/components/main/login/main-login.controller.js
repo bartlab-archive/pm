@@ -13,13 +13,19 @@ export default class MainLoginController extends ControllerBase {
         return ['$mdToast', '$auth', '$state'];
     }
 
-    onSubmit() {
+    $onInit() {
+        this.errors = {};
+        this.loginForm = {};
+    }
+
+    submit() {
         this.$auth.login(this.model)
-            .then((response) => this.onLogin(response));
+            .then((response) => this.onLogin(response))
+            .catch((response) => this.onError(response));
     }
 
     onLogin(response) {
-        if (response.data.token) {
+        if (_.get(response, 'data.token')) {
             this.$mdToast.show(
                 this.$mdToast.simple()
                     .textContent('Welcome!')
@@ -29,13 +35,32 @@ export default class MainLoginController extends ControllerBase {
             // userService.loadUser(true).then(function () {
             this.$state.go('home');
             // });
+        }
+
+        this.errors = _.get(response, 'data.errors', {});
+    }
+
+    onError(response) {
+        if (_.get(response, 'status') === 500) {
+            this.$mdToast.show(
+                this.$mdToast.simple().textContent('Server error')
+            );
         } else {
+            this.errors = _.get(response, 'data', {});
+            for (let field in this.errors) {
+                if (this.loginForm.hasOwnProperty(field)) {
+                    this.loginForm[field].$setValidity('server', false);
+                }
+            }
             this.$mdToast.show(
                 this.$mdToast.simple()
                     .textContent('Whoops, your password or email are incorrect')
             );
         }
+    }
 
-        this.errors = _.get(response, 'data.errors', {});
+    change(field) {
+        this.loginForm[field].$setValidity('server', true);
+        this.errors[field] = undefined;
     }
 }

@@ -58,7 +58,8 @@ Route::group(
                 Route::get('/{identifier}/wiki/{page_title}', 'WikiController@getWikiPageMarkDown');
                 Route::put('/{identifier}/wiki/{name}/{id}', 'WikiController@setWikiPageMarkDown');
 
-                Route::get('/{projectId}/attachments', 'AttachmentController@index');
+				Route::get('/attachments/{identifier}', 'AttachmentsController@index');
+
             }
         );
 
@@ -71,6 +72,7 @@ Route::group(
             function () {
                 Route::get('/', 'NewsController@index');
                 Route::get('/{id}', 'NewsController@show');
+                Route::put('{id}', 'NewsController@update');
             }
         );
 
@@ -83,7 +85,7 @@ Route::group(
             function () {
                 Route::get('/{id}', 'IssuesController@getIssue');
                 Route::get('/', 'IssuesController@getIssues');
-                Route::post('/{id}/update', 'IssuesController@postUpdate');
+                Route::put('/{id}', 'IssuesController@postUpdate');
                 Route::get('/{id}/infoedit/{project_id}', 'IssuesController@infoEdit');
             }
         );

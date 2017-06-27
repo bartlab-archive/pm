@@ -9,11 +9,11 @@ export default class NewsService {
         this.Restangular = $injector.get('Restangular');
     }
 
-    one(indifier) {
-        return this.Restangular.one('news').one(indifier).get();
+    one(identifier) {
+        return this.Restangular.one('news', identifier).get();
     }
 
-    getNews(params) {
+    getNews(params = {}) {
         return this.Restangular.all('news').getList(params);
     }
 }

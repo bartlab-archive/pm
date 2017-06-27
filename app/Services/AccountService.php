@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
-use App\Interfaces\AccountServiceInterface;
+
 use Illuminate\Support\Facades\Auth;
 
-class AccountService implements AccountServiceInterface
+class AccountService
 {
 
     public function get()

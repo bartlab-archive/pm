@@ -26,14 +26,16 @@ export default class IssuesEditController extends ControllerBase {
         this.editIsOpen = true;
         this.info = {};
         this.IssuesService.getInfo(this.$stateParams.id, this.edit_issue.project_id).then((response) => {
-            this.info = response.data;
+            this.info = response.data[0];
             console.log(this.info);
         });
     }
 
     updateIssue() {
         this.IssuesService.postUpdate(this.$stateParams.id, this.edit_issue).then((response) => {
-            console.log(response);
+            if (response.status == 200) {
+                location.reload();
+            }
         });
     }
 

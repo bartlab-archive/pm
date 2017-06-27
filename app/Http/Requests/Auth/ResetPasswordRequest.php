@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Auth;
 
 
+use App\Models\Token;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ResetPasswordRequest extends FormRequest
 {
@@ -25,7 +27,11 @@ class ResetPasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'token' => 'required', //todo: add valid rules
+            'reset_password_token' => [
+                'required',
+                Rule::exists(Token::getTableName(), 'value')
+                    ->where('action', Token::PASSWORD_RESET_TOKEN_ACTION)
+            ],
             'password' => 'required|string|min:6',
             'repeat_password' => 'required|string|min:6|same:password'
         ];

@@ -63,9 +63,9 @@ class ProjectsService
         return $project->delete();
     }
 
-    public function getAttachments($projectId)
+    public function getAttachments($identifier)
     {
-        $project = Project::find($projectId)->first();
+        $project = Project::whereIdentifier($identifier)->first();
         if ($project) {
             return $project->attachments;
         }
@@ -78,10 +78,10 @@ class ProjectsService
     		    'projects' => Project::where('identifier', $identifier)
 		                            ->with(array('issues.user', 'issues.trackers',
 			                            'issues' => function($query) use ($request){
-		                            	$query->limit($request->limit);
-		                            	$query->offset($request->offset);
-		                            	if(!empty($request->sortField)) {
-				                            $query->orderBy($request->sortField, $request->order);
+		                            	$query->limit(array_get($request, 'limit'));
+		                            	$query->offset(array_get($request, 'offset'));
+		                            	if(!empty(array_get($request, 'sortField'))) {
+				                            $query->orderBy(array_get($request, 'sortField'), array_get($request, 'order'));
 			                            }
 		                            }))
 		                            ->get()

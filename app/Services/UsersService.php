@@ -2,11 +2,23 @@
 
 namespace App\Services;
 
-use App\Interfaces\UsersServiceInterface;
+
 use App\Models\User;
 
-class UsersService implements UsersServiceInterface
+class UsersService
 {
+    protected $emailAddressesService;
+    protected $preferenceService;
+
+    public function __construct(
+        EmailAddressesService $emailAddressesService,
+        UserPreferenceService $preferenceService
+    )
+    {
+        $this->emailAddressesService = $emailAddressesService;
+        $this->preferenceService = $preferenceService;
+    }
+
     public function register(array $data)
     {
         $salt = str_random(33);
@@ -21,19 +33,39 @@ class UsersService implements UsersServiceInterface
             'mail_notification' => 'only_my_events'
         ]);
 
-        app('App\Services\EmailAddressesService')->create($user, $data);
-        app('App\Services\UserPreferenceService')->create($user, $data);
+        $this->emailAddressesService->create($user, $data);
+        $this->preferenceService->create($user, $data);
 
         return $user;
     }
 
-    public function getUserByLoginOrEmail(string $login)
+    public function userByLoginOrEmail(string $login)
     {
         return User::where('login', $login)
-            ->orWhereHas('email', function ($q) use($login) {
+            ->orWhereHas('email', function ($q) use ($login) {
                 $q->where('address', $login);
             })
             ->first();
+    }
+
+    public function userByToken(string $token, string $action)
+    {
+        return User::whereHas('tokens', function ($q) use ($token, $action) {
+            $q->where('action', $action)
+                ->where('value', $token);
+        })->first();
+    }
+
+    public function preparePassword(User $user, $password): string
+    {
+        return sha1($user->salt . sha1($password));
+    }
+
+    public function resetPassword(User $user, $new_password): bool
+    {
+        $user->hashed_password = $this->preparePassword($user, $new_password);
+
+        return $user->save();
     }
 
 }

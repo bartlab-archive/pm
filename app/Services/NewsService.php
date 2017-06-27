@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tolik
- * Date: 22.06.17
- * Time: 16:16
- */
 
 namespace App\Services;
 
@@ -17,14 +11,21 @@ class NewsService
 		return News::all();
 	}
 	
-	public function one($identifier)
+	public function one($id)
 	{
-		return News::whereIdentifier($identifier)->first();
+		return News::find($id);
 	}
 	
 	public function allByProjectId(int $id)
 	{
 		return News::where('project_id', $id)->get();
 	}
+	public function update($id, $data)
+	{
+		$news = News::find($id);
+		$news->update($data);
+		return $news;
+	}
+	
 	
 }
