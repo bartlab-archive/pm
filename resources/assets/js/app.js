@@ -12,6 +12,7 @@ import 'angular-messages';
 import 'angular-animate';
 import 'angular-aria';
 import 'ng-showdown';
+import 'angular-file-saver';
 
 
 import 'directives.module';
@@ -32,6 +33,7 @@ angular
             'ngMessages',
             'ngMaterial',
             'angularMoment',
+            'ngFileSaver',
 
             'ui.router',
             'restangular',

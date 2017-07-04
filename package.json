@@ -31,6 +31,7 @@
     "roboto-fontface": "*",
     "satellizer": "*",
     "angular-moment": "^1.0.1",
-    "moment": "^2.18.1"
+    "moment": "^2.18.1",
+    "angular-file-saver": "^1.1.3"
   }
 }

@@ -17,7 +17,7 @@ import projectsBoardsComponent from './boards/projects-boards.component';
 import projectsWikiNewComponent from './wiki-new/projects-wiki-new.component';
 import projectsWikiPageComponent from './wiki/page/projects-wiki-page.component';
 
-angular.module('app.components.projects', [])
+angular.module('app.components.projects', ['ngFileSaver'])
     .config(ProjectsConfig.inst())
     .component(projectsListComponent.name, projectsListComponent)
     .component(projectsNewComponent.name, projectsNewComponent)

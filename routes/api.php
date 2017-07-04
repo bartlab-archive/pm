@@ -58,7 +58,9 @@ Route::group(
                 Route::get('/{identifier}/wiki/{page_title}', 'WikiController@getWikiPageMarkDown');
                 Route::put('/{identifier}/wiki/{name}/{id}', 'WikiController@setWikiPageMarkDown');
 
-				Route::get('/attachments/{identifier}', 'AttachmentsController@index');
+                Route::get('/attachments/{identifier}', 'AttachmentsController@index');
+                Route::get('/attachments/download/{id}', 'AttachmentsController@download');
+                Route::delete('/attachments/{id}', 'AttachmentsController@delete');
 
             }
         );

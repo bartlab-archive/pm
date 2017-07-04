@@ -6,6 +6,11 @@ use App\Models\Project;
 
 class ProjectsService
 {
+    public function __construct(AttachmentsService $attachmentsService)
+    {
+        $this->attachmentsService = $attachmentsService;
+    }
+
     public function all($isClosed = null)
     {
         $projects = Project::orderBy('name')
@@ -71,22 +76,27 @@ class ProjectsService
         }
         return collect();
     }
-	
+
+    public function getAttachmentPath($id)
+    {
+        return $this->attachmentsService->getFullFilePath($id);
+    }
+
     public function getIssues($identifier, $request)
     {
-    	return [
-    		    'projects' => Project::where('identifier', $identifier)
-		                            ->with(array('issues.user', 'issues.trackers',
-			                            'issues' => function($query) use ($request){
-		                            	$query->limit(array_get($request, 'limit'));
-		                            	$query->offset(array_get($request, 'offset'));
-		                            	if(!empty(array_get($request, 'sortField'))) {
-				                            $query->orderBy(array_get($request, 'sortField'), array_get($request, 'order'));
-			                            }
-		                            }))
-		                            ->get()
-		                            ->toArray(),
-		        'total' =>Project::where('identifier', $identifier)->first()->issues()->count()
-	           ];
+        return [
+            'projects' => Project::where('identifier', $identifier)
+                ->with(array('issues.user', 'issues.trackers',
+                    'issues' => function ($query) use ($request) {
+                        $query->limit(array_get($request, 'limit'));
+                        $query->offset(array_get($request, 'offset'));
+                        if (!empty(array_get($request, 'sortField'))) {
+                            $query->orderBy(array_get($request, 'sortField'), array_get($request, 'order'));
+                        }
+                    }))
+                ->get()
+                ->toArray(),
+            'total' => Project::where('identifier', $identifier)->first()->issues()->count()
+        ];
     }
 }

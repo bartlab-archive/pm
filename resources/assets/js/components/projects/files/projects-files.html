@@ -15,8 +15,8 @@
             </md-card-title-text>
         </md-card-title>
         <md-card-actions layout="row" layout-align="end center">
-            <md-button>Download</md-button>
-            <md-button>Delete</md-button>
+            <md-button ng-click="$ctrl.download(row.id, row.filename)">Download</md-button>
+            <md-button ng-click="$ctrl.delete(row.id)">Delete</md-button>
         </md-card-actions>
     </md-card>
 </div>
