@@ -28,11 +28,11 @@ export default class LayoutProjectController extends ControllerBase {
         ];
 
         this.newItems = [
-            'New issue',
-            'New category',
-            'New version',
-            'New wiki page',
-            'New file',
+            {name: 'New issue', url: '', icon: 'create'},
+            {name: 'New category', url: '', icon: 'folder'},
+            {name: 'New version', url: '', icon: 'archive'},
+            {name: 'New wiki page', url: '', icon: 'receipt'},
+            {name: 'New file', url: '', icon: 'attach_file'},
         ];
 
         this.currentNavItem = _.get(
@@ -40,6 +40,9 @@ export default class LayoutProjectController extends ControllerBase {
             'url',
             this.items[0].url
         );
+
+        this.menuOpen = false;
+
     }
 
     goto(url) {

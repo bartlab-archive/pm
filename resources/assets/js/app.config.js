@@ -11,11 +11,12 @@ import InjectableBase from 'base/injectable.base';
  * @property $authProvider
  * @property $mdThemingProvider
  * @property RestangularProvider
+ * @property $showdownProvider
  */
 export default class AppConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$mdThemingProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider', 'RestangularProvider'];
+        return ['$showdownProvider', '$mdThemingProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider', 'RestangularProvider'];
     }
 
     $onInit() {
@@ -24,13 +25,14 @@ export default class AppConfig extends InjectableBase {
         this.authConfig();
         this.restConfig();
         this.themeConfig();
+        this.showdownConfig();
     }
 
     themeConfig() {
         this.$mdThemingProvider.theme('default')
             .primaryPalette('blue-grey')
             .accentPalette('deep-orange');
-            // .warnPalette('red');
+        // .warnPalette('red');
 
         this.$mdThemingProvider.enableBrowserColor({
             // theme: 'myTheme', // Default is 'default'
@@ -72,5 +74,17 @@ export default class AppConfig extends InjectableBase {
             'Content-Type': 'application/json'
         });
         this.RestangularProvider.setFullResponse(true);
+    }
+
+    showdownConfig() {
+        this.$showdownProvider.setOption('simpleLineBreaks', true);
+        this.$showdownProvider.setOption('simplifiedAutoLink', true);
+        this.$showdownProvider.setOption('noHeaderId', true);
+        this.$showdownProvider.setOption('strikethrough', true);
+        this.$showdownProvider.setOption('ghCodeBlocks', true);
+        this.$showdownProvider.setOption('tasklists', true);
+        this.$showdownProvider.setOption('parseImgDimension', true);
+        this.$showdownProvider.setOption('ghMentions', true);
+        this.$showdownProvider.setOption('ghMentionsLink', '/');
     }
 }

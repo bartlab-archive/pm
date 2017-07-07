@@ -82,21 +82,21 @@ class ProjectsService
         return $this->attachmentsService->getFullFilePath($id);
     }
 
-    public function getIssues($identifier, $request)
-    {
-        return [
-            'projects' => Project::where('identifier', $identifier)
-                ->with(array('issues.user', 'issues.trackers',
-                    'issues' => function ($query) use ($request) {
-                        $query->limit(array_get($request, 'limit'));
-                        $query->offset(array_get($request, 'offset'));
-                        if (!empty(array_get($request, 'sortField'))) {
-                            $query->orderBy(array_get($request, 'sortField'), array_get($request, 'order'));
-                        }
-                    }))
-                ->get()
-                ->toArray(),
-            'total' => Project::where('identifier', $identifier)->first()->issues()->count()
-        ];
-    }
+//    public function getIssues($identifier, $request)
+//    {
+//        return [
+//            'projects' => Project::where('identifier', $identifier)
+//                ->with(array('issues.user', 'issues.trackers',
+//                    'issues' => function ($query) use ($request) {
+//                        $query->limit(array_get($request, 'limit'));
+//                        $query->offset(array_get($request, 'offset'));
+//                        if (!empty(array_get($request, 'sortField'))) {
+//                            $query->orderBy(array_get($request, 'sortField'), array_get($request, 'order'));
+//                        }
+//                    }))
+//                ->get()
+//                ->toArray(),
+//            'total' => Project::where('identifier', $identifier)->first()->issues()->count()
+//        ];
+//    }
 }

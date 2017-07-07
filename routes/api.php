@@ -48,9 +48,11 @@ Route::group(
                 Route::post('/', 'ProjectsController@create');
                 Route::put('/{identifier}', 'ProjectsController@update');
                 Route::delete('/{identifier}', 'ProjectsController@destroy');
-                Route::get('/{identifier}/issues', 'ProjectsController@getIssues');
+
+                Route::get('/{identifier}/issues', 'IssuesController@project');
 
                 Route::get('/{identifier}/news', 'NewsController@getProjectNews');
+
                 Route::put('/{identifier}/wiki/{id}', 'WikiController@setWikiPageMarkDown');
                 Route::get('/{identifier}/wiki', 'WikiController@getWikiPageMarkDown');
                 Route::get('/{identifier}/wiki/all', 'WikiController@getAllWikiPage');
@@ -88,7 +90,7 @@ Route::group(
                 Route::get('/{id}', 'IssuesController@getIssue');
                 Route::get('/', 'IssuesController@getIssues');
                 Route::put('/{id}', 'IssuesController@postUpdate');
-                Route::get('/{id}/infoedit/{project_id}', 'IssuesController@infoEdit');
+//                Route::get('/{id}/infoedit/{project_id}', 'IssuesController@infoEdit');
             }
         );
 
