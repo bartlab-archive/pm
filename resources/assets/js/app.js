@@ -14,7 +14,6 @@ import 'angular-aria';
 import 'ng-showdown';
 import 'angular-file-saver';
 
-
 import 'directives.module';
 import 'filters.module';
 import 'services.module';
