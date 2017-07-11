@@ -1,5 +1,4 @@
 const {mix} = require('laravel-mix');
-const ngAnnotatePlugin = require('ng-annotate-webpack-plugin');
 
 /*
  |--------------------------------------------------------------------------
@@ -21,15 +20,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
                 path.resolve('./node_modules')
             ]
         },
-        /* module: {
-             loaders: [
-                 {test: /\.html$/, loader: 'raw'}
-             ]
-         },*/
         plugins: [
-            // new ngAnnotatePlugin({
-            //     add: true,
-            // })
         ]
     })
 ;

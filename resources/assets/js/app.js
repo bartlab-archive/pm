@@ -5,8 +5,6 @@ import '@uirouter/angularjs';
 import 'restangular';
 import 'satellizer';
 import 'angular-moment';
-// import 'ng-table';
-import 'md-data-table';
 import 'angular-material';
 import 'angular-messages';
 import 'angular-animate';
@@ -38,8 +36,6 @@ angular
             'restangular',
             'satellizer',
             'ng-showdown',
-            // 'ngTable',
-            'mdDataTable',
 
             'app.directives',
             'app.filters',
