@@ -79,11 +79,11 @@ export default class ProjectsIssuesController extends ControllerBase {
     setScrollbarContainerHeight() {
         console.log(window.innerHeight);
         this.scrollBarConfigIssue = {
-            setHeight: window.innerHeight - 370
+            setHeight: window.innerHeight - 340
         };
 
         this.scrollBarConfigDescription = {
-            setHeight: window.innerHeight - 335
+            setHeight: window.innerHeight - 305
         };
     }
 
