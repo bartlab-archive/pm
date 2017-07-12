@@ -62,7 +62,6 @@ export default class IssuesListController extends ControllerBase {
     }
 
     load() {
-        console.log(this.$stateParams.id);
         this.selectAllState = false;
         this.IssuesService.getListByProject(this.$stateParams.id || '1')
             .then((response) => {
@@ -79,6 +78,11 @@ export default class IssuesListController extends ControllerBase {
 
     setScrollbarContainerHeight() {
         let windowHeight = window.innerHeight;
+
+        if (!this.$stateParams.id) {
+            windowHeight += 50;
+        }
+
         this.scrollBarConfigIssue = {
             setHeight: windowHeight - 340
         };
