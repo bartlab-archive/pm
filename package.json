@@ -30,6 +30,10 @@
     "ng-showdown": "*",
     "restangular": "*",
     "roboto-fontface": "*",
-    "satellizer": "*"
+    "satellizer": "*",
+    "ng-scrollbars": "*"
+  },
+  "dependencies": {
+    "simplebar": "^2.4.3"
   }
 }

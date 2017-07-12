@@ -12,11 +12,12 @@ import InjectableBase from 'base/injectable.base';
  * @property $mdThemingProvider
  * @property RestangularProvider
  * @property $showdownProvider
+ * @property ScrollBarsProvider
  */
 export default class AppConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$showdownProvider', '$mdThemingProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider', 'RestangularProvider'];
+        return ['$showdownProvider', '$mdThemingProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider', 'RestangularProvider', 'ScrollBarsProvider'];
     }
 
     $onInit() {
@@ -26,6 +27,7 @@ export default class AppConfig extends InjectableBase {
         this.restConfig();
         this.themeConfig();
         this.showdownConfig();
+        this.scrollBarConfig();
     }
 
     themeConfig() {
@@ -86,5 +88,22 @@ export default class AppConfig extends InjectableBase {
         this.$showdownProvider.setOption('parseImgDimension', true);
         this.$showdownProvider.setOption('ghMentions', true);
         this.$showdownProvider.setOption('ghMentionsLink', '/');
+    }
+
+    scrollBarConfig() {
+        this.ScrollBarsProvider.defaults = {
+            autoHideScrollbar: false,
+            setHeight: 200,
+            scrollInertia: 500,
+            axis: 'y',
+            advanced: {
+                updateOnContentResize: true
+            },
+            scrollButtons: {
+                scrollAmount: 'auto', // scroll amount when button pressed
+                enable: true // enable scrolling buttons by default
+            },
+            theme: 'minimal-dark'
+        };
     }
 }

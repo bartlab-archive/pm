@@ -10,10 +10,13 @@ import angular from 'angular';
 export default class ProjectsIssuesController extends ControllerBase {
 
     static get $inject() {
-        return ['$state','$showdown', 'IssuesService', '$stateParams'];
+        return ['$state', '$showdown', 'IssuesService', '$stateParams', '$window'];
     }
 
     $onInit() {
+        angular.element(this.$window).bind('resize', () => this.setScrollbarContainerHeight());
+        this.setScrollbarContainerHeight();
+
         this.load();
 
         this.tags = [
@@ -73,6 +76,17 @@ export default class ProjectsIssuesController extends ControllerBase {
         });
     }
 
+    setScrollbarContainerHeight() {
+        console.log(window.innerHeight);
+        this.scrollBarConfigIssue = {
+            setHeight: window.innerHeight - 370
+        };
+
+        this.scrollBarConfigDescription = {
+            setHeight: window.innerHeight - 335
+        };
+    }
+
     makeHtml(text) {
         return text ? this.$showdown.stripHtml(this.$showdown.makeHtml(text)) : '';
     }
@@ -106,7 +120,7 @@ export default class ProjectsIssuesController extends ControllerBase {
         this.$state.go('issues.edit', {id: id});
     }
 
-    toggleShowMore(){
+    toggleShowMore() {
         this.showMore = !this.showMore;
     }
 }
