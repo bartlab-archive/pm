@@ -10,7 +10,6 @@ export default class IssuesService {
     }
 
     one(indifier) {
-        console.log(123);
         return this.Restangular.one('issues').one(indifier).get();
     }
 

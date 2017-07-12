@@ -5,7 +5,7 @@ import projectsInfoComponent from './info/projects-info.component';
 import projectsSettingsComponent from './settings/projects-settings.component';
 import projectsActivityComponent from './activity/projects-activity.component';
 import projectsCalendarComponent from './calendar/projects-calendar.component';
-import projectsIssuesComponent from './issues/projects-issues.component';
+import issuesListComponent from '../issues/list/issues-list.component';
 import projectsWikiComponent from './wiki/projects-wiki.component';
 import projectsGanttComponent from './gantt/projects-gantt.component';
 import projectsNewsComponent from './news/projects-news.component';
@@ -76,7 +76,7 @@ export default class ProjectsConfig extends InjectableBase {
             })
             .state('projects-inner.issues.index', {
                 url: '',
-                component: projectsIssuesComponent.name,
+                component: issuesListComponent.name,
             })
             .state('projects-inner.issues.calendar', {
                 url: '/calendar',

@@ -7,7 +7,7 @@ import projectsInfoComponent from './info/projects-info.component';
 import projectsSettingsComponent from './settings/projects-settings.component';
 import projectsActivityComponent from './activity/projects-activity.component';
 import projectsCalendarComponent from './calendar/projects-calendar.component';
-import projectsIssuesComponent from './issues/projects-issues.component';
+// import projectsIssuesComponent from './issues/projects-issues.component';
 import projectsWikiComponent from './wiki/projects-wiki.component';
 import projectsGanttComponent from './gantt/projects-gantt.component';
 import projectsNewsComponent from './news/projects-news.component';
@@ -25,7 +25,7 @@ angular.module('app.components.projects', ['ngFileSaver'])
     .component(projectsSettingsComponent.name, projectsSettingsComponent)
     .component(projectsActivityComponent.name, projectsActivityComponent)
     .component(projectsCalendarComponent.name, projectsCalendarComponent)
-    .component(projectsIssuesComponent.name, projectsIssuesComponent)
+    // .component(projectsIssuesComponent.name, projectsIssuesComponent)
     .component(projectsWikiComponent.name, projectsWikiComponent)
     .component(projectsGanttComponent.name, projectsGanttComponent)
     .component(projectsNewsComponent.name, projectsNewsComponent)
