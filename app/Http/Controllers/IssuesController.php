@@ -37,11 +37,11 @@ class IssuesController extends BaseController
 //		$response->assertStatus(404);
 //	}
 //
-//    public function getIssue($id)
-//    {
-//    	$issue = $this->issueService->one($id);
-//        return is_null($issue) ? response('Not Found', 404) : response()->json($issue, 200);
-//    }
+    public function getIssue($id)
+    {
+    	$issue = $this->issueService->one($id);
+        return is_null($issue) ? response('Not Found', 404) : response()->json($issue, 200);
+    }
 //
 //    public function postUpdate($id, Request $request)
 //    {

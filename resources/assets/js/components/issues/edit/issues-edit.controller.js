@@ -33,7 +33,7 @@ export default class IssuesEditController extends ControllerBase {
 
     updateIssue() {
         this.IssuesService.postUpdate(this.$stateParams.id, this.edit_issue).then((response) => {
-            if (response.status == 200) {
+            if (response.status === 200) {
                 location.reload();
             }
         });

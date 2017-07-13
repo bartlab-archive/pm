@@ -9,12 +9,12 @@ export default class IssuesService {
         this.Restangular = $injector.get('Restangular');
     }
 
-    one(indifier) {
-        return this.Restangular.one('issues').one(indifier).get();
+    one(identifier) {
+        return this.Restangular.one('issues').one(identifier).get();
     }
 
-    getListByProject(indifier, params) {
-        return this.Restangular.all('projects').one(indifier).one('issues').getList();
+    getListByProject(identifier, params) {
+        return this.Restangular.all('projects').one(identifier).one('issues').getList();
     }
 
     getList(params) {

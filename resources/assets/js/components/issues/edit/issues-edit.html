@@ -1,5 +1,6 @@
-<div class="main">
-    <md-card class="content">
+<md-content layout="column" layout-align="center center" class="main md-padding">
+
+    <md-card>
         <md-card-header>
             <md-card-title><h3>Feature #{{ $ctrl.issue.id }}</h3></md-card-title>
             <md-card-subtitle>
@@ -14,8 +15,7 @@
                 </p>
                 <br>
                 <p>
-                    Added by {{ $ctrl.issue.author.firstname + ' ' + $ctrl.issue.author.lastname + ' ' +
-                    $ctrl.issue.created_on}}
+                    Added by {{ $ctrl.issue.author.firstname + ' ' + $ctrl.issue.author.lastname + ' ' + $ctrl.issue.created_on}}
                 </p>
             </div>
             <hr>
@@ -50,24 +50,35 @@
             <div class="related">
                 <h3>Related tasks</h3>
             </div>
+            <hr>
+            <div>
+                <h3>Tasks</h3>
+                <div flex="100">
+                    <p><a href="/issues">View All Tasks</a></p>
+                    <p><a href="/issues">Short description</a></p>
+                    <p><a href="/issues">Import</a></p>
+                </div>
+            </div>
         </md-card-content>
     </md-card>
-</div>
-<md-card class="task-description">
-    <md-card-header>
-        <md-card-title><h3>Tasks</h3></md-card-title>
-    </md-card-header>
-    <md-card-content class="content">
-        <div>
-            <p><a href="/issues">View All Tasks</a></p>
-            <p><a href="/issues">Short description</a></p>
-            <p><a href="/issues">Import</a></p>
-        </div>
-        <div>
-            <h3>Observers(*)</h3>
-        </div>
-    </md-card-content>
-</md-card>
+
+    <!--<md-card class="task-description">-->
+        <!--<md-card-header>-->
+            <!--<md-card-title><h3>Tasks</h3></md-card-title>-->
+        <!--</md-card-header>-->
+        <!--<md-card-content class="content">-->
+            <!--<div flex="100">-->
+                <!--<p><a href="/issues">View All Tasks</a></p>-->
+                <!--<p><a href="/issues">Short description</a></p>-->
+                <!--<p><a href="/issues">Import</a></p>-->
+            <!--</div>-->
+            <!--<div>-->
+                <!--<h3>Observers(*)</h3>-->
+            <!--</div>-->
+        <!--</md-card-content>-->
+    <!--</md-card>-->
+</md-content>
+
 <div class="edit" ng-if="$ctrl.editIsOpen">
     <md-card>
         <form action="" method="post">
