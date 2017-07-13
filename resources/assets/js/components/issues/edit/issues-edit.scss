@@ -11,19 +11,18 @@
   margin-left: 10px;
 }
 
-.status p {
-  display: inline-block;
-  padding-right: 170px;
+.status {
+  padding-top: 10px;
 }
 
-.priority p {
-  display: inline-block;
-  padding-right: 170px;
+.status, .priority, .assigned {
+  padding-bottom: 10px;
 }
 
-.assigned p {
-  display: inline-block;
-  padding-right: 170px;
+.assigned {
+  .progress-line {
+    margin-top: 7px;
+  }
 }
 
 .short-desciption p {
@@ -37,7 +36,7 @@
 }
 
 .content {
-  margin-top: 0px !important;
+  margin-top: 0 !important;
 }
 
 .edit {

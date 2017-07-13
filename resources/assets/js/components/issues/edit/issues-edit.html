@@ -1,39 +1,46 @@
-<md-content layout="column" layout-align="center center" class="main md-padding">
+<div layout="column" layout-align="center center">
 
     <md-card>
         <md-card-header>
-            <md-card-title><h3>Feature #{{ $ctrl.issue.id }}</h3></md-card-title>
+            <md-card-header-text>
+                <span class="md-title">{{ $ctrl.issue.subject }}</span>
+                <span class="md-subhead">
+                    #{{ $ctrl.issue.id }} | Feature | {{$ctrl.issue.statusText}} | Added by {{ $ctrl.issue.author.firstname + ' ' + $ctrl.issue.author.lastname}}
+                </span>
+            </md-card-header-text>
             <md-card-subtitle>
                 <md-button ng-click="$ctrl.openEditForm()">Edit</md-button>
             </md-card-subtitle>
         </md-card-header>
         <md-card-content class="content">
             <div class="short-desciption">
-                <img src="/img/icons/a2efce483d126b20e8a67a7c5c6070c7.jpg" alt="">
-                <p>
-                    <a href="/issues/{{ $ctrl.issue.id }}">Feature #{{ $ctrl.issue.id }}</a>: {{ $ctrl.issue.subject }}
-                </p>
-                <br>
-                <p>
-                    Added by {{ $ctrl.issue.author.firstname + ' ' + $ctrl.issue.author.lastname + ' ' + $ctrl.issue.created_on}}
-                </p>
+                <!--<img src="/img/icons/a2efce483d126b20e8a67a7c5c6070c7.jpg" alt="">-->
+                <!--<p>-->
+                <!--Added by {{ $ctrl.issue.author.firstname + ' ' + $ctrl.issue.author.lastname + '    ' + $ctrl.issue.created_on}}-->
+                <!--</p>-->
             </div>
             <hr>
             <div class="info">
-                <div class="status">
-                    <p>Status: {{ $ctrl.issue.statusText }}</p>
-                    <p>Start data: {{ $ctrl.issue.start_date }}</p>
+                <div layout="row" class="status">
+                    <div flex="50"><b>Status:</b> {{ $ctrl.issue.statusText }}</div>
+                    <div flex="50"><b>Start data:</b> {{ $ctrl.issue.start_date }}</div>
                 </div>
-                <div class="priority">
-                    <p>Priority: {{ $ctrl.issue.priority_id }}</p>
-                    <p>End data: {{ $ctrl.issue.closed_on }}</p>
+                <div layout="row" class="priority">
+                    <div flex="50"><b>Priority:</b> {{ $ctrl.issue.priority_id }}</div>
+                    <div flex="50"><b>End data:</b> {{ $ctrl.issue.closed_on }}</div>
                 </div>
-                <div class="assigned">
-                    <p>Assigned: {{ $ctrl.issue.user.firstname + ' ' + $ctrl.issue.user.lastname }}</p>
-                    <p>Progress:
-                        <md-progress-linear class="progress" md-mode="determinate"
-                                            value="{{$ctrl.issue.done_ratio}}"></md-progress-linear>
-                    </p>
+                <div layout="row" class="assigned">
+                    <div flex="50"><b>Assigned:</b> {{ $ctrl.issue.user.firstname + ' ' + $ctrl.issue.user.lastname }}
+                    </div>
+                    <div flex="50" layout="row">
+                        <div flex="20"><b>Progress:</b></div>
+                        <div class="progress-line" flex="50">
+                            <md-progress-linear class="progress"
+                                                md-mode="determinate"
+                                                value="{{$ctrl.issue.done_ratio}}">
+                            </md-progress-linear>
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr>
@@ -63,21 +70,21 @@
     </md-card>
 
     <!--<md-card class="task-description">-->
-        <!--<md-card-header>-->
-            <!--<md-card-title><h3>Tasks</h3></md-card-title>-->
-        <!--</md-card-header>-->
-        <!--<md-card-content class="content">-->
-            <!--<div flex="100">-->
-                <!--<p><a href="/issues">View All Tasks</a></p>-->
-                <!--<p><a href="/issues">Short description</a></p>-->
-                <!--<p><a href="/issues">Import</a></p>-->
-            <!--</div>-->
-            <!--<div>-->
-                <!--<h3>Observers(*)</h3>-->
-            <!--</div>-->
-        <!--</md-card-content>-->
+    <!--<md-card-header>-->
+    <!--<md-card-title><h3>Tasks</h3></md-card-title>-->
+    <!--</md-card-header>-->
+    <!--<md-card-content class="content">-->
+    <!--<div flex="100">-->
+    <!--<p><a href="/issues">View All Tasks</a></p>-->
+    <!--<p><a href="/issues">Short description</a></p>-->
+    <!--<p><a href="/issues">Import</a></p>-->
+    <!--</div>-->
+    <!--<div>-->
+    <!--<h3>Observers(*)</h3>-->
+    <!--</div>-->
+    <!--</md-card-content>-->
     <!--</md-card>-->
-</md-content>
+</div>
 
 <div class="edit" ng-if="$ctrl.editIsOpen">
     <md-card>

@@ -10,6 +10,7 @@ export default class IssuesEditController extends ControllerBase {
         this.IssuesService.one(this.$stateParams.id).then((response) => {
             this.issue = response.data;
             this.issue.statusText = this.statusText(this.issue.status_id);
+            console.log(this.issue.statusText);
             this.edit_issue = this.issue;
         });
     }
@@ -18,6 +19,9 @@ export default class IssuesEditController extends ControllerBase {
         switch (id) {
             case 5:
                 return 'Closed';
+                break;
+            default:
+                return 'Open';
                 break;
         }
     }
