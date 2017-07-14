@@ -1,92 +1,137 @@
-<div layout="column" layout-align="center center">
+<div ng-if="!$ctrl.editIsOpen" layout="column" layout-align="center center">
 
-    <md-card>
-        <md-card-header>
-            <md-card-header-text>
-                <span class="md-title">{{ $ctrl.issue.subject }}</span>
-                <span class="md-subhead">
-                    #{{ $ctrl.issue.id }} | Feature | {{$ctrl.issue.statusText}} | Added by {{ $ctrl.issue.author.firstname + ' ' + $ctrl.issue.author.lastname}}
-                </span>
-            </md-card-header-text>
-            <md-card-subtitle>
-                <md-button ng-click="$ctrl.openEditForm()">Edit</md-button>
-            </md-card-subtitle>
-        </md-card-header>
-        <md-card-content class="content">
-            <div class="short-desciption">
-                <!--<img src="/img/icons/a2efce483d126b20e8a67a7c5c6070c7.jpg" alt="">-->
-                <!--<p>-->
-                <!--Added by {{ $ctrl.issue.author.firstname + ' ' + $ctrl.issue.author.lastname + '    ' + $ctrl.issue.created_on}}-->
-                <!--</p>-->
-            </div>
-            <hr>
-            <div class="info">
-                <div layout="row" class="status">
-                    <div flex="50"><b>Status:</b> {{ $ctrl.issue.statusText }}</div>
-                    <div flex="50"><b>Start data:</b> {{ $ctrl.issue.start_date }}</div>
-                </div>
-                <div layout="row" class="priority">
-                    <div flex="50"><b>Priority:</b> {{ $ctrl.issue.priority_id }}</div>
-                    <div flex="50"><b>End data:</b> {{ $ctrl.issue.closed_on }}</div>
-                </div>
-                <div layout="row" class="assigned">
-                    <div flex="50"><b>Assigned:</b> {{ $ctrl.issue.user.firstname + ' ' + $ctrl.issue.user.lastname }}
-                    </div>
-                    <div flex="50" layout="row">
-                        <div flex="20"><b>Progress:</b></div>
-                        <div class="progress-line" flex="50">
-                            <md-progress-linear class="progress"
-                                                md-mode="determinate"
-                                                value="{{$ctrl.issue.done_ratio}}">
-                            </md-progress-linear>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <div>
-                <h3>Description</h3>
-                <div markdown-to-html="$ctrl.issue.description || ''">
-                </div>
-            </div>
-            <hr>
-            <div class="subtasks">
-                <h3>Subtasks</h3>
-            </div>
-            <hr>
-            <div class="related">
-                <h3>Related tasks</h3>
-            </div>
-            <hr>
-            <div>
-                <h3>Tasks</h3>
-                <div flex="100">
-                    <p><a href="/issues">View All Tasks</a></p>
-                    <p><a href="/issues">Short description</a></p>
-                    <p><a href="/issues">Import</a></p>
-                </div>
-            </div>
-        </md-card-content>
-    </md-card>
-
-    <!--<md-card class="task-description">-->
+    <!--<md-card>-->
     <!--<md-card-header>-->
-    <!--<md-card-title><h3>Tasks</h3></md-card-title>-->
+    <!--<md-card-header-text>-->
+    <!--<span class="md-title">{{ $ctrl.issue.subject }}</span>-->
+    <!--<span class="md-subhead">-->
+    <!--#{{ $ctrl.issue.id }} | Feature | {{$ctrl.issue.statusText}} | Added by {{ $ctrl.issue.author.firstname + ' ' + $ctrl.issue.author.lastname}}-->
+    <!--</span>-->
+    <!--</md-card-header-text>-->
+    <!--<md-card-subtitle>-->
+    <!--<md-button ng-click="$ctrl.openEditForm()">Edit</md-button>-->
+    <!--</md-card-subtitle>-->
     <!--</md-card-header>-->
     <!--<md-card-content class="content">-->
-    <!--<div flex="100">-->
-    <!--<p><a href="/issues">View All Tasks</a></p>-->
-    <!--<p><a href="/issues">Short description</a></p>-->
-    <!--<p><a href="/issues">Import</a></p>-->
+    <!--<div class="short-desciption">-->
+    <!--&lt;!&ndash;<img src="/img/icons/a2efce483d126b20e8a67a7c5c6070c7.jpg" alt="">&ndash;&gt;-->
+    <!--&lt;!&ndash;<p>&ndash;&gt;-->
+    <!--&lt;!&ndash;Added by {{ $ctrl.issue.author.firstname + ' ' + $ctrl.issue.author.lastname + '    ' + $ctrl.issue.created_on}}&ndash;&gt;-->
+    <!--&lt;!&ndash;</p>&ndash;&gt;-->
+    <!--</div>-->
+    <!--<div class="info">-->
+    <!--<div layout="row" class="status">-->
+    <!--<div flex="50"><b>Status:</b> {{ $ctrl.issue.statusText }}</div>-->
+    <!--<div flex="50"><b>Start data:</b> {{ $ctrl.issue.start_date }}</div>-->
+    <!--</div>-->
+    <!--<div layout="row" class="priority">-->
+    <!--<div flex="50"><b>Priority:</b> {{ $ctrl.issue.priority_id }}</div>-->
+    <!--<div flex="50"><b>End data:</b> {{ $ctrl.issue.closed_on }}</div>-->
+    <!--</div>-->
+    <!--<div layout="row" class="assigned">-->
+    <!--<div flex="50"><b>Assigned:</b> {{ $ctrl.issue.user.firstname + ' ' + $ctrl.issue.user.lastname }}-->
+    <!--</div>-->
+    <!--<div flex="50" layout="row">-->
+    <!--<div flex="20"><b>Progress:</b></div>-->
+    <!--<div class="progress-line" flex="50">-->
+    <!--<md-progress-linear class="progress"-->
+    <!--md-mode="determinate"-->
+    <!--value="{{$ctrl.issue.done_ratio}}">-->
+    <!--</md-progress-linear>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
     <!--</div>-->
     <!--<div>-->
-    <!--<h3>Observers(*)</h3>-->
+    <!--<h3>Description</h3>-->
+    <!--<div markdown-to-html="$ctrl.issue.description || ''">-->
     <!--</div>-->
+    <!--</div>-->
+    <!--<div class="subtasks">-->
+    <!--<h3>Subtasks</h3>-->
+    <!--</div>-->
+    <!--<div class="related">-->
+    <!--<h3>Related tasks</h3>-->
+    <!--</div>-->
+    <!--&lt;!&ndash;<div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<h3>Tasks</h3>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div flex="100">&ndash;&gt;-->
+    <!--&lt;!&ndash;<p><a href="/issues">View All Tasks</a></p>&ndash;&gt;-->
+    <!--&lt;!&ndash;<p><a href="/issues">Short description</a></p>&ndash;&gt;-->
+    <!--&lt;!&ndash;<p><a href="/issues">Import</a></p>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
     <!--</md-card-content>-->
     <!--</md-card>-->
+
+
+    <md-card>
+        <md-progress-linear md-mode="determinate" ng-value="$ctrl.issue.done_ratio"></md-progress-linear>
+
+        <md-card-title>
+            <md-card-title-media>
+                <div class="md-media-sm card-media">
+                    <img src="http://178.62.40.206:10010/api/v1/public/uploads/thumbs/5c69d98422fa8dc7f95f311a8be0.jpg"
+                         class="md-user-avatar"
+                         alt="">
+                </div>
+            </md-card-title-media>
+            <md-card-title-text class="padding-l-15">
+                <span class="md-headline"><md-icon ng-if="$ctrl.issue.is_private">lock</md-icon>{{ $ctrl.issue.subject }}</span>
+                <span class="md-subhead">#{{ $ctrl.issue.id }} | Feature | {{$ctrl.issue.statusText}}</span>
+            </md-card-title-text>
+
+            <div flex></div>
+
+            <md-button class="md-icon-button" ng-click="$ctrl.toggleShowMore()">
+                <md-icon>{{ $ctrl.showMore ? 'expand_less' :'expand_more' }}</md-icon>
+            </md-button>
+
+            <md-button class="md-icon-button" ng-click="$ctrl.closeIssueCard()">
+                <md-icon>close</md-icon>
+            </md-button>
+        </md-card-title>
+
+        <md-card-content ng-scrollbars ng-scrollbars-config="$ctrl.scrollBarConfigDescription">
+            <div ng-if="$ctrl.showMore">
+                <p><b>Priority:</b> {{ $ctrl.issue.priority_id }}</p>
+                <p><b>Assignee:</b>{{ $ctrl.issue.user.firstname + ' ' + $ctrl.issue.user.lastname }}</p>
+                <p><b>Target version:</b> -</p>
+                <p><b>Start date:</b> {{ $ctrl.issue.start_date }}</p>
+                <p><b>Due date:</b> {{ $ctrl.issue.due_date || '-' }}</p>
+                <md-divider></md-divider>
+            </div>
+            <div markdown-to-html="$ctrl.issue.description || ''"></div>
+        </md-card-content>
+
+        <md-card-actions layout="row" layout-align="center center">
+
+            <md-button ng-click="$ctrl.openEditForm()">
+                <md-icon>mode_edit</md-icon>
+                Edit
+            </md-button>
+
+            <md-button ng-click="null">
+                <md-icon>star_border</md-icon>
+                Watch
+            </md-button>
+
+            <md-button ng-click="null">
+                <md-icon>content_copy</md-icon>
+                Copy
+            </md-button>
+
+            <md-button ng-click="null">
+                <md-icon>delete</md-icon>
+                Delete
+            </md-button>
+        </md-card-actions>
+    </md-card>
+
+
 </div>
 
-<div class="edit" ng-if="$ctrl.editIsOpen">
+<div layout="column" layout-align="center center" ng-if="$ctrl.editIsOpen">
     <md-card>
         <form action="" method="post">
             <md-card-header>
@@ -99,8 +144,7 @@
                         <div layout="row" layout-align="space-between center">
                             <span>Project</span>
                             <md-select ng-model="$ctrl.edit_issue.project_id" class="md-no-underline">
-                                <md-option ng-repeat="data in $ctrl.info.projects" value="{{ data.id }}">{{ data.name
-                                    }}
+                                <md-option ng-repeat="data in $ctrl.info.projects" value="{{ data.id }}">{{ data.name}}
                                 </md-option>
                             </md-select>
                         </div>
@@ -155,8 +199,9 @@
                             <div layout="row" layout-align="space-between center">
                                 <span>Assigned to</span>
                                 <md-select ng-model="$ctrl.edit_issue.assigned_to_id" class="md-no-underline">
-                                    <md-option ng-repeat="data in $ctrl.info.users" value="{{ data.id }}">{{
-                                        data.firstname + ' ' + data.lastname }}
+                                    <md-option
+                                            ng-repeat="data in $ctrl.info.users" value="{{data.id}}">{{data.firstname +
+                                        ' ' + data.lastname}}
                                     </md-option>
                                 </md-select>
                             </div>

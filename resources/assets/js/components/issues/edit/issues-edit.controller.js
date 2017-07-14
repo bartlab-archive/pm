@@ -3,14 +3,15 @@ import ControllerBase from 'base/controller.base';
 export default class IssuesEditController extends ControllerBase {
 
     static get $inject() {
-        return ['IssuesService', '$stateParams'];
+        return ['IssuesService', '$stateParams', '$window'];
     }
 
     $onInit() {
+        this.showMore = false;
+
         this.IssuesService.one(this.$stateParams.id).then((response) => {
             this.issue = response.data;
             this.issue.statusText = this.statusText(this.issue.status_id);
-            console.log(this.issue.statusText);
             this.edit_issue = this.issue;
         });
     }
@@ -41,6 +42,14 @@ export default class IssuesEditController extends ControllerBase {
                 location.reload();
             }
         });
+    }
+
+    toggleShowMore() {
+        this.showMore = !this.showMore;
+    }
+
+    closeIssueCard() {
+        this.$window.history.back();
     }
 
 }
