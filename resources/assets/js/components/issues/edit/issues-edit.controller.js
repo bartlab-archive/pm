@@ -27,6 +27,10 @@ export default class IssuesEditController extends ControllerBase {
         }
     }
 
+    openMoreMenu($mdMenu, ev) {
+        $mdMenu.open(ev);
+    };
+
     openEditForm() {
         this.editIsOpen = true;
         this.info = {};

@@ -16,11 +16,24 @@ export default function IssuesConfig($stateProvider) {
                 }
             }
         })
+        .state('issues-inner', {
+            abstract: true,
+            data: {
+                access: '@'
+            },
+            url: '/issues',
+            parent: 'project',
+            views: {
+                content: {
+                    template: '<ui-view/>'
+                }
+            }
+        })
         .state('issues.list', {
             url: '',
             component: 'issuesListComponent',
         })
-        .state('issues.edit', {
+        .state('issues-inner.edit', {
             url: '/:id',
             component: 'issuesEditComponent',
         })

@@ -88,7 +88,7 @@ export default class IssuesListController extends ControllerBase {
         };
 
         this.scrollBarConfigDescription = {
-            setHeight: windowHeight - 305
+            setHeight: windowHeight - 292
         };
     }
 
@@ -118,7 +118,7 @@ export default class IssuesListController extends ControllerBase {
     }
 
     openIssue(id) {
-        this.$state.go('issues.edit', {id: id});
+        this.$state.go('issues-inner.edit', {id: id});
     }
 
     editIssue(id) {
