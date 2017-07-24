@@ -12,7 +12,7 @@ class IssuesService
     public function one($id)
     {
         return Issue::where('id', $id)
-            ->with(['trackers', 'user', 'author'])->first();
+            ->with(['trackers', 'user', 'author', 'project'])->first(); // add project info
     }
 
     public function update($id, array $data)

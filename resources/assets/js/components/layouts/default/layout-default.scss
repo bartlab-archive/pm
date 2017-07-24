@@ -1,11 +1,26 @@
 layout-default-component {
 
+  hr {
+    width: 90%;
+  }
+
+  md-sidenav.md-locked-open.md-closed.md-sidenav-left.custom-left-sidenav,
+  md-sidenav.md-sidenav-left.custom-left-sidenav.md-closed {
+    height: calc(100vh - 64px);
+    box-shadow: none;
+
+    md-toolbar {
+      min-height: 49px;
+      background-color: #37474f;
+    }
+  }
+
   .md-sidenav-right,
   .md-sidenav-left {
     .md-button.md-icon-button {
       margin-left: -8px;
     }
-    position: fixed;
+    //position: fixed;
   }
 
   > md-toolbar {

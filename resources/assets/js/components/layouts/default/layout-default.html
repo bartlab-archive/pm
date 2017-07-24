@@ -1,6 +1,6 @@
 <md-toolbar class="md-hue-2">
     <div class="md-toolbar-tools">
-        <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggle()">
+        <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggleLeftMenu()">
             <md-icon>menu</md-icon>
         </md-button>
 
@@ -44,16 +44,13 @@
     </div>
 </md-toolbar>
 
-<section>
-    <md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4" md-disable-scroll-target="body">
-        <md-toolbar>
-            <h1 class="md-toolbar-tools">
-                <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggle()">
-                    <md-icon>menu</md-icon>
-                </md-button>
-                <span>Menu</span>
-            </h1>
-        </md-toolbar>
+<section layout="row">
+    <md-sidenav class="md-sidenav-left custom-left-sidenav"
+                md-component-id="left"
+                md-whiteframe="4"
+                md-is-locked-open="$mdMedia('gt-md') && $ctrl.open"
+                md-disable-scroll-target="body">
+        <!--<md-toolbar></md-toolbar>-->
 
         <md-list-item ng-repeat="item in $ctrl.items" ng-click="$ctrl.menuClick(item)">
             <md-button class="md-icon-button">
@@ -61,11 +58,26 @@
             </md-button>
             {{ item.name }}
         </md-list-item>
+
+        <hr>
+
+        <md-list-item class="md-body-1"
+                      ng-repeat="item in $ctrl.secondMenuItems"
+                      ng-click="$ctrl.goTo(item.url)">
+            <md-button class="md-icon-button">
+                <md-icon>chevron_right</md-icon>
+            </md-button>
+            {{ item.name }}
+        </md-list-item>
+
+
     </md-sidenav>
 
-    <div ui-view="content"></div>
+    <div flex="100" ui-view="content"></div>
 
-    <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right" md-disable-scroll-target="body">
+    <md-sidenav class="md-sidenav-right md-whiteframe-4dp"
+                md-component-id="right"
+                md-disable-scroll-target="body">
         <md-toolbar>
             <h1 class="md-toolbar-tools">
                 <span>Projects</span>
@@ -85,5 +97,6 @@
                 {{ project.name }}
             </md-list-item>
         </md-list>
+
     </md-sidenav>
 </section>
