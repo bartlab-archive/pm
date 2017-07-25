@@ -4,21 +4,28 @@ import * as _ from "lodash";
 /**
  * @property $mdSidenav
  * @property $state
+ * @property $transitions
+ * @property $stateParams
+ * @property $window
  */
 export default class LayoutDefaultController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdSidenav', '$state', '$transitions', 'ProjectsService', '$scope', '$stateParams'];
+        return ['$mdSidenav', '$state', '$transitions', 'ProjectsService', '$stateParams', '$window'];
     }
 
     $onInit() {
-        if (this.$stateParams.project_id) {
-            this.showAdditionalMenu = true;
-        }
+
+        this.showAdditionalMenu = !!this.$stateParams.project_id;
 
         this.$transitions.onSuccess({}, ($transitions) => {
             this.showAdditionalMenu = _.get($transitions.$to(), 'parent.data.showInnerMenu', false);
         });
+
+        angular.element(this.$window).bind('resize', () => this.setScrollbarContainerHeight());
+        this.setScrollbarContainerHeight();
+
+        this.isMobile = this.$window.innerWidth < 1280;
 
         this.open = true;
 
@@ -59,6 +66,10 @@ export default class LayoutDefaultController extends ControllerBase {
 
     toggleLeftMenu() {
         this.open = !this.open;
+        if (this.isMobile) {
+            this.open = true;
+            this.$mdSidenav('left').toggle();
+        }
     }
 
     openUserMenu($mdMenu, ev) {
@@ -90,5 +101,12 @@ export default class LayoutDefaultController extends ControllerBase {
     newProject() {
         this.$state.go('projects.new');
         this.toggle('right');
+    }
+
+    setScrollbarContainerHeight() {
+        let windowHeight = this.$window.innerHeight;
+        this.scrollBarConfig = {
+            setHeight: windowHeight - 64
+        };
     }
 }

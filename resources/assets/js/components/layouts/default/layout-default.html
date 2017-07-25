@@ -50,26 +50,17 @@
                 md-whiteframe="4"
                 md-is-locked-open="$mdMedia('gt-md') && $ctrl.open"
                 md-disable-scroll-target="body">
-        <!--<md-toolbar></md-toolbar>-->
 
-        <md-list-item ng-repeat="item in $ctrl.items" ng-click="$ctrl.menuClick(item)">
-            <md-button class="md-icon-button">
-                <md-icon>{{ item.icon }}</md-icon>
-            </md-button>
-            {{ item.name }}
-        </md-list-item>
+        <div ng-scrollbars ng-scrollbars-config="$ctrl.scrollBarConfig">
+            <md-list-item ng-repeat="item in $ctrl.items" ng-click="$ctrl.menuClick(item)">
+                <md-button class="md-icon-button">
+                    <md-icon>{{ item.icon }}</md-icon>
+                </md-button>
+                {{ item.name }}
+            </md-list-item>
 
-        <hr>
-
-        <md-list-item class="md-body-1"
-                      ng-if="$ctrl.showAdditionalMenu"
-                      ng-repeat="item in $ctrl.secondMenuItems"
-                      ng-click="$ctrl.goTo(item.url)">
-            <md-button class="md-icon-button">
-                <md-icon>chevron_right</md-icon>
-            </md-button>
-            {{ item.name }}
-        </md-list-item>
+            <project-menu-component ng-if="$ctrl.showAdditionalMenu"></project-menu-component>
+        </div>
 
 
     </md-sidenav>
