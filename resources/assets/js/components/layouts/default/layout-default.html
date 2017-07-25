@@ -48,7 +48,7 @@
     <md-sidenav class="md-sidenav-left custom-left-sidenav"
                 md-component-id="left"
                 md-whiteframe="4"
-                md-is-locked-open="$mdMedia('gt-md') && $ctrl.open"
+                md-is-locked-open="$mdMedia('gt-md') && $ctrl.openLeftSidebar"
                 md-disable-scroll-target="body">
 
         <div ng-scrollbars ng-scrollbars-config="$ctrl.scrollBarConfig">
@@ -59,7 +59,18 @@
                 {{ item.name }}
             </md-list-item>
 
-            <project-menu-component ng-if="$ctrl.showAdditionalMenu"></project-menu-component>
+            <div ng-if="$ctrl.showAdditionalMenu">
+                <md-divider></md-divider>
+
+                <md-list-item class="md-body-1"
+                              ng-repeat="item in $ctrl.secondMenuItems"
+                              ng-click="$ctrl.menuClick(item)">
+                    <md-button class="md-icon-button">
+                        <md-icon>chevron_right</md-icon>
+                    </md-button>
+                    {{ item.name }}
+                </md-list-item>
+            </div>
         </div>
 
 
