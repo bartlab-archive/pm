@@ -43,10 +43,12 @@ export default class ProjectsConfig extends InjectableBase {
             .state('projects-inner', {
                 abstract: true,
                 data: {
-                    access: '@'
+                    access: '@',
+                    showInnerMenu: true
                 },
-                url: '/projects/{id:[a-z][a-z0-9\-\_]{0,99}}',
-                parent: 'project',
+                url: '/projects/{project_id:[a-z][a-z0-9\-\_]{0,99}}',
+                // parent: 'project',
+                parent: 'default',
                 views: {
                     content: {
                         template: '<ui-view/>'

@@ -13,7 +13,7 @@ export default class ProjectsInfoController extends ControllerBase {
     }
 
     $onInit() {
-        this.ProjectsService.one(this.$stateParams.id).then((response) => {
+        this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.project = _.get(response, 'data', []);
         });
     }

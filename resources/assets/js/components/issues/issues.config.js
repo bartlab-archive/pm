@@ -19,7 +19,8 @@ export default function IssuesConfig($stateProvider) {
         .state('issues-inner', {
             abstract: true,
             data: {
-                access: '@'
+                access: '@',
+                showInnerMenu: true
             },
             url: '/issues',
             parent: 'project',

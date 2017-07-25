@@ -62,6 +62,7 @@
         <hr>
 
         <md-list-item class="md-body-1"
+                      ng-if="$ctrl.showAdditionalMenu"
                       ng-repeat="item in $ctrl.secondMenuItems"
                       ng-click="$ctrl.goTo(item.url)">
             <md-button class="md-icon-button">
@@ -73,7 +74,7 @@
 
     </md-sidenav>
 
-    <div flex="100" ui-view="content"></div>
+    <div flex ui-view="content"></div>
 
     <md-sidenav class="md-sidenav-right md-whiteframe-4dp"
                 md-component-id="right"

@@ -1,4 +1,5 @@
 import ControllerBase from 'base/controller.base';
+import * as _ from "lodash";
 
 /**
  * @property $mdSidenav
@@ -7,13 +8,16 @@ import ControllerBase from 'base/controller.base';
 export default class LayoutDefaultController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdSidenav', '$state', 'ProjectsService', '$scope'];
+        return ['$mdSidenav', '$state', '$transitions', 'ProjectsService', '$scope', '$stateParams'];
     }
 
     $onInit() {
+        if (this.$stateParams.project_id) {
+            this.showAdditionalMenu = true;
+        }
 
-        this.$scope.$on('$stateChangeSuccess', (event, toState, toParams, fromState, fromParams) => {
-            console.log(toState, toParams, fromState, fromParams);
+        this.$transitions.onSuccess({}, ($transitions) => {
+            this.showAdditionalMenu = _.get($transitions.$to(), 'parent.data.showInnerMenu', false);
         });
 
         this.open = true;
@@ -67,7 +71,6 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     goTo(url) {
-        console.log(url);
         this.$state.go(url);
     }
 

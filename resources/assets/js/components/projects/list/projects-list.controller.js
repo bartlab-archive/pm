@@ -23,7 +23,7 @@ export default class ProjectsListController extends ControllerBase {
     }
 
     goto(identifier) {
-        this.$state.go('projects-inner.info', {id: identifier});
+        this.$state.go('projects-inner.info', {project_id: identifier});
     }
 
     newProject() {
