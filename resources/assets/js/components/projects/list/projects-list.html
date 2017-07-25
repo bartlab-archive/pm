@@ -18,7 +18,7 @@
             </div>
         </md-toolbar>
 
-        <md-list>
+        <md-list ng-scrollbars ng-scrollbars-config="$ctrl.scrollBarConfig">
             <md-list-item class="md-3-line" ng-repeat="row in $ctrl.list" ng-click="$ctrl.goto(row.identifier)">
                 <div class="md-list-item-text" layout="column">
                     <h3>{{ row.name }}</h3>
