@@ -1,6 +1,6 @@
 <md-toolbar class="md-hue-2">
     <div class="md-toolbar-tools">
-        <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggleLeftMenu()">
+        <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggle()">
             <md-icon>menu</md-icon>
         </md-button>
 
@@ -44,39 +44,31 @@
     </div>
 </md-toolbar>
 
-<section layout="row">
-    <md-sidenav class="md-sidenav-left custom-left-sidenav"
+<section>
+    <md-sidenav class="md-sidenav-left"
                 md-component-id="left"
                 md-whiteframe="4"
-                md-is-locked-open="$mdMedia('gt-md') && $ctrl.openLeftSidebar"
                 md-disable-scroll-target="body">
 
-        <div ng-scrollbars ng-scrollbars-config="$ctrl.scrollBarConfig">
-            <md-list-item ng-repeat="item in $ctrl.items" ng-click="$ctrl.menuClick(item)">
-                <md-button class="md-icon-button">
-                    <md-icon>{{ item.icon }}</md-icon>
+        <md-toolbar>
+            <h1 class="md-toolbar-tools">
+                <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggle()">
+                    <md-icon>menu</md-icon>
                 </md-button>
-                {{ item.name }}
-            </md-list-item>
+                <span>Menu</span>
+            </h1>
+        </md-toolbar>
 
-            <div ng-if="$ctrl.showAdditionalMenu">
-                <md-divider></md-divider>
-
-                <md-list-item class="md-body-1"
-                              ng-repeat="item in $ctrl.secondMenuItems"
-                              ng-click="$ctrl.menuClick(item)">
-                    <md-button class="md-icon-button">
-                        <md-icon>chevron_right</md-icon>
-                    </md-button>
-                    {{ item.name }}
-                </md-list-item>
-            </div>
-        </div>
-
+        <md-list-item ng-repeat="item in $ctrl.items" ng-click="$ctrl.menuClick(item)">
+            <md-button class="md-icon-button">
+                <md-icon>{{ item.icon }}</md-icon>
+            </md-button>
+            {{ item.name }}
+        </md-list-item>
 
     </md-sidenav>
 
-    <div flex ui-view="content"></div>
+    <div ui-view="content"></div>
 
     <md-sidenav class="md-sidenav-right md-whiteframe-4dp"
                 md-component-id="right"

@@ -1,10 +1,10 @@
-<!--<md-nav-bar class="md-primary md-hue-2" md-selected-nav-item="$ctrl.currentNavItem"-->
-            <!--nav-bar-aria-label="Project navigation links">-->
-    <!--&lt;!&ndash;<md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">&ndash;&gt;-->
-    <!--<md-nav-item ng-repeat="item in $ctrl.items" md-nav-click="$ctrl.goto(item.url)" name="{{ item.url }}">-->
-        <!--{{ item.name }}-->
-    <!--</md-nav-item>-->
-<!--</md-nav-bar>-->
+<md-nav-bar class="md-primary md-hue-2" md-selected-nav-item="$ctrl.currentNavItem"
+            nav-bar-aria-label="Project navigation links">
+    <!--<md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">-->
+    <md-nav-item ng-repeat="item in $ctrl.items" md-nav-click="$ctrl.goto(item.url)" name="{{ item.url }}">
+        {{ item.name }}
+    </md-nav-item>
+</md-nav-bar>
 
 <div ui-view="content"></div>
 

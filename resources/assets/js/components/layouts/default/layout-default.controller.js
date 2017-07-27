@@ -16,19 +16,6 @@ export default class LayoutDefaultController extends ControllerBase {
 
     $onInit() {
 
-        this.showAdditionalMenu = !!this.$stateParams.project_id;
-
-        this.$transitions.onSuccess({}, ($transitions) => {
-            this.showAdditionalMenu = _.get($transitions.$to(), 'parent.data.showInnerMenu', false);
-        });
-
-        angular.element(this.$window).bind('resize', () => this.onWindowResize());
-        this.onWindowResize();
-
-        this.isMobile = this.$window.innerWidth < 1280;
-
-        this.openLeftSidebar = true;
-
         this.items = [
             {url: 'home', name: 'Home', icon: 'home'},
             {url: 'projects.list', name: 'Projects', icon: 'work'},
@@ -40,35 +27,13 @@ export default class LayoutDefaultController extends ControllerBase {
             // {url: 'home', name: 'Help', icon: 'help'}
         ];
 
-        this.secondMenuItems = [
-            {url: 'projects-inner.info', name: 'Overview'},
-            {url: 'projects-inner.activity', name: 'Activity'},
-            {url: 'projects-inner.issues.index', name: 'Issues'},
-            {url: 'projects-inner.issues.gantt', name: 'Gantt'},
-            {url: 'projects-inner.issues.calendar', name: 'Calendar'},
-            {url: 'projects-inner.news', name: 'News'},
-            {url: 'projects-inner.documents', name: 'Documents'},
-            {url: 'projects-inner.wiki.index', name: 'Wiki'},
-            {url: 'projects-inner.boards', name: 'Forums'},
-            {url: 'projects-inner.files', name: 'Files'},
-            {url: 'projects-inner.settings', name: 'Settings'}
-        ];
-
         this.ProjectsService.getMyList().then((response) => {
             this.projects = response;
         });
     }
 
-    toggle(menu = 'right') {
+    toggle(menu = 'left') {
         this.$mdSidenav(menu).toggle();
-    }
-
-    toggleLeftMenu() {
-        this.openLeftSidebar = !this.openLeftSidebar;
-        if (this.isMobile) {
-            this.openLeftSidebar = true;
-            this.toggle('left');
-        }
     }
 
     openUserMenu($mdMenu, ev) {
@@ -90,23 +55,11 @@ export default class LayoutDefaultController extends ControllerBase {
 
     menuClick(item) {
         this.$state.go(item.url);
-
-        if (this.isMobile) {
-            this.openLeftSidebar = true;
-            this.toggle('left');
-        }
+        this.toggle();
     }
 
     newProject() {
         this.$state.go('projects.new');
         this.toggle('right');
-    }
-
-    onWindowResize() {
-        this.isMobile = this.$window.innerWidth < 1280;
-        let windowHeight = this.$window.innerHeight;
-        this.scrollBarConfig = {
-            setHeight: this.isMobile ? windowHeight : windowHeight - 64
-        };
     }
 }
