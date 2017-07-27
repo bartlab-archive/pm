@@ -40,6 +40,7 @@ export default class LayoutDefaultController extends ControllerBase {
         $mdMenu.open(ev);
     };
 
+
     gotToProject(id) {
         this.$state.go('projects-inner.info', {id: id});
         this.toggle('right');
