@@ -1,17 +1,13 @@
 import ControllerBase from 'base/controller.base';
-import * as _ from "lodash";
 
 /**
  * @property $mdSidenav
  * @property $state
- * @property $transitions
- * @property $stateParams
- * @property $window
  */
 export default class LayoutDefaultController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdSidenav', '$state', '$transitions', 'ProjectsService', '$stateParams', '$window'];
+        return ['$mdSidenav', '$state', 'ProjectsService'];
     }
 
     $onInit() {

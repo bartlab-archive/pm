@@ -46,9 +46,8 @@ export default class LayoutProjectController extends ControllerBase {
     }
 
     goto(url) {
-        // console.log(url, this.$stateParams.id);
-        this.$state.go(url);
-        // this.$state.go(url, {id: this.$stateParams.id});
+        // this.$state.go(url);
+        this.$state.go(url, {project_id: this.$stateParams.project_id});
     }
 
     openNewObjectMenu($mdMenu, $event) {

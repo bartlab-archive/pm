@@ -36,6 +36,8 @@
                     placeholder="Filter"
                     md-require-match="true"
                     delete-button-label="Remove param"
+                    md-on-add="$ctrl.load()"
+                    md-on-remove="$ctrl.load()"
                     delete-hint="Press delete to remove param">
 
                 <md-chip-template>
@@ -54,12 +56,13 @@
         </md-card-content>
 
         <md-list class="md-dense" ng-scrollbars ng-scrollbars-config="$ctrl.scrollBarConfigIssue">
+
             <md-list-item class="md-2-line" ng-repeat="row in $ctrl.list" ng-click="$ctrl.viewIssue(row)">
                 <md-checkbox ng-model="row.selected" aria-label="Select issue"></md-checkbox>
 
                 <div class="md-list-item-text" layout="column">
-                    <h3>{{ row.id }} | Feature | Open | {{ row.subject }}</h3>
-                    <p>Developer Name</p>
+                    <h3>{{ row.id  + ' | ' + row.trackers.name + ' | ' + $ctrl.statusesList[row.status_id] + ' | ' + row.subject}}</h3>
+                    <p>{{row.user.firstname + ' ' + row.user.lastname}}</p>
                 </div>
 
                 <md-icon ng-if="row.is_private">lock</md-icon>
@@ -67,6 +70,7 @@
 
                 <md-divider ng-if="!$last"></md-divider>
             </md-list-item>
+
         </md-list>
 
         <md-card-actions layout="row" layout-align="center center">

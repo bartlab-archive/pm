@@ -10,11 +10,12 @@ export default class IssuesService {
     }
 
     one(identifier) {
-        return this.Restangular.one('issues').one(identifier).get();
+        // return this.Restangular.one('issues').one(identifier).get();
+        return this.Restangular.one('issues', identifier).get();
     }
 
     getListByProject(identifier, params) {
-        return this.Restangular.all('projects').one(identifier).one('issues').getList();
+        return this.Restangular.one('projects', identifier).all('issues').post(params);
     }
 
     getList(params) {
@@ -22,10 +23,15 @@ export default class IssuesService {
     }
 
     postUpdate(id, params) {
-        return this.Restangular.one('issues').one(id).put(null, params);
+        // return this.Restangular.one('issues').one(id).put(null, params);
+        return this.Restangular.one('issues', id).put(null, params);
     }
 
     getInfo(id, project_id) {
-        return this.Restangular.one('issues/' + id + '/infoedit').getList(project_id);
+        return this.Restangular.one('issues', id).one('infoedit').getList(project_id);
+    }
+
+    getIssuesFilters() {
+        return this.Restangular.one('filters').get();
     }
 }

@@ -1,5 +1,6 @@
 import ControllerBase from 'base/controller.base';
 import angular from 'angular';
+import * as _ from "lodash";
 
 /**
  * @property $state
@@ -14,44 +15,67 @@ export default class IssuesListController extends ControllerBase {
     }
 
     $onInit() {
+
+        this.tags = [];
+        this.items = [];
+        this.statusesList = [];
+
         angular.element(this.$window).bind('resize', () => this.setScrollbarContainerHeight());
         this.setScrollbarContainerHeight();
 
+        this.IssuesService.getIssuesFilters().then((response) => {
+            if (!_.isEmpty(response.data)) {
+                this.statuses = _.get(response, 'data.statuses', null);
+                this.trackers = _.get(response, 'data.trackers', null);
+
+                if (this.statuses) {
+                    _.forEach(this.statuses, (item) => {
+                        item.type = 'status';
+                        this.statusesList[item.id] = item.name;
+                        this.items.push(item);
+                    });
+                }
+
+                if (this.trackers) {
+                    _.forEach(this.trackers, (item) => {
+                        item.type = 'tracker';
+                        this.items.push(item);
+                    });
+                }
+            }
+        });
+
         this.load();
 
-        this.tags = [
-            {name: 'open', type: 'status'}
-        ];
-
-        this.items = [
-            // status
-            {name: 'open', type: 'status'},
-            {name: 'any', type: 'status'},
-
-            // priority
-            {name: 'normal', type: 'priority'},
-            {name: 'low', type: 'priority'},
-            {name: 'hight', type: 'priority'},
-            {name: 'not normal', type: 'priority'},
-            {name: 'not low', type: 'priority'},
-            {name: 'not hight', type: 'priority'},
-
-            // traker
-            {name: 'feature', type: 'traker'},
-            {name: 'not feature', type: 'traker'},
-            {name: 'bug', type: 'traker'},
-            {name: 'not bug', type: 'traker'},
-
-            // author
-            {name: 'me', type: 'author'},
-            {name: 'not me', type: 'author'},
-
-            // assignee
-            {name: 'me', type: 'assignee'},
-            {name: 'not me', type: 'assignee'},
-            {name: 'any', type: 'assignee'},
-            {name: 'none', type: 'assignee'},
-        ];
+        // this.items = [
+        //     // status
+        //     {name: 'open', type: 'status'},
+        //     {name: 'any', type: 'status'},
+        //
+        //     // priority
+        //     {name: 'normal', type: 'priority'},
+        //     {name: 'low', type: 'priority'},
+        //     {name: 'hight', type: 'priority'},
+        //     {name: 'not normal', type: 'priority'},
+        //     {name: 'not low', type: 'priority'},
+        //     {name: 'not hight', type: 'priority'},
+        //
+        //     // tracker
+        //     {name: 'feature', type: 'traker'},
+        //     {name: 'not feature', type: 'traker'},
+        //     {name: 'bug', type: 'traker'},
+        //     {name: 'not bug', type: 'traker'},
+        //
+        //     // author
+        //     {name: 'me', type: 'author'},
+        //     {name: 'not me', type: 'author'},
+        //
+        //     // assignee
+        //     {name: 'me', type: 'assignee'},
+        //     {name: 'not me', type: 'assignee'},
+        //     {name: 'any', type: 'assignee'},
+        //     {name: 'none', type: 'assignee'},
+        // ];
 
         // this.selectedItem = null;
         // md-selected-item="$ctrl.selectedItem"
@@ -62,8 +86,25 @@ export default class IssuesListController extends ControllerBase {
     }
 
     load() {
+        console.log(this.tags);
+        let params = {
+            'status_ids': [],
+            'tracker_ids': []
+        };
+        if (!_.isEmpty(this.tags)) {
+            _.forEach(this.tags, (item) => {
+                switch (item.type) {
+                    case 'tracker':
+                        params.tracker_ids.push(item.id);
+                        break;
+                    case 'status' :
+                        params.status_ids.push(item.id);
+                        break;
+                }
+            });
+        }
         this.selectAllState = false;
-        this.IssuesService.getListByProject(this.$stateParams.id || '1')
+        this.IssuesService.getListByProject(this.$stateParams.project_id || '1', params)
             .then((response) => {
                 this.list = response.data;
             });
@@ -79,7 +120,7 @@ export default class IssuesListController extends ControllerBase {
     setScrollbarContainerHeight() {
         let windowHeight = window.innerHeight;
 
-        if (!this.$stateParams.id) {
+        if (!this.$stateParams.project_id) {
             windowHeight += 50;
         }
 
@@ -118,7 +159,7 @@ export default class IssuesListController extends ControllerBase {
     }
 
     openIssue(id) {
-        this.$state.go('issues-inner.edit', {id: id});
+        this.$state.go('issues-inner.edit', {project_id: this.$stateParams.project_id, id: id});
     }
 
     editIssue(id) {

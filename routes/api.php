@@ -49,7 +49,7 @@ Route::group(
                 Route::put('/{identifier}', 'ProjectsController@update');
                 Route::delete('/{identifier}', 'ProjectsController@destroy');
 
-                Route::get('/{identifier}/issues', 'IssuesController@project');
+                Route::post('/{identifier}/issues', 'IssuesController@project');
 
                 Route::get('/{identifier}/news', 'NewsController@getProjectNews');
 
@@ -64,6 +64,16 @@ Route::group(
                 Route::get('/attachments/download/{id}', 'AttachmentsController@download');
                 Route::delete('/attachments/{id}', 'AttachmentsController@delete');
 
+            }
+        );
+
+        Route::group(
+            [
+                'middleware' => 'auth',
+                'prefix' => 'filters'
+            ],
+            function () {
+                Route::get('/', 'IssuesController@getIssuesFilters');
             }
         );
 

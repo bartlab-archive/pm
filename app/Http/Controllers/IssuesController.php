@@ -8,21 +8,22 @@ use Illuminate\Routing\Controller as BaseController;
 
 class IssuesController extends BaseController
 {
-	protected $issueService;
-	
-	public function __construct(IssuesService $issueService)
-	{
-		$this->issueService = $issueService;
-	}
+    protected $issueService;
 
-	public function project(){
-        return $this->issueService->all();
+    public function __construct(IssuesService $issueService)
+    {
+        $this->issueService = $issueService;
+    }
+
+    public function project(Request $request)
+    {
+        return $this->issueService->all($request->all());
 
 //        return response()->json($issues['result'], 200)->header('X-Total', $issues['total']);
     }
 
     // -----
-	
+
 //	public function getIssues(Request $request)
 //    {
 //    	$issues = $this->issueService->all($request->all());
@@ -39,8 +40,26 @@ class IssuesController extends BaseController
 //
     public function getIssue($id)
     {
-    	$issue = $this->issueService->one($id);
+        $issue = $this->issueService->one($id);
         return is_null($issue) ? response('Not Found', 404) : response()->json($issue, 200);
+    }
+
+    public function getIssuesFilters()
+    {
+        $response = [];
+
+        $statuses = $this->issueService->getIssueStatuses();
+        $trackers = $this->issueService->getIssueTrackers();
+
+        if (!is_null($statuses)) {
+            $response['statuses'] = $statuses;
+        }
+
+        if (!is_null($trackers)) {
+            $response['trackers'] = $trackers;
+        }
+
+        return response()->json($response, 200);
     }
 //
 //    public function postUpdate($id, Request $request)

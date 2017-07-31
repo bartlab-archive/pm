@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Issue;
 use App\Models\Project;
+use App\Models\IssueStatuse;
+use App\Models\Tracker;
 use App\Models\User;
 
 class IssuesService
@@ -25,9 +27,35 @@ class IssuesService
         return false;
     }
 
-    public function all()
+    public function all($params)
     {
-        return Issue::where('status_id', 5)->limit(20)->get();
+        if ($params) {
+            $queryString = '';
+            if ($params['status_ids']) {
+                $queryString = implode(",", $params['status_ids']);
+                return Issue::whereRaw("status_id in ($queryString)")
+                    ->limit(20)
+                    ->with(['trackers', 'user', 'author', 'project'])
+                    ->get();
+            }
+
+//            if ($params['status_ids']) {
+//                $queryString = implode(",", $params['tracker_ids']);
+//            }
+
+        }
+
+        return Issue::take(20)
+            ->with(['trackers', 'user', 'author', 'project'])
+            ->get();
+    }
+
+    public function getIssueStatuses() {
+        return IssueStatuse::all();
+    }
+
+    public function getIssueTrackers() {
+        return Tracker::all();
     }
 
 //	public function getInfoFroEdit($project_if)
