@@ -19,10 +19,44 @@ export default class IssuesListController extends ControllerBase {
         this.tags = [];
         this.items = [];
         this.statusesList = [];
+        this.showMore = false;
+        this.searchText = null;
+        this.selectedIssue = null;
+        this.selectAllState = false;
 
-        angular.element(this.$window).bind('resize', () => this.setScrollbarContainerHeight());
-        this.setScrollbarContainerHeight();
+        this.loadFiltersValues();
+        this.load();
+        this.initScrollbar();
+    }
 
+    load() {
+        let params = {};
+
+        if (!_.isEmpty(this.tags)) {
+            angular.extend(params, {
+                'status_ids': [],
+                'tracker_ids': []
+            });
+
+            _.forEach(this.tags, (item) => {
+                switch (item.type) {
+                    case 'tracker':
+                        params.tracker_ids.push(item.id);
+                        break;
+                    case 'status' :
+                        params.status_ids.push(item.id);
+                        break;
+                }
+            });
+        }
+        this.selectAllState = false;
+        this.IssuesService.getListByProject(this.$stateParams.project_id || '1', params)
+            .then((response) => {
+                this.list = response.data;
+            });
+    }
+
+    loadFiltersValues() {
         this.IssuesService.getIssuesFilters().then((response) => {
             if (!_.isEmpty(response.data)) {
                 this.statuses = _.get(response, 'data.statuses', null);
@@ -44,70 +78,11 @@ export default class IssuesListController extends ControllerBase {
                 }
             }
         });
-
-        this.load();
-
-        // this.items = [
-        //     // status
-        //     {name: 'open', type: 'status'},
-        //     {name: 'any', type: 'status'},
-        //
-        //     // priority
-        //     {name: 'normal', type: 'priority'},
-        //     {name: 'low', type: 'priority'},
-        //     {name: 'hight', type: 'priority'},
-        //     {name: 'not normal', type: 'priority'},
-        //     {name: 'not low', type: 'priority'},
-        //     {name: 'not hight', type: 'priority'},
-        //
-        //     // tracker
-        //     {name: 'feature', type: 'traker'},
-        //     {name: 'not feature', type: 'traker'},
-        //     {name: 'bug', type: 'traker'},
-        //     {name: 'not bug', type: 'traker'},
-        //
-        //     // author
-        //     {name: 'me', type: 'author'},
-        //     {name: 'not me', type: 'author'},
-        //
-        //     // assignee
-        //     {name: 'me', type: 'assignee'},
-        //     {name: 'not me', type: 'assignee'},
-        //     {name: 'any', type: 'assignee'},
-        //     {name: 'none', type: 'assignee'},
-        // ];
-
-        // this.selectedItem = null;
-        // md-selected-item="$ctrl.selectedItem"
-        this.searchText = null;
-        this.selectedIssue = null;
-        this.selectAllState = false;
-        this.showMore = false;
     }
 
-    load() {
-        console.log(this.tags);
-        let params = {
-            'status_ids': [],
-            'tracker_ids': []
-        };
-        if (!_.isEmpty(this.tags)) {
-            _.forEach(this.tags, (item) => {
-                switch (item.type) {
-                    case 'tracker':
-                        params.tracker_ids.push(item.id);
-                        break;
-                    case 'status' :
-                        params.status_ids.push(item.id);
-                        break;
-                }
-            });
-        }
-        this.selectAllState = false;
-        this.IssuesService.getListByProject(this.$stateParams.project_id || '1', params)
-            .then((response) => {
-                this.list = response.data;
-            });
+    initScrollbar() {
+        angular.element(this.$window).bind('resize', () => this.setScrollbarContainerHeight());
+        this.setScrollbarContainerHeight();
     }
 
     selectAll() {

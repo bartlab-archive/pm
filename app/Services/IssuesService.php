@@ -30,19 +30,25 @@ class IssuesService
     public function all($params)
     {
         if ($params) {
-            $queryString = '';
-            if ($params['status_ids']) {
-                $queryString = implode(",", $params['status_ids']);
-                return Issue::whereRaw("status_id in ($queryString)")
+            $statusIdsString = count($params['status_ids']) ? implode(",", $params['status_ids']) : false;
+            $trackerIdsString = count($params['tracker_ids']) ? implode(",", $params['tracker_ids']) : false;
+
+            if ($trackerIdsString && $statusIdsString) {
+                $queryString = "status_id in ($statusIdsString) and tracker_id in ($trackerIdsString)";
+            } else if ($statusIdsString) {
+                $queryString = "status_id in ($statusIdsString)";
+            } else if($trackerIdsString) {
+                $queryString = "tracker_id in ($trackerIdsString)";
+            } else {
+                $queryString = false;
+            }
+
+            if ($queryString) {
+                return Issue::whereRaw($queryString)
                     ->limit(20)
                     ->with(['trackers', 'user', 'author', 'project'])
                     ->get();
             }
-
-//            if ($params['status_ids']) {
-//                $queryString = implode(",", $params['tracker_ids']);
-//            }
-
         }
 
         return Issue::take(20)
