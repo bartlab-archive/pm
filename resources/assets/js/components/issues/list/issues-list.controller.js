@@ -49,8 +49,9 @@ export default class IssuesListController extends ControllerBase {
                 }
             });
         }
+
         this.selectAllState = false;
-        this.IssuesService.getListByProject(this.$stateParams.project_id || '1', params)
+        this.IssuesService.getListByProject(this.$stateParams.project_id, params)
             .then((response) => {
                 this.list = response.data;
             });

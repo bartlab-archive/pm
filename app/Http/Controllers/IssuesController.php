@@ -15,9 +15,9 @@ class IssuesController extends BaseController
         $this->issueService = $issueService;
     }
 
-    public function project(Request $request)
+    public function project($id, Request $request)
     {
-        return $this->issueService->all($request->all());
+        return $this->issueService->all($id, $request->all());
 
 //        return response()->json($issues['result'], 200)->header('X-Total', $issues['total']);
     }

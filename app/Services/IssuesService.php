@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\IssueStatuse;
 use App\Models\Tracker;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class IssuesService
 {
@@ -27,7 +28,7 @@ class IssuesService
         return false;
     }
 
-    public function all($params)
+    public function all($id, $params)
     {
         if ($params) {
             $statusIdsString = count($params['status_ids']) ? implode(",", $params['status_ids']) : false;
@@ -37,30 +38,36 @@ class IssuesService
                 $queryString = "status_id in ($statusIdsString) and tracker_id in ($trackerIdsString)";
             } else if ($statusIdsString) {
                 $queryString = "status_id in ($statusIdsString)";
-            } else if($trackerIdsString) {
+            } else if ($trackerIdsString) {
                 $queryString = "tracker_id in ($trackerIdsString)";
             } else {
                 $queryString = false;
             }
 
             if ($queryString) {
-                return Issue::whereRaw($queryString)
+                return Issue::join('projects', 'issues.project_id', '=', 'projects.id')
+                    ->where('projects.identifier', $id)
+                    ->whereRaw($queryString)
                     ->limit(20)
                     ->with(['trackers', 'user', 'author', 'project'])
                     ->get();
             }
         }
 
-        return Issue::take(20)
+        return Issue::join('projects', 'issues.project_id', '=', 'projects.id')
+            ->where('projects.identifier', $id)
+            ->limit(20)
             ->with(['trackers', 'user', 'author', 'project'])
             ->get();
     }
 
-    public function getIssueStatuses() {
+    public function getIssueStatuses()
+    {
         return IssueStatuse::all();
     }
 
-    public function getIssueTrackers() {
+    public function getIssueTrackers()
+    {
         return Tracker::all();
     }
 
