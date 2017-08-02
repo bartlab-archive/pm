@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ModelTrait;
 
 class Issue extends Model
 {
+
+    use ModelTrait;
+
     protected $table = 'issues';
 	
 	const NEW_STATUS = '1';

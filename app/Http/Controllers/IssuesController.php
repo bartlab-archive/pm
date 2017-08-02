@@ -2,22 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Issues\GetIssuesRequest;
 use Illuminate\Http\Request;
 use App\Services\IssuesService;
+use App\Services\StatusesService;
+use App\Services\TrackersService;
 use Illuminate\Routing\Controller as BaseController;
 
 class IssuesController extends BaseController
 {
     protected $issueService;
+    protected $statusesService;
+    protected $trackersService;
 
-    public function __construct(IssuesService $issueService)
+    public function __construct(IssuesService $issueService, StatusesService $statusesService, TrackersService $trackersService)
     {
         $this->issueService = $issueService;
+        $this->statusesService = $statusesService;
+        $this->trackersService = $trackersService;
     }
 
-    public function project($id, Request $request)
+    public function project($id, GetIssuesRequest $request)
     {
-        return $this->issueService->all($id, $request->all());
+        $issues = $this->issueService->all($id, $request->all());
+        return response()->json( $issues, 200);
 
 //        return response()->json($issues['result'], 200)->header('X-Total', $issues['total']);
     }
@@ -48,8 +56,8 @@ class IssuesController extends BaseController
     {
         $response = [];
 
-        $statuses = $this->issueService->getIssueStatuses();
-        $trackers = $this->issueService->getIssueTrackers();
+        $statuses = $this->statusesService->getStatuses();
+        $trackers = $this->trackersService->getTrackers();
 
         if (!is_null($statuses)) {
             $response['statuses'] = $statuses;

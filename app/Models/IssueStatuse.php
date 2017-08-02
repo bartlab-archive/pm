@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ModelTrait;
 
 class IssueStatuse extends Model
 {
+    use ModelTrait;
+
     protected $table = 'issue_statuses';
 
     public $timestamps = false;

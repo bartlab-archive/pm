@@ -103,7 +103,8 @@
                     <md-icon ng-if="$ctrl.selectedIssue.is_private">lock</md-icon>
                     {{ $ctrl.selectedIssue.subject }}
                 </span>
-                <span class="md-subhead">#{{ $ctrl.selectedIssue.id }} | Feature | Open</span>
+                <!--<span class="md-subhead">#{{ $ctrl.selectedIssue.id }} | Feature | Open</span>-->
+                <span class="md-subhead">#{{ $ctrl.selectedIssue.id  + ' | ' + $ctrl.selectedIssue.trackers.name + ' | ' + $ctrl.statusesList[$ctrl.selectedIssue.status_id]}}</span>
             </md-card-header-text>
 
             <div flex></div>

@@ -4,10 +4,6 @@ namespace App\Services;
 
 use App\Models\Issue;
 use App\Models\Project;
-use App\Models\IssueStatuse;
-use App\Models\Tracker;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
 
 class IssuesService
 {
@@ -28,48 +24,25 @@ class IssuesService
         return false;
     }
 
-    public function all($id, $params)
+    public function all(string $id, $params = [])
     {
-        if ($params) {
-            $statusIdsString = count($params['status_ids']) ? implode(",", $params['status_ids']) : false;
-            $trackerIdsString = count($params['tracker_ids']) ? implode(",", $params['tracker_ids']) : false;
+        $query = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
+            ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
+            ->where(Project::getTableName() . '.identifier', $id)
+            ->with(['trackers', 'user', 'author', 'project'])
+            ->limit(20);
 
-            if ($trackerIdsString && $statusIdsString) {
-                $queryString = "status_id in ($statusIdsString) and tracker_id in ($trackerIdsString)";
-            } else if ($statusIdsString) {
-                $queryString = "status_id in ($statusIdsString)";
-            } else if ($trackerIdsString) {
-                $queryString = "tracker_id in ($trackerIdsString)";
-            } else {
-                $queryString = false;
-            }
-
-            if ($queryString) {
-                return Issue::join('projects', 'issues.project_id', '=', 'projects.id')
-                    ->where('projects.identifier', $id)
-                    ->whereRaw($queryString)
-                    ->limit(20)
-                    ->with(['trackers', 'user', 'author', 'project'])
-                    ->get();
-            }
+        If (isset($params['status_ids']) && count($params['status_ids'])) {
+            $query = $query->whereIn('status_id', $params['status_ids']);
         }
 
-        return Issue::join('projects', 'issues.project_id', '=', 'projects.id')
-            ->where('projects.identifier', $id)
-            ->limit(20)
-            ->with(['trackers', 'user', 'author', 'project'])
-            ->get();
+        If (isset($params['tracker_ids']) && count($params['tracker_ids'])) {
+            $query = $query->whereIn('tracker_id', $params['tracker_ids']);
+        }
+
+        return $query->get();
     }
 
-    public function getIssueStatuses()
-    {
-        return IssueStatuse::all();
-    }
-
-    public function getIssueTrackers()
-    {
-        return Tracker::all();
-    }
 
 //	public function getInfoFroEdit($project_if)
 //	{
