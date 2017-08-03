@@ -23,6 +23,7 @@ export default class IssuesListController extends ControllerBase {
         this.searchText = null;
         this.selectedIssue = null;
         this.selectAllState = false;
+        this.offset = 0;
 
         this.loadFiltersValues();
         this.load();
@@ -30,13 +31,13 @@ export default class IssuesListController extends ControllerBase {
     }
 
     load() {
-        let params = {};
+        let params = {
+            'status_ids': [],
+            'tracker_ids': [],
+            'offset': this.offset
+        };
 
         if (!_.isEmpty(this.tags)) {
-            angular.extend(params, {
-                'status_ids': [],
-                'tracker_ids': []
-            });
 
             _.forEach(this.tags, (item) => {
                 switch (item.type) {
@@ -53,9 +54,14 @@ export default class IssuesListController extends ControllerBase {
         this.selectAllState = false;
         this.IssuesService.getListByProject(this.$stateParams.project_id, params)
             .then((response) => {
-                console.log(response);
                 this.list = response.data;
+                this.count = response.headers('X-Total');
             });
+    }
+
+    onChangeFilterValue() {
+        this.offset = 0;
+        this.load();
     }
 
     loadFiltersValues() {
@@ -145,5 +151,19 @@ export default class IssuesListController extends ControllerBase {
 
     toggleShowMore() {
         this.showMore = !this.showMore;
+    }
+
+    next() {
+        if (this.offset + 20 < this.count) {
+            this.offset += 20;
+            this.load();
+        }
+    }
+
+    previous() {
+        if (this.offset > 0) {
+            this.offset = this.offset - 20;
+            this.load();
+        }
     }
 }

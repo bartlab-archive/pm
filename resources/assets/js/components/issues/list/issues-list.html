@@ -12,14 +12,17 @@
             <div flex></div>
 
             <md-button class="pages-button">
-                1-20 / 100
+                {{$ctrl.offset === 0 ? $ctrl.offset + 1 : $ctrl.offset}}-{{($ctrl.count < 20 || $ctrl.count <
+                $ctrl.offset + 20) ? $ctrl.count :
+                $ctrl.offset + 20}} {{($ctrl.count > 20) ? ' / ' +
+                $ctrl.count : ''}}
             </md-button>
 
-            <md-button class="md-icon-button">
+            <md-button ng-click="$ctrl.previous()" ng-disabled="$ctrl.offset === 0" class="md-icon-button">
                 <md-icon>keyboard_arrow_left</md-icon>
             </md-button>
 
-            <md-button class="md-icon-button">
+            <md-button ng-click="$ctrl.next()" ng-disabled="$ctrl.offset + 20 >= $ctrl.count" class="md-icon-button">
                 <md-icon>keyboard_arrow_right</md-icon>
             </md-button>
 
@@ -36,8 +39,8 @@
                     placeholder="Filter"
                     md-require-match="true"
                     delete-button-label="Remove param"
-                    md-on-add="$ctrl.load()"
-                    md-on-remove="$ctrl.load()"
+                    md-on-add="$ctrl.onChangeFilterValue()"
+                    md-on-remove="$ctrl.onChangeFilterValue()"
                     delete-hint="Press delete to remove param">
 
                 <md-chip-template>
@@ -61,7 +64,8 @@
                 <md-checkbox ng-model="row.selected" aria-label="Select issue"></md-checkbox>
 
                 <div class="md-list-item-text" layout="column">
-                    <h3>{{ row.id  + ' | ' + row.trackers.name + ' | ' + $ctrl.statusesList[row.status_id] + ' | ' + row.subject}}</h3>
+                    <h3>{{ row.id + ' | ' + row.trackers.name + ' | ' + $ctrl.statusesList[row.status_id] + ' | ' +
+                        row.subject}}</h3>
                     <p>{{row.user.firstname + ' ' + row.user.lastname}}</p>
                 </div>
 

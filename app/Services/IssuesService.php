@@ -24,23 +24,44 @@ class IssuesService
         return false;
     }
 
-    public function all(string $id, $params = [])
+    public function all()
     {
+        return Issue::limit(20)
+            ->with(['trackers', 'user', 'author', 'project'])
+            ->get();
+    }
+
+    public function getIssuesByProjectIdentifier(string $id, $params = [])
+    {
+        $offset = array_get($params, 'offset', 0);
+
         $query = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
             ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
             ->where(Project::getTableName() . '.identifier', $id)
-            ->with(['trackers', 'user', 'author', 'project'])
-            ->limit(20);
+            ->with(['trackers', 'user', 'author', 'project']);
 
-        If (isset($params['status_ids']) && count($params['status_ids'])) {
+        If (count(array_get($params, 'status_ids', []))) {
             $query = $query->whereIn('status_id', $params['status_ids']);
         }
 
-        If (isset($params['tracker_ids']) && count($params['tracker_ids'])) {
+        If (count(array_get($params, 'tracker_ids', []))) {
             $query = $query->whereIn('tracker_id', $params['tracker_ids']);
         }
 
-        return $query->get();
+        $result = [
+            'count' => $query->count(),
+            'issues' => $query->offset($offset)->limit(20)->get()
+
+        ];
+
+        return $result;
+    }
+
+    public function getCount(string $id)
+    {
+        return Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
+            ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
+            ->where(Project::getTableName() . '.identifier', $id)->count();
     }
 
 

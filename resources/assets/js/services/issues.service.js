@@ -34,4 +34,8 @@ export default class IssuesService {
     getIssuesFilters() {
         return this.Restangular.one('filters').get();
     }
+
+    getCount($identifier) {
+        return this.Restangular.all('issues').one('count', $identifier).get();
+    }
 }

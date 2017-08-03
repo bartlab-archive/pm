@@ -22,10 +22,11 @@ class IssuesController extends BaseController
         $this->trackersService = $trackersService;
     }
 
-    public function project($id, GetIssuesRequest $request)
+    public function project($identifier, GetIssuesRequest $request)
     {
-        $issues = $this->issueService->all($id, $request->all());
-        return response()->json( $issues, 200);
+        $data = $this->issueService->getIssuesByProjectIdentifier($identifier, $request->all());
+        return response()->json($data['issues'], 200)
+            ->header('X-Total', $data['count']);
 
 //        return response()->json($issues['result'], 200)->header('X-Total', $issues['total']);
     }
@@ -68,6 +69,12 @@ class IssuesController extends BaseController
         }
 
         return response()->json($response, 200);
+    }
+
+    public function getCount($identifier)
+    {
+        $count = $this->issueService->getCount($identifier);
+        return response()->json($count, 200);
     }
 //
 //    public function postUpdate($id, Request $request)
