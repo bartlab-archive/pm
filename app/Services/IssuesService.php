@@ -31,7 +31,7 @@ class IssuesService
             ->get();
     }
 
-    public function getIssuesByProjectIdentifier(string $id, $params = [])
+    public function list(string $id, $params = [])
     {
         $offset = array_get($params, 'offset', 0);
 

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Issues\GetIssuesRequest;
-use Illuminate\Http\Request;
 use App\Services\IssuesService;
 use App\Services\StatusesService;
 use App\Services\TrackersService;
@@ -24,11 +23,9 @@ class IssuesController extends BaseController
 
     public function project($identifier, GetIssuesRequest $request)
     {
-        $data = $this->issueService->getIssuesByProjectIdentifier($identifier, $request->all());
+        $data = $this->issueService->list($identifier, $request->all());
         return response()->json($data['issues'], 200)
             ->header('X-Total', $data['count']);
-
-//        return response()->json($issues['result'], 200)->header('X-Total', $issues['total']);
     }
 
     // -----
