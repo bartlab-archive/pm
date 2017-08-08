@@ -18,7 +18,7 @@ class IssuesService
     {
         if ($issue = Issue::where('id', $id)->firstOrFail()) {
             $issue->update($data);
-            return true;
+            return $issue;
         }
 
         return false;
@@ -40,11 +40,11 @@ class IssuesService
             ->where(Project::getTableName() . '.identifier', $id)
             ->with(['trackers', 'user', 'author', 'project']);
 
-        If (count(array_get($params, 'status_ids', []))) {
+        If (array_get($params, 'status_ids', [])) {
             $query = $query->whereIn('status_id', $params['status_ids']);
         }
 
-        If (count(array_get($params, 'tracker_ids', []))) {
+        If (array_get($params, 'tracker_ids', [])) {
             $query = $query->whereIn('tracker_id', $params['tracker_ids']);
         }
 

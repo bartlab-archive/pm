@@ -3,6 +3,7 @@ import ControllerBase from 'base/controller.base';
 /**
  * @property $mdSidenav
  * @property $state
+ * @property ProjectsService
  */
 export default class LayoutDefaultController extends ControllerBase {
 
@@ -23,9 +24,9 @@ export default class LayoutDefaultController extends ControllerBase {
             // {url: 'home', name: 'Help', icon: 'help'}
         ];
 
-        this.ProjectsService.getMyList().then((response) => {
-            this.projects = response;
-        });
+        // this.ProjectsService.getMyList().then((response) => {
+        //     this.projects = response;
+        // });
     }
 
     toggle(menu = 'left') {

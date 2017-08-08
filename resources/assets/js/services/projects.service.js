@@ -23,10 +23,13 @@ export default class ProjectsService {
 
     constructor($injector) {
         this.Restangular = $injector.get('Restangular');
+        this.$cacheFactory = $injector.get('$cacheFactory');
+        this.cache = this.$cacheFactory('ProjectsService');
+        this.project = {};
     }
 
-    one(indifier) {
-        return this.Restangular.all('projects').one(indifier).get();
+    one(identifier) {
+        return this.Restangular.all('projects').one(identifier).withHttpConfig({cache: this.cache}).get();
     }
 
     getList(params) {
@@ -39,9 +42,9 @@ export default class ProjectsService {
         });
     }
 
-    getNews(indifier, params) {
+    getNews(identifier, params) {
 
-        return this.Restangular.all('projects').one(indifier).one('news').getList();
+        return this.Restangular.all('projects').one(identifier).one('news').getList();
 
     }
 

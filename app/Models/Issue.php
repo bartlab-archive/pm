@@ -21,7 +21,7 @@ class Issue extends Model
 	
 	const LOW_PRIORITY = '1';
 	const LOW_NORMAL = '2';
-	const LOW_HIGT = '3';
+	const LOW_HIGH = '3';
     
     public $timestamps = false;
 

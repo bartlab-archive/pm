@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ModelTrait;
 
 class Member extends Model
 {
+    use ModelTrait;
+
     protected $table = 'members';
 
     public $timestamps = false;

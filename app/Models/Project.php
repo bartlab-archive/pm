@@ -101,6 +101,10 @@ class Project extends Model
         return (int)(Auth::guest() ? false : $this->members()->where('user_id', Auth::user()->id)->exists());
     }
 
+    public function users() {
+        return $this->belongsToMany(User::class, Member::getTableName());
+    }
+
     /**
      * @param string $identifier
      */

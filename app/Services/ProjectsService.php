@@ -30,10 +30,15 @@ class ProjectsService
         return $projects->get()->makeVisible(['is_my']);
     }
 
+    public function getProjectsList()
+    {
+        return Project::select('id', 'name')->get();
+    }
+
     public function one($identifier)
     {
         return Project::whereIdentifier($identifier)
-            ->with(['trackers', 'enabled_modules'])->first();
+            ->with(['trackers', 'enabled_modules', 'users', 'issue_categories'])->first();
     }
 
     public function create($data)

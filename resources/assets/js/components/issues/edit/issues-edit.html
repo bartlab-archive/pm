@@ -8,9 +8,11 @@
             </md-card-avatar>
 
             <md-card-header-text>
-                <span class="md-title"><md-icon
-                        ng-if="$ctrl.issue.is_private">lock</md-icon>{{ $ctrl.issue.subject }}</span>
-                <span class="md-subhead">#{{ $ctrl.issue.id }} | Feature | {{$ctrl.issue.statusText}}</span>
+                <span class="md-title">
+                    <md-icon ng-if="$ctrl.issue.is_private">lock</md-icon>
+                    {{ $ctrl.editIsOpen ? $ctrl.originalIssue.subject : $ctrl.issue.subject }}
+                </span>
+                <span class="md-subhead">#{{ ::$ctrl.issue.id }} | {{$ctrl.trackerText}} | {{$ctrl.statusText}}</span>
 
             </md-card-header-text>
 
@@ -30,7 +32,7 @@
                 </md-button>
                 <md-menu-content width="4">
                     <md-menu-item>
-                        <md-button>
+                        <md-button ng-click="$ctrl.openEditForm()">
                             <md-icon>mode_edit</md-icon>
                             Edit
                         </md-button>
@@ -82,14 +84,6 @@
                         <td><b>Assignee:</b></td>
                         <td>{{ $ctrl.issue.user.firstname + ' ' + $ctrl.issue.user.lastname }}</td>
                     </tr>
-                    <!--<tr>-->
-                    <!--<td><b>Target version:</b></td>-->
-                    <!--<td>-</td>-->
-                    <!--</tr>-->
-                    <!--<tr>-->
-                    <!--<td><b>Category:</b></td>-->
-                    <!--<td>-</td>-->
-                    <!--</tr>-->
                     <tr>
                         <td><b>Start date:</b></td>
                         <td>{{ $ctrl.issue.start_date }}</td>
@@ -100,10 +94,124 @@
                     </tr>
 
                 </table>
-                <!--<md-progress-linear md-mode="determinate" ng-value="$ctrl.issue.done_ratio"></md-progress-linear>-->
-                <!--<md-divider></md-divider>-->
             </div>
-            <div markdown-to-html="$ctrl.issue.description || ''"></div>
+            <div ng-if="!$ctrl.editIsOpen" markdown-to-html="$ctrl.issue.description || ''"></div>
+
+
+            <div ng-if="$ctrl.editIsOpen">
+                <form name="editIssue">
+
+                    <md-input-container class="md-block">
+                        <label for="subject">Subject</label>
+                        <input id="subject" name="subject" required ng-model="$ctrl.issue.subject">
+                        <div ng-messages="editIssue.subject.$error">
+                            <div ng-message="required">This field can't be blank.</div>
+                        </div>
+                    </md-input-container>
+
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex="50">
+                            <label>Project</label>
+                            <md-select ng-model="$ctrl.issue.project_id" ng-change="$ctrl.validate()" required>
+                                <md-option ng-repeat="item in $ctrl.projectsList" value="{{item.id}}">
+                                    {{item.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex="50">
+                            <label>Tracker</label>
+                            <md-select ng-model="$ctrl.issue.tracker_id" ng-change="$ctrl.validate()" required>
+                                <md-option ng-repeat="item in $ctrl.trackersList" value="{{item.id}}">
+                                    {{item.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+
+                    <md-input-container class="md-block">
+                        <label>Description</label>
+                        <textarea ng-model="$ctrl.issue.description" rows="5"></textarea>
+                    </md-input-container>
+
+                    <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex="25">
+                            <label>Status</label>
+                            <md-select ng-model="$ctrl.issue.status_id" ng-change="$ctrl.validate()" required>
+                                <md-option ng-repeat="item in $ctrl.statusesList" value="{{item.id}}">
+                                    {{item.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex="25">
+                            <label>Priority</label>
+                            <md-select ng-model="$ctrl.issue.priority_id" ng-change="$ctrl.validate()" required>
+                                <md-option ng-repeat="item in $ctrl.prioritiesList" value="{{item.id}}">
+                                    {{item.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex="25">
+                            <label>Assignee</label>
+                            <md-select ng-model="$ctrl.issue.assigned_to_id" ng-change="$ctrl.validate()">
+                                <md-option ng-repeat="item in $ctrl.usersList" value="{{item.pivot.user_id}}">
+                                    {{item.firstname + ' ' + item.lastname}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex="25">
+                            <label>Category</label>
+                            <md-select ng-model="$ctrl.issue.category_id" ng-change="$ctrl.validate()">
+                                <md-option ng-repeat="item in $ctrl.categoriesList" value="{{item.id}}">
+                                    {{item.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="row">
+
+                        <md-input-container class="md-block" flex="25">
+                            <label>Start date</label>
+                            <md-datepicker ng-model="$ctrl.issue.start_date"></md-datepicker>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex="25">
+                            <label>Due date</label>
+                            <md-datepicker ng-model="$ctrl.issue.due_date"></md-datepicker>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex="50">
+                            <label>Estimated time (hours)</label>
+                            <input name="estimate" ng-model="$ctrl.issue.estimated_hours">
+                        </md-input-container>
+
+                        <!--<md-input-container class="md-block" flex-gt-sm>-->
+                            <!--<label>Postal Code</label>-->
+                            <!--<input name="postalCode" ng-model="user.postalCode" placeholder="12345"-->
+                                   <!--required ng-pattern="/^[0-9]{5}$/" md-maxlength="5">-->
+
+                            <!--<div ng-messages="userForm.postalCode.$error" role="alert" multiple>-->
+                                <!--<div ng-message="required" class="my-message">You must supply a postal code.</div>-->
+                                <!--<div ng-message="pattern" class="my-message">That doesn't look like a valid postal-->
+                                    <!--code.-->
+                                <!--</div>-->
+                                <!--<div ng-message="md-maxlength" class="my-message">-->
+                                    <!--Don't use the long version silly...we don't need to be that specific...-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</md-input-container>-->
+                    </div>
+
+                    <div layout="row">
+                        <md-button type="button" ng-disabled="$ctrl.error" ng-click="$ctrl.updateIssue()">Save</md-button>
+                        <md-button type="button" ng-click="$ctrl.cancel()">Cancel</md-button>
+                    </div>
+                </form>
+            </div>
 
         </md-card-content>
 

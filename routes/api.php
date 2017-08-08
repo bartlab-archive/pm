@@ -102,6 +102,7 @@ Route::group(
                 Route::get('/', 'IssuesController@getIssues');
                 Route::put('/{id}', 'IssuesController@postUpdate');
 //                Route::get('/{id}/infoedit/{project_id}', 'IssuesController@infoEdit');
+                Route::get('/{id}/info', 'IssuesController@getAdditionalInfo');
             }
         );
 

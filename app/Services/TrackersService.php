@@ -14,4 +14,8 @@ class TrackersService
         return Tracker::all();
     }
 
+    public function getTrackersList() {
+        return Tracker::select('id', 'name')->get();
+    }
+
 }
