@@ -1,18 +1,18 @@
 import ControllerBase from 'base/controller.base';
 import * as _ from "lodash";
-import angular from "angular";
 
 /**
  * @property $stateParams
  * @property IssuesService
  * @property ProjectsService
  * @property $window
+ * @property $state
  */
 
 export default class IssuesEditController extends ControllerBase {
 
     static get $inject() {
-        return ['IssuesService', '$stateParams', '$window', 'ProjectsService'];
+        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService'];
     }
 
     $onInit() {
@@ -52,25 +52,7 @@ export default class IssuesEditController extends ControllerBase {
             this.projectsList = _.get(response, 'data.projectsList', []);
             this.statusesList = _.get(response, 'data.statusesList', []);
             this.prioritiesList = _.get(response, 'data.prioritiesList', []);
-
-            this.setStatusText(this.issue.status_id);
-            this.setTrackerText(this.issue.tracker_id);
-            this.setPriorityText(this.issue.priority_id);
         });
-    }
-
-    openMoreMenu($mdMenu, ev) {
-        $mdMenu.open(ev);
-    };
-
-    openEditForm() {
-        this.editIsOpen = true;
-        this.originalIssue = _.cloneDeep(this.issue);
-        this.info = {};
-        // this.IssuesService.getInfo(this.$stateParams.id, this.edit_issue.project_id).then((response) => {
-        //     this.info = response.data[0];
-        //     console.log(this.info);
-        // });
     }
 
     updateIssue() {
@@ -81,11 +63,7 @@ export default class IssuesEditController extends ControllerBase {
         this.issue.put().then((response) => {
 
             if (_.get(response, 'data')) {
-                this.editIsOpen = false;
-                this.issue = response.data;
-                this.setStatusText(response.data.status_id);
-                this.setTrackerText(response.data.tracker_id);
-                this.setPriorityText(response.data.priority_id);
+                this.$state.go('issues-inner.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
             }
         });
     }
@@ -95,32 +73,7 @@ export default class IssuesEditController extends ControllerBase {
     }
 
     cancel() {
-        this.editIsOpen = false;
-        this.issue = _.cloneDeep(this.originalIssue);
-    }
-
-    setStatusText(statusId) {
-        let status = _.find(this.statusesList, ['id', +statusId]);
-        this.statusText = status ? status.name : '';
-    }
-
-    setTrackerText(trackerId) {
-        let tracker = _.find(this.trackersList, ['id', +trackerId]);
-        this.trackerText = tracker ? tracker.name : '';
-    }
-
-    setPriorityText(priorityId) {
-        console.log(priorityId);
-        let priority = _.find(this.prioritiesList, ['id', +priorityId]);
-        this.priorityText = priority ? priority.name : '';
-    }
-
-    toggleShowMore() {
-        this.showMore = !this.showMore;
-    }
-
-    closeIssueCard() {
-        this.$window.history.back();
+        this.$state.go('issues-inner.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
     }
 
 }

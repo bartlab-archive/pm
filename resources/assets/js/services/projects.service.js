@@ -45,7 +45,10 @@ export default class ProjectsService {
     getNews(identifier, params) {
 
         return this.Restangular.all('projects').one(identifier).one('news').getList();
+    }
 
+    getTrackers(identifier) {
+        return this.Restangular.one('projects', identifier).one('trackers').withHttpConfig({cache: this.cache}).get();
     }
 
 }

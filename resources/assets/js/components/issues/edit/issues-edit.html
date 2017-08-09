@@ -3,102 +3,14 @@
         <!--<md-progress-linear md-mode="determinate" ng-value="$ctrl.issue.done_ratio"></md-progress-linear>-->
 
         <md-card-header>
-            <md-card-avatar>
-                <img src="/images/avatar.jpg" class="md-user-avatar" alt="">
-            </md-card-avatar>
 
-            <md-card-header-text>
-                <span class="md-title">
-                    <md-icon ng-if="$ctrl.issue.is_private">lock</md-icon>
-                    {{ $ctrl.editIsOpen ? $ctrl.originalIssue.subject : $ctrl.issue.subject }}
-                </span>
-                <span class="md-subhead">#{{ ::$ctrl.issue.id }} | {{$ctrl.trackerText}} | {{$ctrl.statusText}}</span>
-
-            </md-card-header-text>
-
-            <div flex></div>
-
-            <md-button class="md-icon-button" ng-click="$ctrl.toggleShowMore()">
-                <md-icon>{{ $ctrl.showMore ? 'expand_less' :'expand_more' }}</md-icon>
-            </md-button>
-
-            <!--<md-button class="md-icon-button" ng-click="null">-->
-                <!--<md-icon>more_vert</md-icon>-->
-            <!--</md-button>-->
-
-            <md-menu>
-                <md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openMoreMenu($mdMenu, $event)">
-                    <md-icon>more_vert</md-icon>
-                </md-button>
-                <md-menu-content width="4">
-                    <md-menu-item>
-                        <md-button ng-click="$ctrl.openEditForm()">
-                            <md-icon>mode_edit</md-icon>
-                            Edit
-                        </md-button>
-                    </md-menu-item>
-
-                    <md-menu-item>
-                        <md-button>
-                            <md-icon>timelapse</md-icon>
-                            Log time
-                        </md-button>
-                    </md-menu-item>
-
-                    <md-menu-item>
-                        <md-button>
-                            <md-icon>star_border</md-icon>
-                            Watch
-                        </md-button>
-                    </md-menu-item>
-
-                    <md-menu-item>
-                        <md-button>
-                            <md-icon>content_copy</md-icon>
-                            Copy
-                        </md-button>
-                    </md-menu-item>
-
-                    <md-menu-divider></md-menu-divider>
-
-                    <md-menu-item>
-                        <md-button>
-                            <md-icon>delete</md-icon>
-                            Delete
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
-
+            <h1>Edit</h1>
 
         </md-card-header>
 
         <md-card-content ng-scrollbars-config="$ctrl.scrollBarConfigDescription">
-            <div ng-show="$ctrl.showMore">
-                <table class="md-body-1">
-                    <tr>
-                        <td><b>Priority:</b></td>
-                        <td>{{ $ctrl.priorityText }}</td>
-                    </tr>
-                    <tr>
-                        <td><b>Assignee:</b></td>
-                        <td>{{ $ctrl.issue.user.firstname + ' ' + $ctrl.issue.user.lastname }}</td>
-                    </tr>
-                    <tr>
-                        <td><b>Start date:</b></td>
-                        <td>{{ $ctrl.issue.start_date }}</td>
-                    </tr>
-                    <tr ng-if="$ctrl.issue.due_date">
-                        <td><b>Due date:</b></td>
-                        <td>{{ $ctrl.issue.due_date }}</td>
-                    </tr>
 
-                </table>
-            </div>
-            <div ng-if="!$ctrl.editIsOpen" markdown-to-html="$ctrl.issue.description || ''"></div>
-
-
-            <div ng-if="$ctrl.editIsOpen">
+            <div>
                 <form name="editIssue">
 
                     <md-input-container class="md-block">
@@ -189,21 +101,6 @@
                             <input name="estimate" ng-model="$ctrl.issue.estimated_hours">
                         </md-input-container>
 
-                        <!--<md-input-container class="md-block" flex-gt-sm>-->
-                            <!--<label>Postal Code</label>-->
-                            <!--<input name="postalCode" ng-model="user.postalCode" placeholder="12345"-->
-                                   <!--required ng-pattern="/^[0-9]{5}$/" md-maxlength="5">-->
-
-                            <!--<div ng-messages="userForm.postalCode.$error" role="alert" multiple>-->
-                                <!--<div ng-message="required" class="my-message">You must supply a postal code.</div>-->
-                                <!--<div ng-message="pattern" class="my-message">That doesn't look like a valid postal-->
-                                    <!--code.-->
-                                <!--</div>-->
-                                <!--<div ng-message="md-maxlength" class="my-message">-->
-                                    <!--Don't use the long version silly...we don't need to be that specific...-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</md-input-container>-->
                     </div>
 
                     <div layout="row">

@@ -23,8 +23,8 @@
         </md-card-title>
 
         <md-card-content class="md-body-1">
-            <p>Feature:</p>
-            <p>Bug:</p>
+            <p>Feature: {{$ctrl.feature}}</p>
+            <p>Bug: {{$ctrl.bug}}</p>
         </md-card-content>
 
         <md-card-actions layout="row" layout-align="center center">
@@ -44,8 +44,8 @@
         </md-card-title>
 
         <md-card-content class="md-body-1">
-            <p>Manager:</p>
-            <p>Developer:</p>
+            <p ng-if="$ctrl.project.users.length > 0">Manager: {{$ctrl.project.users[0].firstname + ' ' + $ctrl.project.users[0].lastname}}</p>
+            <p>Developer:<span ng-if="$index !== 0" ng-repeat="item in $ctrl.project.users">{{$index > 1 ? ', ' : ' '}}{{item.firstname + ' ' + item.lastname}}</span> </p>
         </md-card-content>
     </md-card>
 </div>

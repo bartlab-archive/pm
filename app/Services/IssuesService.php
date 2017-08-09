@@ -48,6 +48,10 @@ class IssuesService
             $query = $query->whereIn('tracker_id', $params['tracker_ids']);
         }
 
+        If (array_get($params, 'priority_ids', [])) {
+            $query = $query->whereIn('priority_id', $params['priority_ids']);
+        }
+
         $result = [
             'count' => $query->count(),
             'issues' => $query->offset($offset)->limit(20)->get()
@@ -62,6 +66,19 @@ class IssuesService
         return Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
             ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
             ->where(Project::getTableName() . '.identifier', $id)->count();
+    }
+
+    public function trackers($identifier) {
+        $query = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
+            ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
+            ->where(Project::getTableName() . '.identifier', $identifier);
+
+        $result = [
+            'feature' => $query->where('tracker_id', 4)->count(),
+            'bug' => $query->where('tracker_id', 6)->count()
+        ];
+
+        return $result;
     }
 
 

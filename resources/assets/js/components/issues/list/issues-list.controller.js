@@ -19,6 +19,7 @@ export default class IssuesListController extends ControllerBase {
         this.tags = [];
         this.items = [];
         this.statusesList = [];
+        this.prioritiesList = [];
         this.showMore = false;
         this.searchText = null;
         this.selectedIssue = null;
@@ -34,6 +35,7 @@ export default class IssuesListController extends ControllerBase {
         let params = {
             'status_ids': [],
             'tracker_ids': [],
+            'priority_ids': [],
             'offset': this.offset
         };
 
@@ -46,6 +48,10 @@ export default class IssuesListController extends ControllerBase {
                         break;
                     case 'status' :
                         params.status_ids.push(item.id);
+                        break;
+
+                    case 'priority' :
+                        params.priority_ids.push(item.id);
                         break;
                 }
             });
@@ -69,6 +75,7 @@ export default class IssuesListController extends ControllerBase {
             if (!_.isEmpty(response.data)) {
                 this.statuses = _.get(response, 'data.statuses', null);
                 this.trackers = _.get(response, 'data.trackers', null);
+                this.priorities = _.get(response, 'data.priorities', null);
 
                 if (this.statuses) {
                     _.forEach(this.statuses, (item) => {
@@ -81,6 +88,14 @@ export default class IssuesListController extends ControllerBase {
                 if (this.trackers) {
                     _.forEach(this.trackers, (item) => {
                         item.type = 'tracker';
+                        this.items.push(item);
+                    });
+                }
+
+                if (this.priorities) {
+                    _.forEach(this.priorities, (item) => {
+                        item.type = 'priority';
+                        this.prioritiesList[item.id] = item.name;
                         this.items.push(item);
                     });
                 }
@@ -142,11 +157,11 @@ export default class IssuesListController extends ControllerBase {
     }
 
     openIssue(id) {
-        this.$state.go('issues-inner.edit', {project_id: this.$stateParams.project_id, id: id});
+        this.$state.go('issues-inner.info', {project_id: this.$stateParams.project_id, id: id});
     }
 
     editIssue(id) {
-        this.$state.go('issues.edit', {id: id});
+        this.$state.go('issues-inner.edit', {project_id: this.$stateParams.project_id, id: id});
     }
 
     toggleShowMore() {

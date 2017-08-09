@@ -38,7 +38,8 @@ class IssuesController extends BaseController
     public function project($identifier, GetIssuesRequest $request)
     {
         $data = $this->issueService->list($identifier, $request->all());
-        return response()->json($data['issues'], 200)
+        return response()
+            ->json($data['issues'], 200)
             ->header('X-Total', $data['count']);
     }
 
@@ -70,6 +71,7 @@ class IssuesController extends BaseController
 
         $statuses = $this->statusesService->getStatuses();
         $trackers = $this->trackersService->getTrackers();
+        $priorities = $this->enumerationsService->getPrioritiesList();
 
         if (!is_null($statuses)) {
             $response['statuses'] = $statuses;
@@ -77,6 +79,10 @@ class IssuesController extends BaseController
 
         if (!is_null($trackers)) {
             $response['trackers'] = $trackers;
+        }
+
+        if (!is_null($priorities)) {
+            $response['priorities'] = $priorities;
         }
 
         return response()->json($response, 200);

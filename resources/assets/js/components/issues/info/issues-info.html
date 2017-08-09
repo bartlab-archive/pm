@@ -1,0 +1,114 @@
+<div layout-gt-sm="row" layout-align="center start">
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <!--<md-progress-linear md-mode="determinate" ng-value="$ctrl.issue.done_ratio"></md-progress-linear>-->
+
+        <md-card-header>
+            <md-card-avatar>
+                <img src="/images/avatar.jpg" class="md-user-avatar" alt="">
+            </md-card-avatar>
+
+            <md-card-header-text>
+                <span class="md-title">
+                    <md-icon ng-if="$ctrl.issue.is_private">lock</md-icon>
+                    {{ $ctrl.issue.subject }}
+                </span>
+                <span class="md-subhead">#{{ ::$ctrl.issue.id }} | {{$ctrl.trackerText}} | {{$ctrl.statusText}}</span>
+
+            </md-card-header-text>
+
+            <div flex></div>
+
+            <md-button class="md-icon-button" ng-click="$ctrl.toggleShowMore()">
+                <md-icon>{{ $ctrl.showMore ? 'expand_less' :'expand_more' }}</md-icon>
+            </md-button>
+
+            <!--<md-button class="md-icon-button" ng-click="null">-->
+            <!--<md-icon>more_vert</md-icon>-->
+            <!--</md-button>-->
+
+            <md-menu>
+                <md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openMoreMenu($mdMenu, $event)">
+                    <md-icon>more_vert</md-icon>
+                </md-button>
+                <md-menu-content width="4">
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.edit()">
+                            <md-icon>mode_edit</md-icon>
+                            Edit
+                        </md-button>
+                    </md-menu-item>
+
+                    <md-menu-item>
+                        <md-button>
+                            <md-icon>timelapse</md-icon>
+                            Log time
+                        </md-button>
+                    </md-menu-item>
+
+                    <md-menu-item>
+                        <md-button>
+                            <md-icon>star_border</md-icon>
+                            Watch
+                        </md-button>
+                    </md-menu-item>
+
+                    <md-menu-item>
+                        <md-button>
+                            <md-icon>content_copy</md-icon>
+                            Copy
+                        </md-button>
+                    </md-menu-item>
+
+                    <md-menu-divider></md-menu-divider>
+
+                    <md-menu-item>
+                        <md-button>
+                            <md-icon>delete</md-icon>
+                            Delete
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+
+
+        </md-card-header>
+
+        <md-card-content ng-scrollbars-config="$ctrl.scrollBarConfigDescription">
+            <div ng-show="$ctrl.showMore">
+                <table class="md-body-1">
+                    <tr>
+                        <td><b>Priority:</b></td>
+                        <td>{{ $ctrl.priorityText }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Assignee:</b></td>
+                        <td>{{ $ctrl.issue.user.firstname + ' ' + $ctrl.issue.user.lastname }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Start date:</b></td>
+                        <td>{{ $ctrl.issue.start_date }}</td>
+                    </tr>
+                    <tr ng-if="$ctrl.issue.due_date">
+                        <td><b>Due date:</b></td>
+                        <td>{{ $ctrl.issue.due_date }}</td>
+                    </tr>
+
+                </table>
+            </div>
+            <div markdown-to-html="$ctrl.issue.description || ''"></div>
+
+        </md-card-content>
+
+        <md-card-actions layout="row" layout-align="center center">
+            <md-button ng-click="$ctrl.openEditForm()">
+                <md-icon>rss_feed</md-icon>
+                Atom
+            </md-button>
+
+            <md-button ng-click="null">
+                <md-icon>file_download</md-icon>
+                PDF
+            </md-button>
+        </md-card-actions>
+    </md-card>
+</div>

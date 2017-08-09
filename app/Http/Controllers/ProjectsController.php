@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Projects\CreateProjectRequest;
 use App\Http\Requests\Projects\IndexProjectRequest;
 use App\Http\Requests\Projects\UpdateProjectRequest;
+use App\Services\IssuesService;
 use App\Services\ProjectsService;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
@@ -18,10 +19,12 @@ class ProjectsController extends BaseController
 {
 
     protected $projectsService;
+    protected $issueService;
 
-    public function __construct(ProjectsService $projectsService)
+    public function __construct(ProjectsService $projectsService, IssuesService $issuesService)
     {
         $this->projectsService = $projectsService;
+        $this->issueService = $issuesService;
     }
 
     /**
@@ -142,6 +145,13 @@ class ProjectsController extends BaseController
     	$result = $this->projectsService->getIssues($identifier, $request);
     	
     	return response()->json($result['projects'])->header('X-Total', $result['total']);
+    }
+
+    public function getProjectTrackers($identifier) {
+
+        $result = $this->issueService->trackers($identifier);
+
+        return response()->json($result, 200);
     }
 
    
