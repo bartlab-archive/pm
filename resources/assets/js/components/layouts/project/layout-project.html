@@ -2,7 +2,7 @@
             nav-bar-aria-label="Project navigation links">
     <!--<md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">-->
     <md-nav-item ng-repeat="item in $ctrl.items" md-nav-click="$ctrl.goto(item.url)" name="{{ item.url }}">
-        {{ item.name }}
+        {{ item.name === 'issue_tracking' ? 'activity' : item.name }}
     </md-nav-item>
 </md-nav-bar>
 

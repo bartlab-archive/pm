@@ -15,6 +15,8 @@ export default class LayoutProjectController extends ControllerBase {
 
     $onInit() {
 
+        this.items = [];
+
         this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.items = _.get(response, 'data.enabled_modules', []);
 
@@ -53,6 +55,12 @@ export default class LayoutProjectController extends ControllerBase {
             this.items.unshift({url: 'projects-inner.issues.index', name: 'Issues'});
             this.items.unshift({url: 'projects-inner.info', name: 'Overview'});
             this.items.push({url: 'projects-inner.settings', name: 'Settings'});
+
+            this.currentNavItem = _.get(
+                _.find(this.items, {url: this.$state.current.name}),
+                'url',
+                this.items[0].url
+            );
         });
 
         // this.items = [
@@ -76,12 +84,6 @@ export default class LayoutProjectController extends ControllerBase {
             {name: 'New wiki page', url: '', icon: 'receipt'},
             {name: 'New file', url: '', icon: 'attach_file'},
         ];
-
-        this.currentNavItem = _.get(
-            _.find(this.items, {url: this.$state.current.name}),
-            'url',
-            this.items[0].url
-        );
 
         this.menuOpen = false;
 
