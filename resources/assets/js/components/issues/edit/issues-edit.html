@@ -74,11 +74,11 @@
         </md-card-header>
 
         <md-card-content ng-scrollbars-config="$ctrl.scrollBarConfigDescription">
-            <div ng-if="$ctrl.showMore">
+            <div ng-show="$ctrl.showMore">
                 <table class="md-body-1">
                     <tr>
                         <td><b>Priority:</b></td>
-                        <td>{{ $ctrl.issue.priority_id }}</td>
+                        <td>{{ $ctrl.priorityText }}</td>
                     </tr>
                     <tr>
                         <td><b>Assignee:</b></td>
@@ -113,7 +113,7 @@
                         <md-input-container class="md-block" flex="50">
                             <label>Project</label>
                             <md-select ng-model="$ctrl.issue.project_id" ng-change="$ctrl.validate()" required>
-                                <md-option ng-repeat="item in $ctrl.projectsList" value="{{item.id}}">
+                                <md-option ng-repeat="item in $ctrl.projectsList" ng-value="item.id">
                                     {{item.name}}
                                 </md-option>
                             </md-select>
@@ -122,7 +122,7 @@
                         <md-input-container class="md-block" flex="50">
                             <label>Tracker</label>
                             <md-select ng-model="$ctrl.issue.tracker_id" ng-change="$ctrl.validate()" required>
-                                <md-option ng-repeat="item in $ctrl.trackersList" value="{{item.id}}">
+                                <md-option ng-repeat="item in $ctrl.trackersList" ng-value="item.id">
                                     {{item.name}}
                                 </md-option>
                             </md-select>
@@ -138,7 +138,7 @@
                         <md-input-container class="md-block" flex="25">
                             <label>Status</label>
                             <md-select ng-model="$ctrl.issue.status_id" ng-change="$ctrl.validate()" required>
-                                <md-option ng-repeat="item in $ctrl.statusesList" value="{{item.id}}">
+                                <md-option ng-repeat="item in $ctrl.statusesList" ng-value="item.id">
                                     {{item.name}}
                                 </md-option>
                             </md-select>
@@ -147,7 +147,7 @@
                         <md-input-container class="md-block" flex="25">
                             <label>Priority</label>
                             <md-select ng-model="$ctrl.issue.priority_id" ng-change="$ctrl.validate()" required>
-                                <md-option ng-repeat="item in $ctrl.prioritiesList" value="{{item.id}}">
+                                <md-option ng-repeat="item in $ctrl.prioritiesList" ng-value="item.id">
                                     {{item.name}}
                                 </md-option>
                             </md-select>
@@ -156,7 +156,7 @@
                         <md-input-container class="md-block" flex="25">
                             <label>Assignee</label>
                             <md-select ng-model="$ctrl.issue.assigned_to_id" ng-change="$ctrl.validate()">
-                                <md-option ng-repeat="item in $ctrl.usersList" value="{{item.pivot.user_id}}">
+                                <md-option ng-repeat="item in $ctrl.usersList" ng-value="item.pivot.user_id">
                                     {{item.firstname + ' ' + item.lastname}}
                                 </md-option>
                             </md-select>
@@ -165,7 +165,7 @@
                         <md-input-container class="md-block" flex="25">
                             <label>Category</label>
                             <md-select ng-model="$ctrl.issue.category_id" ng-change="$ctrl.validate()">
-                                <md-option ng-repeat="item in $ctrl.categoriesList" value="{{item.id}}">
+                                <md-option ng-repeat="item in $ctrl.categoriesList" ng-value="item.id">
                                     {{item.name}}
                                 </md-option>
                             </md-select>

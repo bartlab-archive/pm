@@ -1,5 +1,6 @@
 import ControllerBase from 'base/controller.base';
 import * as _ from "lodash";
+import angular from "angular";
 
 /**
  * @property $stateParams
@@ -27,7 +28,6 @@ export default class IssuesEditController extends ControllerBase {
     }
 
     init() {
-        this.loadAdditionalInfo();
         this.loadProject();
         this.loadIssue();
     }
@@ -42,8 +42,7 @@ export default class IssuesEditController extends ControllerBase {
     loadIssue() {
         this.IssuesService.one(this.$stateParams.id).then((response) => {
             this.issue = _.get(response, 'data', {});
-            this.setStatusText(response.data.status_id);
-            this.setTrackerText(response.data.tracker_id);
+            this.loadAdditionalInfo();
         });
     }
 
@@ -53,6 +52,10 @@ export default class IssuesEditController extends ControllerBase {
             this.projectsList = _.get(response, 'data.projectsList', []);
             this.statusesList = _.get(response, 'data.statusesList', []);
             this.prioritiesList = _.get(response, 'data.prioritiesList', []);
+
+            this.setStatusText(this.issue.status_id);
+            this.setTrackerText(this.issue.tracker_id);
+            this.setPriorityText(this.issue.priority_id);
         });
     }
 
@@ -76,9 +79,14 @@ export default class IssuesEditController extends ControllerBase {
         }
 
         this.issue.put().then((response) => {
-            this.editIsOpen = false;
-            this.setStatusText(response.data.status_id);
-            this.setTrackerText(response.data.tracker_id);
+
+            if (_.get(response, 'data')) {
+                this.editIsOpen = false;
+                this.issue = response.data;
+                this.setStatusText(response.data.status_id);
+                this.setTrackerText(response.data.tracker_id);
+                this.setPriorityText(response.data.priority_id);
+            }
         });
     }
 
@@ -99,6 +107,12 @@ export default class IssuesEditController extends ControllerBase {
     setTrackerText(trackerId) {
         let tracker = _.find(this.trackersList, ['id', +trackerId]);
         this.trackerText = tracker ? tracker.name : '';
+    }
+
+    setPriorityText(priorityId) {
+        console.log(priorityId);
+        let priority = _.find(this.prioritiesList, ['id', +priorityId]);
+        this.priorityText = priority ? priority.name : '';
     }
 
     toggleShowMore() {

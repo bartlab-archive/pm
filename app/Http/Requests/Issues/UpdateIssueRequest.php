@@ -1,8 +1,10 @@
 <?php
 
-namespace app\Http\Requests\Issues;
+namespace App\Http\Requests\Issues;
 
 
+use App\Models\Enumeration;
+use App\Models\IssueStatuse;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\Tracker;
@@ -29,13 +31,18 @@ class UpdateIssueRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'assigned_to_id' => 'int|exists:' . User::getTableName() . ', id',
+			'assigned_to_id' => 'int|exists:' . User::getTableName() . ',id',
+            'category_id' => 'int|nullable',
+            'due_date' => 'date|nullable|after:start_date',
+            'estimated_hours' => 'string|nullable',
+            'start_date' => 'date|nullable',
 			'subject' => 'required|string',
 			'description' => 'string',
-			'priority_id' => 'int',
+			'priority_id' => 'int|exists:' . Enumeration::getTableName() .',id',
 //			'is_private' => 'boolean',
 			'project_id' => 'int|exists:' . Project::getTableName() . ',id',
-			'tracker_id' => 'int|exists:' . Tracker::getTableName() . ',id'
+			'tracker_id' => 'int|exists:' . Tracker::getTableName() . ',id',
+			'status_id' => 'int|exists:' . IssueStatuse::getTableName() . ',id'
 		];
 	}
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Issues\GetIssuesRequest;
+use App\Http\Requests\Issues\UpdateIssueRequest;
 use App\Services\EnumerationsService;
 use App\Services\IssueCategoriesService;
 use App\Services\IssuesService;
@@ -98,15 +99,19 @@ class IssuesController extends BaseController
         return response()->json($data, 200);
     }
 
-    public function postUpdate($id, Request $request)
+    public function postUpdate($id, UpdateIssueRequest $request)
     {
         $data = $request->except(['id', 'trackers', 'user', 'author', 'statusText', 'project']);
         $data['start_date'] = Carbon::parse($data['start_date'])->format('Y-m-d');
         $data['due_date'] = Carbon::parse($data['due_date'])->format('Y-m-d');
 
-        $response = $this->issueService->update($id, $data);
+        if ($this->issueService->update($id, $data)) {
+            $response = $this->issueService->one($id);
 
-        return $response ? response()->json($response, 200) : response()->json('Not Found', 404);
+            return response()->json($response, 200);
+        }
+
+        return response()->json('Not Found', 404);
     }
 
 //    public function infoEdit($id, $project_id)
