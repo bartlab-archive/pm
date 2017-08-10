@@ -14,7 +14,7 @@
 
                     <md-input-container class="md-block">
                         <label for="subject">Subject</label>
-                        <input id="subject" name="subject" required ng-model="$ctrl.issue.subject">
+                        <input id="subject" name="subject" ng-blur="$ctrl.validate()" ng-model="$ctrl.issue.subject" required>
                         <div ng-messages="editIssue.subject.$error">
                             <div ng-message="required">This field can't be blank.</div>
                         </div>
@@ -61,7 +61,7 @@
 
                         <md-input-container class="md-block" flex="25">
                             <label>Assignee</label>
-                            <md-select ng-model="$ctrl.issue.assigned_to_id" ng-change="$ctrl.validate()">
+                            <md-select ng-model="$ctrl.issue.assigned_to_id" ng-change="$ctrl.validate()" required>
                                 <md-option ng-repeat="item in $ctrl.usersList" ng-value="item.pivot.user_id">
                                     {{item.firstname + ' ' + item.lastname}}
                                 </md-option>

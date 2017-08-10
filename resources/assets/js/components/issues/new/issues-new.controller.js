@@ -18,6 +18,7 @@ export default class IssuesNewController extends ControllerBase {
     $onInit() {
 
         this.issue = {};
+        this.error = true;
         this.usersList = [];
         this.trackersList = [];
         this.projectsList = [];
@@ -64,7 +65,14 @@ export default class IssuesNewController extends ControllerBase {
     }
 
     validate() {
-        this.error = _.isEmpty(this.issue.subject);
+        this.error = !this.issue.subject
+            || !this.issue.status_id
+            || !this.issue.priority_id
+            || !this.issue.tracker_id
+            || !this.issue.project_id
+            || !this.issue.assigned_to_id;
+
+        console.log(this.issue.status_id, this.issue.priority_id, this.issue.tracker_id, this.issue.project_id, this.issue.assigned_to_id);
     }
 
     cancel() {
