@@ -24,6 +24,12 @@ class IssuesService
         return false;
     }
 
+    public function create($data)
+    {
+        $issue = Issue::create($data);
+        return $issue;
+    }
+
     public function all()
     {
         return Issue::limit(20)
@@ -40,16 +46,16 @@ class IssuesService
             ->where(Project::getTableName() . '.identifier', $id)
             ->with(['trackers', 'user', 'author', 'project']);
 
-        If (array_get($params, 'status_ids', [])) {
-            $query = $query->whereIn('status_id', $params['status_ids']);
+        if ($statuses = array_get($params, 'status_ids', [])) {
+            $query = $query->whereIn('status_id', $statuses);
         }
 
-        If (array_get($params, 'tracker_ids', [])) {
-            $query = $query->whereIn('tracker_id', $params['tracker_ids']);
+        if ($trackers = array_get($params, 'tracker_ids', [])) {
+            $query = $query->whereIn('tracker_id', $trackers);
         }
 
-        If (array_get($params, 'priority_ids', [])) {
-            $query = $query->whereIn('priority_id', $params['priority_ids']);
+        if ($priorities = array_get($params, 'priority_ids', [])) {
+            $query = $query->whereIn('priority_id', $priorities);
         }
 
         $result = [

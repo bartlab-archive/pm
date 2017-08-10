@@ -23,17 +23,8 @@ export default class IssuesService {
         return this.Restangular.all('issues').getList(params);
     }
 
-    getAdditionalInfo(id) {
-        return this.Restangular.all('issues').one(id, 'info').withHttpConfig({cache: this.cache}).get();
-    }
-
-    postUpdate(id, params) {
-        // return this.Restangular.one('issues').one(id).put(null, params);
-        return this.Restangular.one('issues', id).put(null, params);
-    }
-
-    getInfo(id, project_id) {
-        return this.Restangular.one('issues', id).one('infoedit', project_id).get();
+    getAdditionalInfo() {
+        return this.Restangular.all('issues').one('info').withHttpConfig({cache: this.cache}).get();
     }
 
     getIssuesFilters() {
@@ -42,5 +33,9 @@ export default class IssuesService {
 
     getCount($identifier) {
         return this.Restangular.all('issues').one('count', $identifier).get();
+    }
+
+    create(params) {
+        return this.Restangular.all('issues').post(params);
     }
 }

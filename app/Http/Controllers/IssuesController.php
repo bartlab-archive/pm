@@ -13,6 +13,7 @@ use App\Services\TrackersService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Auth;
 
 class IssuesController extends BaseController
 {
@@ -43,22 +44,6 @@ class IssuesController extends BaseController
             ->header('X-Total', $data['count']);
     }
 
-    // -----
-
-//	public function getIssues(Request $request)
-//    {
-//    	$issues = $this->issueService->all($request->all());
-//
-//        return response()->json($issues['result'], 200)->header('X-Total', $issues['total']);
-//    }
-//
-//	public function testNotExistIssue()
-//	{
-//		$response = $this->get('/api/v1/issues/'. $this->findNotExistId());
-//
-//		$response->assertStatus(404);
-//	}
-//
     public function getIssue($id)
     {
         $issue = $this->issueService->one($id);
@@ -67,23 +52,11 @@ class IssuesController extends BaseController
 
     public function getIssuesFilters()
     {
-        $response = [];
-
-        $statuses = $this->statusesService->getStatuses();
-        $trackers = $this->trackersService->getTrackers();
-        $priorities = $this->enumerationsService->getPrioritiesList();
-
-        if (!is_null($statuses)) {
-            $response['statuses'] = $statuses;
-        }
-
-        if (!is_null($trackers)) {
-            $response['trackers'] = $trackers;
-        }
-
-        if (!is_null($priorities)) {
-            $response['priorities'] = $priorities;
-        }
+        $response = [
+            'statuses' => $this->statusesService->getStatuses(),
+            'trackers' => $this->trackersService->getTrackers(),
+            'priorities' => $this->enumerationsService->getPrioritiesList()
+        ];
 
         return response()->json($response, 200);
     }
@@ -94,7 +67,7 @@ class IssuesController extends BaseController
         return response()->json($count, 200);
     }
 
-    public function getAdditionalInfo($id)
+    public function getAdditionalInfo()
     {
         $data = [
             'projectsList' => $this->projectsService->getProjectsList(),
@@ -105,7 +78,16 @@ class IssuesController extends BaseController
         return response()->json($data, 200);
     }
 
-    public function postUpdate($id, UpdateIssueRequest $request)
+    public function create(UpdateIssueRequest $request)
+    {
+        $data = $request->all();
+        $data['author_id'] = Auth::id();
+        $data['start_date'] = Carbon::create()->format('Y-m-d');
+        $response = $this->issueService->create($data);
+        return response()->json($response, 200);
+    }
+
+    public function update($id, UpdateIssueRequest $request)
     {
         $data = $request->except(['id', 'trackers', 'user', 'author', 'statusText', 'project']);
         $data['start_date'] = Carbon::parse($data['start_date'])->format('Y-m-d');

@@ -18,12 +18,14 @@ class Issue extends Model
 	const FEEDBACK_STATUS = '4';
 	const CLOSED_STATUS = '5';
 	const REJECTED_STATUS = '6';
+	const CREATED_AT = 'created_on';
+	const UPDATED_AT = 'updated_on';
 	
 	const LOW_PRIORITY = '1';
 	const LOW_NORMAL = '2';
 	const LOW_HIGH = '3';
     
-    public $timestamps = false;
+//    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.

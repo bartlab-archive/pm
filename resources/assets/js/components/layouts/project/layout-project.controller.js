@@ -17,6 +17,44 @@ export default class LayoutProjectController extends ControllerBase {
 
         this.items = [];
 
+        // this.items = [
+        //     {url: 'projects-inner.info', name: 'Overview'},
+        //     {url: 'projects-inner.activity', name: 'Activity'},
+        //     {url: 'projects-inner.issues.index', name: 'Issues'},
+        //     {url: 'projects-inner.issues.gantt', name: 'Gantt'},
+        //     {url: 'projects-inner.issues.calendar', name: 'Calendar'},
+        //     {url: 'projects-inner.news', name: 'News'},
+        //     {url: 'projects-inner.documents', name: 'Documents'},
+        //     {url: 'projects-inner.wiki.index', name: 'Wiki'},
+        //     {url: 'projects-inner.boards', name: 'Forums'},
+        //     {url: 'projects-inner.files', name: 'Files'},
+        //     {url: 'projects-inner.settings', name: 'Settings'}
+        // ];
+
+        this.newItems = [
+            {name: 'New issue', url: 'issues-inner.create', icon: 'create'},
+            {name: 'New category', url: '', icon: 'folder'},
+            {name: 'New version', url: '', icon: 'archive'},
+            {name: 'New wiki page', url: '', icon: 'receipt'},
+            {name: 'New file', url: '', icon: 'attach_file'},
+        ];
+
+        this.menuOpen = false;
+
+        this.load();
+
+    }
+
+    goto(url) {
+        // this.$state.go(url);
+        this.$state.go(url, {project_id: this.$stateParams.project_id});
+    }
+
+    openNewObjectMenu($mdMenu, $event) {
+        $mdMenu.open($event);
+    }
+
+    load() {
         this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.items = _.get(response, 'data.enabled_modules', []);
 
@@ -62,40 +100,6 @@ export default class LayoutProjectController extends ControllerBase {
                 this.items[0].url
             );
         });
-
-        // this.items = [
-        //     {url: 'projects-inner.info', name: 'Overview'},
-        //     {url: 'projects-inner.activity', name: 'Activity'},
-        //     {url: 'projects-inner.issues.index', name: 'Issues'},
-        //     {url: 'projects-inner.issues.gantt', name: 'Gantt'},
-        //     {url: 'projects-inner.issues.calendar', name: 'Calendar'},
-        //     {url: 'projects-inner.news', name: 'News'},
-        //     {url: 'projects-inner.documents', name: 'Documents'},
-        //     {url: 'projects-inner.wiki.index', name: 'Wiki'},
-        //     {url: 'projects-inner.boards', name: 'Forums'},
-        //     {url: 'projects-inner.files', name: 'Files'},
-        //     {url: 'projects-inner.settings', name: 'Settings'}
-        // ];
-
-        this.newItems = [
-            {name: 'New issue', url: '', icon: 'create'},
-            {name: 'New category', url: '', icon: 'folder'},
-            {name: 'New version', url: '', icon: 'archive'},
-            {name: 'New wiki page', url: '', icon: 'receipt'},
-            {name: 'New file', url: '', icon: 'attach_file'},
-        ];
-
-        this.menuOpen = false;
-
-    }
-
-    goto(url) {
-        // this.$state.go(url);
-        this.$state.go(url, {project_id: this.$stateParams.project_id});
-    }
-
-    openNewObjectMenu($mdMenu, $event) {
-        $mdMenu.open($event);
     }
 
 }

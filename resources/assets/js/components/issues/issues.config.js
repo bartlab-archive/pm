@@ -33,6 +33,10 @@ export default function IssuesConfig($stateProvider) {
             url: '',
             component: 'issuesListComponent',
         })
+        .state('issues-inner.create', {
+            url: '/new',
+            component: 'issuesNewComponent',
+        })
         .state('issues-inner.edit', {
             url: '/:id',
             component: 'issuesEditComponent',
@@ -41,6 +45,7 @@ export default function IssuesConfig($stateProvider) {
             url: '/:id',
             component: 'issuesInfoComponent',
         })
+
 
 
 }

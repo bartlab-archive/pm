@@ -9,7 +9,7 @@ import * as _ from "lodash";
  * @property $state
  */
 
-export default class IssuesEditController extends ControllerBase {
+export default class IssuesNewController extends ControllerBase {
 
     static get $inject() {
         return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService'];
@@ -17,9 +17,7 @@ export default class IssuesEditController extends ControllerBase {
 
     $onInit() {
 
-        console.log(this.$state.current.name);
-
-        this.showMore = false;
+        this.issue = {};
         this.usersList = [];
         this.trackersList = [];
         this.projectsList = [];
@@ -32,24 +30,14 @@ export default class IssuesEditController extends ControllerBase {
 
     init() {
         this.loadProject();
-        if (this.$state.current.name === 'issues-inner.edit') {
-            this.loadIssue();
-        } else {
-            this.loadAdditionalInfo();
-        }
+        this.loadAdditionalInfo();
     }
 
     loadProject() {
         this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
+            this.issue.project_id = _.get(response, 'data.id');
             this.usersList = _.get(response, 'data.users', []);
             this.categoriesList = _.get(response, 'data.issue_categories', []);
-        });
-    }
-
-    loadIssue() {
-        this.IssuesService.one(this.$stateParams.id).then((response) => {
-            this.issue = _.get(response, 'data', {});
-            this.loadAdditionalInfo();
         });
     }
 
@@ -62,14 +50,14 @@ export default class IssuesEditController extends ControllerBase {
         });
     }
 
-    updateIssue() {
+    create() {
         if (this.error) {
             return false;
         }
 
-        this.issue.put().then((response) => {
+        this.IssuesService.create(this.issue).then((response) => {
 
-            if (_.get(response, 'data')) {
+            if (this.issue = _.get(response, 'data')) {
                 this.$state.go('issues-inner.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
             }
         });
@@ -80,7 +68,7 @@ export default class IssuesEditController extends ControllerBase {
     }
 
     cancel() {
-        this.$state.go('issues-inner.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
+        this.$state.go('projects-inner.issues.index', {project_id: this.$stateParams.project_id});
     }
 
 }
