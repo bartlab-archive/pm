@@ -9,12 +9,12 @@ use App\Models\Tracker;
 class TrackersService
 {
 
-    public function getTrackers()
+    public function all()
     {
         return Tracker::all();
     }
 
-    public function getTrackersList() {
+    public function list() {
         return Tracker::select('id', 'name')->get();
     }
 

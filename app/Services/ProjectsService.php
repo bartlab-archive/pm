@@ -30,7 +30,10 @@ class ProjectsService
         return $projects->get()->makeVisible(['is_my']);
     }
 
-    public function getProjectsList()
+    /**
+     * @return mixed
+     */
+    public function list()
     {
         return Project::select('id', 'name')->get();
     }

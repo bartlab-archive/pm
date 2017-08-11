@@ -16,10 +16,7 @@ export default class IssuesEditController extends ControllerBase {
     }
 
     $onInit() {
-
-        console.log(this.$state.current.name);
-
-        this.showMore = false;
+        
         this.usersList = [];
         this.trackersList = [];
         this.projectsList = [];
@@ -32,11 +29,7 @@ export default class IssuesEditController extends ControllerBase {
 
     init() {
         this.loadProject();
-        if (this.$state.current.name === 'issues-inner.edit') {
-            this.loadIssue();
-        } else {
-            this.loadAdditionalInfo();
-        }
+        this.loadIssue();
     }
 
     loadProject() {

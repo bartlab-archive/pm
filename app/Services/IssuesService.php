@@ -67,21 +67,22 @@ class IssuesService
         return $result;
     }
 
-    public function getCount(string $id)
-    {
-        return Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
-            ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
-            ->where(Project::getTableName() . '.identifier', $id)->count();
-    }
-
     public function trackers($identifier) {
-        $query = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
+        $bug = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
             ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
-            ->where(Project::getTableName() . '.identifier', $identifier);
+            ->where(Project::getTableName() . '.identifier', $identifier)
+            ->where('tracker_id', 6)
+            ->count();
+
+        $feature = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
+            ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
+            ->where(Project::getTableName() . '.identifier', $identifier)
+            ->where('tracker_id', 4)
+            ->count();
 
         $result = [
-            'feature' => $query->where('tracker_id', 4)->count(),
-            'bug' => $query->where('tracker_id', 6)->count()
+            'bug' => $bug,
+            'feature' => $feature
         ];
 
         return $result;

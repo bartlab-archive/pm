@@ -8,7 +8,7 @@ use App\Models\IssueStatuse;
 class StatusesService
 {
 
-    public function getStatuses()
+    public function all()
     {
         return IssueStatuse::all();
     }

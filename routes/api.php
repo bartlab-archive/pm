@@ -100,7 +100,6 @@ Route::group(
             function () {
                 Route::get('/info', 'IssuesController@getAdditionalInfo');
                 Route::get('/{id}', 'IssuesController@getIssue');
-                Route::get('/count/{identifier}', 'IssuesController@getCount');
                 Route::get('/', 'IssuesController@getIssues');
                 Route::post('/', 'IssuesController@create');
                 Route::put('/{id}', 'IssuesController@update');

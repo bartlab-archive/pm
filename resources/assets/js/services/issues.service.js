@@ -31,10 +31,6 @@ export default class IssuesService {
         return this.Restangular.one('filters').get();
     }
 
-    getCount($identifier) {
-        return this.Restangular.all('issues').one('count', $identifier).get();
-    }
-
     create(params) {
         return this.Restangular.all('issues').post(params);
     }
