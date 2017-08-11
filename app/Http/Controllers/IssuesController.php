@@ -64,7 +64,7 @@ class IssuesController extends BaseController
         return response()->json(
             [
                 'projectsList' => $this->projectsService->list(),
-                'trackersList' => $this->trackersService->list(),
+                'trackersList' => $this->trackersService->all(),
                 'statusesList' => $this->statusesService->all(),
                 'prioritiesList' => $this->enumerationsService->list()
             ],
