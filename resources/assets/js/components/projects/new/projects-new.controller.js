@@ -21,4 +21,10 @@ export default class ProjectsNewController extends ControllerBase {
             this.projects = response.data;
         });
     }
+
+    submit() {
+        // this.ProjectsService.create(this.model).then((response) => {
+        //     console.log(response);
+        // });
+    }
 }

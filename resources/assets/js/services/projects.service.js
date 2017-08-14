@@ -51,4 +51,8 @@ export default class ProjectsService {
         return this.Restangular.one('projects', identifier).one('trackers').withHttpConfig({cache: this.cache}).get();
     }
 
+    create(params) {
+        return this.Restangular.all('projects').post(params);
+    }
+
 }

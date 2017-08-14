@@ -15,6 +15,7 @@ class ProjectsService
     {
         $projects = Project::orderBy('name')
             ->where('status', Project::ACTIVE_STATUS)
+            ->where('is_public', Project::IS_PUBLIC)
             ->with([
                 'members',
                 'versions',

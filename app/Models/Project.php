@@ -15,6 +15,7 @@ class Project extends Model
     const ACTIVE_STATUS = '1';
     const CLOSED_STATUS = '5';
     const ARCHIVED_STATUS = '9';
+    const IS_PUBLIC = '1';
 
     protected $table = 'projects';
 

@@ -113,7 +113,7 @@ class ProjectsController extends BaseController
      */
     public function create(CreateProjectRequest $request)
     {
-        return response($this->projectsService->create($request->all()), 201);
+        return response($this->projectsService->create($request), 201);
     }
 
     /**

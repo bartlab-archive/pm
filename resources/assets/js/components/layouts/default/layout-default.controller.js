@@ -1,14 +1,16 @@
 import ControllerBase from 'base/controller.base';
+import * as _ from "lodash";
 
 /**
  * @property $mdSidenav
  * @property $state
  * @property ProjectsService
+ * @property UsersService
  */
 export default class LayoutDefaultController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdSidenav', '$state', 'ProjectsService'];
+        return ['$mdSidenav', '$state', 'ProjectsService', 'UsersService'];
     }
 
     $onInit() {
@@ -19,10 +21,15 @@ export default class LayoutDefaultController extends ControllerBase {
             {url: 'issues.list', name: 'View all issues', icon: 'list'},
             {url: 'home', name: 'Overall spent time', icon: 'timelapse'},
             {url: 'home', name: 'Overall activity', icon: 'history'},
-            {url: 'admin.index', name: 'Administration', icon: 'apps'},
             {url: 'my.page', name: 'My page', icon: 'person'},
             // {url: 'home', name: 'Help', icon: 'help'}
         ];
+
+        this.UsersService.getUserInfo().then((response) => {
+            if (_.get(response, 'data.admin')) {
+                this.items.push({url: 'admin.index', name: 'Administration', icon: 'apps'});
+            }
+        });
 
         // this.ProjectsService.getMyList().then((response) => {
         //     this.projects = response;

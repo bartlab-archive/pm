@@ -6,10 +6,12 @@ export default class UsersService {
 
     constructor($injector) {
         this.Restangular = $injector.get('Restangular');
+        this.$cacheFactory = $injector.get('$cacheFactory');
+        this.cache = this.$cacheFactory('UsersService');
     }
 
-    one(indifier) {
-        return this.Restangular.all('users').one(indifier).get();
+    one(identifier) {
+        return this.Restangular.all('users').one(identifier).get();
     }
 
     getList(params) {
@@ -225,7 +227,7 @@ export default class UsersService {
 
 
     getUserInfo() {
-        return this.Restangular.one('my').one('account').get().then((responce) => {
+        return this.Restangular.one('my').one('account').withHttpConfig({cache: this.cache}).get().then((responce) => {
             responce.data.hide_mail = !!responce.data.hide_mail;
             responce.data.no_self_notified = !!responce.data.no_self_notified;
             responce.data.warn_on_leaving_unsaved = !!responce.data.warn_on_leaving_unsaved;
