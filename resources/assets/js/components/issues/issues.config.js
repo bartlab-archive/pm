@@ -6,23 +6,14 @@ export default function IssuesConfig($stateProvider) {
         .state('issues', {
             abstract: true,
             data: {
-                access: '@'
+                access: '@',
+                layoutDefault: {
+                    projectId: null,
+                    showProjectMenu: true
+                }
             },
             url: '/issues',
             parent: 'default',
-            views: {
-                content: {
-                    template: '<ui-view/>'
-                }
-            }
-        })
-        .state('issues-inner', {
-            abstract: true,
-            data: {
-                access: '@'
-            },
-            url: '/projects/{project_id:[a-z][a-z0-9-_]{0,99}}/issues',
-            parent: 'project',
             views: {
                 content: {
                     template: '<ui-view/>'
@@ -33,19 +24,18 @@ export default function IssuesConfig($stateProvider) {
             url: '',
             component: 'issuesListComponent',
         })
-        .state('issues-inner.create', {
-            url: '/new',
-            component: 'issuesNewComponent',
-        })
-        .state('issues-inner.edit', {
-            url: '/:id',
-            component: 'issuesEditComponent',
-        })
-        .state('issues-inner.info', {
+        // .state('issues-inner.create', {
+        //     url: '/new',
+        //     component: 'issuesNewComponent',
+        // })
+        // .state('issues.edit', {
+        //     url: '/:id',
+        //     component: 'issuesEditComponent',
+        // })
+        .state('issues.info', {
             url: '/:id',
             component: 'issuesInfoComponent',
         })
-
 
 
 }

@@ -37,7 +37,7 @@ class User extends Authenticatable
     protected $guarded = ['id'];
 
     protected $hidden = [
-        'id',
+//        'id',
         'hashed_password',
         'auth_source_id',
         'type',

@@ -63,7 +63,7 @@ export default class IssuesEditController extends ControllerBase {
         this.issue.put().then((response) => {
 
             if (_.get(response, 'data')) {
-                this.$state.go('issues-inner.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
+                this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
             }
         });
     }
@@ -73,7 +73,7 @@ export default class IssuesEditController extends ControllerBase {
     }
 
     cancel() {
-        this.$state.go('issues-inner.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
+        this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
     }
 
 }

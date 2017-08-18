@@ -20,7 +20,6 @@ mix.js('resources/assets/js/app.js', 'public/js')
                 path.resolve('./node_modules')
             ]
         },
-        plugins: [
-        ]
+        plugins: []
     })
 ;

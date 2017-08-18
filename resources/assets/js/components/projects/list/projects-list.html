@@ -1,22 +1,86 @@
 <div layout-gt-sm="row" layout-align="center start">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <md-button
-                        class="md-icon-button"
-                        aria-label="New project"
-                        ng-click="$ctrl.newProject()">
-                    <md-icon>add</md-icon>
-                </md-button>
-                <h2>Projects</h2>
-                <span flex></span>
-                <md-switch class="md-body-1" ng-model="$ctrl.showClosed" md-invert aria-label="Show closed"
-                           ng-change="$ctrl.load()"
-                           ng-true-value="1" ng-false-value="0">
-                    Show closed
-                </md-switch>
-            </div>
-        </md-toolbar>
+        <!--<md-toolbar>-->
+        <!--<div class="md-toolbar-tools">-->
+        <!--<md-button-->
+        <!--class="md-icon-button"-->
+        <!--aria-label="New project"-->
+        <!--ng-click="$ctrl.newProject()">-->
+        <!--<md-icon>add</md-icon>-->
+        <!--</md-button>-->
+        <!--<h2>Projects</h2>-->
+        <!--<span flex></span>-->
+        <!--<md-switch class="md-body-1" ng-model="$ctrl.showClosed" md-invert aria-label="Show closed"-->
+        <!--ng-change="$ctrl.load()"-->
+        <!--ng-true-value="1" ng-false-value="0">-->
+        <!--Show closed-->
+        <!--</md-switch>-->
+        <!--</div>-->
+        <!--</md-toolbar>-->
+
+        <md-card-header>
+            <md-card-header-text>
+                <span class="md-title">Projects</span>
+            </md-card-header-text>
+
+            <div flex></div>
+
+            <md-switch class="md-body-1" ng-model="$ctrl.showClosed" md-invert aria-label="Show closed"
+                       ng-change="$ctrl.load()"
+                       ng-true-value="1" ng-false-value="0">
+                Show closed
+            </md-switch>
+
+            <!--<md-button class="md-icon-button" ng-click="null">-->
+            <!--<md-icon>more_vert</md-icon>-->
+            <!--</md-button>-->
+
+            <!--<md-menu>-->
+                <!--<md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openMoreMenu($mdMenu, $event)">-->
+                    <!--<md-icon>more_vert</md-icon>-->
+                <!--</md-button>-->
+                <!--<md-menu-content width="4">-->
+                    <!--<md-menu-item>-->
+                        <!--<md-button>-->
+                            <!--<md-icon>mode_edit</md-icon>-->
+                            <!--Edit-->
+                        <!--</md-button>-->
+                    <!--</md-menu-item>-->
+
+                    <!--<md-menu-item>-->
+                        <!--<md-button>-->
+                            <!--<md-icon>timelapse</md-icon>-->
+                            <!--Log time-->
+                        <!--</md-button>-->
+                    <!--</md-menu-item>-->
+
+                    <!--<md-menu-item>-->
+                        <!--<md-button>-->
+                            <!--<md-icon>star_border</md-icon>-->
+                            <!--Watch-->
+                        <!--</md-button>-->
+                    <!--</md-menu-item>-->
+
+                    <!--<md-menu-item>-->
+                        <!--<md-button>-->
+                            <!--<md-icon>content_copy</md-icon>-->
+                            <!--Copy-->
+                        <!--</md-button>-->
+                    <!--</md-menu-item>-->
+
+                    <!--<md-menu-divider></md-menu-divider>-->
+
+                    <!--<md-menu-item>-->
+                        <!--<md-button>-->
+                            <!--<md-icon>delete</md-icon>-->
+                            <!--Delete-->
+                        <!--</md-button>-->
+                    <!--</md-menu-item>-->
+                <!--</md-menu-content>-->
+            <!--</md-menu>-->
+
+
+        </md-card-header>
 
         <md-list ng-scrollbars ng-scrollbars-config="$ctrl.scrollBarConfig">
             <md-list-item class="md-3-line" ng-repeat="row in $ctrl.list" ng-click="$ctrl.goto(row.identifier)">

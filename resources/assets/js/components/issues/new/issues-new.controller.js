@@ -59,7 +59,7 @@ export default class IssuesNewController extends ControllerBase {
         this.IssuesService.create(this.issue).then((response) => {
 
             if (this.issue = _.get(response, 'data')) {
-                this.$state.go('issues-inner.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
+                this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
             }
         });
     }

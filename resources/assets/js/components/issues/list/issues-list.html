@@ -125,7 +125,7 @@
         <md-card-content ng-scrollbars ng-scrollbars-config="$ctrl.scrollBarConfigDescription">
             <div ng-if="$ctrl.showMore">
                 <p><b>Priority:</b> {{ $ctrl.prioritiesList[$ctrl.selectedIssue.priority_id] }}</p>
-                <p><b>Assignee:</b> {{ $ctrl.selectedIssue.user.firstname + ' ' + $ctrl.selectedIssue.user.lastname }}</p>
+                <p><b>Assignee:</b> <a ui-sref="users.info({id:$ctrl.selectedIssue.user.id})">{{ $ctrl.selectedIssue.user.firstname + ' ' + $ctrl.selectedIssue.user.lastname }}</a></p>
                 <!--<p><b>Target version:</b> -</p>-->
                 <p ng-show="$ctrl.selectedIssue.start_date"><b>Start date:</b> {{ $ctrl.selectedIssue.start_date }}</p>
                 <p ng-show="$ctrl.selectedIssue.due_date"><b>Due date:</b> {{ $ctrl.selectedIssue.due_date }}</p>

@@ -21,16 +21,22 @@ export default class IssuesInfoController extends ControllerBase {
         this.statusesList = [];
         this.prioritiesList = [];
 
-        this.init();
-    }
-
-    init() {
         this.loadIssue();
     }
 
     loadIssue() {
         this.IssuesService.one(this.$stateParams.id).then((response) => {
+            // set issue data
             this.issue = _.get(response, 'data', {});
+
+            // set current project id to state data
+            _.set(
+                this.$state,
+                'data.layoutDefault.projectId',
+                _.get(this.issue,'project.identifier')
+            );
+
+            // load addition info
             this.loadAdditionalInfo();
         });
     }
@@ -53,7 +59,7 @@ export default class IssuesInfoController extends ControllerBase {
     };
 
     edit() {
-        this.$state.go('issues-inner.edit', {project_id: this.$stateParams.project_id, id: this.issue.id});
+        this.$state.go('issues.edit', {project_id: this.$stateParams.project_id, id: this.issue.id});
     }
 
     setStatusText(statusId) {

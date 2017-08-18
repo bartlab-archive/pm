@@ -157,11 +157,11 @@ export default class IssuesListController extends ControllerBase {
     }
 
     openIssue(id) {
-        this.$state.go('issues-inner.info', {project_id: this.$stateParams.project_id, id: id});
+        this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: id});
     }
 
     editIssue(id) {
-        this.$state.go('issues-inner.edit', {project_id: this.$stateParams.project_id, id: id});
+        this.$state.go('issues.edit', {project_id: this.$stateParams.project_id, id: id});
     }
 
     toggleShowMore() {

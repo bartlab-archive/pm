@@ -82,7 +82,7 @@
                     </tr>
                     <tr>
                         <td><b>Assignee:</b></td>
-                        <td>{{ $ctrl.issue.user.firstname + ' ' + $ctrl.issue.user.lastname }}</td>
+                        <td><a ui-sref="users.info({id:$ctrl.issue.user.id})">{{ $ctrl.issue.user.firstname + ' ' + $ctrl.issue.user.lastname }}</a></td>
                     </tr>
                     <tr>
                         <td><b>Start date:</b></td>
