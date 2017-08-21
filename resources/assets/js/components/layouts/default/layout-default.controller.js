@@ -8,11 +8,12 @@ import * as _ from "lodash";
  * @property UsersService
  * @property $transitions
  * @property $stateParams
+ * @property $rootScope
  */
 export default class LayoutDefaultController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdSidenav', '$state', 'ProjectsService', 'UsersService', '$transitions', '$stateParams'];
+        return ['$mdSidenav', '$state', 'ProjectsService', 'UsersService', '$transitions', '$stateParams', '$rootScope'];
     }
 
     $onInit() {
@@ -42,33 +43,32 @@ export default class LayoutDefaultController extends ControllerBase {
         ];
 
         this.projectItems = [
-            {url: 'projects.inner.info', name: 'Overview'},
-            {url: 'projects.inner.activity', name: 'Activity'},
-            {url: 'projects.inner.issues.index', name: 'Issues'},
-            {url: 'projects.inner.issues.gantt', name: 'Gantt'},
-            {url: 'projects.inner.issues.calendar', name: 'Calendar'},
-            {url: 'projects.inner.news', name: 'News'},
-            {url: 'projects.inner.documents', name: 'Documents'},
-            {url: 'projects.inner.wiki.index', name: 'Wiki'},
-            {url: 'projects.inner.boards', name: 'Forums'},
-            {url: 'projects.inner.files', name: 'Files'},
-            {url: 'projects.inner.settings', name: 'Settings'}
+            {url: 'projects.inner.info', title: 'Overview'},
+            {url: 'projects.inner.activity', title: 'Activity', name: 'time_tracking', enable: false},
+            {url: 'projects.inner.issues.index', title: 'Issues', name: 'issue_tracking', enable: false},
+            {url: 'projects.inner.issues.gantt', title: 'Gantt', name: 'gantt', enable: false},
+            {url: 'projects.inner.issues.calendar', title: 'Calendar', name: 'calendar', enable: false},
+            {url: 'projects.inner.news', title: 'News', name: 'news', enable: false},
+            {url: 'projects.inner.documents', title: 'Documents', name: 'documents', enable: false},
+            {url: 'projects.inner.wiki.index', title: 'Wiki', name: 'wiki', enable: false},
+            {url: '', title: 'Repository', name: 'repository', enable: false},
+            {url: 'projects.inner.boards', title: 'Forums', name: 'boards', enable: false},
+            {url: 'projects.inner.files', title: 'Files', name: 'files', enable: false},
+            {url: 'projects.inner.settings', title: 'Settings'}
         ];
 
         this.menuOpen = false;
-        this.showProjectMenu = _.get(this.$state, 'current.data.layoutDefault.showProjectMenu', false) || !!_.get(this.$stateParams, 'project_id');
-        this.$transitions.onStart({}, (...args) => this.checkShowProjectMenu(...args));
+        this.checkShowProjectMenu(this.$state.current);
 
-        // this.load();
+        this.$transitions.onSuccess({}, (trans) => this.checkShowProjectMenu(trans.$to()));
+        this.$rootScope.$on('layoutDefaultUpdateProjectInfo', () => this.loadProjectInfo());
     }
 
-    checkShowProjectMenu(trans) {
-        this.showProjectMenu = _.get(trans.$to(), 'data.layoutDefault.showProjectMenu', false) || !!_.get(this.$stateParams, 'project_id');
-    }
-
-    getStateData(params) {
-        return !!_.get(params, 'project_id');
-
+    checkShowProjectMenu(state) {
+        this.showProjectMenu = _.get(state, 'data.layoutDefault.showProjectMenu', false) || !!_.get(this.$stateParams, 'project_id');
+        if (this.showProjectMenu) {
+            this.loadProjectInfo();
+        }
     }
 
     toggle(menu = 'left') {
@@ -78,7 +78,6 @@ export default class LayoutDefaultController extends ControllerBase {
     openUserMenu($mdMenu, ev) {
         $mdMenu.open(ev);
     };
-
 
     gotToProject(id) {
         this.$state.go('projects.inner.info', {id: id});
@@ -103,67 +102,30 @@ export default class LayoutDefaultController extends ControllerBase {
         this.toggle('right');
     }
 
+    currentProjectId(){
+        return _.get(this.$state, 'data.layoutDefault.projectId') || _.get(this.$stateParams, 'project_id');
+    }
+
     goto(url) {
-        let projectId = _.get(this.$state, 'data.layoutDefault.projectId') || _.get(this.$stateParams, 'project_id');
+        let projectId = this.currentProjectId();
+
         if (projectId) {
             this.$state.go(url, {project_id: projectId});
         }
     }
 
-    load() {
-        let project_id = _.get(this.$stateParams, 'project_id');
-        console.log(project_id);
-        if (!project_id) {
-            return;
+    loadProjectInfo() {
+        let projectId = this.currentProjectId();
+
+        if (projectId) {
+            this.ProjectsService.one(projectId).then((response) => {
+                let modules = _.get(response, 'data.enabled_modules', []);
+                _.forEach(this.projectItems, (module) => {
+                    if (module.name) {
+                        module.enable = _.some(modules, {name: module.name});
+                    }
+                });
+            });
         }
-        this.ProjectsService.one(project_id).then((response) => {
-            this.items = _.get(response, 'data.enabled_modules', []);
-
-            // _.forEach(this.items, (item) => {
-            // switch (item.name) {
-            //     case 'issue_tracking' :
-            //         item.url = 'projects-inner.activity';
-            //         break;
-            //
-            //     case 'wiki' :
-            //         item.url = 'projects-inner.wiki.index';
-            //         break;
-            //
-            //     case 'files' :
-            //         item.url = 'projects-inner.files';
-            //         break;
-            //
-            //     case 'documents' :
-            //         item.url = 'projects-inner.documents';
-            //         break;
-            //
-            //     case 'calendar' :
-            //         item.url = 'projects-inner.issues.calendar';
-            //         break;
-            //
-            //     case 'gantt' :
-            //         item.url = 'projects-inner.issues.gantt';
-            //         break;
-            //
-            //     default :
-            //         item.url = 'projects-inner.info';
-            //         break;
-            // }
-            // });
-
-            // this.currentNavItem = [
-            //     {url: 'projects-inner.issues.index', name: 'Issues'}
-            // ];
-
-            // this.items.unshift({url: 'projects-inner.issues.index', name: 'Issues'});
-            // this.items.unshift({url: 'projects-inner.info', name: 'Overview'});
-            // this.items.push({url: 'projects-inner.settings', name: 'Settings'});
-
-            // this.currentNavItem = _.get(
-            //     _.find(this.items, {url: this.$state.current.name}),
-            //     'url',
-            //     this.items[0].url
-            // );
-        });
     }
 }

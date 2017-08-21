@@ -8,11 +8,12 @@ import * as _ from "lodash";
  * @property $showdown
  * @property IssuesService
  * @property $stateParams
+ * @property $rootScope
  */
 export default class IssuesInfoController extends ControllerBase {
 
     static get $inject() {
-        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService'];
+        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService','$rootScope'];
     }
 
     $onInit() {
@@ -38,6 +39,7 @@ export default class IssuesInfoController extends ControllerBase {
 
             // load addition info
             this.loadAdditionalInfo();
+            this.$rootScope.$emit('layoutDefaultUpdateProjectInfo');
         });
     }
 
