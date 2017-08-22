@@ -6,6 +6,21 @@ export default class ProjectsService {
         return ['$injector'];
     }
 
+    get modules() {
+        return [
+            {id: 'issue_tracking', name: 'Issue tracking'},
+            {id: 'time_tracking', name: 'Time tracking '},
+            {id: 'news', name: 'News'},
+            {id: 'documents', name: 'Documents'},
+            {id: 'files', name: 'Files'},
+            {id: 'wiki', name: 'Wiki'},
+            {id: 'repository', name: 'Repository'},
+            {id: 'boards', name: 'Forums'},
+            {id: 'calendar', name: 'Calendar'},
+            {id: 'gantt', name: 'Gantt'},
+        ];
+    }
+
     constructor($injector) {
         this.Restangular = $injector.get('Restangular');
         this.$cacheFactory = $injector.get('$cacheFactory');
