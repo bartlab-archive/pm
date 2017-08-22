@@ -24,10 +24,6 @@ export default class IssuesEditController extends ControllerBase {
         this.categoriesList = [];
         this.prioritiesList = [];
 
-        this.init();
-    }
-
-    init() {
         this.loadIssue();
     }
 
@@ -36,16 +32,6 @@ export default class IssuesEditController extends ControllerBase {
             this.issue = _.get(response, 'data.issue', {});
             this.usersList = _.get(response, 'data.project.users', []);
             this.categoriesList = _.get(response, 'data.project.issue_categories', []);
-            this.trackersList = _.get(response, 'data.trackersList', []);
-            this.projectsList = _.get(response, 'data.projectsList', []);
-            this.statusesList = _.get(response, 'data.statusesList', []);
-            this.prioritiesList = _.get(response, 'data.prioritiesList', []);
-            // this.loadAdditionalInfo();
-        });
-    }
-
-    loadAdditionalInfo() {
-        this.IssuesService.getAdditionalInfo().then((response) => {
             this.trackersList = _.get(response, 'data.trackersList', []);
             this.projectsList = _.get(response, 'data.projectsList', []);
             this.statusesList = _.get(response, 'data.statusesList', []);

@@ -37,12 +37,6 @@ export default class IssuesInfoController extends ControllerBase {
             );
 
             // load addition info
-            this.loadAdditionalInfo();
-        });
-    }
-
-    loadAdditionalInfo() {
-        this.IssuesService.getAdditionalInfo(this.$stateParams.id).then((response) => {
             this.trackersList = _.get(response, 'data.trackersList', []);
             this.projectsList = _.get(response, 'data.projectsList', []);
             this.statusesList = _.get(response, 'data.statusesList', []);

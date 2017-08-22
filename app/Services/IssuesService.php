@@ -17,7 +17,6 @@ class IssuesService
     protected $enumerationsService;
 
     public function __construct(
-        IssuesService $issueService,
         StatusesService $statusesService,
         TrackersService $trackersService,
         ProjectsService $projectsService,
@@ -25,7 +24,6 @@ class IssuesService
         IssueCategoriesService $categoriesService
     )
     {
-        $this->issueService = $issueService;
         $this->statusesService = $statusesService;
         $this->trackersService = $trackersService;
         $this->projectsService = $projectsService;
@@ -35,19 +33,17 @@ class IssuesService
 
     public function one($id)
     {
-//        $response = [
-//            'projectsList' => $this->projectsService->list(),
-//            'trackersList' => $this->trackersService->all(),
-//            'statusesList' => $this->statusesService->all(),
-//            'prioritiesList' => $this->enumerationsService->list(),
-//
-//        ];
-        $response = [];
-        $response['issue'] = Issue::where('id', $id)->with(['trackers', 'user', 'author', 'project'])->first();
+        $response = [
+            'projectsList' => $this->projectsService->list(),
+            'trackersList' => $this->trackersService->all(),
+            'statusesList' => $this->statusesService->all(),
+            'prioritiesList' => $this->enumerationsService->list(),
+            'issue' => Issue::where('id', $id)->with(['trackers', 'user', 'author', 'project'])->first()
+        ];
 
-//        if ($project_identifier = array_get($response, 'issue.project.identifier')) {
-//            $response['project'] = $this->projectsService->one($project_identifier);
-//        }
+        if ($project_identifier = array_get($response, 'issue.project.identifier')) {
+            $response['project'] = $this->projectsService->one($project_identifier);
+        }
 
         return $response;
     }

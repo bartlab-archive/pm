@@ -34,7 +34,7 @@ export default class LayoutDefaultController extends ControllerBase {
         });
 
         this.newItems = [
-            {name: 'New issue', url: 'issues.create', icon: 'create'},
+            {name: 'New issue', url: 'issues-inner.create', icon: 'create'},
             {name: 'New category', url: '', icon: 'folder'},
             {name: 'New version', url: '', icon: 'archive'},
             {name: 'New wiki page', url: '', icon: 'receipt'},
