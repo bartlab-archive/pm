@@ -24,10 +24,6 @@ export default function IssuesConfig($stateProvider) {
             url: '',
             component: 'issuesListComponent',
         })
-        .state('issues-inner.create', {
-            url: '/new',
-            component: 'issuesNewComponent',
-        })
         .state('issues.edit', {
             url: '/:id/edit',
             component: 'issuesEditComponent',

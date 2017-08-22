@@ -71,8 +71,6 @@ export default class IssuesNewController extends ControllerBase {
             || !this.issue.tracker_id
             || !this.issue.project_id
             || !this.issue.assigned_to_id;
-
-        console.log(this.issue.status_id, this.issue.priority_id, this.issue.tracker_id, this.issue.project_id, this.issue.assigned_to_id);
     }
 
     cancel() {

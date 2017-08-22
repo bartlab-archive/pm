@@ -12,17 +12,17 @@ export default class ProjectsWikiController extends ControllerBase {
     }
 
     $onInit() {
-        this.WikiService.getStartPageWiki(this.$stateParams.id).then((response) => {
-            if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
-                this.data = response.data;
-            }
-        });
-
-        this.WikiService.getAllWikiPage(this.$stateParams.id).then((response) => {
-            if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
-                this.pageList = response.data;
-            }
-        });
+        // this.WikiService.getStartPageWiki(this.$stateParams.id).then((response) => {
+        //     if (!_.isEmpty(response.data)) {
+        //         this.data = response.data;
+        //     }
+        // });
+        //
+        // this.WikiService.getAllWikiPage(this.$stateParams.id).then((response) => {
+        //     if (!_.isEmpty(response.data)) {
+        //         this.pageList = response.data;
+        //     }
+        // });
 
         this.editMode = false;
     }

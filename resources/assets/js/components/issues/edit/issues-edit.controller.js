@@ -7,12 +7,13 @@ import * as _ from "lodash";
  * @property ProjectsService
  * @property $window
  * @property $state
+ * @property $rootScope
  */
 
 export default class IssuesEditController extends ControllerBase {
 
     static get $inject() {
-        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService'];
+        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService', '$rootScope'];
     }
 
     $onInit() {
@@ -36,6 +37,13 @@ export default class IssuesEditController extends ControllerBase {
             this.projectsList = _.get(response, 'data.projectsList', []);
             this.statusesList = _.get(response, 'data.statusesList', []);
             this.prioritiesList = _.get(response, 'data.prioritiesList', []);
+
+            _.set(
+                this.$state,
+                'data.layoutDefault.projectId',
+                _.get(response, 'data.project.identifier')
+            );
+            this.$rootScope.$emit('layoutDefaultUpdateProjectInfo');
         });
     }
 
