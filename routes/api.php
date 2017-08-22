@@ -98,6 +98,7 @@ Route::group(
 
             ],
             function () {
+                Route::get('/info', 'IssuesController@getAdditionalInfo');
                 Route::get('/{id}', 'IssuesController@getIssue');
                 Route::get('/', 'IssuesController@getIssues');
                 Route::post('/', 'IssuesController@create');

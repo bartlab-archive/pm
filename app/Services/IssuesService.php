@@ -9,43 +9,9 @@ use App\Models\Project;
 class IssuesService
 {
 
-    protected $issueService;
-    protected $statusesService;
-    protected $trackersService;
-    protected $projectsService;
-    protected $categoriesService;
-    protected $enumerationsService;
-
-    public function __construct(
-        StatusesService $statusesService,
-        TrackersService $trackersService,
-        ProjectsService $projectsService,
-        EnumerationsService $enumerationsService,
-        IssueCategoriesService $categoriesService
-    )
-    {
-        $this->statusesService = $statusesService;
-        $this->trackersService = $trackersService;
-        $this->projectsService = $projectsService;
-        $this->categoriesService = $categoriesService;
-        $this->enumerationsService = $enumerationsService;
-    }
-
     public function one($id)
     {
-        $response = [
-            'projectsList' => $this->projectsService->list(),
-            'trackersList' => $this->trackersService->all(),
-            'statusesList' => $this->statusesService->all(),
-            'prioritiesList' => $this->enumerationsService->list(),
-            'issue' => Issue::where('id', $id)->with(['trackers', 'user', 'author', 'project'])->first()
-        ];
-
-        if ($project_identifier = array_get($response, 'issue.project.identifier')) {
-            $response['project'] = $this->projectsService->one($project_identifier);
-        }
-
-        return $response;
+        return Issue::where('id', $id)->with(['trackers', 'user', 'author', 'project'])->first();
     }
 
     public function update($id, array $data)
