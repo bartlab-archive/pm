@@ -61,14 +61,14 @@ class IssuesController extends BaseController
 
     public function getAdditionalInfo()
     {
-        return response()->json(
-            [
-                'projectsList' => $this->projectsService->list(),
-                'trackersList' => $this->trackersService->all(),
-                'statusesList' => $this->statusesService->all(),
-                'prioritiesList' => $this->enumerationsService->list()
-            ],
-            200);
+//        return response()->json(
+//            [
+//                'projectsList' => $this->projectsService->list(),
+//                'trackersList' => $this->trackersService->all(),
+//                'statusesList' => $this->statusesService->all(),
+//                'prioritiesList' => $this->enumerationsService->list()
+//            ],
+//            200);
     }
 
     public function create(UpdateIssueRequest $request)

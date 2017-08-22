@@ -143,7 +143,7 @@ class ProjectsController extends BaseController
     public function getIssues($identifier, Request $request)
     {
     	$result = $this->projectsService->getIssues($identifier, $request);
-    	
+
     	return response()->json($result['projects'])->header('X-Total', $result['total']);
     }
 

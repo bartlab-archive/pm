@@ -27,13 +27,13 @@ export default class IssuesInfoController extends ControllerBase {
     loadIssue() {
         this.IssuesService.one(this.$stateParams.id).then((response) => {
             // set issue data
-            this.issue = _.get(response, 'data', {});
+            this.issue = _.get(response, 'data.issue', {});
 
             // set current project id to state data
             _.set(
                 this.$state,
                 'data.layoutDefault.projectId',
-                _.get(this.issue,'project.identifier')
+                _.get(response, 'data.project.identifier')
             );
 
             // load addition info

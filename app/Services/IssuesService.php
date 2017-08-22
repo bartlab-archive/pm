@@ -5,13 +5,51 @@ namespace App\Services;
 use App\Models\Issue;
 use App\Models\Project;
 
+
 class IssuesService
 {
 
+    protected $issueService;
+    protected $statusesService;
+    protected $trackersService;
+    protected $projectsService;
+    protected $categoriesService;
+    protected $enumerationsService;
+
+    public function __construct(
+        IssuesService $issueService,
+        StatusesService $statusesService,
+        TrackersService $trackersService,
+        ProjectsService $projectsService,
+        EnumerationsService $enumerationsService,
+        IssueCategoriesService $categoriesService
+    )
+    {
+        $this->issueService = $issueService;
+        $this->statusesService = $statusesService;
+        $this->trackersService = $trackersService;
+        $this->projectsService = $projectsService;
+        $this->categoriesService = $categoriesService;
+        $this->enumerationsService = $enumerationsService;
+    }
+
     public function one($id)
     {
-        return Issue::where('id', $id)
-            ->with(['trackers', 'user', 'author', 'project'])->first(); // add project info
+//        $response = [
+//            'projectsList' => $this->projectsService->list(),
+//            'trackersList' => $this->trackersService->all(),
+//            'statusesList' => $this->statusesService->all(),
+//            'prioritiesList' => $this->enumerationsService->list(),
+//
+//        ];
+        $response = [];
+        $response['issue'] = Issue::where('id', $id)->with(['trackers', 'user', 'author', 'project'])->first();
+
+//        if ($project_identifier = array_get($response, 'issue.project.identifier')) {
+//            $response['project'] = $this->projectsService->one($project_identifier);
+//        }
+
+        return $response;
     }
 
     public function update($id, array $data)
@@ -67,7 +105,8 @@ class IssuesService
         return $result;
     }
 
-    public function trackers($identifier) {
+    public function trackers($identifier)
+    {
         $bug = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
             ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
             ->where(Project::getTableName() . '.identifier', $identifier)

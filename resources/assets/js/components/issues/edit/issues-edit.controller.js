@@ -28,21 +28,19 @@ export default class IssuesEditController extends ControllerBase {
     }
 
     init() {
-        this.loadProject();
         this.loadIssue();
-    }
-
-    loadProject() {
-        this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
-            this.usersList = _.get(response, 'data.users', []);
-            this.categoriesList = _.get(response, 'data.issue_categories', []);
-        });
     }
 
     loadIssue() {
         this.IssuesService.one(this.$stateParams.id).then((response) => {
-            this.issue = _.get(response, 'data', {});
-            this.loadAdditionalInfo();
+            this.issue = _.get(response, 'data.issue', {});
+            this.usersList = _.get(response, 'data.project.users', []);
+            this.categoriesList = _.get(response, 'data.project.issue_categories', []);
+            this.trackersList = _.get(response, 'data.trackersList', []);
+            this.projectsList = _.get(response, 'data.projectsList', []);
+            this.statusesList = _.get(response, 'data.statusesList', []);
+            this.prioritiesList = _.get(response, 'data.prioritiesList', []);
+            // this.loadAdditionalInfo();
         });
     }
 
