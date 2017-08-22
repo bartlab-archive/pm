@@ -24,7 +24,9 @@ export default class IssuesService {
     }
 
     getAdditionalInfo() {
-        return this.Restangular.all('issues').one('info').withHttpConfig({cache: this.cache}).get();
+        return this.Restangular.all('issues').one('info')
+            // .withHttpConfig({cache: this.cache})
+            .get();
     }
 
     getIssuesFilters() {

@@ -8,11 +8,12 @@ import * as _ from "lodash";
  * @property $showdown
  * @property IssuesService
  * @property $stateParams
+ * @property $rootScope
  */
 export default class IssuesInfoController extends ControllerBase {
 
     static get $inject() {
-        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService'];
+        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService','$rootScope'];
     }
 
     $onInit() {
@@ -45,6 +46,7 @@ export default class IssuesInfoController extends ControllerBase {
             this.setStatusText(this.issue.status_id);
             this.setTrackerText(this.issue.tracker_id);
             this.setPriorityText(this.issue.priority_id);
+            this.$rootScope.$emit('layoutDefaultUpdateProjectInfo');
         });
     }
 
