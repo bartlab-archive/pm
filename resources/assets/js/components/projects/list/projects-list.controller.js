@@ -14,13 +14,9 @@ export default class ProjectsListController extends ControllerBase {
     $onInit() {
         this.showClosed = 0;
         this.load();
-
-        angular.element(this.$window).bind('resize', () => this.onWindowResize());
-        this.onWindowResize();
     }
 
     load() {
-        // this.list = [];
         this.ProjectsService.getList({closed: this.showClosed}).then((response) => {
             this.list = response.data;
         });
@@ -36,13 +32,6 @@ export default class ProjectsListController extends ControllerBase {
 
     makeHtml(text) {
         return text ? this.$showdown.stripHtml(this.$showdown.makeHtml(text)) : '';
-    }
-
-    onWindowResize() {
-        let windowHeight = this.$window.innerHeight;
-        this.scrollBarConfig = {
-            setHeight: windowHeight - 200
-        };
     }
 
 }
