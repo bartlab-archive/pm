@@ -9,6 +9,7 @@ use App\Http\Requests\Projects\UpdateProjectRequest;
 use App\Services\EnabledModulesService;
 use App\Services\IssuesService;
 use App\Services\ProjectsService;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
 /**
