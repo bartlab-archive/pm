@@ -33,5 +33,5 @@ class EnabledModule extends Model
     /**
      * @var array
      */
-    protected $hidden = ['id'];
+    protected $hidden = ['project_id', 'id'];
 }
