@@ -75,9 +75,9 @@
             <md-tab label="Modules">
                 <md-content class="md-padding">
                     <md-list>
-                        <md-list-item ng-repeat="item in $ctrl.modules">
+                        <md-list-item ng-repeat="item in $ctrl.allModules">
                             <p> {{ item.name }} </p>
-                            <md-switch class="md-secondary" ng-model="$ctrl.model.module[item.id]"></md-switch>
+                            <md-switch class="md-secondary" ng-model="$ctrl.model.modules[item.id]"></md-switch>
                         </md-list-item>
                     </md-list>
 

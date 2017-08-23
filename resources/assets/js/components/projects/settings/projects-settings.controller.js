@@ -5,15 +5,16 @@ import ControllerBase from 'base/controller.base';
  * @property ProjectsService
  * @property UsersService
  * @property $stateParams
+ * @property $rootScope
  */
 export default class ProjectsSettingsController extends ControllerBase {
 
     static get $inject() {
-        return ['ProjectsService', 'UsersService', '$stateParams'];
+        return ['ProjectsService', 'UsersService', '$stateParams','$rootScope'];
     }
 
     $onInit() {
-        this.modules = this.ProjectsService.modules;
+        this.allModules = this.ProjectsService.modules;
 
         this.trackers = [
             {id: '4', name: 'Feature'},
@@ -22,12 +23,7 @@ export default class ProjectsSettingsController extends ControllerBase {
 
         this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.model = _.get(response, 'data', []);
-
-            this.model.module ={};
-            _.forEach(this.model.enabled_modules, (value, key) => {
-                this.model.module[value.name] = true;
-            });
-            console.log(this.model.module);
+            this.model.modules =this.ProjectsService.getModules(this.model.enabled_modules);
         });
 
         this.ProjectsService.getList().then((response) => {
@@ -108,15 +104,29 @@ export default class ProjectsSettingsController extends ControllerBase {
     }
 
     updateModules() {
-        let requestData = [];
+        // let requestData = [];
+        //
+        // if( typeof this.model.module !== 'undefined'){
+        //     _.forEach(this.model.module, (value, key) => {
+        //         value ? requestData.push(key) : null;
+        //     });
+        // }
 
-        if( typeof this.model.module !== 'undefined'){
-            _.forEach(this.model.module, (value, key) => {
-                value ? requestData.push(key) : null;
+        // let requestData = _.find(this.model.ena);
+        // console.log(
+        //     _.keys(
+        //         _.pickBy(this.model.module,(value, key)=> value)
+        //     )
+        // );
+
+        this.ProjectsService
+            .updateModules(
+                this.model.identifier,
+                _.keys(_.pickBy(this.model.modules,(value, key)=> value))
+            )
+            .then(()=>{
+                this.$rootScope.$emit('layoutDefaultUpdateProjectInfo');
             });
-        }
-
-        this.ProjectsService.updateModules(this.model.id, requestData);
     }
 
 

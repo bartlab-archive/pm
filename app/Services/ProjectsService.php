@@ -91,13 +91,6 @@ class ProjectsService
         return $this->attachmentsService->getFullFilePath($id);
     }
 
-    /**
-     * @param $id
-     */
-    public function projectExists($id){
-        Project::where(['id' => $id])->firstOrFail();
-    }
-
 //    public function getIssues($identifier, $request)
 //    {
 //        return [

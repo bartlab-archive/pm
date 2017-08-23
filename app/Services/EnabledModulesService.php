@@ -35,13 +35,13 @@ class EnabledModulesService
      */
     public function update($data)
     {
-        $this->projectService->projectExists($data['project_id']);
+        $project = $this->projectService->one($data['identifier']);
 
-        EnabledModule::where(['project_id' => $data['project_id']])->delete();
+        EnabledModule::where(['project_id' => $project->id])->delete();
 
         foreach ($data['enabled_modules'] as $moduleName) {
             EnabledModule::create([
-                'project_id' => $data['project_id'],
+                'project_id' => $project->id,
                 'name' => $moduleName
             ]);
         }

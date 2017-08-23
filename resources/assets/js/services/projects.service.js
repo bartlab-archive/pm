@@ -30,9 +30,18 @@ export default class ProjectsService {
 
     one(identifier) {
         return this.Restangular.all('projects').one(identifier)
-            .withHttpConfig({cache: this.cache})
+            // .withHttpConfig({cache: this.cache})
             .get();
     }
+
+    getModules(data) {
+        let module = {};
+        _.forEach(data, (value, key) => {
+            module[value.name] = true;
+        });
+
+        return module;
+    };
 
     getList(params) {
         return this.Restangular.all('projects').getList(params);
@@ -58,8 +67,8 @@ export default class ProjectsService {
         return this.Restangular.all('projects').post(params);
     }
 
-    updateModules(identifier, params){
-        return this.Restangular.one('projects', identifier).one('modules').put(params);
+    updateModules(identifier,params){
+        return this.Restangular.one('projects',identifier).customPUT(params,'modules');
     }
 
 }

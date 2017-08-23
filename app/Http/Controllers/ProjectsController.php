@@ -169,7 +169,7 @@ class ProjectsController extends BaseController
     public function updateProjectModules($identifier, Request $request)
     {
         $result = $this->enabledModulesService->update([
-            'project_id' => $identifier,
+            'identifier' => $identifier,
             'enabled_modules' => $request->all()
         ]);
 
