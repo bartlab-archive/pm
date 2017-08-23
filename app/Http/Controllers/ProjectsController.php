@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Projects\CreateProjectRequest;
 use App\Http\Requests\Projects\IndexProjectRequest;
+use App\Http\Requests\Projects\ProjectExistsRequest;
 use App\Http\Requests\Projects\UpdateProjectRequest;
+use App\Services\EnabledModulesService;
 use App\Services\IssuesService;
 use App\Services\ProjectsService;
 use Illuminate\Routing\Controller as BaseController;
@@ -13,18 +15,28 @@ use Illuminate\Http\Request;
 /**
  * Class ProjectController
  *
+ * @property ProjectsService $projectsService
+ * @property IssuesService $issuesService
+ * @property EnabledModulesService $enabledModulesService
+ * 
  * @package App\Http\Controllers\Projects
  */
 class ProjectsController extends BaseController
 {
 
     protected $projectsService;
-    protected $issueService;
+    protected $issuesService;
+    protected $enabledModulesService;
 
-    public function __construct(ProjectsService $projectsService, IssuesService $issuesService)
+    public function __construct(
+        ProjectsService $projectsService,
+        IssuesService $issuesService,
+        EnabledModulesService $enabledModulesService
+    )
     {
         $this->projectsService = $projectsService;
-        $this->issueService = $issuesService;
+        $this->issuesService = $issuesService;
+        $this->enabledModulesService = $enabledModulesService;
     }
 
     /**
@@ -149,10 +161,18 @@ class ProjectsController extends BaseController
 
     public function getProjectTrackers($identifier) {
 
-        $result = $this->issueService->trackers($identifier);
+        $result = $this->issuesService->trackers($identifier);
 
         return response()->json($result, 200);
     }
 
-   
+    public function updateProjectModules($identifier, Request $request)
+    {
+        $result = $this->enabledModulesService->update([
+            'project_id' => $identifier,
+            'enabled_modules' => $request->all()
+        ]);
+
+        return response()->json($result, 200);
+    }
 }

@@ -65,6 +65,7 @@ Route::group(
                 Route::get('/attachments/download/{id}', 'AttachmentsController@download');
                 Route::delete('/attachments/{id}', 'AttachmentsController@delete');
 
+                Route::put('/{identifier}/modules', 'ProjectsController@updateProjectModules');
             }
         );
 

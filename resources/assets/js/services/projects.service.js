@@ -58,4 +58,8 @@ export default class ProjectsService {
         return this.Restangular.all('projects').post(params);
     }
 
+    updateModules(identifier, params){
+        return this.Restangular.one('projects', identifier).one('modules').put(params);
+    }
+
 }

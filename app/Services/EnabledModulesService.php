@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\EnabledModule;
+
+/**
+ * Class EnabledModulesService
+ *
+ * @property ProjectsService $projectService
+ *
+ * @package App\Services
+ */
+class EnabledModulesService
+{
+    /**
+     * @var ProjectsService
+     */
+    protected $projectService;
+
+    /**
+     * EnabledModulesService constructor.
+     * @param ProjectsService $projectService
+     */
+    function __construct(ProjectsService $projectService)
+    {
+        $this->projectService = $projectService;
+    }
+
+    /**
+     * Update project enabled modules
+     *
+     * @param array $data
+     * @return bool
+     */
+    public function update($data)
+    {
+        $this->projectService->projectExists($data['project_id']);
+
+        EnabledModule::where(['project_id' => $data['project_id']])->delete();
+
+        foreach ($data['enabled_modules'] as $moduleName) {
+            EnabledModule::create([
+                'project_id' => $data['project_id'],
+                'name' => $moduleName
+            ]);
+        }
+
+        return true;
+    }
+}

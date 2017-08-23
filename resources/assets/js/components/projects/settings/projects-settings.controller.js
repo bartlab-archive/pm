@@ -20,8 +20,14 @@ export default class ProjectsSettingsController extends ControllerBase {
             {id: '6', name: 'Bug'},
         ];
 
-        this.ProjectsService.one(this.$stateParams.id).then((response) => {
+        this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.model = _.get(response, 'data', []);
+
+            this.model.module ={};
+            _.forEach(this.model.enabled_modules, (value, key) => {
+                this.model.module[value.name] = true;
+            });
+            console.log(this.model.module);
         });
 
         this.ProjectsService.getList().then((response) => {
@@ -100,6 +106,19 @@ export default class ProjectsSettingsController extends ControllerBase {
             },
         ];
     }
+
+    updateModules() {
+        let requestData = [];
+
+        if( typeof this.model.module !== 'undefined'){
+            _.forEach(this.model.module, (value, key) => {
+                value ? requestData.push(key) : null;
+            });
+        }
+
+        this.ProjectsService.updateModules(this.model.id, requestData);
+    }
+
 
     // paginatorCallback(page, pageSize) {
     //     let offset = (page - 1) * pageSize;

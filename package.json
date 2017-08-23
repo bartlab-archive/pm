@@ -34,6 +34,7 @@
     "ng-scrollbars": "*"
   },
   "dependencies": {
+    "node-sass": "^4.5.3",
     "simplebar": "^2.4.3"
   }
 }
