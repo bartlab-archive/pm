@@ -7,12 +7,13 @@ import * as _ from "lodash";
  * @property ProjectsService
  * @property $window
  * @property $state
+ * @property $rootScope
  */
 
 export default class IssuesEditController extends ControllerBase {
 
     static get $inject() {
-        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService'];
+        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService', '$rootScope'];
     }
 
     $onInit() {
@@ -24,34 +25,25 @@ export default class IssuesEditController extends ControllerBase {
         this.categoriesList = [];
         this.prioritiesList = [];
 
-        this.init();
-    }
-
-    init() {
-        this.loadProject();
         this.loadIssue();
-    }
-
-    loadProject() {
-        this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
-            this.usersList = _.get(response, 'data.users', []);
-            this.categoriesList = _.get(response, 'data.issue_categories', []);
-        });
     }
 
     loadIssue() {
         this.IssuesService.one(this.$stateParams.id).then((response) => {
-            this.issue = _.get(response, 'data', {});
-            this.loadAdditionalInfo();
-        });
-    }
-
-    loadAdditionalInfo() {
-        this.IssuesService.getAdditionalInfo().then((response) => {
+            this.issue = _.get(response, 'data.issue', {});
+            this.usersList = _.get(response, 'data.project.users', []);
+            this.categoriesList = _.get(response, 'data.project.issue_categories', []);
             this.trackersList = _.get(response, 'data.trackersList', []);
             this.projectsList = _.get(response, 'data.projectsList', []);
             this.statusesList = _.get(response, 'data.statusesList', []);
             this.prioritiesList = _.get(response, 'data.prioritiesList', []);
+
+            _.set(
+                this.$state,
+                'data.layoutDefault.projectId',
+                _.get(response, 'data.project.identifier')
+            );
+            this.$rootScope.$emit('layoutDefaultUpdateProjectInfo');
         });
     }
 

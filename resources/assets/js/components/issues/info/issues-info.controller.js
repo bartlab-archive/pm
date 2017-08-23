@@ -28,23 +28,16 @@ export default class IssuesInfoController extends ControllerBase {
     loadIssue() {
         this.IssuesService.one(this.$stateParams.id).then((response) => {
             // set issue data
-            this.issue = _.get(response, 'data', {});
+            this.issue = _.get(response, 'data.issue', {});
 
             // set current project id to state data
             _.set(
                 this.$state,
                 'data.layoutDefault.projectId',
-                _.get(this.issue,'project.identifier')
+                _.get(response, 'data.project.identifier')
             );
 
             // load addition info
-            this.loadAdditionalInfo();
-            this.$rootScope.$emit('layoutDefaultUpdateProjectInfo');
-        });
-    }
-
-    loadAdditionalInfo() {
-        this.IssuesService.getAdditionalInfo(this.$stateParams.id).then((response) => {
             this.trackersList = _.get(response, 'data.trackersList', []);
             this.projectsList = _.get(response, 'data.projectsList', []);
             this.statusesList = _.get(response, 'data.statusesList', []);
@@ -53,6 +46,7 @@ export default class IssuesInfoController extends ControllerBase {
             this.setStatusText(this.issue.status_id);
             this.setTrackerText(this.issue.tracker_id);
             this.setPriorityText(this.issue.priority_id);
+            this.$rootScope.$emit('layoutDefaultUpdateProjectInfo');
         });
     }
 

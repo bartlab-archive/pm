@@ -5,13 +5,13 @@ namespace App\Services;
 use App\Models\Issue;
 use App\Models\Project;
 
+
 class IssuesService
 {
 
     public function one($id)
     {
-        return Issue::where('id', $id)
-            ->with(['trackers', 'user', 'author', 'project'])->first(); // add project info
+        return Issue::where('id', $id)->with(['trackers', 'user', 'author', 'project'])->first();
     }
 
     public function update($id, array $data)
@@ -67,7 +67,8 @@ class IssuesService
         return $result;
     }
 
-    public function trackers($identifier) {
+    public function trackers($identifier)
+    {
         $bug = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
             ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
             ->where(Project::getTableName() . '.identifier', $identifier)

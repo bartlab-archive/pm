@@ -10,7 +10,6 @@ use App\Services\EnabledModulesService;
 use App\Services\IssuesService;
 use App\Services\ProjectsService;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Http\Request;
 
 /**
  * Class ProjectController
@@ -152,12 +151,12 @@ class ProjectsController extends BaseController
         return response(null, 204);
     }
     
-    public function getIssues($identifier, Request $request)
-    {
-    	$result = $this->projectsService->getIssues($identifier, $request);
-    	
-    	return response()->json($result['projects'])->header('X-Total', $result['total']);
-    }
+//    public function getIssues($identifier, Request $request)
+//    {
+//    	$result = $this->projectsService->getIssues($identifier, $request);
+//
+//    	return response()->json($result['projects'])->header('X-Total', $result['total']);
+//    }
 
     public function getProjectTrackers($identifier) {
 

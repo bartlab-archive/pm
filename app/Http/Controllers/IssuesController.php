@@ -45,7 +45,18 @@ class IssuesController extends BaseController
 
     public function getIssue($id)
     {
-        return response()->json($this->issueService->one($id), 200);
+        $issue = $this->issueService->one($id);
+
+        $response = [
+            'projectsList' => $this->projectsService->list(),
+            'trackersList' => $this->trackersService->all(),
+            'statusesList' => $this->statusesService->all(),
+            'prioritiesList' => $this->enumerationsService->list(),
+            'project' => $this->projectsService->one(array_get($issue, 'project.identifier')),
+            'issue' => $issue
+        ];
+
+        return response()->json($response, 200);
     }
 
     public function getIssuesFilters()

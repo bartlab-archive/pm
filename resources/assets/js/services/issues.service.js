@@ -25,7 +25,7 @@ export default class IssuesService {
 
     getAdditionalInfo() {
         return this.Restangular.all('issues').one('info')
-            // .withHttpConfig({cache: this.cache})
+            .withHttpConfig({cache: this.cache})
             .get();
     }
 
