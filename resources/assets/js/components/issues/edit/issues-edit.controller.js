@@ -17,7 +17,7 @@ export default class IssuesEditController extends ControllerBase {
     }
 
     $onInit() {
-        
+
         this.usersList = [];
         this.trackersList = [];
         this.projectsList = [];
@@ -52,7 +52,7 @@ export default class IssuesEditController extends ControllerBase {
             return false;
         }
 
-        this.issue.put().then((response) => {
+        this.IssuesService.update(this.issue).then((response) => {
 
             if (_.get(response, 'data')) {
                 this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});

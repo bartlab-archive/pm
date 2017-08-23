@@ -36,4 +36,8 @@ export default class IssuesService {
     create(params) {
         return this.Restangular.all('issues').post(params);
     }
+
+    update(issue) {
+        return this.Restangular.all('issues').customPUT(issue, issue.id);
+    }
 }

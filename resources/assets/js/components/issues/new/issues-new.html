@@ -102,24 +102,20 @@
                         <textarea ng-model="$ctrl.issue.description" rows="5"></textarea>
                     </md-input-container>
 
-                    <div layout="row">
-                        <md-button type="button" ng-disabled="$ctrl.error" ng-click="$ctrl.create()">Create</md-button>
-                        <md-button type="button" ng-click="$ctrl.cancel()">Cancel</md-button>
-                    </div>
                 </form>
             </div>
 
         </md-card-content>
 
         <md-card-actions layout="row" layout-align="center center">
-            <md-button ng-click="$ctrl.openEditForm()">
-                <md-icon>rss_feed</md-icon>
-                Atom
+            <md-button ng-disabled="$ctrl.error" ng-click="$ctrl.create()">
+                <md-icon>create</md-icon>
+                Create
             </md-button>
 
-            <md-button ng-click="null">
-                <md-icon>file_download</md-icon>
-                PDF
+            <md-button ng-click="$ctrl.cancel()">
+                <md-icon>cancel</md-icon>
+                Cancel
             </md-button>
         </md-card-actions>
     </md-card>
