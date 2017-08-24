@@ -1,12 +1,12 @@
-export default class NewsService {
+import ServiceBase from "base/service.base";
+
+/**
+ * @property {Restangular} Restangular
+ */
+export default class NewsService extends ServiceBase {
 
     static get $inject() {
-        return ['$injector'];
-    }
-
-
-    constructor($injector) {
-        this.Restangular = $injector.get('Restangular');
+        return ['Restangular'];
     }
 
     one(identifier) {

@@ -1,6 +1,11 @@
 import ControllerBase from 'base/controller.base';
 
+/**
+ * @property {ProjectsService} ProjectsService
+ * @property {$stateParams} $stateParams
+ */
 export default class ProjectsNewsController extends ControllerBase {
+
     static get $inject() {
         return ['ProjectsService', '$stateParams'];
     }
@@ -13,7 +18,6 @@ export default class ProjectsNewsController extends ControllerBase {
 
             })
             .catch(console.log);
-
     }
 
 }

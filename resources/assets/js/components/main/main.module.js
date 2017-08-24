@@ -1,5 +1,4 @@
 import 'angular';
-
 import mainConfig from './main.config';
 import mainIndexComponent from './index/main-index.component';
 import mainLoginComponent from './login/main-login.component';

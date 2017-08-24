@@ -4,9 +4,7 @@ import myPasswordComponent from './password/my-password.component';
 import myPageComponent from './page/my-page.component';
 
 /**
- * Class MyConfig
- *
- * @property $stateProvider
+ * @property {$stateProvider} $stateProvider
  */
 export default class MyConfig extends InjectableBase {
 

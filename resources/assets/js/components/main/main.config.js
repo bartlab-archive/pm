@@ -8,9 +8,7 @@ import main404Component from './404/main-404.component';
 import main500Component from './500/main-500.component';
 
 /**
- * Class MainConfig
- *
- * @property $stateProvider
+ * @property {$stateProvider} $stateProvider
  */
 export default class MainConfig extends InjectableBase {
 

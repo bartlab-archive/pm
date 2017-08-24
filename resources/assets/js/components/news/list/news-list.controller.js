@@ -1,5 +1,10 @@
 import ControllerBase from 'base/controller.base';
 
+/**
+ * @property {NewsService} NewsService
+ * @property {$state} $state
+ * @property {$stateParams} $stateParams
+ */
 export default class NewsListController extends ControllerBase {
 
     static get $inject() {
@@ -11,7 +16,6 @@ export default class NewsListController extends ControllerBase {
         this.NewsService.getNews(this.$stateParams.id, {})
             .then((response) => {
                 this.news = response.data
-
             })
             .catch(console.log);
     }

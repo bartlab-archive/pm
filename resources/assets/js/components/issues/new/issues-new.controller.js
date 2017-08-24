@@ -2,13 +2,12 @@ import ControllerBase from 'base/controller.base';
 import * as _ from "lodash";
 
 /**
- * @property $stateParams
- * @property IssuesService
- * @property ProjectsService
- * @property $window
- * @property $state
+ * @property {$stateParams} $stateParams
+ * @property {IssuesService} IssuesService
+ * @property {ProjectsService} ProjectsService
+ * @property {$window} $window
+ * @property {$state} $state
  */
-
 export default class IssuesNewController extends ControllerBase {
 
     static get $inject() {

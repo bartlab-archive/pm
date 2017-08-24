@@ -4,9 +4,7 @@ import usersEditComponent from './edit/users-edit.component';
 import usersInfoComponent from './info/users-info.component';
 
 /**
- * Class UsersConfig
- *
- * @property $stateProvider
+ * @property {$stateProvider} $stateProvider
  */
 export default class UsersConfig extends InjectableBase {
 

@@ -1,12 +1,9 @@
 import InjectableBase from 'base/injectable.base';
 import layoutBlankComponent from './blank/layout-blank.component';
 import layoutDefaultComponent from './default/layout-default.component';
-// import layoutProjectComponent from './project/layout-project.component';
 
 /**
- * Class LayoutConfig
- *
- * @property $stateProvider
+ * @property {$stateProvider} $stateProvider
  */
 export default class LayoutConfig extends InjectableBase {
 

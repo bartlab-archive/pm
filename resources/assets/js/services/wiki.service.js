@@ -1,11 +1,12 @@
-export default class WikiService {
+import ServiceBase from "base/service.base";
+
+/**
+ * @property {Restangular} Restangular
+ */
+export default class WikiService extends ServiceBase {
 
     static get $inject() {
-        return ['$injector'];
-    }
-
-    constructor($injector) {
-        this.Restangular = $injector.get('Restangular');
+        return ['Restangular'];
     }
 
     getStartPageWiki(indetifire) {

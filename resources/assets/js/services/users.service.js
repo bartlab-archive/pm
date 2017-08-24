@@ -1,25 +1,13 @@
-export default class UsersService {
+import ServiceBase from "base/service.base";
 
-    static get $inject() {
-        return ['$injector'];
-    }
+/**
+ * @property {Restangular} Restangular
+ * @property {$cacheFactory} $cacheFactory
+ */
+export default class UsersService extends ServiceBase {
 
-    constructor($injector) {
-        this.Restangular = $injector.get('Restangular');
-        this.$cacheFactory = $injector.get('$cacheFactory');
-        this.cache = this.$cacheFactory('UsersService');
-    }
-
-    one(identifier) {
-        return this.Restangular.all('users').one(identifier).get();
-    }
-
-    getList(params) {
-        return this.Restangular.all('users').getList(params);
-    }
-
-    getLanguage() {
-        return this.Language = [
+    get languages() {
+        return [
             {id: 'sq', name: 'Albanian (Shqip)'},
             {id: 'ar', name: 'Arabic (عربي)'},
             {id: 'az', name: 'Azerbaijani (Azeri)'},
@@ -72,8 +60,8 @@ export default class UsersService {
         ];
     }
 
-    getTimeZone() {
-        return this.TimeZone = [
+    get timeZone() {
+        return [
             {value: 'American Samoa', name: '(GMT-11:00) American Samoa'},
             {value: 'International Date Line West', name: '(GMT-11:00) International Date Line West'},
             {value: 'Midway Island', name: '(GMT-11:00) Midway Island'},
@@ -225,6 +213,21 @@ export default class UsersService {
         ];
     }
 
+    static get $inject() {
+        return ['Restangular', '$cacheFactory'];
+    }
+
+    $onInit($injector) {
+        this.cache = this.$cacheFactory(UsersService.name);
+    }
+
+    one(identifier) {
+        return this.Restangular.all('users').one(identifier).get();
+    }
+
+    getList(params) {
+        return this.Restangular.all('users').getList(params);
+    }
 
     getUserInfo() {
         return this.Restangular.one('my').one('account').withHttpConfig({cache: this.cache}).get().then((responce) => {

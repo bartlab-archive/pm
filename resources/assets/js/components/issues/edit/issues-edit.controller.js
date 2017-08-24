@@ -2,12 +2,12 @@ import ControllerBase from 'base/controller.base';
 import * as _ from "lodash";
 
 /**
- * @property $stateParams
- * @property IssuesService
- * @property ProjectsService
- * @property $window
- * @property $state
- * @property $rootScope
+ * @property {$stateParams} $stateParams
+ * @property {IssuesService} IssuesService
+ * @property {ProjectsService} ProjectsService
+ * @property {$window} $window
+ * @property {$state} $state
+ * @property {$rootScope} $rootScope
  */
 
 export default class IssuesEditController extends ControllerBase {

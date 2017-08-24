@@ -1,7 +1,7 @@
 import ControllerBase from 'base/controller.base';
 
 /**
- * @property ProjectsService
+ * @property {ProjectsService} ProjectsService
  */
 export default class ProjectsNewController extends ControllerBase {
 

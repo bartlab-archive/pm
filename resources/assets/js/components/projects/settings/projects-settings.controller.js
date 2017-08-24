@@ -2,15 +2,15 @@ import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 
 /**
- * @property ProjectsService
- * @property UsersService
- * @property $stateParams
- * @property $rootScope
+ * @property {ProjectsService} ProjectsService
+ * @property {UsersService} UsersService
+ * @property {$stateParams} $stateParams
+ * @property {$rootScope} $rootScope
  */
 export default class ProjectsSettingsController extends ControllerBase {
 
     static get $inject() {
-        return ['ProjectsService', 'UsersService', '$stateParams','$rootScope'];
+        return ['ProjectsService', 'UsersService', '$stateParams', '$rootScope'];
     }
 
     $onInit() {
@@ -23,7 +23,7 @@ export default class ProjectsSettingsController extends ControllerBase {
 
         this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.model = _.get(response, 'data', []);
-            this.model.modules =this.ProjectsService.getModules(this.model.enabled_modules);
+            this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
         });
 
         this.ProjectsService.getList().then((response) => {
@@ -104,41 +104,13 @@ export default class ProjectsSettingsController extends ControllerBase {
     }
 
     updateModules() {
-        // let requestData = [];
-        //
-        // if( typeof this.model.module !== 'undefined'){
-        //     _.forEach(this.model.module, (value, key) => {
-        //         value ? requestData.push(key) : null;
-        //     });
-        // }
-
-        // let requestData = _.find(this.model.ena);
-        // console.log(
-        //     _.keys(
-        //         _.pickBy(this.model.module,(value, key)=> value)
-        //     )
-        // );
-
         this.ProjectsService
             .updateModules(
                 this.model.identifier,
-                _.keys(_.pickBy(this.model.modules,(value, key)=> value))
+                _.keys(_.pickBy(this.model.modules, (value, key) => value))
             )
-            .then(()=>{
+            .then(() => {
                 this.$rootScope.$emit('layoutDefaultUpdateProjectInfo');
             });
     }
-
-
-    // paginatorCallback(page, pageSize) {
-    //     let offset = (page - 1) * pageSize;
-    //
-    //     return this.UsersService.getList().then(function (response) {
-    //         return {
-    //             results: response.data,
-    //             totalResultCount: response.data.length
-    //         }
-    //     });
-    // }
-
 }

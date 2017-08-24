@@ -1,11 +1,10 @@
 import ControllerBase from 'base/controller.base';
 import _ from 'lodash';
+
 /**
- * MainLoginController class
- *
- * @property $mdToast
- * @property $auth
- * @property $state
+ * @property {$mdToast} $mdToast
+ * @property {$auth} $auth
+ * @property {$state} $state
  */
 export default class MainLoginController extends ControllerBase {
 

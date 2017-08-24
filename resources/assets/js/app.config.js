@@ -2,17 +2,15 @@ import 'angular';
 import InjectableBase from 'base/injectable.base';
 
 /**
- * Class AppConfig
- *
- * @property $rootScope
- * @property $stateProvider
- * @property $urlRouterProvider
- * @property $locationProvider
- * @property $authProvider
- * @property $mdThemingProvider
- * @property RestangularProvider
- * @property $showdownProvider
- * @property ScrollBarsProvider
+ * @property {$rootScope} $rootScope
+ * @property {$stateProvider} $stateProvider
+ * @property {$urlRouterProvider} $urlRouterProvider
+ * @property {$locationProvider} $locationProvider
+ * @property {$authProvider} $authProvider
+ * @property {$mdThemingProvider} $mdThemingProvider
+ * @property {RestangularProvider} RestangularProvider
+ * @property {$showdownProvider} $showdownProvider
+ * @property {ScrollBarsProvider} ScrollBarsProvider
  */
 export default class AppConfig extends InjectableBase {
 

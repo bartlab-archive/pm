@@ -7,8 +7,8 @@ import issuesInfoComponent from './info/issues-info.component';
 import issuesListComponent from './list/issues-list.component';
 
 angular.module('app.components.issues', [])
-    .config(IssuesConfig)
-    .component('issuesEditComponent', issuesEditComponent)
-    .component('issuesNewComponent', issuesNewComponent)
-    .component('issuesInfoComponent', issuesInfoComponent)
-    .component('issuesListComponent', issuesListComponent);
+    .config(IssuesConfig.inst())
+    .component(issuesEditComponent.name, issuesEditComponent)
+    .component(issuesNewComponent.name, issuesNewComponent)
+    .component(issuesInfoComponent.name, issuesInfoComponent)
+    .component(issuesListComponent.name, issuesListComponent);

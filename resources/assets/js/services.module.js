@@ -7,9 +7,9 @@ import NewsService from 'services/news.service';
 import FilesService from 'services/files.service';
 
 angular.module('app.services', [])
-    .service('ProjectsService', ProjectsService)
-    .service('UsersService', UsersService)
-    .service('NewsService', NewsService)
-    .service('WikiService', WikiService)
-    .service('IssuesService', IssuesService)
-    .service('FilesService', FilesService);
+    .service(ProjectsService.name, ProjectsService)
+    .service(UsersService.name, UsersService)
+    .service(NewsService.name, NewsService)
+    .service(WikiService.name, WikiService)
+    .service(IssuesService.name, IssuesService)
+    .service(FilesService.name, FilesService);

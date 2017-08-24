@@ -2,20 +2,14 @@ import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 
 /**
- * @property UserService
- * @property apiKey
+ * @property {UserService} UserService
+ * @property {$mdDialog} $mdDialog
  */
 export default class myShowApiKeyController extends ControllerBase {
 
     static get $inject() {
         return ['UsersService', '$mdDialog'];
     }
-
-    // constructor(...args){
-    //     super(...args);
-    //
-    //     this.$onInit();
-    // }
 
     $onInit() {
         this.UsersService.getApiAccessKey().then((result) => {

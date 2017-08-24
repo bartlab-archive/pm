@@ -1,30 +1,39 @@
-NewsConfig.$inject = ['$stateProvider'];
+import InjectableBase from "base/injectable.base";
+import newsListComponent from './list/news-list.component';
+import newsEditComponent from './edit/news-edit.component';
 
-export default function NewsConfig($stateProvider) {
+/**
+ * @property {$stateProvider} $stateProvider
+ */
+export default class NewsConfig extends InjectableBase {
 
-    $stateProvider
-        .state('news', {
-            abstract: true,
-            data: {
-                access: '@'
-            },
-            url: '/news',
-            parent: 'default',
-            views: {
-                content: {
-                    template: '<ui-view/>'
+    static get $inject() {
+        return ['$stateProvider'];
+    }
+
+    $onInit() {
+        this.$stateProvider
+            .state('news', {
+                abstract: true,
+                data: {
+                    access: '@'
+                },
+                url: '/news',
+                parent: 'default',
+                views: {
+                    content: {
+                        template: '<ui-view/>'
+                    }
                 }
-            }
-        })
-        .state('news.list', {
-            url: '',
-            component: 'newsListComponent',
-        })
-        .state('news.edit', {
-            url: '/:id',
-            component: 'newsEditComponent',
-        })
-
-
-};
+            })
+            .state('news.list', {
+                url: '',
+                component: newsListComponent.name,
+            })
+            .state('news.edit', {
+                url: '/:id',
+                component: newsEditComponent.name,
+            })
+    }
+}
 

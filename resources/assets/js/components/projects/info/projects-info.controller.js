@@ -2,10 +2,10 @@ import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 
 /**
- * @property ProjectsService
- * @property IssuesService
- * @property $stateParams
- * @property $state
+ * @property {ProjectsService} ProjectsService
+ * @property {IssuesService} IssuesService
+ * @property {$stateParams} $stateParams
+ * @property {$state} $state
  */
 export default class ProjectsInfoController extends ControllerBase {
 
@@ -25,7 +25,7 @@ export default class ProjectsInfoController extends ControllerBase {
         });
     }
 
-    canShowModule(moduleName){
-        return (typeof this.project.modules[moduleName] !== 'undefined');
+    canShowModule(moduleName) {
+        return (this.project && typeof this.project.modules[moduleName] !== 'undefined');
     }
 }

@@ -2,10 +2,10 @@ import ControllerBase from 'base/controller.base';
 import * as _ from "lodash";
 
 /**
- * @property $auth
- * @property $state
- * @property $mdToast
- * @property UsersService
+ * @property {$auth} $auth
+ * @property {$state} $state
+ * @property {$mdToast} $mdToast
+ * @property {UsersService} UsersService
  */
 export default class MainRegistrationController extends ControllerBase {
 

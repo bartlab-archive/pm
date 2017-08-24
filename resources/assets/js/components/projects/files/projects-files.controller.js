@@ -1,11 +1,13 @@
 import ControllerBase from 'base/controller.base';
-// import ngFileSaver from 'angular-file-saver';
 
 /**
- * @property FilesService
- * @property $state
+ * @property {FilesService} FilesService
+ * @property {$state} $state
+ * @property {$stateParams} $stateParams
+ * @property {FileSaver} FileSaver
  */
 export default class ProjectsFilesController extends ControllerBase {
+
     static get $inject() {
         return ['FilesService', '$state', '$stateParams', 'FileSaver'];
     }
@@ -17,7 +19,7 @@ export default class ProjectsFilesController extends ControllerBase {
     download(id, name) {
         this.FilesService.getProjectAttachment(id)
             .then((response) => {
-                var data = new Blob([response.data], {type: 'application/octet-stream'});
+                let data = new Blob([response.data], {type: 'application/octet-stream'});
                 this.FileSaver.saveAs(data, name);
             });
     }

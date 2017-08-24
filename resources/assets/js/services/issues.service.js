@@ -1,14 +1,17 @@
-export default class IssuesService {
+import ServiceBase from "base/service.base";
+
+/**
+ * @property {Restangular} Restangular
+ * @property {$cacheFactory} $cacheFactory
+ */
+export default class IssuesService extends ServiceBase {
 
     static get $inject() {
-        return ['$injector'];
+        return ['Restangular', '$cacheFactory'];
     }
 
-
-    constructor($injector) {
-        this.Restangular = $injector.get('Restangular');
-        this.$cacheFactory = $injector.get('$cacheFactory');
-        this.cache = this.$cacheFactory('IssuesService');
+    $onInit($injector) {
+        this.cache = this.$cacheFactory(IssuesService.name);
     }
 
     one(identifier) {

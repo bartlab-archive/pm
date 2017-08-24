@@ -1,22 +1,17 @@
 import angular from 'angular';
 import * as _ from 'lodash';
-
 import ControllerBase from 'base/controller.base';
 import myShowApiKeyComponent from 'components/my/show-api-key/my-show-api-key.component';
 import myAddMailComponent from 'components/my/add-mail/my-add-mail.component';
 import myChangePasswordComponent from 'components/my/change-password/my-change-password.component';
 
 /**
- * @property $auth
- * @property $state
- * @property $mdToast
- * @property $mdPanel
- * @property UsersService
- * @property user
- * @property languages
- * @property timeZone
+ * @property {$auth} $auth
+ * @property {$state} $state
+ * @property {$mdToast} $mdToast
+ * @property {UsersService} UsersService
+ * @property {$mdDialog} $mdDialog
  */
-
 export default class mainMyAccountIndexController extends ControllerBase {
 
     static get $inject() {
@@ -30,13 +25,11 @@ export default class mainMyAccountIndexController extends ControllerBase {
             }
         });
 
-        this.languages = this.UsersService.getLanguage();
-        this.timeZone = this.UsersService.getTimeZone();
+        this.languages = this.UsersService.languages;
+        this.timeZone = this.UsersService.timeZone;
     }
 
     setMdDialogConfig(component, target) {
-
-
         let ctrlConfig = [].concat(
             component.controller.$inject || [],
             [(...args) => {
@@ -62,45 +55,6 @@ export default class mainMyAccountIndexController extends ControllerBase {
             closeTo: target
         }
     }
-
-
-    // setMdPanelConfig(component, target) {
-    //
-    //   let position = this.$mdPanel.newPanelPosition()
-    //       .absolute()
-    //       .center();
-    //
-    //   let animation = this.$mdPanel.newPanelAnimation()
-    //       .duration(300)
-    //       .openFrom(target)
-    //       .withAnimation(this.$mdPanel.animation.SCALE);
-    //
-    //   let ctrlConfig = [].concat(
-    //     component.controller.$inject || [],
-    //     [(...args) => {
-    //       let ctrl = new component.controller(...args);
-    //       ctrl.$onInit && ctrl.$onInit();
-    //       return ctrl;
-    //     }]
-    //   );
-    //
-    //   return {
-    //     animation: animation,
-    //     attachTo: angular.element(document.body),
-    //     controller: ctrlConfig,
-    //     controllerAs: '$ctrl',
-    //     template: component.template,
-    //     panelClass: 'modal-custom-dialog',
-    //     position: position,
-    //     trapFocus: true,
-    //     clickOutsideToClose: true,
-    //     clickEscapeToClose: true,
-    //     escapeToClose: true,
-    //     hasBackdrop: true,
-    //     disableParentScroll: true,
-    //   }
-    // }
-
 
     changePassword($event) {
         this.$mdDialog.show(

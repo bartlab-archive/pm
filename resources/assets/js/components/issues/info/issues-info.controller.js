@@ -1,14 +1,12 @@
 import ControllerBase from 'base/controller.base';
-import angular from 'angular';
 import * as _ from "lodash";
 
 /**
- * @property $state
- * @property $window
- * @property $showdown
- * @property IssuesService
- * @property $stateParams
- * @property $rootScope
+ * @property {$state} $state
+ * @property {$window} $window
+ * @property {IssuesService} IssuesService
+ * @property {$stateParams} $stateParams
+ * @property {$rootScope} $rootScope
  */
 export default class IssuesInfoController extends ControllerBase {
 

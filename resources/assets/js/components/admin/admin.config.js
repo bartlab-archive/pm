@@ -2,9 +2,7 @@ import InjectableBase from 'base/injectable.base';
 import adminIndexComponent from './index/admin-index.component';
 
 /**
- * Class AdminConfig
- *
- * @property $stateProvider
+ * @property {$stateProvider} $stateProvider
  */
 export default class AdminConfig extends InjectableBase {
 

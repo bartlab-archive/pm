@@ -3,10 +3,10 @@ import angular from 'angular';
 import * as _ from "lodash";
 
 /**
- * @property $state
- * @property $showdown
- * @property IssuesService
- * @property $stateParams
+ * @property {$state} $state
+ * @property {$showdown} $showdown
+ * @property {IssuesService} IssuesService
+ * @property {$stateParams} $stateParams
  */
 export default class IssuesListController extends ControllerBase {
 

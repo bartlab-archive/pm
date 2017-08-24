@@ -1,9 +1,9 @@
 import ControllerBase from 'base/controller.base';
 
 /**
- * @property ProjectsService
- * @property $state
- * @property $window
+ * @property {ProjectsService} ProjectsService
+ * @property {$state} $state
+ * @property {$window} $window
  */
 export default class ProjectsListController extends ControllerBase {
 

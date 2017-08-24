@@ -15,9 +15,7 @@ import projectsBoardsComponent from './boards/projects-boards.component';
 import projectsWikiPageComponent from './wiki/page/projects-wiki-page.component';
 
 /**
- * Class ProjectsConfig
- *
- * @property $stateProvider
+ * @property {$stateProvider} $stateProvider
  */
 export default class ProjectsConfig extends InjectableBase {
 

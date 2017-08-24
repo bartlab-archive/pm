@@ -1,30 +1,30 @@
-export default class FilesService {
+import ServiceBase from "base/service.base";
+
+/**
+ * @property {Restangular} Restangular
+ */
+export default class FilesService extends ServiceBase {
 
     static get $inject() {
-        return ['$injector'];
-    }
-
-
-    constructor($injector) {
-        this.Restangular = $injector.get('Restangular');
+        return ['Restangular'];
     }
 
     getProjectAttachments(identifier) {
-            return this.Restangular
-                .one('projects')
-                .one('attachments')
-                .one(identifier)
-                .get();
-        }
+        return this.Restangular
+            .one('projects')
+            .one('attachments')
+            .one(identifier)
+            .get();
+    }
 
-    delete(id){
+    delete(id) {
         return this.Restangular.one('projects')
             .one('attachments')
             .one(String(id))
             .remove();
     }
-    
-    getProjectAttachment(id){
+
+    getProjectAttachment(id) {
         return this.Restangular
             .one('projects')
             .one('attachments')
@@ -32,5 +32,5 @@ export default class FilesService {
             .one(String(id)).withHttpConfig({responseType: 'arraybuffer'})
             .get({}, {});
     }
-    
+
 }

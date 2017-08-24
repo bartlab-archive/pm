@@ -1,8 +1,8 @@
 import ControllerBase from 'base/controller.base';
 
 /**
- * @property UsersService
- * @property $stateParams
+ * @property {UsersService} UsersService
+ * @property {$stateParams} $stateParams
  */
 export default class UsersInfoController extends ControllerBase {
 

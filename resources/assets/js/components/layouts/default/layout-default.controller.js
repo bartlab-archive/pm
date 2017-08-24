@@ -2,13 +2,13 @@ import ControllerBase from 'base/controller.base';
 import * as _ from "lodash";
 
 /**
- * @property $mdSidenav
- * @property $state
- * @property ProjectsService
- * @property UsersService
- * @property $transitions
- * @property $stateParams
- * @property $rootScope
+ * @property {$mdSidenav} $mdSidenav
+ * @property {$state} $state
+ * @property {ProjectsService} ProjectsService
+ * @property {UsersService} UsersService
+ * @property {$transitions} $transitions
+ * @property {$stateParams} $stateParams
+ * @property {$rootScope} $rootScope
  */
 export default class LayoutDefaultController extends ControllerBase {
 
@@ -102,7 +102,7 @@ export default class LayoutDefaultController extends ControllerBase {
         this.toggle('right');
     }
 
-    currentProjectId(){
+    currentProjectId() {
         return _.get(this.$state, 'data.layoutDefault.projectId') || _.get(this.$stateParams, 'project_id');
     }
 

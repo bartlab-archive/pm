@@ -1,9 +1,14 @@
 import _ from 'lodash';
+import ServiceBase from "base/service.base";
 
-export default class ProjectsService {
+/**
+ * @property {Restangular} Restangular
+ * @property {$cacheFactory} $cacheFactory
+ */
+export default class ProjectsService extends ServiceBase {
 
     static get $inject() {
-        return ['$injector'];
+        return ['Restangular', '$cacheFactory'];
     }
 
     get modules() {
@@ -21,16 +26,14 @@ export default class ProjectsService {
         ];
     }
 
-    constructor($injector) {
-        this.Restangular = $injector.get('Restangular');
-        this.$cacheFactory = $injector.get('$cacheFactory');
-        this.cache = this.$cacheFactory(this.name);
-        this.project = {};
+    $onInit($injector) {
+        // this.cache = this.$cacheFactory(this.name);
+        // this.project = {};
     }
 
     one(identifier) {
         return this.Restangular.all('projects').one(identifier)
-            // .withHttpConfig({cache: this.cache})
+        // .withHttpConfig({cache: this.cache})
             .get();
     }
 
@@ -53,13 +56,13 @@ export default class ProjectsService {
         });
     }
 
-    getNews(identifier, params) {
+    getNews(identifier) {
         return this.Restangular.all('projects').one(identifier).one('news').getList();
     }
 
     getTrackers(identifier) {
         return this.Restangular.one('projects', identifier).one('trackers')
-            // .withHttpConfig({cache: this.cache})
+        // .withHttpConfig({cache: this.cache})
             .get();
     }
 
@@ -67,8 +70,8 @@ export default class ProjectsService {
         return this.Restangular.all('projects').post(params);
     }
 
-    updateModules(identifier,params){
-        return this.Restangular.one('projects',identifier).customPUT(params,'modules');
+    updateModules(identifier, params) {
+        return this.Restangular.one('projects', identifier).customPUT(params, 'modules');
     }
 
 }
