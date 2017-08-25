@@ -2,20 +2,26 @@ import 'angular';
 import InjectableBase from 'base/injectable.base';
 
 /**
- * @property {$rootScope} $rootScope
- * @property {$stateProvider} $stateProvider
- * @property {$urlRouterProvider} $urlRouterProvider
+ * @property {UrlRouterProvider} $urlRouterProvider
  * @property {$locationProvider} $locationProvider
- * @property {$authProvider} $authProvider
+ * @property {AuthProvider} $authProvider
  * @property {$mdThemingProvider} $mdThemingProvider
  * @property {RestangularProvider} RestangularProvider
- * @property {$showdownProvider} $showdownProvider
- * @property {ScrollBarsProvider} ScrollBarsProvider
+ * @property {ngShowdown} $showdownProvider
+ * @property {object} ScrollBarsProvider
  */
 export default class AppConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$showdownProvider', '$mdThemingProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', '$authProvider', 'RestangularProvider', 'ScrollBarsProvider'];
+        return [
+            '$showdownProvider',
+            '$mdThemingProvider',
+            '$urlRouterProvider',
+            '$locationProvider',
+            '$authProvider',
+            'RestangularProvider',
+            'ScrollBarsProvider'
+        ];
     }
 
     $onInit() {
