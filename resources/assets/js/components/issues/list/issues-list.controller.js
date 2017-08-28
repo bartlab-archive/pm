@@ -6,29 +6,42 @@ import * as _ from "lodash";
  * @property {$state} $state
  * @property {$showdown} $showdown
  * @property {IssuesService} IssuesService
+ * @property {ProjectsService} ProjectsService
  * @property {$stateParams} $stateParams
  */
 export default class IssuesListController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$showdown', 'IssuesService', '$stateParams', '$window'];
+        return ['$state', '$showdown', 'IssuesService', 'ProjectsService', '$stateParams', '$window'];
     }
 
     $onInit() {
+        let enabledModules ={};
+        const currentProjectId = this.currentProjectId();
+        this.ProjectsService.one(currentProjectId).then((response) => {
+            enabledModules =  this.ProjectsService.getModules(_.get(response, 'data.enabled_modules', []));
 
-        this.tags = [];
-        this.items = [];
-        this.statusesList = [];
-        this.prioritiesList = [];
-        this.showMore = false;
-        this.searchText = null;
-        this.selectedIssue = null;
-        this.selectAllState = false;
-        this.offset = 0;
+            if (typeof enabledModules.issue_tracking === 'undefined') {
+                window.location.href = '/projects/' + currentProjectId;
+            }else{
+                this.tags = [];
+                this.items = [];
+                this.statusesList = [];
+                this.prioritiesList = [];
+                this.showMore = false;
+                this.searchText = null;
+                this.selectedIssue = null;
+                this.selectAllState = false;
+                this.offset = 0;
 
-        this.loadFiltersValues();
-        this.load();
-        this.initScrollbar();
+                this.loadFiltersValues();
+                this.load();
+                this.initScrollbar();
+            }
+        });
+
+
+
     }
 
     load() {
@@ -181,4 +194,9 @@ export default class IssuesListController extends ControllerBase {
             this.load();
         }
     }
+
+    currentProjectId() {
+        return _.get(this.$state, 'data.layoutDefault.projectId') || _.get(this.$stateParams, 'project_id');
+    }
+
 }
