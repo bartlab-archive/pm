@@ -74,4 +74,7 @@ export default class ProjectsService extends ServiceBase {
         return this.Restangular.one('projects', identifier).customPUT(params, 'modules');
     }
 
+    updateInformation(identifier, params) {
+        return this.Restangular.one('projects', identifier).customPUT(params, 'information');
+    }
 }

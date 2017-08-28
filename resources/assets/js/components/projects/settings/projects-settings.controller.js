@@ -27,7 +27,8 @@ export default class ProjectsSettingsController extends ControllerBase {
         });
 
         this.ProjectsService.getList().then((response) => {
-            this.projects = response.data;
+            const self = this;
+            this.projects = _.filter(response.data, (item) => (item.identifier !== self.model.identifier));
         });
 
         this.members = [
@@ -108,6 +109,23 @@ export default class ProjectsSettingsController extends ControllerBase {
             .updateModules(
                 this.model.identifier,
                 _.keys(_.pickBy(this.model.modules, (value, key) => value))
+            )
+            .then(() => {
+                this.$rootScope.$emit('layoutDefaultUpdateProjectInfo');
+            });
+    }
+
+    updateInformation() {
+        this.ProjectsService
+            .updateInformation(
+                this.model.identifier, {
+                    name: this.model.name,
+                    description: this.model.description,
+                    homepage: this.model.homepage,
+                    is_public: this.model.public,
+                    parent_identifier: this.model.parent,
+                    inherit_members: this.model.inherit_members,
+                }
             )
             .then(() => {
                 this.$rootScope.$emit('layoutDefaultUpdateProjectInfo');

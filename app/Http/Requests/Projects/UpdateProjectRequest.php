@@ -31,7 +31,7 @@ class UpdateProjectRequest extends FormRequest
             'description' => 'string',
             'homepage' => 'url',
             'is_public' => 'boolean',
-            'parent_id' => 'int|exists:' . Project::getTableName() . ',id',
+            'parent_identifier' => 'string|exists:' . Project::getTableName() . ',identifier',
             'inherit_members' => 'boolean',
             'custom_field_values' => 'string',
 

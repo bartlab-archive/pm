@@ -48,7 +48,7 @@
                             <label>Subproject of</label>
                             <md-select ng-model="$ctrl.model.parent">
                                 <md-option md-option-empty></md-option>
-                                <md-option ng-value="item.id" ng-repeat="item in $ctrl.projects">
+                                <md-option ng-value="item.identifier" ng-repeat="item in $ctrl.projects">
                                     {{ item.name }}
                                 </md-option>
                             </md-select>
@@ -63,8 +63,7 @@
                         </md-input-container>
 
                         <div layout-align="center center" layout="row">
-                            <md-button class="md-raised md-primary animation-target" type="submit"
-                                       ng-disabled="InfoForm.$invalid">
+                            <md-button class="md-raised md-primary animation-target" ng-disabled="InfoForm.$invalid" ng-click="$ctrl.updateInformation()">
                                 Save
                             </md-button>
                         </div>

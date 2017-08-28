@@ -39,7 +39,7 @@ class EnabledModulesService
 
         EnabledModule::where(['project_id' => $project->id])->delete();
 
-        foreach ($data['enabled_modules'] as $moduleName) {
+        foreach ($data['enabled_module_names'] as $moduleName) {
             EnabledModule::create([
                 'project_id' => $project->id,
                 'name' => $moduleName

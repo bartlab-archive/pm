@@ -53,6 +53,8 @@ class ProjectsService
     public function update($identifier, $data)
     {
         $project = Project::whereIdentifier($identifier)->firstOrFail();
+        $data['parent_id'] = Project::whereIdentifier($data['parent_identifier'])->firstOrFail()->id;
+        unset($data['parent_identifier']);
         $project->update($data);
         return $project;
     }
