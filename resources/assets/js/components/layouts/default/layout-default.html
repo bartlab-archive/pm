@@ -87,7 +87,7 @@
         </md-fab-trigger>
 
         <md-fab-actions>
-            <md-button aria-label="Twitter" class="md-fab md-raised md-mini" ng-click="$ctrl.goto(item.url)" ng-repeat="item in $ctrl.newItems">
+            <md-button aria-label="Twitter" class="md-fab md-raised md-mini" ng-click="$ctrl.goto(item.url)" ng-repeat="item in $ctrl.newItems" ng-if="$ctrl.showFabAction(item)">
                 <md-tooltip md-direction="left" md-visible="$ctrl.menuOpen"
                             md-autohide="true">{{ item.name }}
                 </md-tooltip>

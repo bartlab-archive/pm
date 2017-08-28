@@ -116,17 +116,29 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     loadProjectInfo() {
-        let projectId = this.currentProjectId();
+        let projectIdentifier = this.currentProjectId();
 
-        if (projectId) {
-            this.ProjectsService.one(projectId).then((response) => {
+        if (projectIdentifier) {
+            this.ProjectsService.one(projectIdentifier).then((response) => {
+                this.enabledModules = [];
                 let modules = _.get(response, 'data.enabled_modules', []);
                 _.forEach(this.projectItems, (module) => {
                     if (module.name) {
                         module.enable = _.some(modules, {name: module.name});
+                        this.enabledModules.push(module.name);
                     }
                 });
             });
         }
+    }
+
+    showFabAction(item){
+        if (item.name === 'New issue'){
+            return _.includes(this.enabledModules, 'issue_tracking');
+        }else if (item.name === 'New wiki page') {
+            return _.includes(this.enabledModules, 'news');
+        }
+
+        return true;
     }
 }
