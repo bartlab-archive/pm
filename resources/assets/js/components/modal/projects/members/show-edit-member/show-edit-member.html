@@ -1,0 +1,41 @@
+<div layout="column" layout-align="center center">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Edit member</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                <md-icon aria-label="Close dialog">clear</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <div class="popup-content-show-edit-member">
+        <md-content class="md-padding">
+            <p layout-align="center center">{{$ctrl.userName}}</p>
+            <md-input-container class="md-icon-float md-block">
+                <label>Roles</label>
+                <md-select ng-model="$ctrl.role.role_id">
+                    <md-option
+                            ng-repeat="role in $ctrl.roles"
+                            ng-value="role.id"
+                            ng-selected="role.id === $ctrl.roleId">
+                        {{ role.name }}
+                    </md-option>
+                </md-select>
+                <div class="md-errors-spacer"></div>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <md-checkbox class="md-primary" ng-model="$ctrl.member.mail_notification" aria-label="Mail Notification">
+                    Mail Notification
+                </md-checkbox>
+            </md-input-container>
+
+            <md-button class="md-raised md-primary animation-target"
+                       ng-disabled="$ctrl.role.role_id === $ctrl.roleId && $ctrl.member.mail_notification === $ctrl.mailNotification"
+                       ng-click="$ctrl.updateMember()">
+                Save
+            </md-button>
+        </md-content>
+    </div>
+</div>

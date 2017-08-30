@@ -68,4 +68,17 @@ class UsersService
         return $user->save();
     }
 
+    /**
+     * Get users list
+     *
+     * @param array $params
+     * @return mixed
+     */
+    public function getList($params = [])
+    {
+        $users = User::orderBy('firstname')->where('firstname', '!=', '');
+        !empty($params) ? $users->andWhere($params) : null;
+
+        return $users->get();
+    }
 }

@@ -1,16 +1,19 @@
 import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
+import showEditMemberComponent from 'components/modal/projects/members/show-edit-member/show-edit-member.component';
+import showAddMemberComponent from 'components/modal/projects/members/show-add-member/show-add-member.component';
 
 /**
  * @property {ProjectsService} ProjectsService
  * @property {UsersService} UsersService
  * @property {$stateParams} $stateParams
  * @property {$rootScope} $rootScope
+ * @property {$mdDialog} $mdDialog
  */
 export default class ProjectsSettingsController extends ControllerBase {
 
     static get $inject() {
-        return ['ProjectsService', 'UsersService', '$stateParams', '$rootScope'];
+        return ['ProjectsService', 'UsersService', '$stateParams', '$rootScope', '$mdDialog'];
     }
 
     $onInit() {
@@ -21,20 +24,13 @@ export default class ProjectsSettingsController extends ControllerBase {
             {id: '6', name: 'Bug'},
         ];
 
-        this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
-            this.model = _.get(response, 'data', []);
-            this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
-        });
+        this.load();
+        this.$rootScope.$on('updateProjectInfo', () => this.load());
 
         this.ProjectsService.getList().then((response) => {
             const self = this;
             this.projects = _.filter(response.data, (item) => (item.identifier !== self.model.identifier));
         });
-
-        this.members = [
-            {name: 'developer', role: 'manager'},
-            {name: 'developer', role: 'manager'}
-        ];
 
         this.issuesCategories = [
             {name: 'category 1', assignee: 'developer'},
@@ -104,6 +100,16 @@ export default class ProjectsSettingsController extends ControllerBase {
         ];
     }
 
+    load() {
+        this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
+            this.model = _.get(response, 'data', []);
+            this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
+            this.model.parent_identifier = this.model.parent_project.identifier;
+
+            this.members = this.getMembersList(this.model.members);
+        });
+    }
+
     updateModules() {
         this.ProjectsService
             .updateModules(
@@ -111,24 +117,108 @@ export default class ProjectsSettingsController extends ControllerBase {
                 _.keys(_.pickBy(this.model.modules, (value, key) => value))
             )
             .then(() => {
-                this.$rootScope.$emit('layoutDefaultUpdateProjectInfo');
+                this.$rootScope.$emit('updateProjectInfo');
             });
     }
+
 
     updateInformation() {
         this.ProjectsService
             .updateInformation(
-                this.model.identifier, {
-                    name: this.model.name,
-                    description: this.model.description,
-                    homepage: this.model.homepage,
-                    is_public: this.model.public,
-                    parent_identifier: this.model.parent,
-                    inherit_members: this.model.inherit_members,
-                }
+                this.model.identifier,
+                _.pick(this.model, [
+                    'name',
+                    'description',
+                    'homepage',
+                    'parent_identifier',
+                    'inherit_members'
+                ])
             )
             .then(() => {
-                this.$rootScope.$emit('layoutDefaultUpdateProjectInfo');
+                this.$rootScope.$emit('updateProjectInfo');
             });
+    }
+
+    setMdDialogConfig(component, target, data = {}) {
+        let ctrlConfig = [].concat(
+            component.controller.$inject || [],
+            [(...args) => {
+                let ctrl = new component.controller(...args);
+
+                // decorator
+                _.each(data, (v, k) => {
+                    ctrl[k] = v;
+                });
+
+                ctrl.$onInit && ctrl.$onInit();
+                return ctrl;
+            }]
+        );
+
+        return {
+            controller: ctrlConfig,
+            controllerAs: '$ctrl',
+            template: component.template,
+            //panelClass: 'modal-custom-dialog',
+            parent: angular.element(document.body),
+            trapFocus: true,
+            clickOutsideToClose: true,
+            clickEscapeToClose: true,
+            escapeToClose: true,
+            hasBackdrop: true,
+            disableParentScroll: true,
+            openFrom: target,
+            closeTo: target,
+        }
+    }
+
+    addMember($event) {
+        this.$mdDialog.show(
+            this.setMdDialogConfig(showAddMemberComponent, $event.target)
+        );
+    }
+
+    getMembersList(data) {
+        let members = [];
+        _.forEach(data, (member, key) => {
+            members.push({
+                name: member.users.firstname + ' ' + member.users.lastname,
+                role: member.member_roles.roles.name,
+                role_id: member.member_roles.roles.id,
+                mail_notification: member.mail_notification,
+                user_id: member.users.id,
+                member_id: member.id
+            });
+        });
+
+        return members;
+    }
+
+    deleteMember(memberId) {
+        this.ProjectsService
+            .deleteMember(memberId)
+            .then(() => {
+                this.$rootScope.$emit('updateProjectInfo');
+            });
+    }
+
+    editMember($event, memberId, roleId, userName, mailNotification) {
+        this.$mdDialog.show(
+            this.setMdDialogConfig(showEditMemberComponent, $event.target, {
+                memberId: memberId,
+                mailNotification: mailNotification,
+                roleId: roleId,
+                userName: userName
+            })
+        );
+    }
+
+    addMember($event) {
+        this.$mdDialog.show(
+            this.setMdDialogConfig(showAddMemberComponent, $event.target, {
+                identifier: this.model.identifier,
+                currentMembers: _.map(this.members, 'user_id')
+            })
+        );
     }
 }

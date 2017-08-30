@@ -20,7 +20,8 @@ class Project extends Model
     protected $table = 'projects';
 
     protected $appends = ['is_my'];
-    protected $hidden = ['is_my'];
+
+    protected $hidden = ['is_my', 'id', 'parent_id'];
 
     public $timestamps = false;
 
@@ -139,4 +140,8 @@ class Project extends Model
 	{
 		return static::projectByIdentifier($project_identifier)->news;
 	}
+
+    public function parentProject() {
+        return $this->hasOne(self::class, 'id', 'parent_id');
+    }
 }

@@ -23,4 +23,20 @@ class Member extends Model
     protected $dates = [
         'created_on',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function member_roles()
+    {
+        return $this->hasOne(MemberRole::class, 'member_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function users()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

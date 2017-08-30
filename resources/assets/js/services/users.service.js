@@ -225,7 +225,7 @@ export default class UsersService extends ServiceBase {
         return this.Restangular.all('users').one(identifier).get();
     }
 
-    getList(params) {
+    getList(params = []) {
         return this.Restangular.all('users').getList(params);
     }
 

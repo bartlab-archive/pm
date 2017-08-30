@@ -42,7 +42,8 @@ class User extends Authenticatable
         'auth_source_id',
         'type',
         'identity_url',
-        'salt'
+        'salt',
+        'admin'
     ];
 
     public function email()

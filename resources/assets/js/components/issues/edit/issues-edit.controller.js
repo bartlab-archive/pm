@@ -43,7 +43,7 @@ export default class IssuesEditController extends ControllerBase {
                 'data.layoutDefault.projectId',
                 _.get(response, 'data.project.identifier')
             );
-            this.$rootScope.$emit('layoutDefaultUpdateProjectInfo');
+            this.$rootScope.$emit('updateProjectInfo');
         });
     }
 

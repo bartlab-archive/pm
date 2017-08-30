@@ -16,4 +16,12 @@ class MemberRole extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function roles()
+    {
+        return $this->hasOne(Role::class, 'id', 'role_id');
+    }
 }

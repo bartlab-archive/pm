@@ -77,4 +77,16 @@ export default class ProjectsService extends ServiceBase {
     updateInformation(identifier, params) {
         return this.Restangular.one('projects', identifier).customPUT(params, 'information');
     }
+
+    deleteMember(memberId) {
+        return this.Restangular.one('projects').one('members', memberId).remove();
+    }
+
+    updateMember(memberId, data) {
+        return this.Restangular.one('projects', 'members').customPUT(data, memberId);
+    }
+
+    createMember(identifier, data) {
+        return this.Restangular.one('projects', identifier).all('members').post(data);
+    }
 }

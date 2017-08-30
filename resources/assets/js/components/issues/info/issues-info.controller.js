@@ -44,7 +44,7 @@ export default class IssuesInfoController extends ControllerBase {
             this.setStatusText(this.issue.status_id);
             this.setTrackerText(this.issue.tracker_id);
             this.setPriorityText(this.issue.priority_id);
-            this.$rootScope.$emit('layoutDefaultUpdateProjectInfo');
+            this.$rootScope.$emit('updateProjectInfo');
         });
     }
 

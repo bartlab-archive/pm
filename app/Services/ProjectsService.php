@@ -42,7 +42,12 @@ class ProjectsService
     public function one($identifier)
     {
         return Project::whereIdentifier($identifier)
-            ->with(['trackers', 'enabled_modules', 'users', 'issue_categories'])->first();
+            ->with(['trackers', 'enabled_modules', 'issue_categories', 'parentProject'])
+            ->with(['members' => function ($query) {
+                $query->with('users')
+                    ->with('member_roles.roles');
+            }])
+            ->first();
     }
 
     public function create($data)

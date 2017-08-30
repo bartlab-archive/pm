@@ -8,6 +8,8 @@ use App\Http\Requests\Projects\ProjectExistsRequest;
 use App\Http\Requests\Projects\UpdateProjectRequest;
 use App\Services\EnabledModulesService;
 use App\Services\IssuesService;
+use App\Services\MemberRolesService;
+use App\Services\MembersService;
 use App\Services\ProjectsService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -16,9 +18,11 @@ use Illuminate\Routing\Controller as BaseController;
  * Class ProjectController
  *
  * @property ProjectsService $projectsService
+ * @property MembersService $membersService
  * @property IssuesService $issuesService
  * @property EnabledModulesService $enabledModulesService
- * 
+ * @property MemberRolesService $memberRolesService
+ *
  * @package App\Http\Controllers\Projects
  */
 class ProjectsController extends BaseController
@@ -27,16 +31,22 @@ class ProjectsController extends BaseController
     protected $projectsService;
     protected $issuesService;
     protected $enabledModulesService;
+    protected $membersService;
+    protected $memberRolesService;
 
     public function __construct(
         ProjectsService $projectsService,
         IssuesService $issuesService,
-        EnabledModulesService $enabledModulesService
+        EnabledModulesService $enabledModulesService,
+        MembersService $membersService,
+        MemberRolesService $memberRolesService
     )
     {
         $this->projectsService = $projectsService;
         $this->issuesService = $issuesService;
         $this->enabledModulesService = $enabledModulesService;
+        $this->membersService = $membersService;
+        $this->memberRolesService = $memberRolesService;
     }
 
     /**
@@ -151,7 +161,7 @@ class ProjectsController extends BaseController
         $this->projectsService->delete($identifier);
         return response(null, 204);
     }
-    
+
 //    public function getIssues($identifier, Request $request)
 //    {
 //    	$result = $this->projectsService->getIssues($identifier, $request);
@@ -159,13 +169,19 @@ class ProjectsController extends BaseController
 //    	return response()->json($result['projects'])->header('X-Total', $result['total']);
 //    }
 
-    public function getProjectTrackers($identifier) {
+    public function getProjectTrackers($identifier)
+    {
 
         $result = $this->issuesService->trackers($identifier);
 
         return response()->json($result, 200);
     }
 
+    /**
+     * @param $identifier
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateProjectModules($identifier, Request $request)
     {
         $result = $this->enabledModulesService->update([
@@ -176,10 +192,61 @@ class ProjectsController extends BaseController
         return response()->json($result, 200);
     }
 
+    /**
+     * @param $identifier
+     * @param UpdateProjectRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateProjectInformation($identifier, UpdateProjectRequest $request)
     {
         $this->projectsService->update($identifier, $request->all());
 
         return response()->json(true, 200);
+    }
+
+    /**
+     * @param $memberId
+     */
+    public function deleteMember($memberId)
+    {
+        $this->membersService->deleteById($memberId);
+    }
+
+    /**
+     * @param $memberId
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function editMember($memberId, Request $request)
+    {
+        if (!$this->membersService->editMember($memberId, $request->member)) {
+            return response()->json(false, 200);
+        }
+
+        $result = $this->memberRolesService->editRole([
+            'member_id' => $memberId,
+            'role_id' => $request->role['role_id']
+        ]);
+
+        return response()->json($result, 200);
+    }
+
+    /**
+     * @param $identifier
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createMember($identifier, Request $request)
+    {
+        if(!($memberId = $this->membersService->createMember($identifier, $request->member))){
+            return response()->json(false, 200);
+        }
+
+        $result = $this->memberRolesService->createRole([
+            'member_id' => $memberId,
+            'role_id' => $request->role['role_id']
+        ]);
+
+        return response()->json($result, 200);
     }
 }

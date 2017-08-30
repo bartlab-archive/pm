@@ -61,7 +61,7 @@ export default class LayoutDefaultController extends ControllerBase {
         this.checkShowProjectMenu(this.$state.current);
 
         this.$transitions.onSuccess({}, (trans) => this.checkShowProjectMenu(trans.$to()));
-        this.$rootScope.$on('layoutDefaultUpdateProjectInfo', () => this.loadProjectInfo());
+        this.$rootScope.$on('updateProjectInfo', () => this.loadProjectInfo());
     }
 
     checkShowProjectMenu(state) {

@@ -67,6 +67,20 @@ Route::group(
 
                 Route::put('/{identifier}/modules', 'ProjectsController@updateProjectModules');
                 Route::put('/{identifier}/information', 'ProjectsController@updateProjectInformation');
+
+                Route::post('/{identifier}/members', 'ProjectsController@createMember');
+                Route::delete('/members/{memberId}', 'ProjectsController@deleteMember');
+                Route::put('/members/{memberId}', 'ProjectsController@editMember');
+            }
+        );
+
+        Route::group(
+            [
+                'middleware' => 'auth',
+                'prefix' => 'roles'
+            ],
+            function () {
+                Route::get('/', 'RolesController@getList');
             }
         );
 
@@ -116,7 +130,7 @@ Route::group(
 
             ],
             function () {
-
+                Route::get('/', 'UsersController@getList');
             }
         );
     }

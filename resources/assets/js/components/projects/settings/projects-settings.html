@@ -37,7 +37,7 @@
                         </md-input-container>
 
                         <md-input-container class="md-block">
-                            <md-checkbox class="md-primary" ng-model="$ctrl.model.public" aria-label="Public">
+                            <md-checkbox class="md-primary" ng-model="$ctrl.model.is_public" aria-label="Public">
                                 Public
                             </md-checkbox>
                         </md-input-container>
@@ -46,7 +46,7 @@
 
                         <md-input-container class="md-block">
                             <label>Subproject of</label>
-                            <md-select ng-model="$ctrl.model.parent">
+                            <md-select ng-model="$ctrl.model.parent_identifier">
                                 <md-option md-option-empty></md-option>
                                 <md-option ng-value="item.identifier" ng-repeat="item in $ctrl.projects">
                                     {{ item.name }}
@@ -57,7 +57,7 @@
                         <md-input-container class="md-block">
                             <md-checkbox class="md-primary" ng-model="$ctrl.model.inherit_members"
                                          aria-label="Inherit members"
-                                         ng-disabled="!$ctrl.model.parent">
+                                         ng-disabled="!$ctrl.model.parent_identifier">
                                 Inherit members
                             </md-checkbox>
                         </md-input-container>
@@ -96,14 +96,18 @@
                                 <h3>{{ item.name }}</h3>
                                 <p>{{ item.role }}</p>
                             </div>
-                            <md-button class="md-secondary md-icon-button" ng-click="null">
+                            <md-button class="md-secondary md-icon-button"
+                                       ng-click="$ctrl.editMember($event, item.member_id, item.role_id, item.name, item.mail_notification)">
+                                <md-icon>edit</md-icon>
+                            </md-button>
+                            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.deleteMember(item.member_id)">
                                 <md-icon>delete</md-icon>
                             </md-button>
                         </md-list-item>
                     </md-list>
 
                     <div layout-align="center center" layout="row">
-                        <md-button class="md-raised md-primary animation-target">
+                        <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.addMember($event)">
                             New member
                         </md-button>
                     </div>
