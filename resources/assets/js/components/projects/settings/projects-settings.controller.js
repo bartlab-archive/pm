@@ -185,7 +185,6 @@ export default class ProjectsSettingsController extends ControllerBase {
                 name: member.users.firstname + ' ' + member.users.lastname,
                 role: member.member_roles.roles.name,
                 role_id: member.member_roles.roles.id,
-                mail_notification: member.mail_notification,
                 user_id: member.users.id,
                 member_id: member.id
             });
@@ -202,11 +201,10 @@ export default class ProjectsSettingsController extends ControllerBase {
             });
     }
 
-    editMember($event, memberId, roleId, userName, mailNotification) {
+    editMember($event, memberId, roleId, userName) {
         this.$mdDialog.show(
             this.setMdDialogConfig(showEditMemberComponent, $event.target, {
                 memberId: memberId,
-                mailNotification: mailNotification,
                 roleId: roleId,
                 userName: userName
             })

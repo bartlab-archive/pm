@@ -219,13 +219,9 @@ class ProjectsController extends BaseController
      */
     public function editMember($memberId, Request $request)
     {
-        if (!$this->membersService->editMember($memberId, $request->member)) {
-            return response()->json(false, 200);
-        }
-
         $result = $this->memberRolesService->editRole([
             'member_id' => $memberId,
-            'role_id' => $request->role['role_id']
+            'role_id' => $request->role_id
         ]);
 
         return response()->json($result, 200);

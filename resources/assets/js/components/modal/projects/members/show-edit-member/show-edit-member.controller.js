@@ -20,11 +20,6 @@ export default class showEditMemberController extends ControllerBase {
             });
         });
 
-        this.mailNotification = this.mailNotification !== 0;
-
-        this.member = {
-            mail_notification: this.mailNotification
-        };
         this.role = {
             role_id: null
         };
@@ -35,10 +30,7 @@ export default class showEditMemberController extends ControllerBase {
     }
 
     updateMember() {
-        this.ProjectsService.updateMember(this.memberId, {
-            member: this.member,
-            role: this.role
-        })
+        this.ProjectsService.updateMember(this.memberId, this.role)
             .then(() => {
                 this.$mdDialog.cancel();
                 this.$rootScope.$emit('updateProjectInfo');

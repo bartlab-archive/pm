@@ -28,7 +28,6 @@ export default class showAddMemberController extends ControllerBase {
         });
 
         this.member = {
-            mail_notification: false,
             user_id: null
         };
 

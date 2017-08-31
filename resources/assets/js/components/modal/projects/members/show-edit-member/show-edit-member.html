@@ -25,14 +25,8 @@
                 <div class="md-errors-spacer"></div>
             </md-input-container>
 
-            <md-input-container class="md-block">
-                <md-checkbox class="md-primary" ng-model="$ctrl.member.mail_notification" aria-label="Mail Notification">
-                    Mail Notification
-                </md-checkbox>
-            </md-input-container>
-
             <md-button class="md-raised md-primary animation-target"
-                       ng-disabled="$ctrl.role.role_id === $ctrl.roleId && $ctrl.member.mail_notification === $ctrl.mailNotification"
+                       ng-disabled="$ctrl.role.role_id === $ctrl.roleId"
                        ng-click="$ctrl.updateMember()">
                 Save
             </md-button>
