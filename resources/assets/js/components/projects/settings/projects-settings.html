@@ -97,11 +97,13 @@
                                 <p>{{ item.role }}</p>
                             </div>
                             <md-button class="md-secondary md-icon-button"
+                                       ng-if="!item.inherited_member"
+                                       ng-click="$ctrl.deleteMember(item.member_id)">
+                                <md-icon>delete</md-icon>
+                            </md-button>
+                            <md-button class="md-secondary md-icon-button"
                                        ng-click="$ctrl.editMember($event, item.member_id, item.role_id, item.name)">
                                 <md-icon>edit</md-icon>
-                            </md-button>
-                            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.deleteMember(item.member_id)">
-                                <md-icon>delete</md-icon>
                             </md-button>
                         </md-list-item>
                     </md-list>

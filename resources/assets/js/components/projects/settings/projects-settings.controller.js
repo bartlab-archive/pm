@@ -103,10 +103,12 @@ export default class ProjectsSettingsController extends ControllerBase {
     load() {
         this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.model = _.get(response, 'data', []);
-            this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
-            this.model.parent_identifier = this.model.parent_project.identifier;
+            this.model.inherit_members = this.model.inherit_members !== 0;
 
-            this.members = this.getMembersList(this.model.members);
+            this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
+
+            this.model.parent_identifier = this.model.parent_project.identifier;
+            this.members = this.getMembersList();
         });
     }
 
@@ -178,17 +180,31 @@ export default class ProjectsSettingsController extends ControllerBase {
         );
     }
 
-    getMembersList(data) {
-        let members = [];
-        _.forEach(data, (member, key) => {
-            members.push({
+    getMembersList() {
+        let members = {};
+        _.forEach(this.model.members, (member, key) => {
+            members[member.user_id] = {
                 name: member.users.firstname + ' ' + member.users.lastname,
                 role: member.member_roles.roles.name,
                 role_id: member.member_roles.roles.id,
                 user_id: member.users.id,
-                member_id: member.id
-            });
+                member_id: member.id,
+                inherited_member: false,
+            };
         });
+
+        if (this.model.parent_project && this.model.inherit_members) {
+            _.forEach(this.model.parent_project.members, (member, key) => {
+                members[member.user_id] = {
+                    name: member.users.firstname + ' ' + member.users.lastname,
+                    role: member.member_roles.roles.name,
+                    role_id: member.member_roles.roles.id,
+                    user_id: member.users.id,
+                    member_id: member.id,
+                    inherited_member: true,
+                };
+            });
+        }
 
         return members;
     }
