@@ -14,6 +14,7 @@ export default class RolesService extends ServiceBase {
     }
 
     getList(params = []) {
+        console.log('params', params);
         return this.Restangular.all('roles').getList(params);
     }
 }

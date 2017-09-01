@@ -1,5 +1,6 @@
 import 'angular';
 import InjectableBase from 'base/injectable.base';
+import moment from 'moment';
 
 /**
  * @property {UrlRouterProvider} $urlRouterProvider
@@ -20,7 +21,8 @@ export default class AppConfig extends InjectableBase {
             '$locationProvider',
             '$authProvider',
             'RestangularProvider',
-            'ScrollBarsProvider'
+            'ScrollBarsProvider',
+            '$mdDateLocaleProvider'
         ];
     }
 
@@ -32,6 +34,7 @@ export default class AppConfig extends InjectableBase {
         this.themeConfig();
         this.showdownConfig();
         this.scrollBarConfig();
+        this.datePickerFormat();
     }
 
     themeConfig() {
@@ -108,6 +111,12 @@ export default class AppConfig extends InjectableBase {
                 enable: true // enable scrolling buttons by default
             },
             theme: 'minimal-dark'
+        };
+    }
+
+    datePickerFormat(){
+        this.$mdDateLocaleProvider.formatDate = function(date) {
+            return date ? moment(date).format('YYYY-MM-DD') : '';
         };
     }
 }

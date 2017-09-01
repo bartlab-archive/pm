@@ -63,7 +63,8 @@
                         </md-input-container>
 
                         <div layout-align="center center" layout="row">
-                            <md-button class="md-raised md-primary animation-target" ng-disabled="InfoForm.$invalid" ng-click="$ctrl.updateInformation()">
+                            <md-button class="md-raised md-primary animation-target" ng-disabled="InfoForm.$invalid"
+                                       ng-click="$ctrl.updateInformation()">
                                 Save
                             </md-button>
                         </div>
@@ -119,20 +120,30 @@
             <md-tab label="Versions">
                 <md-content class="md-padding">
                     <md-list>
-                        <md-list-item class="md-3-line" ng-repeat="item in $ctrl.versions" ng-click="null">
+                        <md-list-item class="md-3-line" ng-repeat="item in $ctrl.versions">
                             <div class="md-list-item-text">
-                                <h3>{{ item.name }}</h3>
-                                <h4>{{ item.sharing }}</h4>
-                                <p>{{ item.status }}</p>
+                                <h3>
+                                    {{ item.name }} | {{ $ctrl.versionStatuses[item.status].name }}
+                                    {{ item.effective_date ? '| ' + item.effective_date + ' ': '' }}
+                                </h3>
+                                <h4>{{ item.description }}</h4>
+                                <h4>{{ $ctrl.versionSharings[item.sharing].name }}</h4>
                             </div>
-                            <md-button class="md-secondary md-icon-button" ng-click="null">
+                            <md-button class="md-secondary md-icon-button"
+                                       ng-click="$ctrl.versionWikiNavigate(item.wiki_page_title)">
+                                <md-icon>receipt</md-icon>
+                            </md-button>
+                            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.editVersion($event, item)">
+                                <md-icon>edit</md-icon>
+                            </md-button>
+                            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.deleteVersion(item.id)">
                                 <md-icon>delete</md-icon>
                             </md-button>
                         </md-list-item>
                     </md-list>
 
                     <div layout-align="center center" layout="row">
-                        <md-button class="md-raised md-primary animation-target">
+                        <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.addVersion($event)">
                             New version
                         </md-button>
                         <md-button class="md-raised animation-target">

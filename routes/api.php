@@ -71,6 +71,10 @@ Route::group(
                 Route::post('/{identifier}/members', 'ProjectsController@createMember');
                 Route::delete('/members/{memberId}', 'ProjectsController@deleteMember');
                 Route::put('/members/{memberId}', 'ProjectsController@editMember');
+
+                Route::post('/{identifier}/versions', 'ProjectsController@createVersion');
+                Route::delete('/versions/{versionId}', 'ProjectsController@deleteVersion');
+                Route::put('/versions/{versionId}', 'ProjectsController@editVersion');
             }
         );
 

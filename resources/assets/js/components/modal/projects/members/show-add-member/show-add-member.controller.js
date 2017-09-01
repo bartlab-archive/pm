@@ -15,7 +15,9 @@ export default class showAddMemberController extends ControllerBase {
     }
 
     $onInit() {
-        this.RolesService.getList().then((response) => {
+        this.RolesService.getList({
+            builtin: 0
+        }).then((response) => {
             this.roles = _.map(response.data, item => {
                 return _.pick(item, ['id', 'name']);
             });

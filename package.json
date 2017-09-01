@@ -27,11 +27,11 @@
     "lodash": "^4.17.4",
     "material-design-icons-iconfont": "*",
     "moment": "^2.18.1",
+    "ng-scrollbars": "*",
     "ng-showdown": "*",
     "restangular": "*",
     "roboto-fontface": "*",
-    "satellizer": "*",
-    "ng-scrollbars": "*"
+    "satellizer": "*"
   },
   "dependencies": {
     "node-sass": "^4.5.3",

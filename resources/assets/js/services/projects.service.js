@@ -78,6 +78,7 @@ export default class ProjectsService extends ServiceBase {
         return this.Restangular.one('projects', identifier).customPUT(params, 'information');
     }
 
+    /* Members */
     deleteMember(memberId) {
         return this.Restangular.one('projects').one('members', memberId).remove();
     }
@@ -88,5 +89,36 @@ export default class ProjectsService extends ServiceBase {
 
     createMember(identifier, data) {
         return this.Restangular.one('projects', identifier).all('members').post(data);
+    }
+
+    /* Versions */
+    getVersionStatuses() {
+        return {
+            open: {name: 'Open', selected: true},
+            locked: {name: 'Locked'},
+            closed: {name: 'Closed'},
+        };
+    }
+
+    getVersionSharings() {
+        return {
+            none: {name: 'Not shared', selected: true},
+            descendants: {name: 'With subprojects'},
+            hierarchy: {name: 'With project hierarchy'},
+            tree: {name: 'With project tree'},
+            system: {name: 'With all projects'}
+        };
+    }
+
+    createVersion(identifier, data) {
+        return this.Restangular.one('projects', identifier).all('versions').post(data);
+    }
+
+    deleteMember(versionId) {
+        return this.Restangular.one('projects').one('versions', versionId).remove();
+    }
+
+    editVersion(versionId, data) {
+        return this.Restangular.one('projects', 'versions').customPUT(data, versionId);
     }
 }

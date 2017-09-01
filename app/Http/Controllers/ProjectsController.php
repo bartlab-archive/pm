@@ -11,6 +11,7 @@ use App\Services\IssuesService;
 use App\Services\MemberRolesService;
 use App\Services\MembersService;
 use App\Services\ProjectsService;
+use App\Services\VersionService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -22,6 +23,7 @@ use Illuminate\Routing\Controller as BaseController;
  * @property IssuesService $issuesService
  * @property EnabledModulesService $enabledModulesService
  * @property MemberRolesService $memberRolesService
+ * @property VersionService $versionService
  *
  * @package App\Http\Controllers\Projects
  */
@@ -33,13 +35,15 @@ class ProjectsController extends BaseController
     protected $enabledModulesService;
     protected $membersService;
     protected $memberRolesService;
+    protected $versionService;
 
     public function __construct(
         ProjectsService $projectsService,
         IssuesService $issuesService,
         EnabledModulesService $enabledModulesService,
         MembersService $membersService,
-        MemberRolesService $memberRolesService
+        MemberRolesService $memberRolesService,
+        VersionService $versionService
     )
     {
         $this->projectsService = $projectsService;
@@ -47,6 +51,7 @@ class ProjectsController extends BaseController
         $this->enabledModulesService = $enabledModulesService;
         $this->membersService = $membersService;
         $this->memberRolesService = $memberRolesService;
+        $this->versionService = $versionService;
     }
 
     /**
@@ -205,11 +210,13 @@ class ProjectsController extends BaseController
     }
 
     /**
-     * @param $memberId
+     * @param int $memberId
+     * @return \Illuminate\Http\JsonResponse
      */
     public function deleteMember($memberId)
     {
-        $this->membersService->deleteById($memberId);
+        $result = $this->membersService->deleteById($memberId);
+        return response()->json($result, 200);
     }
 
     /**
@@ -234,7 +241,7 @@ class ProjectsController extends BaseController
      */
     public function createMember($identifier, Request $request)
     {
-        if(!($memberId = $this->membersService->createMember($identifier, $request->member))){
+        if (!($memberId = $this->membersService->createMember($identifier, $request->member))) {
             return response()->json(false, 200);
         }
 
@@ -242,6 +249,35 @@ class ProjectsController extends BaseController
             'member_id' => $memberId,
             'role_id' => $request->role['role_id']
         ]);
+
+        return response()->json($result, 200);
+    }
+
+    /**
+     * @param $identifier
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createVersion($identifier, Request $request)
+    {
+        $result = $this->versionService->createVersion($identifier, $request->all());
+
+        return response()->json($result, 200);
+    }
+
+    /**
+     * @param int $versionId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteVersion($versionId)
+    {
+        $result = $this->versionService->deleteById($versionId);
+        return response()->json($result, 200);
+    }
+
+    public function editVersion($versionId, Request $request)
+    {
+        $result = $this->versionService->editVersion($versionId, $request->all());
 
         return response()->json($result, 200);
     }

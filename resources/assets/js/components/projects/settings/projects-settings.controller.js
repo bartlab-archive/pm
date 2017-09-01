@@ -2,6 +2,8 @@ import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 import showEditMemberComponent from 'components/modal/projects/members/show-edit-member/show-edit-member.component';
 import showAddMemberComponent from 'components/modal/projects/members/show-add-member/show-add-member.component';
+import showAddVersionComponent from 'components/modal/projects/versions/show-add-version/show-add-version.component';
+import showEditVersionComponent from 'components/modal/projects/versions/show-edit-version/show-edit-version.component';
 
 /**
  * @property {ProjectsService} ProjectsService
@@ -9,11 +11,12 @@ import showAddMemberComponent from 'components/modal/projects/members/show-add-m
  * @property {$stateParams} $stateParams
  * @property {$rootScope} $rootScope
  * @property {$mdDialog} $mdDialog
+ * @property {$state} $state
  */
 export default class ProjectsSettingsController extends ControllerBase {
 
     static get $inject() {
-        return ['ProjectsService', 'UsersService', '$stateParams', '$rootScope', '$mdDialog'];
+        return ['ProjectsService', 'UsersService', '$stateParams', '$rootScope', '$mdDialog', '$state'];
     }
 
     $onInit() {
@@ -23,6 +26,9 @@ export default class ProjectsSettingsController extends ControllerBase {
             {id: '4', name: 'Feature'},
             {id: '6', name: 'Bug'},
         ];
+
+        this.versionStatuses = this.ProjectsService.getVersionStatuses();
+        this.versionSharings = this.ProjectsService.getVersionSharings();
 
         this.load();
         this.$rootScope.$on('updateProjectInfo', () => this.load());
@@ -37,24 +43,6 @@ export default class ProjectsSettingsController extends ControllerBase {
             {name: 'category 2', assignee: 'developer'}
         ];
 
-        this.versions = [
-            {
-                name: 'version 1',
-                date: '06/16/2017',
-                description: 'description',
-                status: 'open',
-                sharing: 'Not shared',
-                wiki: 'wiki',
-            },
-            {
-                name: 'version 2',
-                date: '06/16/2017',
-                description: 'description',
-                status: 'open',
-                sharing: 'Not shared',
-                wiki: 'wiki',
-            }
-        ];
 
         this.repositories = [
             {
@@ -103,13 +91,24 @@ export default class ProjectsSettingsController extends ControllerBase {
     load() {
         this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.model = _.get(response, 'data', []);
-            this.model.inherit_members = this.model.inherit_members !== 0;
+            this.model.inherit_members = !!+this.model.inherit_members;
 
             this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
 
             this.model.parent_identifier = this.model.parent_project.identifier;
+            delete(this.model.parent_project.identifier);
             this.members = this.getMembersList();
+            this.versions = this.getVersions();
         });
+    }
+
+    getVersions() {
+        const versions = _.map(this.model.versions, item => {
+            return _.pick(item, ['id', 'name', 'description', 'effective_date', 'wiki_page_title', 'status', 'sharing']);
+        });
+        delete this.model.versions;
+
+        return versions;
     }
 
     updateModules() {
@@ -193,6 +192,8 @@ export default class ProjectsSettingsController extends ControllerBase {
             };
         });
 
+        delete this.model.members;
+
         if (this.model.parent_project && this.model.inherit_members) {
             _.forEach(this.model.parent_project.members, (member, key) => {
                 members[member.user_id] = {
@@ -205,6 +206,8 @@ export default class ProjectsSettingsController extends ControllerBase {
                 };
             });
         }
+
+        delete this.model.parent_project.members;
 
         return members;
     }
@@ -233,6 +236,33 @@ export default class ProjectsSettingsController extends ControllerBase {
                 identifier: this.model.identifier,
                 currentMembers: _.map(this.members, 'user_id')
             })
+        );
+    }
+
+    addVersion($event) {
+        this.$mdDialog.show(
+            this.setMdDialogConfig(showAddVersionComponent, $event.target, {
+                identifier: this.model.identifier,
+                //currentMembers: _.map(this.members, 'user_id')
+            })
+        );
+    }
+
+    deleteVersion(versionId) {
+        this.ProjectsService
+            .deleteMember(versionId)
+            .then(() => {
+                this.$rootScope.$emit('updateProjectInfo');
+            });
+    }
+
+    versionWikiNavigate(wikiPageTitle) {
+        this.$state.go('projects.inner.wiki.page', {name: wikiPageTitle});
+    }
+
+    editVersion($event, version) {
+        this.$mdDialog.show(
+            this.setMdDialogConfig(showEditVersionComponent, $event.target, {version: version})
         );
     }
 }

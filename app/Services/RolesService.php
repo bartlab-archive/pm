@@ -23,7 +23,7 @@ class RolesService
      */
     public function getList($params = [])
     {
-        $roles = Role::orderBy('name');
+        $roles = Role::orderBy('position');
         !empty($params) ? $roles->where($params) : null;
 
         return $roles->get();

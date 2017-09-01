@@ -32,9 +32,7 @@ class MembersService
      */
     public function deleteById($memberId)
     {
-        Member::find($memberId)->delete();
-
-        return true;
+        return Member::find($memberId)->delete();
     }
 
     /**
