@@ -75,6 +75,7 @@ Route::group(
                 Route::post('/{identifier}/versions', 'ProjectsController@createVersion');
                 Route::delete('/versions/{versionId}', 'ProjectsController@deleteVersion');
                 Route::put('/versions/{versionId}', 'ProjectsController@editVersion');
+                Route::put('/{identifier}/versions/close-completed', 'ProjectsController@closeCompletedVersion');
             }
         );
 

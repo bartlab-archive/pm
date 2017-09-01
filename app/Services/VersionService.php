@@ -31,9 +31,9 @@ class VersionService
     public function createVersion($identifier, $data)
     {
         $project = $this->projectsService->one($identifier);
-        $data['project_id'] =$project->id;
+        $data['project_id'] = $project->id;
 
-        $memberRole =  new Version($data);
+        $memberRole = new Version($data);
         return $memberRole->save();
     }
 
@@ -45,12 +45,25 @@ class VersionService
      */
     public function deleteById($versionId)
     {
-        return Version::find($versionId)->delete();;
+        return Version::find($versionId)->delete();
     }
 
+    /**
+     * @param $versionId
+     * @param $data
+     * @return mixed
+     */
     public function editVersion($versionId, $data)
     {
-        $version = Version::find($versionId)->firstOrFail();
+        $version = Version::where(['id' => $versionId])->firstOrFail();
         return $version->update($data);
+    }
+
+    public function closeCompleted($identifier)
+    {
+        $project = $this->projectsService->one($identifier);
+        return Version::where(['project_id' => $project->id])
+            ->where('effective_date', '<', date('Y-m-d'))
+            ->update(['status' => 'closed']);
     }
 }

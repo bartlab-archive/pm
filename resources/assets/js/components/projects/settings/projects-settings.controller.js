@@ -262,7 +262,15 @@ export default class ProjectsSettingsController extends ControllerBase {
 
     editVersion($event, version) {
         this.$mdDialog.show(
-            this.setMdDialogConfig(showEditVersionComponent, $event.target, {version: version})
+            this.setMdDialogConfig(showEditVersionComponent, $event.target, {version: _.clone(version)})
         );
+    }
+
+    closeCompletedVersions(){
+        this.ProjectsService
+            .closeCompletedVersions(this.model.identifier)
+            .then(() => {
+                this.$rootScope.$emit('updateProjectInfo');
+            });
     }
 }

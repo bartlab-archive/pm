@@ -275,10 +275,19 @@ class ProjectsController extends BaseController
         return response()->json($result, 200);
     }
 
+    /**
+     * @param $versionId
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function editVersion($versionId, Request $request)
     {
         $result = $this->versionService->editVersion($versionId, $request->all());
+        return response()->json($result, 200);
+    }
 
+    public function closeCompletedVersion($identifier){
+        $result = $this->versionService->closeCompleted($identifier);
         return response()->json($result, 200);
     }
 }

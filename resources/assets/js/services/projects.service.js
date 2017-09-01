@@ -121,4 +121,8 @@ export default class ProjectsService extends ServiceBase {
     editVersion(versionId, data) {
         return this.Restangular.one('projects', 'versions').customPUT(data, versionId);
     }
+
+    closeCompletedVersions(identifier){
+        return this.Restangular.one('projects', identifier).one('versions','close-completed').put();
+    }
 }

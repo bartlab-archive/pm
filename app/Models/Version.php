@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Version extends Model
 {
     protected $table = 'versions';
+    protected $fillable = ['project_id', 'name', 'description', 'effective_date', 'wiki_page_title', 'status', 'sharing'];
 
     public $timestamps = false;
 
