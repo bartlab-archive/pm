@@ -61,7 +61,6 @@ class IssueCategoriesService
      */
     public function update($issueCategoryId, $data)
     {
-        $version = IssueCategory::where(['id' => $issueCategoryId])->firstOrFail();
-        return $version->update($data);
+        return IssueCategory::where(['id' => $issueCategoryId])->update($data);
     }
 }

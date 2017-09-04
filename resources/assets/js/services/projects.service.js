@@ -137,4 +137,9 @@ export default class ProjectsService extends ServiceBase {
     editIssueCategory(issueCategoriesId, data) {
         return this.Restangular.one('projects', 'issue-categories').customPUT(data, issueCategoriesId);
     }
+
+    editWiki(wikiId, data) {
+
+        return this.Restangular.one('projects', 'wiki').customPUT(data, wikiId);
+    }
 }

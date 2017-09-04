@@ -183,7 +183,7 @@
                     <form name="WikiForm">
                         <md-input-container class="md-block">
                             <label>Start page</label>
-                            <input ng-model="$ctrl.model.wiki" name="wiki" type="text" required
+                            <input ng-model="$ctrl.model.wiki.start_page" name="wiki" type="text" required
                                    ng-pattern="/^[A-z0-9,./?;:|]+$/">
                             <div class="md-caption">Unallowed characters: , . / ? ; : |</div>
                             <div ng-messages="WikiForm.wiki.$error">
@@ -194,7 +194,9 @@
 
                         <div layout-align="center center" layout="row">
                             <md-button class="md-raised md-primary animation-target" type="submit"
-                                       ng-disabled="WikiForm.$invalid">
+                                       ng-disabled="WikiForm.$invalid"
+                                       ng-click="$ctrl.saveWiki()"
+                            >
                                 Save
                             </md-button>
                             <md-button class="md-raised animation-target">

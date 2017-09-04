@@ -306,4 +306,12 @@ export default class ProjectsSettingsController extends ControllerBase {
                 this.$rootScope.$emit('updateProjectInfo');
             });
     }
+
+    saveWiki(){
+        this.ProjectsService
+            .editWiki(this.model.wiki.id, _.pick(this.model.wiki, ['start_page']))
+            .then(() => {
+                this.$rootScope.$emit('updateProjectInfo');
+            });
+    }
 }
