@@ -28,8 +28,12 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app['auth']->viaRequest('userAuth', function (Request $request) {
-            return app('App\Services\UsersService')
-                ->userByToken($request->bearerToken(), Token::SESSION_TOKEN_ACTION);
+            if ($request->bearerToken())
+            {
+                return app('App\Services\UsersService')
+                    ->userByToken($request->bearerToken(), Token::SESSION_TOKEN_ACTION);
+            }
+
         });
 
         Auth::setDefaultDriver('user_auth');
