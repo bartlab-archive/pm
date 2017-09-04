@@ -28,6 +28,7 @@ class AuthService
 
     public function session(string $login): Token
     {
+
         return $this->tokenService->one(
             $this->usersService->userByLoginOrEmail($login),
             Token::SESSION_TOKEN_ACTION

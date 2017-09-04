@@ -18,6 +18,7 @@ export default class MainLoginController extends ControllerBase {
     }
 
     submit() {
+
         this.$auth.login(this.model)
             .then((response) => this.onLogin(response))
             .catch((response) => this.onError(response));
