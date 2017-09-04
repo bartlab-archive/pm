@@ -8,6 +8,8 @@ class IssueCategory extends Model
 {
     protected $table = 'issue_categories';
 
+    protected $hidden=['project_id'];
+
     public $timestamps = false;
 
     /**

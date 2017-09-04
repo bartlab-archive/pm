@@ -7,11 +7,12 @@ use App\Http\Requests\Projects\IndexProjectRequest;
 use App\Http\Requests\Projects\ProjectExistsRequest;
 use App\Http\Requests\Projects\UpdateProjectRequest;
 use App\Services\EnabledModulesService;
+use App\Services\IssueCategoriesService;
 use App\Services\IssuesService;
 use App\Services\MemberRolesService;
 use App\Services\MembersService;
 use App\Services\ProjectsService;
-use App\Services\VersionService;
+use App\Services\VersionsService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -23,7 +24,8 @@ use Illuminate\Routing\Controller as BaseController;
  * @property IssuesService $issuesService
  * @property EnabledModulesService $enabledModulesService
  * @property MemberRolesService $memberRolesService
- * @property VersionService $versionService
+ * @property VersionsService $versionsService
+ * @property IssueCategoriesService $issueCategoriesService
  *
  * @package App\Http\Controllers\Projects
  */
@@ -35,7 +37,8 @@ class ProjectsController extends BaseController
     protected $enabledModulesService;
     protected $membersService;
     protected $memberRolesService;
-    protected $versionService;
+    protected $versionsService;
+    protected $issueCategoriesService;
 
     public function __construct(
         ProjectsService $projectsService,
@@ -43,7 +46,8 @@ class ProjectsController extends BaseController
         EnabledModulesService $enabledModulesService,
         MembersService $membersService,
         MemberRolesService $memberRolesService,
-        VersionService $versionService
+        VersionsService $versionsService,
+        IssueCategoriesService $issueCategoriesService
     )
     {
         $this->projectsService = $projectsService;
@@ -51,7 +55,8 @@ class ProjectsController extends BaseController
         $this->enabledModulesService = $enabledModulesService;
         $this->membersService = $membersService;
         $this->memberRolesService = $memberRolesService;
-        $this->versionService = $versionService;
+        $this->versionsService = $versionsService;
+        $this->issueCategoriesService = $issueCategoriesService;
     }
 
     /**
@@ -224,9 +229,9 @@ class ProjectsController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function editMember($memberId, Request $request)
+    public function updateMember($memberId, Request $request)
     {
-        $result = $this->memberRolesService->editRole([
+        $result = $this->memberRolesService->update([
             'member_id' => $memberId,
             'role_id' => $request->role_id
         ]);
@@ -241,11 +246,11 @@ class ProjectsController extends BaseController
      */
     public function createMember($identifier, Request $request)
     {
-        if (!($memberId = $this->membersService->createMember($identifier, $request->member))) {
+        if (!($memberId = $this->membersService->create($identifier, $request->member))) {
             return response()->json(false, 200);
         }
 
-        $result = $this->memberRolesService->createRole([
+        $result = $this->memberRolesService->create([
             'member_id' => $memberId,
             'role_id' => $request->role['role_id']
         ]);
@@ -260,7 +265,7 @@ class ProjectsController extends BaseController
      */
     public function createVersion($identifier, Request $request)
     {
-        $result = $this->versionService->createVersion($identifier, $request->all());
+        $result = $this->versionsService->create($identifier, $request->all());
 
         return response()->json($result, 200);
     }
@@ -271,7 +276,7 @@ class ProjectsController extends BaseController
      */
     public function deleteVersion($versionId)
     {
-        $result = $this->versionService->deleteById($versionId);
+        $result = $this->versionsService->deleteById($versionId);
         return response()->json($result, 200);
     }
 
@@ -280,14 +285,48 @@ class ProjectsController extends BaseController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function editVersion($versionId, Request $request)
+    public function updateVersion($versionId, Request $request)
     {
-        $result = $this->versionService->editVersion($versionId, $request->all());
+        $result = $this->versionsService->update($versionId, $request->all());
         return response()->json($result, 200);
     }
 
     public function closeCompletedVersion($identifier){
-        $result = $this->versionService->closeCompleted($identifier);
+        $result = $this->versionsService->closeCompleted($identifier);
+        return response()->json($result, 200);
+    }
+
+    /**
+     * @param $identifier
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createIssueCategory($identifier, Request $request)
+    {
+        $result = $this->issueCategoriesService->create($identifier, $request->all());
+
+        return response()->json($result, 200);
+    }
+
+    /**
+     * @param int $issueCategoryId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteIssueCategory($issueCategoryId)
+    {
+        dd(111);
+        $result = $this->issueCategoriesService->deleteById($issueCategoryId);
+        return response()->json($result, 200);
+    }
+
+    /**
+     * @param $issueCategoryId
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateIssueCategory($issueCategoryId, Request $request)
+    {
+        $result = $this->issueCategoriesService->update($issueCategoryId, $request->all());
         return response()->json($result, 200);
     }
 }

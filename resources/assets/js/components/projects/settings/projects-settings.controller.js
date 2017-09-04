@@ -4,6 +4,8 @@ import showEditMemberComponent from 'components/modal/projects/members/show-edit
 import showAddMemberComponent from 'components/modal/projects/members/show-add-member/show-add-member.component';
 import showAddVersionComponent from 'components/modal/projects/versions/show-add-version/show-add-version.component';
 import showEditVersionComponent from 'components/modal/projects/versions/show-edit-version/show-edit-version.component';
+import showAddIssuesCategoryComponent from 'components/modal/projects/issue-categories/show-add-issue-category/show-add-issue-category.component';
+import showEditIssuesCategoryComponent from 'components/modal/projects/issue-categories/show-edit-issue-category/show-edit-issue-category.component';
 
 /**
  * @property {ProjectsService} ProjectsService
@@ -37,11 +39,6 @@ export default class ProjectsSettingsController extends ControllerBase {
             const self = this;
             this.projects = _.filter(response.data, (item) => (item.identifier !== self.model.identifier));
         });
-
-        this.issuesCategories = [
-            {name: 'category 1', assignee: 'developer'},
-            {name: 'category 2', assignee: 'developer'}
-        ];
 
 
         this.repositories = [
@@ -99,7 +96,17 @@ export default class ProjectsSettingsController extends ControllerBase {
             delete(this.model.parent_project.identifier);
             this.members = this.getMembersList();
             this.versions = this.getVersions();
+            this.issuesCategories = this.getIssueCategories();
         });
+    }
+
+    getIssueCategories() {
+        const issueCategories = _.map(this.model.issue_categories, item => {
+            return _.pick(item, ['id', 'name', 'assigned_to_id']);
+        });
+        delete this.model.issue_categories;
+
+        return issueCategories;
     }
 
     getVersions() {
@@ -266,9 +273,35 @@ export default class ProjectsSettingsController extends ControllerBase {
         );
     }
 
-    closeCompletedVersions(){
+    closeCompletedVersions() {
         this.ProjectsService
             .closeCompletedVersions(this.model.identifier)
+            .then(() => {
+                this.$rootScope.$emit('updateProjectInfo');
+            });
+    }
+
+    createIssuesCategory($event) {
+        this.$mdDialog.show(
+            this.setMdDialogConfig(showAddIssuesCategoryComponent, $event.target, {
+                identifier: this.model.identifier,
+                currentMembers: _.omit(this.members, ['id', 'name'])
+            })
+        );
+    }
+
+    editIssuesCategory($event, issueCategory) {
+        this.$mdDialog.show(
+            this.setMdDialogConfig(showEditIssuesCategoryComponent, $event.target, {
+                issueCategory: _.clone(issueCategory),
+                currentMembers: _.omit(this.members, ['id', 'name'])
+            })
+        );
+    }
+
+    deleteIssuesCategory(issueCategoryId) {
+        this.ProjectsService
+            .deleteIssueCategory(issueCategoryId)
             .then(() => {
                 this.$rootScope.$emit('updateProjectInfo');
             });

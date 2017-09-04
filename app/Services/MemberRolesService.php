@@ -18,7 +18,7 @@ class MemberRolesService
      * @param array $data
      * @return bool
      */
-    public function editRole($data)
+    public function update($data)
     {
         $memberRole = MemberRole::where(['member_id' => $data['member_id']])->first();
         $memberRole->role_id = $data['role_id'];
@@ -31,7 +31,7 @@ class MemberRolesService
      * @param $data
      * @return bool
      */
-    public function createRole($data)
+    public function create($data)
     {
         $memberRole =  new MemberRole($data);
         return $memberRole->save();

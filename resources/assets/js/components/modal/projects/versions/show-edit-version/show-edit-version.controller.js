@@ -20,7 +20,7 @@ export default class showEditVersionController extends ControllerBase {
         this.statuses = this.ProjectsService.getVersionStatuses();
         this.sharings = this.ProjectsService.getVersionSharings();
 
-        this.initailVersion = _.assign({}, this.version);
+        this.initailVersion = _.clone(this.version);
     }
 
     cancel() {

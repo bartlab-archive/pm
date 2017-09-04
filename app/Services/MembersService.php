@@ -56,7 +56,7 @@ class MembersService
      * @param $data
      * @return bool|mixed
      */
-    public function createMember($identifier, $data)
+    public function create($identifier, $data)
     {
         $project = $this->projectsService->one($identifier);
 

@@ -6,13 +6,13 @@ use App\Models\Version;
 
 
 /**
- * Class VersionService
+ * Class VersionsService
  *
  * @property ProjectsService $projectsService
  *
  * @package App\Services
  */
-class VersionService
+class VersionsService
 {
     protected $projectsService;
 
@@ -28,7 +28,7 @@ class VersionService
      * @param $data
      * @return bool
      */
-    public function createVersion($identifier, $data)
+    public function create($identifier, $data)
     {
         $project = $this->projectsService->one($identifier);
         $data['project_id'] = $project->id;
@@ -49,11 +49,13 @@ class VersionService
     }
 
     /**
+     * Edit Version
+     *
      * @param $versionId
      * @param $data
      * @return mixed
      */
-    public function editVersion($versionId, $data)
+    public function update($versionId, $data)
     {
         $version = Version::where(['id' => $versionId])->firstOrFail();
         return $version->update($data);

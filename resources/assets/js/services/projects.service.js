@@ -125,4 +125,16 @@ export default class ProjectsService extends ServiceBase {
     closeCompletedVersions(identifier){
         return this.Restangular.one('projects', identifier).one('versions','close-completed').put();
     }
+
+    createIssueCategory(identifier, data) {
+        return this.Restangular.one('projects', identifier).all('issue-categories').post(data);
+    }
+
+    deleteIssueCategory(issueCategoriesId) {
+        return this.Restangular.one('projects').one('issue-categories', issueCategoriesId).remove();
+    }
+
+    editIssueCategory(issueCategoriesId, data) {
+        return this.Restangular.one('projects', 'issue-categories').customPUT(data, issueCategoriesId);
+    }
 }

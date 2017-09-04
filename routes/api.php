@@ -70,12 +70,16 @@ Route::group(
 
                 Route::post('/{identifier}/members', 'ProjectsController@createMember');
                 Route::delete('/members/{memberId}', 'ProjectsController@deleteMember');
-                Route::put('/members/{memberId}', 'ProjectsController@editMember');
+                Route::put('/members/{memberId}', 'ProjectsController@updateMember');
 
                 Route::post('/{identifier}/versions', 'ProjectsController@createVersion');
                 Route::delete('/versions/{versionId}', 'ProjectsController@deleteVersion');
-                Route::put('/versions/{versionId}', 'ProjectsController@editVersion');
+                Route::put('/versions/{versionId}', 'ProjectsController@updateVersion');
                 Route::put('/{identifier}/versions/close-completed', 'ProjectsController@closeCompletedVersion');
+
+                Route::post('/{identifier}/issue-categories', 'ProjectsController@createIssueCategory');
+                Route::delete('/issue-categories/{issueCategoryId}', 'ProjectsController@deleteIssueCategory');
+                Route::put('/issue-categories/{issueCategoryId}', 'ProjectsController@updateIssueCategory');
             }
         );
 
