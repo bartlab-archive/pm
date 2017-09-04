@@ -15,14 +15,13 @@ class MemberRolesService
     /**
      * Update member role
      *
+     * @param int $memberId
      * @param array $data
      * @return bool
      */
-    public function update($data)
+    public function update($memberId, $data)
     {
-        $memberRole = MemberRole::where(['member_id' => $data['member_id']])->first();
-        $memberRole->role_id = $data['role_id'];
-        return $memberRole->save();
+        return MemberRole::where(['member_id' => $memberId])->update($data);
     }
 
     /**

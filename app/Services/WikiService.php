@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Requests\WikiRequest;
 use App\Models\Project;
+use App\Models\Wiki;
 use App\Models\WikiContent;
 use App\Models\WikiPage;
 use Auth;
@@ -90,5 +91,10 @@ class WikiService
         $wiki = $project->wiki->page()->with('content')->get();
 
         return $wiki;
+    }
+
+    public function update($wikiId, $data)
+    {
+        return Wiki::where(['id' => $wikiId])->update($data);
     }
 }

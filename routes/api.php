@@ -80,6 +80,8 @@ Route::group(
                 Route::post('/{identifier}/issue-categories', 'ProjectsController@createIssueCategory');
                 Route::delete('/issue-categories/{issueCategoryId}', 'ProjectsController@deleteIssueCategory');
                 Route::put('/issue-categories/{issueCategoryId}', 'ProjectsController@updateIssueCategory');
+
+                Route::put('/wiki/{wikiId}', 'ProjectsController@updateWiki');
             }
         );
 

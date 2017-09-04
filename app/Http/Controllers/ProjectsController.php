@@ -13,6 +13,7 @@ use App\Services\MemberRolesService;
 use App\Services\MembersService;
 use App\Services\ProjectsService;
 use App\Services\VersionsService;
+use App\Services\WikiService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -26,6 +27,7 @@ use Illuminate\Routing\Controller as BaseController;
  * @property MemberRolesService $memberRolesService
  * @property VersionsService $versionsService
  * @property IssueCategoriesService $issueCategoriesService
+ * @property WikiService $wikiService
  *
  * @package App\Http\Controllers\Projects
  */
@@ -39,6 +41,7 @@ class ProjectsController extends BaseController
     protected $memberRolesService;
     protected $versionsService;
     protected $issueCategoriesService;
+    protected $wikiService;
 
     public function __construct(
         ProjectsService $projectsService,
@@ -47,7 +50,8 @@ class ProjectsController extends BaseController
         MembersService $membersService,
         MemberRolesService $memberRolesService,
         VersionsService $versionsService,
-        IssueCategoriesService $issueCategoriesService
+        IssueCategoriesService $issueCategoriesService,
+        WikiService $wikiService
     )
     {
         $this->projectsService = $projectsService;
@@ -57,6 +61,7 @@ class ProjectsController extends BaseController
         $this->memberRolesService = $memberRolesService;
         $this->versionsService = $versionsService;
         $this->issueCategoriesService = $issueCategoriesService;
+        $this->wikiService = $wikiService;
     }
 
     /**
@@ -231,10 +236,7 @@ class ProjectsController extends BaseController
      */
     public function updateMember($memberId, Request $request)
     {
-        $result = $this->memberRolesService->update([
-            'member_id' => $memberId,
-            'role_id' => $request->role_id
-        ]);
+        $result = $this->memberRolesService->update($memberId, $request->all());
 
         return response()->json($result, 200);
     }
@@ -291,7 +293,8 @@ class ProjectsController extends BaseController
         return response()->json($result, 200);
     }
 
-    public function closeCompletedVersion($identifier){
+    public function closeCompletedVersion($identifier)
+    {
         $result = $this->versionsService->closeCompleted($identifier);
         return response()->json($result, 200);
     }
@@ -327,6 +330,17 @@ class ProjectsController extends BaseController
     public function updateIssueCategory($issueCategoryId, Request $request)
     {
         $result = $this->issueCategoriesService->update($issueCategoryId, $request->all());
+        return response()->json($result, 200);
+    }
+
+    /**
+     * @param $wikiId
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateWiki($wikiId, Request $request)
+    {
+        $result = $this->wikiService->update($wikiId, $request->all());
         return response()->json($result, 200);
     }
 }

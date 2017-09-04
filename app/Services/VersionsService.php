@@ -57,8 +57,7 @@ class VersionsService
      */
     public function update($versionId, $data)
     {
-        $version = Version::where(['id' => $versionId])->firstOrFail();
-        return $version->update($data);
+        return Version::where(['id' => $versionId])->update($data);
     }
 
     public function closeCompleted($identifier)
