@@ -36,7 +36,7 @@
                 </md-input-container>
 
                 <md-button class="md-raised md-primary animation-target"
-                           ng-disabled="!$ctrl.issueCategory.name || ($ctrl.issueCategory.name === $ctrl.initialIssueCategory.name && $ctrl.issueCategory.assigned_to_id === $ctrl.initialIssueCategory.assigned_to_id)"
+                           ng-disabled="issueCategoryForm.$invalid || ($ctrl.issueCategory.name === $ctrl.initialIssueCategory.name && $ctrl.issueCategory.assigned_to_id === $ctrl.initialIssueCategory.assigned_to_id)"
                            ng-click="$ctrl.editIssueCategory()">
                     Save
                 </md-button>

@@ -106,7 +106,7 @@ export default class ProjectsConfig extends InjectableBase {
                 component: projectsFilesComponent.name,
             })
             .state('projects.inner.boards', {
-                url: '/boards',
+                url: '/boards/{id:[0-9]}',
                 component: projectsBoardsComponent.name,
             })
 

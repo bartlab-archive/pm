@@ -1,4 +1,3 @@
-// import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 
 /**

@@ -161,17 +161,20 @@
                                 <h3>{{ item.name }}</h3>
                                 <p>{{ $ctrl.members[item.assigned_to_id].name }}</p>
                             </div>
-                            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.editIssuesCategory($event, item)">
+                            <md-button class="md-secondary md-icon-button"
+                                       ng-click="$ctrl.editIssuesCategory($event, item)">
                                 <md-icon>edit</md-icon>
                             </md-button>
-                            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.deleteIssuesCategory(item.id)">
+                            <md-button class="md-secondary md-icon-button"
+                                       ng-click="$ctrl.deleteIssuesCategory(item.id)">
                                 <md-icon>delete</md-icon>
                             </md-button>
                         </md-list-item>
                     </md-list>
 
                     <div layout-align="center center" layout="row">
-                        <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.createIssuesCategory($event)">
+                        <md-button class="md-raised md-primary animation-target"
+                                   ng-click="$ctrl.createIssuesCategory($event)">
                             New category
                         </md-button>
                     </div>
@@ -232,19 +235,25 @@
             <md-tab label="Forums">
                 <md-content class="md-padding">
                     <md-list>
-                        <md-list-item class="md-2-line" ng-repeat="item in $ctrl.forums" ng-click="null">
+                        <md-list-item class="md-2-line" ng-repeat="item in $ctrl.forums">
                             <div class="md-list-item-text">
                                 <h3>{{ item.name }}</h3>
                                 <p>{{ item.description }}</p>
                             </div>
-                            <md-button class="md-secondary md-icon-button" ng-click="null">
+                            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.forumNavigate(item.id)">
+                                <md-icon>forum</md-icon>
+                            </md-button>
+                            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.editForum($even, item)">
+                                <md-icon>edit</md-icon>
+                            </md-button>
+                            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.deleteForum(item.id)">
                                 <md-icon>delete</md-icon>
                             </md-button>
                         </md-list-item>
                     </md-list>
 
                     <div layout-align="center center" layout="row">
-                        <md-button class="md-raised md-primary animation-target">
+                        <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.createForum($event)">
                             New forum
                         </md-button>
                     </div>

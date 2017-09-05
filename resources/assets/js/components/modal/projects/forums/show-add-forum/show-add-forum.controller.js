@@ -5,21 +5,24 @@ import ControllerBase from 'base/controller.base';
  * @property {$mdDialog} $mdDialog
  * @property {ProjectsService} ProjectsService
  * @property {$rootScope} $rootScope
+ * @property {RolesService} RolesService
+ * @property {UsersService} UsersService
  */
-export default class showAddIssueCategoryController extends ControllerBase {
+export default class showAddVersionController extends ControllerBase {
     static get $inject() {
         return ['$mdDialog', 'ProjectsService', '$rootScope'];
     }
 
     $onInit() {
+
     }
 
     cancel() {
         this.$mdDialog.cancel();
     }
 
-    createIssueCategory() {
-        this.ProjectsService.createIssueCategory(this.identifier, this.issueCategory)
+    createForum() {
+        this.ProjectsService.createForum(this.identifier, this.forum)
             .then(() => {
                 this.$mdDialog.cancel();
                 this.$rootScope.$emit('updateProjectInfo');

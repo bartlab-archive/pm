@@ -6,6 +6,7 @@ use App\Http\Requests\Projects\CreateProjectRequest;
 use App\Http\Requests\Projects\IndexProjectRequest;
 use App\Http\Requests\Projects\ProjectExistsRequest;
 use App\Http\Requests\Projects\UpdateProjectRequest;
+use App\Services\BoardsService;
 use App\Services\EnabledModulesService;
 use App\Services\IssueCategoriesService;
 use App\Services\IssuesService;
@@ -28,6 +29,7 @@ use Illuminate\Routing\Controller as BaseController;
  * @property VersionsService $versionsService
  * @property IssueCategoriesService $issueCategoriesService
  * @property WikiService $wikiService
+ * @property BoardsService $boardsService
  *
  * @package App\Http\Controllers\Projects
  */
@@ -42,6 +44,7 @@ class ProjectsController extends BaseController
     protected $versionsService;
     protected $issueCategoriesService;
     protected $wikiService;
+    protected $boardsService;
 
     public function __construct(
         ProjectsService $projectsService,
@@ -51,7 +54,8 @@ class ProjectsController extends BaseController
         MemberRolesService $memberRolesService,
         VersionsService $versionsService,
         IssueCategoriesService $issueCategoriesService,
-        WikiService $wikiService
+        WikiService $wikiService,
+        BoardsService $boardsService
     )
     {
         $this->projectsService = $projectsService;
@@ -62,6 +66,7 @@ class ProjectsController extends BaseController
         $this->versionsService = $versionsService;
         $this->issueCategoriesService = $issueCategoriesService;
         $this->wikiService = $wikiService;
+        $this->boardsService = $boardsService;
     }
 
     /**
@@ -317,7 +322,6 @@ class ProjectsController extends BaseController
      */
     public function deleteIssueCategory($issueCategoryId)
     {
-        dd(111);
         $result = $this->issueCategoriesService->deleteById($issueCategoryId);
         return response()->json($result, 200);
     }
@@ -334,6 +338,8 @@ class ProjectsController extends BaseController
     }
 
     /**
+     * Update Project Wiki
+     *
      * @param $wikiId
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -341,6 +347,39 @@ class ProjectsController extends BaseController
     public function updateWiki($wikiId, Request $request)
     {
         $result = $this->wikiService->update($wikiId, $request->all());
+        return response()->json($result, 200);
+    }
+
+    /**
+     * @param $identifier
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createForum($identifier, Request $request)
+    {
+        $result = $this->boardsService->create($identifier, $request->all());
+
+        return response()->json($result, 200);
+    }
+
+    /**
+     * @param int $forumId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteForum($forumId)
+    {
+        $result = $this->boardsService->deleteById($forumId);
+        return response()->json($result, 200);
+    }
+
+    /**
+     * @param $forumId
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateForum($forumId, Request $request)
+    {
+        $result = $this->boardsService->update($forumId, $request->all());
         return response()->json($result, 200);
     }
 }

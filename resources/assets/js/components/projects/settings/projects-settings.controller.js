@@ -6,6 +6,8 @@ import showAddVersionComponent from 'components/modal/projects/versions/show-add
 import showEditVersionComponent from 'components/modal/projects/versions/show-edit-version/show-edit-version.component';
 import showAddIssuesCategoryComponent from 'components/modal/projects/issue-categories/show-add-issue-category/show-add-issue-category.component';
 import showEditIssuesCategoryComponent from 'components/modal/projects/issue-categories/show-edit-issue-category/show-edit-issue-category.component';
+import showAddForumComponent from 'components/modal/projects/forums/show-add-forum/show-add-forum.component';
+import showEditForumComponent from 'components/modal/projects/forums/show-edit-forum/show-edit-forum.component';
 
 /**
  * @property {ProjectsService} ProjectsService
@@ -58,19 +60,6 @@ export default class ProjectsSettingsController extends ControllerBase {
             }
         ];
 
-        this.forums = [
-            {
-                name: 'Board 1',
-                description: 'description',
-                parent: ''
-            },
-            {
-                name: 'Board 2',
-                description: 'description',
-                parent: ''
-            }
-        ];
-
         this.activities = [
             {
                 name: 'Architech',
@@ -97,7 +86,17 @@ export default class ProjectsSettingsController extends ControllerBase {
             this.members = this.getMembersList();
             this.versions = this.getVersions();
             this.issuesCategories = this.getIssueCategories();
+            this.forums = this.getForums();
         });
+    }
+
+    getForums() {
+        const forums = _.map(this.model.boards, item => {
+            return _.pick(item, ['id', 'name', 'description', 'parent_id']);
+        });
+        delete this.model.boards;
+
+        return forums;
     }
 
     getIssueCategories() {
@@ -307,9 +306,39 @@ export default class ProjectsSettingsController extends ControllerBase {
             });
     }
 
-    saveWiki(){
+    saveWiki() {
         this.ProjectsService
             .editWiki(this.model.wiki.id, _.pick(this.model.wiki, ['start_page']))
+            .then(() => {
+                this.$rootScope.$emit('updateProjectInfo');
+            });
+    }
+
+    forumNavigate(forumId) {
+        this.$state.go('projects.inner.boards', {id: forumId});
+    }
+
+    createForum($event) {
+        this.$mdDialog.show(
+            this.setMdDialogConfig(showAddForumComponent, $event.target, {
+                identifier: this.model.identifier,
+                currentProjectForums: _.omit(this.forums, ['id', 'name'])
+            })
+        );
+    }
+
+    editForum($event, forum) {
+        this.$mdDialog.show(
+            this.setMdDialogConfig(showEditForumComponent, $event.target, {
+                forum: _.clone(forum),
+                currentProjectForums: _.omit(this.forums, ['id', 'name', 'parent_id'])
+            })
+        );
+    }
+
+    deleteForum(forumId) {
+        this.ProjectsService
+            .deleteForum(forumId)
             .then(() => {
                 this.$rootScope.$emit('updateProjectInfo');
             });
