@@ -263,20 +263,20 @@
             <md-tab label="Activities (time tracking)">
                 <md-content class="md-padding">
                     <md-list>
-                        <md-list-item class="md-2-line" ng-repeat="item in $ctrl.activities" ng-click="null">
+                        <md-list-item class="md-2-line" ng-repeat="item in $ctrl.activities">
                             <div class="md-list-item-text">
                                 <h3>{{ item.name }}</h3>
-                                <p>System Activity</p>
+                                <p ng-show="!item.parent_id">System Activity</p>
                             </div>
-                            <md-switch class="md-secondary"></md-switch>
+                            <md-switch class="md-secondary" ng-model="item.active"></md-switch>
                         </md-list-item>
                     </md-list>
 
                     <div layout-align="center center" layout="row">
-                        <md-button class="md-raised md-primary animation-target">
+                        <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.saveActivity()">
                             Save
                         </md-button>
-                        <md-button class="md-raised animation-target">
+                        <md-button class="md-raised animation-target" ng-click="$ctrl.resetActivity()">
                             Reset
                         </md-button>
                     </div>

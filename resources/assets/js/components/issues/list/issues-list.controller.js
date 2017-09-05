@@ -84,7 +84,7 @@ export default class IssuesListController extends ControllerBase {
     }
 
     loadFiltersValues() {
-        this.IssuesService.getIssuesFilters().then((response) => {
+        this.IssuesService.getIssuesFilters({enumeration_type: 'IssuePriority'}).then((response) => {
             if (!_.isEmpty(response.data)) {
                 this.statuses = _.get(response, 'data.statuses', null);
                 this.trackers = _.get(response, 'data.trackers', null);

@@ -8,6 +8,7 @@ use App\Http\Requests\Projects\ProjectExistsRequest;
 use App\Http\Requests\Projects\UpdateProjectRequest;
 use App\Services\BoardsService;
 use App\Services\EnabledModulesService;
+use App\Services\EnumerationsService;
 use App\Services\IssueCategoriesService;
 use App\Services\IssuesService;
 use App\Services\MemberRolesService;
@@ -30,6 +31,7 @@ use Illuminate\Routing\Controller as BaseController;
  * @property IssueCategoriesService $issueCategoriesService
  * @property WikiService $wikiService
  * @property BoardsService $boardsService
+ * @property EnumerationsService $enumerationsService
  *
  * @package App\Http\Controllers\Projects
  */
@@ -45,7 +47,21 @@ class ProjectsController extends BaseController
     protected $issueCategoriesService;
     protected $wikiService;
     protected $boardsService;
+    protected $enumerationsService;
 
+    /**
+     * ProjectsController constructor.
+     * @param ProjectsService $projectsService
+     * @param IssuesService $issuesService
+     * @param EnabledModulesService $enabledModulesService
+     * @param MembersService $membersService
+     * @param MemberRolesService $memberRolesService
+     * @param VersionsService $versionsService
+     * @param IssueCategoriesService $issueCategoriesService
+     * @param WikiService $wikiService
+     * @param BoardsService $boardsService
+     * @param EnumerationsService $enumerationsService
+     */
     public function __construct(
         ProjectsService $projectsService,
         IssuesService $issuesService,
@@ -55,7 +71,8 @@ class ProjectsController extends BaseController
         VersionsService $versionsService,
         IssueCategoriesService $issueCategoriesService,
         WikiService $wikiService,
-        BoardsService $boardsService
+        BoardsService $boardsService,
+        EnumerationsService $enumerationsService
     )
     {
         $this->projectsService = $projectsService;
@@ -67,6 +84,7 @@ class ProjectsController extends BaseController
         $this->issueCategoriesService = $issueCategoriesService;
         $this->wikiService = $wikiService;
         $this->boardsService = $boardsService;
+        $this->enumerationsService = $enumerationsService;
     }
 
     /**
@@ -380,6 +398,39 @@ class ProjectsController extends BaseController
     public function updateForum($forumId, Request $request)
     {
         $result = $this->boardsService->update($forumId, $request->all());
+        return response()->json($result, 200);
+    }
+
+    /**
+     * @param $identifier
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createActivity($identifier, Request $request)
+    {
+        $result = $this->enumerationsService->create($identifier, $request->all());
+
+        return response()->json($result, 200);
+    }
+
+    /**
+     * @param int $activityId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteActivity($activityId)
+    {
+        $result = $this->enumerationsService->deleteById($activityId);
+        return response()->json($result, 200);
+    }
+
+    /**
+     * @param $activityId
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateActivity($activityId, Request $request)
+    {
+        $result = $this->enumerationsService->update($activityId, $request->all());
         return response()->json($result, 200);
     }
 }

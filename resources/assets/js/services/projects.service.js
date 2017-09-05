@@ -154,4 +154,16 @@ export default class ProjectsService extends ServiceBase {
     editForum(forumId, data) {
         return this.Restangular.one('projects', 'forums').customPUT(data, forumId);
     }
+
+    createActivity(identifier, data) {
+        return this.Restangular.one('projects', identifier).all('activities').post(data);
+    }
+
+    deleteActivity(activityId) {
+        return this.Restangular.one('projects').one('activities', activityId).remove();
+    }
+
+    editActivity(activityId, data) {
+        return this.Restangular.one('projects', 'activities').customPUT(data, activityId);
+    }
 }

@@ -69,6 +69,11 @@ class Project extends Model
         return $this->hasMany(Version::class);
     }
 
+    public function enumerations()
+    {
+        return $this->hasMany(Enumeration::class);
+    }
+
     public function issue_categories()
     {
         return $this->hasMany(IssueCategory::class);

@@ -86,6 +86,20 @@ Route::group(
                 Route::post('/{identifier}/forums', 'ProjectsController@createForum');
                 Route::delete('/forums/{forumId}', 'ProjectsController@deleteForum');
                 Route::put('/forums/{forumId}', 'ProjectsController@updateForum');
+
+                Route::post('/{identifier}/activities', 'ProjectsController@createActivity');
+                Route::delete('/activities/{activityId}', 'ProjectsController@deleteActivity');
+                Route::put('/activities/{activityId}', 'ProjectsController@updateActivity');
+            }
+        );
+
+        Route::group(
+            [
+                'middleware' => 'auth',
+                'prefix' => 'enumerations'
+            ],
+            function () {
+                Route::get('/', 'EnumerationsController@getList');
             }
         );
 

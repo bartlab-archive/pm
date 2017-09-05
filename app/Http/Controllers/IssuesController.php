@@ -11,6 +11,7 @@ use App\Services\ProjectsService;
 use App\Services\StatusesService;
 use App\Services\TrackersService;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,7 +44,7 @@ class IssuesController extends BaseController
             ->header('X-Total', $data['count']);
     }
 
-    public function getIssue($id)
+    public function getIssue($id, Request $request)
     {
         $issue = $this->issueService->one($id);
 
@@ -51,7 +52,7 @@ class IssuesController extends BaseController
             'projectsList' => $this->projectsService->list(),
             'trackersList' => $this->trackersService->all(),
             'statusesList' => $this->statusesService->all(),
-            'prioritiesList' => $this->enumerationsService->list(),
+            'prioritiesList' => $this->enumerationsService->getList(['type' => $request->enumeration_type]),
             'project' => $this->projectsService->one(array_get($issue, 'project.identifier')),
             'issue' => $issue
         ];
@@ -59,25 +60,25 @@ class IssuesController extends BaseController
         return response()->json($response, 200);
     }
 
-    public function getIssuesFilters()
+    public function getIssuesFilters(Request $request)
     {
         return response()->json(
             [
                 'statuses' => $this->statusesService->all(),
                 'trackers' => $this->trackersService->all(),
-                'priorities' => $this->enumerationsService->list()
+                'priorities' => $this->enumerationsService->getList(['type' => $request->enumeration_type])
             ]
             , 200);
     }
 
-    public function getAdditionalInfo()
+    public function getAdditionalInfo(Request $request)
     {
         return response()->json(
             [
                 'projectsList' => $this->projectsService->list(),
                 'trackersList' => $this->trackersService->all(),
                 'statusesList' => $this->statusesService->all(),
-                'prioritiesList' => $this->enumerationsService->list()
+                'prioritiesList' => $this->enumerationsService->getList(['type' => $request->enumeration_type])
             ],
             200);
     }

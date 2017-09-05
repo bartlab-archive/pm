@@ -24,7 +24,7 @@ export default class IssuesInfoController extends ControllerBase {
     }
 
     loadIssue() {
-        this.IssuesService.one(this.$stateParams.id).then((response) => {
+        this.IssuesService.one(this.$stateParams.id, {enumeration_type: 'IssuePriority'}).then((response) => {
             // set issue data
             this.issue = _.get(response, 'data.issue', {});
 

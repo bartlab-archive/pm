@@ -42,7 +42,7 @@ export default class IssuesNewController extends ControllerBase {
     }
 
     loadAdditionalInfo() {
-        this.IssuesService.getAdditionalInfo().then((response) => {
+        this.IssuesService.getAdditionalInfo({enumeration_type: 'IssuePriority'}).then((response) => {
             this.trackersList = _.get(response, 'data.trackersList', []);
             this.projectsList = _.get(response, 'data.projectsList', []);
             this.statusesList = _.get(response, 'data.statusesList', []);

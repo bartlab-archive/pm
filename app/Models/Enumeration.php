@@ -11,6 +11,10 @@ class Enumeration extends Model
 
     protected $table = 'enumerations';
 
+    protected $hidden = ['project_id'];
+
+    protected $fillable = ['name', 'position', 'is_default', 'type', 'active', 'project_id', 'parent_id', 'position_name'];
+
     public $timestamps = false;
 
     /**

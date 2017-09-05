@@ -26,14 +26,14 @@ export default class IssuesService extends ServiceBase {
         return this.Restangular.all('issues').getList(params);
     }
 
-    getAdditionalInfo() {
+    getAdditionalInfo(params) {
         return this.Restangular.all('issues').one('info')
             .withHttpConfig({cache: this.cache})
-            .get();
+            .get(params);
     }
 
-    getIssuesFilters() {
-        return this.Restangular.one('filters').get();
+    getIssuesFilters(params) {
+        return this.Restangular.one('filters').get(params);
     }
 
     create(params) {

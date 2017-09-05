@@ -12,6 +12,7 @@ import showEditForumComponent from 'components/modal/projects/forums/show-edit-f
 /**
  * @property {ProjectsService} ProjectsService
  * @property {UsersService} UsersService
+ * @property {EnumerationsService} EnumerationsService
  * @property {$stateParams} $stateParams
  * @property {$rootScope} $rootScope
  * @property {$mdDialog} $mdDialog
@@ -20,7 +21,7 @@ import showEditForumComponent from 'components/modal/projects/forums/show-edit-f
 export default class ProjectsSettingsController extends ControllerBase {
 
     static get $inject() {
-        return ['ProjectsService', 'UsersService', '$stateParams', '$rootScope', '$mdDialog', '$state'];
+        return ['ProjectsService', 'UsersService', 'EnumerationsService', '$stateParams', '$rootScope', '$mdDialog', '$state'];
     }
 
     $onInit() {
@@ -33,6 +34,18 @@ export default class ProjectsSettingsController extends ControllerBase {
 
         this.versionStatuses = this.ProjectsService.getVersionStatuses();
         this.versionSharings = this.ProjectsService.getVersionSharings();
+
+        this.EnumerationsService.getList({
+            type: 'TimeEntryActivity'
+        }).then((response) => {
+            let activities = {};
+            _.each(response.data, (v, k) => {
+                v.active = !!+v.active;
+                activities[v.name] = _.pick(v, ['id', 'name', 'position', 'is_default', 'type', 'active', 'parent_id', 'position_name']);
+            });
+
+            this.defaultActivities = activities;
+        });
 
         this.load();
         this.$rootScope.$on('updateProjectInfo', () => this.load());
@@ -59,19 +72,6 @@ export default class ProjectsSettingsController extends ControllerBase {
                 encoding: 'UTF-8'
             }
         ];
-
-        this.activities = [
-            {
-                name: 'Architech',
-                system: true,
-                active: true
-            },
-            {
-                name: 'Develop',
-                system: true,
-                active: true
-            },
-        ];
     }
 
     load() {
@@ -87,7 +87,22 @@ export default class ProjectsSettingsController extends ControllerBase {
             this.versions = this.getVersions();
             this.issuesCategories = this.getIssueCategories();
             this.forums = this.getForums();
+
+            this.activities = this.getActivities();
+
+            this.initialActivities = _.cloneDeep(this.activities);
         });
+    }
+
+    getActivities() {
+        let activities = _.cloneDeep(this.defaultActivities);
+        _.each(this.model.enumerations, (v, k) => {
+            v.active = !!+v.active;
+            activities[v.name] = v;
+        });
+        delete this.model.enumerations;
+
+        return activities;
     }
 
     getForums() {
@@ -342,5 +357,32 @@ export default class ProjectsSettingsController extends ControllerBase {
             .then(() => {
                 this.$rootScope.$emit('updateProjectInfo');
             });
+    }
+
+    saveActivity() {
+        const initialActivities = this.initialActivities;
+        _.each(this.activities, (v, k) => {
+            if (!v.parent_id && !v.active) {
+                v.parent_id = v.id;
+                delete v.id;
+                this.ProjectsService.createActivity(this.model.identifier, v).then(() => {
+                    this.$rootScope.$emit('updateProjectInfo');
+                });
+            } else if (v.parent_id && v.active !== initialActivities[v.name].active) {
+                this.ProjectsService.editActivity(v.id, v).then(() => {
+                    this.$rootScope.$emit('updateProjectInfo');
+                });
+            }
+        });
+    }
+
+    resetActivity() {
+        _.each(this.activities, (v, k) => {
+            if (v.parent_id) {
+                this.ProjectsService.deleteActivity(v.id).then(() => {
+                    this.$rootScope.$emit('updateProjectInfo');
+                });
+            }
+        });
     }
 }
