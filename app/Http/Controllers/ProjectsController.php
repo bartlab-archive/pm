@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Projects\CreateProjectRequest;
 use App\Http\Requests\Projects\IndexProjectRequest;
-use App\Http\Requests\Projects\Members\CreateMembersRequest;
-use App\Http\Requests\Projects\Members\UpdateMemberRoleRequest;
 use App\Http\Requests\Projects\UpdateProjectRequest;
+use App\Http\Requests\Members\CreateMembersRequest;
+use App\Http\Requests\MemberRoles\MemberRolesRequest;
+use App\Http\Requests\Versions\VersionsRequest;
 use App\Services\BoardsService;
 use App\Services\EnabledModulesService;
 use App\Services\EnumerationsService;
@@ -258,10 +259,10 @@ class ProjectsController extends BaseController
 
     /**
      * @param $memberId
-     * @param UpdateMemberRoleRequest $request
+     * @param MemberRolesRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateMember($memberId, UpdateMemberRoleRequest $request)
+    public function updateMember($memberId, MemberRolesRequest $request)
     {
         $result = $this->memberRolesService->update($memberId, $request->all());
 
@@ -289,10 +290,10 @@ class ProjectsController extends BaseController
 
     /**
      * @param $identifier
-     * @param Request $request
+     * @param VersionsRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createVersion($identifier, Request $request)
+    public function createVersion($identifier, VersionsRequest $request)
     {
         $result = $this->versionsService->create($identifier, $request->all());
 
@@ -311,10 +312,10 @@ class ProjectsController extends BaseController
 
     /**
      * @param $versionId
-     * @param Request $request
+     * @param VersionsRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateVersion($versionId, Request $request)
+    public function updateVersion($versionId, VersionsRequest $request)
     {
         $result = $this->versionsService->update($versionId, $request->all());
         return response()->json($result, 200);

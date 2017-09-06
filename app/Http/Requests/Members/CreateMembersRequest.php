@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Projects\Members;
+namespace App\Http\Requests\Members;
 
 use App\Models\Project;
 use App\Models\Role;
