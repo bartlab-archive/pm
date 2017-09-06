@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Versions;
+namespace App\Http\Requests\IssueCategories;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
-class VersionsRequest extends FormRequest
+class IssueCategoriesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,11 +26,7 @@ class VersionsRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'description' => 'string|max:255',
-            'wiki_page_title' => 'string|max:255',
-            'status' => 'string|max:255',
-            'sharing' => 'string|max:255',
-            'effective_date' => 'date_format:Y-m-d',
+            'assigned_to_id' => 'exists:' . User::getTableName() . ',id'
         ];
     }
 }

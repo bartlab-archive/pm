@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Members;
 
-use App\Models\Project;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;

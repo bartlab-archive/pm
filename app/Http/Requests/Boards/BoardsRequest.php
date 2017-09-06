@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Versions;
+namespace App\Http\Requests\Boards;
 
+use App\Models\Board;
 use Illuminate\Foundation\Http\FormRequest;
 
-class VersionsRequest extends FormRequest
+class BoardsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,11 +26,9 @@ class VersionsRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'description' => 'string|max:255',
-            'wiki_page_title' => 'string|max:255',
-            'status' => 'string|max:255',
-            'sharing' => 'string|max:255',
-            'effective_date' => 'date_format:Y-m-d',
+            'description' => 'required|string|max:255',
+            'position' => 'int',
+            'parent_id' => 'int|exists:' . Board::getTableName() . ',id',
         ];
     }
 }

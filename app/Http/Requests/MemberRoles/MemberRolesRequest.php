@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\MemberRoles;
 
-use App\Models\Project;
 use App\Models\Role;
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class MemberRolesRequest extends FormRequest

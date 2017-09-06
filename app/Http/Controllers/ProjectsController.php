@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Boards\BoardsRequest;
+use App\Http\Requests\Enumerations\EnumerationsRequest;
+use App\Http\Requests\IssueCategories\IssueCategoriesRequest;
 use App\Http\Requests\Projects\CreateProjectRequest;
 use App\Http\Requests\Projects\IndexProjectRequest;
 use App\Http\Requests\Projects\UpdateProjectRequest;
 use App\Http\Requests\Members\CreateMembersRequest;
 use App\Http\Requests\MemberRoles\MemberRolesRequest;
 use App\Http\Requests\Versions\VersionsRequest;
+use App\Http\Requests\Wiki\WikiRequest;
 use App\Services\BoardsService;
 use App\Services\EnabledModulesService;
 use App\Services\EnumerationsService;
@@ -329,10 +333,10 @@ class ProjectsController extends BaseController
 
     /**
      * @param $identifier
-     * @param Request $request
+     * @param IssueCategoriesRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createIssueCategory($identifier, Request $request)
+    public function createIssueCategory($identifier, IssueCategoriesRequest $request)
     {
         $result = $this->issueCategoriesService->create($identifier, $request->all());
 
@@ -351,10 +355,10 @@ class ProjectsController extends BaseController
 
     /**
      * @param $issueCategoryId
-     * @param Request $request
+     * @param IssueCategoriesRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateIssueCategory($issueCategoryId, Request $request)
+    public function updateIssueCategory($issueCategoryId, IssueCategoriesRequest $request)
     {
         $result = $this->issueCategoriesService->update($issueCategoryId, $request->all());
         return response()->json($result, 200);
@@ -364,10 +368,10 @@ class ProjectsController extends BaseController
      * Update Project Wiki
      *
      * @param $wikiId
-     * @param Request $request
+     * @param WikiRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateWiki($wikiId, Request $request)
+    public function updateWiki($wikiId, WikiRequest $request)
     {
         $result = $this->wikiService->update($wikiId, $request->all());
         return response()->json($result, 200);
@@ -375,10 +379,10 @@ class ProjectsController extends BaseController
 
     /**
      * @param $identifier
-     * @param Request $request
+     * @param BoardsRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createForum($identifier, Request $request)
+    public function createForum($identifier, BoardsRequest $request)
     {
         $result = $this->boardsService->create($identifier, $request->all());
 
@@ -397,10 +401,10 @@ class ProjectsController extends BaseController
 
     /**
      * @param $forumId
-     * @param Request $request
+     * @param BoardsRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateForum($forumId, Request $request)
+    public function updateForum($forumId, BoardsRequest $request)
     {
         $result = $this->boardsService->update($forumId, $request->all());
         return response()->json($result, 200);
@@ -408,10 +412,10 @@ class ProjectsController extends BaseController
 
     /**
      * @param $identifier
-     * @param Request $request
+     * @param EnumerationsRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createActivity($identifier, Request $request)
+    public function createActivity($identifier, EnumerationsRequest $request)
     {
         $result = $this->enumerationsService->create($identifier, $request->all());
 
@@ -430,10 +434,10 @@ class ProjectsController extends BaseController
 
     /**
      * @param $activityId
-     * @param Request $request
+     * @param EnumerationsRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateActivity($activityId, Request $request)
+    public function updateActivity($activityId, EnumerationsRequest $request)
     {
         $result = $this->enumerationsService->update($activityId, $request->all());
         return response()->json($result, 200);
