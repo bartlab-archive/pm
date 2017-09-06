@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Projects\CreateProjectRequest;
 use App\Http\Requests\Projects\IndexProjectRequest;
-use App\Http\Requests\Projects\ProjectExistsRequest;
+use App\Http\Requests\Projects\Members\CreateMembersRequest;
+use App\Http\Requests\Projects\Members\UpdateMemberRoleRequest;
 use App\Http\Requests\Projects\UpdateProjectRequest;
 use App\Services\BoardsService;
 use App\Services\EnabledModulesService;
@@ -248,16 +249,19 @@ class ProjectsController extends BaseController
      */
     public function deleteMember($memberId)
     {
-        $result = $this->membersService->deleteById($memberId);
+        if ($result = $this->membersService->deleteById($memberId)) {
+            $result = $this->memberRolesService->deleteByMemberId($memberId);
+        }
+
         return response()->json($result, 200);
     }
 
     /**
      * @param $memberId
-     * @param Request $request
+     * @param UpdateMemberRoleRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function updateMember($memberId, Request $request)
+    public function updateMember($memberId, UpdateMemberRoleRequest $request)
     {
         $result = $this->memberRolesService->update($memberId, $request->all());
 
@@ -266,18 +270,18 @@ class ProjectsController extends BaseController
 
     /**
      * @param $identifier
-     * @param Request $request
+     * @param CreateMembersRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function createMember($identifier, Request $request)
+    public function createMember($identifier, CreateMembersRequest $request)
     {
-        if (!($memberId = $this->membersService->create($identifier, $request->member))) {
+        if (!($memberId = $this->membersService->create($identifier, ['user_id' => $request->user_id]))) {
             return response()->json(false, 200);
         }
 
         $result = $this->memberRolesService->create([
             'member_id' => $memberId,
-            'role_id' => $request->role['role_id']
+            'role_id' => $request->role_id
         ]);
 
         return response()->json($result, 200);

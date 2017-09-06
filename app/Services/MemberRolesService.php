@@ -35,4 +35,15 @@ class MemberRolesService
         $memberRole =  new MemberRole($data);
         return $memberRole->save();
     }
+
+    /**
+     * Delete role by member_id
+     *
+     * @param int $memberId
+     * @return bool
+     */
+    public function deleteByMemberId($memberId)
+    {
+        return MemberRole::where(['member_id' => $memberId])->delete();
+    }
 }

@@ -30,10 +30,7 @@ export default class showAddMemberController extends ControllerBase {
         });
 
         this.member = {
-            user_id: null
-        };
-
-        this.role = {
+            user_id: null,
             role_id: null
         };
     }
@@ -54,10 +51,7 @@ export default class showAddMemberController extends ControllerBase {
     }
 
     addMember() {
-        this.ProjectsService.createMember(this.identifier, {
-            member: this.member,
-            role: this.role
-        })
+        this.ProjectsService.createMember(this.identifier, this.member)
             .then(() => {
                 this.$mdDialog.cancel();
                 this.$rootScope.$emit('updateProjectInfo');

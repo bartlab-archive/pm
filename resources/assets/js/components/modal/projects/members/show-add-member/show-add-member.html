@@ -25,7 +25,7 @@
 
             <md-input-container class="md-icon-float md-block">
                 <label>Roles</label>
-                <md-select ng-model="$ctrl.role.role_id">
+                <md-select ng-model="$ctrl.member.role_id">
                     <md-option
                             ng-repeat="role in $ctrl.roles"
                             ng-value="role.id">
@@ -36,7 +36,7 @@
             </md-input-container>
 
             <md-button class="md-raised md-primary animation-target"
-                       ng-disabled="!$ctrl.member.user_id || !$ctrl.role.role_id"
+                       ng-disabled="!$ctrl.member.user_id || !$ctrl.member.role_id"
                        ng-click="$ctrl.addMember()">
                 Save
             </md-button>

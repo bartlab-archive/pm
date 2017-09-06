@@ -114,7 +114,7 @@ export default class ProjectsService extends ServiceBase {
         return this.Restangular.one('projects', identifier).all('versions').post(data);
     }
 
-    deleteMember(versionId) {
+    deleteVersion(versionId) {
         return this.Restangular.one('projects').one('versions', versionId).remove();
     }
 

@@ -271,7 +271,7 @@ export default class ProjectsSettingsController extends ControllerBase {
 
     deleteVersion(versionId) {
         this.ProjectsService
-            .deleteMember(versionId)
+            .deleteVersion(versionId)
             .then(() => {
                 this.$rootScope.$emit('updateProjectInfo');
             });

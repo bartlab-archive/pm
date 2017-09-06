@@ -40,6 +40,7 @@ export default class LayoutDefaultController extends ControllerBase {
             {name: 'New version', url: '', icon: 'archive'},
             {name: 'New wiki page', url: '', icon: 'receipt'},
             {name: 'New file', url: '', icon: 'attach_file'},
+            {name: 'New project', url: 'projects.new', icon: 'work'},
         ];
 
         this.projectItems = [
@@ -107,7 +108,6 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     goto(url) {
-        console.log(url);
         let projectId = this.currentProjectId();
 
         if (projectId) {

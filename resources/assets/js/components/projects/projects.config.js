@@ -29,6 +29,9 @@ export default class ProjectsConfig extends InjectableBase {
                 abstract: true,
                 data: {
                     access: '@',
+                    layoutDefault: {
+                        showProjectMenu: true
+                    }
                 },
                 url: '/projects',
                 parent: 'default',
