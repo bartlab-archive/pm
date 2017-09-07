@@ -4,8 +4,18 @@ namespace App\Services;
 
 use App\Models\Project;
 
+/**
+ * Class ProjectsService
+ *
+ * @property AttachmentsService $attachmentsService
+ * @property EnabledModulesService $enabledModulesService
+ *
+ * @package App\Services
+ */
 class ProjectsService
 {
+    protected $attachmentsService;
+
     public function __construct(AttachmentsService $attachmentsService)
     {
         $this->attachmentsService = $attachmentsService;
@@ -59,7 +69,7 @@ class ProjectsService
                     $query->with(['users', 'member_roles.roles']);
                 }]);
             }])
-            ->with(['boards'=>function($query){
+            ->with(['boards' => function ($query) {
                 $query->orderBy('position');
             }])
             ->first();
@@ -67,7 +77,18 @@ class ProjectsService
 
     public function create($data)
     {
-        return Project::create($data);
+        if (isset($data['parent_identifier'])) {
+            $data['parent_id'] = $this->one($data['parent_identifier'])->id;
+            unset($data['parent_identifier']);
+        }
+        $projectModules = isset($data['module']) ? $data['module'] : [];
+        unset($data['module']);
+
+        $this->enabledModulesService = app('App\Services\EnabledModulesService');
+        $project = Project::create($data);
+        $this->enabledModulesService->massCreate($project->id, $projectModules);
+
+        return $project;
     }
 
     public function update($identifier, $data)

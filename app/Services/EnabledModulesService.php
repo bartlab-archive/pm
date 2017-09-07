@@ -30,18 +30,38 @@ class EnabledModulesService
     /**
      * Update project enabled modules
      *
+     * @param string $identifier
      * @param array $data
      * @return bool
      */
-    public function update($data)
+    public function massUpdate($identifier, $data)
     {
-        $project = $this->projectService->one($data['identifier']);
+        $project = $this->projectService->one($identifier);
 
         EnabledModule::where(['project_id' => $project->id])->delete();
 
-        foreach ($data['enabled_module_names'] as $moduleName) {
+        foreach ($data as $moduleName) {
             EnabledModule::create([
                 'project_id' => $project->id,
+                'name' => $moduleName
+            ]);
+        }
+
+        return true;
+    }
+
+    /**
+     * Create project enabled modules
+     *
+     * @param int $projectId
+     * @param array $data
+     * @return bool
+     */
+    public function massCreate($projectId, $data)
+    {
+        foreach ($data as $moduleName) {
+            EnabledModule::create([
+                'project_id' => $projectId,
                 'name' => $moduleName
             ]);
         }

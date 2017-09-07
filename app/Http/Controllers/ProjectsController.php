@@ -179,7 +179,7 @@ class ProjectsController extends BaseController
      */
     public function create(CreateProjectRequest $request)
     {
-        return response($this->projectsService->create($request), 201);
+        return response($this->projectsService->create($request->all()), 201);
     }
 
     /**
@@ -228,10 +228,7 @@ class ProjectsController extends BaseController
      */
     public function updateProjectModules($identifier, Request $request)
     {
-        $result = $this->enabledModulesService->update([
-            'identifier' => $identifier,
-            'enabled_module_names' => $request->all()
-        ]);
+        $result = $this->enabledModulesService->massUpdate($identifier, $request->all());
 
         return response()->json($result, 200);
     }

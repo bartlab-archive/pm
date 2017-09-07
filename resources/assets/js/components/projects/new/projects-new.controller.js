@@ -1,12 +1,15 @@
 import ControllerBase from 'base/controller.base';
+import _ from 'lodash';
 
 /**
  * @property {ProjectsService} ProjectsService
+ * @property {$mdToast} $mdToast
+ * @property {$state} $state
  */
 export default class ProjectsNewController extends ControllerBase {
 
     static get $inject() {
-        return ['ProjectsService'];
+        return ['ProjectsService', '$mdToast', '$state'];
     }
 
     $onInit() {
@@ -20,11 +23,38 @@ export default class ProjectsNewController extends ControllerBase {
         this.ProjectsService.getList().then((response) => {
             this.projects = response.data;
         });
+
+        this.errors = {};
+        this.projectForm = {};
     }
 
-    submit() {
-        // this.ProjectsService.create(this.model).then((response) => {
-        //     console.log(response);
-        // });
+    createProject(state, stateData) {
+        this.ProjectsService.create(this.model)
+            .then((response) => {
+            console.log(state, stateData);
+                this.$state.go(state, stateData);
+            })
+            .catch((response) => this.onError(response));
+    }
+
+    onError(response) {
+
+        if (_.get(response, 'status') === 500) {
+            this.$mdToast.show(
+                this.$mdToast.simple().textContent('Server error')
+            );
+        } else {
+            this.errors = _.get(response, 'data', {});
+            for (let field in this.errors) {
+                if (this.projectForm.hasOwnProperty(field)) {
+                    this.projectForm[field].$setValidity('server', false);
+                }
+            }
+        }
+    }
+
+    change(field) {
+        this.projectForm[field].$setValidity('server', true);
+        this.errors[field] = undefined;
     }
 }
