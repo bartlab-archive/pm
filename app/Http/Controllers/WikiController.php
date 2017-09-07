@@ -19,6 +19,7 @@ class WikiController extends BaseController
 
     public function getWikiPageMarkDown($identifier, $page_title = null)
     {
+
         return $this->WikiService->getWikiPageMarkDown($identifier, $page_title);
     }
 

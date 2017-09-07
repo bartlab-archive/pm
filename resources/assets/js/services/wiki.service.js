@@ -14,7 +14,6 @@ export default class WikiService extends ServiceBase {
             .one('projects')
             .one(indetifire)
             .one('wiki')
-            .one('wiki')
             .get();
     }
 

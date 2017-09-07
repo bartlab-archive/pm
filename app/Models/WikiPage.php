@@ -6,9 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class WikiPage extends Model
 {
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->{self::CREATED_AT} = $model->freshTimestamp();
+        });
+    }
+
     protected $table = 'wiki_pages';
 
-    public $timestamps = true;
+//    protected $fillable = ['title', 'wiki_id'];
+    public $timestamps = false;
 
     /**
      * The name of the "created on" column.

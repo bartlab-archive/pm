@@ -71,8 +71,8 @@ class WikiService
 
         $new_page = $wiki->page()->create([
             'title' => array_get($request, 'title'),
-            'parent_id' => $wiki->page->first()->id
         ]);
+
 
         $new_page_content = $new_page->content()->create([
             'author_id' => Auth::user()->id,

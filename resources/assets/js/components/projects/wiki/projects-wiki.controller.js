@@ -25,15 +25,14 @@ export default class ProjectsWikiController extends ControllerBase {
 
         }
         else
-            {
-                this.WikiService.getStartPageWiki(this.$stateParams.project_id).then((response) => {
-                    if (!_.isEmpty(response.data)) {
-                        this.data = response.data;
+        {
+            this.WikiService.getStartPageWiki(this.$stateParams.project_id).then((response) => {
+                if (!_.isEmpty(response.data)) {
+                    this.data = response.data;
 
-                    }
-                });
-            }
-
+                }
+            });
+        }
 
         this.WikiService.getAllWikiPage(this.$stateParams.project_id).then((response) => {
             if (!_.isEmpty(response.data))
@@ -46,6 +45,7 @@ export default class ProjectsWikiController extends ControllerBase {
 
         this.editMode = false;
     }
+
     formatByDate(pages)
     {
         pages.sort((a, b) => {
@@ -53,7 +53,7 @@ export default class ProjectsWikiController extends ControllerBase {
         });
         let startDate = pages[0].created_on.split(' ', 1);
         var body = document.createElement('DIV');
-        pages.forEach((page , index) =>{
+        pages.forEach((page) =>{
             let currentData = page.created_on.split(' ', 1);
             if (startDate == currentData )
             {
@@ -76,8 +76,6 @@ export default class ProjectsWikiController extends ControllerBase {
         let currentDiv = document.getElementById('byDate');
         currentDiv.appendChild(body);
 
-
-
     }
 
     formatByTitle(pages){
@@ -86,7 +84,7 @@ export default class ProjectsWikiController extends ControllerBase {
         });
 
         let root = document.createElement('UL');
-        pages.forEach((page, index) =>
+        pages.forEach((page) =>
         {
             if (!page.parent_id)
             {

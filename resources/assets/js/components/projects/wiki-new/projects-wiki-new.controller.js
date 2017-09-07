@@ -12,14 +12,16 @@ export default class ProjectsWikiNewController extends ControllerBase {
     onSubmit() {
         console.log(this.$stateParams.id);
         let queryParams = {
-            title: this.title,
-            text: 'h1. ' + this.title
+            title: this.title.replace(' ','_'),
+            text: '# ' + this.title
         };
 
-        this.WikiService.addNewWikiPage(this.$stateParams.id, queryParams).then((response) => {
+        this.WikiService.addNewWikiPage(this.$stateParams.project_id, queryParams).then((response) => {
+
             if (response && response.status === 201) {
                 this.$mdDialog.cancel();
-                this.$state.go('projects-inner.wiki.page', {name: response.data.title});
+                console.log(response);
+                this.$state.go('projects.inner.wiki.page', {name: response.data.title});
             }
         });
     }
