@@ -32,8 +32,7 @@ class WikiService
         }
 
         $wiki_content = $wiki_content->first();
-
-        return response()->json(array_merge(is_null($wiki_content['content']) ? [] : $wiki_content['content'] , ['title' => $wiki_content['title']]));
+        return ($wiki_content['content']);
     }
 
     public function setWikiPageMarkDown($request, $project_identifier, $wiki_id, $name = null)
