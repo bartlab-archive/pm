@@ -127,7 +127,6 @@ export default class ProjectsWikiController extends ControllerBase {
         this.WikiService.getPageWiki(this.$stateParams.project_id, name).then((response) => {
             if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
                 this.data = response.data;
-                // console.log(response.data);
             }
         });
     }
@@ -162,9 +161,23 @@ export default class ProjectsWikiController extends ControllerBase {
     }
 
     newWikiPage($event) {
+
         this.$mdDialog.show(
             this.setMdDialogConfig(projectsWikiNewComponent, $event.target)
         );
+    }
+
+    deleteWikiPage(){
+
+        this.WikiService.deleteWikiPage(this.$stateParams.project_id, this.$stateParams.name).then((response) => {
+                console.log(response.data);
+                this.deleteResult = response.data;
+                if (this.deleteResult.success){
+                    this.$state.go('projects.inner.wiki.index',{project_id: this.$stateParams.project_id })
+                }
+
+        });
+
     }
 
     goToEdit() {

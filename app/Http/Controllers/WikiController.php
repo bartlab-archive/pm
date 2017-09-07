@@ -33,6 +33,11 @@ class WikiController extends BaseController
         return $this->WikiService->addNewWiki($request->all(), $project_identifier);
     }
 
+    public function deleteWikiPage($identifier, $page_title){
+
+        return $this->WikiService->deleteWikiPage($identifier, $page_title);
+    }
+
     public function getAllWikiPage($project_identifier)
     {
         return $this->WikiService->getAllWikiPage($project_identifier);

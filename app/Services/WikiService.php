@@ -83,6 +83,28 @@ class WikiService
         return response()->json(array_merge($new_page_content->toArray(), ['title' => $new_page->title]), 201);
     }
 
+    public function deleteWikiPage($identifier, $title)
+    {
+        $success = false;
+        $message = '';
+        $project = Auth::user()->projects()->where('identifier', $identifier)->firstOrFail();
+        $wiki = $project->wiki;
+        $delete_page = $wiki->page()->where('title', $title)->firstOrFail();
+        try
+        {
+            $success = $delete_page->delete();
+
+        }
+        catch (Exception $e)
+        {
+            $message = $e->getMessage();
+        }
+
+
+        return response()->json( ['success' => $success, 'message'=> $message], 200);
+
+    }
+
     public function getAllWikiPage($project_identifier)
     {
         $project = Auth::user()->projects()->where('identifier', $project_identifier)->firstOrFail();

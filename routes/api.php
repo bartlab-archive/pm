@@ -59,6 +59,7 @@ Route::group(
                 Route::get('/{identifier}/wiki/all', 'WikiController@getAllWikiPage');
                 Route::post('/{identifier}/new-page', 'WikiController@addNewWiki');
                 Route::get('/{identifier}/wiki/{page_title}', 'WikiController@getWikiPageMarkDown');
+                Route::delete('/{identifier}/wiki/{page_title}', 'WikiController@deleteWikiPage');
                 Route::put('/{identifier}/wiki/{name}/{id}', 'WikiController@setWikiPageMarkDown');
 
                 Route::get('/attachments/{identifier}', 'AttachmentsController@index');

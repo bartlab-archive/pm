@@ -42,4 +42,13 @@ export default class WikiService extends ServiceBase {
             .one('all')
             .get();
     }
+
+    deleteWikiPage(indetifire, title){
+        return this.Restangular
+            .one('projects')
+            .one(indetifire)
+            .one('wiki')
+            .one(title)
+            .remove()
+    }
 }
