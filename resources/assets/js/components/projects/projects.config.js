@@ -59,11 +59,6 @@ export default class ProjectsConfig extends InjectableBase {
                 url: '/new',
                 component: 'issuesNewComponent'
             })
-            .state('projects.inner.wiki', {
-                url: '/wiki',
-                abstract: true,
-            })
-
             .state('projects.list', {
                 url: '',
                 component: projectsListComponent.name,
@@ -113,6 +108,10 @@ export default class ProjectsConfig extends InjectableBase {
                 component: projectsBoardsComponent.name,
             })
 
+            .state('projects.inner.wiki', {
+                url: '/wiki',
+                abstract: true,
+            })
             .state('projects.inner.wiki.index', {
                 url: '',
                 component: projectsWikiComponent.name,

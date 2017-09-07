@@ -9,12 +9,15 @@ use App\Models\Project;
  *
  * @property AttachmentsService $attachmentsService
  * @property EnabledModulesService $enabledModulesService
+ * @property ProjectTrackersService $projectTrackersService
  *
  * @package App\Services
  */
 class ProjectsService
 {
     protected $attachmentsService;
+    protected $enabledModulesService;
+    protected $projectTrackersService;
 
     public function __construct(AttachmentsService $attachmentsService)
     {
@@ -72,21 +75,29 @@ class ProjectsService
             ->with(['boards' => function ($query) {
                 $query->orderBy('position');
             }])
-            ->first();
+            ->firstOrFail();
     }
 
     public function create($data)
     {
         if (isset($data['parent_identifier'])) {
-            $data['parent_id'] = $this->one($data['parent_identifier'])->id;
+            $parentProject = $this->one($data['parent_identifier']);
+            $data['parent_id'] = $parentProject->id;
             unset($data['parent_identifier']);
         }
-        $projectModules = isset($data['module']) ? $data['module'] : [];
-        unset($data['module']);
+
+        $projectModules = isset($data['modules']) ? $data['modules'] : [];
+        unset($data['modules']);
+
+        $projectTrackers = isset($data['trackers']) ? $data['trackers'] : [];
+        unset($data['trackers']);
+
+        $project = Project::create($data);
 
         $this->enabledModulesService = app('App\Services\EnabledModulesService');
-        $project = Project::create($data);
         $this->enabledModulesService->massCreate($project->id, $projectModules);
+        $this->projectTrackersService = app('App\Services\ProjectTrackersService');
+        $this->projectTrackersService->massCreate($project->id, $projectTrackers);
 
         return $project;
     }

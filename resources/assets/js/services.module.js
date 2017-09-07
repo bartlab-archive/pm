@@ -7,6 +7,7 @@ import NewsService from 'services/news.service';
 import FilesService from 'services/files.service';
 import RolesService from 'services/roles.service';
 import EnumerationsService from 'services/enumerations.service';
+import TrackersService from 'services/trackers.service';
 
 angular.module('app.services', [])
     .service(ProjectsService.name, ProjectsService)
@@ -16,4 +17,5 @@ angular.module('app.services', [])
     .service(IssuesService.name, IssuesService)
     .service(FilesService.name, FilesService)
     .service(RolesService.name, RolesService)
-    .service(EnumerationsService.name, EnumerationsService);
+    .service(EnumerationsService.name, EnumerationsService)
+    .service(TrackersService.name, TrackersService);

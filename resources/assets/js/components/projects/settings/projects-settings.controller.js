@@ -27,11 +27,6 @@ export default class ProjectsSettingsController extends ControllerBase {
     $onInit() {
         this.allModules = this.ProjectsService.modules;
 
-        this.trackers = [
-            {id: '4', name: 'Feature'},
-            {id: '6', name: 'Bug'},
-        ];
-
         this.versionStatuses = this.ProjectsService.getVersionStatuses();
         this.versionSharings = this.ProjectsService.getVersionSharings();
 
@@ -81,8 +76,11 @@ export default class ProjectsSettingsController extends ControllerBase {
 
             this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
 
-            this.model.parent_identifier = this.model.parent_project.identifier;
-            delete(this.model.parent_project.identifier);
+            if(this.model.parent_project){
+                this.model.parent_identifier = this.model.parent_project.identifier;
+                delete(this.model.parent_project.identifier);
+            }
+
             this.members = this.getMembersList();
             this.versions = this.getVersions();
             this.issuesCategories = this.getIssueCategories();
@@ -226,9 +224,8 @@ export default class ProjectsSettingsController extends ControllerBase {
                     inherited_member: true,
                 };
             });
+            delete this.model.parent_project.members;
         }
-
-        delete this.model.parent_project.members;
 
         return members;
     }

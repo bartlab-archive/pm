@@ -110,9 +110,8 @@ export default class LayoutDefaultController extends ControllerBase {
     goto(url) {
         let projectId = this.currentProjectId();
 
-        if (projectId) {
-            this.$state.go(url, {project_id: projectId});
-        }
+        projectId ? this.$state.go(url, {project_id: projectId}) : null;
+        _.includes(['projects.new'], url) ? this.$state.go(url, {}) : null;
     }
 
     loadProjectInfo() {
@@ -128,15 +127,15 @@ export default class LayoutDefaultController extends ControllerBase {
                     }
                 });
 
-                this.enabledModules  =this.ProjectsService.getModules(modules);
+                this.enabledModules = this.ProjectsService.getModules(modules);
             });
         }
     }
 
-    showFabAction(item){
-        if (item.name === 'New issue'){
+    showFabAction(item) {
+        if (item.name === 'New issue') {
             return typeof this.enabledModules !== 'undefined' && typeof this.enabledModules.issue_tracking !== 'undefined';
-        }else if (item.name === 'New wiki page') {
+        } else if (item.name === 'New wiki page') {
             return typeof this.enabledModules !== 'undefined' && typeof this.enabledModules.news !== 'undefined';
         }
 

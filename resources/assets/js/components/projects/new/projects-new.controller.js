@@ -3,36 +3,51 @@ import _ from 'lodash';
 
 /**
  * @property {ProjectsService} ProjectsService
+ * @property {TrackersService} TrackersService
  * @property {$mdToast} $mdToast
  * @property {$state} $state
  */
 export default class ProjectsNewController extends ControllerBase {
 
     static get $inject() {
-        return ['ProjectsService', '$mdToast', '$state'];
+        return ['ProjectsService', 'TrackersService', '$mdToast', '$state'];
     }
 
     $onInit() {
         this.modules = this.ProjectsService.modules;
 
-        this.trackers = [
-            {id: '4', name: 'Feature'},
-            {id: '6', name: 'Bug'},
-        ];
-
         this.ProjectsService.getList().then((response) => {
             this.projects = response.data;
+        });
+
+        this.TrackersService.getAll().then((response) => {
+            this.trackers = response.data;
         });
 
         this.errors = {};
         this.projectForm = {};
     }
 
-    createProject(state, stateData) {
-        this.ProjectsService.create(this.model)
+    createProjectAndContinue() {
+        let data = _.cloneDeep(this.model);
+        data.modules = _.keys(_.pickBy(data.modules, (value, key) => value));
+        data.trackers = _.keys(_.pickBy(data.trakers, (value, key) => value));
+
+        this.ProjectsService.create(data)
             .then((response) => {
-            console.log(state, stateData);
-                this.$state.go(state, stateData);
+                this.$state.go('projects.inner.settings', {project_id: this.model.identifier});
+            })
+            .catch((response) => this.onError(response));
+    }
+
+    createProject() {
+        let data = _.cloneDeep(this.model);
+        data.modules = _.keys(_.pickBy(data.modules, (value, key) => value));
+        data.trackers = _.keys(_.pickBy(data.trackers, (value, key) => value));
+
+        this.ProjectsService.create(data)
+            .then((response) => {
+                this.$state.reload();
             })
             .catch((response) => this.onError(response));
     }

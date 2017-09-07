@@ -96,6 +96,16 @@ Route::group(
         Route::group(
             [
                 'middleware' => 'auth',
+                'prefix' => 'trackers'
+            ],
+            function () {
+                Route::get('/', 'TrackersController@getAll');
+            }
+        );
+
+        Route::group(
+            [
+                'middleware' => 'auth',
                 'prefix' => 'enumerations'
             ],
             function () {
