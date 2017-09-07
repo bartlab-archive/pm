@@ -23,8 +23,9 @@
         </md-card-title>
 
         <md-card-content class="md-body-1">
-            <p>Feature: {{$ctrl.feature}}</p>
-            <p>Bug: {{$ctrl.bug}}</p>
+            <p ng-repeat="(trackerName, issue)  in $ctrl.issuesCount">
+                {{trackerName}}: {{issue.opened}} | {{issue.closed}} | {{issue.closed + issue.opened}}
+            </p>
         </md-card-content>
 
         <md-card-actions layout="row" layout-align="center center">

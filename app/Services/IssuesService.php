@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\Issue;
+use App\Models\IssueStatuse;
 use App\Models\Project;
+use App\Models\Tracker;
 
 
 class IssuesService
@@ -67,26 +69,31 @@ class IssuesService
         return $result;
     }
 
-    public function trackers($identifier)
+    public function trackersCount($identifier)
     {
-        $bug = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
-            ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
+        $issues = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
+            ->join(Tracker::getTableName(), Issue::getTableName() . '.tracker_id', '=', Tracker::getTableName() . '.id')
+            ->join(IssueStatuse::getTableName(), Issue::getTableName() . '.status_id', '=', IssueStatuse::getTableName() . '.id')
+            ->select(
+                Tracker::getTableName() . '.name',
+                IssueStatuse::getTableName() . '.is_closed'
+            )
             ->where(Project::getTableName() . '.identifier', $identifier)
-            ->where('tracker_id', 6)
-            ->count();
+            ->orderBy('tracker_id', 'is_closed')
+            ->get()
+            ->toArray();
 
-        $feature = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
-            ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
-            ->where(Project::getTableName() . '.identifier', $identifier)
-            ->where('tracker_id', 4)
-            ->count();
+        $result = [];
+        foreach ($issues as $issue) {
+            if ($issue['is_closed']) {
+                isset($result[$issue['name']]['closed']) ? $result[$issue['name']]['closed']++ : $result[$issue['name']]['closed'] = 1;
+            } else {
+                isset($result[$issue['name']]['opened']) ? $result[$issue['name']]['opened']++ : $result[$issue['name']]['opened'] = 1;
+            }
 
-        $result = [
-            'bug' => $bug,
-            'feature' => $feature
-        ];
+        }
 
-        return $result;
+        return ['trackers' => $result];
     }
 
 

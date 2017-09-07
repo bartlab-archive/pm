@@ -214,10 +214,10 @@ class ProjectsController extends BaseController
 //    	return response()->json($result['projects'])->header('X-Total', $result['total']);
 //    }
 
-    public function getProjectTrackers($identifier)
+    public function getProjectIssuesCount($identifier)
     {
 
-        $result = $this->issuesService->trackers($identifier);
+        $result = $this->issuesService->trackersCount($identifier);
 
         return response()->json($result, 200);
     }

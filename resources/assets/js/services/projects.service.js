@@ -60,8 +60,8 @@ export default class ProjectsService extends ServiceBase {
         return this.Restangular.all('projects').one(identifier).one('news').getList();
     }
 
-    getTrackers(identifier) {
-        return this.Restangular.one('projects', identifier).one('trackers')
+    getProjectIssues(identifier) {
+        return this.Restangular.one('projects', identifier).one('issues-count')
         // .withHttpConfig({cache: this.cache})
             .get();
     }

@@ -48,7 +48,7 @@ Route::group(
                 Route::post('/', 'ProjectsController@create');
                 Route::put('/{identifier}', 'ProjectsController@update');
                 Route::delete('/{identifier}', 'ProjectsController@destroy');
-                Route::get('/{identifier}/trackers', 'ProjectsController@getProjectTrackers');
+                Route::get('/{identifier}/issues-count', 'ProjectsController@getProjectIssuesCount');
 
                 Route::post('/{identifier}/issues', 'IssuesController@project');
 
