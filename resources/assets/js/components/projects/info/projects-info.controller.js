@@ -51,4 +51,8 @@ export default class ProjectsInfoController extends ControllerBase {
     userNavigate(userId) {
         this.$state.go('users.info', {id: userId});
     }
+
+    projectNavigate(identifier){
+        this.$state.go('projects.inner.info', {project_id: identifier});
+    }
 }

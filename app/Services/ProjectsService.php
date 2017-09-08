@@ -62,7 +62,8 @@ class ProjectsService
                 'versions',
                 'wiki',
                 'repositories',
-                'enumerations'
+                'enumerations',
+                'childProjects'
             ])
             ->with(['members' => function ($query) {
                 $query->with(['users', 'member_roles.roles']);

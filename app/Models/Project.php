@@ -149,4 +149,8 @@ class Project extends Model
     public function parentProject() {
         return $this->hasOne(self::class, 'id', 'parent_id');
     }
+
+    public function childProjects() {
+        return $this->hasMany(self::class, 'parent_id', 'id');
+    }
 }

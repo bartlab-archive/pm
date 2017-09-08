@@ -57,7 +57,7 @@
     </md-card>
 </div>
 
-<div layout="row" layout-align="center start"  ng-if="$ctrl.canShowModule('news')">
+<div layout="row" layout-align="center start" ng-if="$ctrl.canShowModule('news')">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
         <md-card-title>
             <md-card-title-text>
@@ -74,7 +74,7 @@
     </md-card>
 </div>
 
-<div layout="row" layout-align="center start">
+<div layout="row" layout-align="center start" ng-if="_.isEmpty($ctrl.project.child_projects)">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
         <md-card-title>
             <md-card-title-text>
@@ -83,7 +83,11 @@
         </md-card-title>
 
         <md-card-content class="md-body-1">
-
+            <md-button class="md-secondary"
+                       ng-repeat="subProject in $ctrl.project.child_projects"
+                       ng-click="$ctrl.projectNavigate(subProject.identifier)">
+                {{subProject.name}}
+            </md-button>
         </md-card-content>
     </md-card>
 </div>
