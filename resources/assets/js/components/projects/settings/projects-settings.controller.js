@@ -81,7 +81,8 @@ export default class ProjectsSettingsController extends ControllerBase {
                 delete(this.model.parent_project.identifier);
             }
 
-            this.members = this.getMembersList();
+            this.members = this.ProjectsService.getMembersList(this.model);
+
             this.versions = this.getVersions();
             this.issuesCategories = this.getIssueCategories();
             this.forums = this.getForums();
@@ -196,38 +197,6 @@ export default class ProjectsSettingsController extends ControllerBase {
         this.$mdDialog.show(
             this.setMdDialogConfig(showAddMemberComponent, $event.target)
         );
-    }
-
-    getMembersList() {
-        let members = {};
-        _.forEach(this.model.members, (member, key) => {
-            members[member.user_id] = {
-                name: member.users.firstname + ' ' + member.users.lastname,
-                role: member.member_roles.roles.name,
-                role_id: member.member_roles.roles.id,
-                user_id: member.users.id,
-                member_id: member.id,
-                inherited_member: false,
-            };
-        });
-
-        delete this.model.members;
-
-        if (this.model.parent_project && this.model.inherit_members) {
-            _.forEach(this.model.parent_project.members, (member, key) => {
-                members[member.user_id] = {
-                    name: member.users.firstname + ' ' + member.users.lastname,
-                    role: member.member_roles.roles.name,
-                    role_id: member.member_roles.roles.id,
-                    user_id: member.users.id,
-                    member_id: member.id,
-                    inherited_member: true,
-                };
-            });
-            delete this.model.parent_project.members;
-        }
-
-        return members;
     }
 
     deleteMember(memberId) {

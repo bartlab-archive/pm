@@ -17,6 +17,7 @@ export default class ProjectsInfoController extends ControllerBase {
         this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.project = _.get(response, 'data', []);
             this.project.modules = this.ProjectsService.getModules(this.project.enabled_modules);
+            this.membersByRole = this.getMembersByRole(this.ProjectsService.getMembersList(this.project));
         });
 
         this.ProjectsService.getProjectIssues(this.$stateParams.project_id).then((response) => {
@@ -26,9 +27,28 @@ export default class ProjectsInfoController extends ControllerBase {
                 !v.closed ? v.closed = 0 : null;
             });
         });
+
+    }
+
+    getMembersByRole(members) {
+        let memberRoles = {};
+        _.each(members, (member) => {
+            if (memberRoles[member.role]) {
+                memberRoles[member.role][member.user_id] = member.name;
+            } else {
+                memberRoles[member.role] = {};
+                memberRoles[member.role][member.user_id] = member.name;
+            }
+        });
+
+        return memberRoles;
     }
 
     canShowModule(moduleName) {
         return (this.project && typeof this.project.modules[moduleName] !== 'undefined');
+    }
+
+    userNavigate(userId) {
+        this.$state.go('users.info', {id: userId});
     }
 }

@@ -30,7 +30,7 @@
 
         <md-card-actions layout="row" layout-align="center center">
             <md-button ui-sref="projects-inner.issues.index">View all issues</md-button>
-            <md-button ui-sref="projects-inner.issues.calendar">Calendar</md-button>
+            <md-button ui-sref="projects-inner.issues.calendar" ng-if="canShowModule('calendar')">Calendar</md-button>
             <md-button ui-sref="projects-inner.issues.gantt">Gantt</md-button>
         </md-card-actions>
     </md-card>
@@ -45,8 +45,14 @@
         </md-card-title>
 
         <md-card-content class="md-body-1">
-            <p ng-if="$ctrl.project.users.length > 0">Manager: {{$ctrl.project.users[0].firstname + ' ' + $ctrl.project.users[0].lastname}}</p>
-            <p>Developer:<span ng-if="$index !== 0" ng-repeat="item in $ctrl.project.users">{{$index > 1 ? ', ' : ' '}}{{item.firstname + ' ' + item.lastname}}</span> </p>
+            <p ng-repeat="(role, members) in $ctrl.membersByRole">
+                {{role}}:
+                <md-button class="md-secondary"
+                           ng-repeat="(userId, name) in members"
+                           ng-click="$ctrl.userNavigate(userId)">
+                    {{name}}
+                </md-button>
+            </p>
         </md-card-content>
     </md-card>
 </div>

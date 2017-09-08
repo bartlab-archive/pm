@@ -166,4 +166,33 @@ export default class ProjectsService extends ServiceBase {
     editActivity(activityId, data) {
         return this.Restangular.one('projects', 'activities').customPUT(data, activityId);
     }
+
+    getMembersList(project) {
+        let members = {};
+        _.forEach(project.members, (member, key) => {
+            members[member.user_id] = {
+                name: member.users.firstname + ' ' + member.users.lastname,
+                role: member.member_roles.roles.name,
+                role_id: member.member_roles.roles.id,
+                user_id: member.users.id,
+                member_id: member.id,
+                inherited_member: false,
+            };
+        });
+
+        if (project.parent_project && project.inherit_members) {
+            _.forEach(project.parent_project.members, (member, key) => {
+                members[member.user_id] = {
+                    name: member.users.firstname + ' ' + member.users.lastname,
+                    role: member.member_roles.roles.name,
+                    role_id: member.member_roles.roles.id,
+                    user_id: member.users.id,
+                    member_id: member.id,
+                    inherited_member: true,
+                };
+            });
+        }
+
+        return members;
+    }
 }
