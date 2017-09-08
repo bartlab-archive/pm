@@ -25,6 +25,7 @@ class WikiController extends BaseController
 
     public function setWikiPageMarkDown(WikiUpdateRequest $request, $project_identifier, $wiki_id, $name = null)
     {
+
         return $this->WikiService->setWikiPageMarkDown($request->all(), $project_identifier, $wiki_id, $name);
     }
 
@@ -41,6 +42,10 @@ class WikiController extends BaseController
     public function getAllWikiPage($project_identifier)
     {
         return $this->WikiService->getAllWikiPage($project_identifier);
+    }
+    public function editWikiPage($identifier, $page_title )
+    {
+        return $this->WikiService->editWikiPage($identifier, $page_title);
     }
 
 

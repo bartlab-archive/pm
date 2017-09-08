@@ -11,7 +11,7 @@ use Auth;
 
 class WikiService
 {
-    public function getWikiPageMarkDown($identifier, $page_title = null): WikiContent
+    public function getWikiPageMarkDown($identifier, $page_title = null)
     {
         $user_projects = Auth::user()->projects;
 
@@ -30,38 +30,34 @@ class WikiService
         } else {
             $wiki_content->where('parent_id', null);
         }
+        return $wiki_content->first();
 
-        $wiki_content = $wiki_content->first();
-        return ($wiki_content['content']);
     }
 
-    public function setWikiPageMarkDown($request, $project_identifier, $wiki_id, $name = null)
+    public function setWikiPageMarkDown($request, $identifier, $wiki_id, $name = null)
     {
         $user_projects = Auth::user()->projects;
-        $project = $user_projects->where('identifier', $project_identifier)->first();
-
-        $wiki_content = $project->wiki->page();
+        $project = $user_projects->where('identifier', $identifier)->first();
+        $wiki_page = $project->wiki->page();
 
         if ($name) {
-            $wiki_content->where('title', $wiki_id);
+            $wiki_page->where('title', $wiki_id);
             $wiki_id = $name;
         } else {
-            $wiki_content->where('id', $wiki_id);
+            $wiki_page->where('id', $wiki_id);
         }
-        $wiki_content = $wiki_content
+
+        $wiki_page = $wiki_page
             ->with(['content' => function ($q) use ($wiki_id) {
                 $q->where('id', $wiki_id);
             }])
             ->firstOrFail();
-        $wiki_content->content->update([
-            'text' => array_get($request, 'text')
-        ]);
-
-
-
-        $wiki_content = $wiki_content->toArray();
-
-        return response()->json(array_merge($wiki_content['content'], ['title' => $wiki_content['title']]));
+        $wiki_page->update(['title' => array_get($request, 'title')]);
+        $wiki_page->title = str_replace(' ','_',array_get($request, 'title'));
+        $wiki_page->parent_id = array_get($request, 'parent_id') == 'null' ? null : array_get($request, 'parent_id') ;
+        $wiki_page->save();
+        $wiki_page->content()->update($request['content']);
+          return $wiki_page;
     }
 
     public function addNewWiki($request, $project_identifier)
@@ -112,6 +108,11 @@ class WikiService
         $wiki = $project->wiki->page()->with('content')->get();
 
         return $wiki;
+    }
+
+    public function editWikiPage($identifier, $title)
+    {
+        var_dump($title);
     }
 
     public function update($wikiId, $data)

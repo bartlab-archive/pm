@@ -51,4 +51,5 @@ export default class WikiService extends ServiceBase {
             .one(title)
             .remove()
     }
+
 }

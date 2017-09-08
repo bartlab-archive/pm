@@ -54,7 +54,7 @@ Route::group(
 
                 Route::get('/{identifier}/news', 'NewsController@getProjectNews');
 
-                Route::put('/{identifier}/wiki/{id}', 'WikiController@setWikiPageMarkDown');
+//                Route::put('/{identifier}/wiki/{name}', 'WikiController@setWikiPageMarkDown');
                 Route::get('/{identifier}/wiki', 'WikiController@getWikiPageMarkDown');
                 Route::get('/{identifier}/wiki/all', 'WikiController@getAllWikiPage');
                 Route::post('/{identifier}/new-page', 'WikiController@addNewWiki');

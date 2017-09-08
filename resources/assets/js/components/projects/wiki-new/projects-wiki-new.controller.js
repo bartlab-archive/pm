@@ -12,7 +12,8 @@ export default class ProjectsWikiNewController extends ControllerBase {
     onSubmit() {
         console.log(this.$stateParams.id);
         let queryParams = {
-            title: this.title.replace(' ','_'),
+            // replace only one space, fix it!
+            title: this.title.replace( / /g, "_" ),
             text: '# ' + this.title
         };
 

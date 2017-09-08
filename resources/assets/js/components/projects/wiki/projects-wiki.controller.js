@@ -15,10 +15,11 @@ export default class ProjectsWikiController extends ControllerBase {
     $onInit() {
         if (this.$stateParams.name) {
 
-
             this.WikiService.getPageWiki(this.$stateParams.project_id,this.$stateParams.name).then((response) => {
                 if (!_.isEmpty(response.data)) {
                     this.data = response.data;
+                    // Object.assign(this.data,response.data.content);
+                    console.log(this.data)
                 }
             });
             this.currentPage =  this.$stateParams.name;
@@ -29,6 +30,7 @@ export default class ProjectsWikiController extends ControllerBase {
             this.WikiService.getStartPageWiki(this.$stateParams.project_id).then((response) => {
                 if (!_.isEmpty(response.data)) {
                     this.data = response.data;
+                    console.log(response.data);
 
                 }
             });
@@ -37,6 +39,7 @@ export default class ProjectsWikiController extends ControllerBase {
         this.WikiService.getAllWikiPage(this.$stateParams.project_id).then((response) => {
             if (!_.isEmpty(response.data))
             {
+
                 this.pageList = response.data;
                 this.formatByDate(this.pageList);
                 this.formatByTitle(this.pageList);
@@ -180,11 +183,14 @@ export default class ProjectsWikiController extends ControllerBase {
 
     }
 
-    goToEdit() {
-        if (this.data) {
-            this.editMode = true;
-            // this.$state.go('projects-inner.wiki.edit', {name : this.data.title});
-        }
+    goToEdit(name) {
+        // if (this.data) {
+        //     this.editMode = true;
+
+        //     // this.$state.go('projects-inner.wiki.edit', {name : this.data.title});
+        // }
+
+        this.$state.go('projects.inner.wiki.edit', {name: name});
 
     }
 

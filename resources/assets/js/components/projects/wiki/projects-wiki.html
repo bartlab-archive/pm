@@ -5,7 +5,7 @@
                     <md-tab label="Start page" md-on-select="$ctrl.selectWiki('wiki')">
                         <md-content class="md-padding">
                             <h1 class="md-display-2"></h1>
-                            <div class="md-body-1" markdown-to-html="$ctrl.data.text || ''"></div>
+                            <div class="md-body-1" markdown-to-html="$ctrl.data.content.text || ''"></div>
                         </md-content>
                     </md-tab>
                     <md-tab label="Index by title">
@@ -25,7 +25,7 @@
                             md-on-select="$ctrl.selectWiki($ctrl.currentPage)"
                             md-active="true">
                         <md-content class="md-padding">
-                         <div class="md-body-1" markdown-to-html="$ctrl.data.text || ''"></div>
+                         <div class="md-body-1" markdown-to-html="$ctrl.data.content.text || ''"></div>
                         </md-content>
                     </md-tab>
                     <!--<md-tab-->
@@ -51,7 +51,7 @@
                         <md-button aria-label="label" class="md-icon-button"">
                             <md-icon >menu</md-icon>
                         </md-button>
-                        <md-button aria-label="label" class="md-button" ng-click="$ctrl.goToEdit()">
+                        <md-button aria-label="label" class="md-button" ng-click="$ctrl.goToEdit($ctrl.data.title)">
                             <md-icon >edit</md-icon>
                             Edit
                         </md-button>
@@ -82,25 +82,45 @@
             </md-content>
 
         </div>
-        <form ng-if="$ctrl.editMode" name="EditWikiForm" ng-submit="$ctrl.submit()" flex="80">
-            <md-input-container layout-padding layout="column">
-                    <textarea name="editor" ng-model="$ctrl.data.text" required>
-                    </textarea>
-                <div ng-messages="EditWikiForm.editor.$error">
-                    <div ng-message="required">
-                        Wiki can't be blank!
+        <md-content layout-padding ng-if="$ctrl.editMode" >
+            <div>
+                <form name="EditWikiForm">
+                    <div layout-gt="row">
+                        <md-input-container>
+                            <label>Page name</label>
+                            <input ng-model="$ctrl.data.title">
+                        </md-input-container>
                     </div>
-                </div>
-            </md-input-container>
-            <md-card-actions layout="row" layout-align="center center">
-                <md-button class="md-raised md-primary animation-target" type="submit"
-                           ng-disabled="EditWikiForm.$invalid">Save
-                </md-button>
-                <md-button class="md-raised animation-target" ng-click="$ctrl.cancel()">
-                    Cancel
-                </md-button>
-            </md-card-actions>
-        </form>
+                </form>
+            </div>
+        </md-content>
+        <!--<form ng-if="$ctrl.editMode" name="EditWikiForm" ng-submit="$ctrl.submit()" flex="80">-->
+            <!--<md-input-container layout-padding layout="column">-->
+                    <!--<textarea name="editor" ng-model="$ctrl.data.text" required></textarea>-->
+                <!--<label>Parent category</label>-->
+                <!--<div ng-messages="EditWikiForm.editor.$error">-->
+                    <!--<div ng-message="required">-->
+                        <!--Wiki can't be blank!-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;<md-select>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<md-option><em>None</em></md-option>&ndash;&gt;-->
+                    <!--&lt;!&ndash;&lt;!&ndash;<md-option ng-repeat="page in ctrl.pageList" ng-value="page.id" ng-disabled="$index === 1">&ndash;&gt;&ndash;&gt;-->
+                        <!--&lt;!&ndash;&lt;!&ndash;{{page.title}}&ndash;&gt;&ndash;&gt;-->
+                    <!--&lt;!&ndash;</md-option>&ndash;&gt;-->
+                <!--&lt;!&ndash;</md-select>&ndash;&gt;-->
+
+            <!--</md-input-container>-->
+            <!--<md-card-actions layout="row" layout-align="center center">-->
+                <!--<md-button class="md-raised md-primary animation-target" type="submit"-->
+                           <!--ng-disabled="EditWikiForm.$invalid">Save-->
+                <!--</md-button>-->
+                <!--<md-button class="md-raised animation-target" ng-click="$ctrl.cancel()">-->
+                    <!--Cancel-->
+                <!--</md-button>-->
+            <!--</md-card-actions>-->
+        <!--</form>-->
+
         <!--<div layout-align="end start" flex="20">-->
             <!--<md-list>-->
                 <!--<md-toolbar>-->
