@@ -16,6 +16,7 @@ import projectsFilesComponent from './files/projects-files.component';
 import projectsBoardsComponent from './boards/projects-boards.component';
 import projectsWikiNewComponent from './wiki-new/projects-wiki-new.component';
 import projectsWikiEditComponent from './wiki/edit/projects-wiki-edit.component';
+import projectsWikiIndexByComponent from './wiki/index-by/projects-wiki-index-by.component';
 
 
 angular.module('app.components.projects', ['ngFileSaver'])
@@ -34,4 +35,5 @@ angular.module('app.components.projects', ['ngFileSaver'])
     .component(projectsFilesComponent.name, projectsFilesComponent)
     .component(projectsBoardsComponent.name, projectsBoardsComponent)
     .component(projectsWikiNewComponent.name, projectsWikiNewComponent)
-    .component(projectsWikiEditComponent.name, projectsWikiEditComponent);
+    .component(projectsWikiEditComponent.name, projectsWikiEditComponent)
+    .component(projectsWikiIndexByComponent.name, projectsWikiIndexByComponent);

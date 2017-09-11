@@ -38,7 +38,7 @@ export default class LayoutDefaultController extends ControllerBase {
             {name: 'New issue', url: 'projects.inner.issues.new', icon: 'create'},
             {name: 'New category', url: '', icon: 'folder'},
             {name: 'New version', url: '', icon: 'archive'},
-            {name: 'New wiki page', url: '', icon: 'receipt'},
+            {name: 'New wiki page', url: 'projects.inner.wiki.index', icon: 'receipt'},
             {name: 'New file', url: '', icon: 'attach_file'},
         ];
 
@@ -107,7 +107,6 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     goto(url) {
-        console.log(url);
         let projectId = this.currentProjectId();
 
         if (projectId) {
@@ -136,9 +135,10 @@ export default class LayoutDefaultController extends ControllerBase {
     showFabAction(item){
         if (item.name === 'New issue'){
             return typeof this.enabledModules !== 'undefined' && typeof this.enabledModules.issue_tracking !== 'undefined';
-        }else if (item.name === 'New wiki page') {
-            return typeof this.enabledModules !== 'undefined' && typeof this.enabledModules.news !== 'undefined';
         }
+        // else if (item.name === 'New wiki page') {
+        //     return typeof this.enabledModules !== 'undefined' && typeof this.enabledModules.news !== 'undefined';
+        // }
 
         return true;
     }

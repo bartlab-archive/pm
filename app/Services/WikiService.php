@@ -28,8 +28,11 @@ class WikiService
         if ($page_title) {
             $wiki_content->where('title', $page_title);
         } else {
-            $wiki_content->where('parent_id', null);
+            $wiki_content
+                ->where('parent_id', null)
+                ->orderBy('created_on', 'asc');
         }
+
         return $wiki_content->first();
 
     }

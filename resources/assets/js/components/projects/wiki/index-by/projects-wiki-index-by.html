@@ -1,0 +1,55 @@
+<div layout-gt-sm="row" layout-align="center start">
+    <md-card layout="column" ng-cloak flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+
+        <md-content layout-padding  >
+            <md-card-header>
+                <md-card-header-text>
+                    <span class="md-title">Index by title</span>
+                </md-card-header-text>
+                <md-menu>
+                    <md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openActionMenu($mdMenu, $event)">
+                        <md-icon>more_vert</md-icon>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="$ctrl.startPage()">
+                                <md-icon>bookmark</md-icon>
+                                Start page
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="$ctrl.indexBy('title')">
+                                <md-icon>title</md-icon>
+                                Index by title
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="$ctrl.indexBy('date')">
+                                <md-icon>date_range</md-icon>
+                                Index by date
+                            </md-button>
+                        </md-menu-item>
+                        <md-divider></md-divider>
+                        <md-menu-item>
+                            <md-button ng-click="$ctrl.goBack()">
+                                <md-icon>keyboard_backspace</md-icon>
+                                Back
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </md-card-header>
+            <div id="indexBy"></div>
+        </md-content>
+        <div>
+            <md-button ng-click="$ctrl.goBack()">
+                back
+            </md-button>
+
+
+        </div>
+    </md-card>
+
+</div>
+
+
