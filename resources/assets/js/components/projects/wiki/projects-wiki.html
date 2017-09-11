@@ -1,6 +1,6 @@
 <div layout-gt-sm="row" layout-align="center start">
     <md-card layout="row" flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-        <div layout-align="start start"  flex-xs="100" flex-sm="100" flex-md="100" flex-gt-md="100"   ng-if="!$ctrl.editMode">
+        <div layout-align="start start"  flex-xs="100" flex-sm="100" flex-md="100" flex-gt-md="100" >
                 <md-tabs md-dynamic-height md-border-bottom >
                     <md-tab label="Start page" md-on-select="$ctrl.selectWiki('wiki')">
                         <md-content class="md-padding">
@@ -28,57 +28,37 @@
                          <div class="md-body-1" markdown-to-html="$ctrl.data.content.text || ''"></div>
                         </md-content>
                     </md-tab>
-                    <!--<md-tab-->
-                            <!--label="{{ $ctrl.data.title }}"-->
-                            <!--md-on-select="$ctrl.selectWiki($ctrl.data.title)"-->
-                            <!--md-active="$ctrl.data.title == $ctrl.currentPage ? true: false">-->
-                        <!--<md-content class="md-padding">-->
-                            <!--&lt;!&ndash;<h1 class="md-display-2">Tab One</h1>&ndash;&gt;-->
-                            <!--<div class="md-body-1" markdown-to-html="$ctrl.data.text || ''"></div>-->
-                        <!--</md-content>-->
-
-                    <!--</md-tab>-->
-
                 </md-tabs>
-            <md-fab-toolbar  >
-                <md-fab-trigger class="align-with-text">
-                    <md-button aria-label="menu" class="md-fab md-primary">
-                        <md-icon >menu</md-icon>
+            <md-toolbar class="md-hue-2">
+                <div class="md-toolbar-tools"> <md-button aria-label="label" class="md-icon-button"">
+                    <md-icon >menu</md-icon>
                     </md-button>
-                </md-fab-trigger>
-                <md-toolbar>
-                    <md-fab-actions class="md-toolbar-tools ">
-                        <md-button aria-label="label" class="md-icon-button"">
-                            <md-icon >menu</md-icon>
-                        </md-button>
-                        <md-button aria-label="label" class="md-button" ng-click="$ctrl.goToEdit($ctrl.data.title)">
-                            <md-icon >edit</md-icon>
-                            Edit
-                        </md-button>
-                        <md-button aria-label="label" class="md-button" ng-click="$ctrl.newWikiPage($event)">
-                            <md-icon >fiber_new</md-icon>
-                            New
-                        </md-button>
-                        <md-button aria-label="label" class="md-button" ng-click="$ctrl.watchPage()">
-                            <md-icon >watch_later</md-icon>
-                            watch
-                        </md-button>
-                        <md-button aria-label="label" class="md-button" ng-click="$ctrl.deleteWikiPage()">
-                            <md-icon >delete</md-icon>
-                            delete
-                        </md-button>
-                        <md-button aria-label="label" class="md-button" ng-click="$ctrl.showHistory()">
-                            <md-icon >history</md-icon>
-                            history
-                        </md-button>
-                        <md-button aria-label="label" class="md-button" ng-click="$ctrl.addFile($event)">
-                            <md-icon >file_upload</md-icon>
-                            add file
-                        </md-button>
-
-                    </md-fab-actions>
-                </md-toolbar>
-            </md-fab-toolbar>
+                    <md-button aria-label="label" class="md-button" ng-click="$ctrl.goToEdit($ctrl.data.title)">
+                        <md-icon >edit</md-icon>
+                        Edit
+                    </md-button>
+                    <md-button aria-label="label" class="md-button" ng-click="$ctrl.newWikiPage($event)">
+                        <md-icon >fiber_new</md-icon>
+                        New
+                    </md-button>
+                    <md-button aria-label="label" class="md-button" ng-click="$ctrl.watchPage()">
+                        <md-icon >watch_later</md-icon>
+                        watch
+                    </md-button>
+                    <md-button aria-label="label" class="md-button" ng-click="$ctrl.deleteWikiPage()">
+                        <md-icon >delete</md-icon>
+                        delete
+                    </md-button>
+                    <md-button aria-label="label" class="md-button" ng-click="$ctrl.showHistory()">
+                        <md-icon >history</md-icon>
+                        history
+                    </md-button>
+                    <md-button aria-label="label" class="md-button" ng-click="$ctrl.addFile($event)">
+                        <md-icon >file_upload</md-icon>
+                        add file
+                    </md-button>
+                </div>
+            </md-toolbar>
             </md-content>
 
         </div>
@@ -94,42 +74,5 @@
                 </form>
             </div>
         </md-content>
-        <!--<form ng-if="$ctrl.editMode" name="EditWikiForm" ng-submit="$ctrl.submit()" flex="80">-->
-            <!--<md-input-container layout-padding layout="column">-->
-                    <!--<textarea name="editor" ng-model="$ctrl.data.text" required></textarea>-->
-                <!--<label>Parent category</label>-->
-                <!--<div ng-messages="EditWikiForm.editor.$error">-->
-                    <!--<div ng-message="required">-->
-                        <!--Wiki can't be blank!-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--&lt;!&ndash;<md-select>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<md-option><em>None</em></md-option>&ndash;&gt;-->
-                    <!--&lt;!&ndash;&lt;!&ndash;<md-option ng-repeat="page in ctrl.pageList" ng-value="page.id" ng-disabled="$index === 1">&ndash;&gt;&ndash;&gt;-->
-                        <!--&lt;!&ndash;&lt;!&ndash;{{page.title}}&ndash;&gt;&ndash;&gt;-->
-                    <!--&lt;!&ndash;</md-option>&ndash;&gt;-->
-                <!--&lt;!&ndash;</md-select>&ndash;&gt;-->
-
-            <!--</md-input-container>-->
-            <!--<md-card-actions layout="row" layout-align="center center">-->
-                <!--<md-button class="md-raised md-primary animation-target" type="submit"-->
-                           <!--ng-disabled="EditWikiForm.$invalid">Save-->
-                <!--</md-button>-->
-                <!--<md-button class="md-raised animation-target" ng-click="$ctrl.cancel()">-->
-                    <!--Cancel-->
-                <!--</md-button>-->
-            <!--</md-card-actions>-->
-        <!--</form>-->
-
-        <!--<div layout-align="end start" flex="20">-->
-            <!--<md-list>-->
-                <!--<md-toolbar>-->
-                    <!--<div class="md-toolbar-tools">-->
-                        <!--<h3>Wiki page</h3>-->
-                    <!--</div>-->
-                <!--</md-toolbar>-->
-
-            <!--</md-list>-->
-        <!--</div>-->
     </md-card>
 </div>

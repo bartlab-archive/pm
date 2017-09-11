@@ -18,8 +18,6 @@ export default class ProjectsWikiController extends ControllerBase {
             this.WikiService.getPageWiki(this.$stateParams.project_id,this.$stateParams.name).then((response) => {
                 if (!_.isEmpty(response.data)) {
                     this.data = response.data;
-                    // Object.assign(this.data,response.data.content);
-                    console.log(this.data)
                 }
             });
             this.currentPage =  this.$stateParams.name;
@@ -46,7 +44,6 @@ export default class ProjectsWikiController extends ControllerBase {
             }
         });
 
-        this.editMode = false;
     }
 
     formatByDate(pages)
