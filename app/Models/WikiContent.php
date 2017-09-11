@@ -6,9 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class WikiContent extends Model
 {
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->{self::UPDATED_AT} = $model->freshTimestamp();
+        });
+    }
+
     protected $table = 'wiki_contents';
 
-    public $timestamps = true;
+    public $timestamps = false;
 
     /**
      * The name of the "created on" column.

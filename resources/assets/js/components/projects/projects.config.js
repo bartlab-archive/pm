@@ -7,12 +7,12 @@ import projectsActivityComponent from './activity/projects-activity.component';
 import projectsCalendarComponent from './calendar/projects-calendar.component';
 import issuesListComponent from '../issues/list/issues-list.component';
 import projectsWikiComponent from './wiki/projects-wiki.component';
+import projectsWikiEditComponent from './wiki/edit/projects-wiki-edit.component';
 import projectsGanttComponent from './gantt/projects-gantt.component';
 import projectsNewsComponent from './news/projects-news.component';
 import projectsDocumentsComponent from './documents/projects-documents.component';
 import projectsFilesComponent from './files/projects-files.component';
 import projectsBoardsComponent from './boards/projects-boards.component';
-import projectsWikiPageComponent from './wiki/page/projects-wiki-page.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -118,7 +118,11 @@ export default class ProjectsConfig extends InjectableBase {
             })
             .state('projects.inner.wiki.page', {
                 url: '/{name:[A-z0-9,./?;:|]+}',
-                component: projectsWikiPageComponent.name,
+                component: projectsWikiComponent.name,
+            })
+            .state('projects.inner.wiki.edit', {
+                url: '/edit/{name:[A-z0-9,./?;:|]+}',
+                component: projectsWikiEditComponent.name,
             });
     }
 }

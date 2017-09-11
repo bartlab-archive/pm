@@ -1,0 +1,53 @@
+<div layout-gt-sm="row" layout-align="center start">
+    <md-card layout="column" ng-cloak flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+
+        <md-content layout-padding  >
+            <div>
+                <form name="editWikiForm">
+                    <md-input-container class="md-block" >
+                        <label>Page title</label>
+                        <input md-maxlength="255" required  md-no-asterisk name="title" ng-model="$ctrl.page.title">
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Description</label>
+                        <textarea ng-model="$ctrl.page.content.text"  md-select-on-focus rows="5"></textarea>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <md-select ng-model="$ctrl.page.parent_id" placeholder="Select a parent page">
+                            <md-option ng-value="null"> No parent</md-option>
+                            <md-option ng-repeat="page in $ctrl.pages"
+                                       value="{{page.id}}"
+                                       ng-if="$ctrl.page.id != page.id"
+                                       >
+                                {{page.title}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <div>
+                        <md-button ng-click="$ctrl.goTo($ctrl.page.title)">
+                            Cancel
+                        </md-button>
+                        <md-button ng-click="$ctrl.submit(false)" type="submit">
+                            Apply
+                        </md-button>
+                        <md-button ng-click="$ctrl.submit(true)" type="submit">
+                            Save
+                        </md-button>
+                        <md-button ng-click="$ctrl.showPreview($event)" type="submit">
+                            Preview
+                        </md-button>
+
+                    </div>
+                </form>
+            </div>
+        </md-content>
+    </md-card>
+    <md-card ng-if="$ctrl.preview" layout="column" ng-cloak flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <md-content layout-padding>
+            <div class="md-body-1" markdown-to-html="$ctrl.page.content.text || ''"></div>
+        </md-content>
+    </md-card>
+
+</div>
+
+
