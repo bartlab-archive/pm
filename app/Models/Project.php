@@ -23,6 +23,10 @@ class Project extends Model
 
     protected $hidden = ['is_my', 'id', 'parent_id'];
 
+    protected $casts = [
+        'is_public' => 'boolean',
+    ];
+
     public $timestamps = false;
 
     /**

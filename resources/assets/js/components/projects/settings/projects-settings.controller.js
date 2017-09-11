@@ -35,7 +35,6 @@ export default class ProjectsSettingsController extends ControllerBase {
         }).then((response) => {
             let activities = {};
             _.each(response.data, (v, k) => {
-                v.active = !!+v.active;
                 activities[v.name] = _.pick(v, ['id', 'name', 'position', 'is_default', 'type', 'active', 'parent_id', 'position_name']);
             });
 
@@ -72,7 +71,6 @@ export default class ProjectsSettingsController extends ControllerBase {
     load() {
         this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.model = _.get(response, 'data', []);
-            this.model.inherit_members = !!+this.model.inherit_members;
 
             this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
 
@@ -96,7 +94,6 @@ export default class ProjectsSettingsController extends ControllerBase {
     getActivities() {
         let activities = _.cloneDeep(this.defaultActivities);
         _.each(this.model.enumerations, (v, k) => {
-            v.active = !!+v.active;
             activities[v.name] = v;
         });
         delete this.model.enumerations;
