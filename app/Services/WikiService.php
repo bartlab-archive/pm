@@ -44,6 +44,7 @@ class WikiService
         $wiki_page = $project->wiki->page();
 
         if ($name) {
+            $name = str_replace(' ','_',$name);
             $wiki_page->where('title', $wiki_id);
             $wiki_id = $name;
         } else {

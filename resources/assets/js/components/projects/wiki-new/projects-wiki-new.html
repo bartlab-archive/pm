@@ -11,12 +11,14 @@
 
     <div class="popup-content">
 
-        <form name="WikiNew" ng-submit="$ctrl.onSubmit()">
-
+        <form name="$ctrl.newWiki" ng-submit="$ctrl.onSubmit()">
             <md-card-content>
                 <md-input-container class="md-icon-float md-block">
                     <label>Title</label>
                     <input ng-model="$ctrl.title" type="text" name="title" required>
+                    <div class="errors">
+                       <small class="" ng-repeat="item in $ctrl.errors.title">{{item}}</small>
+                    </div>
                 </md-input-container>
             </md-card-content>
 

@@ -13,6 +13,7 @@ export default class ProjectsWikiController extends ControllerBase {
     }
 
     $onInit() {
+        this.errors = {};
         if (this.$stateParams.name) {
 
             this.WikiService.getPageWiki(this.$stateParams.project_id,this.$stateParams.name).then((response) => {
@@ -88,11 +89,13 @@ export default class ProjectsWikiController extends ControllerBase {
         }
     }
 
-    newWikiPage($event) {
+    newWikiPage() {
+        this.$state.go('projects.inner.wiki.new');
 
-        this.$mdDialog.show(
-            this.setMdDialogConfig(projectsWikiNewComponent, $event.target)
-        );
+        // this.$mdDialog.show(
+        //     this.setMdDialogConfig(projectsWikiNewComponent, $event.target)
+        // );
+
     }
 
     deleteWikiPage(){

@@ -123,6 +123,10 @@ export default class ProjectsConfig extends InjectableBase {
                 url: '/edit/{name:[A-z0-9,./?;:|]+}',
                 component: projectsWikiEditComponent.name,
             })
+            .state('projects.inner.wiki.new', {
+                url: '/new',
+                component: projectsWikiEditComponent.name,
+            })
             .state('projects.inner.wiki.index-by-title', {
                 url: '/index',
                 component: projectsWikiIndexByComponent.name,

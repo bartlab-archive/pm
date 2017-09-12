@@ -1,8 +1,15 @@
 import ControllerBase from 'base/controller.base';
+import _ from 'lodash';
 
 export default class ProjectsWikiNewController extends ControllerBase {
     static get $inject() {
         return ['$mdDialog', 'WikiService', '$stateParams', '$state'];
+    }
+
+    $onInit() {
+        this.errors = {};
+        // console.log(this);
+
     }
 
     cancel() {
@@ -10,20 +17,37 @@ export default class ProjectsWikiNewController extends ControllerBase {
     }
 
     onSubmit() {
-        console.log(this.$stateParams.id);
+
         let queryParams = {
-            // replace only one space, fix it!
             title: this.title.replace( / /g, "_" ),
             text: '# ' + this.title
         };
 
-        this.WikiService.addNewWikiPage(this.$stateParams.project_id, queryParams).then((response) => {
+        // console.log(this);
+        this.WikiService.addNewWikiPage(this.$stateParams.project_id, queryParams)
+           .then((response) => {
+            if (response && response.status === 201)
+            {
 
-            if (response && response.status === 201) {
                 this.$mdDialog.cancel();
-                console.log(response);
                 this.$state.go('projects.inner.wiki.page', {name: response.data.title});
             }
-        });
+        })
+            .catch((response) => this.onError(response));
+    }
+
+    onError(response) {
+        if (_.get(response, 'status') === 500) {
+            this.$mdToast.show(
+                this.$mdToast.simple().textContent('Server error')
+            );
+        } else {
+            this.errors = _.get(response, 'data.errors', {});
+            for (let field in this.errors) {
+                if (this.newWiki.hasOwnProperty(field)) {
+                    this.newWiki[field].$setValidity('server', false);
+                }
+            }
+        }
     }
 }
