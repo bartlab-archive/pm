@@ -5,6 +5,30 @@
                 <span ng-if="$ctrl.newWiki" class="md-headline">Create new wiki page</span>
                 <span ng-if="!$ctrl.newWiki" class="md-headline">Edit wiki page</span>
             </md-card-header-text>
+            <md-button class="md-icon-button" ng-click="$ctrl.goTo($ctrl.page.title)">
+                <md-icon>cancel</md-icon>
+                <md-tooltip md-direction="down"
+                            md-autohide="true">Index by date
+                </md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button" ng-click="$ctrl.save(false)" type="submit">
+                <md-icon>check</md-icon>
+                <md-tooltip md-direction="down"
+                            md-autohide="true">Index by date
+                </md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button" ng-click="$ctrl.save(true)" type="submit">
+               <md-icon>save</md-icon>
+                <md-tooltip md-direction="down"
+                            md-autohide="true">Index by date
+                </md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button" ng-click="$ctrl.showPreview($event)" type="submit">
+               <md-icon>airplay</md-icon>
+                <md-tooltip md-direction="down"
+                            md-autohide="true">Index by date
+                </md-tooltip>
+            </md-button>
             <md-menu>
                 <md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openActionMenu($mdMenu, $event)">
                     <md-icon>more_vert</md-icon>

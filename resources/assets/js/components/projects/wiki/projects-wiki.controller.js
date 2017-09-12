@@ -1,8 +1,6 @@
 import angular from 'angular';
 import * as _ from 'lodash';
 
-import projectsWikiNewComponent from '../wiki-new/projects-wiki-new.component';
-
 import ControllerBase from 'base/controller.base';
 
 export default class ProjectsWikiController extends ControllerBase {
@@ -56,6 +54,7 @@ export default class ProjectsWikiController extends ControllerBase {
     indexBy(order){
         this.$state.go('projects.inner.wiki.index-by-' + order);
     }
+
     startPage()
     {
         this.$state.go('projects.inner.wiki.index');
@@ -101,18 +100,11 @@ export default class ProjectsWikiController extends ControllerBase {
                 if (this.deleteResult.success){
                     this.$state.go('projects.inner.wiki.index',{project_id: this.$stateParams.project_id })
                 }
-
         });
 
     }
 
     goToEdit(name) {
-        // if (this.data) {
-        //     this.editMode = true;
-
-        //     // this.$state.go('projects-inner.wiki.edit', {name : this.data.title});
-        // }
-
         this.$state.go('projects.inner.wiki.edit', {name: name});
 
     }
@@ -124,20 +116,12 @@ export default class ProjectsWikiController extends ControllerBase {
     submit() {
         this.data.save().then((response) => {
             if (response && response.status === 200) {
-                this.editMode = false;
                 this.mdToast.success();
             }
         });
     }
 
-    cancel() {
-        this.editMode = false;
-    }
-
-
-
     goto(name) {
-
         this.$state.go('projects.inner.wiki.page', {name: name});
     }
 

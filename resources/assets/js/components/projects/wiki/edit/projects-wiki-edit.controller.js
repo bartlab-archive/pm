@@ -165,5 +165,14 @@ export default class ProjectsWikiEditController extends ControllerBase {
         $mdMenu.open(ev);
     };
 
+    indexBy(order){
+        this.$state.go('projects.inner.wiki.index-by-' + order);
+    }
+
+    startPage()
+    {
+        this.$state.go('projects.inner.wiki.index');
+    }
+
 
 }
