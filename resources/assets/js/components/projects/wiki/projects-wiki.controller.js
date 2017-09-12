@@ -91,11 +91,6 @@ export default class ProjectsWikiController extends ControllerBase {
 
     newWikiPage() {
         this.$state.go('projects.inner.wiki.new');
-
-        // this.$mdDialog.show(
-        //     this.setMdDialogConfig(projectsWikiNewComponent, $event.target)
-        // );
-
     }
 
     deleteWikiPage(){

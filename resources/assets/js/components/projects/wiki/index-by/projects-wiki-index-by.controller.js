@@ -13,16 +13,22 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
     }
 
     $onInit() {
+        this.index_by = 'Index by';
+        this.index_mode = false;
         this.WikiService.getAllWikiPage(this.$stateParams.project_id).then((response) => {
             if (!_.isEmpty(response.data))
             {
+
                 this.pageList = response.data;
                 if (this.$state.current.name.indexOf('title') != -1){
-
+                    this.index_by += ' title';
+                    this.index_mode = true;
                     this.formatByTitle(this.pageList,'indexBy');
                 }
                 if (this.$state.current.name.indexOf('date') != -1)
                 {
+                    this.index_mode = false;
+                    this.index_by += ' date';
                     this.formatByDate(this.pageList,'indexBy');
                 }
             }
@@ -120,6 +126,10 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
     startPage()
     {
         this.$state.go('projects.inner.wiki.index');
+    }
+
+    newWikiPage() {
+        this.$state.go('projects.inner.wiki.new');
     }
 
 
