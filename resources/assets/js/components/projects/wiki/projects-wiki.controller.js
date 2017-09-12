@@ -19,7 +19,6 @@ export default class ProjectsWikiController extends ControllerBase {
                     this.data = response.data;
                 }
             });
-            this.currentPage =  this.$stateParams.name;
 
         }
         else
@@ -27,8 +26,6 @@ export default class ProjectsWikiController extends ControllerBase {
             this.WikiService.getStartPageWiki(this.$stateParams.project_id).then((response) => {
                 if (!_.isEmpty(response.data)) {
                     this.data = response.data;
-                    console.log(response.data);
-
                 }
             });
         }
@@ -42,15 +39,6 @@ export default class ProjectsWikiController extends ControllerBase {
 
     }
 
-    selectWiki(name){
-        // this.goto(name);
-        this.WikiService.getPageWiki(this.$stateParams.project_id, name).then((response) => {
-            if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
-                this.data = response.data;
-            }
-        });
-    }
-
     indexBy(order){
         this.$state.go('projects.inner.wiki.index-by-' + order);
     }
@@ -59,6 +47,7 @@ export default class ProjectsWikiController extends ControllerBase {
     {
         this.$state.go('projects.inner.wiki.index');
     }
+
     setMdDialogConfig(component, target) {
 
 

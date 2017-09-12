@@ -54,7 +54,8 @@ export default class ProjectsWikiEditController extends ControllerBase {
         {
             let queryParams = {
                 title: this.page.title,
-                text: this.page.content.text
+                text: this.page.content.text,
+                parent_id: this.page.parent_id
             };
             this.WikiService.addNewWikiPage(this.$stateParams.project_id, queryParams)
                 .then((response) => {
