@@ -161,5 +161,9 @@ export default class ProjectsWikiEditController extends ControllerBase {
         }
     }
 
+    openActionMenu($mdMenu, ev) {
+        $mdMenu.open(ev);
+    };
+
 
 }

@@ -5,6 +5,31 @@
                 <span ng-if="$ctrl.newWiki" class="md-headline">Create new wiki page</span>
                 <span ng-if="!$ctrl.newWiki" class="md-headline">Edit wiki page</span>
             </md-card-header-text>
+            <md-menu>
+                <md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openActionMenu($mdMenu, $event)">
+                    <md-icon>more_vert</md-icon>
+                </md-button>
+                <md-menu-content width="4">
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.startPage()">
+                            <md-icon>bookmark</md-icon>
+                            Start page
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.indexBy('title')">
+                            <md-icon>title</md-icon>
+                            Index by title
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.indexBy('date')">
+                            <md-icon>date_range</md-icon>
+                            Index by date
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
         </md-card-header>
         <md-content layout-padding  >
             <div>
@@ -17,7 +42,6 @@
                             <div ng-message="server" ng-bind-html="$ctrl.errors.title | join"></div>
                         </div>
                     </md-input-container>
-
                     <md-input-container class="md-block">
                         <label>Description</label>
                         <textarea name="text" ng-model="$ctrl.page.content.text" ng-change="$ctrl.change('text')"  md-select-on-focus rows="5"></textarea>
