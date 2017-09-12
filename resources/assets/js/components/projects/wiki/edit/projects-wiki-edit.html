@@ -11,7 +11,7 @@
                 <form name="$ctrl.pageWiki">
                     <md-input-container class="md-icon-float md-block">
                         <label>Title</label>
-                        <input ng-model="$ctrl.page.title" name="title" type="text"
+                        <input ng-model="$ctrl.page.title" ng-change="$ctrl.change('title')" name="title" type="text"
                                >
                         <div ng-messages="$ctrl.pageWiki.title.$error">
                             <div ng-message="server" ng-bind-html="$ctrl.errors.title | join"></div>
@@ -20,7 +20,7 @@
 
                     <md-input-container class="md-block">
                         <label>Description</label>
-                        <textarea name="text" ng-model="$ctrl.page.content.text"  md-select-on-focus rows="5"></textarea>
+                        <textarea name="text" ng-model="$ctrl.page.content.text" ng-change="$ctrl.change('text')"  md-select-on-focus rows="5"></textarea>
                         <div ng-messages="$ctrl.pageWiki.text.$error">
                             <div ng-message="server" ng-bind-html="$ctrl.errors.text | join"></div>
                         </div>

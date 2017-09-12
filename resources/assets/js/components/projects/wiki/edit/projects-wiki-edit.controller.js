@@ -15,6 +15,8 @@ export default class ProjectsWikiEditController extends ControllerBase {
 
     $onInit() {
             this.newWiki = false;
+            this.pageWiki = {};
+            this.errors = {};
             this.page =
                 {
                     title: '',
@@ -24,7 +26,7 @@ export default class ProjectsWikiEditController extends ControllerBase {
                     }
 
                 };
-            this.pageWiki = {};
+
             if (this.$stateParams.name)
             {
                 this.WikiService.getPageWiki(this.$stateParams.project_id,this.$stateParams.name).then((response) => {
@@ -143,13 +145,19 @@ export default class ProjectsWikiEditController extends ControllerBase {
             );
         } else {
             this.errors = _.get(response, 'data.errors', {});
-            console.log(this.errors);
             for (let field in this.errors) {
-                console.log(field);
                 if (this.pageWiki.hasOwnProperty(field)) {
                     this.pageWiki[field].$setValidity('server', false);
                 }
             }
+        }
+    }
+
+    change(field) {
+        if (this.pageWiki.hasOwnProperty(field) && this.errors.hasOwnProperty(field))
+        {
+            this.pageWiki[field].$setValidity('server', true);
+            this.errors[field] = undefined;
         }
     }
 
