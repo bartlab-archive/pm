@@ -38,7 +38,7 @@ export default class LayoutDefaultController extends ControllerBase {
             {name: 'New issue', url: 'projects.inner.issues.new', icon: 'create'},
             {name: 'New category', url: '', icon: 'folder'},
             {name: 'New version', url: '', icon: 'archive'},
-            {name: 'New wiki page', url: 'projects.inner.wiki.index', icon: 'receipt'},
+            {name: 'New wiki page', url: 'projects.inner.wiki.new', icon: 'receipt'},
             {name: 'New file', url: '', icon: 'attach_file'},
         ];
 

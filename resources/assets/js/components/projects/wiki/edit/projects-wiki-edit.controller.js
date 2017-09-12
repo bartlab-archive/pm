@@ -124,7 +124,6 @@ export default class ProjectsWikiEditController extends ControllerBase {
             controller: ctrlConfig,
             controllerAs: '$ctrl',
             template: component.template,
-            //panelClass: 'modal-custom-dialog',
             parent: angular.element(document.body),
             trapFocus: true,
             clickOutsideToClose: true,
@@ -153,14 +152,6 @@ export default class ProjectsWikiEditController extends ControllerBase {
             }
         }
     }
-
-    // change(field) {
-    //     if (this.pageWiki[field])
-    //     {
-    //         this.pageWiki[field].$setValidity('server', true);
-    //         this.errors[field] = this.errors[field] ? undefined ;
-    //     }
-    // }
 
 
 }

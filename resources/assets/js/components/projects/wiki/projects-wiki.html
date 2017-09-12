@@ -11,6 +11,12 @@
                                 md-autohide="true">Edit
                     </md-tooltip>
                 </md-button>
+                <md-button class="md-icon-button" ng-click="$ctrl.indexBy('title')">
+                    <md-icon>title</md-icon>
+                    <md-tooltip md-direction="down"
+                                md-autohide="true">Index by title
+                    </md-tooltip>
+                </md-button>
                 <md-button aria-label="label" class="md-icon-button" ng-click="$ctrl.newWikiPage()">
                     <md-icon >fiber_new</md-icon>
                     <md-tooltip md-direction="down"
@@ -71,34 +77,6 @@
                 <h1 class="md-display-2"></h1>
                 <div class="md-body-1" markdown-to-html="$ctrl.data.content.text || ''"></div>
             </md-content>
-
-                <!--<md-tabs md-dynamic-height md-border-bottom >-->
-                    <!--<md-tab label="Start page" md-on-select="$ctrl.selectWiki('wiki')">-->
-                    <!--</md-tab>-->
-                    <!--<md-tab ng-if="$ctrl.currentPage"-->
-                            <!--label="{{$ctrl.currentPage}}"-->
-                            <!--md-on-select="$ctrl.selectWiki($ctrl.currentPage)"-->
-                            <!--md-active="true">-->
-                        <!--<md-content class="md-padding">-->
-                         <!--<div class="md-body-1" markdown-to-html="$ctrl.data.content.text || ''"></div>-->
-                        <!--</md-content>-->
-                    <!--</md-tab>-->
-                <!--</md-tabs>-->
-
-            </md-content>
-
         </div>
-        <md-content layout-padding ng-if="$ctrl.editMode" >
-            <div>
-                <form name="EditWikiForm">
-                    <div layout-gt="row">
-                        <md-input-container>
-                            <label>Page name</label>
-                            <input ng-model="$ctrl.data.title">
-                        </md-input-container>
-                    </div>
-                </form>
-            </div>
-        </md-content>
     </md-card>
 </div>
