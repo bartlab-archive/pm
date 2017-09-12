@@ -1,8 +1,6 @@
 import angular from 'angular';
 import * as _ from 'lodash';
 
-import projectsWikiNewComponent from '../wiki-new/projects-wiki-new.component';
-
 import ControllerBase from 'base/controller.base';
 
 export default class ProjectsWikiController extends ControllerBase {
@@ -21,7 +19,6 @@ export default class ProjectsWikiController extends ControllerBase {
                     this.data = response.data;
                 }
             });
-            this.currentPage =  this.$stateParams.name;
 
         }
         else
@@ -29,8 +26,6 @@ export default class ProjectsWikiController extends ControllerBase {
             this.WikiService.getStartPageWiki(this.$stateParams.project_id).then((response) => {
                 if (!_.isEmpty(response.data)) {
                     this.data = response.data;
-                    console.log(response.data);
-
                 }
             });
         }
@@ -44,22 +39,15 @@ export default class ProjectsWikiController extends ControllerBase {
 
     }
 
-    selectWiki(name){
-        // this.goto(name);
-        this.WikiService.getPageWiki(this.$stateParams.project_id, name).then((response) => {
-            if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
-                this.data = response.data;
-            }
-        });
-    }
-
     indexBy(order){
         this.$state.go('projects.inner.wiki.index-by-' + order);
     }
+
     startPage()
     {
         this.$state.go('projects.inner.wiki.index');
     }
+
     setMdDialogConfig(component, target) {
 
 
@@ -91,11 +79,6 @@ export default class ProjectsWikiController extends ControllerBase {
 
     newWikiPage() {
         this.$state.go('projects.inner.wiki.new');
-
-        // this.$mdDialog.show(
-        //     this.setMdDialogConfig(projectsWikiNewComponent, $event.target)
-        // );
-
     }
 
     deleteWikiPage(){
@@ -106,18 +89,11 @@ export default class ProjectsWikiController extends ControllerBase {
                 if (this.deleteResult.success){
                     this.$state.go('projects.inner.wiki.index',{project_id: this.$stateParams.project_id })
                 }
-
         });
 
     }
 
     goToEdit(name) {
-        // if (this.data) {
-        //     this.editMode = true;
-
-        //     // this.$state.go('projects-inner.wiki.edit', {name : this.data.title});
-        // }
-
         this.$state.go('projects.inner.wiki.edit', {name: name});
 
     }
@@ -129,20 +105,12 @@ export default class ProjectsWikiController extends ControllerBase {
     submit() {
         this.data.save().then((response) => {
             if (response && response.status === 200) {
-                this.editMode = false;
                 this.mdToast.success();
             }
         });
     }
 
-    cancel() {
-        this.editMode = false;
-    }
-
-
-
     goto(name) {
-
         this.$state.go('projects.inner.wiki.page', {name: name});
     }
 

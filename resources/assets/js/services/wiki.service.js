@@ -30,7 +30,7 @@ export default class WikiService extends ServiceBase {
         return this.Restangular
             .one('projects')
             .one(indetifire)
-            .one('new-page')
+            .one('new')
             .post(null, params);
     }
 

@@ -15,6 +15,8 @@ export default class ProjectsWikiEditController extends ControllerBase {
 
     $onInit() {
             this.newWiki = false;
+            this.pageWiki = {};
+            this.errors = {};
             this.page =
                 {
                     title: '',
@@ -24,7 +26,7 @@ export default class ProjectsWikiEditController extends ControllerBase {
                     }
 
                 };
-            this.pageWiki = {};
+
             if (this.$stateParams.name)
             {
                 this.WikiService.getPageWiki(this.$stateParams.project_id,this.$stateParams.name).then((response) => {
@@ -52,7 +54,8 @@ export default class ProjectsWikiEditController extends ControllerBase {
         {
             let queryParams = {
                 title: this.page.title,
-                text: this.page.content.text
+                text: this.page.content.text,
+                parent_id: this.page.parent_id
             };
             this.WikiService.addNewWikiPage(this.$stateParams.project_id, queryParams)
                 .then((response) => {
@@ -143,14 +146,33 @@ export default class ProjectsWikiEditController extends ControllerBase {
             );
         } else {
             this.errors = _.get(response, 'data.errors', {});
-            console.log(this.errors);
             for (let field in this.errors) {
-                console.log(field);
                 if (this.pageWiki.hasOwnProperty(field)) {
                     this.pageWiki[field].$setValidity('server', false);
                 }
             }
         }
+    }
+
+    change(field) {
+        if (this.pageWiki.hasOwnProperty(field) && this.errors.hasOwnProperty(field))
+        {
+            this.pageWiki[field].$setValidity('server', true);
+            this.errors[field] = undefined;
+        }
+    }
+
+    openActionMenu($mdMenu, ev) {
+        $mdMenu.open(ev);
+    };
+
+    indexBy(order){
+        this.$state.go('projects.inner.wiki.index-by-' + order);
+    }
+
+    startPage()
+    {
+        this.$state.go('projects.inner.wiki.index');
     }
 
 

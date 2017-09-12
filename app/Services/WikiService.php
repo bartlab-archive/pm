@@ -70,7 +70,8 @@ class WikiService
         $wiki = $project->wiki;
 
         $new_page = $wiki->page()->create([
-            'title' => array_get($request, 'title'),
+            'title' => str_replace(' ','_',array_get($request, 'title')),
+            'parent_id' => array_get($request, 'parent_id'),
         ]);
 
 
@@ -112,11 +113,6 @@ class WikiService
         $wiki = $project->wiki->page()->with('content')->get();
 
         return $wiki;
-    }
-
-    public function editWikiPage($identifier, $title)
-    {
-        var_dump($title);
     }
 
     public function update($wikiId, $data)
