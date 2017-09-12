@@ -28,8 +28,11 @@ class WikiService
         if ($page_title) {
             $wiki_content->where('title', $page_title);
         } else {
-            $wiki_content->where('parent_id', null);
+            $wiki_content
+                ->where('parent_id', null)
+                ->orderBy('created_on', 'asc');
         }
+
         return $wiki_content->first();
 
     }
@@ -41,6 +44,7 @@ class WikiService
         $wiki_page = $project->wiki->page();
 
         if ($name) {
+            $name = str_replace(' ','_',$name);
             $wiki_page->where('title', $wiki_id);
             $wiki_id = $name;
         } else {

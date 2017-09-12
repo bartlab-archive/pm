@@ -54,6 +54,7 @@ export default class AppRun extends InjectableBase {
     }
 
     errorInterceptor(response, deferred, responseHandler) {
+        console.log(response);
         switch (response.status) {
             case 401:
                 this.$rootScope.$broadcast('authUnauthorized');
@@ -61,6 +62,8 @@ export default class AppRun extends InjectableBase {
 
             case 403:
                 this.$rootScope.$broadcast('authForbidden');
+                break;
+            case 422:
                 break;
 
             default:

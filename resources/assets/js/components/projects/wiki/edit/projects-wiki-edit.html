@@ -3,14 +3,22 @@
 
         <md-content layout-padding  >
             <div>
-                <form name="editWikiForm">
-                    <md-input-container class="md-block" >
-                        <label>Page title</label>
-                        <input md-maxlength="255" required  md-no-asterisk name="title" ng-model="$ctrl.page.title">
+                <form name="$ctrl.pageWiki">
+                    <md-input-container class="md-icon-float md-block">
+                        <label>Title</label>
+                        <input ng-model="$ctrl.page.title" name="title" type="text"
+                               >
+                        <div ng-messages="$ctrl.pageWiki.title.$error">
+                            <div ng-message="server" ng-bind-html="$ctrl.errors.title | join"></div>
+                        </div>
                     </md-input-container>
+
                     <md-input-container class="md-block">
                         <label>Description</label>
-                        <textarea ng-model="$ctrl.page.content.text"  md-select-on-focus rows="5"></textarea>
+                        <textarea name="text" ng-model="$ctrl.page.content.text"  md-select-on-focus rows="5"></textarea>
+                        <div ng-messages="$ctrl.pageWiki.text.$error">
+                            <div ng-message="server" ng-bind-html="$ctrl.errors.text | join"></div>
+                        </div>
                     </md-input-container>
                     <md-input-container class="md-block" flex-gt-sm>
                         <md-select ng-model="$ctrl.page.parent_id" placeholder="Select a parent page">
@@ -27,10 +35,10 @@
                         <md-button ng-click="$ctrl.goTo($ctrl.page.title)">
                             Cancel
                         </md-button>
-                        <md-button ng-click="$ctrl.submit(false)" type="submit">
+                        <md-button ng-click="$ctrl.save(false)" type="submit">
                             Apply
                         </md-button>
-                        <md-button ng-click="$ctrl.submit(true)" type="submit">
+                        <md-button ng-click="$ctrl.save(true)" type="submit">
                             Save
                         </md-button>
                         <md-button ng-click="$ctrl.showPreview($event)" type="submit">
@@ -42,11 +50,7 @@
             </div>
         </md-content>
     </md-card>
-    <md-card ng-if="$ctrl.preview" layout="column" ng-cloak flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-        <md-content layout-padding>
-            <div class="md-body-1" markdown-to-html="$ctrl.page.content.text || ''"></div>
-        </md-content>
-    </md-card>
+
 
 </div>
 
