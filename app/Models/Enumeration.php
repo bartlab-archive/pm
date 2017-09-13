@@ -15,6 +15,11 @@ class Enumeration extends Model
 
     protected $fillable = ['name', 'position', 'is_default', 'type', 'active', 'project_id', 'parent_id', 'position_name'];
 
+    protected $casts = [
+        'is_default' => 'boolean',
+        'active' => 'boolean',
+    ];
+
     public $timestamps = false;
 
     /**

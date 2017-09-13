@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\ModelTrait;
+
 class News extends Model
 {
-	use ModelTrait;
-	
+    use ModelTrait;
+
     protected $table = 'news';
+
+    protected $hidden = ['project_id'];
 
     public $timestamps = false;
 

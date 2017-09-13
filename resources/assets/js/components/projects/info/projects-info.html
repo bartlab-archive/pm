@@ -29,9 +29,10 @@
         </md-card-content>
 
         <md-card-actions layout="row" layout-align="center center">
-            <md-button ui-sref="projects.inner.issues.index">View all issues</md-button>
-            <md-button ui-sref="projects.inner.issues.calendar" ng-if="canShowModule('calendar')">Calendar</md-button>
-            <md-button ui-sref="projects.inner.issues.gantt">Gantt</md-button>
+            <md-button ui-sref="projects-inner.issues.index" ng-click="$ctrl.issueNavigate()">View all issues
+            </md-button>
+            <md-button ui-sref="projects-inner.issues.calendar" ng-if="canShowModule('calendar')">Calendar</md-button>
+            <md-button ui-sref="projects-inner.issues.gantt">Gantt</md-button>
         </md-card-actions>
     </md-card>
 </div>
@@ -66,7 +67,23 @@
         </md-card-title>
 
         <md-card-content class="md-body-1">
+            <div ng-repeat="news in $ctrl.project.news">
+                <md-button class="md-secondary"
+                           ng-click="$ctrl.$state.go('news.index', {id: news.id})">
+                    {{news.title}}
+                </md-button>
 
+                Added by
+                <md-button class="md-secondary"
+                           ng-click="$ctrl.userNavigate(news.author_id)">
+                    {{$ctrl.members[news.author_id].name}}
+                </md-button>
+                <md-button class="md-secondary"
+                           ng-click="$ctrl.userNavigate(news.author_id)">
+                    {{news.created_on}}
+                </md-button>
+                ago
+            </div>
         </md-card-content>
         <md-card-actions layout="row" layout-align="center center">
             <md-button ui-sref="projects-inner.news">View all news</md-button>
