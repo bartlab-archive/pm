@@ -119,13 +119,13 @@
             <md-card-actions layout="row" layout-align="center center">
                 <md-button class="md-raised md-primary animation-target"
                            ng-disabled="$ctrl.projectForm.$invalid"
-                           ng-click="$ctrl.createProject()">
+                           ng-click="$ctrl.create(false)">
                     Create
                 </md-button>
 
                 <md-button class="md-raised animation-target"
                            ng-disabled="$ctrl.projectForm.$invalid"
-                           ng-click="$ctrl.createProjectAndContinue()">
+                           ng-click="$ctrl.create(true)">
                     Create and continue
                 </md-button>
             </md-card-actions>

@@ -27,27 +27,26 @@ export default class ProjectsNewController extends ControllerBase {
         this.errors = {};
         this.projectForm = {};
     }
-
-    createProjectAndContinue() {
-        let data = _.cloneDeep(this.model);
-        data.modules = _.keys(_.pickBy(data.modules, (value, key) => value));
-        data.trackers = _.keys(_.pickBy(data.trakers, (value, key) => value));
-
-        this.ProjectsService.create(data)
-            .then((response) => {
-                this.$state.go('projects.inner.settings', {project_id: this.model.identifier});
-            })
-            .catch((response) => this.onError(response));
-    }
-
-    createProject() {
+    create(redirect) {
         let data = _.cloneDeep(this.model);
         data.modules = _.keys(_.pickBy(data.modules, (value, key) => value));
         data.trackers = _.keys(_.pickBy(data.trackers, (value, key) => value));
 
         this.ProjectsService.create(data)
             .then((response) => {
-                this.$state.reload();
+
+                if (redirect)
+                {
+                    this.$state.go('projects.inner.settings', {project_id: this.model.identifier});
+                }
+                else
+                {
+                    this.$state.reload();
+                }
+                this.$mdToast.show(
+                    this.$mdToast.simple()
+                        .textContent('Project created success')
+                );
             })
             .catch((response) => this.onError(response));
     }
