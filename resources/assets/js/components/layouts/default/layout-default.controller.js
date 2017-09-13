@@ -17,7 +17,10 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     $onInit() {
-
+        this.ProjectsService.getMyList().then((responce) =>
+        {
+           this.projects = responce ? responce : {};
+        });
         this.items = [
             {url: 'home', name: 'Home', icon: 'home'},
             {url: 'projects.list', name: 'Projects', icon: 'work'},
@@ -80,8 +83,8 @@ export default class LayoutDefaultController extends ControllerBase {
         $mdMenu.open(ev);
     };
 
-    gotToProject(id) {
-        this.$state.go('projects.inner.info', {id: id});
+    gotToProject(identifier) {
+        this.$state.go('projects.inner.info', {project_id: identifier});
         this.toggle('right');
     }
 
