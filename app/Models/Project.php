@@ -21,7 +21,7 @@ class Project extends Model
 
     protected $appends = ['is_my'];
 
-    protected $hidden = ['is_my', 'id', 'parent_id'];
+    protected $hidden = ['is_my', 'parent_id'];
 
     public $timestamps = false;
 
