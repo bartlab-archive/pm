@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import momemt from 'moment';
 import ControllerBase from 'base/controller.base';
 
 /**
@@ -17,7 +18,8 @@ export default class ProjectsInfoController extends ControllerBase {
         this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.project = _.get(response, 'data', []);
             this.project.modules = this.ProjectsService.getModules(this.project.enabled_modules);
-            this.membersByRole = this.getMembersByRole(this.ProjectsService.getMembersList(this.project));
+            this.members = this.ProjectsService.getMembersList(this.project);
+            this.membersByRole = this.getMembersByRole(this.members);
         });
 
         this.ProjectsService.getProjectIssues(this.$stateParams.project_id).then((response) => {
@@ -27,7 +29,6 @@ export default class ProjectsInfoController extends ControllerBase {
                 !v.closed ? v.closed = 0 : null;
             });
         });
-
     }
 
     getMembersByRole(members) {
@@ -52,7 +53,11 @@ export default class ProjectsInfoController extends ControllerBase {
         this.$state.go('users.info', {id: userId});
     }
 
-    projectNavigate(identifier){
+    issueNavigate() {
+        this.$state.go('projects.inner.issues.index', {project_id: this.project.identifier});
+    }
+
+    projectNavigate(identifier) {
         this.$state.go('projects.inner.info', {project_id: identifier});
     }
 }

@@ -76,6 +76,9 @@ class ProjectsService
             ->with(['boards' => function ($query) {
                 $query->orderBy('position');
             }])
+            ->with(['news' => function ($query) {
+                $query->orderBy('created_on', 'desc')->take(3);
+            }])
             ->firstOrFail();
     }
 

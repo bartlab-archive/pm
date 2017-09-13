@@ -1,6 +1,7 @@
 import InjectableBase from "base/injectable.base";
 import newsListComponent from './list/news-list.component';
 import newsEditComponent from './edit/news-edit.component';
+import newsViewComponent from './view/news-view.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -25,6 +26,10 @@ export default class NewsConfig extends InjectableBase {
                         template: '<ui-view/>'
                     }
                 }
+            })
+            .state('news.index', {
+                url: '/:id',
+                component: newsViewComponent.name,
             })
             .state('news.list', {
                 url: '',
