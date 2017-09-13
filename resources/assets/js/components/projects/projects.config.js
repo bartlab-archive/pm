@@ -8,6 +8,7 @@ import projectsCalendarComponent from './calendar/projects-calendar.component';
 import issuesListComponent from '../issues/list/issues-list.component';
 import projectsWikiComponent from './wiki/projects-wiki.component';
 import projectsWikiEditComponent from './wiki/edit/projects-wiki-edit.component';
+import projectsWikiIndexByComponent from './wiki/index-by/projects-wiki-index-by.component';
 import projectsGanttComponent from './gantt/projects-gantt.component';
 import projectsNewsComponent from './news/projects-news.component';
 import projectsDocumentsComponent from './documents/projects-documents.component';
@@ -123,6 +124,19 @@ export default class ProjectsConfig extends InjectableBase {
             .state('projects.inner.wiki.edit', {
                 url: '/edit/{name:[A-z0-9,./?;:|]+}',
                 component: projectsWikiEditComponent.name,
+            })
+            .state('projects.inner.wiki.new', {
+                url: '/new',
+                component: projectsWikiEditComponent.name,
+            })
+            .state('projects.inner.wiki.index-by-title', {
+                url: '/index',
+                component: projectsWikiIndexByComponent.name,
+            })
+            .state('projects.inner.wiki.index-by-date', {
+                url: '/date_index',
+                component: projectsWikiIndexByComponent.name,
             });
+
     }
 }

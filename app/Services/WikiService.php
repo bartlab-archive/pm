@@ -28,8 +28,11 @@ class WikiService
         if ($page_title) {
             $wiki_content->where('title', $page_title);
         } else {
-            $wiki_content->where('parent_id', null);
+            $wiki_content
+                ->where('parent_id', null)
+                ->orderBy('created_on', 'asc');
         }
+
         return $wiki_content->first();
 
     }
@@ -41,6 +44,7 @@ class WikiService
         $wiki_page = $project->wiki->page();
 
         if ($name) {
+            $name = str_replace(' ','_',$name);
             $wiki_page->where('title', $wiki_id);
             $wiki_id = $name;
         } else {
@@ -66,7 +70,8 @@ class WikiService
         $wiki = $project->wiki;
 
         $new_page = $wiki->page()->create([
-            'title' => array_get($request, 'title'),
+            'title' => str_replace(' ','_',array_get($request, 'title')),
+            'parent_id' => array_get($request, 'parent_id'),
         ]);
 
 
@@ -108,11 +113,6 @@ class WikiService
         $wiki = $project->wiki->page()->with('content')->get();
 
         return $wiki;
-    }
-
-    public function editWikiPage($identifier, $title)
-    {
-        var_dump($title);
     }
 
     public function update($wikiId, $data)

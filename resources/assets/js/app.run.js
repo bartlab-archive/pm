@@ -62,6 +62,8 @@ export default class AppRun extends InjectableBase {
             case 403:
                 this.$rootScope.$broadcast('authForbidden');
                 break;
+            case 422:
+                break;
 
             default:
                 this.$mdToast.show(
