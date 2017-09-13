@@ -1,5 +1,6 @@
 import ControllerBase from 'base/controller.base';
 import * as _ from "lodash";
+import moment from 'moment';
 
 /**
  * @property {$stateParams} $stateParams
@@ -36,7 +37,7 @@ export default class IssuesNewController extends ControllerBase {
     loadProject() {
         this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.issue.project_id = _.get(response, 'data.id');
-            this.usersList = _.get(response, 'data.users', []);
+            this.usersList = _.get(response, 'data.members', []);
             this.categoriesList = _.get(response, 'data.issue_categories', []);
         });
     }
@@ -54,7 +55,8 @@ export default class IssuesNewController extends ControllerBase {
         if (this.error) {
             return false;
         }
-
+        this.issue.due_date = moment(this.issue.due_date).format('YYYY-MM-DD');
+        this.issue.start_date = moment(this.issue.start_date).format('YYYY-MM-DD');
         this.IssuesService.create(this.issue).then((response) => {
 
             if (this.issue = _.get(response, 'data')) {
