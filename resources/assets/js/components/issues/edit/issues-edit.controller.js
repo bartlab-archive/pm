@@ -33,10 +33,8 @@ export default class IssuesEditController extends ControllerBase {
             this.issue = _.get(response, 'data.issue', {});
             this.usersList = _.get(response, 'data.project.members', []);
             this.categoriesList = _.get(response, 'data.project.issue_categories', []);
-            this.trackersList = _.get(response, 'data.trackersList', []);
             this.projectsList = _.get(response, 'data.projectsList', []);
             this.statusesList = _.get(response, 'data.statusesList', []);
-            this.prioritiesList = _.get(response, 'data.prioritiesList', []);
 
             _.set(
                 this.$state,
@@ -45,7 +43,13 @@ export default class IssuesEditController extends ControllerBase {
             );
             this.$rootScope.$emit('updateProjectInfo');
         });
+        this.IssuesService.getAdditionalInfo({enumeration_type: 'IssuePriority'}).then((response) => {
+            this.prioritiesList = _.get(response, 'data.prioritiesList', []);
+            this.trackersList = _.get(response, 'data.trackersList', []);
+
+        });
     }
+
 
     updateIssue() {
         if (this.error) {
