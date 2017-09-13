@@ -22,12 +22,6 @@
                                 md-autohide="true">Index by date
                     </md-tooltip>
                 </md-button>
-                <md-button aria-label="label" class="md-icon-button" ng-click="$ctrl.newWikiPage()">
-                    <md-icon >fiber_new</md-icon>
-                    <md-tooltip md-direction="down"
-                                md-autohide="true">New wiki page
-                    </md-tooltip>
-                </md-button>
                 <md-menu>
                     <md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openActionMenu($mdMenu, $event)">
                         <md-icon>more_vert</md-icon>
@@ -51,13 +45,6 @@
                                 Index by date
                             </md-button>
                         </md-menu-item>
-                        <md-divider></md-divider>
-                        <md-menu-item>
-                            <md-button ng-click="$ctrl.goBack()">
-                                <md-icon>keyboard_backspace</md-icon>
-                                Back
-                            </md-button>
-                        </md-menu-item>
                     </md-menu-content>
                 </md-menu>
             </md-card-header>
@@ -65,9 +52,6 @@
                <div id="indexBy"></div>
            </md-content>
         <div>
-        <md-button ng-click="$ctrl.goBack()">
-            back
-        </md-button>
         </div>
     </md-card>
 

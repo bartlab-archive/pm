@@ -77,21 +77,51 @@ export default class ProjectsWikiController extends ControllerBase {
         }
     }
 
-    newWikiPage() {
+    newPage() {
         this.$state.go('projects.inner.wiki.new');
     }
 
-    deleteWikiPage(){
+    delete($event){
+        var confirm = this.$mdDialog.confirm()
+            .title('Would you like to delete this page?')
+            .targetEvent($event)
+            .ok('Delete!')
+            .cancel('Cancel');
 
-        this.WikiService.deleteWikiPage(this.$stateParams.project_id, this.$stateParams.name).then((response) => {
+        this.$mdDialog.show(confirm).then(()=> {
+            this.WikiService.deleteWikiPage(this.$stateParams.project_id, this.$stateParams.name).then((response) => {
                 console.log(response.data);
                 this.deleteResult = response.data;
                 if (this.deleteResult.success){
+                    this.$mdToast.show(
+                        this.$mdToast.simple()
+                            .textContent('Success deleted!')
+                    );
                     this.$state.go('projects.inner.wiki.index',{project_id: this.$stateParams.project_id })
                 }
+            });
         });
 
+
+
     }
+
+    showConfirm($event) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        var confirm = this.$mdDialog.confirm()
+            .title('Would you like to delete your debt?')
+            .textContent('All of the banks have agreed to forgive you your debts.')
+            .ariaLabel('Lucky day')
+            .targetEvent($event)
+            .ok('Please do it!')
+            .cancel('Sounds like a scam');
+
+        this.$mdDialog.show(confirm).then(function() {
+            // $scope.status = 'You decided to get rid of your debt.';
+        }, function() {
+            // $scope.status = 'You decided to keep your debt.';
+        });
+    };
 
     goToEdit(name) {
         this.$state.go('projects.inner.wiki.edit', {name: name});

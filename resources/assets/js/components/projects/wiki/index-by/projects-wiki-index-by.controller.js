@@ -35,8 +35,7 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
         });
     }
 
-    formatByDate(pages, tag)
-    {
+    formatByDate(pages, tag) {
         pages.sort((a, b) => {
             return (new Date(a.created_on).getTime() > new Date(b.created_on).getTime()) ? true : false;
         });
@@ -111,10 +110,6 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
         parentElement.appendChild(root);
     }
 
-    goBack()
-    {
-        this.$state.go('projects.inner.wiki.index');
-    }
     openActionMenu($mdMenu, ev) {
         $mdMenu.open(ev);
     }
@@ -123,8 +118,7 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
         this.$state.go('projects.inner.wiki.index-by-' + order);
     }
 
-    startPage()
-    {
+    startPage() {
         this.$state.go('projects.inner.wiki.index');
     }
 
