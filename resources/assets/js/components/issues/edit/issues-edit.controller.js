@@ -31,7 +31,7 @@ export default class IssuesEditController extends ControllerBase {
     loadIssue() {
         this.IssuesService.one(this.$stateParams.id).then((response) => {
             this.issue = _.get(response, 'data.issue', {});
-            this.usersList = _.get(response, 'data.project.users', []);
+            this.usersList = _.get(response, 'data.project.members', []);
             this.categoriesList = _.get(response, 'data.project.issue_categories', []);
             this.trackersList = _.get(response, 'data.trackersList', []);
             this.projectsList = _.get(response, 'data.projectsList', []);
