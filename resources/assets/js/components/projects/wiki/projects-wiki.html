@@ -5,50 +5,6 @@
                 <md-card-header-text>
                     <span class="md-headline">{{$ctrl.data.title}}</span>
                 </md-card-header-text>
-                <md-button aria-label="label" class="md-icon-button" ng-click="$ctrl.goToEdit($ctrl.data.title)">
-                    <md-icon >edit</md-icon>
-                    <md-tooltip md-direction="down"
-                                md-autohide="true">Edit
-                    </md-tooltip>
-                </md-button>
-                <div hide-xs>
-                    <md-button class="md-icon-button" ng-click="$ctrl.indexBy('title')">
-                        <md-icon>title</md-icon>
-                        <md-tooltip md-direction="down"
-                                    md-autohide="true">Index by title
-                        </md-tooltip>
-                    </md-button>
-                    <md-button aria-label="label" class="md-icon-button" ng-click="$ctrl.newWikiPage()">
-                        <md-icon >fiber_new</md-icon>
-                        <md-tooltip md-direction="down"
-                                    md-autohide="true">New wiki page
-                        </md-tooltip>
-                    </md-button>
-                    <md-button  aria-label="label" class="md-icon-button" ng-click="$ctrl.watchPage()">
-                        <md-icon >watch_later</md-icon>
-                        <md-tooltip md-direction="down"
-                                    md-autohide="true">Watch
-                        </md-tooltip>
-                    </md-button>
-                    <md-button aria-label="label" class="md-icon-button" ng-click="$ctrl.deleteWikiPage()">
-                        <md-icon >delete</md-icon>
-                        <md-tooltip md-direction="down"
-                                    md-autohide="true">Delete
-                        </md-tooltip>
-                    </md-button>
-                    <md-button aria-label="label" class="md-icon-button" ng-click="$ctrl.showHistory()">
-                        <md-icon >history</md-icon>
-                        <md-tooltip md-direction="down"
-                                    md-autohide="true">History
-                        </md-tooltip>
-                    </md-button>
-                    <md-button aria-label="label" class="md-icon-button" ng-click="$ctrl.addFile($event)">
-                        <md-icon >file_upload</md-icon>
-                        <md-tooltip md-direction="down"
-                                    md-autohide="true">Add file
-                        </md-tooltip>
-                    </md-button>
-                </div>
                 <md-menu>
                     <md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openActionMenu($mdMenu, $event)">
                         <md-icon>more_vert</md-icon>
@@ -80,7 +36,7 @@
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button aria-label="label" class="md-button" ng-click="$ctrl.newWikiPage()">
+                            <md-button aria-label="label" class="md-button" ng-click="$ctrl.newPage()">
                                 <md-icon >fiber_new</md-icon>
                                 New wiki page
                             </md-button>
@@ -92,9 +48,9 @@
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button aria-label="label" class="md-button" ng-click="$ctrl.deleteWikiPage()">
+                            <md-button aria-label="label" class="md-button" ng-click="$ctrl.delete($event)">
                                 <md-icon >delete</md-icon>
-                                Selete
+                                Delete
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
