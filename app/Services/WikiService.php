@@ -13,9 +13,7 @@ class WikiService
 {
     public function getWikiPageMarkDown($identifier, $page_title = null)
     {
-        $user_projects = Auth::user()->projects;
-
-        $project = $user_projects->where('identifier', $identifier)->first();
+        $project = Auth::user()->projects()->where('identifier', $identifier)->first();
 
         if (is_null($project)) {
             abort(403);
@@ -39,8 +37,7 @@ class WikiService
 
     public function setWikiPageMarkDown($request, $identifier, $wiki_id, $name = null)
     {
-        $user_projects = Auth::user()->projects;
-        $project = $user_projects->where('identifier', $identifier)->first();
+        $project = Auth::user()->projects()->where('identifier', $identifier)->first();;
         $wiki_page = $project->wiki->page();
 
         if ($name) {
@@ -56,6 +53,7 @@ class WikiService
                 $q->where('id', $wiki_id);
             }])
             ->firstOrFail();
+
         $wiki_page->update(['title' => array_get($request, 'title')]);
         $wiki_page->title = str_replace(' ','_',array_get($request, 'title'));
         $wiki_page->parent_id = array_get($request, 'parent_id') == 'null' ? null : array_get($request, 'parent_id') ;
