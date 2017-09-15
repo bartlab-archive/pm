@@ -1,57 +1,45 @@
 import angular from 'angular';
 import * as _ from 'lodash';
-
 import ControllerBase from 'base/controller.base';
-
 import showPreviewComponent from 'components/modal/projects/wiki/show-preview/show-preview.component';
 
-
 export default class ProjectsWikiEditController extends ControllerBase {
-
 
     static get $inject() {
         return ['$state', '$mdDialog', 'WikiService', '$stateParams', '$mdToast', '$compile'];
     }
 
     $onInit() {
-            this.newWiki = false;
-            this.pageWiki = {};
-            this.errors = {};
-            this.page =
-                {
-                    title: '',
-                    parent_id: null,
-                    content: {
-                        text: ''
-                    }
-
-                };
-
-            if (this.$stateParams.name)
-            {
-                this.WikiService.getPageWiki(this.$stateParams.project_id,this.$stateParams.name).then((response) => {
-                    if (!_.isEmpty(response.data)) {
-                        this.page = response.data;
-                    }
-                });
-            } else
-            {
-                this.newWiki = true;
-
-
+        this.newWiki = false;
+        this.pageWiki = {};
+        this.errors = {};
+        this.page = {
+            title: '',
+            parent_id: null,
+            content: {
+                text: ''
             }
+        };
+
+        if (this.$stateParams.name) {
+            this.WikiService.getPageWiki(this.$stateParams.project_id, this.$stateParams.name).then((response) => {
+                if (!_.isEmpty(response.data)) {
+                    this.page = response.data;
+                }
+            });
+        } else {
+            this.newWiki = true;
+        }
 
         this.WikiService.getAllWikiPage(this.$stateParams.project_id).then((response) => {
-            if (!_.isEmpty(response.data))
-            {
+            if (!_.isEmpty(response.data)) {
                 this.pages = response.data;
             }
         });
     }
 
     save(redirect) {
-        if (this.newWiki)
-        {
+        if (this.newWiki) {
             let queryParams = {
                 title: this.page.title,
                 text: this.page.content.text,
@@ -59,16 +47,14 @@ export default class ProjectsWikiEditController extends ControllerBase {
             };
             this.WikiService.addNewWikiPage(this.$stateParams.project_id, queryParams)
                 .then((response) => {
-                    if (response && response.status === 201)
-                    {
+                    if (response && response.status === 201) {
                         this.$mdDialog.cancel();
                         this.$state.go('projects.inner.wiki.page', {name: response.data.title});
                     }
                 })
                 .catch((response) => this.onError(response));
         }
-        else
-        {
+        else {
             this.page.text = 'save page';
             this.page.save().then((response) => {
                 if (response && response.status === 200) {
@@ -77,31 +63,27 @@ export default class ProjectsWikiEditController extends ControllerBase {
                         this.$mdToast.simple()
                             .textContent('Success saved!')
                     );
-                    if (this.$stateParams.name != this.page.title)
-                    {
-                        this.$state.go('projects.inner.wiki.edit', { name: response.data.title })
+                    if (this.$stateParams.name != this.page.title) {
+                        this.$state.go('projects.inner.wiki.edit', {name: response.data.title})
                     }
-                    if (redirect)
-                    {
-                        this.$state.go('projects.inner.wiki.page', { name: response.data.title });
+                    if (redirect) {
+                        this.$state.go('projects.inner.wiki.page', {name: response.data.title});
                     }
                 }
             });
         }
     }
 
-    showPreview($event)
-    {
+    showPreview($event) {
         this.$mdDialog.show(
             this.setMdDialogConfig(showPreviewComponent, $event.target, this.page)
         );
     }
+
     goTo(name) {
-        if (name)
-        {
-            this.$state.go('projects.inner.wiki.page', { name: name });
-        } else
-        {
+        if (name) {
+            this.$state.go('projects.inner.wiki.page.view', {name: name});
+        } else {
             this.$state.go('projects.inner.wiki.index');
         }
 
@@ -155,8 +137,7 @@ export default class ProjectsWikiEditController extends ControllerBase {
     }
 
     change(field) {
-        if (this.pageWiki.hasOwnProperty(field) && this.errors.hasOwnProperty(field))
-        {
+        if (this.pageWiki.hasOwnProperty(field) && this.errors.hasOwnProperty(field)) {
             this.pageWiki[field].$setValidity('server', true);
             this.errors[field] = undefined;
         }
@@ -166,12 +147,11 @@ export default class ProjectsWikiEditController extends ControllerBase {
         $mdMenu.open(ev);
     };
 
-    indexBy(order){
+    indexBy(order) {
         this.$state.go('projects.inner.wiki.index-by-' + order);
     }
 
-    startPage()
-    {
+    startPage() {
         this.$state.go('projects.inner.wiki.index');
     }
 

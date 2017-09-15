@@ -3,13 +3,15 @@ import InjectableBase from 'base/injectable.base';
 import moment from 'moment';
 
 /**
- * @property {UrlRouterProvider} $urlRouterProvider
- * @property {$locationProvider} $locationProvider
- * @property {AuthProvider} $authProvider
- * @property {$mdThemingProvider} $mdThemingProvider
- * @property {RestangularProvider} RestangularProvider
- * @property {ngShowdown} $showdownProvider
+ * @property {object} $urlRouterProvider
+ * @property {object} $locationProvider
+ * @property {object} $authProvider
+ * @property {object} $mdThemingProvider
+ * @property {object} RestangularProvider
+ * @property {object} $showdownProvider
  * @property {object} ScrollBarsProvider
+ * @property {object} $mdDateLocaleProvider
+ * @property {object} $stateProvider
  */
 export default class AppConfig extends InjectableBase {
 
@@ -22,7 +24,8 @@ export default class AppConfig extends InjectableBase {
             '$authProvider',
             'RestangularProvider',
             'ScrollBarsProvider',
-            '$mdDateLocaleProvider'
+            '$mdDateLocaleProvider',
+            '$stateProvider',
         ];
     }
 
@@ -95,6 +98,25 @@ export default class AppConfig extends InjectableBase {
         this.$showdownProvider.setOption('parseImgDimension', true);
         this.$showdownProvider.setOption('ghMentions', true);
         this.$showdownProvider.setOption('ghMentionsLink', '/');
+        this.$showdownProvider.loadExtension({
+            type: 'lang',
+            regex: /\[\[(.*)\]\]/g,
+            replace: (full, string) => {
+                // this.$injector.invoke(['$state',function($state){
+                //     console.log($state.href('projects.inner.wiki.page.view',{name:string}));
+                // }]);
+                // var $injector = angular.injector(['ng','$provide','ui.router']);
+                // $injector.get('$injector');
+                // console.log(angular.element('html').injector().get('$state').href('projects.inner.wiki.page.view', {name: string}));
+                let href = this.$stateProvider.$get().href(
+                    'projects.inner.wiki.page.view',
+                    {
+                        name: string.replace(' ', '_')
+                    }
+                );
+                return '<a href="' + href + '">' + string + '</a>';
+            }
+        });
     }
 
     scrollBarConfig() {
@@ -114,8 +136,8 @@ export default class AppConfig extends InjectableBase {
         };
     }
 
-    datePickerFormat(){
-        this.$mdDateLocaleProvider.formatDate = function(date) {
+    datePickerFormat() {
+        this.$mdDateLocaleProvider.formatDate = function (date) {
             return date ? moment(date).format('YYYY-MM-DD') : '';
         };
     }

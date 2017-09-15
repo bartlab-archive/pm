@@ -113,16 +113,20 @@ export default class ProjectsConfig extends InjectableBase {
                 url: '/wiki',
                 abstract: true,
             })
+            .state('projects.inner.wiki.page', {
+                url: '/{name:[^\,\.\/\?\;\:\|]+}',
+                abstract: true,
+            })
             .state('projects.inner.wiki.index', {
                 url: '',
                 component: projectsWikiComponent.name,
             })
-            .state('projects.inner.wiki.page', {
-                url: '/{name:[A-z0-9,./?;:|]+}',
+            .state('projects.inner.wiki.page.view', {
+                url: '',
                 component: projectsWikiComponent.name,
             })
-            .state('projects.inner.wiki.edit', {
-                url: '/edit/{name:[A-z0-9,./?;:|]+}',
+            .state('projects.inner.wiki.page.edit', {
+                url: '/edit',
                 component: projectsWikiEditComponent.name,
             })
             .state('projects.inner.wiki.new', {

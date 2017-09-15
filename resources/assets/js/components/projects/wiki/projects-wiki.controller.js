@@ -1,28 +1,24 @@
 import angular from 'angular';
 import * as _ from 'lodash';
-
 import ControllerBase from 'base/controller.base';
 
 export default class ProjectsWikiController extends ControllerBase {
 
-
     static get $inject() {
-        return ['$state', '$mdDialog', 'WikiService', '$stateParams', '$mdToast', '$compile'];
+        return ['$state', '$mdDialog', 'WikiService', '$stateParams', '$mdToast', '$compile', '$filter'];
     }
 
     $onInit() {
         this.errors = {};
         if (this.$stateParams.name) {
 
-            this.WikiService.getPageWiki(this.$stateParams.project_id,this.$stateParams.name).then((response) => {
+            this.WikiService.getPageWiki(this.$stateParams.project_id, this.$stateParams.name).then((response) => {
                 if (!_.isEmpty(response.data)) {
                     this.data = response.data;
                 }
             });
 
-        }
-        else
-        {
+        } else {
             this.WikiService.getStartPageWiki(this.$stateParams.project_id).then((response) => {
                 if (!_.isEmpty(response.data)) {
                     this.data = response.data;
@@ -31,26 +27,21 @@ export default class ProjectsWikiController extends ControllerBase {
         }
 
         this.WikiService.getAllWikiPage(this.$stateParams.project_id).then((response) => {
-            if (!_.isEmpty(response.data))
-            {
+            if (!_.isEmpty(response.data)) {
                 this.pageList = response.data;
             }
         });
-
     }
 
-    indexBy(order){
+    indexBy(order) {
         this.$state.go('projects.inner.wiki.index-by-' + order);
     }
 
-    startPage()
-    {
+    startPage() {
         this.$state.go('projects.inner.wiki.index');
     }
 
     setMdDialogConfig(component, target) {
-
-
         let ctrlConfig = [].concat(
             component.controller.$inject || [],
             [(...args) => {
@@ -81,29 +72,26 @@ export default class ProjectsWikiController extends ControllerBase {
         this.$state.go('projects.inner.wiki.new');
     }
 
-    delete($event){
+    delete($event) {
         var confirm = this.$mdDialog.confirm()
             .title('Would you like to delete this page?')
             .targetEvent($event)
             .ok('Delete!')
             .cancel('Cancel');
 
-        this.$mdDialog.show(confirm).then(()=> {
+        this.$mdDialog.show(confirm).then(() => {
             this.WikiService.deleteWikiPage(this.$stateParams.project_id, this.$stateParams.name).then((response) => {
                 console.log(response.data);
                 this.deleteResult = response.data;
-                if (this.deleteResult.success){
+                if (this.deleteResult.success) {
                     this.$mdToast.show(
                         this.$mdToast.simple()
                             .textContent('Success deleted!')
                     );
-                    this.$state.go('projects.inner.wiki.index',{project_id: this.$stateParams.project_id })
+                    this.$state.go('projects.inner.wiki.index', {project_id: this.$stateParams.project_id})
                 }
             });
         });
-
-
-
     }
 
     showConfirm($event) {
@@ -116,16 +104,15 @@ export default class ProjectsWikiController extends ControllerBase {
             .ok('Please do it!')
             .cancel('Sounds like a scam');
 
-        this.$mdDialog.show(confirm).then(function() {
+        this.$mdDialog.show(confirm).then(function () {
             // $scope.status = 'You decided to get rid of your debt.';
-        }, function() {
+        }, function () {
             // $scope.status = 'You decided to keep your debt.';
         });
     };
 
     goToEdit(name) {
-        this.$state.go('projects.inner.wiki.edit', {name: name});
-
+        this.$state.go('projects.inner.wiki.page.edit', {name: name});
     }
 
     openActionMenu($mdMenu, ev) {

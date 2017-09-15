@@ -1,6 +1,6 @@
 <div layout-gt-sm="row" layout-align="center start">
-    <md-card layout="row" flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-        <div layout-align="start start"  flex-xs="100" flex-sm="100" flex-md="100" flex-gt-md="100" >
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <!--<div layout-align="start start"  flex-xs="100" flex-sm="100" flex-md="100" flex-gt-md="100" >-->
             <md-card-header>
                 <md-card-header-text>
                     <span class="md-headline">{{$ctrl.data.title}}</span>
@@ -70,10 +70,10 @@
                     </md-menu-content>
                 </md-menu>
             </md-card-header>
-            <md-content class="md-padding">
+            <md-card-content>
                 <h1 class="md-display-2"></h1>
                 <div class="md-body-1" markdown-to-html="$ctrl.data.content.text || ''"></div>
-            </md-content>
-        </div>
+            </md-card-content>
+        <!--</div>-->
     </md-card>
 </div>
