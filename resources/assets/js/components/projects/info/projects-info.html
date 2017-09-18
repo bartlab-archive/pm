@@ -79,14 +79,14 @@
                     {{$ctrl.members[news.author_id].name}}
                 </md-button>
                 <md-button class="md-secondary"
-                           ng-click="$ctrl.userNavigate(news.author_id)">
-                    {{news.created_on}}
+                           ng-click="$ctrl.$state.go('projects.inner.activity', {from: news.created_on, project_id: $ctrl.project.identifier})">
+                    {{$ctrl.timeAgo(news.created_on)}}
                 </md-button>
                 ago
             </div>
         </md-card-content>
         <md-card-actions layout="row" layout-align="center center">
-            <md-button ui-sref="projects-inner.news">View all news</md-button>
+            <md-button ng-click="$ctrl.$state.go('projects.inner.news', {project_id: $ctrl.project.identifier})">View all news</md-button>
         </md-card-actions>
     </md-card>
 </div>
