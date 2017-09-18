@@ -1,6 +1,6 @@
 import InjectableBase from "base/injectable.base";
 import issuesListComponent from './list/issues-list.component';
-import issuesEditComponent from './edit/issues-edit.component';
+import issuesEditCopyComponent from './edit-copy/issues-edit-copy.component';
 import issuesInfoComponent from './info/issues-info.component';
 
 /**
@@ -37,7 +37,11 @@ export default class IssuesConfig extends InjectableBase {
             })
             .state('issues.edit', {
                 url: '/:id/edit',
-                component: issuesEditComponent.name,
+                component: issuesEditCopyComponent.name,
+            })
+            .state('issues.copy', {
+                url: '/:id/copy',
+                component: issuesEditCopyComponent.name,
             })
             .state('issues.info', {
                 url: '/:id',

@@ -159,6 +159,7 @@ Route::group(
                 Route::get('/', 'IssuesController@getIssues');
                 Route::post('/', 'IssuesController@create');
                 Route::put('/{id}', 'IssuesController@update');
+                Route::delete('/{id}', 'IssuesController@delete');
 //                Route::get('/{id}/infoedit/{project_id}', 'IssuesController@infoEdit');
             }
         );

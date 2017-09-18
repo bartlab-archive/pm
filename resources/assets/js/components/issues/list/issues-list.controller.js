@@ -8,22 +8,23 @@ import * as _ from "lodash";
  * @property {IssuesService} IssuesService
  * @property {ProjectsService} ProjectsService
  * @property {$stateParams} $stateParams
+ * @property {$rootScope} $rootScope
  */
 export default class IssuesListController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$showdown', 'IssuesService', 'ProjectsService', '$stateParams', '$window'];
+        return ['$state', '$showdown', 'IssuesService', 'ProjectsService', '$stateParams', '$window', '$rootScope'];
     }
 
     $onInit() {
-        let enabledModules ={};
+        let enabledModules = {};
         const currentProjectId = this.currentProjectId();
         this.ProjectsService.one(currentProjectId).then((response) => {
-            enabledModules =  this.ProjectsService.getModules(_.get(response, 'data.enabled_modules', []));
+            enabledModules = this.ProjectsService.getModules(_.get(response, 'data.enabled_modules', []));
 
             if (typeof enabledModules.issue_tracking === 'undefined') {
                 window.location.href = '/projects/' + currentProjectId;
-            }else{
+            } else {
                 this.tags = [];
                 this.items = [];
                 this.statusesList = [];
@@ -36,10 +37,10 @@ export default class IssuesListController extends ControllerBase {
 
                 this.loadFiltersValues();
                 this.load();
+                this.$rootScope.$on('updateIssues', () => this.load());
                 this.initScrollbar();
             }
         });
-
 
 
     }
@@ -173,8 +174,18 @@ export default class IssuesListController extends ControllerBase {
         this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: id});
     }
 
-    editIssue(id) {
+    editIssue(id, edit) {
         this.$state.go('issues.edit', {project_id: this.$stateParams.project_id, id: id});
+    }
+
+    copyIssue(id, edit) {
+        this.$state.go('issues.copy', {project_id: this.$stateParams.project_id, id: id});
+    }
+
+    deleteIssue(id) {
+        this.IssuesService.deleteIssue(id).then(() => {
+            this.$rootScope.$emit('updateIssues');
+        });
     }
 
     toggleShowMore() {

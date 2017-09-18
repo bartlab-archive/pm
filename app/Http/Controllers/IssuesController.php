@@ -105,6 +105,11 @@ class IssuesController extends BaseController
         return response()->json('Not Found', 404);
     }
 
+    public function delete($id)
+    {
+        return response()->json($this->issueService->deleteById($id), 200);
+    }
+
 //    public function infoEdit($id, $project_id)
 //    {
 //        $result = $this->issueService->getInfoFroEdit($project_id);

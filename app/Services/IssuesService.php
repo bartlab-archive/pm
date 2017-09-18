@@ -96,6 +96,11 @@ class IssuesService
         return ['trackers' => $result];
     }
 
+    public function deleteById($id)
+    {
+        return Issue::find($id)->delete();
+    }
+
 
 //	public function getInfoFroEdit($project_if)
 //	{

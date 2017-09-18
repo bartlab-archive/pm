@@ -10,14 +10,13 @@ import * as _ from "lodash";
  * @property {$rootScope} $rootScope
  */
 
-export default class IssuesEditController extends ControllerBase {
+export default class IssuesEditCopyController extends ControllerBase {
 
     static get $inject() {
         return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService', '$rootScope'];
     }
 
     $onInit() {
-
         this.usersList = [];
         this.trackersList = [];
         this.projectsList = [];
@@ -51,17 +50,48 @@ export default class IssuesEditController extends ControllerBase {
     }
 
 
-    updateIssue() {
+    saveIssue() {
         if (this.error) {
             return false;
         }
 
-        this.IssuesService.update(this.issue).then((response) => {
+        if (this.$state.current.name === 'issues.copy') {
+            this.IssuesService.create(_.pick(this.issue, [
+                'tracker_id',
+                'project_id',
+                'subject',
+                'description',
+                'due_date',
+                'category_id',
+                'status_id',
+                'assigned_to_id',
+                'priority_id',
+                'fixed_version_id',
+                'author_id',
+                'lock_version',
+                'start_date',
+                'done_ratio',
+                'estimated_hours',
+                'parent_id',
+                'root_id',
+                'lft',
+                'rgt',
+                'is_private',
+                'closed_on'
+            ])).then((response) => {
 
-            if (_.get(response, 'data')) {
-                this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
-            }
-        });
+                if (this.issue = _.get(response, 'data')) {
+                    this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
+                }
+            });
+        } else {
+            this.IssuesService.update(this.issue).then((response) => {
+
+                if (_.get(response, 'data')) {
+                    this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
+                }
+            });
+        }
     }
 
     validate() {

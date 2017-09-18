@@ -43,4 +43,8 @@ export default class IssuesService extends ServiceBase {
     update(issue) {
         return this.Restangular.all('issues').customPUT(issue, issue.id);
     }
+
+    deleteIssue(issueId) {
+        return this.Restangular.one('issues', issueId).remove();
+    }
 }
