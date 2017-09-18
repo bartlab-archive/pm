@@ -8,6 +8,11 @@ layout-default-component {
 
   .md-sidenav-right,
   .md-sidenav-left {
+
+    &.fixed {
+      position: fixed;
+    }
+
     .md-button.md-icon-button {
       margin-left: -8px;
     }
