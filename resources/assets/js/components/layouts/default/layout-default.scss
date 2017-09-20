@@ -6,9 +6,12 @@ layout-default-component {
     bottom: 50px;
   }
 
+  md-sidenav.md-sidenav-right{
+    position: fixed;
+  }
+
   .md-sidenav-right,
   .md-sidenav-left {
-
     &.fixed {
       position: fixed;
     }
