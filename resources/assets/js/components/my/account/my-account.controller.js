@@ -22,11 +22,19 @@ export default class mainMyAccountIndexController extends ControllerBase {
         this.user = this.UsersService.getUserInfo().then((response) => {
             if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
                 this.model = response.data;
+                this.model.email = this.model.email.address;
+                this.model.comments_sorting = this.model.preference.others.comments_sorting;
+                this.model.no_self_notified = this.model.preference.others.no_self_notified;
+                this.model.warn_on_leaving_unsaved = this.model.preference.others.warn_on_leaving_unsaved;
+                this.model.time_zone = this.model.preference.time_zone;
+                this.model.hide_mail = this.model.preference.hide_mail;
+                _.unset(this.model, 'preference');
             }
         });
 
         this.languages = this.UsersService.languages;
         this.timeZone = this.UsersService.timeZone;
+        this.emailNotifications = this.UsersService.getEmailNotifications;
     }
 
     setMdDialogConfig(component, target) {
@@ -89,9 +97,10 @@ export default class mainMyAccountIndexController extends ControllerBase {
     submit() {
         this.model.save().then(
             (response) => {
-                console.log(response);
                 if (response && response.status === 200) {
-                    this.mdToast.success();
+                    this.$mdToast.show(
+                        this.$mdToast.simple().textContent('Account Settings Saved')
+                    );
                 }
             }
         );

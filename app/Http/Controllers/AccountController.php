@@ -6,10 +6,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\UpdateRequest;
 use App\Services\AccountService;
+use App\Services\UsersService;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Auth;
+
 
 /**
  * Class AccountController
+ *
+ * @property AccountService $accountService
+ * @property UsersService $usersService
+ *
  */
 class AccountController extends BaseController
 {
@@ -18,20 +25,22 @@ class AccountController extends BaseController
      * @var AccountService
      */
     protected $accountService;
+    protected $usersService;
 
-    public function __construct(AccountService $accountService)
+    public function __construct(AccountService $accountService, UsersService $usersService)
     {
         $this->accountService = $accountService;
+        $this->usersService = $usersService;
     }
 
     public function show()
     {
-        return $this->accountService->get();
+        return $this->usersService->getById(Auth::user()->id, ['email', 'preference']);
     }
 
-    public function update(UpdateRequest $request)
+    public function update($id, UpdateRequest $request)
     {
-        $this->accountService->update($request->all());
+        $this->usersService->update($id, $request->all());
     }
 
     public function changePassword(ChangePasswordRequest $request)

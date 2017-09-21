@@ -27,4 +27,18 @@ class UserPreferenceService
 
         return yaml_emit($update_others);
     }
+
+    public function updateByUserId($userId, $data)
+    {
+        $others = UserPreference::DEFAULT_OTHERS_DATA;
+        foreach ($others as $key => $val) {
+            if (isset($data[$key])) {
+                $others[$key] = $data[$key];
+                unset($data[$key]);
+            };
+        }
+        $data['others'] = self::updateOthers($others);
+
+        return UserPreference::where('user_id', $userId)->update($data);
+    }
 }

@@ -42,7 +42,7 @@ class UpdateRequest extends FormRequest
                     'address'
                 )->ignore(Auth::id(), 'user_id')
             ],
-            'lang' => 'required|string',
+            'language' => 'required|string',
             'hide_mail' => 'required|boolean',
             'time_zone' => 'required|string|in:' . implode(',', array_keys(UserPreference::TIME_ZONE_MAP)),
             'comments_sorting' => 'required|string|in:asc,desc',

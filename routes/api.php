@@ -28,7 +28,7 @@ Route::group(
             ],
             function () {
                 Route::get('account', 'AccountController@show');
-                Route::put('account', 'AccountController@update');
+                Route::put('account/{id}', 'AccountController@update');
                 Route::put('password', 'AccountController@changePassword');
                 Route::get('api-key', 'AccountController@showApiKey');
                 Route::put('api-key', 'AccountController@resetApiKey');

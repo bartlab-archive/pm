@@ -86,7 +86,7 @@
 
                 <md-input-container class="md-icon-float md-block">
                     <label>Language</label>
-                    <md-select ng-model="$ctrl.model.lang" required>
+                    <md-select ng-model="$ctrl.model.language" required>
                         <md-option ng-value="language.id" ng-repeat="language in $ctrl.languages">
                             {{language.name }}
                         </md-option>
@@ -97,13 +97,11 @@
                 <md-input-container class="md-icon-float md-block">
                     <label>Email notifications</label>
                     <md-select ng-model="$ctrl.model.mail_notification" required>
-                        <md-option value="selected">For any event on the selected projects only...
+                        <md-option ng-repeat="notification in $ctrl.emailNotifications"
+                                   ng-value="notification.value"
+                                   ng-selected="notification.selected">
+                            {{notification.name}}
                         </md-option>
-                        <md-option value="only_my_events">Only for things I watch or I'm involved in
-                        </md-option>
-                        <md-option value="only_assigned">Only for things I am assigned to</md-option>
-                        <md-option value="only_owner">Only for things I am the owner of</md-option>
-                        <md-option value="none">No events</md-option>
                         </select>
                     </md-select>
                     <div class="md-errors-spacer"></div>

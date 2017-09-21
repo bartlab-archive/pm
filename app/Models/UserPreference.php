@@ -182,17 +182,9 @@ class UserPreference extends Model
      */
     protected $guarded = ['id'];
 
-    /**
-     * Parse others
-     *
-     * This method parses the others field
-     *
-     * @param UserPreference $preference
-     * @return array
-     */
-    public static function parseOthers(UserPreference $preference)
+    public function getOthersAttribute($value)
     {
-        $others = yaml_parse($preference->others);
+        $others = yaml_parse($value);
         $result_others = [];
 
         foreach ($others as $key => $other) {

@@ -81,4 +81,45 @@ class UsersService
 
         return $users->get();
     }
+
+    /**
+     * @param $id
+     * @param array $with
+     * @return mixed
+     */
+    public function getById($id, $with = [])
+    {
+        return User::where('id', $id)->with($with)->first();
+    }
+
+    public function update($id, $data)
+    {
+        if (isset($data['email'])) {
+            $this->emailAddressesService->updateByUserId($id, ['address' => $data['email']]);
+            unset($data['email']);
+        }
+
+        $userPreferencesData = [];
+        $userPreferencesFields = [
+            'comments_sorting',
+            'no_self_notified',
+            'warn_on_leaving_unsaved',
+            'time_zone',
+            'hide_mail'
+        ];
+
+        foreach ($userPreferencesFields as $field) {
+            if (isset($data[$field])) {
+                $userPreferencesData[$field] = $data[$field];
+                unset($data[$field]);
+            }
+        }
+        unset($userPreferencesFields);
+
+        if (!empty($userPreferencesData)) {
+            $this->preferenceService->updateByUserId($id, $userPreferencesData);
+        }
+
+        return User::where('id', $id)->update($data);
+    }
 }
