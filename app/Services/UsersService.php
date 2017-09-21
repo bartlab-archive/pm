@@ -103,7 +103,7 @@ class UsersService
     public function update($id, $data)
     {
         if (isset($data['email'])) {
-            $mainEmail = $this->emailAddressesService->list(['user_id' => $id, 'is_default' => true])->first();
+            $mainEmail = $this->emailAddressesService->getList(['user_id' => $id, 'is_default' => true])->first();
             $this->emailAddressesService->update($mainEmail, ['address' => $data['email']]);
             unset($data['email']);
         }
@@ -129,6 +129,8 @@ class UsersService
             $this->preferenceService->updateByUserId($id, $userPreferencesData);
         }
 
-        return User::where('id', $id)->update($data);
+        unset($data['id']);
+
+        return User::where(['id'=> $id])->update($data);
     }
 }

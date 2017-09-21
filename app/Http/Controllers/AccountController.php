@@ -49,7 +49,9 @@ class AccountController extends BaseController
 
     public function update($id, UpdateRequest $request)
     {
-        $this->usersService->update($id, $request->all());
+        $result = $this->usersService->update($id, $request->all());
+        dd($result);
+        return response($result, 200);
     }
 
     public function changePassword(ChangePasswordRequest $request)

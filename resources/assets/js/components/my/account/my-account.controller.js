@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 import myShowApiKeyComponent from 'components/my/show-api-key/my-show-api-key.component';
 import myAddMailComponent from 'components/modal/account/add-mail/my-add-mail.component';
-import myChangePasswordComponent from 'components/my/change-password/my-change-password.component';
+import myChangePasswordComponent from '../../modal/account/change-password/my-change-password.component';
 
 /**
  * @property {$auth} $auth
@@ -28,10 +28,11 @@ export default class mainMyAccountIndexController extends ControllerBase {
                 this.model.warn_on_leaving_unsaved = this.model.preference.others.warn_on_leaving_unsaved;
                 this.model.time_zone = this.model.preference.time_zone;
                 this.model.hide_mail = this.model.preference.hide_mail;
-                this.model.additional_emails = _.map(this.model.additional_emails, function (email) {
+                this.additional_emails = _.map(this.model.additional_emails, function (email) {
                     return _.pick(email, ['id', 'address', 'notify']);
                 });
                 _.unset(this.model, 'preference');
+                _.unset(this.model, 'additional_emails');
             }
         });
 
@@ -87,7 +88,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
 
     addEmail($event) {
         this.$mdDialog.show(
-            this.setMdDialogConfig(myAddMailComponent, $event.target, {additional_emails: this.model.additional_emails})
+            this.setMdDialogConfig(myAddMailComponent, $event.target, {additional_emails: this.additional_emails})
         );
     }
 

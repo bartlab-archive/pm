@@ -17,12 +17,15 @@ export default class myAddMailController extends ControllerBase {
     $onInit() {
         this.emails = _.keyBy(this.additional_emails, 'id');
         this.$rootScope.$on('updateAccountAdditionalEmails', () => this.load());
+        this.addEmailForm = {};
+        this.errors = {};
     }
 
     load() {
         this.UsersService.getAdditionalEmails().then((responce) => {
             this.emails = _.keyBy(responce.data, 'id');
         });
+
         this.newEmail = null;
     }
 
@@ -45,6 +48,30 @@ export default class myAddMailController extends ControllerBase {
     addEmailAddress() {
         this.UsersService.addAdditionalEmail(this.newEmail).then(() => {
             this.$rootScope.$emit('updateAccountAdditionalEmails');
-        });
+        }).catch((response) => this.onError(response));;
+    }
+
+    onError(response) {
+        if (_.get(response, 'status') === 500) {
+            this.$mdToast.show(
+                this.$mdToast.simple().textContent('Server error')
+            );
+        } else {
+            this.errors = _.get(response, 'data.errors', {});
+            for (let field in this.errors) {
+                if (this.addEmailForm.hasOwnProperty(field)) {
+                    this.addEmailForm[field].$setValidity('server', false);
+                }
+            }
+        }
+    }
+
+    change(field) {
+        this.addEmailForm[field].$setValidity('server', true);
+        this.errors[field] = undefined;
+        // if (this.addEmailForm.hasOwnProperty(field) && this.errors.hasOwnProperty(field)) {
+        //     this.addEmailForm[field].$setValidity('server', true);
+        //     this.addEmailForm[field] = undefined;
+        // }
     }
 }
