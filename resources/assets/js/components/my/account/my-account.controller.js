@@ -2,7 +2,7 @@ import angular from 'angular';
 import * as _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 import myShowApiKeyComponent from 'components/my/show-api-key/my-show-api-key.component';
-import myAddMailComponent from 'components/my/add-mail/my-add-mail.component';
+import myAddMailComponent from 'components/modal/account/add-mail/my-add-mail.component';
 import myChangePasswordComponent from 'components/my/change-password/my-change-password.component';
 
 /**
@@ -28,6 +28,9 @@ export default class mainMyAccountIndexController extends ControllerBase {
                 this.model.warn_on_leaving_unsaved = this.model.preference.others.warn_on_leaving_unsaved;
                 this.model.time_zone = this.model.preference.time_zone;
                 this.model.hide_mail = this.model.preference.hide_mail;
+                this.model.additional_emails = _.map(this.model.additional_emails, function (email) {
+                    return _.pick(email, ['id', 'address', 'notify']);
+                });
                 _.unset(this.model, 'preference');
             }
         });
@@ -37,11 +40,17 @@ export default class mainMyAccountIndexController extends ControllerBase {
         this.emailNotifications = this.UsersService.getEmailNotifications;
     }
 
-    setMdDialogConfig(component, target) {
+    setMdDialogConfig(component, target, data = {}) {
         let ctrlConfig = [].concat(
             component.controller.$inject || [],
             [(...args) => {
                 let ctrl = new component.controller(...args);
+
+                // decorator
+                _.each(data, (v, k) => {
+                    ctrl[k] = v;
+                });
+
                 ctrl.$onInit && ctrl.$onInit();
                 return ctrl;
             }]
@@ -51,7 +60,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
             controller: ctrlConfig,
             controllerAs: '$ctrl',
             template: component.template,
-            panelClass: 'modal-custom-dialog',
+            //panelClass: 'modal-custom-dialog',
             parent: angular.element(document.body),
             trapFocus: true,
             clickOutsideToClose: true,
@@ -60,7 +69,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
             hasBackdrop: true,
             disableParentScroll: true,
             openFrom: target,
-            closeTo: target
+            closeTo: target,
         }
     }
 
@@ -78,7 +87,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
 
     addEmail($event) {
         this.$mdDialog.show(
-            this.setMdDialogConfig(myAddMailComponent, $event.target)
+            this.setMdDialogConfig(myAddMailComponent, $event.target, {additional_emails: this.model.additional_emails})
         );
     }
 

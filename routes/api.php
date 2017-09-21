@@ -33,6 +33,10 @@ Route::group(
                 Route::get('api-key', 'AccountController@showApiKey');
                 Route::put('api-key', 'AccountController@resetApiKey');
                 Route::put('rss-key', 'AccountController@resetAtomKey');
+                Route::get('email-addresses', 'AccountController@getAdditionalEmails');
+                Route::post('email-addresses', 'AccountController@addAdditionalEmails');
+                Route::put('email-addresses/{id}', 'AccountController@updateAdditionalEmail');
+                Route::delete('email-addresses/{id}', 'AccountController@deleteAdditionalEmail');
             }
         );
 

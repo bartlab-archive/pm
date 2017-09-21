@@ -48,7 +48,12 @@ class User extends Authenticatable
 
     public function email()
     {
-        return $this->hasOne(EmailAddresses::class);
+        return $this->hasOne(EmailAddresses::class)->where('is_default', true);
+    }
+
+    public function additionalEmails()
+    {
+        return $this->hasMany(EmailAddresses::class)->where('is_default', false);
     }
 
     public function attachments()

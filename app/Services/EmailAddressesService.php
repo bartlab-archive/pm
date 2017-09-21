@@ -24,28 +24,51 @@ class EmailAddressesService
     {
         return $user->email()->create([
             'address' => array_get($data, 'email'),
-            'is_default' => 1,
-            'notify' => 1,
+            'is_default' => isset($data['is_default']) ? $data['is_default'] : 1,
+            'notify' => isset($data['notify']) ? $data['notify'] : 1,
         ]);
     }
 
     /**
-     * @param $userId
+     * @param $params
      * @return mixed
      */
-    public function getByUserId($userId)
+    public function getList($params)
     {
-        return EmailAddresses::where('user_id', $userId)->first();
+        return EmailAddresses::where($params)->get();
+    }
+
+    public function getById($id)
+    {
+        return EmailAddresses::where(['id' => $id])->firstOrFail();
     }
 
     /**
-     * @param $userId
-     * @param $data
+     * @param EmailAddresses $emailAddress
+     * @param array $data
      * @return mixed
      */
-    public function updateByUserId($userId, $data)
+    public function update(EmailAddresses $emailAddress, array $data)
     {
-        return EmailAddresses::where('user_id', $userId)->first()->update($data);
+        return $emailAddress->update($data);
     }
 
+    /**
+     * @param int $id
+     * @param array $data
+     * @return mixed
+     */
+    public function updateById(int $id, array $data)
+    {
+        return $this->getById($id)->update($data);
+    }
+
+    /**
+     * @param int $id
+     * @return mixed
+     */
+    public function deleteById(int $id)
+    {
+        return $this->getById($id)->delete();
+    }
 }

@@ -5,6 +5,14 @@ namespace App\Services;
 
 use App\Models\User;
 
+/**
+ * Class UsersService
+ *
+ * @property EmailAddressesService $emailAddressesService
+ * @property UserPreferenceService $preferenceService
+ *
+ * @package App\Services
+ */
 class UsersService
 {
     protected $emailAddressesService;
@@ -95,7 +103,8 @@ class UsersService
     public function update($id, $data)
     {
         if (isset($data['email'])) {
-            $this->emailAddressesService->updateByUserId($id, ['address' => $data['email']]);
+            $mainEmail = $this->emailAddressesService->list(['user_id' => $id, 'is_default' => true])->first();
+            $this->emailAddressesService->update($mainEmail, ['address' => $data['email']]);
             unset($data['email']);
         }
 

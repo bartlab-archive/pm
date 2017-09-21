@@ -4,7 +4,7 @@ import MyConfig from './my.config';
 import myAccountComponent from './account/my-account.component';
 import myPasswordComponent from './password/my-password.component';
 import myShowApiKeyComponent from './show-api-key/my-show-api-key.component';
-import myAddMailComponent from './add-mail/my-add-mail.component';
+import myAddMailComponent from '../modal/account/add-mail/my-add-mail.component';
 import myChangePasswordComponent from './change-password/my-change-password.component';
 import myPageComponent from './page/my-page.component';
 
