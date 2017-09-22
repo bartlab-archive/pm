@@ -3,6 +3,7 @@
 namespace App\Services;
 
 
+use App\Models\Token;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,14 +13,14 @@ class AccountService
 
     public function getApiKey()
     {
-//        $user = User::userByHeaderAuthToken($request);
-//        $user_api_key = Token::apiKey($user);
-//
-//        if (is_null($user_api_key)) {
-//            $user_api_key = Token::createApiKey($user);
-//        }
-//
-//        return response($this->buildResponse($user, $user_api_key));
+        $user = Auth::user();
+        $user_api_key = Token::apiKey($user);
+
+        if (is_null($user_api_key)) {
+            $user_api_key = Token::createApiKey($user);
+        }
+
+        return $user_api_key;
     }
 
     public function resetApiKey()

@@ -13,7 +13,7 @@ export default class myShowApiKeyController extends ControllerBase {
 
     $onInit() {
         this.UsersService.getApiAccessKey().then((result) => {
-            this.apiKey = _.get(result, 'data.api_key');
+            this.apiKey = _.get(result, 'data.value');
         });
 
     }

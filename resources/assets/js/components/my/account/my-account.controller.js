@@ -1,9 +1,9 @@
 import angular from 'angular';
 import * as _ from 'lodash';
 import ControllerBase from 'base/controller.base';
-import myShowApiKeyComponent from 'components/my/show-api-key/my-show-api-key.component';
+import myShowApiKeyComponent from 'components/modal/account/show-api-key/my-show-api-key.component';
 import myAddMailComponent from 'components/modal/account/add-mail/my-add-mail.component';
-import myChangePasswordComponent from '../../modal/account/change-password/my-change-password.component';
+import myChangePasswordComponent from 'components/modal/account/change-password/my-change-password.component';
 
 /**
  * @property {$auth} $auth

@@ -44,7 +44,7 @@ class AccountController extends BaseController
 
     public function show()
     {
-        return $this->usersService->getById(Auth::user()->id, ['email', 'additionalEmails', 'preference']);
+        return $this->usersService->getById(Auth::user()->id, ['email', 'additionalEmails', 'preference', 'tokens']);
     }
 
     public function update($id, UpdateRequest $request)
@@ -61,7 +61,7 @@ class AccountController extends BaseController
 
     public function showApiKey()
     {
-        return response($this->accountService->getApiKey());
+        return response($this->usersService->getApiKey(), 200);
     }
 
     public function resetApiKey()

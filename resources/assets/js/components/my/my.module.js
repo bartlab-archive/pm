@@ -3,9 +3,9 @@ import 'angular';
 import MyConfig from './my.config';
 import myAccountComponent from './account/my-account.component';
 import myPasswordComponent from './password/my-password.component';
-import myShowApiKeyComponent from './show-api-key/my-show-api-key.component';
-import myAddMailComponent from '../modal/account/add-mail/my-add-mail.component';
-import myChangePasswordComponent from './../modal/account/change-password/my-change-password.component';
+import myShowApiKeyComponent from 'components/modal/account/show-api-key/my-show-api-key.component';
+import myAddMailComponent from 'components/modal/account/add-mail/my-add-mail.component';
+import myChangePasswordComponent from 'components/modal/account/change-password/my-change-password.component';
 import myPageComponent from './page/my-page.component';
 
 angular.module('app.components.my', [])
