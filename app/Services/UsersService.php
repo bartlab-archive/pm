@@ -4,6 +4,7 @@ namespace App\Services;
 
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class UsersService
@@ -131,6 +132,14 @@ class UsersService
 
         unset($data['id']);
 
-        return User::where(['id'=> $id])->update($data);
+        return User::where(['id' => $id])->first()->update($data);
+    }
+
+    public function changePassword(array $data)
+    {
+        $user = Auth::user();
+        $this->resetPassword($user, $data['new_password']);
+
+        return $user->update(['passwd_changed_on' => date('Y-m-d H:i:s')]);
     }
 }

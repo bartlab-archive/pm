@@ -10,25 +10,6 @@ class AccountService
 {
 
 
-
-    public function changePassword(array $data)
-    {
-//        $this->validate($request, $this->rules(), $this->messages());
-
-//        $user = User::userByHeaderAuthToken($request);
-//        $pass = $this->preparePassword($user, $request->input('password'));
-//
-//        if ($pass !== $user->hashed_password) {
-//            return response()->json(['password' => 'Invalid credentials.'], 422);
-//        }
-//
-//        $this->resetPassword($user, $request->input('new_password'));
-//
-//        $user->update(['passwd_changed_on' => date('Y-m-d H:i:s')]);
-//
-//        return response(null, 204);
-    }
-
     public function getApiKey()
     {
 //        $user = User::userByHeaderAuthToken($request);

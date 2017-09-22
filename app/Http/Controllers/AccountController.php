@@ -50,15 +50,13 @@ class AccountController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         $result = $this->usersService->update($id, $request->all());
-        dd($result);
-        return response($result, 200);
+        return response((string)$result, 200);
     }
 
     public function changePassword(ChangePasswordRequest $request)
     {
-        $this->accountService->changePassword($request->all());
-
-        return response(null, 204);
+        $result = $this->usersService->changePassword($request->all());
+        return response((string)$result, 200);
     }
 
     public function showApiKey()

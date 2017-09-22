@@ -282,4 +282,7 @@ export default class UsersService extends ServiceBase {
         });
     }
 
+    changePassword(data) {
+        return this.Restangular.one('my').customPUT(data, 'password');
+    }
 }

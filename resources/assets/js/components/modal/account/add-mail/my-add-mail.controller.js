@@ -9,9 +9,10 @@ export default class myAddMailController extends ControllerBase {
      * @property {$mdDialog} $mdDialog
      * @property {UsersService} UsersService
      * @property {$rootScope} $rootScope
+     * @property {$mdToast} $mdToast
      */
     static get $inject() {
-        return ['$mdDialog', 'UsersService', '$rootScope'];
+        return ['$mdDialog', 'UsersService', '$rootScope', '$mdToast'];
     }
 
     $onInit() {
@@ -48,7 +49,7 @@ export default class myAddMailController extends ControllerBase {
     addEmailAddress() {
         this.UsersService.addAdditionalEmail(this.newEmail).then(() => {
             this.$rootScope.$emit('updateAccountAdditionalEmails');
-        }).catch((response) => this.onError(response));;
+        }).catch((response) => this.onError(response));
     }
 
     onError(response) {
@@ -67,11 +68,9 @@ export default class myAddMailController extends ControllerBase {
     }
 
     change(field) {
-        this.addEmailForm[field].$setValidity('server', true);
-        this.errors[field] = undefined;
-        // if (this.addEmailForm.hasOwnProperty(field) && this.errors.hasOwnProperty(field)) {
-        //     this.addEmailForm[field].$setValidity('server', true);
-        //     this.addEmailForm[field] = undefined;
-        // }
+        if (this.addEmailForm.hasOwnProperty(field) && this.errors.hasOwnProperty(field)) {
+            this.addEmailForm[field].$setValidity('server', true);
+            this.addEmailForm[field] = undefined;
+        }
     }
 }

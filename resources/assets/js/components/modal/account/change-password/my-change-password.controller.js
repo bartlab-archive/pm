@@ -5,11 +5,57 @@ import ControllerBase from 'base/controller.base';
  */
 export default class myChangePasswordController extends ControllerBase {
 
+    /**
+     * @property {$mdDialog} $mdDialog
+     * @property {$mdToast} $mdToast
+     * @property {UsersService} UsersService
+     */
     static get $inject() {
-        return ['$mdDialog'];
+        return ['$mdDialog', '$mdToast', 'UsersService'];
+    }
+
+    $onInit() {
+        this.changePasswordForm = {};
+        this.errors = {};
     }
 
     cancel() {
         this.$mdDialog.cancel();
+    }
+
+    onError(response) {
+        if (_.get(response, 'status') === 500) {
+            this.$mdToast.show(
+                this.$mdToast.simple().textContent('Server error')
+            );
+        } else {
+            this.errors = _.get(response, 'data.errors', {});
+
+            for (let field in this.errors) {
+                if (this.changePasswordForm.hasOwnProperty(field)) {
+                    this.changePasswordForm[field].$setValidity('server', false);
+                }
+            }
+        }
+    }
+
+    change(field) {
+        if (this.changePasswordForm.hasOwnProperty(field) && this.errors.hasOwnProperty(field)) {
+            this.changePasswordForm[field].$setValidity('server', true);
+            this.changePasswordForm[field] = undefined;
+        }
+    }
+
+    changePassword() {
+        this.UsersService.changePassword(this.model)
+            .then((response) => {
+                if (response && response.status === 200) {
+                    this.$mdDialog.cancel();
+                    this.$mdToast.show(
+                        this.$mdToast.simple().textContent('Password Changed Successfully')
+                    );
+                }
+            })
+            .catch((response) => this.onError(response));
     }
 }
