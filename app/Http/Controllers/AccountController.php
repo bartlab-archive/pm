@@ -7,6 +7,7 @@ use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\UpdateRequest;
 use App\Services\AccountService;
 use App\Services\EmailAddressesService;
+use App\Services\TokenService;
 use App\Services\UsersService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 /**
  * Class AccountController
  *
- * @property AccountService $accountService
+ * @property TokenService $tokenService
  * @property UsersService $usersService
  * @property EmailAddressesService $emailAddressesService
  *
@@ -24,22 +25,19 @@ use Illuminate\Support\Facades\Auth;
 class AccountController extends BaseController
 {
 
-    /**
-     * @var AccountService
-     */
-    protected $accountService;
     protected $usersService;
     protected $emailAddressesService;
+    protected $tokenService;
 
     public function __construct(
-        AccountService $accountService,
         UsersService $usersService,
-        EmailAddressesService $emailAddressesService
+        EmailAddressesService $emailAddressesService,
+        TokenService $tokenService
     )
     {
-        $this->accountService = $accountService;
         $this->usersService = $usersService;
         $this->emailAddressesService = $emailAddressesService;
+        $this->tokenService = $tokenService;
     }
 
     public function show()
@@ -61,17 +59,17 @@ class AccountController extends BaseController
 
     public function showApiKey()
     {
-        return response($this->usersService->getApiKey(), 200);
+        return response($this->tokenService->getApiKey(Auth::user()), 200);
     }
 
     public function resetApiKey()
     {
-        return response($this->accountService->resetApiKey());
+        return response($this->tokenService->resetApiKey(Auth::user()), 200);
     }
 
     public function resetAtomKey()
     {
-        return response($this->accountService->resetAtomKey());
+        return response($this->tokenService->resetAtomKey(Auth::user()), 200);
     }
 
     public function updateAdditionalEmail($id, Request $request)

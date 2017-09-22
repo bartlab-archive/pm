@@ -144,15 +144,7 @@ class UsersService
         return $user->update(['passwd_changed_on' => date('Y-m-d H:i:s')]);
     }
 
-    public function getApiKey()
-    {
-        $user = Auth::user();
-        $user_api_key = Token::apiKey($user);
 
-        if (is_null($user_api_key)) {
-            $user_api_key = Token::createApiKey($user);
-        }
 
-        return $user_api_key;
-    }
+
 }
