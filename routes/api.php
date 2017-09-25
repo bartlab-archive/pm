@@ -164,6 +164,7 @@ Route::group(
                 Route::post('/', 'IssuesController@create');
                 Route::put('/{id}', 'IssuesController@update');
                 Route::delete('/{id}', 'IssuesController@delete');
+                Route::get('/{id}/history', 'IssuesController@getHistory');
 //                Route::get('/{id}/infoedit/{project_id}', 'IssuesController@infoEdit');
             }
         );

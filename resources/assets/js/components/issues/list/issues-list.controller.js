@@ -9,11 +9,13 @@ import * as _ from "lodash";
  * @property {ProjectsService} ProjectsService
  * @property {$stateParams} $stateParams
  * @property {$rootScope} $rootScope
+ * @property {TrackersService} TrackersService
+ * @property {UsersService} UsersService
  */
 export default class IssuesListController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$showdown', 'IssuesService', 'ProjectsService', '$stateParams', '$window', '$rootScope'];
+        return ['$state', '$showdown', 'IssuesService', 'ProjectsService', '$stateParams', '$window', '$rootScope', 'TrackersService', 'UsersService'];
     }
 
     $onInit() {
@@ -39,6 +41,10 @@ export default class IssuesListController extends ControllerBase {
                 this.load();
                 this.$rootScope.$on('updateIssues', () => this.load());
                 this.initScrollbar();
+
+                this.UsersService.getList({}).then((response) => {
+                    this.users = _.keyBy(_.get(response, 'data', null), 'id');
+                });
             }
         });
 
@@ -87,8 +93,8 @@ export default class IssuesListController extends ControllerBase {
     loadFiltersValues() {
         this.IssuesService.getIssuesFilters({enumeration_type: 'IssuePriority'}).then((response) => {
             if (!_.isEmpty(response.data)) {
-                this.statuses = _.get(response, 'data.statuses', null);
-                this.trackers = _.get(response, 'data.trackers', null);
+                this.statuses = _.keyBy(_.get(response, 'data.statuses', null), 'id');
+                this.trackers = _.keyBy(_.get(response, 'data.trackers', null), 'id');
                 this.priorities = _.get(response, 'data.priorities', null);
 
                 if (this.statuses) {
@@ -162,8 +168,11 @@ export default class IssuesListController extends ControllerBase {
         };
     }
 
-    viewIssue(id) {
-        this.selectedIssue = id;
+    viewIssue(issue) {
+        this.IssuesService.getHistory(issue.id).then((response) => {
+            this.history = _.keyBy(response.data, 'id')
+        });
+        this.selectedIssue = issue;
     }
 
     closeIssueCard() {
@@ -210,4 +219,7 @@ export default class IssuesListController extends ControllerBase {
         return _.get(this.$state, 'data.layoutDefault.projectId') || _.get(this.$stateParams, 'project_id');
     }
 
+    showAvatar(hash) {
+        return '//www.gravatar.com/avatar/' + hash + '?rating=PG&amp;size=24&amp;default=';
+    }
 }

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import moment from 'moment';
+
 import ControllerBase from 'base/controller.base';
 
 /**
@@ -7,6 +7,7 @@ import ControllerBase from 'base/controller.base';
  * @property {IssuesService} IssuesService
  * @property {$stateParams} $stateParams
  * @property {$state} $state
+ * @property {UsersService} UsersService
  */
 export default class ProjectsInfoController extends ControllerBase {
 
@@ -43,16 +44,6 @@ export default class ProjectsInfoController extends ControllerBase {
         });
 
         return memberRoles;
-    }
-
-    timeAgo(creationDate) {
-        let daysAgo = moment().diff(moment(creationDate, 'YYYY-MM-DD'), 'days');
-        const yearsAgo = Math.floor(daysAgo / 365);
-        daysAgo -= yearsAgo * 365;
-        const monthsAgo = Math.floor(daysAgo / 30);
-        daysAgo -= monthsAgo * 30;
-
-        return (yearsAgo ? yearsAgo + ' years ' : '') + (monthsAgo ? monthsAgo + ' months ' : '') + daysAgo + ' days';
     }
 
     canShowModule(moduleName) {

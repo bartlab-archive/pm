@@ -7,6 +7,7 @@ use App\Http\Requests\Issues\UpdateIssueRequest;
 use App\Services\EnumerationsService;
 use App\Services\IssueCategoriesService;
 use App\Services\IssuesService;
+use App\Services\JournalsService;
 use App\Services\ProjectsService;
 use App\Services\StatusesService;
 use App\Services\TrackersService;
@@ -15,6 +16,19 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class IssuesController
+ *
+ * @property IssuesService $issueService
+ * @property StatusesService $statusesService
+ * @property TrackersService $trackersService
+ * @property ProjectsService $projectsService
+ * @property EnumerationsService $enumerationsService
+ * @property IssueCategoriesService $categoriesService
+ * @property JournalsService $journalsService
+ *
+ * @package App\Http\Controllers
+ */
 class IssuesController extends BaseController
 {
     protected $issueService;
@@ -23,10 +37,17 @@ class IssuesController extends BaseController
     protected $projectsService;
     protected $categoriesService;
     protected $enumerationsService;
+    protected $journalsService;
 
-    public function __construct(IssuesService $issueService, StatusesService $statusesService,
-                                TrackersService $trackersService, ProjectsService $projectsService,
-                                EnumerationsService $enumerationsService, IssueCategoriesService $categoriesService)
+    public function __construct(
+        IssuesService $issueService,
+        StatusesService $statusesService,
+        TrackersService $trackersService,
+        ProjectsService $projectsService,
+        EnumerationsService $enumerationsService,
+        IssueCategoriesService $categoriesService,
+        JournalsService $journalsService
+    )
     {
         $this->issueService = $issueService;
         $this->statusesService = $statusesService;
@@ -34,6 +55,7 @@ class IssuesController extends BaseController
         $this->projectsService = $projectsService;
         $this->categoriesService = $categoriesService;
         $this->enumerationsService = $enumerationsService;
+        $this->journalsService = $journalsService;
     }
 
     public function project($identifier, GetIssuesRequest $request)
@@ -117,5 +139,10 @@ class IssuesController extends BaseController
 //        return response()->json([$result], 200);
 //    }
 
+    public function getHistory($id)
+    {
+        $data = $this->journalsService->getList(['journalized_id' => $id], ['journalDetails','user']);
 
+        return response()->json($data, 200);
+    }
 }

@@ -1,4 +1,5 @@
 import ServiceBase from "base/service.base";
+import moment from 'moment';
 
 /**
  * @property {Restangular} Restangular
@@ -46,5 +47,19 @@ export default class IssuesService extends ServiceBase {
 
     deleteIssue(issueId) {
         return this.Restangular.one('issues', issueId).remove();
+    }
+
+    getHistory(id) {
+        return this.Restangular.one('issues',id).one('history').get();
+    }
+
+    timeAgo(creationDate) {
+        let daysAgo = moment().diff(moment(creationDate, 'YYYY-MM-DD'), 'days');
+        const yearsAgo = Math.floor(daysAgo / 365);
+        daysAgo -= yearsAgo * 365;
+        const monthsAgo = Math.floor(daysAgo / 30);
+        daysAgo -= monthsAgo * 30;
+
+        return (yearsAgo ? yearsAgo + ' years ' : '') + (monthsAgo ? monthsAgo + ' months ' : '') + daysAgo + ' days';
     }
 }

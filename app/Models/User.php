@@ -46,6 +46,13 @@ class User extends Authenticatable
         'admin'
     ];
 
+    protected $appends = ['avatar_hash'];
+
+    public function getAvatarHashAttribute()
+    {
+        return md5(strtolower(trim($this->email->address)));
+    }
+
     public function email()
     {
         return $this->hasOne(EmailAddresses::class)->where('is_default', true);
