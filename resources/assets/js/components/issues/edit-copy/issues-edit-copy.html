@@ -3,13 +3,10 @@
         <!--<md-progress-linear md-mode="determinate" ng-value="$ctrl.issue.done_ratio"></md-progress-linear>-->
 
         <md-card-header>
-
             <h1>Edit</h1>
-
         </md-card-header>
 
         <md-card-content>
-
             <div>
                 <form name="editIssue">
 
@@ -103,6 +100,10 @@
                         <textarea ng-model="$ctrl.issue.description" rows="5"></textarea>
                     </md-input-container>
 
+                    <md-input-container class="md-block">
+                        <label>Notes</label>
+                        <textarea ng-model="$ctrl.issue.notes" rows="5"></textarea>
+                    </md-input-container>
                 </form>
             </div>
 

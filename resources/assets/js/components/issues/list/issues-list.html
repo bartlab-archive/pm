@@ -231,6 +231,9 @@
                                     <div ng-if="detail.prop_key==='due_date'">
                                         <strong>Due date</strong> set to <i>{{$ctrl.convertDate(detail.value)}}</i>
                                     </div>
+                                    <div ng-if="detail.prop_key==='start_date'">
+                                        <strong>Start date</strong> set to <i>{{$ctrl.convertDate(detail.value)}}</i>
+                                    </div>
                                     <div ng-if="detail.prop_key==='is_private'">
                                         <strong>Private</strong> changed from
                                         <i>{{+detail.old_value ? 'Yes' : 'No'}}</i>
@@ -248,7 +251,6 @@
                             </md-list>
                             <p ng-if="item.notes">{{item.notes}}</p>
                             <md-divider ng-if="!$last"></md-divider>
-
                         </div>
                     </button>
                 </md-list-item>

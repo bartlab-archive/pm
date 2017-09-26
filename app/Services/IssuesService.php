@@ -4,12 +4,29 @@ namespace App\Services;
 
 use App\Models\Issue;
 use App\Models\IssueStatuse;
+use App\Models\Journal;
 use App\Models\Project;
 use App\Models\Tracker;
+use Illuminate\Support\Facades\Auth;
 
-
+/**
+ * Class IssuesService
+ *
+ * JournalsService $journalsService
+ * JournalDetailsService $journalDetailsService
+ *
+ * @package App\Services
+ */
 class IssuesService
 {
+    protected $journalsService;
+    protected $journalDetailsService;
+
+    public function __construct(JournalsService $journalsService, JournalDetailsService $journalDetailsService)
+    {
+        $this->journalsService = $journalsService;
+        $this->journalDetailsService = $journalDetailsService;
+    }
 
     public function one($id)
     {
@@ -19,6 +36,48 @@ class IssuesService
     public function update($id, array $data)
     {
         if ($issue = Issue::where('id', $id)->firstOrFail()) {
+            /**
+             * @var Journal $journal
+             */
+            $journal = $this->journalsService->create([
+                'notes' => isset($data['notes']) ? $data['notes'] : null,
+                'journalized_type' => 'Issue',
+                'journalized_id' => $issue->id,
+                'user_id' => Auth::user()->id,
+                'created_on' => date('Y-m-d H:i:s')
+            ]);
+            unset($data['notes']);
+
+            $fields = [
+                'tracker_id',
+                'project_id',
+                'status_id',
+                'assigned_to_id',
+                'done_ratio',
+                'project_id',
+                'priority_id',
+                'priority_id',
+                'subject',
+                'estimated_hours',
+                'description',
+                'due_date',
+                'is_private',
+                'parent_id',
+                'start_date'
+            ];
+
+            foreach ($fields as $field) {
+                if (isset($data[$field]) && $issue[$field] != $data[$field]) {
+                    $this->journalDetailsService->create([
+                        'journal_id' => $journal->id,
+                        'property' => 'attr',
+                        'prop_key' => $field,
+                        'old_value' => $issue[$field],
+                        'value' => $data[$field]
+                    ]);
+                }
+            }
+
             $issue->update($data);
             return $issue;
         }

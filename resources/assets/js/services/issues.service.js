@@ -50,16 +50,20 @@ export default class IssuesService extends ServiceBase {
     }
 
     getHistory(id) {
-        return this.Restangular.one('issues',id).one('history').get();
+        return this.Restangular.one('issues', id).one('history').get();
     }
 
     timeAgo(creationDate) {
         let daysAgo = moment().diff(moment(creationDate, 'YYYY-MM-DD'), 'days');
         const yearsAgo = Math.floor(daysAgo / 365);
+        if (yearsAgo) {
+            return yearsAgo === 1 ? 'year' : (yearsAgo + ' years');
+        }
+
         daysAgo -= yearsAgo * 365;
         const monthsAgo = Math.floor(daysAgo / 30);
         daysAgo -= monthsAgo * 30;
 
-        return (yearsAgo ? yearsAgo + ' years ' : '') + (monthsAgo ? monthsAgo + ' months ' : '') + daysAgo + ' days';
+        return (monthsAgo ? monthsAgo + ' months ' : '') + daysAgo + ' days';
     }
 }
