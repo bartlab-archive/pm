@@ -46,7 +46,7 @@ export default class ProjectsService extends ServiceBase {
         return module;
     };
 
-    getList(params) {
+    getList(params = {}) {
         return this.Restangular.all('projects').getList(params);
     }
 
@@ -122,8 +122,8 @@ export default class ProjectsService extends ServiceBase {
         return this.Restangular.one('projects', 'versions').customPUT(data, versionId);
     }
 
-    closeCompletedVersions(identifier){
-        return this.Restangular.one('projects', identifier).one('versions','close-completed').put();
+    closeCompletedVersions(identifier) {
+        return this.Restangular.one('projects', identifier).one('versions', 'close-completed').put();
     }
 
     createIssueCategory(identifier, data) {

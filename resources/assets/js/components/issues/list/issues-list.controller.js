@@ -1,5 +1,6 @@
 import ControllerBase from 'base/controller.base';
 import angular from 'angular';
+import moment from 'moment';
 import * as _ from "lodash";
 
 /**
@@ -48,7 +49,9 @@ export default class IssuesListController extends ControllerBase {
             }
         });
 
-
+        this.ProjectsService.getList().then((response) => {
+            this.projects = _.keyBy(_.get(response, 'data', null), 'id');
+        });
     }
 
     load() {
@@ -80,7 +83,7 @@ export default class IssuesListController extends ControllerBase {
         this.selectAllState = false;
         this.IssuesService.getListByProject(this.$stateParams.project_id, params)
             .then((response) => {
-                this.list = response.data;
+                this.list = _.keyBy(response.data, 'id');
                 this.count = response.headers('X-Total');
             });
     }
@@ -95,7 +98,7 @@ export default class IssuesListController extends ControllerBase {
             if (!_.isEmpty(response.data)) {
                 this.statuses = _.keyBy(_.get(response, 'data.statuses', null), 'id');
                 this.trackers = _.keyBy(_.get(response, 'data.trackers', null), 'id');
-                this.priorities = _.get(response, 'data.priorities', null);
+                this.priorities = _.keyBy(_.get(response, 'data.priorities', null), 'id');
 
                 if (this.statuses) {
                     _.forEach(this.statuses, (item) => {
@@ -221,5 +224,9 @@ export default class IssuesListController extends ControllerBase {
 
     showAvatar(hash) {
         return '//www.gravatar.com/avatar/' + hash + '?rating=PG&amp;size=24&amp;default=';
+    }
+
+    convertDate(date){
+        return moment(date).format('DD/MM/YYYY')
     }
 }
