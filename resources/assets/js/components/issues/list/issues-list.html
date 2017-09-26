@@ -122,7 +122,7 @@
             </md-button>
         </md-card-header>
 
-        <md-card-content ng-scrollbars ng-scrollbars-config="$ctrl.scrollBarConfigDescription">
+        <md-card-content ng-scrollbars ng-scrollbars-config="$ctrl.scrollBarConfigDescription" class="md-body-1">
             <div ng-if="$ctrl.showMore">
                 <p><b>Priority:</b> {{ $ctrl.prioritiesList[$ctrl.selectedIssue.priority_id] }}</p>
                 <p><b>Assignee:</b> <a ui-sref="users.info({id:$ctrl.selectedIssue.user.id})">{{
@@ -133,117 +133,124 @@
                 <md-divider></md-divider>
             </div>
             <div markdown-to-html="$ctrl.selectedIssue.description || ''"></div>
+            <md-divider></md-divider>
 
-            <md-list ng-if="$ctrl.history">
+            <md-list ng-if="$ctrl.history" class="md-dense">
                 <md-list-item ng-repeat="item in $ctrl.history">
-                    <div>
-                        <img src="{{$ctrl.showAvatar(item.user.avatar_hash)}}" width="24" height="24">
-                        Updated by
-                        <md-button ng-click="$ctrl.$state.go('users.info', {id: item.user.id})">
-                            {{item.user.firstname + ' ' + item.user.lastname }}
-                        </md-button>
-                        <md-button
-                                ng-click="$ctrl.$state.go('projects.inner.activity', {id: item.user.id, from: item.created_on})">
-                            {{$ctrl.IssuesService.timeAgo(item.created_on)}}
-                        </md-button>
-                        ago
-                        <ul>
-                            <li ng-repeat="detail in item.journal_details | filter: {available: true}">
-                                <div ng-if="detail.prop_key==='tracker_id'">
-                                    <strong>Tracker</strong>
-                                    changed from
-                                    <i>{{$ctrl.trackers[+detail.old_value] ? $ctrl.trackers[+detail.old_value].name :
-                                        detail.old_value}}</i>
-                                    to
-                                    <i>{{$ctrl.trackers[+detail.value] ? $ctrl.trackers[+detail.value].name :
-                                        detail.value}}</i>
-                                </div>
-                                <div ng-if="detail.prop_key==='status_id'">
-                                    <strong>Status</strong>
-                                    changed from
-                                    <i>{{$ctrl.statuses[+detail.old_value] ? $ctrl.statuses[+detail.old_value].name :
-                                        detail.old_value}}</i>
-                                    to
-                                    <i>{{$ctrl.statuses[+detail.value] ? $ctrl.statuses[+detail.value].name :
-                                        detail.value}}</i>
-                                </div>
-                                <div ng-if="detail.prop_key==='estimated_hours'">
-                                    <strong>Estimated time</strong>
-                                    set to
-                                    <i>{{detail.value ? detail.value : 0}} h</i>
-                                </div>
-                                <div ng-if="detail.prop_key==='assigned_to_id'">
-                                    <strong>Assignee</strong>
-                                    changed from
-                                    <i>{{$ctrl.users[+detail.old_value] ?
-                                        ($ctrl.users[+detail.old_value].firstname + ' ' +
-                                        $ctrl.users[+detail.old_value].lastname):
-                                        detail.old_value}}</i>
-                                    to
-                                    <i>{{$ctrl.users[+detail.value] ?
-                                        ($ctrl.users[+detail.value].firstname + ' ' +
-                                        $ctrl.users[+detail.value].lastname):
-                                        detail.value}}</i>
-                                </div>
-                                <div ng-if="detail.prop_key==='priority_id'">
-                                    <strong>Project</strong>
-                                    changed from
-                                    <i>{{$ctrl.projects[+detail.old_value] ?
-                                        $ctrl.projects[+detail.old_value].name : detail.old_value}}</i>
-                                    to
-                                    <i>{{$ctrl.projects[+detail.value] ?
-                                        $ctrl.projects[+detail.value].name : detail.value}}</i>
-                                </div>
-                                <div ng-if="detail.prop_key==='project_id'">
-                                    <strong>Priority</strong>
-                                    changed from
-                                    <i>{{$ctrl.priorities[+detail.old_value] ?
-                                        $ctrl.priorities[+detail.old_value].name : detail.old_value}}</i>
-                                    to
-                                    <i>{{$ctrl.priorities[+detail.value] ?
-                                        $ctrl.priorities[+detail.value].name : detail.value}}</i>
-                                </div>
-                                <div ng-if="detail.prop_key==='relates'">
-                                    <strong>Related to</strong>
-                                    <md-button ng-click="$ctrl.viewIssue($ctrl.list[+detail.value])">
-                                        <i>Feature {{detail.value}}</i>
-                                    </md-button>
-                                    <i>{{$ctrl.list[+detail.value] ?
-                                        $ctrl.list[+detail.value].subject : detail.value}} added</i>
-                                </div>
-                                <div ng-if="detail.prop_key==='done_ratio'">
-                                    <strong>% Done</strong> changed from <i>{{detail.old_value}}</i> to <i>{{detail.value}}</i>
-                                </div>
-                                <div ng-if="detail.prop_key==='subject'">
-                                    <strong>Subject</strong> changed from <i>{{detail.old_value}}</i> to <i>{{detail.value}}</i>
-                                </div>
-                                <div ng-if="detail.prop_key==='description'">
-                                    <strong>Description</strong> updated</i>
-                                </div>
-                                <div ng-if="detail.prop_key==='parent_id'">
-                                    <strong>Parent task</strong> set to <i>#{{detail.value}}</i>
-                                </div>
-                                <div ng-if="detail.prop_key==='due_date'">
-                                    <strong>Due date</strong> set to <i>{{$ctrl.convertDate(detail.value)}}</i>
-                                </div>
-                                <div ng-if="detail.prop_key==='is_private'">
-                                    <strong>Private</strong> changed from
-                                    <i>{{+detail.old_value ? 'Yes' : 'No'}}</i>
-                                    to
-                                    <i>{{+detail.value ? 'Yes' : 'No'}}</i>
-                                </div>
-                                <div ng-if="detail.property==='attachment'">
-                                    <strong>File</strong>
-                                    <i>{{detail.old_value ? detail.old_value : detail.value}}</i>
-                                    <span ng-if="detail.old_value">deleted</span>
-                                    <span ng-if="detail.value">added</span>
-                                </div>
-                            </li>
-                        </ul>
-                        <div ng-if="item.notes">
-                            <p>{{item.notes}}</p>
+                    <button class="md-button md-no-style" type="button">
+                        <div class="history">
+                            <img src="{{$ctrl.showAvatar(item.user.avatar_hash)}}" width="24" height="24">
+                            Updated by
+                            <md-button ng-click="$ctrl.$state.go('users.info', {id: item.user.id})">
+                                <span class="md-caption">{{item.user.firstname + ' ' + item.user.lastname }}</span>
+                            </md-button>
+                            <md-button
+                                    ng-click="$ctrl.$state.go('projects.inner.activity', {id: item.user.id, from: item.created_on})">
+                                <span class="md-caption">{{$ctrl.IssuesService.timeAgo(item.created_on)}}</span>
+                            </md-button>
+                            ago
+
+                            <md-list>
+                                <md-list-item ng-repeat="detail in item.journal_details">
+                                    <div ng-if="detail.prop_key =='tracker_id'">
+                                        <strong>Tracker</strong>
+                                        changed from
+                                        <i>{{$ctrl.trackers[+detail.old_value] ? $ctrl.trackers[+detail.old_value].name
+                                            :
+                                            detail.old_value}}</i>
+                                        to
+                                        <i>{{$ctrl.trackers[+detail.value] ? $ctrl.trackers[+detail.value].name :
+                                            detail.value}}</i>
+                                    </div>
+                                    <div ng-if="detail.prop_key==='status_id'">
+                                        <strong>Status</strong>
+                                        changed from
+                                        <i>{{$ctrl.statuses[+detail.old_value] ? $ctrl.statuses[+detail.old_value].name
+                                            :
+                                            detail.old_value}}</i>
+                                        to
+                                        <i>{{$ctrl.statuses[+detail.value] ? $ctrl.statuses[+detail.value].name :
+                                            detail.value}}</i>
+                                    </div>
+                                    <div ng-if="detail.prop_key==='estimated_hours'">
+                                        <strong>Estimated time</strong>
+                                        set to
+                                        <i>{{detail.value ? detail.value : 0}} h</i>
+                                    </div>
+                                    <div ng-if="detail.prop_key==='assigned_to_id'">
+                                        <strong>Assignee</strong>
+                                        changed from
+                                        <i>{{$ctrl.users[+detail.old_value] ?
+                                            ($ctrl.users[+detail.old_value].firstname + ' ' +
+                                            $ctrl.users[+detail.old_value].lastname):
+                                            detail.old_value}}</i>
+                                        to
+                                        <i>{{$ctrl.users[+detail.value] ?
+                                            ($ctrl.users[+detail.value].firstname + ' ' +
+                                            $ctrl.users[+detail.value].lastname):
+                                            detail.value}}</i>
+                                    </div>
+                                    <div ng-if="detail.prop_key==='priority_id'">
+                                        <strong>Project</strong>
+                                        changed from
+                                        <i>{{$ctrl.projects[+detail.old_value] ?
+                                            $ctrl.projects[+detail.old_value].name : detail.old_value}}</i>
+                                        to
+                                        <i>{{$ctrl.projects[+detail.value] ?
+                                            $ctrl.projects[+detail.value].name : detail.value}}</i>
+                                    </div>
+                                    <div ng-if="detail.prop_key==='project_id'">
+                                        <strong>Priority</strong>
+                                        changed from
+                                        <i>{{$ctrl.priorities[+detail.old_value] ?
+                                            $ctrl.priorities[+detail.old_value].name : detail.old_value}}</i>
+                                        to
+                                        <i>{{$ctrl.priorities[+detail.value] ?
+                                            $ctrl.priorities[+detail.value].name : detail.value}}</i>
+                                    </div>
+                                    <div ng-if="detail.prop_key==='relates'">
+                                        <strong>Related to</strong>
+                                        <md-button ng-click="$ctrl.viewIssue($ctrl.list[+detail.value])">
+                                            <i>Feature {{detail.value}}</i>
+                                        </md-button>
+                                        <i>{{$ctrl.list[+detail.value] ?
+                                            $ctrl.list[+detail.value].subject : detail.value}} added</i>
+                                    </div>
+                                    <div ng-if="detail.prop_key==='done_ratio'">
+                                        <strong>% Done</strong> changed from <i>{{detail.old_value}}</i> to <i>{{detail.value}}</i>
+                                    </div>
+                                    <div ng-if="detail.prop_key==='subject'">
+                                        <strong>Subject</strong> changed from <i>{{detail.old_value}}</i> to <i>{{detail.value}}</i>
+                                    </div>
+                                    <div ng-if="detail.prop_key==='description'">
+                                        <strong>Description</strong> updated</i>
+                                    </div>
+                                    <div ng-if="detail.prop_key==='parent_id'">
+                                        <strong>Parent task</strong> set to <i>#{{detail.value}}</i>
+                                    </div>
+                                    <div ng-if="detail.prop_key==='due_date'">
+                                        <strong>Due date</strong> set to <i>{{$ctrl.convertDate(detail.value)}}</i>
+                                    </div>
+                                    <div ng-if="detail.prop_key==='is_private'">
+                                        <strong>Private</strong> changed from
+                                        <i>{{+detail.old_value ? 'Yes' : 'No'}}</i>
+                                        to
+                                        <i>{{+detail.value ? 'Yes' : 'No'}}</i>
+                                    </div>
+                                    <div ng-if="detail.property==='attachment'">
+                                        <strong>File</strong>
+                                        <i>{{detail.old_value ? detail.old_value : detail.value}}</i>
+                                        <span ng-if="detail.old_value">deleted</span>
+                                        <span ng-if="detail.value">added</span>
+                                    </div>
+                                    <md-divider ng-if="!$last"></md-divider>
+                                </md-list-item>
+                            </md-list>
+                            <p ng-if="item.notes">{{item.notes}}</p>
+                            <md-divider ng-if="!$last"></md-divider>
+
                         </div>
-                    </div>
+                    </button>
                 </md-list-item>
             </md-list>
         </md-card-content>
