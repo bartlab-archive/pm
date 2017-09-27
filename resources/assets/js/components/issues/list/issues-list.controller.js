@@ -37,6 +37,7 @@ export default class IssuesListController extends ControllerBase {
                 this.selectedIssue = null;
                 this.selectAllState = false;
                 this.offset = 0;
+                this.limitPerPage = 20;
 
                 this.loadFiltersValues();
                 this.load();
@@ -59,6 +60,7 @@ export default class IssuesListController extends ControllerBase {
             'status_ids': [],
             'tracker_ids': [],
             'priority_ids': [],
+            'limit': this.limitPerPage,
             'offset': this.offset
         };
 
@@ -133,7 +135,8 @@ export default class IssuesListController extends ControllerBase {
 
     selectAll() {
         this.selectAllState = !this.selectAllState;
-        this.list.forEach((item) => {
+
+        Object.values(this.list).forEach((item) => {
             item.selected = this.selectAllState;
         });
     }
@@ -204,16 +207,21 @@ export default class IssuesListController extends ControllerBase {
         this.showMore = !this.showMore;
     }
 
+    setLimitPerPage(count) {
+        this.limitPerPage = count;
+        this.onChangeFilterValue();
+    }
+
     next() {
-        if (this.offset + 20 < this.count) {
-            this.offset += 20;
+        if (this.offset + this.limitPerPage < this.count) {
+            this.offset += this.limitPerPage;
             this.load();
         }
     }
 
     previous() {
         if (this.offset > 0) {
-            this.offset = this.offset - 20;
+            this.offset = this.offset - this.limitPerPage;
             this.load();
         }
     }
@@ -228,5 +236,9 @@ export default class IssuesListController extends ControllerBase {
 
     convertDate(date){
         return moment(date).format('DD/MM/YYYY')
+    }
+
+    openOffsetMenu($mdMenu, ev) {
+        $mdMenu.open(ev);
     }
 }

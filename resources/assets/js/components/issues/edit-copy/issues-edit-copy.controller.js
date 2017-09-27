@@ -23,6 +23,7 @@ export default class IssuesEditCopyController extends ControllerBase {
         this.statusesList = [];
         this.categoriesList = [];
         this.prioritiesList = [];
+        this.cardTitle = '';
 
         this.loadIssue();
     }
@@ -47,6 +48,10 @@ export default class IssuesEditCopyController extends ControllerBase {
             this.trackersList = _.get(response, 'data.trackersList', []);
 
         });
+
+        this.$state.current.name === 'issues.copy'
+            ? this.cardTitle = 'Copy'
+            : this.cardTitle = 'Edit';
     }
 
 

@@ -119,9 +119,11 @@ class IssuesService
             $query = $query->whereIn('priority_id', $priorities);
         }
 
+        $limit = array_get($params, 'limit');
+
         $result = [
             'count' => $query->count(),
-            'issues' => $query->offset($offset)->limit(20)->get()
+            'issues' => $query->offset($offset)->limit($limit)->get()
 
         ];
 

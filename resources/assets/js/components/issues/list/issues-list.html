@@ -11,18 +11,38 @@
 
             <div flex></div>
 
-            <md-button class="pages-button">
-                {{$ctrl.offset === 0 ? $ctrl.offset + 1 : $ctrl.offset}}-{{($ctrl.count < 20 || $ctrl.count <
-                $ctrl.offset + 20) ? $ctrl.count :
-                $ctrl.offset + 20}} {{($ctrl.count > 20) ? ' / ' +
-                $ctrl.count : ''}}
-            </md-button>
+            <md-menu>
+                <md-button class="pages-button" ng-click="$ctrl.openOffsetMenu($mdMenu, $event)">
+                    {{$ctrl.offset === 0 ? $ctrl.offset + 1 :
+                    $ctrl.offset}}-{{($ctrl.count < $ctrl.limitPerPage || $ctrl.count <
+                    $ctrl.offset + $ctrl.limitPerPage) ? $ctrl.count :
+                    $ctrl.offset + $ctrl.limitPerPage}} {{($ctrl.count > $ctrl.limitPerPage) ? ' / ' +
+                    $ctrl.count : ''}}
+                </md-button>
+                <md-menu-content>
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.setLimitPerPage(20)">
+                            20
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.setLimitPerPage(50)">
+                            50
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.setLimitPerPage(100)">
+                            100
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
 
             <md-button ng-click="$ctrl.previous()" ng-disabled="$ctrl.offset === 0" class="md-icon-button">
                 <md-icon>keyboard_arrow_left</md-icon>
             </md-button>
 
-            <md-button ng-click="$ctrl.next()" ng-disabled="$ctrl.offset + 20 >= $ctrl.count" class="md-icon-button">
+            <md-button ng-click="$ctrl.next()" ng-disabled="$ctrl.offset + $ctrl.limitPerPage >= $ctrl.count" class="md-icon-button">
                 <md-icon>keyboard_arrow_right</md-icon>
             </md-button>
 
