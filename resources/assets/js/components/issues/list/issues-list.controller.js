@@ -1,6 +1,5 @@
 import ControllerBase from 'base/controller.base';
 import angular from 'angular';
-import moment from 'moment';
 import * as _ from "lodash";
 
 /**
@@ -175,9 +174,6 @@ export default class IssuesListController extends ControllerBase {
     }
 
     viewIssue(issue) {
-        this.IssuesService.getHistory(issue.id).then((response) => {
-            this.history = _.keyBy(response.data, 'id')
-        });
         this.selectedIssue = issue;
     }
 
@@ -230,15 +226,5 @@ export default class IssuesListController extends ControllerBase {
         return _.get(this.$state, 'data.layoutDefault.projectId') || _.get(this.$stateParams, 'project_id');
     }
 
-    showAvatar(hash) {
-        return '//www.gravatar.com/avatar/' + hash + '?rating=PG&amp;size=24&amp;default=';
-    }
 
-    convertDate(date){
-        return moment(date).format('DD/MM/YYYY')
-    }
-
-    openOffsetMenu($mdMenu, ev) {
-        $mdMenu.open(ev);
-    }
 }
