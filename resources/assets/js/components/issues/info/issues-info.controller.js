@@ -7,11 +7,12 @@ import * as _ from "lodash";
  * @property {IssuesService} IssuesService
  * @property {$stateParams} $stateParams
  * @property {$rootScope} $rootScope
+ * @property {UsersService} UsersService
  */
 export default class IssuesInfoController extends ControllerBase {
 
     static get $inject() {
-        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService','$rootScope'];
+        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService', '$rootScope', 'UsersService'];
     }
 
     $onInit() {
@@ -21,6 +22,13 @@ export default class IssuesInfoController extends ControllerBase {
         this.prioritiesList = [];
 
         this.loadIssue();
+
+        this.UsersService.getList({}).then((response) => {
+            this.users = _.keyBy(_.get(response, 'data', null), 'id');
+        });
+
+
+
     }
 
     loadIssue() {
@@ -36,10 +44,10 @@ export default class IssuesInfoController extends ControllerBase {
             );
 
             // load addition info
-            this.trackersList = _.get(response, 'data.trackersList', []);
-            this.projectsList = _.get(response, 'data.projectsList', []);
-            this.statusesList = _.get(response, 'data.statusesList', []);
-            this.prioritiesList = _.get(response, 'data.prioritiesList', []);
+            this.trackersList = _.keyBy(_.get(response, 'data.trackersList', []), 'id');
+            this.projectsList = _.keyBy(_.get(response, 'data.projectsList', []), 'id');
+            this.statusesList = _.keyBy(_.get(response, 'data.statusesList', []), 'id');
+            this.prioritiesList = _.keyBy(_.get(response, 'data.prioritiesList', []), 'id');
 
             this.setStatusText(this.issue.status_id);
             this.setTrackerText(this.issue.tracker_id);
