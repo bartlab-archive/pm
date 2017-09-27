@@ -203,6 +203,10 @@ export default class IssuesListController extends ControllerBase {
         this.showMore = !this.showMore;
     }
 
+    openLimitMenu($mdMenu, ev) {
+        $mdMenu.open(ev);
+    };
+
     setLimitPerPage(count) {
         this.limitPerPage = count;
         this.onChangeFilterValue();
