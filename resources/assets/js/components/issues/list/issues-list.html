@@ -51,6 +51,18 @@
             </md-button>
         </md-card-header>
 
+        <md-card-content ng-show="$ctrl.selectedGroup.length > 0">
+            <p>Selected items: {{$ctrl.selectedGroup.length}}</p>
+            <md-button>
+                <md-icon>content_copy</md-icon>
+                Copy
+            </md-button>
+            <md-button ng-click="$ctrl.deleteGroup()">
+                <md-icon>delete</md-icon>
+                Delete
+            </md-button>
+        </md-card-content>
+
         <md-card-content>
             <md-chips
                     ng-model="$ctrl.tags"
@@ -81,7 +93,7 @@
         <md-list class="md-dense" ng-scrollbars ng-scrollbars-config="$ctrl.scrollBarConfigIssue">
 
             <md-list-item class="md-2-line" ng-repeat="row in $ctrl.list" ng-click="$ctrl.viewIssue(row)">
-                <md-checkbox ng-model="row.selected" aria-label="Select issue"></md-checkbox>
+                <md-checkbox ng-model="row.selected" ng-change="$ctrl.onSelectIssue(row)" aria-label="Select issue"></md-checkbox>
 
                 <div class="md-list-item-text" layout="column">
                     <h3>{{ row.id + ' | ' + row.trackers.name + ' | ' + $ctrl.statusesList[row.status_id] + ' | ' +

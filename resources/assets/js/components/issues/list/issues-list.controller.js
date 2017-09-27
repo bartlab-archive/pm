@@ -34,6 +34,7 @@ export default class IssuesListController extends ControllerBase {
                 this.showMore = false;
                 this.searchText = null;
                 this.selectedIssue = null;
+                this.selectedGroup = [];
                 this.selectAllState = false;
                 this.offset = 0;
                 this.limitPerPage = 20;
@@ -90,6 +91,7 @@ export default class IssuesListController extends ControllerBase {
     }
 
     onChangeFilterValue() {
+        this.selectedGroup = [];
         this.offset = 0;
         this.load();
     }
@@ -134,10 +136,31 @@ export default class IssuesListController extends ControllerBase {
 
     selectAll() {
         this.selectAllState = !this.selectAllState;
+        this.selectedGroup = [];
 
         Object.values(this.list).forEach((item) => {
             item.selected = this.selectAllState;
+
+            if (this.selectAllState) {
+                this.addToSelectedGroup(item);
+            }
         });
+    }
+
+    onSelectIssue(issue) {
+        issue.selected ? this.addToSelectedGroup(issue) : this.removeFromSelectedGroup(issue.id);
+    }
+
+    addToSelectedGroup(issue) {
+        this.selectedGroup.push(issue);
+    }
+
+    removeFromSelectedGroup(id) {
+        const index = this.selectedGroup.findIndex((item) => {
+            return item.id === id;
+        });
+
+        this.selectedGroup.splice(index, 1);
     }
 
     setScrollbarContainerHeight() {
@@ -197,6 +220,17 @@ export default class IssuesListController extends ControllerBase {
         this.IssuesService.deleteIssue(id).then(() => {
             this.$rootScope.$emit('updateIssues');
         });
+
+        this.selectedGroup = [];
+        // this.removeFromSelectedGroup(id);
+    }
+
+    deleteGroup() {
+        this.selectedGroup.forEach((issue) => {
+            this.deleteIssue(issue.id);
+        });
+
+        this.selectedGroup = [];
     }
 
     toggleShowMore() {
