@@ -97,6 +97,18 @@
             </div>
             <div markdown-to-html="$ctrl.issue.description || ''"></div>
 
+            <md-divider></md-divider>
+
+            <history-component
+                    ng-if="$ctrl.issue.id"
+                    issue-id="$ctrl.issue.id"
+                    trackers="$ctrl.trackersList"
+                    statuses="$ctrl.statusesList"
+                    users="$ctrl.users"
+                    projects="$ctrl.projectsList"
+                    priorities="$ctrl.prioritiesList"
+                    list="$ctrl.list">
+            </history-component>
         </md-card-content>
 
         <md-card-actions layout="row" layout-align="center center">
