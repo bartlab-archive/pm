@@ -1,4 +1,4 @@
-<div layout-gt-sm="row" layout-align="center start">
+<div layout-gt-sm="row" layout-align="center start" class="issues-container" ng-click="$ctrl.hideContextHandler()">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
         <md-card-header>
             <md-button class="md-icon-button" ng-click="$ctrl.selectAll()">
@@ -92,7 +92,7 @@
 
         <md-list class="md-dense" ng-scrollbars ng-scrollbars-config="$ctrl.scrollBarConfigIssue">
 
-            <md-list-item class="md-2-line" ng-repeat="row in $ctrl.list" ng-click="$ctrl.viewIssue(row)">
+            <md-list-item class="md-2-line has-context-menu" ng-repeat="row in $ctrl.list" id="issue-{{row.id}}" ng-click="$ctrl.viewIssue(row)" ng-mousedown="$ctrl.contextMenuHandler()">
                 <md-checkbox ng-model="row.selected" ng-change="$ctrl.onSelectIssue(row)" aria-label="Select issue"></md-checkbox>
 
                 <div class="md-list-item-text" layout="column">
@@ -205,4 +205,27 @@
             </md-button>
         </md-card-actions>
     </md-card>
+
+    <div class="context-menu" style="left: 0; top: 0; display: none">
+        <md-content>
+            <md-list layout="column" layout-align="center none" flex>
+                <md-list-item class="context-menu-item" ng-click="$ctrl.contextOpen()">
+                        Open
+                </md-list-item>
+                <md-list-item class="context-menu-item" ng-click="$ctrl.contextEdit()">
+                        Edit
+                </md-list-item>
+                <md-list-item class="context-menu-item" ng-click="null">
+                            Watch
+                </md-list-item>
+                <md-list-item class="context-menu-item" ng-click="$ctrl.contextCopy()">
+                            Copy
+                </md-list-item>
+                <md-divider></md-divider>
+                <md-list-item class="context-menu-item" ng-click="$ctrl.contextDelete()">
+                            Delete
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </div>
 </div>

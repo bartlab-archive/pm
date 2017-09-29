@@ -38,6 +38,8 @@ export default class IssuesListController extends ControllerBase {
                 this.selectAllState = false;
                 this.offset = 0;
                 this.limitPerPage = 20;
+                this.contextTarget = '';
+                this.contextState = false;
 
                 this.loadFiltersValues();
                 this.load();
@@ -222,7 +224,6 @@ export default class IssuesListController extends ControllerBase {
         });
 
         this.selectedGroup = [];
-        // this.removeFromSelectedGroup(id);
     }
 
     deleteGroup() {
@@ -264,5 +265,63 @@ export default class IssuesListController extends ControllerBase {
         return _.get(this.$state, 'data.layoutDefault.projectId') || _.get(this.$stateParams, 'project_id');
     }
 
+    showContextMenu(coordX, coordY) {
+        $('.context-menu').css('left', coordX);
+        $('.context-menu').css('top', coordY);
+        $('.context-menu').css('display', 'block');
 
+        this.contextState = true;
+    }
+
+    hideContextMenu() {
+        $('.context-menu').css('display', 'none');
+        $('.context-menu').css('left', 0);
+        $('.context-menu').css('top', 0);
+
+        this.contextState = false;
+    }
+
+    contextMenuHandler() {
+        const _this = this;
+
+        $('.has-context-menu').contextmenu(function (event) {
+            event.stopPropagation();
+            event.preventDefault();
+
+            _this.contextState ? _this.hideContextMenu() : _this.showContextMenu(event.pageX, event.pageY);
+            _this.contextTarget = ($(this).closest('.has-context-menu').attr('id')).substr(6);
+
+            $(this).off(event);
+        });
+    }
+
+    hideContextHandler() {
+        const _this = this;
+
+        if (this.contextState) {
+            $('.issues-container').on('click', function(event) {
+                event.stopPropagation();
+                event.preventDefault();
+                _this.hideContextMenu();
+
+                $('.has-context-menu').unbind('contextmenu').bind('contextmenu');
+            })
+        }
+    }
+
+    contextOpen() {
+        this.openIssue(this.contextTarget, '');
+    }
+
+    contextEdit() {
+        this.editIssue(this.contextTarget, '');
+    }
+
+    contextCopy() {
+        this.copyIssue(this.contextTarget, '');
+    }
+
+    contextDelete() {
+        this.deleteIssue(this.contextTarget, '');
+    }
 }
