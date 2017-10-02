@@ -165,6 +165,8 @@ Route::group(
                 Route::put('/{id}', 'IssuesController@update');
                 Route::delete('/{id}', 'IssuesController@delete');
                 Route::get('/{id}/history', 'IssuesController@getHistory');
+                Route::post('/{id}/watch', 'IssuesController@watch');
+                Route::delete('/{id}/watch', 'IssuesController@unwatch');
 //                Route::get('/{id}/infoedit/{project_id}', 'IssuesController@infoEdit');
             }
         );

@@ -68,6 +68,14 @@ export default class IssuesInfoController extends ControllerBase {
         this.$state.go('issues.copy', {project_id: this.$stateParams.project_id, id: this.issue.id});
     }
 
+    watch() {
+        this.$state.go('issues.watch', {project_id: this.$stateParams.project_id, id: this.issue.id});
+    }
+
+    unwatch() {
+        this.$state.go('issues.unwatch', {project_id: this.$stateParams.project_id, id: this.issue.id});
+    }
+
     setStatusText(statusId) {
         let status = _.find(this.statusesList, ['id', +statusId]);
         this.statusText = status ? status.name : '';

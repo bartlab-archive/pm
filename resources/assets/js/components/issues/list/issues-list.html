@@ -189,7 +189,12 @@
                 Edit
             </md-button>
 
-            <md-button ng-click="null">
+            <md-button ng-if="$ctrl.selectedIssue.watch_state" ng-click="$ctrl.unwatchIssue($ctrl.selectedIssue.id)">
+                <md-icon>star_border</md-icon>
+                Unwatch
+            </md-button>
+
+            <md-button ng-if="$ctrl.selectedIssue.watch_state == false" ng-click="$ctrl.watchIssue($ctrl.selectedIssue.id)">
                 <md-icon>star_border</md-icon>
                 Watch
             </md-button>
@@ -209,20 +214,20 @@
     <div class="context-menu" style="left: 0; top: 0; display: none">
         <md-content>
             <md-list layout="column" layout-align="center none" flex>
-                <md-list-item class="context-menu-item" ng-click="$ctrl.contextOpen()">
+                <md-list-item class="context-menu-item" ng-click="$ctrl.openIssue($ctrl.contextTarget)">
                         Open
                 </md-list-item>
-                <md-list-item class="context-menu-item" ng-click="$ctrl.contextEdit()">
+                <md-list-item class="context-menu-item" ng-click="$ctrl.editIssue($ctrl.contextTarget)">
                         Edit
                 </md-list-item>
                 <md-list-item class="context-menu-item" ng-click="null">
                             Watch
                 </md-list-item>
-                <md-list-item class="context-menu-item" ng-click="$ctrl.contextCopy()">
+                <md-list-item class="context-menu-item" ng-click="$ctrl.copyIssue($ctrl.contextTarget)">
                             Copy
                 </md-list-item>
                 <md-divider></md-divider>
-                <md-list-item class="context-menu-item" ng-click="$ctrl.contextDelete()">
+                <md-list-item class="context-menu-item" ng-click="$ctrl.deleteIssue($ctrl.contextTarget)">
                             Delete
                 </md-list-item>
             </md-list>

@@ -11,6 +11,7 @@ use App\Services\JournalsService;
 use App\Services\ProjectsService;
 use App\Services\StatusesService;
 use App\Services\TrackersService;
+use App\Services\WatchersService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -26,6 +27,7 @@ use Illuminate\Support\Facades\Auth;
  * @property EnumerationsService $enumerationsService
  * @property IssueCategoriesService $categoriesService
  * @property JournalsService $journalsService
+ * @property WatchersService $watchersService
  *
  * @package App\Http\Controllers
  */
@@ -38,6 +40,7 @@ class IssuesController extends BaseController
     protected $categoriesService;
     protected $enumerationsService;
     protected $journalsService;
+    protected $watchersService;
 
     public function __construct(
         IssuesService $issueService,
@@ -46,7 +49,8 @@ class IssuesController extends BaseController
         ProjectsService $projectsService,
         EnumerationsService $enumerationsService,
         IssueCategoriesService $categoriesService,
-        JournalsService $journalsService
+        JournalsService $journalsService,
+        WatchersService $watchersService
     )
     {
         $this->issueService = $issueService;
@@ -56,11 +60,13 @@ class IssuesController extends BaseController
         $this->categoriesService = $categoriesService;
         $this->enumerationsService = $enumerationsService;
         $this->journalsService = $journalsService;
+        $this->watchersService = $watchersService;
     }
 
     public function project($identifier, GetIssuesRequest $request)
     {
         $data = $this->issueService->list($identifier, $request->all());
+
         return response()
             ->json($data['issues'], 200)
             ->header('X-Total', $data['count']);
@@ -69,6 +75,7 @@ class IssuesController extends BaseController
     public function getIssue($id, Request $request)
     {
         $issue = $this->issueService->one($id);
+        $issue['watch_state'] = $this->watchersService->isWatched($id);
 
         $response = [
             'projectsList' => $this->projectsService->list(),
@@ -144,5 +151,26 @@ class IssuesController extends BaseController
         $data = $this->journalsService->getList(['journalized_id' => $id], ['journalDetails','user']);
 
         return response()->json($data, 200);
+    }
+
+    public function watch($id)
+    {
+        $data = [
+            'watchable_type' => 'Issue',
+            'watchable_id'   => $id,
+            'user_id'        => Auth::id()
+        ];
+
+        return response()->json($this->watchersService->startWatching($data), 200);
+    }
+
+    public function unwatch($id)
+    {
+        $data = [
+            'watchable_id' => $id,
+            'user_id'      => Auth::id()
+        ];
+
+        return response()->json($this->watchersService->stopWatching($data), 200);
     }
 }

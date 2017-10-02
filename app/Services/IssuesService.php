@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\Auth;
 /**
  * Class IssuesService
  *
- * JournalsService $journalsService
- * JournalDetailsService $journalDetailsService
+ * @property JournalsService $journalsService
+ * @property JournalDetailsService $journalDetailsService
+ * @property WatchersService $watchersService
  *
  * @package App\Services
  */
@@ -21,11 +22,17 @@ class IssuesService
 {
     protected $journalsService;
     protected $journalDetailsService;
+    protected $watchersService;
 
-    public function __construct(JournalsService $journalsService, JournalDetailsService $journalDetailsService)
+    public function __construct(
+        JournalsService $journalsService,
+        JournalDetailsService $journalDetailsService,
+        WatchersService $watchersService
+    )
     {
         $this->journalsService = $journalsService;
         $this->journalDetailsService = $journalDetailsService;
+        $this->watchersService = $watchersService;
     }
 
     public function one($id)
@@ -127,6 +134,10 @@ class IssuesService
 
         ];
 
+        foreach ($result['issues'] as $issue) {
+            $issue['watch_state'] = $this->watchersService->isWatched($issue['id']);
+        }
+
         return $result;
     }
 
@@ -161,7 +172,6 @@ class IssuesService
     {
         return Issue::find($id)->delete();
     }
-
 
 //	public function getInfoFroEdit($project_if)
 //	{

@@ -53,6 +53,14 @@ export default class IssuesService extends ServiceBase {
         return this.Restangular.one('issues', id).one('history').get();
     }
 
+    watch(issue) {
+        return this.Restangular.one(`issues/${issue.id}/watch`).post();
+    }
+
+    unwatch(issue) {
+        return this.Restangular.one(`issues/${issue.id}/watch`).remove();
+    }
+
     timeAgo(creationDate) {
         let daysAgo = moment().diff(moment(creationDate, 'YYYY-MM-DD'), 'days');
         const yearsAgo = Math.floor(daysAgo / 365);

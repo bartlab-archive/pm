@@ -210,11 +210,19 @@ export default class IssuesListController extends ControllerBase {
         this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: id});
     }
 
-    editIssue(id, edit) {
+    editIssue(id) {
         this.$state.go('issues.edit', {project_id: this.$stateParams.project_id, id: id});
     }
 
-    copyIssue(id, edit) {
+    watchIssue(id) {
+        this.$state.go('issues.watch', {project_id: this.$stateParams.project_id, id: id});
+    }
+
+    unwatchIssue(id) {
+        this.$state.go('issues.unwatch', {project_id: this.$stateParams.project_id, id: id});
+    }
+
+    copyIssue(id) {
         this.$state.go('issues.copy', {project_id: this.$stateParams.project_id, id: id});
     }
 
@@ -296,32 +304,14 @@ export default class IssuesListController extends ControllerBase {
     }
 
     hideContextHandler() {
-        const _this = this;
-
         if (this.contextState) {
-            $('.issues-container').on('click', function(event) {
+            $('.issues-container').on('click', (event) => {
                 event.stopPropagation();
                 event.preventDefault();
-                _this.hideContextMenu();
+                this.hideContextMenu();
 
                 $('.has-context-menu').unbind('contextmenu').bind('contextmenu');
             })
         }
-    }
-
-    contextOpen() {
-        this.openIssue(this.contextTarget, '');
-    }
-
-    contextEdit() {
-        this.editIssue(this.contextTarget, '');
-    }
-
-    contextCopy() {
-        this.copyIssue(this.contextTarget, '');
-    }
-
-    contextDelete() {
-        this.deleteIssue(this.contextTarget, '');
     }
 }
