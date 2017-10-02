@@ -98,11 +98,31 @@ class IssuesService
         return $issue;
     }
 
-    public function all()
+    public function all($params)
     {
-        return Issue::limit(20)
-            ->with(['trackers', 'user', 'author', 'project'])
-            ->get();
+        $offset = array_get($params, 'offset', 0);
+        $limit = array_get($params, 'limit');
+
+        $query = Issue::with(['trackers', 'user', 'author', 'project']);
+
+        if ($statuses = array_get($params, 'status_ids', [])) {
+            $query = $query->whereIn('status_id', $statuses);
+        }
+
+        if ($trackers = array_get($params, 'tracker_ids', [])) {
+            $query = $query->whereIn('tracker_id', $trackers);
+        }
+
+        if ($priorities = array_get($params, 'priority_ids', [])) {
+            $query = $query->whereIn('priority_id', $priorities);
+        }
+
+        $count = $query->count();
+
+        return [
+            'issues' => $query->offset($offset)->limit($limit)->get(),
+            'count' => $count
+        ];
     }
 
     public function list(string $id, $params = [])

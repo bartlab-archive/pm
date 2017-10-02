@@ -89,6 +89,15 @@ class IssuesController extends BaseController
         return response()->json($response, 200);
     }
 
+    public function getIssues(Request $request)
+    {
+        $data = $this->issueService->all($request);
+
+        return response()
+            ->json($data['issues'], 200)
+            ->header('X-Total', $data['count']);
+    }
+
     public function getIssuesFilters(Request $request)
     {
         return response()->json(

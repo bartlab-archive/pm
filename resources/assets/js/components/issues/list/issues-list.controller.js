@@ -24,7 +24,7 @@ export default class IssuesListController extends ControllerBase {
         this.ProjectsService.one(currentProjectId).then((response) => {
             enabledModules = this.ProjectsService.getModules(_.get(response, 'data.enabled_modules', []));
 
-            if (typeof enabledModules.issue_tracking === 'undefined') {
+            if (typeof enabledModules.issue_tracking === 'undefined' && currentProjectId != undefined) {
                 window.location.href = '/projects/' + currentProjectId;
             } else {
                 this.tags = [];

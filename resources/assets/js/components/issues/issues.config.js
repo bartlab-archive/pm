@@ -57,6 +57,5 @@ export default class IssuesConfig extends InjectableBase {
                 component: issuesWatchComponent.name,
             });
     }
-
 }
 
