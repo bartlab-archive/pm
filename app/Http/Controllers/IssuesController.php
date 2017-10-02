@@ -91,7 +91,7 @@ class IssuesController extends BaseController
 
     public function getIssues(Request $request)
     {
-        $data = $this->issueService->all($request);
+        $data = $this->issueService->list('', $request);
 
         return response()
             ->json($data['issues'], 200)

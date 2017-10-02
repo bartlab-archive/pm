@@ -98,41 +98,24 @@ class IssuesService
         return $issue;
     }
 
-    public function all($params)
+    public function all()
     {
-        $offset = array_get($params, 'offset', 0);
-        $limit = array_get($params, 'limit');
-
-        $query = Issue::with(['trackers', 'user', 'author', 'project']);
-
-        if ($statuses = array_get($params, 'status_ids', [])) {
-            $query = $query->whereIn('status_id', $statuses);
-        }
-
-        if ($trackers = array_get($params, 'tracker_ids', [])) {
-            $query = $query->whereIn('tracker_id', $trackers);
-        }
-
-        if ($priorities = array_get($params, 'priority_ids', [])) {
-            $query = $query->whereIn('priority_id', $priorities);
-        }
-
-        $count = $query->count();
-
-        return [
-            'issues' => $query->offset($offset)->limit($limit)->get(),
-            'count' => $count
-        ];
+        return Issue::limit(20)
+            ->with(['trackers', 'user', 'author', 'project'])->get();
     }
 
-    public function list(string $id, $params = [])
+    public function list(string $id = '', $params = [])
     {
         $offset = array_get($params, 'offset', 0);
 
-        $query = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
-            ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
-            ->where(Project::getTableName() . '.identifier', $id)
-            ->with(['trackers', 'user', 'author', 'project']);
+        if ($id) {
+            $query = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
+                ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
+                ->where(Project::getTableName() . '.identifier', $id)
+                ->with(['trackers', 'user', 'author', 'project']);
+        } else {
+            $query = Issue::with(['trackers', 'user', 'author', 'project']);
+        }
 
         if ($statuses = array_get($params, 'status_ids', [])) {
             $query = $query->whereIn('status_id', $statuses);
