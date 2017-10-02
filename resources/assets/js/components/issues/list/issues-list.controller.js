@@ -38,7 +38,7 @@ export default class IssuesListController extends ControllerBase {
                 this.selectAllState = false;
                 this.offset = 0;
                 this.limitPerPage = 20;
-                this.contextTarget = '';
+                this.contextTarget = [];
                 this.contextState = false;
 
                 this.loadFiltersValues();
@@ -296,8 +296,12 @@ export default class IssuesListController extends ControllerBase {
             event.stopPropagation();
             event.preventDefault();
 
+            Object.values(_this.list).forEach((item) => {
+                if (item.id == ($(this).closest('.has-context-menu').attr('id')).substr(6)) {
+                    _this.contextTarget = item;
+                }
+            });
             _this.contextState ? _this.hideContextMenu() : _this.showContextMenu(event.pageX, event.pageY);
-            _this.contextTarget = ($(this).closest('.has-context-menu').attr('id')).substr(6);
 
             $(this).off(event);
         });

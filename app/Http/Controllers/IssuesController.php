@@ -123,7 +123,7 @@ class IssuesController extends BaseController
 
     public function update($id, UpdateIssueRequest $request)
     {
-        $data = $request->except(['id', 'trackers', 'user', 'author', 'statusText', 'project']);
+        $data = $request->except(['id', 'trackers', 'user', 'author', 'statusText', 'project', 'watch_state']);
         $data['start_date'] = Carbon::parse($data['start_date'])->format('Y-m-d');
         $data['due_date'] = Carbon::parse($data['due_date'])->format('Y-m-d');
 

@@ -214,21 +214,18 @@
     <div class="context-menu" style="left: 0; top: 0; display: none">
         <md-content>
             <md-list layout="column" layout-align="center none" flex>
-                <md-list-item class="context-menu-item" ng-click="$ctrl.openIssue($ctrl.contextTarget)">
-                        Open
+                <md-list-item class="context-menu-item" ng-click="$ctrl.openIssue($ctrl.contextTarget.id)">
+                    Open
                 </md-list-item>
-                <md-list-item class="context-menu-item" ng-click="$ctrl.editIssue($ctrl.contextTarget)">
-                        Edit
+                <md-list-item class="context-menu-item" ng-click="$ctrl.editIssue($ctrl.contextTarget.id)">
+                    Edit
                 </md-list-item>
-                <md-list-item class="context-menu-item" ng-click="null">
-                            Watch
-                </md-list-item>
-                <md-list-item class="context-menu-item" ng-click="$ctrl.copyIssue($ctrl.contextTarget)">
-                            Copy
+                <md-list-item class="context-menu-item" ng-click="$ctrl.copyIssue($ctrl.contextTarget.id)">
+                    Copy
                 </md-list-item>
                 <md-divider></md-divider>
-                <md-list-item class="context-menu-item" ng-click="$ctrl.deleteIssue($ctrl.contextTarget)">
-                            Delete
+                <md-list-item class="context-menu-item" ng-click="$ctrl.deleteIssue($ctrl.contextTarget.id)">
+                    Delete
                 </md-list-item>
             </md-list>
         </md-content>
