@@ -26,9 +26,6 @@ export default class IssuesInfoController extends ControllerBase {
         this.UsersService.getList({}).then((response) => {
             this.users = _.keyBy(_.get(response, 'data', null), 'id');
         });
-
-
-
     }
 
     loadIssue() {
@@ -74,6 +71,12 @@ export default class IssuesInfoController extends ControllerBase {
 
     unwatch() {
         this.$state.go('issues.unwatch', {project_id: this.$stateParams.project_id, id: this.issue.id});
+    }
+
+    delete() {
+        this.IssuesService.deleteIssue(this.issue.id).then(() => {
+            window.location = 'projects/' + this.issue.project.identifier;
+        })
     }
 
     setStatusText(statusId) {
