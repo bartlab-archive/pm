@@ -2,18 +2,12 @@
 
 namespace App\Models;
 
+use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class WikiPage extends Model
 {
-    public static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->{self::CREATED_AT} = $model->freshTimestamp();
-        });
-    }
+    use ModelTrait;
 
     protected $table = 'wiki_pages';
 
@@ -43,6 +37,15 @@ class WikiPage extends Model
     protected $dates = [
         'created_on',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->{self::CREATED_AT} = $model->freshTimestamp();
+        });
+    }
 
     public function content()
     {

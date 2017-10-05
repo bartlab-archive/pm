@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
  *
  * JournalsService $journalsService
  * JournalDetailsService $journalDetailsService
+ * ProjectsService $projectsService
  *
  * @package App\Services
  */
@@ -21,9 +22,16 @@ class IssuesService
 {
     protected $journalsService;
     protected $journalDetailsService;
+    protected $projectsService;
 
-    public function __construct(JournalsService $journalsService, JournalDetailsService $journalDetailsService)
+
+    public function __construct(
+        JournalsService $journalsService,
+        JournalDetailsService $journalDetailsService,
+        ProjectsService $projectsService
+    )
     {
+        $this->projectsService = $projectsService;
         $this->journalsService = $journalsService;
         $this->journalDetailsService = $journalDetailsService;
     }
@@ -98,7 +106,7 @@ class IssuesService
             ->get();
     }
 
-    public function list(string $id, $params = [])
+    public function list(string $id, $params = [], $orderBy = [])
     {
         $offset = array_get($params, 'offset', 0);
 
@@ -117,6 +125,12 @@ class IssuesService
 
         if ($priorities = array_get($params, 'priority_ids', [])) {
             $query = $query->whereIn('priority_id', $priorities);
+        }
+
+        if (!empty([$orderBy])) {
+            foreach ($orderBy as $key => $val) {
+                $query = $query->orderBy($key, $val);
+            }
         }
 
         $limit = array_get($params, 'limit');

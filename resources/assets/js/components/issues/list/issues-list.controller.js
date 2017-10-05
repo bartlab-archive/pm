@@ -44,7 +44,7 @@ export default class IssuesListController extends ControllerBase {
                 this.$rootScope.$on('updateIssues', () => this.load());
                 this.initScrollbar();
 
-                this.UsersService.getList({}).then((response) => {
+                this.UsersService.getList().then((response) => {
                     this.users = _.keyBy(_.get(response, 'data', null), 'id');
                 });
             }

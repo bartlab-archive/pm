@@ -2,8 +2,14 @@
 
 namespace App\Services;
 
+use App\Models\Issue;
 use App\Models\Journal;
 
+/**
+ * Class JournalsService
+ *
+ * @package App\Services
+ */
 class JournalsService
 {
     public function getList($params = [], $with = [])

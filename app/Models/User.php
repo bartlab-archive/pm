@@ -7,6 +7,31 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
 
+/**
+ * Class User
+ *
+ * @property string $login
+ * @property string $hashed_password
+ * @property string $firstname
+ * @property string $lastname
+ * @property string $last_login_on
+ * @property string $language
+ * @property string $created_on
+ * @property string $updated_on
+ * @property string $identity_url
+ * @property string $type
+ * @property string $mail_notification
+ * @property string $salt
+ * @property string $passwd_changed_on
+ * @property string $avatar_hash
+ * @property bool $admin
+ * @property bool $must_change_passwd
+ * @property int $id
+ * @property int $status
+ * @property int $auth_source_id
+ *
+ * @package App\Models
+ */
 class User extends Authenticatable
 {
     use ModelTrait;

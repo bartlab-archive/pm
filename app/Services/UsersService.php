@@ -87,7 +87,12 @@ class UsersService
     public function getList($params = [])
     {
         $users = User::orderBy('firstname')->where('firstname', '!=', '');
-        !empty($params) ? $users->andWhere($params) : null;
+        if (isset($params['ids'])) {
+            $users = $users->whereIn('id', $params['ids']);
+            unset($params['ids']);
+        }
+
+        !empty($params) ? $users = $users->where($params) : null;
 
         return $users->get();
     }
@@ -143,8 +148,6 @@ class UsersService
 
         return $user->update(['passwd_changed_on' => date('Y-m-d H:i:s')]);
     }
-
-
 
 
 }

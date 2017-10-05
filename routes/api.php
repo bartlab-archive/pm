@@ -95,6 +95,8 @@ Route::group(
                 Route::post('/{identifier}/activities', 'ProjectsController@createActivity');
                 Route::delete('/activities/{activityId}', 'ProjectsController@deleteActivity');
                 Route::put('/activities/{activityId}', 'ProjectsController@updateActivity');
+
+                Route::get('/{identifier}/activity', 'ProjectsController@getActivity');
             }
         );
 
@@ -158,6 +160,7 @@ Route::group(
 
             ],
             function () {
+                Route::get('/statuses', 'IssuesController@getIssueStatuses');
                 Route::get('/info', 'IssuesController@getAdditionalInfo');
                 Route::get('/{id}', 'IssuesController@getIssue');
                 Route::get('/', 'IssuesController@getIssues');

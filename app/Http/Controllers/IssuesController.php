@@ -7,6 +7,7 @@ use App\Http\Requests\Issues\UpdateIssueRequest;
 use App\Services\EnumerationsService;
 use App\Services\IssueCategoriesService;
 use App\Services\IssuesService;
+use App\Services\IssueStatusesService;
 use App\Services\JournalsService;
 use App\Services\ProjectsService;
 use App\Services\StatusesService;
@@ -26,6 +27,7 @@ use Illuminate\Support\Facades\Auth;
  * @property EnumerationsService $enumerationsService
  * @property IssueCategoriesService $categoriesService
  * @property JournalsService $journalsService
+ * @property IssueStatusesService $issueStatusesService
  *
  * @package App\Http\Controllers
  */
@@ -38,6 +40,7 @@ class IssuesController extends BaseController
     protected $categoriesService;
     protected $enumerationsService;
     protected $journalsService;
+    protected $issueStatusesService;
 
     public function __construct(
         IssuesService $issueService,
@@ -46,7 +49,8 @@ class IssuesController extends BaseController
         ProjectsService $projectsService,
         EnumerationsService $enumerationsService,
         IssueCategoriesService $categoriesService,
-        JournalsService $journalsService
+        JournalsService $journalsService,
+        IssueStatusesService $issueStatusesService
     )
     {
         $this->issueService = $issueService;
@@ -56,11 +60,12 @@ class IssuesController extends BaseController
         $this->categoriesService = $categoriesService;
         $this->enumerationsService = $enumerationsService;
         $this->journalsService = $journalsService;
+        $this->issueStatusesService = $issueStatusesService;
     }
 
     public function project($identifier, GetIssuesRequest $request)
     {
-        $data = $this->issueService->list($identifier, $request->all());
+        $data = $this->issueService->list($identifier, $request->all(), ['updated_on' => 'desc']);
         return response()
             ->json($data['issues'], 200)
             ->header('X-Total', $data['count']);
@@ -141,8 +146,13 @@ class IssuesController extends BaseController
 
     public function getHistory($id)
     {
-        $data = $this->journalsService->getList(['journalized_id' => $id], ['journalDetails','user']);
+        $data = $this->journalsService->getList(['journalized_id' => $id], ['journalDetails', 'user']);
 
         return response()->json($data, 200);
+    }
+
+    public function getIssueStatuses()
+    {
+        return response()->json($this->issueStatusesService->getList(), 200);
     }
 }

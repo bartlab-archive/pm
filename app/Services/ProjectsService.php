@@ -2,7 +2,19 @@
 
 namespace App\Services;
 
+use App\Models\Document;
+use App\Models\Issue;
+use App\Models\IssueStatuse;
+use App\Models\Journal;
+use App\Models\JournalDetail;
 use App\Models\Project;
+use App\Models\Tracker;
+use App\Models\User;
+use App\Models\Wiki;
+use App\Models\WikiContent;
+use App\Models\WikiContentVersion;
+use App\Models\WikiPage;
+use Illuminate\Support\Carbon;
 
 /**
  * Class ProjectsService
@@ -10,6 +22,7 @@ use App\Models\Project;
  * @property AttachmentsService $attachmentsService
  * @property EnabledModulesService $enabledModulesService
  * @property ProjectTrackersService $projectTrackersService
+ * @property UsersService $usersService
  *
  * @package App\Services
  */
@@ -18,10 +31,20 @@ class ProjectsService
     protected $attachmentsService;
     protected $enabledModulesService;
     protected $projectTrackersService;
+    protected $usersService;
 
-    public function __construct(AttachmentsService $attachmentsService)
+    /**
+     * ProjectsService constructor.
+     * @param AttachmentsService $attachmentsService
+     * @param UsersService $usersService
+     */
+    public function __construct(
+        AttachmentsService $attachmentsService,
+        UsersService $usersService
+    )
     {
         $this->attachmentsService = $attachmentsService;
+        $this->usersService = $usersService;
     }
 
     public function all($isClosed = null)
@@ -47,7 +70,8 @@ class ProjectsService
     /**
      * @return mixed
      */
-    public function list()
+    public
+    function list()
     {
         return Project::select('id', 'name')->get();
     }
@@ -148,6 +172,180 @@ class ProjectsService
     {
         return $this->attachmentsService->getFullFilePath($id);
     }
+
+
+    public function getActivity($projectIdentifier, $params = [])
+    {
+        /**
+         * @var Issue $issue
+         * @var User $user
+         * @var Tracker $tracker
+         * @var IssueStatuse $status
+         * @var Journal $journal
+         * @var WikiContentVersion $wiki
+         * @var Project $project
+         * @var JournalDetail $journalDetails
+         * @var Document $document
+         */
+
+        $project = $this->one($projectIdentifier);
+        $result = [];
+
+        if (isset($params['showIssues']) && $params['showIssues']) {
+            $issues = Issue::with(['journals', 'author', 'trackers', 'issueStatuse'])
+                ->where('project_id', $project->id)
+                ->whereBetween('created_on', [$params['start_date'] . ' 00:00:00', $params['end_date'] . ' 23:59:59'])
+                ->get();
+            foreach ($issues as $issue) {
+                $date = new Carbon($issue->created_on);
+                $user = $issue->author;
+                $tracker = $issue->trackers;
+                $status = $issue->issueStatuse;
+
+                $result[$date->format('m/d/Y')]['_' . $date->format('His')][] = [
+                    'type' => 'issue',
+                    'time' => $date->format('h:i A'),
+                    'author_id' => $issue->author_id,
+                    'avatar_hash' => $user->avatar_hash,
+                    'author_name' => $user->firstname . ' ' . $user->lastname,
+                    'link_ui_sref' => 'issues.info({id: ' . $issue->id . '})',
+                    'link_text' => $tracker->name . ' #' . $issue->id . ' (' . $status->name . ') ' .
+                        (($issue->subject && count($issue->subject) > 65) ?
+                            mb_substr($issue->subject, 0, 65) . '...' : $issue->subject),
+                    'description' => $issue->description ? mb_substr($issue->description, 0, 115) . '...' : null,
+                ];
+            }
+
+            $tableJ = Journal::getTableName();
+            $tableI = Issue::getTableName();
+            $tableJD = JournalDetail::getTableName();
+            $journals = Journal::select($tableJ . '.*')
+                ->with(['user', 'issue', 'issue.trackers', 'issue.issueStatuse'])
+                ->join($tableI, $tableI . '.id', $tableJ . '.journalized_id')
+                ->join($tableJD, $tableJ . '.id', $tableJD . '.journal_id')
+                ->where($tableJD . '.property', '!=', 'attachment')
+                ->where($tableJ . '.journalized_type', 'Issue')
+                ->where($tableI . '.id', $project->id)
+                ->whereBetween($tableJ . '.created_on', [$params['start_date'] . ' 00:00:00', $params['end_date'] . ' 23:59:59'])
+                ->get();
+
+            foreach ($journals as $journal) {
+                $date = new Carbon($journal->created_on);
+                $issue = $journal->issue;
+                $user = $journal->user;
+                $tracker = $journal->issue->trackers;
+                $status = $journal->issue->issueStatuse;
+
+                $result[$date->format('m/d/Y')]['_' . $date->format('His')][] = [
+                    'type' => 'issue',
+                    'time' => $date->format('h:i A'),
+                    'author_id' => $journal->user_id,
+                    'avatar_hash' => $user->avatar_hash,
+                    'author_name' => $user->firstname . ' ' . $user->lastname,
+                    'link_ui_sref' => 'issues.info({id: ' . $issue->id . '})',
+                    'link_text' => $tracker->name . ' #' . $issue->id . ' (' . $status->name . ') ' .
+                        (($issue->subject && count($issue->subject) > 65) ?
+                            mb_substr($issue->subject, 0, 65) . '...' : $issue->subject),
+                    'description' => $journal->notes ? mb_substr($issue->notes, 0, 115) . '...' : null,
+                ];
+            }
+        }
+
+        if (isset($params['showWiki']) && $params['showWiki']) {
+            $tableWCV = WikiContentVersion::getTableName();
+            $tableWP = WikiPage::getTableName();
+            $tableW = Wiki::getTableName();
+            $wikies = WikiContentVersion::select($tableWCV . '.*')
+                ->with('author', 'wikiPage')
+                ->join($tableWP, $tableWP . '.id', $tableWCV . '.page_id')
+                ->join($tableW, $tableW . '.id', $tableWP . '.wiki_id')
+                ->where($tableW . '.project_id', $project->id)
+                ->where(function ($query) use ($params, $tableWCV) {
+                    $query->whereBetween($tableWCV . '.updated_on', [$params['start_date'] . ' 00:00:00', $params['end_date'] . ' 23:59:59']);
+                })->get();
+
+            foreach ($wikies as $wiki) {
+                $date = new Carbon($wiki->updated_on);
+                $user = $wiki->author;
+
+                $wikiData = explode('\n', str_replace('h1. ', '', $wiki->data))[0];
+                $wikiData = mb_substr($wikiData, 0, 65);
+                $result[$date->format('m/d/Y')]['_' . $date->format('His')][] = [
+                    'type' => 'wiki',
+                    'time' => $date->format('h:i A'),
+                    'author_id' => $wiki->author_id,
+                    'avatar_hash' => $user->avatar_hash,
+                    'author_name' => $user->firstname . ' ' . $user->lastname,
+                    'link_ui_sref' => null,
+                    'href' => '/projects/' . $projectIdentifier . '/wiki/' . $wiki->wikiPage->title,
+                    'link_text' => 'Wiki edit: ' . $wikiData . ' (#' . $wiki->version . ')',
+                    'link_params' => [
+                        'wiki_content_versions' => $wiki->id,
+                        'version_id' => $wiki->version
+                    ],
+                ];
+            }
+        }
+
+        if (isset($params['showFiles']) && $params['showFiles']) {
+            $tableJ = Journal::getTableName();
+            $tableI = Issue::getTableName();
+            $tableJD = JournalDetail::getTableName();
+            $journals = Journal::select($tableJ . '.*')
+                ->with(['user', 'issue', 'issue.trackers', 'issue.issueStatuse'])
+                ->with(['journalDetails' => function ($query) use ($tableJD) {
+                    $query->where($tableJD . '.property', 'attachment');
+                }])
+                ->join($tableI, $tableI . '.id', $tableJ . '.journalized_id')
+                ->join($tableJD, $tableJ . '.id', $tableJD . '.journal_id')
+                ->where($tableJD . '.property', 'attachment')
+                ->where($tableJ . '.journalized_type', 'Issue')
+                ->where($tableI . '.project_id', $project->id)
+                ->whereBetween($tableJ . '.created_on', [$params['start_date'] . ' 00:00:00', $params['end_date'] . ' 23:59:59'])
+                ->get();
+
+            foreach ($journals as $journal) {
+                $date = new Carbon($journal->created_on);
+                $issue = $journal->issue;
+                $user = $journal->user;
+                $journalDetails = $journal->journalDetails->first();
+
+                $result[$date->format('m/d/Y')]['_' . $date->format('His')][] = [
+                    'type' => 'files',
+                    'time' => $date->format('h:i A'),
+                    'author_id' => $journal->user_id,
+                    'avatar_hash' => $user->avatar_hash,
+                    'author_name' => $user->firstname . ' ' . $user->lastname,
+                    'link_text' => $journalDetails->value,
+                    'link_params' => ['file' => $journalDetails->value],
+                    'description' => null,
+                ];
+            }
+        }
+
+        if (isset($params['showDocuments']) && $params['showDocuments']) {
+            $documents = Document::where('project_id', $project->id)
+                ->whereBetween('created_on', [$params['start_date'] . ' 00:00:00', $params['end_date'] . ' 23:59:59'])
+                ->get();
+
+            foreach ($documents as $document) {
+                $date = new Carbon($document->created_on);
+                $result[$date->format('m/d/Y')]['_' . $date->format('His')][] = [
+                    'time' => $date->format('h:i A'),
+                    'author_id' => null,
+                    'avatar_hash' => null,
+                    'author_name' => null,
+                    'link_text' => 'Document: ', $document->title,
+                    'link_params' => ['document_id' => $document->id],
+                    'description' => $document->description ? mb_substr($document->description, 0, 115) . '...' : null,
+                ];
+            }
+        }
+
+
+        return $result;
+    }
+
 
 //    public function getIssues($identifier, $request)
 //    {

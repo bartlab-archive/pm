@@ -440,4 +440,12 @@ class ProjectsController extends BaseController
         $result = $this->enumerationsService->update($activityId, $request->all());
         return response()->json($result, 200);
     }
+
+
+    public function getActivity($projectIdentifier, Request $request)
+    {
+        $data = $this->projectsService->getActivity($projectIdentifier, $request->all());
+
+        return response()->json(['data' => $data], 200);
+    }
 }

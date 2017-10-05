@@ -66,4 +66,8 @@ export default class IssuesService extends ServiceBase {
 
         return (monthsAgo ? monthsAgo + ' months ' : '') + daysAgo + ' days';
     }
+
+    getIssueStatuses(){
+        return this.Restangular.one('issues').all('statuses').getList({});
+    }
 }

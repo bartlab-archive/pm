@@ -1,1 +1,90 @@
-activity
+<div layout-gt-sm="row" layout-align="center start">
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <md-card-header>
+            <md-card-header-text>
+                <span class="md-title">Activity</span>
+            </md-card-header-text>
+            <div flex></div>
+            <span class="md-body-1">{{$ctrl.startDate}} - {{$ctrl.endDate}}</span>
+
+
+            <md-switch class="md-body-1" ng-model="$ctrl.showIssues" aria-label="Show Issues"
+                       ng-change="$ctrl.getActivity()">
+                Show Issues
+            </md-switch>
+            <md-switch class="md-body-1" ng-model="$ctrl.showFiles" aria-label="Show Files"
+                       ng-change="$ctrl.getActivity()">
+                Show Files
+            </md-switch>
+            <md-switch class="md-body-1" ng-model="$ctrl.showWiki" aria-label="Show Wiki"
+                       ng-change="$ctrl.getActivity()">
+                Show Wiki edits
+            </md-switch>
+            <md-switch class="md-body-1" ng-model="$ctrl.showDocuments" aria-label="Show Documents"
+                       ng-change="$ctrl.getActivity()">
+                Show Documents
+            </md-switch>
+
+
+            <md-button ng-click="$ctrl.previous()" class="md-icon-button">
+                <md-icon>keyboard_arrow_left</md-icon>
+            </md-button>
+
+            <md-button ng-click="$ctrl.next()" ng-disabled="$ctrl.endDateDisabled()" class="md-icon-button">
+                <md-icon>keyboard_arrow_right</md-icon>
+            </md-button>
+
+            <md-button class="md-icon-button">
+                <md-icon>settings</md-icon>
+            </md-button>
+        </md-card-header>
+
+        <md-list ng-repeat="(date, days) in $ctrl.activities" >
+            <md-subheader class="md-no-sticky">{{date}}</md-subheader>
+            <div ng-repeat="(time, times) in days">
+                <md-list-item class="md-body-1" ng-repeat="activity in times">
+                    <md-divider ng-if="$ctrl.showDivider(date)"></md-divider>
+                    <div>
+                        <p>
+                            <img width="24" height="24"
+                                 ng-if="activity.avatar_hash"
+                                 src="{{'//www.gravatar.com/avatar/' + activity.avatar_hash + '?rating=PG&amp;size=24&amp;default='}}">
+                            {{activity.time}}
+                            <a ng-if="activity.link_ui_sref" ui-sref="{{activity.link_ui_sref}}">
+                                {{activity.link_text}}
+                            </a>
+                            <a ng-if="!activity.link_ui_sref" href="{{activity.href}}">
+                                {{activity.link_text}}
+                            </a>
+                        </p>
+                        <p><i>{{activity.description}}</i></p>
+                        <p ng-if="activity.author_name">
+                            <a ui-sref="users.info({id: activity.author_id})">
+                                {{activity.author_name}}
+                            </a>
+                        </p>
+                    </div>
+                </md-list-item>
+            </div>
+            </md-list-item>
+
+            <!--<md-list-item class="md-3-line" ng-repeat="item in activity">
+                <div class="md-list-item-text" layout="column">
+                    <h3> item.issue.name</h3>
+                    <p>{{ row.homepage }}</p>
+                    <p class="md-truncate" ng-bind-html="$ctrl.makeHtml(row.description) | words: 50"></p>
+                </div>
+
+
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>-->
+        </md-list>
+
+        <md-card-actions layout="row" layout-align="center center">
+            <md-button ng-click="null">
+                <md-icon>rss_feed</md-icon>
+                Atom
+            </md-button>
+        </md-card-actions>
+    </md-card>
+</div>
