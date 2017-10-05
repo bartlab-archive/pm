@@ -12,9 +12,10 @@ use Illuminate\Support\Facades\Auth;
 /**
  * Class IssuesService
  *
- * JournalsService $journalsService
- * JournalDetailsService $journalDetailsService
- * ProjectsService $projectsService
+ * @property JournalsService $journalsService
+ * @property JournalDetailsService $journalDetailsService
+ * @property WatchersService $watchersService
+ * @property ProjectsService $projectsService
  *
  * @package App\Services
  */
@@ -22,18 +23,20 @@ class IssuesService
 {
     protected $journalsService;
     protected $journalDetailsService;
+    protected $watchersService;
     protected $projectsService;
-
 
     public function __construct(
         JournalsService $journalsService,
         JournalDetailsService $journalDetailsService,
+        WatchersService $watchersService,
         ProjectsService $projectsService
     )
     {
         $this->projectsService = $projectsService;
         $this->journalsService = $journalsService;
         $this->journalDetailsService = $journalDetailsService;
+        $this->watchersService = $watchersService;
     }
 
     public function one($id)
@@ -102,18 +105,21 @@ class IssuesService
     public function all()
     {
         return Issue::limit(20)
-            ->with(['trackers', 'user', 'author', 'project'])
-            ->get();
+            ->with(['trackers', 'user', 'author', 'project'])->get();
     }
 
     public function list(string $id, $params = [], $orderBy = [])
     {
         $offset = array_get($params, 'offset', 0);
 
-        $query = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
-            ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
-            ->where(Project::getTableName() . '.identifier', $id)
-            ->with(['trackers', 'user', 'author', 'project']);
+        if ($id) {
+            $query = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
+                ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
+                ->where(Project::getTableName() . '.identifier', $id)
+                ->with(['trackers', 'user', 'author', 'project']);
+        } else {
+            $query = Issue::with(['trackers', 'user', 'author', 'project']);
+        }
 
         if ($statuses = array_get($params, 'status_ids', [])) {
             $query = $query->whereIn('status_id', $statuses);
@@ -140,6 +146,10 @@ class IssuesService
             'issues' => $query->offset($offset)->limit($limit)->get()
 
         ];
+
+        foreach ($result['issues'] as $issue) {
+            $issue['watch_state'] = $this->watchersService->isWatched($issue['id']);
+        }
 
         return $result;
     }
@@ -175,7 +185,6 @@ class IssuesService
     {
         return Issue::find($id)->delete();
     }
-
 
 //	public function getInfoFroEdit($project_if)
 //	{

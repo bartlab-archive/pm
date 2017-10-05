@@ -31,7 +31,17 @@ export default class ProjectsService extends ServiceBase {
         // this.project = {};
     }
 
-    one(identifier) {
+    one(identifier, params = {
+        'status_ids': [],
+        'tracker_ids': [],
+        'priority_ids': [],
+        'limit': 20,
+        'offset': 0
+    }) {
+        if (identifier === undefined) {
+            return this.Restangular.one('projects', identifier).all('issues').post(params);
+        }
+
         return this.Restangular.all('projects').one(identifier)
         // .withHttpConfig({cache: this.cache})
             .get();

@@ -12,6 +12,7 @@ use App\Services\JournalsService;
 use App\Services\ProjectsService;
 use App\Services\StatusesService;
 use App\Services\TrackersService;
+use App\Services\WatchersService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -28,6 +29,7 @@ use Illuminate\Support\Facades\Auth;
  * @property IssueCategoriesService $categoriesService
  * @property JournalsService $journalsService
  * @property IssueStatusesService $issueStatusesService
+ * @property WatchersService $watchersService
  *
  * @package App\Http\Controllers
  */
@@ -40,6 +42,7 @@ class IssuesController extends BaseController
     protected $categoriesService;
     protected $enumerationsService;
     protected $journalsService;
+    protected $watchersService;
     protected $issueStatusesService;
 
     public function __construct(
@@ -50,7 +53,8 @@ class IssuesController extends BaseController
         EnumerationsService $enumerationsService,
         IssueCategoriesService $categoriesService,
         JournalsService $journalsService,
-        IssueStatusesService $issueStatusesService
+        IssueStatusesService $issueStatusesService,
+        WatchersService $watchersService
     )
     {
         $this->issueService = $issueService;
@@ -60,6 +64,7 @@ class IssuesController extends BaseController
         $this->categoriesService = $categoriesService;
         $this->enumerationsService = $enumerationsService;
         $this->journalsService = $journalsService;
+        $this->watchersService = $watchersService;
         $this->issueStatusesService = $issueStatusesService;
     }
 
@@ -74,6 +79,7 @@ class IssuesController extends BaseController
     public function getIssue($id, Request $request)
     {
         $issue = $this->issueService->one($id);
+        $issue['watch_state'] = $this->watchersService->isWatched($id);
 
         $response = [
             'projectsList' => $this->projectsService->list(),
@@ -85,6 +91,15 @@ class IssuesController extends BaseController
         ];
 
         return response()->json($response, 200);
+    }
+
+    public function getIssues(Request $request)
+    {
+        $data = $this->issueService->list('', $request);
+
+        return response()
+            ->json($data['issues'], 200)
+            ->header('X-Total', $data['count']);
     }
 
     public function getIssuesFilters(Request $request)
@@ -121,7 +136,7 @@ class IssuesController extends BaseController
 
     public function update($id, UpdateIssueRequest $request)
     {
-        $data = $request->except(['id', 'trackers', 'user', 'author', 'statusText', 'project']);
+        $data = $request->except(['id', 'trackers', 'user', 'author', 'statusText', 'project', 'watch_state']);
         $data['start_date'] = Carbon::parse($data['start_date'])->format('Y-m-d');
         $data['due_date'] = Carbon::parse($data['due_date'])->format('Y-m-d');
 
@@ -154,5 +169,26 @@ class IssuesController extends BaseController
     public function getIssueStatuses()
     {
         return response()->json($this->issueStatusesService->getList(), 200);
+    }
+
+    public function watch($id)
+    {
+        $data = [
+            'watchable_type' => 'Issue',
+            'watchable_id'   => $id,
+            'user_id'        => Auth::id()
+        ];
+
+        return response()->json($this->watchersService->startWatching($data), 200);
+    }
+
+    public function unwatch($id)
+    {
+        $data = [
+            'watchable_id' => $id,
+            'user_id'      => Auth::id()
+        ];
+
+        return response()->json($this->watchersService->stopWatching($data), 200);
     }
 }

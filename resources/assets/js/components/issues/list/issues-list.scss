@@ -15,4 +15,10 @@ issues-list-component {
     line-height: 24px;
     padding: 8px;
   }
+
+  .context-menu {
+    position: absolute;
+    z-index: 40;
+    border: 1px solid gainsboro;
+  }
 }

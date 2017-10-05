@@ -6,6 +6,7 @@ import issuesNewComponent from './new/issues-new.component';
 import issuesInfoComponent from './info/issues-info.component';
 import issuesListComponent from './list/issues-list.component';
 import historyComponent from './history/history.component';
+import issuesWatchComponent from './watch/issues-watch.component';
 
 angular.module('app.components.issues', [])
     .config(IssuesConfig.inst())
@@ -13,4 +14,5 @@ angular.module('app.components.issues', [])
     .component(issuesNewComponent.name, issuesNewComponent)
     .component(issuesInfoComponent.name, issuesInfoComponent)
     .component(issuesListComponent.name, issuesListComponent)
-    .component(historyComponent.name, historyComponent);
+    .component(historyComponent.name, historyComponent)
+    .component(issuesWatchComponent.name, issuesWatchComponent);

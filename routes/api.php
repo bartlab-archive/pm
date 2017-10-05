@@ -47,6 +47,8 @@ Route::group(
 
             ],
             function () {
+                Route::get('/issues', 'IssuesController@getIssues');
+                Route::post('/issues', 'IssuesController@getIssues');
                 Route::get('/', 'ProjectsController@index');
                 Route::get('/{identifier}', 'ProjectsController@show');
                 Route::post('/', 'ProjectsController@create');
@@ -163,11 +165,13 @@ Route::group(
                 Route::get('/statuses', 'IssuesController@getIssueStatuses');
                 Route::get('/info', 'IssuesController@getAdditionalInfo');
                 Route::get('/{id}', 'IssuesController@getIssue');
-                Route::get('/', 'IssuesController@getIssues');
                 Route::post('/', 'IssuesController@create');
                 Route::put('/{id}', 'IssuesController@update');
                 Route::delete('/{id}', 'IssuesController@delete');
                 Route::get('/{id}/history', 'IssuesController@getHistory');
+                Route::post('/{id}/watch', 'IssuesController@watch');
+                Route::delete('/{id}/watch', 'IssuesController@unwatch');
+                Route::get('/', 'IssuesController@getIssues');
 //                Route::get('/{id}/infoedit/{project_id}', 'IssuesController@infoEdit');
             }
         );

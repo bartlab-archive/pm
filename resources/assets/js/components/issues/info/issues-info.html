@@ -45,15 +45,22 @@
                         </md-button>
                     </md-menu-item>
 
-                    <md-menu-item>
-                        <md-button>
+                    <md-menu-item ng-if="$ctrl.issue.watch_state">
+                        <md-button ng-click="$ctrl.unwatch()">
+                            <md-icon>star_border</md-icon>
+                            Unwatch
+                        </md-button>
+                    </md-menu-item>
+
+                    <md-menu-item ng-if="!$ctrl.issue.watch_state">
+                        <md-button ng-click="$ctrl.watch()">
                             <md-icon>star_border</md-icon>
                             Watch
                         </md-button>
                     </md-menu-item>
 
                     <md-menu-item>
-                        <md-button>
+                        <md-button ng-click="$ctrl.copy()">
                             <md-icon>content_copy</md-icon>
                             Copy
                         </md-button>
@@ -62,7 +69,7 @@
                     <md-menu-divider></md-menu-divider>
 
                     <md-menu-item>
-                        <md-button>
+                        <md-button ng-click="$ctrl.delete()">
                             <md-icon>delete</md-icon>
                             Delete
                         </md-button>

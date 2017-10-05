@@ -24,7 +24,7 @@ export default class IssuesListController extends ControllerBase {
         this.ProjectsService.one(currentProjectId).then((response) => {
             enabledModules = this.ProjectsService.getModules(_.get(response, 'data.enabled_modules', []));
 
-            if (typeof enabledModules.issue_tracking === 'undefined') {
+            if (typeof enabledModules.issue_tracking === 'undefined' && currentProjectId != undefined) {
                 window.location.href = '/projects/' + currentProjectId;
             } else {
                 this.tags = [];
@@ -38,6 +38,8 @@ export default class IssuesListController extends ControllerBase {
                 this.selectAllState = false;
                 this.offset = 0;
                 this.limitPerPage = 20;
+                this.contextTarget = [];
+                this.contextState = false;
 
                 this.loadFiltersValues();
                 this.load();
@@ -208,11 +210,19 @@ export default class IssuesListController extends ControllerBase {
         this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: id});
     }
 
-    editIssue(id, edit) {
+    editIssue(id) {
         this.$state.go('issues.edit', {project_id: this.$stateParams.project_id, id: id});
     }
 
-    copyIssue(id, edit) {
+    watchIssue(id) {
+        this.$state.go('issues.watch', {project_id: this.$stateParams.project_id, id: id});
+    }
+
+    unwatchIssue(id) {
+        this.$state.go('issues.unwatch', {project_id: this.$stateParams.project_id, id: id});
+    }
+
+    copyIssue(id) {
         this.$state.go('issues.copy', {project_id: this.$stateParams.project_id, id: id});
     }
 
@@ -222,7 +232,6 @@ export default class IssuesListController extends ControllerBase {
         });
 
         this.selectedGroup = [];
-        // this.removeFromSelectedGroup(id);
     }
 
     deleteGroup() {
@@ -264,5 +273,49 @@ export default class IssuesListController extends ControllerBase {
         return _.get(this.$state, 'data.layoutDefault.projectId') || _.get(this.$stateParams, 'project_id');
     }
 
+    showContextMenu(coordX, coordY) {
+        $('.context-menu').css('left', coordX);
+        $('.context-menu').css('top', coordY);
+        $('.context-menu').css('display', 'block');
 
+        this.contextState = true;
+    }
+
+    hideContextMenu() {
+        $('.context-menu').css('display', 'none');
+        $('.context-menu').css('left', 0);
+        $('.context-menu').css('top', 0);
+
+        this.contextState = false;
+    }
+
+    contextMenuHandler() {
+        const _this = this;
+
+        $('.has-context-menu').contextmenu(function (event) {
+            event.stopPropagation();
+            event.preventDefault();
+
+            Object.values(_this.list).forEach((item) => {
+                if (item.id == ($(this).closest('.has-context-menu').attr('id')).substr(6)) {
+                    _this.contextTarget = item;
+                }
+            });
+            _this.contextState ? _this.hideContextMenu() : _this.showContextMenu(event.pageX, event.pageY);
+
+            $(this).off(event);
+        });
+    }
+
+    hideContextHandler() {
+        if (this.contextState) {
+            $('.issues-container').on('click', (event) => {
+                event.stopPropagation();
+                event.preventDefault();
+                this.hideContextMenu();
+
+                $('.has-context-menu').unbind('contextmenu').bind('contextmenu');
+            })
+        }
+    }
 }
