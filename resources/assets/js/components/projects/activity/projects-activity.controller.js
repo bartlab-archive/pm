@@ -17,7 +17,7 @@ export default class ProjectsActivityController extends ControllerBase {
     $onInit() {
         let enabledModules = {};
         this.projectId = this.currentProjectId();
-        this.substract = 5;
+        this.substract = 1;
         this.activities = [];
         this.date = null;
         this.showIssues = true;
