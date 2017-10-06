@@ -56,6 +56,11 @@ export default class ProjectsService extends ServiceBase {
         return module;
     };
 
+    isModuleEnabled(moduleName, modulesData){
+        const enabledModules = this.getModules(modulesData);
+        return (typeof enabledModules[moduleName] !== 'undefined');
+    }
+
     getList(params = {}) {
         return this.Restangular.all('projects').getList(params);
     }

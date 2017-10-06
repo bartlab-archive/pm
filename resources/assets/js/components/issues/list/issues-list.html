@@ -13,11 +13,7 @@
 
             <md-menu>
                 <md-button class="pages-button" ng-click="$ctrl.openLimitMenu($mdMenu, $event)">
-                    {{$ctrl.offset === 0 ? $ctrl.offset + 1 :
-                    $ctrl.offset}}-{{($ctrl.count < $ctrl.limitPerPage || $ctrl.count <
-                    $ctrl.offset + $ctrl.limitPerPage) ? $ctrl.count :
-                    $ctrl.offset + $ctrl.limitPerPage}} {{($ctrl.count > $ctrl.limitPerPage) ? ' / ' +
-                    $ctrl.count : ''}}
+                    {{$ctrl.getPager()}}
                 </md-button>
                 <md-menu-content>
                     <md-menu-item>

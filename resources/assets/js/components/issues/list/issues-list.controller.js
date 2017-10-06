@@ -19,37 +19,35 @@ export default class IssuesListController extends ControllerBase {
     }
 
     $onInit() {
-        let enabledModules = {};
         const currentProjectId = this.currentProjectId();
         this.ProjectsService.one(currentProjectId).then((response) => {
-            enabledModules = this.ProjectsService.getModules(_.get(response, 'data.enabled_modules', []));
-
-            if (typeof enabledModules.issue_tracking === 'undefined' && currentProjectId != undefined) {
-                window.location.href = '/projects/' + currentProjectId;
-            } else {
-                this.tags = [];
-                this.items = [];
-                this.statusesList = [];
-                this.prioritiesList = [];
-                this.showMore = false;
-                this.searchText = null;
-                this.selectedIssue = null;
-                this.selectedGroup = [];
-                this.selectAllState = false;
-                this.offset = 0;
-                this.limitPerPage = 20;
-                this.contextTarget = [];
-                this.contextState = false;
-
-                this.loadFiltersValues();
-                this.load();
-                this.$rootScope.$on('updateIssues', () => this.load());
-                this.initScrollbar();
-
-                this.UsersService.getList().then((response) => {
-                    this.users = _.keyBy(_.get(response, 'data', null), 'id');
-                });
+            const enabledModules = _.get(response, 'data.enabled_modules', []);
+            if (!this.ProjectsService.isModuleEnabled('issue_tracking', enabledModules) && currentProjectId != undefined) {
+                this.$state.go('projects.inner.info', {project_id: currentProjectId});
             }
+
+            this.tags = [];
+            this.items = [];
+            this.statusesList = [];
+            this.prioritiesList = [];
+            this.showMore = false;
+            this.searchText = null;
+            this.selectedIssue = null;
+            this.selectedGroup = [];
+            this.selectAllState = false;
+            this.offset = 0;
+            this.limitPerPage = 20;
+            this.contextTarget = [];
+            this.contextState = false;
+
+            this.loadFiltersValues();
+            this.load();
+            this.$rootScope.$on('updateIssues', () => this.load());
+            this.initScrollbar();
+
+            this.UsersService.getList().then((response) => {
+                this.users = _.keyBy(_.get(response, 'data', null), 'id');
+            });
         });
 
         this.ProjectsService.getList().then((response) => {
@@ -317,5 +315,14 @@ export default class IssuesListController extends ControllerBase {
                 $('.has-context-menu').unbind('contextmenu').bind('contextmenu');
             })
         }
+    }
+
+    getPager() {
+        const currentPage = this.offset === 0 ? this.offset + 1 : this.offset;
+        const fromPage = (this.count < this.limitPerPage || this.count < this.offset + this.limitPerPage) ?
+            this.count : this.limitPerPage + this.offset;
+        const all = this.count > this.limitPerPage ? ' /' + this.count : '';
+
+        return currentPage + '-' + fromPage + all;
     }
 }
