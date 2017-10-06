@@ -20,10 +20,10 @@ export default class ProjectsActivityController extends ControllerBase {
         this.substract = 1;
         this.activities = [];
         this.date = null;
-        this.showIssues = true;
-        this.showFiles = true;
-        this.showWiki = true;
-        this.showDocuments = true;
+        this.showIssues = 1;
+        this.showFiles = 1;
+        this.showWiki = 1;
+        this.showDocuments = 1;
 
         this.ProjectsService.one(this.projectId).then(response => {
             enabledModules = this.ProjectsService.getModules(_.get(response, 'data.enabled_modules', []));
@@ -79,5 +79,14 @@ export default class ProjectsActivityController extends ControllerBase {
         }
 
         return true;
+    }
+
+    openFiltersMenu($mdMenu, ev) {
+        $mdMenu.open(ev);
+    };
+
+    getDateRange(){
+        return moment(this.startDate , 'YYYY-MM-DD').format('MM/DD/YYYY') + ' to  ' +
+            moment(this.endDate , 'YYYY-MM-DD').format('MM/DD/YYYY');
     }
 }

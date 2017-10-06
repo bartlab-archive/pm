@@ -3,28 +3,9 @@
         <md-card-header>
             <md-card-header-text>
                 <span class="md-title">Activity</span>
+                <span class="md-body-1">{{$ctrl.getDateRange()}}</span>
             </md-card-header-text>
             <div flex></div>
-            <span class="md-body-1">{{$ctrl.startDate}} - {{$ctrl.endDate}}</span>
-
-
-            <md-switch class="md-body-1" ng-model="$ctrl.showIssues" aria-label="Show Issues"
-                       ng-change="$ctrl.getActivity()">
-                Show Issues
-            </md-switch>
-            <md-switch class="md-body-1" ng-model="$ctrl.showFiles" aria-label="Show Files"
-                       ng-change="$ctrl.getActivity()">
-                Show Files
-            </md-switch>
-            <md-switch class="md-body-1" ng-model="$ctrl.showWiki" aria-label="Show Wiki"
-                       ng-change="$ctrl.getActivity()">
-                Show Wiki edits
-            </md-switch>
-            <md-switch class="md-body-1" ng-model="$ctrl.showDocuments" aria-label="Show Documents"
-                       ng-change="$ctrl.getActivity()">
-                Show Documents
-            </md-switch>
-
 
             <md-button ng-click="$ctrl.previous()" class="md-icon-button">
                 <md-icon>keyboard_arrow_left</md-icon>
@@ -34,12 +15,42 @@
                 <md-icon>keyboard_arrow_right</md-icon>
             </md-button>
 
-            <md-button class="md-icon-button">
-                <md-icon>settings</md-icon>
-            </md-button>
+            <md-menu>
+                <md-button class="md-icon-button pages-button" ng-click="$ctrl.openFiltersMenu($mdMenu, $event)">
+                    <md-icon>settings</md-icon>
+                </md-button>
+                <md-menu-content>
+                    <md-list>
+                        <md-list-item>
+                            <md-switch class="md-body-1" ng-model="$ctrl.showIssues" aria-label="Show Issues"
+                                       ng-change="$ctrl.getActivity()" ng-true-value="1" ng-false-value="0">
+                                Show Issues
+                            </md-switch>
+                        </md-list-item>
+                        <md-list-item>
+                            <md-switch class="md-body-1" ng-model="$ctrl.showFiles" aria-label="Show Files"
+                                       ng-change="$ctrl.getActivity()" ng-true-value="1" ng-false-value="0">
+                                Show Files
+                            </md-switch>
+                        </md-list-item>
+                        <md-list-item>
+                            <md-switch class="md-body-1" ng-model="$ctrl.showWiki" aria-label="Show Wiki"
+                                       ng-change="$ctrl.getActivity()" ng-true-value="1" ng-false-value="0">
+                                Show Wiki edits
+                            </md-switch>
+                        </md-list-item>
+                        <md-list-item>
+                            <md-switch class="md-body-1" ng-model="$ctrl.showDocuments" aria-label="Show Documents"
+                                       ng-change="$ctrl.getActivity()" ng-true-value="1" ng-false-value="0">
+                                Show Documents
+                            </md-switch>
+                        </md-list-item>
+                    </md-list>
+                </md-menu-content>
+            </md-menu>
         </md-card-header>
 
-        <md-list ng-repeat="(date, days) in $ctrl.activities" >
+        <md-list ng-repeat="(date, days) in $ctrl.activities">
             <md-subheader class="md-no-sticky">{{date}}</md-subheader>
             <div ng-repeat="(time, times) in days">
                 <md-list-item class="md-body-1" ng-repeat="activity in times">
@@ -47,8 +58,8 @@
                     <div>
                         <p>
                             <img width="24" height="24"
-                                 ng-if="activity.avatar_hash"
-                                 src="{{'//www.gravatar.com/avatar/' + activity.avatar_hash + '?rating=PG&amp;size=24&amp;default='}}">
+                                 ng-if="activity.avatar_src"
+                                 src="{{activity.avatar_src}}">
                             {{activity.time}}
                             <a ng-if="activity.link_ui_sref" ui-sref="{{activity.link_ui_sref}}">
                                 {{activity.link_text}}
