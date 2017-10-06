@@ -241,12 +241,12 @@ export default class UsersService extends ServiceBase {
     }
 
     getUserInfo() {
-        return this.Restangular.one('my').one('account').withHttpConfig({cache: this.cache}).get().then((responce) => {
-            responce.data.hide_mail = !!responce.data.hide_mail;
-            responce.data.no_self_notified = !!responce.data.no_self_notified;
-            responce.data.warn_on_leaving_unsaved = !!responce.data.warn_on_leaving_unsaved;
+        return this.Restangular.one('my').one('account').withHttpConfig({cache: this.cache}).get().then((response) => {
+            response.data.hide_mail = !!response.data.hide_mail;
+            response.data.no_self_notified = !!response.data.no_self_notified;
+            response.data.warn_on_leaving_unsaved = !!response.data.warn_on_leaving_unsaved;
 
-            return responce;
+            return response;
         });
     }
 

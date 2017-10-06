@@ -22,6 +22,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
         this.user = this.UsersService.getUserInfo().then((response) => {
             if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
                 this.model = response.data;
+                this.model.tokens = this.getTokens(this.model.tokens);
                 this.model.email = this.model.email.address;
                 this.model.comments_sorting = this.model.preference.others.comments_sorting;
                 this.model.no_self_notified = this.model.preference.others.no_self_notified;
@@ -39,6 +40,23 @@ export default class mainMyAccountIndexController extends ControllerBase {
         this.languages = this.UsersService.languages;
         this.timeZone = this.UsersService.timeZone;
         this.emailNotifications = this.UsersService.getEmailNotifications;
+    }
+
+    getTokens(tokens) {
+        let result = {
+            atom: {},
+            api: {}
+        };
+
+        result.atom = tokens.filter((token) => {
+            return token.action === 'feeds';
+        });
+
+        result.api = tokens.filter((token) => {
+            return token.action === 'api';
+        });
+
+        return result;
     }
 
     setMdDialogConfig(component, target, data = {}) {

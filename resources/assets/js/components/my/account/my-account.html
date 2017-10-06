@@ -11,14 +11,14 @@
             <md-card-content>
                 <p class="md-body-1" layout="column">
                     <span><span class="md-body-2">Login:</span> {{ $ctrl.model.login }}</span>
-                    <span><span class="md-body-2">Created:</span> {{ $ctrl.model.created }}</span>
+                    <span><span class="md-body-2">Created:</span> {{ $ctrl.model.created_on }}</span>
                 </p>
 
                 <md-list>
                     <md-list-item>
                         <p class="md-list-item-text md-body-1" layout="column">
                             <span>Atom access key</span>
-                            <span>created {{ $ctrl.model.atom_key_updated_on }}</span>
+                            <span>created {{ $ctrl.model.tokens.atom[0].created_on }}</span>
                         </p>
                         <md-button class="md-raised md-primary animation-target md-secondary"
                                    ng-click="$ctrl.resetAtomKey()">
@@ -31,7 +31,7 @@
                     <md-list-item>
                         <p class="md-list-item-text md-body-1" layout="column">
                             <span>API access key</span>
-                            <span>created {{ $ctrl.model.api_key_updated_on  }}</span>
+                            <span>created {{ $ctrl.model.tokens.api[0].created_on }}</span>
                         </p>
                         <md-button class="md-raised md-primary animation-target md-secondary"
                                    ng-click="$ctrl.showApiKey($event)">
