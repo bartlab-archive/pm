@@ -1,13 +1,15 @@
-.history {
-  margin-top: 10px;
-  margin-bottom: 5px;
+history-component {
+  .history {
+    margin-top: 10px;
+    margin-bottom: 5px;
 
-  button{
-    margin: 0;
-  }
+    button {
+      margin: 0;
+    }
 
-  md-list-item{
-    height: 24px;
-    min-height: 24px;
+    md-list-item {
+      height: 24px;
+      min-height: 24px;
+    }
   }
 }
