@@ -19,6 +19,14 @@ export default class HistoryController extends ControllerBase {
         this.IssuesService.getHistory(this.issueId).then((response) => {
             this.history = _.keyBy(response.data, 'id');
         });
+
+        this.IssuesService.one(this.issueId).then((response) => {
+            _.set(
+                this.$state,
+                'data.layoutDefault.projectId',
+                _.get(response, 'data.project.identifier')
+            );
+        });
     }
 
     convertDate(date){

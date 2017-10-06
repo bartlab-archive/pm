@@ -4,11 +4,11 @@
             <img width="24" height="24"
                  src="{{'//www.gravatar.com/avatar/' + item.user.avatar_hash + '?rating=PG&amp;size=24&amp;default='}}">
             Updated by
-            <md-button ng-click="$ctrl.$state.go('users.info', {id: item.user.id})">
+            <md-button ng-href="users/{{item.user.id}}">
                 <span class="md-caption">{{item.user.firstname + ' ' + item.user.lastname }}</span>
             </md-button>
             <md-button
-                    ng-click="$ctrl.$state.go('projects.inner.activity', {id: item.user.id, from: item.created_on})">
+                    ng-href="projects/{{$ctrl.$state.data.layoutDefault.projectId}}/activity">
                 <span class="md-caption">{{$ctrl.IssuesService.timeAgo(item.created_on)}}</span>
             </md-button>
             ago
