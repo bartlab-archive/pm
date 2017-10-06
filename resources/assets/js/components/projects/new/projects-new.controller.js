@@ -60,7 +60,6 @@ export default class ProjectsNewController extends ControllerBase {
         } else {
             this.errors = _.get(response, 'data.errors', {});
             for (let field in this.errors) {
-                console.log(field , this.projectForm.hasOwnProperty(field));
                 if (this.projectForm.hasOwnProperty(field)) {
                     this.projectForm[field].$setValidity('server', false);
                 }
