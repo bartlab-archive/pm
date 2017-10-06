@@ -58,8 +58,9 @@ export default class ProjectsNewController extends ControllerBase {
                 this.$mdToast.simple().textContent('Server error')
             );
         } else {
-            this.errors = _.get(response, 'data', {});
+            this.errors = _.get(response, 'data.errors', {});
             for (let field in this.errors) {
+                console.log(field , this.projectForm.hasOwnProperty(field));
                 if (this.projectForm.hasOwnProperty(field)) {
                     this.projectForm[field].$setValidity('server', false);
                 }
