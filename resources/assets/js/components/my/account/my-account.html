@@ -20,9 +20,9 @@
                             <span>Atom access key</span>
                             <span>created {{ $ctrl.model.tokens.atom[0].created_on }}</span>
                         </p>
-                        <md-button class="md-raised md-primary animation-target md-secondary"
+                        <md-button class="md-icon-button animation-target md-secondary"
                                    ng-click="$ctrl.resetAtomKey()">
-                            Reset
+                            <md-icon>cached</md-icon>
                         </md-button>
                     </md-list-item>
 
@@ -33,13 +33,13 @@
                             <span>API access key</span>
                             <span>created {{ $ctrl.model.tokens.api[0].created_on }}</span>
                         </p>
-                        <md-button class="md-raised md-primary animation-target md-secondary"
+                        <md-button class="md-icon-button animation-target md-secondary"
                                    ng-click="$ctrl.showApiKey($event)">
-                            Show
+                            <md-icon>visibility</md-icon>
                         </md-button>
-                        <md-button class="md-raised md-primary animation-target md-secondary"
+                        <md-button class="md-icon-button animation-target md-secondary"
                                    ng-click="$ctrl.resetApiKey()">
-                            Reset
+                            <md-icon>cached</md-icon>
                         </md-button>
                     </md-list-item>
                 </md-list>
