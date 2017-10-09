@@ -9,15 +9,25 @@ use App\Models\WikiContent;
 use App\Models\WikiPage;
 use Auth;
 
+/**
+ * Class WikiService
+ *
+ * @property ProjectsService $projectsService
+ *
+ * @package App\Services
+ */
 class WikiService
 {
+    protected $projectsService;
+
+    public function __construct(ProjectsService $projectsService)
+    {
+        $this->projectsService = $projectsService;
+    }
+
     public function getWikiPageMarkDown($identifier, $page_title = null)
     {
-        $project = Auth::user()->projects()->where('identifier', $identifier)->first();
-
-        if (is_null($project)) {
-            abort(403);
-        }
+        $project = $this->projectsService->one($identifier);
 
         $wiki_content = $project->wiki
             ->page()
@@ -37,11 +47,11 @@ class WikiService
 
     public function setWikiPageMarkDown($request, $identifier, $wiki_id, $name = null)
     {
-        $project = Auth::user()->projects()->where('identifier', $identifier)->first();;
+        $project = $this->projectsService->one($identifier);
         $wiki_page = $project->wiki->page();
 
         if ($name) {
-            $name = str_replace(' ','_',$name);
+            $name = str_replace(' ', '_', $name);
             $wiki_page->where('title', $wiki_id);
             $wiki_id = $name;
         } else {
@@ -55,20 +65,20 @@ class WikiService
             ->firstOrFail();
 
         $wiki_page->update(['title' => array_get($request, 'title')]);
-        $wiki_page->title = str_replace(' ','_',array_get($request, 'title'));
-        $wiki_page->parent_id = array_get($request, 'parent_id') == 'null' ? null : array_get($request, 'parent_id') ;
+        $wiki_page->title = str_replace(' ', '_', array_get($request, 'title'));
+        $wiki_page->parent_id = array_get($request, 'parent_id') == 'null' ? null : array_get($request, 'parent_id');
         $wiki_page->save();
         $wiki_page->content()->update($request['content']);
-          return $wiki_page;
+        return $wiki_page;
     }
 
-    public function addNewWiki($request, $project_identifier)
+    public function addNewWiki($request, $identifier)
     {
-        $project = Auth::user()->projects()->where('identifier', $project_identifier)->firstOrFail();
+        $project = $this->projectsService->one($identifier);
         $wiki = $project->wiki;
 
         $new_page = $wiki->page()->create([
-            'title' => str_replace(' ','_',array_get($request, 'title')),
+            'title' => str_replace(' ', '_', array_get($request, 'title')),
             'parent_id' => array_get($request, 'parent_id'),
         ]);
 
@@ -86,31 +96,25 @@ class WikiService
     {
         $success = false;
         $message = '';
-        $project = Auth::user()->projects()->where('identifier', $identifier)->firstOrFail();
+        $project = $this->projectsService->one($identifier);
         $wiki = $project->wiki;
         $delete_page = $wiki->page()->where('title', $title)->firstOrFail();
-        try
-        {
+        try {
             $success = $delete_page->delete();
 
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             $message = $e->getMessage();
         }
 
 
-        return response()->json( ['success' => $success, 'message'=> $message], 200);
+        return response()->json(['success' => $success, 'message' => $message], 200);
 
     }
 
-    public function getAllWikiPage($project_identifier)
+    public function getAllWikiPage($identifier)
     {
-        $project = Auth::user()->projects()->where('identifier', $project_identifier)->firstOrFail();
-
-        $wiki = $project->wiki->page()->with('content')->get();
-
-        return $wiki;
+        $project = $this->projectsService->one($identifier);
+        return $project->wiki->page()->with('content')->get();
     }
 
     public function update($wikiId, $data)

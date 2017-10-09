@@ -80,6 +80,10 @@ export default class ProjectsConfig extends InjectableBase {
                 url: '/activity',
                 component: projectsActivityComponent.name,
             })
+            .state('projects.inner.activity.date', {
+                url: '/activity/:end_date',
+                component: projectsActivityComponent.name,
+            })
             .state('projects.inner.issues.index', {
                 url: '',
                 component: issuesListComponent.name,

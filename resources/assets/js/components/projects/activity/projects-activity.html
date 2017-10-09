@@ -55,7 +55,7 @@
             <div ng-repeat="(time, times) in days">
                 <md-list-item class="md-body-1" ng-repeat="activity in times">
                     <md-divider ng-if="$ctrl.showDivider(date)"></md-divider>
-                    <div>
+                    <div class="history">
                         <p>
                             <img width="24" height="24"
                                  ng-if="activity.avatar_src"

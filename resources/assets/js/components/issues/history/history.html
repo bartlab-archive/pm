@@ -4,13 +4,10 @@
             <img width="24" height="24"
                  src="{{'//www.gravatar.com/avatar/' + item.user.avatar_hash + '?rating=PG&amp;size=24&amp;default='}}">
             Updated by
-            <md-button ng-href="users/{{item.user.id}}">
-                <span class="md-caption">{{item.user.firstname + ' ' + item.user.lastname }}</span>
-            </md-button>
-            <md-button
-                    ng-href="projects/{{$ctrl.$state.data.layoutDefault.projectId}}/activity">
-                <span class="md-caption">{{$ctrl.IssuesService.timeAgo(item.created_on)}}</span>
-            </md-button>
+            <a ui-sref="users.info({id: item.user.id})">{{item.user.firstname + ' ' + item.user.lastname }}</a>
+            <a ui-sref="projects.inner.activity.date({project_id: $ctrl.$state.data.layoutDefault.projectId, end_date: item.created_on.split(' ')[0]})">
+                {{$ctrl.IssuesService.timeAgo(item.created_on)}}
+            </a>
             ago
 
             <md-list>

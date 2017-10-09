@@ -2,12 +2,14 @@ history-component {
   .history {
     margin-top: 10px;
     margin-bottom: 5px;
+    padding-left: 24px;
 
-    button {
-      margin: 0;
+    img{
+      margin-left: -24px;
     }
 
-    md-list-item {
+    md-list-item{
+      padding-left: 0;
       height: 24px;
       min-height: 24px;
     }

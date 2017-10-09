@@ -1,2 +1,17 @@
 projects-activity-component{
+  .history {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    padding-left: 24px;
+
+    img{
+      margin-left: -24px;
+    }
+
+    md-list-item{
+      padding-left: 0;
+      height: 24px;
+      min-height: 24px;
+    }
+  }
 }

@@ -19,19 +19,18 @@ class WikiController extends BaseController
 
     public function getWikiPageMarkDown($identifier, $page_title = null)
     {
-
         return $this->WikiService->getWikiPageMarkDown($identifier, $page_title);
     }
 
-    public function setWikiPageMarkDown(WikiUpdateRequest $request, $project_identifier, $wiki_id, $name = null)
+    public function setWikiPageMarkDown(WikiUpdateRequest $request, $identifier, $wiki_id, $name = null)
     {
 
-        return $this->WikiService->setWikiPageMarkDown($request->all(), $project_identifier, $wiki_id, $name);
+        return $this->WikiService->setWikiPageMarkDown($request->all(), $identifier, $wiki_id, $name);
     }
 
-    public function addNewWiki(WikiRequest $request, $project_identifier)
+    public function addNewWiki(WikiRequest $request, $identifier)
     {
-        return $this->WikiService->addNewWiki($request->all(), $project_identifier);
+        return $this->WikiService->addNewWiki($request->all(), $identifier);
     }
 
     public function deleteWikiPage($identifier, $page_title){
@@ -39,9 +38,9 @@ class WikiController extends BaseController
         return $this->WikiService->deleteWikiPage($identifier, $page_title);
     }
 
-    public function getAllWikiPage($project_identifier)
+    public function getAllWikiPage($identifier)
     {
-        return $this->WikiService->getAllWikiPage($project_identifier);
+        return $this->WikiService->getAllWikiPage($identifier);
     }
     public function editWikiPage($identifier, $page_title )
     {

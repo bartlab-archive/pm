@@ -9,13 +9,13 @@ export default class ProjectsActivityController extends ControllerBase {
      * @property {TrackersService} TrackersService
      * @property {UsersService} UsersService
      * @property {IssuesService} IssueService
+     * @property {$stateParam} $stateParam
      */
     static get $inject() {
-        return ['ProjectsService', 'TrackersService', '$stateParams', 'UsersService', 'IssuesService'];
+        return ['ProjectsService', 'TrackersService', '$stateParams', 'UsersService', 'IssuesService', '$stateParams'];
     }
 
     $onInit() {
-        let enabledModules = {};
         this.projectId = this.currentProjectId();
         this.substract = 1;
         this.activities = [];
@@ -24,9 +24,11 @@ export default class ProjectsActivityController extends ControllerBase {
         this.showFiles = 1;
         this.showWiki = 1;
         this.showDocuments = 1;
+        this.date = this.$stateParams.end_date ?
+            moment(this.$stateParams.end_date, 'YYYY-MM-DD').add(30, 'days') : moment();
 
         this.ProjectsService.one(this.projectId).then(response => {
-            enabledModules = this.ProjectsService.getModules(_.get(response, 'data.enabled_modules', []));
+            let enabledModules = this.ProjectsService.getModules(_.get(response, 'data.enabled_modules', []));
 
             if (typeof enabledModules.time_tracking === 'undefined') {
                 window.location.href = '/projects/' + this.projectId;
@@ -41,8 +43,9 @@ export default class ProjectsActivityController extends ControllerBase {
     }
 
     getActivity() {
-        this.startDate = moment().subtract(this.substract, 'months').format('YYYY-MM-DD');
-        this.endDate = moment().subtract((this.substract - 1), 'months').format('YYYY-MM-DD');
+
+        this.startDate = this.date.subtract(this.substract*30, 'days').format('YYYY-MM-DD');
+        this.endDate = this.date.subtract((this.substract - 1)*30, 'days').format('YYYY-MM-DD');
 
         this.ProjectsService.getActivity(this.projectId, {
             start_date: this.startDate,
