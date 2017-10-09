@@ -18,7 +18,7 @@
                     <md-list-item>
                         <p class="md-list-item-text md-body-1" layout="column">
                             <span>Atom access key</span>
-                            <span>created {{ $ctrl.model.tokens.atom[0].created_on }}</span>
+                            <span>created {{ $ctrl.model.tokens.atom.created_on }}</span>
                         </p>
                         <md-button class="md-icon-button animation-target md-secondary"
                                    ng-click="$ctrl.resetAtomKey()">
@@ -31,7 +31,7 @@
                     <md-list-item>
                         <p class="md-list-item-text md-body-1" layout="column">
                             <span>API access key</span>
-                            <span>created {{ $ctrl.model.tokens.api[0].created_on }}</span>
+                            <span>created {{ $ctrl.model.tokens.api.created_on }}</span>
                         </p>
                         <md-button class="md-icon-button animation-target md-secondary"
                                    ng-click="$ctrl.showApiKey($event)">

@@ -43,20 +43,18 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
     getTokens(tokens) {
-        let result = {
-            atom: {},
-            api: {}
-        };
-
-        result.atom = tokens.filter((token) => {
+        const atom = tokens.filter((token) => {
             return token.action === 'feeds';
         });
 
-        result.api = tokens.filter((token) => {
+        const api = tokens.filter((token) => {
             return token.action === 'api';
         });
 
-        return result;
+        return {
+            atom: atom[0],
+            api: api[0]
+        }
     }
 
     setMdDialogConfig(component, target, data = {}) {
@@ -112,13 +110,24 @@ export default class mainMyAccountIndexController extends ControllerBase {
 
     resetApiKey() {
         this.UsersService.resetApiAccessKey().then((response) => {
-            this.model.api_key_updated_on = response.data;
+            if (response && response.status === 200) {
+                this.model.tokens.api.updated_on = response.data;
+                this.$mdToast.show(
+                    this.$mdToast.simple().textContent('API key was reset successfully').position('top right')
+                );
+            }
         });
+
     }
 
     resetAtomKey() {
         this.UsersService.resetAtomAccessKey().then((response) => {
-            this.model.atom_key_updated_on = response.data;
+            if (response && response.status === 200) {
+                this.model.tokens.atom.updated_on = response.data;
+                this.$mdToast.show(
+                    this.$mdToast.simple().textContent('RSS key was reset successfully').position('top right')
+                );
+            }
         });
     }
 

@@ -31,6 +31,10 @@ body {
   }
 }
 
+body.md-toast-animating {
+  overflow: auto !important;
+}
+
 md-input-container {
 
   .custom-error-message {
