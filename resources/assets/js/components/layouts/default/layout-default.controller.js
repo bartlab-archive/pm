@@ -17,9 +17,9 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     $onInit() {
-        this.ProjectsService.getMyList().then((responce) =>
+        this.ProjectsService.getMyList().then((response) =>
         {
-           this.projects = responce ? responce : {};
+           this.projects = response ? response : {};
         });
         this.items = [
             {url: 'home', name: 'Home', icon: 'home'},
@@ -69,7 +69,8 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     checkShowProjectMenu(state) {
-        this.showProjectMenu = _.get(state, 'data.layoutDefault.showProjectMenu', false) || !!_.get(this.$stateParams, 'project_id');
+        this.showProjectMenu = _.get(state, 'data.layoutDefault.projectId', false) || !!_.get(this.$stateParams, 'project_id');
+
         if (this.showProjectMenu) {
             this.loadProjectInfo();
         }
@@ -135,10 +136,18 @@ export default class LayoutDefaultController extends ControllerBase {
         }
     }
 
-    showFabAction(item){
-        if (item.name === 'New issue'){
-            return typeof this.enabledModules !== 'undefined' && typeof this.enabledModules.issue_tracking !== 'undefined';
+    showFabAction(item) {
+        const projectId = this.currentProjectId();
+        if (projectId) {
+            if (item.name === 'New issue') {
+                return typeof this.enabledModules !== 'undefined' && typeof this.enabledModules.issue_tracking !== 'undefined';
+            }
+        } else {
+            if (item.name !== 'New project') {
+                return false;
+            }
         }
+
         return true;
     }
 }
