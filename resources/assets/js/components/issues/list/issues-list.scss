@@ -21,4 +21,12 @@ issues-list-component {
     z-index: 40;
     border: 1px solid gainsboro;
   }
+
+  .context-menu-item md-icon {
+    margin: 0 4px 4px 0;
+  }
+
+  .md-icon-button, .pages-button {
+    margin: 6px!important;
+  }
 }

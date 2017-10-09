@@ -18,7 +18,7 @@
                     <md-list-item>
                         <p class="md-list-item-text md-body-1" layout="column">
                             <span>Atom access key</span>
-                            <span>created {{ $ctrl.model.tokens.atom.created_on }}</span>
+                            <span>created {{ $ctrl.model.tokens.atom.updated_on }}</span>
                         </p>
                         <md-button class="md-icon-button animation-target md-secondary"
                                    ng-click="$ctrl.resetAtomKey()">
@@ -28,14 +28,15 @@
 
                     <md-divider></md-divider>
 
-                    <md-list-item>
+                    <md-list-item class="api-key-container">
                         <p class="md-list-item-text md-body-1" layout="column">
                             <span>API access key</span>
-                            <span>created {{ $ctrl.model.tokens.api.created_on }}</span>
+                            <span>created {{ $ctrl.model.tokens.api.updated_on }}</span>
+                            <span id="api-key"></span>
                         </p>
                         <md-button class="md-icon-button animation-target md-secondary"
-                                   ng-click="$ctrl.showApiKey($event)">
-                            <md-icon>visibility</md-icon>
+                                   ng-click="$ctrl.showApiKey()">
+                            <md-icon id="api-key-visibility-icon">visibility</md-icon>
                         </md-button>
                         <md-button class="md-icon-button animation-target md-secondary"
                                    ng-click="$ctrl.resetApiKey()">
