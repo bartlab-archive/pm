@@ -13,7 +13,7 @@ class WikiService
 {
     public function getWikiPageMarkDown($identifier, $page_title = null)
     {
-        $project = Auth::user()->projects()->where('identifier', $identifier)->first();
+        $project = Project::where('identifier', $identifier)->first();
 
         if (is_null($project)) {
             abort(403);
@@ -106,7 +106,7 @@ class WikiService
 
     public function getAllWikiPage($project_identifier)
     {
-        $project = Auth::user()->projects()->where('identifier', $project_identifier)->firstOrFail();
+        $project = Project::where('identifier', $project_identifier)->firstOrFail();
 
         $wiki = $project->wiki->page()->with('content')->get();
 
