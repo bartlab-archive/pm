@@ -88,6 +88,8 @@ export default class IssuesListController extends ControllerBase {
                 this.list = _.keyBy(response.data, 'id');
                 this.count = response.headers('X-Total');
             });
+
+        this.selectedGroup = [];
     }
 
     onChangeFilterValue() {

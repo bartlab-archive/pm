@@ -40,6 +40,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
         this.languages = this.UsersService.languages;
         this.timeZone = this.UsersService.timeZone;
         this.emailNotifications = this.UsersService.getEmailNotifications;
+        this.apiVisibilityState = false;
     }
 
     getTokens(tokens) {
@@ -96,10 +97,18 @@ export default class mainMyAccountIndexController extends ControllerBase {
         );
     }
 
-    showApiKey($event) {
-        this.$mdDialog.show(
-            this.setMdDialogConfig(myShowApiKeyComponent, $event.target)
-        );
+    showApiKey() {
+        if (!this.apiVisibilityState) {
+            $('.api-key-container .md-list-item-text #api-key').html(`key: ${this.model.tokens.api.value}`);
+            $('.api-key-container #api-key-visibility-icon').html('visibility_off');
+
+        } else {
+
+            $('.api-key-container .md-list-item-text #api-key').html('');
+            $('.api-key-container #api-key-visibility-icon').html('visibility');
+        }
+
+        this.apiVisibilityState = !this.apiVisibilityState;
     }
 
     addEmail($event) {

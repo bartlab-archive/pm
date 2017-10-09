@@ -11,7 +11,18 @@
 
             <div flex></div>
 
-            <md-menu>
+            <p ng-show="$ctrl.selectedGroup.length > 0">Selected items: {{$ctrl.selectedGroup.length}}</p>
+            <md-button ng-show="$ctrl.selectedGroup.length > 0">
+                <md-icon>content_copy</md-icon>
+                Copy
+            </md-button>
+            <md-button ng-show="$ctrl.selectedGroup.length > 0"
+                       ng-click="$ctrl.deleteGroup()">
+                <md-icon>delete</md-icon>
+                Delete
+            </md-button>
+
+            <md-menu ng-show="$ctrl.selectedGroup.length === 0">
                 <md-button class="pages-button" ng-click="$ctrl.openLimitMenu($mdMenu, $event)">
                     {{$ctrl.getPager()}}
                 </md-button>
@@ -34,30 +45,25 @@
                 </md-menu-content>
             </md-menu>
 
-            <md-button ng-click="$ctrl.previous()" ng-disabled="$ctrl.offset === 0" class="md-icon-button">
+            <md-button
+                    ng-show="$ctrl.selectedGroup.length === 0"
+                    ng-click="$ctrl.previous()"
+                    ng-disabled="$ctrl.offset === 0" class="md-icon-button">
                 <md-icon>keyboard_arrow_left</md-icon>
             </md-button>
 
-            <md-button ng-click="$ctrl.next()" ng-disabled="$ctrl.offset + $ctrl.limitPerPage >= $ctrl.count" class="md-icon-button">
+            <md-button
+                    ng-show="$ctrl.selectedGroup.length === 0"
+                    ng-click="$ctrl.next()"
+                    ng-disabled="$ctrl.offset + $ctrl.limitPerPage >= $ctrl.count"
+                    class="md-icon-button">
                 <md-icon>keyboard_arrow_right</md-icon>
             </md-button>
 
-            <md-button class="md-icon-button">
+            <md-button ng-show="$ctrl.selectedGroup.length === 0" class="md-icon-button">
                 <md-icon>settings</md-icon>
             </md-button>
         </md-card-header>
-
-        <md-card-content ng-show="$ctrl.selectedGroup.length > 0">
-            <p>Selected items: {{$ctrl.selectedGroup.length}}</p>
-            <md-button>
-                <md-icon>content_copy</md-icon>
-                Copy
-            </md-button>
-            <md-button ng-click="$ctrl.deleteGroup()">
-                <md-icon>delete</md-icon>
-                Delete
-            </md-button>
-        </md-card-content>
 
         <md-card-content>
             <md-chips
@@ -211,17 +217,29 @@
         <md-content>
             <md-list layout="column" layout-align="center none" flex>
                 <md-list-item class="context-menu-item" ng-click="$ctrl.openIssue($ctrl.contextTarget.id)">
-                    Open
+                    <div>
+                        <md-icon>open_in_browser</md-icon>
+                        <span class="context-menu-text">Open</span>
+                    </div>
                 </md-list-item>
                 <md-list-item class="context-menu-item" ng-click="$ctrl.editIssue($ctrl.contextTarget.id)">
-                    Edit
+                    <div>
+                        <md-icon>mode_edit</md-icon>
+                        <span class="context-menu-text">Edit</span>
+                    </div>
                 </md-list-item>
                 <md-list-item class="context-menu-item" ng-click="$ctrl.copyIssue($ctrl.contextTarget.id)">
-                    Copy
+                    <div>
+                        <md-icon>content_copy</md-icon>
+                        <span class="context-menu-text">Copy</span>
+                    </div>
                 </md-list-item>
                 <md-divider></md-divider>
                 <md-list-item class="context-menu-item" ng-click="$ctrl.deleteIssue($ctrl.contextTarget.id)">
-                    Delete
+                   <div>
+                       <md-icon>delete</md-icon>
+                       <span class="context-menu-text">Delete</span>
+                   </div>
                 </md-list-item>
             </md-list>
         </md-content>

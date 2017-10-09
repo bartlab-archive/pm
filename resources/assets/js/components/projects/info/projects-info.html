@@ -48,9 +48,8 @@
         <md-card-content class="md-body-1">
             <p ng-repeat="(role, members) in $ctrl.membersByRole">
                 {{role}}:
-                <md-button class="md-secondary"
-                           ng-repeat="(userId, name) in members"
-                           ng-click="$ctrl.userNavigate(userId)">
+                <md-button ng-repeat="(userId, name) in members"
+                           ng-href="users/{{userId}}">
                     {{name}}
                 </md-button>
             </p>
