@@ -48,7 +48,9 @@
         <md-card-content class="md-body-1">
             <p ng-repeat="(role, members) in $ctrl.membersByRole">
                 {{role}}:
-                <a ng-repeat="(userId, name) in members" ui-sref="users.info({id: userId})">{{name}}</a>
+                <span ng-repeat="(userId, name) in members">
+                    <a ui-sref="users.info({id: userId})">{{name}}</a><span ng-if="!$last">, </span>
+                </span>
             </p>
         </md-card-content>
     </md-card>
