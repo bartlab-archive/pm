@@ -19,7 +19,7 @@ issues-list-component {
   .context-menu {
     position: absolute;
     z-index: 40;
-    width: 150px;
+    width: 200px;
     border: 1px solid gainsboro;
   }
 
@@ -29,5 +29,9 @@ issues-list-component {
 
   .md-icon-button, .pages-button {
     margin: 6px!important;
+  }
+
+  .md-list-item-inner {
+    padding-right: 0;
   }
 }

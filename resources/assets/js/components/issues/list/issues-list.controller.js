@@ -39,6 +39,7 @@ export default class IssuesListController extends ControllerBase {
             this.limitPerPage = 20;
             this.contextTarget = [];
             this.contextState = false;
+            this.members = this.ProjectsService.getMembersList(_.get(response, 'data', []));
 
             this.loadFiltersValues();
             this.load();
@@ -326,5 +327,35 @@ export default class IssuesListController extends ControllerBase {
         const all = this.count > this.limitPerPage ? ' /' + this.count : '';
 
         return currentPage + '-' + fromPage + all;
+    }
+
+    assignTo(memberId) {
+        this.contextTarget.assigned_to_id = memberId;
+        this.contextTarget.project_id = this.contextTarget.project.id;
+        delete this.contextTarget.identifier;
+
+        this.IssuesService.update(this.contextTarget).then((response) => {
+            this.hideContextMenu();
+        });
+    }
+
+    setPriority(priorityId) {
+        this.contextTarget.priority_id = priorityId;
+        this.contextTarget.project_id = this.contextTarget.project.id;
+        delete this.contextTarget.identifier;
+
+        this.IssuesService.update(this.contextTarget).then((response) => {
+            this.hideContextMenu();
+        });
+    }
+
+    setStatus(statusId) {
+        this.contextTarget.status_id = statusId;
+        this.contextTarget.project_id = this.contextTarget.project.id;
+        delete this.contextTarget.identifier;
+
+        this.IssuesService.update(this.contextTarget).then((response) => {
+            this.hideContextMenu();
+        });
     }
 }

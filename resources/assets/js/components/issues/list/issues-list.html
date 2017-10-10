@@ -234,6 +234,98 @@
                         <span class="context-menu-text">Copy</span>
                     </div>
                 </md-list-item>
+                <!--Status context menu-->
+                <md-list-item class="context-menu-item">
+                    <div>
+                        <md-icon>content_copy</md-icon>
+                        <span class="context-menu-text">Status</span>
+                        <md-menu class="md-secondary">
+                            <md-button aria-label="Open menu with custom trigger" class="md-icon-button" ng-mouseenter="$mdMenu.open()">
+                                <md-icon>keyboard_arrow_right</md-icon>
+                            </md-button>
+                            <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.setStatus(1)">
+                                        Новая
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.setStatus(2)">
+                                        В работе
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.setStatus(3)">
+                                        Решена
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.setStatus(4)">
+                                        Обратная связь
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.setStatus(5)">
+                                        Закрыта
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.setStatus(6)">
+                                        Отклонена
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </div>
+                </md-list-item>
+                <!--Priority context menu-->
+                <md-list-item class="context-menu-item" ng-click="">
+                    <div>
+                        <md-icon>content_copy</md-icon>
+                        <span class="context-menu-text">Priority</span>
+                        <md-menu class="md-secondary">
+                            <md-button aria-label="Open menu with custom trigger" class="md-icon-button" ng-mouseenter="$mdMenu.open()">
+                                <md-icon>keyboard_arrow_right</md-icon>
+                            </md-button>
+                            <md-menu-content width="4">
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.setPriority(1)">
+                                        Низкий
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.setPriority(2)">
+                                        Нормальный
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="$ctrl.setPriority(3)">
+                                        Высокий
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </div>
+                </md-list-item>
+                <!--Assignee context menu-->
+                <md-list-item class="context-menu-item" ng-click="">
+                    <div>
+                        <md-icon>content_copy</md-icon>
+                        <span class="context-menu-text">Asignee</span>
+                        <md-menu class="md-secondary">
+                            <md-button aria-label="Open menu with custom trigger" class="md-icon-button" ng-mouseenter="$mdMenu.open()">
+                                <md-icon>keyboard_arrow_right</md-icon>
+                            </md-button>
+                            <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+                                <md-menu-item ng-repeat="member in $ctrl.members">
+                                    <md-button ng-click="$ctrl.assignTo(member.user_id)">
+                                        {{member.name}}
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </div>
+                </md-list-item>
                 <md-divider></md-divider>
                 <md-list-item class="context-menu-item" ng-click="$ctrl.deleteIssue($ctrl.contextTarget.id)">
                    <div>
