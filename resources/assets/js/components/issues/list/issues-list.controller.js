@@ -37,8 +37,6 @@ export default class IssuesListController extends ControllerBase {
             this.selectAllState = false;
             this.offset = 0;
             this.limitPerPage = 20;
-            this.contextTarget = [];
-            this.contextState = false;
             this.members = this.ProjectsService.getMembersList(_.get(response, 'data', []));
 
             this.loadFiltersValues();
@@ -274,52 +272,6 @@ export default class IssuesListController extends ControllerBase {
         return _.get(this.$state, 'data.layoutDefault.projectId') || _.get(this.$stateParams, 'project_id');
     }
 
-    showContextMenu(coordX, coordY) {
-        $('.context-menu').css('left', coordX);
-        $('.context-menu').css('top', coordY);
-        $('.context-menu').css('display', 'block');
-
-        this.contextState = true;
-    }
-
-    hideContextMenu() {
-        $('.context-menu').css('display', 'none');
-        $('.context-menu').css('left', 0);
-        $('.context-menu').css('top', 0);
-
-        this.contextState = false;
-    }
-
-    contextMenuHandler() {
-        const _this = this;
-
-        $('.has-context-menu').contextmenu(function (event) {
-            event.stopPropagation();
-            event.preventDefault();
-
-            Object.values(_this.list).forEach((item) => {
-                if (item.id == ($(this).closest('.has-context-menu').attr('id')).substr(6)) {
-                    _this.contextTarget = item;
-                }
-            });
-            _this.contextState ? _this.hideContextMenu() : _this.showContextMenu(event.pageX, event.pageY);
-
-            $(this).off(event);
-        });
-    }
-
-    hideContextHandler() {
-        if (this.contextState) {
-            $('.issues-container').on('click', (event) => {
-                event.stopPropagation();
-                event.preventDefault();
-                this.hideContextMenu();
-
-                $('.has-context-menu').unbind('contextmenu').bind('contextmenu');
-            })
-        }
-    }
-
     getPager() {
         const currentPage = this.offset === 0 ? this.offset + 1 : this.offset;
         const fromPage = (this.count < this.limitPerPage || this.count < this.offset + this.limitPerPage) ?
@@ -329,33 +281,33 @@ export default class IssuesListController extends ControllerBase {
         return currentPage + '-' + fromPage + all;
     }
 
-    assignTo(memberId) {
-        this.contextTarget.assigned_to_id = memberId;
-        this.contextTarget.project_id = this.contextTarget.project.id;
-        delete this.contextTarget.identifier;
+    assignTo(taskId, memberId) {
+        this.list[taskId].assigned_to_id = memberId;
+        this.list[taskId].project_id = this.list[taskId].project.id;
+        delete this.list[taskId].identifier;
 
-        this.IssuesService.update(this.contextTarget).then((response) => {
-            this.hideContextMenu();
+        this.IssuesService.update(this.list[taskId]).then((response) => {
+            this.list[taskId] = response.data;
         });
     }
 
-    setPriority(priorityId) {
-        this.contextTarget.priority_id = priorityId;
-        this.contextTarget.project_id = this.contextTarget.project.id;
-        delete this.contextTarget.identifier;
+    setPriority(taskId, priorityId) {
+        this.list[taskId].priority_id = priorityId;
+        this.list[taskId].project_id = this.list[taskId].project.id;
+        delete this.list[taskId].identifier;
 
-        this.IssuesService.update(this.contextTarget).then((response) => {
-            this.hideContextMenu();
+        this.IssuesService.update(this.list[taskId]).then((response) => {
+            this.list[taskId] = response.data;
         });
     }
 
-    setStatus(statusId) {
-        this.contextTarget.status_id = statusId;
-        this.contextTarget.project_id = this.contextTarget.project.id;
-        delete this.contextTarget.identifier;
+    setStatus(taskId, statusId) {
+        this.list[taskId].status_id = statusId;
+        this.list[taskId].project_id = this.list[taskId].project.id;
+        delete this.list[taskId].identifier;
 
-        this.IssuesService.update(this.contextTarget).then((response) => {
-            this.hideContextMenu();
+        this.IssuesService.update(this.list[taskId]).then((response) => {
+            this.list[taskId] = response.data;
         });
     }
 }
