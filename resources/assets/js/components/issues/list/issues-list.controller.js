@@ -64,7 +64,6 @@ export default class IssuesListController extends ControllerBase {
         };
 
         if (!_.isEmpty(this.tags)) {
-
             _.forEach(this.tags, (item) => {
                 switch (item.type) {
                     case 'tracker':
@@ -109,6 +108,11 @@ export default class IssuesListController extends ControllerBase {
                         item.type = 'status';
                         this.statusesList[item.id] = item.name;
                         this.items.push(item);
+
+                        // apply "status: open" filters on issues load
+                        if (!item.is_closed) {
+                            this.tags.push(item);
+                        }
                     });
                 }
 
@@ -126,6 +130,9 @@ export default class IssuesListController extends ControllerBase {
                         this.items.push(item);
                     });
                 }
+
+                // apply "status: open" filters on issues load
+                this.onChangeFilterValue();
             }
         });
     }
