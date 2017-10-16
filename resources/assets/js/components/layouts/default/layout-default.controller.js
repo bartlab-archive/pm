@@ -61,6 +61,9 @@ export default class LayoutDefaultController extends ControllerBase {
             {url: 'projects.inner.settings', title: 'Settings'}
         ];
 
+        // this is used to display navbar ink bar (underline red bar) on first load
+        this.currentNavItem = this.$state.$current.name;
+
         this.menuOpen = false;
         this.checkShowProjectMenu(this.$state.current);
 
@@ -113,7 +116,7 @@ export default class LayoutDefaultController extends ControllerBase {
 
     goto(url) {
         let projectId = this.currentProjectId();
-
+console.log(this.$state, this.currentNavItem); // this.currentNavItem = 'projects.inner.issues.index'
         projectId ? this.$state.go(url, {project_id: projectId}) : null;
         _.includes(['projects.new'], url) ? this.$state.go(url, {}) : null;
     }
