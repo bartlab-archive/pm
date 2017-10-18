@@ -107,14 +107,4 @@ md-toast.notification {
       position: fixed;
     }
   }
-
-  @media (max-width: $layout-breakpoint-sm - 1) { // $layout-breakpoint-sm is 960px by default in angular-material
-    md-toast {
-      &._md-bottom {
-        &:not(._md-right):not(._md-left) {
-          position: fixed;
-        }
-      }
-    }
-  }
 /* mdToast fixed position */
