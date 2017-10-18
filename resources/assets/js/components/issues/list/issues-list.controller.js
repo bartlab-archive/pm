@@ -15,7 +15,7 @@ import * as _ from "lodash";
 export default class IssuesListController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$showdown', 'IssuesService', 'ProjectsService', '$stateParams', '$window', '$rootScope', 'TrackersService', 'UsersService'];
+        return ['$state', '$showdown', 'IssuesService', 'ProjectsService', '$stateParams', '$window', '$rootScope', 'TrackersService', 'UsersService', '$mdDialog'];
     }
 
     $onInit() {
@@ -233,16 +233,36 @@ export default class IssuesListController extends ControllerBase {
     }
 
     deleteIssue(id) {
-        this.IssuesService.deleteIssue(id).then(() => {
-            this.$rootScope.$emit('updateIssues');
-        });
+        let confirm = this.$mdDialog.confirm()
+            .title(`Would you like to delete this issue?`)
+            .ok('Delete!')
+            .cancel('Cancel');
+        this.$mdDialog.show(confirm).then(() => {
+            this.IssuesService.deleteIssue(id).then(() => {
+                this.$rootScope.$emit('updateIssues');
+            });
 
-        this.selectedGroup = [];
+            this.selectedGroup = [];
+        });
     }
 
     deleteGroup() {
-        this.selectedGroup.forEach((issue) => {
-            this.deleteIssue(issue.id);
+        let title_issue = this.selectedGroup.length > 1 ? 'issues' : 'issue';
+        let confirm = this.$mdDialog.confirm()
+            .title(`Would you like to delete this ${title_issue}?`)
+            .ok('Delete!')
+            .cancel('Cancel');
+        this.$mdDialog.show(confirm).then(() => {
+            this.selectedGroup.forEach((issue) => {
+                this.deleteConfirmedIssue(issue.id);
+            });
+            this.selectedGroup = [];
+        });
+    }
+
+    deleteConfirmedIssue(id) {
+        this.IssuesService.deleteIssue(id).then(() => {
+            this.$rootScope.$emit('updateIssues');
         });
 
         this.selectedGroup = [];
