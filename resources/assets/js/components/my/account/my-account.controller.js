@@ -122,7 +122,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
             if (response && response.status === 200) {
                 this.model.tokens.api.updated_on = response.data;
                 this.$mdToast.show(
-                    this.$mdToast.simple().textContent('API key was reset successfully').position('top right')
+                    this.$mdToast.simple().textContent('API key was reset successfully').position('bottom left')
                 );
             }
         });
@@ -134,7 +134,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
             if (response && response.status === 200) {
                 this.model.tokens.atom.updated_on = response.data;
                 this.$mdToast.show(
-                    this.$mdToast.simple().textContent('RSS key was reset successfully').position('top right')
+                    this.$mdToast.simple().textContent('RSS key was reset successfully').position('bottom left')
                 );
             }
         });
