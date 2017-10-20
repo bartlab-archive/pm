@@ -1,6 +1,6 @@
 import ControllerBase from 'base/controller.base';
 import * as _ from "lodash";
-
+import moment from 'moment';
 /**
  * @property {$stateParams} $stateParams
  * @property {IssuesService} IssuesService
@@ -35,7 +35,7 @@ export default class IssuesEditCopyController extends ControllerBase {
             this.categoriesList = _.get(response, 'data.project.issue_categories', []);
             this.projectsList = _.get(response, 'data.projectsList', []);
             this.statusesList = _.get(response, 'data.statusesList', []);
-
+            this.issue.project_id = this.issue.project.id;
             _.set(
                 this.$state,
                 'data.layoutDefault.projectId',
@@ -59,6 +59,9 @@ export default class IssuesEditCopyController extends ControllerBase {
         if (this.error) {
             return false;
         }
+
+        this.issue.due_date = moment(this.issue.due_date).format('YYYY-MM-DD');
+        this.issue.start_date = moment(this.issue.start_date).format('YYYY-MM-DD');
 
         if (this.$state.current.name === 'issues.copy') {
             this.IssuesService.create(_.pick(this.issue, [
