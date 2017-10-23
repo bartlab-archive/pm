@@ -157,4 +157,8 @@ class Project extends Model
     public function childProjects() {
         return $this->hasMany(self::class, 'parent_id', 'id');
     }
+
+    public function childProjectsRecursive() {
+        return $this->childProjects()->with('childProjectsRecursive');
+    }
 }

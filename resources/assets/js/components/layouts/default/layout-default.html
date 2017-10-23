@@ -109,14 +109,47 @@
             </h1>
         </md-toolbar>
 
+        <!--todo: convert this code into component-->
         <md-list>
-            <md-list-item class="md-body-1" ng-repeat="project in $ctrl.projects"
-                          ng-click="$ctrl.gotToProject(project.identifier)">
-                <md-button class="md-icon-button">
-                    <md-icon>folder</md-icon>
-                </md-button>
-                {{ project.name }}
-            </md-list-item>
+            <div ng-repeat="project in $ctrl.projects">
+                <md-list-item class="md-body-1" ng-click="$ctrl.gotToProject(project.identifier)">
+                    <md-button class="md-icon-button">
+                        <md-icon>folder</md-icon>
+                    </md-button>
+                    {{ project.name }}
+                </md-list-item>
+
+                <div ng-repeat="project2 in project.child_projects_recursive">
+                    <md-list style="padding-top: 0px; padding-bottom: 0px;">
+                        <md-list-item class="md-body-1" ng-click="$ctrl.gotToProject(project2.identifier)">
+                            <md-button class="md-icon-button">
+                                <md-icon>subdirectory_arrow_right</md-icon>
+                            </md-button>
+                            <md-button class="md-icon-button">
+                                <md-icon>folder</md-icon>
+                            </md-button>
+                            {{ project2.name }}
+                        </md-list-item>
+
+                        <div ng-repeat="project3 in project2.child_projects_recursive">
+                            <md-list style="padding-top: 0px; padding-bottom: 0px;">
+                                <md-list-item class="md-body-1" ng-click="$ctrl.gotToProject(project3.identifier)">
+                                    <md-button class="md-icon-button">
+                                        <md-icon aria-label=""></md-icon>
+                                    </md-button>
+                                    <md-button class="md-icon-button">
+                                        <md-icon>subdirectory_arrow_right</md-icon>
+                                    </md-button>
+                                    <md-button class="md-icon-button">
+                                        <md-icon>folder</md-icon>
+                                    </md-button>
+                                    {{ project3.name }}
+                                </md-list-item>
+                            </md-list>
+                        </div>
+                    </md-list>
+                </div>
+            </div>
         </md-list>
 
     </md-sidenav>
