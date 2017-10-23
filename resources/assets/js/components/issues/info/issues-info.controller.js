@@ -12,7 +12,7 @@ import * as _ from "lodash";
 export default class IssuesInfoController extends ControllerBase {
 
     static get $inject() {
-        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService', '$rootScope', 'UsersService'];
+        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService', '$rootScope', 'UsersService', '$mdDialog'];
     }
 
     $onInit() {
@@ -74,9 +74,15 @@ export default class IssuesInfoController extends ControllerBase {
     }
 
     delete() {
-        this.IssuesService.deleteIssue(this.issue.id).then(() => {
-            window.location = 'projects/' + this.issue.project.identifier;
-        })
+        let confirm = this.$mdDialog.confirm()
+            .title(`Would you like to delete this issue?`)
+            .ok('Delete!')
+            .cancel('Cancel');
+        this.$mdDialog.show(confirm).then(() => {
+            this.IssuesService.deleteIssue(this.issue.id).then(() => {
+                window.location = 'projects/' + this.issue.project.identifier;
+            })
+        });
     }
 
     setStatusText(statusId) {
