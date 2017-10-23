@@ -82,20 +82,62 @@
 
         </md-card-header>
 
+        <!--todo: convert this code into component-->
         <md-list>
-            <md-list-item class="md-3-line" ng-repeat="row in $ctrl.list" ng-click="$ctrl.goto(row.identifier)">
-                <div class="md-list-item-text" layout="column">
-                    <h3>{{ row.name }}</h3>
-                    <p>{{ row.homepage }}</p>
-                    <p class="md-truncate" ng-bind-html="$ctrl.makeHtml(row.description) | words: 50"></p>
+            <div ng-repeat="project in $ctrl.list">
+                <md-list-item class="md-3-line" ng-click="$ctrl.goto(project.identifier)">
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ project.name }}</h3>
+                        <p>{{ project.homepage }}</p>
+                        <p class="md-truncate" ng-bind-html="$ctrl.makeHtml(project.description) | words: 50"></p>
+                    </div>
+
+                    <md-icon class="md-warn" ng-if="project.is_my === 1">star_rate</md-icon>
+                    <md-icon>{{ project.is_public?'lock_open':'lock' }}</md-icon>
+                    <md-icon ng-if="project.status === 5">close</md-icon>
+                </md-list-item>
+
+                <div ng-repeat="project2 in project.child_projects_recursive">
+                    <md-list-item class="md-3-line" ng-click="$ctrl.goto(project2.identifier)">
+                        <md-button class="md-icon-button">
+                            <md-icon>subdirectory_arrow_right</md-icon>
+                        </md-button>
+
+                        <div class="md-list-item-text" layout="column">
+                            <h3>{{ project2.name }}</h3>
+                            <p>{{ project2.homepage }}</p>
+                            <p class="md-truncate" ng-bind-html="$ctrl.makeHtml(project2.description) | words: 50"></p>
+                        </div>
+
+                        <md-icon class="md-warn" ng-if="project2.is_my === 1">star_rate</md-icon>
+                        <md-icon>{{ project2.is_public?'lock_open':'lock' }}</md-icon>
+                        <md-icon ng-if="project2.status === 5">close</md-icon>
+                    </md-list-item>
+
+                    <div ng-repeat="project3 in project2.child_projects_recursive">
+                        <md-list-item class="md-3-line" ng-click="$ctrl.goto(project3.identifier)">
+                            <md-button class="md-icon-button">
+                                <md-icon aria-label=""></md-icon>
+                            </md-button>
+                            <md-button class="md-icon-button">
+                                <md-icon>subdirectory_arrow_right</md-icon>
+                            </md-button>
+
+                            <div class="md-list-item-text" layout="column">
+                                <h3>{{ project3.name }}</h3>
+                                <p>{{ project3.homepage }}</p>
+                                <p class="md-truncate" ng-bind-html="$ctrl.makeHtml(project3.description) | words: 50"></p>
+                            </div>
+
+                            <md-icon class="md-warn" ng-if="project3.is_my === 1">star_rate</md-icon>
+                            <md-icon>{{ project3.is_public?'lock_open':'lock' }}</md-icon>
+                            <md-icon ng-if="project3.status === 5">close</md-icon>
+                        </md-list-item>
+                    </div>
                 </div>
 
-                <md-icon class="md-warn" ng-if="row.is_my === 1">star_rate</md-icon>
-                <md-icon>{{ row.is_public?'lock_open':'lock' }}</md-icon>
-                <md-icon ng-if="row.status === 5">close</md-icon>
-
                 <md-divider ng-if="!$last"></md-divider>
-            </md-list-item>
+            </div>
         </md-list>
 
         <md-card-actions layout="row" layout-align="center center">
