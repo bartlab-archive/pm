@@ -86,7 +86,8 @@
                         md-no-cache="true"
                         md-search-text="$ctrl.searchText"
                         md-item-text="item.name"
-                        md-items="item in $ctrl.querySearch($ctrl.searchText)">
+                        md-items="item in $ctrl.querySearch($ctrl.searchText)"
+                        placeholder="Add filter">
                     <span md-highlight-text="$ctrl.searchText">{{item.name}} :: {{item.type}}</span>
                 </md-autocomplete>
             </md-chips>
@@ -286,6 +287,8 @@
         <md-card-content ng-scrollbars ng-scrollbars-config="$ctrl.scrollBarConfigDescription" class="md-body-1">
             <div ng-if="$ctrl.showMore">
                 <p><b>Priority:</b> {{ $ctrl.prioritiesList[$ctrl.selectedIssue.priority_id] }}</p>
+                <p><b>Added by:</b> <a ui-sref="users.info({id:$ctrl.selectedIssue.author.id})">{{
+                    $ctrl.selectedIssue.author.firstname + ' ' + $ctrl.selectedIssue.author.lastname }}</a></p>
                 <p><b>Assignee:</b> <a ui-sref="users.info({id:$ctrl.selectedIssue.user.id})">{{
                     $ctrl.selectedIssue.user.firstname + ' ' + $ctrl.selectedIssue.user.lastname }}</a></p>
                 <!--<p><b>Target version:</b> -</p>-->

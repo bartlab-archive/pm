@@ -96,6 +96,10 @@
                         <td>{{ $ctrl.priorityText }}</td>
                     </tr>
                     <tr>
+                        <td><b>Added by:</b></td>
+                        <td><a ui-sref="users.info({id:$ctrl.issue.author.id})">{{ $ctrl.issue.author.firstname + ' ' + $ctrl.issue.author.lastname }}</a></td>
+                    </tr>
+                    <tr>
                         <td><b>Assignee:</b></td>
                         <td><a ui-sref="users.info({id:$ctrl.issue.user.id})">{{ $ctrl.issue.user.firstname + ' ' + $ctrl.issue.user.lastname }}</a></td>
                     </tr>

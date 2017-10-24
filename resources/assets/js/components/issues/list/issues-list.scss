@@ -34,8 +34,12 @@ issues-list-component {
   .md-list-item-inner {
     padding-right: 0;
   }
-}
 
-md-menu-item .md-button md-icon {
-  margin: auto 16px auto 0;
+  .md-chip-input-container {
+    width: 100%;
+  }
+
+  //md-menu-item .md-button md-icon {
+  //  margin: auto 16px auto 0;
+  //}
 }
