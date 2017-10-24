@@ -16,7 +16,7 @@ export default class IssuesInfoController extends ControllerBase {
     }
 
     $onInit() {
-        this.showMore = false;
+        this.showMore = true;
         this.trackersList = [];
         this.statusesList = [];
         this.prioritiesList = [];

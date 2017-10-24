@@ -19,7 +19,7 @@
             <div flex></div>
 
             <md-button class="md-icon-button" ng-click="$ctrl.toggleShowMore()">
-                <md-icon>{{ $ctrl.showMore ? 'expand_less' :'expand_more' }}</md-icon>
+                <md-icon>{{ $ctrl.showMore ? 'expand_less' : 'expand_more' }}</md-icon>
             </md-button>
 
             <!--<md-button class="md-icon-button" ng-click="null">-->
@@ -84,6 +84,14 @@
             <div ng-show="$ctrl.showMore">
                 <table class="md-body-1">
                     <tr>
+                        <td><b>Project:</b></td>
+                        <td>
+                            <a ui-sref="projects.inner.info({project_id: $ctrl.issue.project.identifier})">
+                                {{ $ctrl.issue.project.name }}
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
                         <td><b>Priority:</b></td>
                         <td>{{ $ctrl.priorityText }}</td>
                     </tr>
@@ -105,6 +113,16 @@
             <div markdown-to-html="$ctrl.issue.description || ''"></div>
 
             <md-divider></md-divider>
+
+            <div ng-show="$ctrl.issue.child_issues.length">
+                <p>Subtasks:</p>
+
+                <p ng-repeat="childIssue in $ctrl.issue.child_issues">
+                    <a ui-sref="issues.info({id: childIssue.id})">{{ childIssue.subject }}</a>
+                </p>
+
+                <md-divider></md-divider>
+            </div>
 
             <history-component
                     ng-if="$ctrl.issue.id"

@@ -100,4 +100,9 @@ class Issue extends Model
     {
         return $this->hasOne(IssueStatuse::class, 'id', 'status_id');
     }
+
+    public function childIssues()
+    {
+        return $this->hasMany(self::class, 'parent_id', 'id');
+    }
 }
