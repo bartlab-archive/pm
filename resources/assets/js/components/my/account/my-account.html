@@ -131,7 +131,8 @@
             <md-list>
                 <md-list-item>
                     <p>I don't want to be notified of changes that I make myself</p>
-                    <md-switch class="md-primary" ng-model="$ctrl.model.no_self_notified"></md-switch>
+                    <md-switch class="md-primary" ng-model="$ctrl.model.no_self_notified"
+                               ng-true-value="'1'" ng-false-value="'0'"></md-switch>
                 </md-list-item>
                 <md-list-item>
                     <p>Hide my Email</p>
@@ -139,7 +140,8 @@
                 </md-list-item>
                 <md-list-item>
                     <p>Warn me when leaving a page with unsaved text</p>
-                    <md-switch class="md-primary" ng-model="$ctrl.model.warn_on_leaving_unsaved"></md-switch>
+                    <md-switch class="md-primary" ng-model="$ctrl.model.warn_on_leaving_unsaved"
+                               ng-true-value="'1'" ng-false-value="'0'"></md-switch>
                 </md-list-item>
             </md-list>
 

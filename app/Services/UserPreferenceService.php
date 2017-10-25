@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Models\UserPreference;
+use Symfony\Component\Yaml\Yaml;
 
 class UserPreferenceService
 {
@@ -25,7 +26,7 @@ class UserPreferenceService
             $update_others[UserPreference::OTHERS_FIELD_SYMBOL . $key] = $other;
         }
 
-        return yaml_emit($update_others);
+        return Yaml::dump($update_others);
     }
 
     public function updateByUserId($userId, $data)

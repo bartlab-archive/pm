@@ -46,8 +46,8 @@ class UpdateRequest extends FormRequest
             'hide_mail' => 'required|boolean',
             'time_zone' => 'required|string|in:' . implode(',', array_keys(UserPreference::TIME_ZONE_MAP)),
             'comments_sorting' => 'required|string|in:asc,desc',
-            'no_self_notified' => 'required|int|in:0,1',
-            'warn_on_leaving_unsaved' => 'required|int|in:0,1'
+            'no_self_notified' => 'required|string|in:0,1',
+            'warn_on_leaving_unsaved' => 'required|string|in:0,1'
         ];
     }
 }

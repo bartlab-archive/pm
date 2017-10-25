@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\Yaml\Yaml;
 
 class UserPreference extends Model
 {
@@ -184,7 +185,7 @@ class UserPreference extends Model
 
     public function getOthersAttribute($value)
     {
-        $others = yaml_parse($value);
+        $others = Yaml::parse($value);
         $result_others = [];
 
         foreach ($others as $key => $other) {
@@ -212,7 +213,7 @@ class UserPreference extends Model
         }
 
         return $preference->update([
-            'others' => yaml_emit($others)
+            'others' => Yaml::dump($others)
         ]);
     }
 

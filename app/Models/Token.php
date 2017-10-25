@@ -45,7 +45,7 @@ class Token extends Model
 
     public static function existsToken(string $token, string $action = 'session')
     {
-        return Token::where('action', $action)
+        return static::where('action', $action)
             ->where('value', $token)
             ->exists();
     }
@@ -57,14 +57,14 @@ class Token extends Model
 
     public static function apiKey(User $user)
     {
-        return Token::where('user_id', $user->id)
+        return static::where('user_id', $user->id)
             ->where('action', 'api')
             ->first();
     }
 
     public static function createApiKey(User $user)
     {
-        return Token::create([
+        return static::create([
             'action' => 'api',
             'user_id' => $user->id,
             'value' => sha1(str_random(33))
@@ -73,14 +73,14 @@ class Token extends Model
 
     public static function atomKey(User $user)
     {
-        return Token::where('user_id', $user->id)
+        return static::where('user_id', $user->id)
             ->where('action', 'feeds')
             ->first();
     }
 
     public static function createAtomKey(User $user)
     {
-        return Token::create([
+        return static::create([
             'action' => 'feeds',
             'user_id' => $user->id,
             'value' => sha1(str_random(33))
