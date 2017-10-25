@@ -52,14 +52,14 @@ class ProjectsService
         $projects = Project::orderBy('name')
             ->where('status', Project::ACTIVE_STATUS)
             ->where('is_public', Project::IS_PUBLIC)
-            ->whereNull('parent_id')
+//            ->whereNull('parent_id') // disabled recursive projects
             ->with([
                 'members',
                 'versions',
                 'issue_categories',
                 'repositories',
                 'boards',
-                'childProjectsRecursive',
+//                'childProjectsRecursive', // disabled recursive projects
             ]);
 
         if ($isClosed) {
