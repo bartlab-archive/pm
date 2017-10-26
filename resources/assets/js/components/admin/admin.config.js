@@ -1,5 +1,8 @@
 import InjectableBase from 'base/injectable.base';
 import adminIndexComponent from './index/admin-index.component';
+import adminProjectsComponent from './projects/admin-projects.component';
+import adminPluginsComponent from './plugins/admin-plugins.component';
+import adminInfoComponent from './info/admin-info.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -28,6 +31,18 @@ export default class AdminConfig extends InjectableBase {
             .state('admin.index', {
                 url: '',
                 component: adminIndexComponent.name,
+            })
+            .state('admin.projects', {
+                url: '/projects',
+                component: adminProjectsComponent.name,
+            })
+            .state('admin.plugins', {
+                url: '/plugins',
+                component: adminPluginsComponent.name,
+            })
+            .state('admin.info', {
+                url: '/info',
+                component: adminPluginsComponent.name,
             });
     }
 }
