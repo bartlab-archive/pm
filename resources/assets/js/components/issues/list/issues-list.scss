@@ -39,6 +39,17 @@ issues-list-component {
     width: 100%;
   }
 
+  .md-button.small {
+    margin: 0px;
+    min-height: 27px !important;
+    line-height: 27px !important;
+    font-size: 11px !important;
+
+    .material-icons {
+      font-size: 20px;
+    }
+  }
+
   //md-menu-item .md-button md-icon {
   //  margin: auto 16px auto 0;
   //}

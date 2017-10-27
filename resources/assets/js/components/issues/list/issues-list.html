@@ -99,140 +99,93 @@
                 <md-checkbox ng-model="row.selected" ng-change="$ctrl.onSelectIssue(row)" aria-label="Select issue"></md-checkbox>
 
                 <div class="md-list-item-text" layout="column">
-                    <h3>{{ row.id + ' | ' + row.trackers.name + ' | ' + $ctrl.statusesList[row.status_id] + ' | ' +
-                        row.subject}}</h3>
-                    <p>{{row.user.firstname + ' ' + row.user.lastname}}</p>
+                    <h3>{{ row.id + ' | ' + row.trackers.name + ' | ' + row.subject}}</h3>
+                    <div>
+                        <md-menu>
+                            <md-button class="small" ng-click="$mdMenu.open()">
+                                <md-icon>error_outline</md-icon>
+                                {{ $ctrl.prioritiesList[row.priority_id] }}
+                            </md-button>
+                            <md-menu-content width="2">
+                                <md-menu-item ng-repeat="(id, priority) in $ctrl.prioritiesList" ng-if="priority">
+                                    <md-button ng-click="">
+                                        {{ priority }}
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+
+                        <md-menu>
+                            <md-button class="small" ng-click="$mdMenu.open()">
+                                <md-icon>person</md-icon>
+                                {{ row.user.firstname + ' ' + row.user.lastname }}
+                            </md-button>
+                            <md-menu-content width="3">
+                                <md-menu-item ng-repeat="member in $ctrl.members">
+                                    <md-button ng-click="$ctrl.assignTo(row.id, member.user_id)">
+                                        {{ member.name }}
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+
+                        <md-menu>
+                            <md-button class="small" ng-click="$mdMenu.open()">
+                                <md-icon>check</md-icon>
+                                {{ $ctrl.statusesList[row.status_id] }}
+                            </md-button>
+                            <md-menu-content width="2">
+                                <md-menu-item ng-repeat="(id, status) in $ctrl.statusesList" ng-if="status">
+                                    <md-button ng-click="$ctrl.setStatus(row.id, id)">
+                                        {{ status }}
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </div>
                 </div>
 
                 <md-icon ng-if="row.is_private">lock</md-icon>
                 <md-icon ng-if="row.priority_id == 5">priority_high</md-icon>
 
-                <md-menu-bar>
-                    <md-menu md-position-mode="target-right target">
-                        <md-button aria-label="More actions" class="md-icon-button" ng-click="$mdMenu.open()">
-                            <md-icon>more_vert</md-icon>
-                        </md-button>
-                        <md-menu-content width="3">
-                            <md-menu-item ng-click="$ctrl.openIssue(row.id)">
-                                <md-button>
-                                    <md-icon>open_in_browser</md-icon>
-                                    Open
-                                </md-button>
-                            </md-menu-item>
+                <md-menu md-position-mode="target-right target">
+                    <md-button aria-label="More actions" class="md-icon-button" ng-click="$mdMenu.open()">
+                        <md-icon>more_vert</md-icon>
+                    </md-button>
+                    <md-menu-content width="3">
+                        <md-menu-item ng-click="$ctrl.openIssue(row.id)">
+                            <md-button>
+                                <md-icon>open_in_browser</md-icon>
+                                Open
+                            </md-button>
+                        </md-menu-item>
 
-                            <md-menu-item ng-click="$ctrl.editIssue(row.id)">
-                                <md-button>
-                                    <md-icon>mode_edit</md-icon>
-                                    Edit
-                                </md-button>
-                            </md-menu-item>
+                        <md-menu-item ng-click="$ctrl.editIssue(row.id)">
+                            <md-button>
+                                <md-icon>mode_edit</md-icon>
+                                Edit
+                            </md-button>
+                        </md-menu-item>
 
-                            <md-menu-item ng-click="$ctrl.copyIssue(row.id)">
-                                <md-button>
-                                    <md-icon>content_copy</md-icon>
-                                    Copy
-                                </md-button>
-                            </md-menu-item>
+                        <md-menu-item ng-click="$ctrl.copyIssue(row.id)">
+                            <md-button>
+                                <md-icon>content_copy</md-icon>
+                                Copy
+                            </md-button>
+                        </md-menu-item>
 
-                            <md-menu-divider></md-menu-divider>
+                        <md-menu-divider></md-menu-divider>
 
-                            <md-menu-item>
-                                <md-menu>
-                                    <md-button ng-mouseenter="$mdMenu.open()">
-                                        <md-icon>check_box</md-icon>
-                                        Status
-                                    </md-button>
-                                    <md-menu-content width="2">
-                                        <md-menu-item>
-                                            <md-button ng-click="$ctrl.setStatus(row.id, 1)">
-                                                Новая
-                                            </md-button>
-                                        </md-menu-item>
-                                        <md-menu-item>
-                                            <md-button ng-click="$ctrl.setStatus(row.id, 2)">
-                                                В работе
-                                            </md-button>
-                                        </md-menu-item>
-                                        <md-menu-item>
-                                            <md-button ng-click="$ctrl.setStatus(row.id, 3)">
-                                                Решена
-                                            </md-button>
-                                        </md-menu-item>
-                                        <md-menu-item>
-                                            <md-button ng-click="$ctrl.setStatus(row.id, 4)">
-                                                Обратная связь
-                                            </md-button>
-                                        </md-menu-item>
-                                        <md-menu-item>
-                                            <md-button ng-click="$ctrl.setStatus(row.id, 5)">
-                                                Закрыта
-                                            </md-button>
-                                        </md-menu-item>
-                                        <md-menu-item>
-                                            <md-button ng-click="$ctrl.setStatus(row.id, 6)">
-                                                Отклонена
-                                            </md-button>
-                                        </md-menu-item>
-                                    </md-menu-content>
-                                </md-menu>
-                            </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="$ctrl.deleteIssue(row.id)">
+                                <md-icon>delete</md-icon>
+                                Delete
+                            </md-button>
+                        </md-menu-item>
 
 
-                            <md-menu-item>
-                                <md-menu>
-                                    <md-button ng-mouseenter="$mdMenu.open()">
-                                        <md-icon>error</md-icon>
-                                        Priority
-                                    </md-button>
-                                    <md-menu-content width="2">
-                                        <md-menu-item>
-                                            <md-button ng-click="$ctrl.setPriority(row.id, 1)">
-                                                Низкий
-                                            </md-button>
-                                        </md-menu-item>
-                                        <md-menu-item>
-                                            <md-button ng-click="$ctrl.setPriority(row.id, 2)">
-                                                Нормальный
-                                            </md-button>
-                                        </md-menu-item>
-                                        <md-menu-item>
-                                            <md-button ng-click="$ctrl.setPriority(row.id, 3)">
-                                                Высокий
-                                            </md-button>
-                                        </md-menu-item>
-                                    </md-menu-content>
-                                </md-menu>
-                            </md-menu-item>
-
-                            <md-menu-item>
-                                <md-menu md-position-mode="cascade" class="md-nested-menu">
-                                    <md-button ng-mouseenter="$mdMenu.open()">
-                                        <md-icon>person</md-icon>
-                                        Asignee
-                                    </md-button>
-                                    <md-menu-content width="3">
-                                        <md-menu-item ng-repeat="member in $ctrl.members">
-                                            <md-button ng-click="$ctrl.assignTo(row.id, member.user_id)">
-                                                {{member.name}}
-                                            </md-button>
-                                        </md-menu-item>
-                                    </md-menu-content>
-                                </md-menu>
-                            </md-menu-item>
-
-                            <md-menu-divider></md-menu-divider>
-
-                            <md-menu-item>
-                                <md-button ng-click="$ctrl.deleteIssue(row.id)">
-                                    <md-icon>delete</md-icon>
-                                    Delete
-                                </md-button>
-                            </md-menu-item>
-
-
-                        </md-menu-content>
-                    </md-menu>
-                </md-menu-bar>
+                    </md-menu-content>
+                </md-menu>
 
                 <md-divider ng-if="!$last"></md-divider>
             </md-list-item>
