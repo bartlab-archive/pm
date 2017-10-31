@@ -34,16 +34,16 @@ export default class  IssuesWatchController extends ControllerBase {
     watch() {
         if (this.$state.current.name === 'issues.watch') {
             this.IssuesService.watch(_.pick(this.issue, ['id', 'project_id']))
-                .then(() => {
+                /*.then(() => {
                     this.$stateParams.project_id = this.issue.project.identifier;
-                    this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
-                });
+                    //this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
+                });*/
         } else {
             this.IssuesService.unwatch(_.pick(this.issue, ['id', 'project_id']))
-                .then(() => {
+                /*.then(() => {
                     this.$stateParams.project_id = this.issue.project.identifier;
-                    this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
-            });
+                    //this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
+            });*/
         }
     }
 }

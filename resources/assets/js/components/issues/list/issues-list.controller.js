@@ -55,6 +55,7 @@ export default class IssuesListController extends ControllerBase {
     }
 
     load() {
+        console.log(111222222222);
         let params = {
             'status_ids': [],
             'tracker_ids': [],
