@@ -55,7 +55,6 @@ export default class IssuesListController extends ControllerBase {
     }
 
     load() {
-        console.log(111222222222);
         let params = {
             'status_ids': [],
             'tracker_ids': [],
@@ -222,11 +221,13 @@ export default class IssuesListController extends ControllerBase {
     }
 
     watchIssue(id) {
-        this.$state.go('issues.watch', {project_id: this.$stateParams.project_id, id: id});
+        this.IssuesService.watch(id).then(() => this.selectedIssue.watch_state = true);
+        //this.$state.go('issues.watch', {project_id: this.$stateParams.project_id, id: id});
     }
 
     unwatchIssue(id) {
-        this.$state.go('issues.unwatch', {project_id: this.$stateParams.project_id, id: id});
+        this.IssuesService.unwatch(id).then(() => this.selectedIssue.watch_state = false);
+        //this.$state.go('issues.unwatch', {project_id: this.$stateParams.project_id, id: id});
     }
 
     copyIssue(id) {

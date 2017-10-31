@@ -53,12 +53,12 @@ export default class IssuesService extends ServiceBase {
         return this.Restangular.one('issues', id).one('history').get();
     }
 
-    watch(issue) {
-        return this.Restangular.one(`issues/${issue.id}/watch`).post();
+    watch(id) {
+        return this.Restangular.one(`issues/${id}/watch`).post();
     }
 
-    unwatch(issue) {
-        return this.Restangular.one(`issues/${issue.id}/watch`).remove();
+    unwatch(id) {
+        return this.Restangular.one(`issues/${id}/watch`).remove();
     }
 
     timeAgo(creationDate) {
