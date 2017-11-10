@@ -75,7 +75,7 @@ export default class IssuesNewController extends ControllerBase {
     }
 
     cancel() {
-        this.$state.go('projects-inner.issues.index', {project_id: this.$stateParams.project_id});
+        this.$state.go('projects.inner.issues.index', {project_id: this.$stateParams.project_id});
     }
 
 }

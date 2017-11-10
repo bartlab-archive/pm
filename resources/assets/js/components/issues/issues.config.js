@@ -2,7 +2,6 @@ import InjectableBase from "base/injectable.base";
 import issuesListComponent from './list/issues-list.component';
 import issuesEditCopyComponent from './edit-copy/issues-edit-copy.component';
 import issuesInfoComponent from './info/issues-info.component';
-import issuesWatchComponent from './watch/issues-watch.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -47,14 +46,6 @@ export default class IssuesConfig extends InjectableBase {
             .state('issues.info', {
                 url: '/:id',
                 component: issuesInfoComponent.name,
-            })
-            .state('issues.watch', {
-                url: '/:id/watch',
-                component: issuesWatchComponent.name,
-            })
-            .state('issues.unwatch', {
-                url: '/:id/unwatch',
-                component: issuesWatchComponent.name,
             });
     }
 }

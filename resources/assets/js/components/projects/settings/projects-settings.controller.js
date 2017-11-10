@@ -49,23 +49,19 @@ export default class ProjectsSettingsController extends ControllerBase {
             this.projects = _.filter(response.data, (item) => (item.identifier !== self.model.identifier));
         });
 
-
-        this.repositories = [
-            {
-                scm: 'Filesystem',
-                main: true,
-                identifier: 'identifier 1',
-                root: '/tmp',
-                encoding: 'UTF-8'
-            },
-            {
-                scm: 'Filesystem',
-                main: true,
-                identifier: 'identifier 2',
-                root: '/tmp',
-                encoding: 'UTF-8'
-            }
-        ];
+        this.repositories = [{
+            scm: 'Filesystem',
+            main: true,
+            identifier: 'identifier 1',
+            root: '/tmp',
+            encoding: 'UTF-8'
+        }, {
+            scm: 'Filesystem',
+            main: true,
+            identifier: 'identifier 2',
+            root: '/tmp',
+            encoding: 'UTF-8'
+        }];
     }
 
     load() {
@@ -74,7 +70,7 @@ export default class ProjectsSettingsController extends ControllerBase {
 
             this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
 
-            if(this.model.parent_project){
+            if (this.model.parent_project) {
                 this.model.parent_identifier = this.model.parent_project.identifier;
                 delete(this.model.parent_project.identifier);
             }

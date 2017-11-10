@@ -7,9 +7,9 @@
 
         <md-card-content>
             <md-list>
-                <md-list-item ng-repeat="row in $ctrl.list" ng-click="$ctrl.goto(row.url)">
-                    <md-icon>{{ row.icon }}</md-icon>
-                    <p>{{ row.name }}</p>
+                <md-list-item ng-repeat="row in ::$ctrl.list" ng-click="$ctrl.goto(row.url)">
+                    <md-icon>{{ ::row.icon }}</md-icon>
+                    <p>{{ ::row.name }}</p>
                 </md-list-item>
             </md-list>
         </md-card-content>

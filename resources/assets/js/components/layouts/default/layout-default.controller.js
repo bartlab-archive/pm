@@ -13,14 +13,14 @@ import * as _ from "lodash";
 export default class LayoutDefaultController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdSidenav', '$state', 'ProjectsService', 'UsersService', '$transitions', '$stateParams', '$rootScope'];
+        return ['$timeout', '$mdSidenav', '$state', 'ProjectsService', 'UsersService', '$transitions', '$stateParams', '$rootScope'];
     }
 
     $onInit() {
-        this.ProjectsService.getMyList().then((response) =>
-        {
-           this.projects = response ? response : {};
+        this.ProjectsService.getMyList().then((response) => {
+            this.projects = response || {};
         });
+
         this.items = [
             {url: 'home', name: 'Home', icon: 'home'},
             {url: 'projects.list', name: 'Projects', icon: 'work'},
@@ -37,46 +37,127 @@ export default class LayoutDefaultController extends ControllerBase {
             }
         });
 
-        this.newItems = [
-            {name: 'New issue', url: 'projects.inner.issues.new', icon: 'create'},
-            {name: 'New category', url: '', icon: 'folder'},
-            {name: 'New version', url: '', icon: 'archive'},
-            {name: 'New wiki page', url: 'projects.inner.wiki.new', icon: 'receipt'},
-            {name: 'New file', url: '', icon: 'attach_file'},
-            {name: 'New project', url: 'projects.new', icon: 'work'},
-        ];
+        this.newItems = [{
+            name: 'New issue',
+            url: 'projects.inner.issues.new',
+            icon: 'create',
+            module: 'issue_tracking',
+            single: true,
+            enable: false
+        }, {
+            name: 'New category',
+            url: '',
+            icon: 'folder',
+            module: 'issue_tracking',
+            single: false,
+            enable: false
+        }, {
+            name: 'New version',
+            url: '',
+            icon: 'archive',
+            single: false,
+            enable: false
+        }, {
+            name: 'New wiki page',
+            url: 'projects.inner.wiki.new',
+            icon: 'receipt',
+            module: 'wiki',
+            single: false,
+            enable: false
+        }, {
+            name: 'New file',
+            url: '',
+            icon: 'attach_file',
+            module: 'files',
+            single: false,
+            enable: false
+        }, {
+            name: 'New project',
+            url: 'projects.new',
+            icon: 'work',
+            single: true,
+            enable: false
+        }];
 
-        this.projectItems = [
-            {url: 'projects.inner.info', title: 'Overview'},
-            {url: 'projects.inner.activity', title: 'Activity', name: 'time_tracking', enable: false},
-            {url: 'projects.inner.issues.index', title: 'Issues', name: 'issue_tracking', enable: false},
-            {url: 'projects.inner.issues.gantt', title: 'Gantt', name: 'gantt', enable: false},
-            {url: 'projects.inner.issues.calendar', title: 'Calendar', name: 'calendar', enable: false},
-            {url: 'projects.inner.news', title: 'News', name: 'news', enable: false},
-            {url: 'projects.inner.documents', title: 'Documents', name: 'documents', enable: false},
-            {url: 'projects.inner.wiki.index', title: 'Wiki', name: 'wiki', enable: false},
-            {url: '', title: 'Repository', name: 'repository', enable: false},
-            {url: 'projects.inner.boards', title: 'Forums', name: 'boards', enable: false},
-            {url: 'projects.inner.files', title: 'Files', name: 'files', enable: false},
-            {url: 'projects.inner.settings', title: 'Settings'}
-        ];
-
-        // this is used to display navbar ink bar (underline red bar) on first load
-        this.currentNavItem = this.$state.$current.name;
+        this.projectItems = [{
+            url: 'projects.inner.info',
+            title: 'Overview'
+        }, {
+            url: 'projects.inner.activity',
+            title: 'Activity',
+            name: 'time_tracking',
+            enable: false
+        }, {
+            url: 'projects.inner.issues.index',
+            title: 'Issues',
+            name: 'issue_tracking',
+            enable: false,
+            alt: [/issues\.*/]
+        }, {
+            url: 'projects.inner.issues.gantt',
+            title: 'Gantt',
+            name: 'gantt',
+            enable: false
+        }, {
+            url: 'projects.inner.issues.calendar',
+            title: 'Calendar',
+            name: 'calendar',
+            enable: false
+        }, {
+            url: 'projects.inner.news',
+            title: 'News',
+            name: 'news',
+            enable: false
+        }, {
+            url: 'projects.inner.documents',
+            title: 'Documents',
+            name: 'documents',
+            enable: false
+        }, {
+            url: 'projects.inner.wiki.index',
+            title: 'Wiki',
+            name: 'wiki',
+            enable: false,
+            alt: [/projects\.inner\.wiki\.*/]
+        }, {
+            url: '',
+            title: 'Repository',
+            name: 'repository',
+            enable: false
+        }, {
+            url: 'projects.inner.boards',
+            title: 'Forums',
+            name: 'boards',
+            enable: false
+        }, {
+            url: 'projects.inner.files',
+            title: 'Files',
+            name: 'files',
+            enable: false
+        }, {
+            url: 'projects.inner.settings',
+            title: 'Settings'
+        }];
 
         this.menuOpen = false;
-        this.checkShowProjectMenu(this.$state.current);
+        this.loadProjectInfo();
 
-        this.$transitions.onSuccess({}, (trans) => this.checkShowProjectMenu(trans.$to()));
+        this.$transitions.onSuccess({}, (trans) => this.loadProjectInfo());
         this.$rootScope.$on('updateProjectInfo', () => this.loadProjectInfo());
     }
 
-    checkShowProjectMenu(state) {
-        this.showProjectMenu = _.get(state, 'data.layoutDefault.projectId', false) || !!_.get(this.$stateParams, 'project_id');
+    hlCurrentNavItem() {
+        // this is used to display navbar ink bar (underline red bar) on first load
+        this.currentNavItem = '';
 
-        if (this.showProjectMenu) {
-            this.loadProjectInfo();
-        }
+        this.$timeout(() => {
+            this.currentNavItem = _.get(
+                this.projectItems.find((item) => {
+                    return item.url === this.$state.$current.name || (item.alt && !!item.alt.find((alt) => {
+                        return this.$state.$current.name.match(alt);
+                    }));
+                }), 'url');
+        }, 0);
     }
 
     toggle(menu = 'left') {
@@ -111,45 +192,43 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     currentProjectId() {
-        return _.get(this.$state, 'data.layoutDefault.projectId') || _.get(this.$stateParams, 'project_id');
+        return _.get(this.$stateParams, 'project_id');
+        // return _.get(this.$state, 'data.layoutDefault.projectId') || _.get(this.$stateParams, 'project_id');
     }
 
     goto(url) {
-        let projectId = this.currentProjectId();
+        const projectId = this.currentProjectId();
         projectId ? this.$state.go(url, {project_id: projectId}) : null;
         _.includes(['projects.new'], url) ? this.$state.go(url, {}) : null;
     }
 
     loadProjectInfo() {
-        let projectIdentifier = this.currentProjectId();
+        const projectIdentifier = this.currentProjectId();
+        this.showProjectMenu = !!projectIdentifier;
 
         if (projectIdentifier) {
             this.ProjectsService.one(projectIdentifier).then((response) => {
-                this.enabledModules = [];
                 let modules = _.get(response, 'data.enabled_modules', []);
-                _.forEach(this.projectItems, (module) => {
-                    if (module.name) {
-                        module.enable = _.some(modules, {name: module.name});
+
+                // change visible items in project menu
+                this.projectItems.forEach((item) => {
+                    if (item.name) {
+                        item.enable = modules.some((value) => value.name === item.name);
                     }
                 });
 
-                this.enabledModules = this.ProjectsService.getModules(modules);
+                // change visible items in add menu
+                this.newItems.forEach((item) => {
+                    item.enable = ((!item.module || modules.some((value) => value.name === item.module)) && this.$state.current.name !== item.url);
+                });
+
+                // highlight current item in project menu
+                this.hlCurrentNavItem();
+            });
+        } else {
+            this.newItems.forEach((item) => {
+                item.enable = (item.single && this.$state.current.name !== item.url);
             });
         }
-    }
-
-    showFabAction(item) {
-        const projectId = this.currentProjectId();
-        if (projectId) {
-            if (item.name === 'New issue') {
-                return typeof this.enabledModules !== 'undefined' && typeof this.enabledModules.issue_tracking !== 'undefined';
-            }
-        } else {
-            if (item.name !== 'New project') {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

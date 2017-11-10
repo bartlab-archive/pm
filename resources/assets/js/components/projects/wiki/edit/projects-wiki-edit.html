@@ -5,10 +5,13 @@
                 <span ng-if="$ctrl.newWiki" class="md-headline">Create new wiki page</span>
                 <span ng-if="!$ctrl.newWiki" class="md-headline">Edit wiki page</span>
             </md-card-header-text>
+
             <md-menu>
-                <md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openActionMenu($mdMenu, $event)">
+                <md-button class="md-icon-button" aria-label="User menu"
+                           ng-click="$ctrl.openActionMenu($mdMenu, $event)">
                     <md-icon>more_vert</md-icon>
                 </md-button>
+
                 <md-menu-content width="4">
                     <md-menu-item>
                         <md-button ng-click="$ctrl.startPage()">
@@ -16,12 +19,14 @@
                             Start page
                         </md-button>
                     </md-menu-item>
+
                     <md-menu-item>
                         <md-button ng-click="$ctrl.indexBy('title')">
                             <md-icon>title</md-icon>
                             Index by title
                         </md-button>
                     </md-menu-item>
+
                     <md-menu-item>
                         <md-button ng-click="$ctrl.indexBy('date')">
                             <md-icon>date_range</md-icon>
@@ -31,49 +36,59 @@
                 </md-menu-content>
             </md-menu>
         </md-card-header>
+
         <md-card-content>
             <div>
                 <form name="$ctrl.pageWiki">
                     <md-input-container class="md-icon-float md-block">
                         <label>Title</label>
-                        <input ng-model="$ctrl.page.title" ng-change="$ctrl.change('title')" name="title" type="text"
-                               >
+
+                        <input ng-model="$ctrl.page.title" ng-change="$ctrl.change('title')" name="title" type="text">
+
                         <div ng-messages="$ctrl.pageWiki.title.$error">
                             <div ng-message="server" ng-bind-html="$ctrl.errors.title | join"></div>
                         </div>
                     </md-input-container>
+
                     <md-input-container class="md-block">
                         <label>Description</label>
-                        <textarea name="text" ng-model="$ctrl.page.content.text" ng-change="$ctrl.change('text')"  md-select-on-focus rows="5"></textarea>
+
+                        <textarea name="text" ng-model="$ctrl.page.content.text" ng-change="$ctrl.change('text')"
+                                  md-select-on-focus rows="5"></textarea>
+
                         <div ng-messages="$ctrl.pageWiki.text.$error">
                             <div ng-message="server" ng-bind-html="$ctrl.errors.text | join"></div>
                         </div>
                     </md-input-container>
+
                     <md-input-container class="md-block" flex-gt-sm>
                         <md-select ng-model="$ctrl.page.parent_id" placeholder="Select a parent page">
                             <md-option ng-value="null"> No parent</md-option>
+
                             <md-option ng-repeat="page in $ctrl.pages"
-                                       value="{{page.id}}"
-                                       ng-if="$ctrl.page.id != page.id"
-                                       >
-                                {{page.title}}
+                                       value="{{ page.id }}"
+                                       ng-if="$ctrl.page.id != page.id">
+                                {{ page.title }}
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <div>
-                        <md-button ng-click="$ctrl.goTo($ctrl.page.title)">
-                            Cancel
-                        </md-button>
-                        <md-button ng-click="$ctrl.save(false)" type="submit">
-                            Apply
-                        </md-button>
-                        <md-button ng-click="$ctrl.save(true)" type="submit">
+
+                    <div layout-align="center center" layout="row">
+                        <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.save(true)">
                             Save
                         </md-button>
-                        <md-button ng-click="$ctrl.showPreview($event)" type="submit">
+
+                        <md-button ng-click="$ctrl.save(false)">
+                            Apply
+                        </md-button>
+
+                        <md-button ng-click="$ctrl.showPreview($event)">
                             Preview
                         </md-button>
 
+                        <md-button ng-click="$ctrl.goTo($ctrl.page.title)">
+                            Cancel
+                        </md-button>
                     </div>
                 </form>
             </div>

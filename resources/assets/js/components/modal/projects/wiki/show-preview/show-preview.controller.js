@@ -1,6 +1,4 @@
-import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
-
 
 /**
  * @property {$mdDialog} $mdDialog
@@ -20,8 +18,5 @@ export default class ShowPreviewController extends ControllerBase {
     cancel() {
         this.$mdDialog.cancel();
     }
-
-
-
 
 }

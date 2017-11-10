@@ -1,6 +1,4 @@
-import _ from 'lodash';
 import moment from 'moment';
-
 import ControllerBase from 'base/controller.base';
 
 
@@ -27,7 +25,7 @@ export default class showAddVersionController extends ControllerBase {
 
     createVersion() {
         this.version.effective_date ?
-            this.version.effective_date =  moment(this.version.effective_date).format('YYYY-MM-DD') : null;
+            this.version.effective_date = moment(this.version.effective_date).format('YYYY-MM-DD') : null;
 
         this.ProjectsService.createVersion(this.identifier, this.version)
             .then(() => {

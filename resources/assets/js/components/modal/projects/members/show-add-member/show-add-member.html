@@ -17,7 +17,7 @@
                     <md-option
                             ng-repeat="user in $ctrl.users"
                             ng-value="user.id">
-                        {{user.firstname + ' ' + user.lastname}}
+                        {{ user.firstname }} {{ user.lastname }}
                     </md-option>
                 </md-select>
                 <div class="md-errors-spacer"></div>

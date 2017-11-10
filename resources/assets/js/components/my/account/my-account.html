@@ -89,7 +89,7 @@
                     <label>Language</label>
                     <md-select ng-model="$ctrl.model.language" required>
                         <md-option ng-value="language.id" ng-repeat="language in $ctrl.languages">
-                            {{language.name }}
+                            {{ language.name }}
                         </md-option>
                     </md-select>
                     <div class="md-errors-spacer"></div>
@@ -101,7 +101,7 @@
                         <md-option ng-repeat="notification in $ctrl.emailNotifications"
                                    ng-value="notification.value"
                                    ng-selected="notification.selected">
-                            {{notification.name}}
+                            {{ notification.name }}
                         </md-option>
                         </select>
                     </md-select>

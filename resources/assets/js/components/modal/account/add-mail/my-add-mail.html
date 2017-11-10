@@ -12,7 +12,7 @@
     <div class="popup-content-my-add-mail">
         <md-list>
             <md-list-item ng-repeat="email in $ctrl.emails">
-                <p>{{email.address}}</p>
+                <p>{{ email.address }}</p>
                 <md-icon>volume_up</md-icon>
                 <md-switch class="md-primary" ng-model="$ctrl.emails[email.id].notify"
                            ng-change="$ctrl.updateEmailAddress(email.id)"></md-switch>
@@ -29,7 +29,8 @@
             <md-card-content>
                 <md-input-container class="md-icon-float md-block">
                     <label>Add email adress</label>
-                    <input ng-model="$ctrl.newEmail" type="email" required ng-change="$ctrl.change('email')" name="email">
+                    <input ng-model="$ctrl.newEmail" type="email" required ng-change="$ctrl.change('email')"
+                           name="email">
                     <div ng-messages="$ctrl.addEmailForm.email.$error">
                         <div ng-message="server" ng-bind-html="$ctrl.errors.text | join"></div>
                     </div>

@@ -49,7 +49,6 @@
                 md-component-id="left"
                 md-whiteframe="4"
                 md-disable-scroll-target="body">
-
         <md-toolbar>
             <h1 class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggle()">
@@ -59,21 +58,20 @@
             </h1>
         </md-toolbar>
 
-        <md-list-item ng-repeat="item in $ctrl.items" ng-click="$ctrl.menuClick(item)">
+        <md-list-item ng-repeat="item in ::$ctrl.items" ng-click="$ctrl.menuClick(item)">
             <md-button class="md-icon-button">
-                <md-icon>{{ item.icon }}</md-icon>
+                <md-icon>{{ ::item.icon }}</md-icon>
             </md-button>
-            {{ item.name }}
+            {{ ::item.name }}
         </md-list-item>
-
     </md-sidenav>
 
     <!--<div ui-view="content"></div>-->
     <md-nav-bar class="md-primary md-hue-2" md-selected-nav-item="$ctrl.currentNavItem"
                 nav-bar-aria-label="Project navigation links" ng-if="$ctrl.showProjectMenu">
         <!--<md-nav-item md-nav-sref="page6" sref-opts="{reload:true, notify:true}">-->
-        <md-nav-item ng-repeat="item in $ctrl.projectItems" md-nav-click="$ctrl.goto(item.url)" name="{{ item.url }}" ng-if="!item.name || item.enable">
-            {{ item.title }}
+        <md-nav-item ng-repeat="item in ::$ctrl.projectItems" md-nav-click="$ctrl.goto(item.url)" name="{{ ::item.url }}" ng-if="!item.name || item.enable">
+            {{ ::item.title }}
         </md-nav-item>
     </md-nav-bar>
 
@@ -87,11 +85,11 @@
         </md-fab-trigger>
 
         <md-fab-actions>
-            <md-button aria-label="Twitter" class="md-fab md-raised md-mini" ng-click="$ctrl.goto(item.url)" ng-repeat="item in $ctrl.newItems" ng-if="$ctrl.showFabAction(item)">
+            <md-button class="md-fab md-raised md-mini" ng-click="$ctrl.goto(item.url)" ng-repeat="item in ::$ctrl.newItems" ng-if="item.enable">
                 <md-tooltip md-direction="left" md-visible="$ctrl.menuOpen"
-                            md-autohide="true">{{ item.name }}
+                            md-autohide="true">{{ ::item.name }}
                 </md-tooltip>
-                <md-icon>{{ item.icon }}</md-icon>
+                <md-icon>{{ ::item.icon }}</md-icon>
             </md-button>
         </md-fab-actions>
     </md-fab-speed-dial>

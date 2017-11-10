@@ -3,7 +3,7 @@
         <md-card-header>
             <md-card-header-text>
                 <span class="md-title">Activity</span>
-                <span class="md-body-1">{{$ctrl.getDateRange()}}</span>
+                <span class="md-body-1">{{ $ctrl.getDateRange() }}</span>
             </md-card-header-text>
             <div flex></div>
 
@@ -51,7 +51,7 @@
         </md-card-header>
 
         <md-list ng-repeat="(date, days) in $ctrl.activities">
-            <md-subheader class="md-no-sticky">{{date}}</md-subheader>
+            <md-subheader class="md-no-sticky">{{ date }}</md-subheader>
             <div ng-repeat="(time, times) in days">
                 <md-list-item class="md-body-1" ng-repeat="activity in times">
                     <md-divider ng-if="$ctrl.showDivider(date)"></md-divider>
@@ -59,19 +59,19 @@
                         <p>
                             <img width="24" height="24"
                                  ng-if="activity.avatar_src"
-                                 src="{{activity.avatar_src}}">
-                            {{activity.time}}
-                            <a ng-if="activity.link_ui_sref" ui-sref="{{activity.link_ui_sref}}">
-                                {{activity.link_text}}
+                                 src="{{ activity.avatar_src }}">
+                            {{ activity.time }}
+                            <a ng-if="activity.link_ui_sref" ui-sref="{{ activity.link_ui_sref }}">
+                                {{ activity.link_text }}
                             </a>
-                            <a ng-if="!activity.link_ui_sref" href="{{activity.href}}">
-                                {{activity.link_text}}
+                            <a ng-if="!activity.link_ui_sref" href="{{ activity.href }}">
+                                {{ activity.link_text }}
                             </a>
                         </p>
-                        <p><i>{{activity.description}}</i></p>
+                        <p><i>{{ activity.description }}</i></p>
                         <p ng-if="activity.author_name">
                             <a ui-sref="users.info({id: activity.author_id})">
-                                {{activity.author_name}}
+                                {{ activity.author_name }}
                             </a>
                         </p>
                     </div>

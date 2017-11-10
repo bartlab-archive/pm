@@ -1,6 +1,5 @@
 import ControllerBase from 'base/controller.base';
 
-
 /**
  * @property {$mdDialog} $mdDialog
  * @property {ProjectsService} ProjectsService
@@ -14,7 +13,6 @@ export default class showAddVersionController extends ControllerBase {
     }
 
     $onInit() {
-
     }
 
     cancel() {

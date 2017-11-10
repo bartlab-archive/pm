@@ -2,7 +2,7 @@ import angular from 'angular';
 import * as _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 
-export default class ProjectsWikiController extends ControllerBase {
+export default class ProjectsWikiPageController extends ControllerBase {
 
     static get $inject() {
         return ['$state', '$mdDialog', 'WikiService', '$stateParams', '$mdToast', '$compile', '$filter'];
@@ -73,7 +73,7 @@ export default class ProjectsWikiController extends ControllerBase {
     }
 
     delete($event) {
-        var confirm = this.$mdDialog.confirm()
+        let confirm = this.$mdDialog.confirm()
             .title('Would you like to delete this page?')
             .targetEvent($event)
             .ok('Delete!')
@@ -96,7 +96,7 @@ export default class ProjectsWikiController extends ControllerBase {
 
     showConfirm($event) {
         // Appending dialog to document.body to cover sidenav in docs app
-        var confirm = this.$mdDialog.confirm()
+        let confirm = this.$mdDialog.confirm()
             .title('Would you like to delete your debt?')
             .textContent('All of the banks have agreed to forgive you your debts.')
             .ariaLabel('Lucky day')

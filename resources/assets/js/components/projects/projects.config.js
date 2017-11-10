@@ -6,7 +6,7 @@ import projectsSettingsComponent from './settings/projects-settings.component';
 import projectsActivityComponent from './activity/projects-activity.component';
 import projectsCalendarComponent from './calendar/projects-calendar.component';
 import issuesListComponent from '../issues/list/issues-list.component';
-import projectsWikiComponent from './wiki/projects-wiki.component';
+import projectsWikiPageComponent from './wiki/page/projects-wiki-page.component';
 import projectsWikiEditComponent from './wiki/edit/projects-wiki-edit.component';
 import projectsWikiIndexByComponent from './wiki/index-by/projects-wiki-index-by.component';
 import projectsGanttComponent from './gantt/projects-gantt.component';
@@ -29,10 +29,7 @@ export default class ProjectsConfig extends InjectableBase {
             .state('projects', {
                 abstract: true,
                 data: {
-                    access: '@',
-                    layoutDefault: {
-                        showProjectMenu: true
-                    }
+                    access: '@'
                 },
                 url: '/projects',
                 parent: 'default',
@@ -45,10 +42,7 @@ export default class ProjectsConfig extends InjectableBase {
             .state('projects.inner', {
                 abstract: true,
                 data: {
-                    access: '@',
-                    layoutDefault: {
-                        showProjectMenu: true
-                    }
+                    access: '@'
                 },
                 url: '/{project_id:[a-z][a-z0-9\-\_]{0,99}}',
             })
@@ -123,11 +117,11 @@ export default class ProjectsConfig extends InjectableBase {
             })
             .state('projects.inner.wiki.index', {
                 url: '',
-                component: projectsWikiComponent.name,
+                component: projectsWikiPageComponent.name,
             })
             .state('projects.inner.wiki.page.view', {
                 url: '',
-                component: projectsWikiComponent.name,
+                component: projectsWikiPageComponent.name,
             })
             .state('projects.inner.wiki.page.edit', {
                 url: '/edit',

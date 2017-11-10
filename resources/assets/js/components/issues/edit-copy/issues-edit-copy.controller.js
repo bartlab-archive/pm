@@ -1,6 +1,7 @@
 import ControllerBase from 'base/controller.base';
 import * as _ from "lodash";
 import moment from 'moment';
+
 /**
  * @property {$stateParams} $stateParams
  * @property {IssuesService} IssuesService
@@ -23,7 +24,7 @@ export default class IssuesEditCopyController extends ControllerBase {
         this.statusesList = [];
         this.categoriesList = [];
         this.prioritiesList = [];
-        this.cardTitle = '';
+        this.cardTitle = (this.$state.current.name === 'issues.copy' ? 'Copy' : 'Edit');
 
         this.loadIssue();
     }
@@ -37,21 +38,18 @@ export default class IssuesEditCopyController extends ControllerBase {
             this.statusesList = _.get(response, 'data.statusesList', []);
             this.issue.project_id = this.issue.project.id;
             _.set(
-                this.$state,
-                'data.layoutDefault.projectId',
+                this.$stateParams,
+                'project_id',
                 _.get(response, 'data.project.identifier')
             );
             this.$rootScope.$emit('updateProjectInfo');
         });
+
         this.IssuesService.getAdditionalInfo({enumeration_type: 'IssuePriority'}).then((response) => {
             this.prioritiesList = _.get(response, 'data.prioritiesList', []);
             this.trackersList = _.get(response, 'data.trackersList', []);
 
         });
-
-        this.$state.current.name === 'issues.copy'
-            ? this.cardTitle = 'Copy'
-            : this.cardTitle = 'Edit';
     }
 
 

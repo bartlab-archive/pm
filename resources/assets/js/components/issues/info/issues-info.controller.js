@@ -35,8 +35,8 @@ export default class IssuesInfoController extends ControllerBase {
 
             // set current project id to state data
             _.set(
-                this.$state,
-                'data.layoutDefault.projectId',
+                this.$stateParams,
+                'project_id',
                 _.get(response, 'data.project.identifier')
             );
 
@@ -49,6 +49,7 @@ export default class IssuesInfoController extends ControllerBase {
             this.setStatusText(this.issue.status_id);
             this.setTrackerText(this.issue.tracker_id);
             this.setPriorityText(this.issue.priority_id);
+
             this.$rootScope.$emit('updateProjectInfo');
         });
     }

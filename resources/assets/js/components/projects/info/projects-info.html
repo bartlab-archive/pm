@@ -24,7 +24,7 @@
 
         <md-card-content class="md-body-1">
             <p ng-repeat="(trackerName, issue)  in $ctrl.issuesCount">
-                {{trackerName}}: {{issue.opened}} | {{issue.closed}} | {{issue.closed + issue.opened}}
+                {{ trackerName }}: {{ issue.opened }} | {{ issue.closed }} | {{ issue.closed }}{{ issue.opened }}
             </p>
         </md-card-content>
 
@@ -47,9 +47,9 @@
 
         <md-card-content class="md-body-1">
             <p ng-repeat="(role, members) in $ctrl.membersByRole">
-                {{role}}:
+                {{ role }}:
                 <span ng-repeat="(userId, name) in members">
-                    <a ui-sref="users.info({id: userId})">{{name}}</a><span ng-if="!$last">, </span>
+                    <a ui-sref="users.info({id: userId})">{{ name }}</a><span ng-if="!$last">, </span>
                 </span>
             </p>
         </md-card-content>
@@ -68,17 +68,17 @@
             <div ng-repeat="news in $ctrl.project.news">
                 <md-button class="md-secondary"
                            ng-click="$ctrl.$state.go('news.index', {id: news.id})">
-                    {{news.title}}
+                    {{ news.title }}
                 </md-button>
 
                 Added by
                 <md-button class="md-secondary"
                            ng-click="$ctrl.userNavigate(news.author_id)">
-                    {{$ctrl.members[news.author_id].name}}
+                    {{ $ctrl.members[news.author_id].name }}
                 </md-button>
                 <md-button class="md-secondary"
                            ng-click="$ctrl.$state.go('projects.inner.activity', {from: news.created_on, project_id: $ctrl.project.identifier})">
-                    {{$ctrl.IssuesService.timeAgo(news.created_on)}}
+                    {{ $ctrl.IssuesService.timeAgo(news.created_on) }}
                 </md-button>
                 ago
             </div>
@@ -101,7 +101,7 @@
             <md-button class="md-secondary"
                        ng-repeat="subProject in $ctrl.project.child_projects"
                        ng-click="$ctrl.projectNavigate(subProject.identifier)">
-                {{subProject.name}}
+                {{ subProject.name }}
             </md-button>
         </md-card-content>
     </md-card>

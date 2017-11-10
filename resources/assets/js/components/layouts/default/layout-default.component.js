@@ -5,5 +5,8 @@ import './layout-default.scss';
 export default {
     name: 'layoutDefaultComponent',
     controller: LayoutDefaultController,
-    template: LayoutDefaultTemplate
+    template: LayoutDefaultTemplate,
+    // bindings:{
+    //     items:'='
+    // }
 };

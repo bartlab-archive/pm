@@ -22,7 +22,7 @@ export default class IssuesListController extends ControllerBase {
         const currentProjectId = this.currentProjectId();
         this.ProjectsService.one(currentProjectId).then((response) => {
             const enabledModules = _.get(response, 'data.enabled_modules', []);
-            if (!this.ProjectsService.isModuleEnabled('issue_tracking', enabledModules) && currentProjectId != undefined) {
+            if (!this.ProjectsService.isModuleEnabled('issue_tracking', enabledModules) && currentProjectId !== undefined) {
                 this.$state.go('projects.inner.info', {project_id: currentProjectId});
             }
 
@@ -192,17 +192,25 @@ export default class IssuesListController extends ControllerBase {
     }
 
     querySearch(query) {
-        return query ? this.items.filter(this.createFilterFor(query)) : [];
+        let lowercaseQuery = query ? query.toLowerCase() : '';
+
+        return lowercaseQuery ? this.items.filter((value) => {
+            return (value.name.toLowerCase().indexOf(lowercaseQuery) !== -1) ||
+                (value.type.toLowerCase().indexOf(lowercaseQuery) !== -1);
+        }) : this.items;
+
+
+        // return query ? this.items.filter(this.createFilterFor(query)) : [];
     }
 
-    createFilterFor(query) {
-        let lowercaseQuery = angular.lowercase(query);
-
-        return function filterFn(vegetable) {
-            return (vegetable.name.indexOf(lowercaseQuery) !== -1) ||
-                (vegetable.type.indexOf(lowercaseQuery) !== -1);
-        };
-    }
+    // createFilterFor(query) {
+    //     let lowercaseQuery = query.toLowerCase();
+    //
+    //     return function filterFn(vegetable) {
+    //         return (vegetable.name.toLowerCase().indexOf(lowercaseQuery) !== -1) ||
+    //             (vegetable.type.toLowerCase().indexOf(lowercaseQuery) !== -1);
+    //     };
+    // }
 
     viewIssue(issue) {
         this.selectedIssue = issue;

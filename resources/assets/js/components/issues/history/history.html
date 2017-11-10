@@ -2,11 +2,11 @@
     <md-list-item ng-repeat="item in $ctrl.history">
         <div class="history">
             <img width="24" height="24"
-                 src="{{'//www.gravatar.com/avatar/' + item.user.avatar_hash + '?rating=PG&amp;size=24&amp;default='}}">
+                 src="//www.gravatar.com/avatar/{{ item.user.avatar_hash }}?rating=PG&amp;size=24&amp;default=">
             Updated by
-            <a ui-sref="users.info({id: item.user.id})">{{item.user.firstname + ' ' + item.user.lastname }}</a>
+            <a ui-sref="users.info({id: item.user.id})">{{ item.user.firstname }} {{ item.user.lastname }}</a>
             <a ui-sref="projects.inner.activity.date({project_id: $ctrl.$state.data.layoutDefault.projectId, end_date: item.created_on.split(' ')[0]})">
-                {{$ctrl.IssuesService.timeAgo(item.created_on)}}
+                {{ $ctrl.IssuesService.timeAgo(item.created_on) }}
             </a>
             ago
 
@@ -15,8 +15,8 @@
                     <div ng-if="detail.prop_key =='tracker_id'">
                         <strong>Tracker</strong>
                         changed from
-                        <i>{{$ctrl.trackers[+detail.old_value] ?
-                            $ctrl.trackers[+detail.old_value].name : detail.old_value}}</i>
+                        <i>{{ $ctrl.trackers[+detail.old_value] ?
+                            $ctrl.trackers[+detail.old_value].name : detail.old_value }}</i>
                         to
                         <i>{{$ctrl.trackers[+detail.value] ? $ctrl.trackers[+detail.value].name :
                             detail.value}}</i>
@@ -107,7 +107,7 @@
                     </div>
                 </md-list-item>
             </md-list>
-            <p ng-if="item.notes">{{item.notes}}</p>
+            <p ng-if="item.notes">{{ item.notes }}</p>
             <md-divider ng-if="!$last"></md-divider>
         </div>
     </md-list-item>

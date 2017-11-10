@@ -22,8 +22,8 @@ export default class HistoryController extends ControllerBase {
 
         this.IssuesService.one(this.issueId).then((response) => {
             _.set(
-                this.$state,
-                'data.layoutDefault.projectId',
+                this.$stateParams,
+                'project_id',
                 _.get(response, 'data.project.identifier')
             );
         });

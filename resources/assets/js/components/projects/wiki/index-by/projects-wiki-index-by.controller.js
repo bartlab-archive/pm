@@ -1,9 +1,5 @@
-import angular from 'angular';
 import * as _ from 'lodash';
-
 import ControllerBase from 'base/controller.base';
-
-
 
 export default class ProjectsWikiIndexByController extends ControllerBase {
 
@@ -15,17 +11,18 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
     $onInit() {
         this.index_by = 'Index by';
         this.index_mode = false;
+
         this.WikiService.getAllWikiPage(this.$stateParams.project_id).then((response) => {
             if (!_.isEmpty(response.data))
             {
 
                 this.pageList = response.data;
-                if (this.$state.current.name.indexOf('title') != -1){
+                if (this.$state.current.name.indexOf('title') !== -1){
                     this.index_by += ' title';
                     this.index_mode = true;
                     this.formatByTitle(this.pageList,'indexBy');
                 }
-                if (this.$state.current.name.indexOf('date') != -1)
+                if (this.$state.current.name.indexOf('date') !== -1)
                 {
                     this.index_mode = false;
                     this.index_by += ' date';
@@ -37,13 +34,14 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
 
     formatByDate(pages, tag) {
         pages.sort((a, b) => {
-            return (new Date(a.created_on).getTime() > new Date(b.created_on).getTime()) ? true : false;
+            return (new Date(a.created_on).getTime() > new Date(b.created_on).getTime());
         });
         let startDate = pages[0].created_on.split(' ', 1);
-        var body = document.createElement('DIV');
+        let body = document.createElement('DIV');
+
         pages.forEach((page) =>{
             let currentData = page.created_on.split(' ', 1);
-            if (startDate == currentData )
+            if (startDate === currentData )
             {
                 let wikiPage = currentData;
                 wikiPage.innerHTML = page.title;
@@ -63,15 +61,15 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
 
         let currentDiv = document.getElementById(tag);
         currentDiv.appendChild(body);
-
     }
 
     formatByTitle(pages, tag){
         pages.sort((a, b) => {
-            return (a.title > b.title) ? true : false;
+            return (a.title > b.title);
         });
 
         let root = document.createElement('UL');
+
         pages.forEach((page) =>
         {
             if (!page.parent_id)
@@ -93,10 +91,10 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
 
     getChildren(parentElement,parentId, pages){
         let root = document.createElement('UL');
+
         pages.forEach((page, index) =>
         {
-            if (page.parent_id == parentId){
-
+            if (page.parent_id === parentId){
                 let li = document.createElement('LI');
                 let a = document.createElement('A');
                 a.setAttribute('href',this.$state.href('projects.inner.wiki.page',{ project_id: this.$stateParams.project_id, name: page.title}));
@@ -125,9 +123,4 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
     newWikiPage() {
         this.$state.go('projects.inner.wiki.new');
     }
-
-
-
-
-
 }

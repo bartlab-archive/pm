@@ -4,7 +4,7 @@
 
         <md-card-header>
             <md-card-avatar>
-                <img src="{{'//www.gravatar.com/avatar/' + $ctrl.issue.user.avatar_hash}}" class="md-user-avatar">
+                <img src="//www.gravatar.com/avatar/{{ $ctrl.issue.user.avatar_hash }}" class="md-user-avatar">
             </md-card-avatar>
 
             <md-card-header-text>
@@ -12,7 +12,7 @@
                     <md-icon ng-if="$ctrl.issue.is_private">lock</md-icon>
                     {{ $ctrl.issue.subject }}
                 </span>
-                <span class="md-subhead">#{{ ::$ctrl.issue.id }} | {{$ctrl.trackerText}} | {{$ctrl.statusText}}</span>
+                <span class="md-subhead">#{{ ::$ctrl.issue.id }} | {{ $ctrl.trackerText }} | {{ $ctrl.statusText }}</span>
 
             </md-card-header-text>
 
@@ -97,11 +97,19 @@
                     </tr>
                     <tr>
                         <td><b>Added by:</b></td>
-                        <td><a ui-sref="users.info({id:$ctrl.issue.author.id})">{{ $ctrl.issue.author.firstname + ' ' + $ctrl.issue.author.lastname }}</a></td>
+                        <td>
+                            <a ui-sref="users.info({id:$ctrl.issue.author.id})">
+                                {{ $ctrl.issue.author.firstname }} {{ $ctrl.issue.author.lastname }}
+                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td><b>Assignee:</b></td>
-                        <td><a ui-sref="users.info({id:$ctrl.issue.user.id})">{{ $ctrl.issue.user.firstname + ' ' + $ctrl.issue.user.lastname }}</a></td>
+                        <td>
+                            <a ui-sref="users.info({id:$ctrl.issue.user.id})">
+                                {{ $ctrl.issue.user.firstname }} {{ $ctrl.issue.user.lastname }}
+                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td><b>Start date:</b></td>

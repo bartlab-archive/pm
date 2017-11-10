@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 
-
 /**
  * @property {$mdDialog} $mdDialog
  * @property {ProjectsService} ProjectsService

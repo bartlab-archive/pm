@@ -1,6 +1,4 @@
 import _ from 'lodash';
-import moment from 'moment';
-
 import ControllerBase from 'base/controller.base';
 
 
