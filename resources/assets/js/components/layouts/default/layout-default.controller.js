@@ -203,7 +203,6 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     loadProjectInfo() {
-        console.log(this.$state.current.name);
         const projectIdentifier = this.currentProjectId();
         this.showProjectMenu = !!projectIdentifier;
 

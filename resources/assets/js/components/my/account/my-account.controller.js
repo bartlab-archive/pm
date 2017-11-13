@@ -1,9 +1,8 @@
 import angular from 'angular';
 import * as _ from 'lodash';
 import ControllerBase from 'base/controller.base';
-import myShowApiKeyComponent from 'components/modal/account/show-api-key/my-show-api-key.component';
-import myAddMailComponent from 'components/modal/account/add-mail/my-add-mail.component';
-import myChangePasswordComponent from 'components/modal/account/change-password/my-change-password.component';
+import myAddMailComponent from '../add-mail/my-add-mail.component';
+import myChangePasswordComponent from '../change-password/my-change-password.component';
 
 /**
  * @property {$auth} $auth
@@ -98,16 +97,6 @@ export default class mainMyAccountIndexController extends ControllerBase {
     }
 
     showApiKey() {
-        if (!this.apiVisibilityState) {
-            $('.api-key-container .md-list-item-text #api-key').html(`key: ${this.model.tokens.api.value}`);
-            $('.api-key-container #api-key-visibility-icon').html('visibility_off');
-
-        } else {
-
-            $('.api-key-container .md-list-item-text #api-key').html('');
-            $('.api-key-container #api-key-visibility-icon').html('visibility');
-        }
-
         this.apiVisibilityState = !this.apiVisibilityState;
     }
 

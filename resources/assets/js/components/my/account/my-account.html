@@ -32,11 +32,11 @@
                         <p class="md-list-item-text md-body-1" layout="column">
                             <span>API access key</span>
                             <span>created {{ $ctrl.model.tokens.api.updated_on }}</span>
-                            <span id="api-key"></span>
+                            <span ng-if="$ctrl.apiVisibilityState">{{ $ctrl.model.tokens.api.value }}</span>
                         </p>
                         <md-button class="md-icon-button animation-target md-secondary"
                                    ng-click="$ctrl.showApiKey()">
-                            <md-icon id="api-key-visibility-icon">visibility</md-icon>
+                            <md-icon>{{ $ctrl.apiVisibilityState? 'visibility_off':'visibility' }}</md-icon>
                         </md-button>
                         <md-button class="md-icon-button animation-target md-secondary"
                                    ng-click="$ctrl.resetApiKey()">
