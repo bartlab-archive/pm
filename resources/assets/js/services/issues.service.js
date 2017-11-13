@@ -12,7 +12,7 @@ export default class IssuesService extends ServiceBase {
     }
 
     $onInit($injector) {
-        this.cache = this.$cacheFactory(IssuesService.name);
+        this.cache = this.$cacheFactory('IssuesService');
     }
 
     one(identifier) {

@@ -10,12 +10,12 @@ import EnumerationsService from 'services/enumerations.service';
 import TrackersService from 'services/trackers.service';
 
 angular.module('app.services', [])
-    .service(ProjectsService.name, ProjectsService)
-    .service(UsersService.name, UsersService)
-    .service(NewsService.name, NewsService)
-    .service(WikiService.name, WikiService)
-    .service(IssuesService.name, IssuesService)
-    .service(FilesService.name, FilesService)
-    .service(RolesService.name, RolesService)
-    .service(EnumerationsService.name, EnumerationsService)
-    .service(TrackersService.name, TrackersService);
+    .service('ProjectsService', ProjectsService)
+    .service('UsersService', UsersService)
+    .service('NewsService', NewsService)
+    .service('WikiService', WikiService)
+    .service('IssuesService', IssuesService)
+    .service('FilesService', FilesService)
+    .service('RolesService', RolesService)
+    .service('EnumerationsService', EnumerationsService)
+    .service('TrackersService', TrackersService);
