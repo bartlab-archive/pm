@@ -19,10 +19,6 @@ export default class myChangePasswordController extends ControllerBase {
         this.errors = {};
     }
 
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-
     onError(response) {
         if (_.get(response, 'status') === 500) {
             this.$mdToast.show(

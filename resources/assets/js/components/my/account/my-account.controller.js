@@ -1,8 +1,10 @@
 import angular from 'angular';
 import * as _ from 'lodash';
 import ControllerBase from 'base/controller.base';
-import myAddMailComponent from '../add-mail/my-add-mail.component';
-import myChangePasswordComponent from '../change-password/my-change-password.component';
+// import myMailsComponent from '../mails/my-mails.component';
+import myEmailsModalTemplate from './my-mails-modal.html';
+import myPasswordModalTemplate from './my-password-modal.html';
+// import myChangePasswordComponent from '../change-password/my-change-password.component';
 
 /**
  * @property {$auth} $auth
@@ -57,27 +59,15 @@ export default class mainMyAccountIndexController extends ControllerBase {
         }
     }
 
-    setMdDialogConfig(component, target, data = {}) {
-        let ctrlConfig = [].concat(
-            component.controller.$inject || [],
-            [(...args) => {
-                let ctrl = new component.controller(...args);
+    cancel() {
+        this.$mdDialog.cancel();
+    }
 
-                // decorator
-                _.each(data, (v, k) => {
-                    ctrl[k] = v;
-                });
-
-                ctrl.$onInit && ctrl.$onInit();
-                return ctrl;
-            }]
-        );
-
+    setMdDialogConfig(template, target) {
         return {
-            controller: ctrlConfig,
+            controller: () => this,
             controllerAs: '$ctrl',
-            template: component.template,
-            //panelClass: 'modal-custom-dialog',
+            template: template,
             parent: angular.element(document.body),
             trapFocus: true,
             clickOutsideToClose: true,
@@ -92,7 +82,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
 
     changePassword($event) {
         this.$mdDialog.show(
-            this.setMdDialogConfig(myChangePasswordComponent, $event.target)
+            this.setMdDialogConfig(myPasswordModalTemplate, $event.target)
         );
     }
 
@@ -102,7 +92,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
 
     addEmail($event) {
         this.$mdDialog.show(
-            this.setMdDialogConfig(myAddMailComponent, $event.target, {additional_emails: this.additional_emails})
+            this.setMdDialogConfig(myEmailsModalTemplate, $event.target)
         );
     }
 

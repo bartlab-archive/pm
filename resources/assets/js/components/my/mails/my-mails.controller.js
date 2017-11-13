@@ -1,18 +1,14 @@
 import ControllerBase from 'base/controller.base';
 
 /**
- * @property {$mdDialog} $mdDialog
+ * @property {UsersService} UsersService
+ * @property {$rootScope} $rootScope
+ * @property {$mdToast} $mdToast
  */
-export default class myAddMailController extends ControllerBase {
+export default class myMailsController extends ControllerBase {
 
-    /**
-     * @property {$mdDialog} $mdDialog
-     * @property {UsersService} UsersService
-     * @property {$rootScope} $rootScope
-     * @property {$mdToast} $mdToast
-     */
     static get $inject() {
-        return ['$mdDialog', 'UsersService', '$rootScope', '$mdToast'];
+        return ['UsersService', '$rootScope', '$mdToast'];
     }
 
     $onInit() {
@@ -30,9 +26,6 @@ export default class myAddMailController extends ControllerBase {
         this.newEmail = null;
     }
 
-    cancel() {
-        this.$mdDialog.cancel();
-    }
 
     updateEmailAddress(id) {
         this.UsersService.updateAdditionalEmail(id, {notify: this.emails[id].notify}).then(() => {
