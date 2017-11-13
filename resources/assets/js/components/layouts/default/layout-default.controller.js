@@ -92,7 +92,7 @@ export default class LayoutDefaultController extends ControllerBase {
             title: 'Issues',
             name: 'issue_tracking',
             enable: false,
-            alt: [/issues\.*/]
+            alt: [/^issues\.*/]
         }, {
             url: 'projects.inner.issues.gantt',
             title: 'Gantt',
@@ -118,7 +118,7 @@ export default class LayoutDefaultController extends ControllerBase {
             title: 'Wiki',
             name: 'wiki',
             enable: false,
-            alt: [/projects\.inner\.wiki\.*/]
+            alt: [/^projects\.inner\.wiki\.*/]
         }, {
             url: '',
             title: 'Repository',
@@ -203,6 +203,7 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     loadProjectInfo() {
+        console.log(this.$state.current.name);
         const projectIdentifier = this.currentProjectId();
         this.showProjectMenu = !!projectIdentifier;
 
