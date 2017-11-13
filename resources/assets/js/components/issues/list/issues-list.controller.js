@@ -40,7 +40,7 @@ export default class IssuesListController extends ControllerBase {
             this.members = this.ProjectsService.getMembersList(_.get(response, 'data', []));
 
             this.loadFiltersValues();
-            this.load();
+            // this.load();
             this.$rootScope.$on('updateIssues', () => this.load());
             this.initScrollbar();
 
