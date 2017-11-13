@@ -59,7 +59,7 @@ class TokenService
             $user_api_key->save();
         }
 
-        return $user_api_key->updated_on;
+        return $user_api_key;
     }
 
     public function resetAtomKey($user)
@@ -73,6 +73,6 @@ class TokenService
             $user_atom_key->save();
         }
 
-        return $user_atom_key->updated_on;
+        return $user_atom_key;
     }
 }

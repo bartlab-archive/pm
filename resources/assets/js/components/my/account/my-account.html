@@ -15,11 +15,12 @@
                 </p>
 
                 <md-list>
-                    <md-list-item>
+                    <md-list-item class="md-2-line">
                         <p class="md-list-item-text md-body-1" layout="column">
                             <span>Atom access key</span>
                             <span>created {{ $ctrl.model.tokens.atom.updated_on }}</span>
                         </p>
+
                         <md-button class="md-icon-button animation-target md-secondary"
                                    ng-click="$ctrl.resetAtomKey()">
                             <md-icon>cached</md-icon>
@@ -28,16 +29,18 @@
 
                     <md-divider></md-divider>
 
-                    <md-list-item class="api-key-container">
+                    <md-list-item class="api-key-container md-3-line">
                         <p class="md-list-item-text md-body-1" layout="column">
                             <span>API access key</span>
                             <span>created {{ $ctrl.model.tokens.api.updated_on }}</span>
                             <span ng-if="$ctrl.apiVisibilityState">{{ $ctrl.model.tokens.api.value }}</span>
                         </p>
+
                         <md-button class="md-icon-button animation-target md-secondary"
                                    ng-click="$ctrl.showApiKey()">
                             <md-icon>{{ $ctrl.apiVisibilityState? 'visibility_off':'visibility' }}</md-icon>
                         </md-button>
+
                         <md-button class="md-icon-button animation-target md-secondary"
                                    ng-click="$ctrl.resetApiKey()">
                             <md-icon>cached</md-icon>
@@ -88,8 +91,8 @@
                 <md-input-container class="md-icon-float md-block">
                     <label>Language</label>
                     <md-select ng-model="$ctrl.model.language" required>
-                        <md-option ng-value="language.id" ng-repeat="language in $ctrl.languages">
-                            {{ language.name }}
+                        <md-option ng-value="language.id" ng-repeat="language in ::$ctrl.languages">
+                            {{ ::language.name }}
                         </md-option>
                     </md-select>
                     <div class="md-errors-spacer"></div>
@@ -98,10 +101,10 @@
                 <md-input-container class="md-icon-float md-block">
                     <label>Email notifications</label>
                     <md-select ng-model="$ctrl.model.mail_notification" required>
-                        <md-option ng-repeat="notification in $ctrl.emailNotifications"
+                        <md-option ng-repeat="notification in ::$ctrl.emailNotifications"
                                    ng-value="notification.value"
                                    ng-selected="notification.selected">
-                            {{ notification.name }}
+                            {{ ::notification.name }}
                         </md-option>
                         </select>
                     </md-select>
@@ -111,8 +114,8 @@
                 <md-input-container class="md-icon-float md-block">
                     <label>Time zone</label>
                     <md-select ng-model="$ctrl.model.time_zone" required>
-                        <md-option ng-value="zone.value" ng-repeat="zone in $ctrl.timeZone">
-                            {{ zone.name }}
+                        <md-option ng-value="zone.value" ng-repeat="zone in ::$ctrl.timeZone">
+                            {{ ::zone.name }}
                         </md-option>
                     </md-select>
                     <div class="md-errors-spacer"></div>

@@ -13,7 +13,6 @@ export default class myMailsController extends ControllerBase {
 
     $onInit() {
         this.emails = _.keyBy(this.additional_emails, 'id');
-        this.$rootScope.$on('updateAccountAdditionalEmails', () => this.load());
         this.addEmailForm = {};
         this.errors = {};
     }
@@ -29,19 +28,19 @@ export default class myMailsController extends ControllerBase {
 
     updateEmailAddress(id) {
         this.UsersService.updateAdditionalEmail(id, {notify: this.emails[id].notify}).then(() => {
-            this.$rootScope.$emit('updateAccountAdditionalEmails');
+            this.load();
         });
     }
 
     deleteEmailAddress(id) {
         this.UsersService.deleteAdditionalEmail(id).then(() => {
-            this.$rootScope.$emit('updateAccountAdditionalEmails');
+            this.load();
         });
     }
 
     addEmailAddress() {
         this.UsersService.addAdditionalEmail(this.newEmail).then(() => {
-            this.$rootScope.$emit('updateAccountAdditionalEmails');
+            this.load();
         }).catch((response) => this.onError(response));
     }
 

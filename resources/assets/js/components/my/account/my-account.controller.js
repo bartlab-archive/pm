@@ -1,10 +1,8 @@
 import angular from 'angular';
 import * as _ from 'lodash';
 import ControllerBase from 'base/controller.base';
-// import myMailsComponent from '../mails/my-mails.component';
 import myEmailsModalTemplate from './my-mails-modal.html';
 import myPasswordModalTemplate from './my-password-modal.html';
-// import myChangePasswordComponent from '../change-password/my-change-password.component';
 
 /**
  * @property {$auth} $auth
@@ -99,7 +97,8 @@ export default class mainMyAccountIndexController extends ControllerBase {
     resetApiKey() {
         this.UsersService.resetApiAccessKey().then((response) => {
             if (response && response.status === 200) {
-                this.model.tokens.api.updated_on = response.data;
+                this.model.tokens.api.updated_on = response.data.updated_on;
+                this.model.tokens.api.value = response.data.value;
                 this.$mdToast.show(
                     this.$mdToast.simple().textContent('API key was reset successfully').position('bottom left')
                 );
@@ -111,7 +110,7 @@ export default class mainMyAccountIndexController extends ControllerBase {
     resetAtomKey() {
         this.UsersService.resetAtomAccessKey().then((response) => {
             if (response && response.status === 200) {
-                this.model.tokens.atom.updated_on = response.data;
+                this.model.tokens.atom.updated_on = response.data.updated_on;
                 this.$mdToast.show(
                     this.$mdToast.simple().textContent('RSS key was reset successfully').position('bottom left')
                 );

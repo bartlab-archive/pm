@@ -57,19 +57,28 @@ class AccountController extends BaseController
         return response((string)$result, 200);
     }
 
-    public function showApiKey()
-    {
-        return response($this->tokenService->getApiKey(Auth::user()), 200);
-    }
+//    public function showApiKey()
+//    {
+//        return response([
+//            'token' => $this->tokenService->getApiKey(Auth::user())
+//        ], 200);
+//    }
 
     public function resetApiKey()
     {
-        return response($this->tokenService->resetApiKey(Auth::user()), 200);
+        $token = $this->tokenService->resetApiKey(Auth::user())->toArray();
+
+        return response([
+            'updated_on' => $token['updated_on'],
+            'value' => $token['value']
+        ], 200);
     }
 
     public function resetAtomKey()
     {
-        return response($this->tokenService->resetAtomKey(Auth::user()), 200);
+        return response([
+            'updated_on' => $this->tokenService->resetAtomKey(Auth::user())->toArray()['updated_on']
+        ], 200);
     }
 
     public function updateAdditionalEmail($id, Request $request)
