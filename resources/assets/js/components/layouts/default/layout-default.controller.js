@@ -28,6 +28,7 @@ export default class LayoutDefaultController extends ControllerBase {
             {url: 'home', name: 'Overall spent time', icon: 'timelapse'},
             {url: 'home', name: 'Overall activity', icon: 'history'},
             {url: 'my.page', name: 'My page', icon: 'person'},
+            {url: 'admin.index', name: 'Administration', icon: 'settings_applications'},
             // {url: 'home', name: 'Help', icon: 'help'}
         ];
 
@@ -38,41 +39,41 @@ export default class LayoutDefaultController extends ControllerBase {
         });
 
         this.newItems = [{
-            name: 'New issue',
+            name: 'Issue',
             url: 'projects.inner.issues.new',
             icon: 'create',
             module: 'issue_tracking',
             single: true,
             enable: false
         }, {
-            name: 'New category',
+            name: 'Category',
             url: '',
             icon: 'folder',
             module: 'issue_tracking',
             single: false,
             enable: false
         }, {
-            name: 'New version',
+            name: 'Version',
             url: '',
             icon: 'archive',
             single: false,
             enable: false
         }, {
-            name: 'New wiki page',
-            url: 'projects.inner.wiki.new',
+            name: 'Wiki page',
+            url: 'wiki.new',
             icon: 'receipt',
             module: 'wiki',
             single: false,
             enable: false
         }, {
-            name: 'New file',
+            name: 'File',
             url: '',
             icon: 'attach_file',
             module: 'files',
             single: false,
             enable: false
         }, {
-            name: 'New project',
+            name: 'Project',
             url: 'projects.new',
             icon: 'work',
             single: true,
@@ -114,11 +115,11 @@ export default class LayoutDefaultController extends ControllerBase {
             name: 'documents',
             enable: false
         }, {
-            url: 'projects.inner.wiki.index',
+            url: 'wiki.index',
             title: 'Wiki',
             name: 'wiki',
             enable: false,
-            alt: [/^projects\.inner\.wiki\.*/]
+            alt: [/^wiki\.*/]
         }, {
             url: '',
             title: 'Repository',

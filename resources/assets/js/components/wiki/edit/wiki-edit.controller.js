@@ -1,9 +1,8 @@
-import angular from 'angular';
 import * as _ from 'lodash';
 import ControllerBase from 'base/controller.base';
-import projectsWikiPreviewComponent from '../preview/projects-wiki-preview.component';
+import wikiPreviewComponent from '../preview/wiki-preview.component';
 
-export default class ProjectsWikiEditController extends ControllerBase {
+export default class WikiEditController extends ControllerBase {
 
     static get $inject() {
         return ['$state', '$mdDialog', 'WikiService', '$stateParams', '$mdToast', '$compile'];
@@ -46,7 +45,7 @@ export default class ProjectsWikiEditController extends ControllerBase {
                 .then((response) => {
                     if (response && response.status === 201) {
                         this.$mdDialog.cancel();
-                        this.$state.go('projects.inner.wiki.page', {name: response.data.title});
+                        this.$state.go('wiki.page', {name: response.data.title});
                     }
                 })
                 .catch((response) => this.onError(response));
@@ -63,11 +62,11 @@ export default class ProjectsWikiEditController extends ControllerBase {
                     );
 
                     if (this.$stateParams.name !== this.page.title) {
-                        this.$state.go('projects.inner.wiki.edit', {name: response.data.title})
+                        this.$state.go('wiki.edit', {name: response.data.title})
                     }
 
                     if (redirect) {
-                        this.$state.go('projects.inner.wiki.page', {name: response.data.title});
+                        this.$state.go('wiki.page', {name: response.data.title});
                     }
                 }
             });
@@ -77,13 +76,13 @@ export default class ProjectsWikiEditController extends ControllerBase {
     showPreview($event) {
         this.$mdDialog.show(
             {
-                controller: projectsWikiPreviewComponent.controller,
+                controller: wikiPreviewComponent.controller,
                 controllerAs: '$ctrl',
                 bindToController: true,
                 locals: {
                     page: this.page
                 },
-                template: projectsWikiPreviewComponent.template,
+                template: wikiPreviewComponent.template,
                 clickOutsideToClose: true,
             }
         );
@@ -91,9 +90,9 @@ export default class ProjectsWikiEditController extends ControllerBase {
 
     goTo(name) {
         if (name) {
-            this.$state.go('projects.inner.wiki.page.view', {name: name});
+            this.$state.go('wiki.page.view', {name: name});
         } else {
-            this.$state.go('projects.inner.wiki.index');
+            this.$state.go('wiki.index');
         }
 
     }

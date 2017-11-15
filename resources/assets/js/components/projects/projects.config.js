@@ -6,9 +6,6 @@ import projectsSettingsComponent from './settings/projects-settings.component';
 import projectsActivityComponent from './activity/projects-activity.component';
 import projectsCalendarComponent from './calendar/projects-calendar.component';
 import issuesListComponent from '../issues/list/issues-list.component';
-import projectsWikiPageComponent from './wiki/page/projects-wiki-page.component';
-import projectsWikiEditComponent from './wiki/edit/projects-wiki-edit.component';
-import projectsWikiIndexByComponent from './wiki/index-by/projects-wiki-index-by.component';
 import projectsGanttComponent from './gantt/projects-gantt.component';
 import projectsNewsComponent from './news/projects-news.component';
 import projectsDocumentsComponent from './documents/projects-documents.component';
@@ -45,6 +42,12 @@ export default class ProjectsConfig extends InjectableBase {
                     access: '@'
                 },
                 url: '/{project_id:[a-z][a-z0-9\-\_]{0,99}}',
+                template: '<ui-view/>'
+                // views: {
+                //     content: {
+                //         template: '<ui-view/>'
+                //     }
+                // }
             })
             .state('projects.inner.issues', {
                 abstract: true,
@@ -105,40 +108,6 @@ export default class ProjectsConfig extends InjectableBase {
             .state('projects.inner.boards', {
                 url: '/boards/{id:[0-9]}',
                 component: projectsBoardsComponent.name,
-            })
-
-            .state('projects.inner.wiki', {
-                url: '/wiki',
-                abstract: true,
-            })
-            .state('projects.inner.wiki.page', {
-                url: '/{name:[^\,\.\/\?\;\:\|]+}',
-                abstract: true,
-            })
-            .state('projects.inner.wiki.index', {
-                url: '',
-                component: projectsWikiPageComponent.name,
-            })
-            .state('projects.inner.wiki.page.view', {
-                url: '',
-                component: projectsWikiPageComponent.name,
-            })
-            .state('projects.inner.wiki.page.edit', {
-                url: '/edit',
-                component: projectsWikiEditComponent.name,
-            })
-            .state('projects.inner.wiki.new', {
-                url: '/new',
-                component: projectsWikiEditComponent.name,
-            })
-            .state('projects.inner.wiki.index-by-title', {
-                url: '/index',
-                component: projectsWikiIndexByComponent.name,
-            })
-            .state('projects.inner.wiki.index-by-date', {
-                url: '/date_index',
-                component: projectsWikiIndexByComponent.name,
             });
-
     }
 }

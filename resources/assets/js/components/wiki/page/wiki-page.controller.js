@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 
-export default class ProjectsWikiPageController extends ControllerBase {
+export default class WikiPageController extends ControllerBase {
 
     static get $inject() {
         return ['$state', '$mdDialog', 'WikiService', '$stateParams', '$mdToast', '$compile', '$filter'];
@@ -29,15 +29,11 @@ export default class ProjectsWikiPageController extends ControllerBase {
     }
 
     indexBy(order) {
-        this.$state.go('projects.inner.wiki.index-by-' + order);
+        this.$state.go('wiki.index-by-' + order);
     }
 
     startPage() {
-        this.$state.go('projects.inner.wiki.index');
-    }
-
-    newPage() {
-        this.$state.go('projects.inner.wiki.new');
+        this.$state.go('wiki.index');
     }
 
     delete($event) {
@@ -55,14 +51,14 @@ export default class ProjectsWikiPageController extends ControllerBase {
                     this.$mdToast.show(
                         this.$mdToast.simple().textContent('Success deleted!')
                     );
-                    this.$state.go('projects.inner.wiki.index', {project_id: this.$stateParams.project_id})
+                    this.$state.go('wiki.index', {project_id: this.$stateParams.project_id})
                 }
             });
         });
     }
 
     goToEdit(name) {
-        this.$state.go('projects.inner.wiki.page.edit', {name: name});
+        this.$state.go('wiki.page.edit', {name: name});
     }
 
     openActionMenu($mdMenu, ev) {
@@ -75,10 +71,6 @@ export default class ProjectsWikiPageController extends ControllerBase {
                 this.mdToast.success();
             }
         });
-    }
-
-    goto(name) {
-        this.$state.go('projects.inner.wiki.page', {name: name});
     }
 
 }

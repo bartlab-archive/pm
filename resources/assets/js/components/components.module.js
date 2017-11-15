@@ -16,6 +16,7 @@ import 'components/fields/fields.module';
 import 'components/enumerations/enumerations.module';
 import 'components/settings/settings.module';
 import 'components/auth/auth.module';
+import 'components/wiki/wiki.module';
 
 angular.module('app.components', [
     'app.components.layouts',
@@ -36,4 +37,5 @@ angular.module('app.components', [
     'app.components.enumerations',
     'app.components.settings',
     'app.components.auth',
+    'app.components.wiki',
 ]);

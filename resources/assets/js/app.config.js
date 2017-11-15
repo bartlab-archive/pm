@@ -98,25 +98,6 @@ export default class AppConfig extends InjectableBase {
         this.$showdownProvider.setOption('parseImgDimension', true);
         this.$showdownProvider.setOption('ghMentions', true);
         this.$showdownProvider.setOption('ghMentionsLink', '/');
-        this.$showdownProvider.loadExtension({
-            type: 'lang',
-            regex: /\[\[(.*)\]\]/g,
-            replace: (full, string) => {
-                // this.$injector.invoke(['$state',function($state){
-                //     console.log($state.href('projects.inner.wiki.page.view',{name:string}));
-                // }]);
-                // var $injector = angular.injector(['ng','$provide','ui.router']);
-                // $injector.get('$injector');
-                // console.log(angular.element('html').injector().get('$state').href('projects.inner.wiki.page.view', {name: string}));
-                let href = this.$stateProvider.$get().href(
-                    'projects.inner.wiki.page.view',
-                    {
-                        name: string.replace(' ', '_')
-                    }
-                );
-                return '<a href="' + href + '">' + string + '</a>';
-            }
-        });
     }
 
     scrollBarConfig() {

@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 
-export default class ProjectsWikiIndexByController extends ControllerBase {
+export default class WikiIndexByController extends ControllerBase {
 
 
     static get $inject() {
@@ -55,7 +55,7 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
                 body.appendChild(date);
                 let wikiPage = document.createElement('a');
                 wikiPage.innerHTML = page.title;
-                wikiPage.setAttribute('href',this.$state.href('projects.inner.wiki.page',{ project_id: this.$stateParams.project_id, name: page.title}));
+                wikiPage.setAttribute('href',this.$state.href('wiki.page',{ project_id: this.$stateParams.project_id, name: page.title}));
                 body.appendChild(wikiPage);
             }
         });
@@ -77,7 +77,7 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
             {
                 let li = document.createElement('LI');
                 let a = document.createElement('A');
-                a.setAttribute('href',this.$state.href('projects.inner.wiki.page',{ project_id: this.$stateParams.project_id, name: page.title}));
+                a.setAttribute('href',this.$state.href('wiki.page',{ project_id: this.$stateParams.project_id, name: page.title}));
                 a.innerHTML = page.title;
                 li.appendChild(a);
                 root.appendChild(li);
@@ -98,7 +98,7 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
             if (page.parent_id === parentId){
                 let li = document.createElement('LI');
                 let a = document.createElement('A');
-                a.setAttribute('href',this.$state.href('projects.inner.wiki.page',{ project_id: this.$stateParams.project_id, name: page.title}));
+                a.setAttribute('href',this.$state.href('wiki.page',{ project_id: this.$stateParams.project_id, name: page.title}));
                 a.innerHTML = page.title;
                 li.appendChild(a);
                 this.getChildren(li, page.id, pages);
@@ -114,15 +114,15 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
     }
 
     indexBy(order){
-        this.$state.go('projects.inner.wiki.index-by-' + order);
+        this.$state.go('wiki.index-by-' + order);
     }
 
     startPage() {
-        this.$state.go('projects.inner.wiki.index');
+        this.$state.go('wiki.index');
     }
 
     newWikiPage() {
-        this.$state.go('projects.inner.wiki.new');
+        this.$state.go('wiki.new');
     }
 
 }
