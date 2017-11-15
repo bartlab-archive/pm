@@ -36,6 +36,7 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
         pages.sort((a, b) => {
             return (new Date(a.created_on).getTime() > new Date(b.created_on).getTime());
         });
+
         let startDate = pages[0].created_on.split(' ', 1);
         let body = document.createElement('DIV');
 
@@ -123,4 +124,5 @@ export default class ProjectsWikiIndexByController extends ControllerBase {
     newWikiPage() {
         this.$state.go('projects.inner.wiki.new');
     }
+
 }

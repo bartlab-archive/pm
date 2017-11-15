@@ -1,7 +1,7 @@
 import angular from 'angular';
 import * as _ from 'lodash';
 import ControllerBase from 'base/controller.base';
-import showPreviewComponent from 'components/modal/projects/wiki/show-preview/show-preview.component';
+import projectsWikiPreviewComponent from '../preview/projects-wiki-preview.component';
 
 export default class ProjectsWikiEditController extends ControllerBase {
 
@@ -31,11 +31,7 @@ export default class ProjectsWikiEditController extends ControllerBase {
             this.newWiki = true;
         }
 
-        this.WikiService.getAllWikiPage(this.$stateParams.project_id).then((response) => {
-            if (!_.isEmpty(response.data)) {
-                this.pages = response.data;
-            }
-        });
+        this.test = 123;
     }
 
     save(redirect) {
@@ -45,6 +41,7 @@ export default class ProjectsWikiEditController extends ControllerBase {
                 text: this.page.content.text,
                 parent_id: this.page.parent_id
             };
+
             this.WikiService.addNewWikiPage(this.$stateParams.project_id, queryParams)
                 .then((response) => {
                     if (response && response.status === 201) {
@@ -59,13 +56,16 @@ export default class ProjectsWikiEditController extends ControllerBase {
             this.page.save().then((response) => {
                 if (response && response.status === 200) {
                     this.editMode = false;
+
                     this.$mdToast.show(
                         this.$mdToast.simple()
                             .textContent('Success saved!')
                     );
-                    if (this.$stateParams.name != this.page.title) {
+
+                    if (this.$stateParams.name !== this.page.title) {
                         this.$state.go('projects.inner.wiki.edit', {name: response.data.title})
                     }
+
                     if (redirect) {
                         this.$state.go('projects.inner.wiki.page', {name: response.data.title});
                     }
@@ -76,7 +76,16 @@ export default class ProjectsWikiEditController extends ControllerBase {
 
     showPreview($event) {
         this.$mdDialog.show(
-            this.setMdDialogConfig(showPreviewComponent, $event.target, this.page)
+            {
+                controller: projectsWikiPreviewComponent.controller,
+                controllerAs: '$ctrl',
+                bindToController: true,
+                locals: {
+                    page: this.page
+                },
+                template: projectsWikiPreviewComponent.template,
+                clickOutsideToClose: true,
+            }
         );
     }
 
@@ -87,38 +96,6 @@ export default class ProjectsWikiEditController extends ControllerBase {
             this.$state.go('projects.inner.wiki.index');
         }
 
-    }
-
-    setMdDialogConfig(component, target, data = {}) {
-        let ctrlConfig = [].concat(
-            component.controller.$inject || [],
-            [(...args) => {
-                let ctrl = new component.controller(...args);
-
-                // decorator
-                _.each(data, (v, k) => {
-                    ctrl[k] = v;
-                });
-
-                ctrl.$onInit && ctrl.$onInit();
-                return ctrl;
-            }]
-        );
-
-        return {
-            controller: ctrlConfig,
-            controllerAs: '$ctrl',
-            template: component.template,
-            parent: angular.element(document.body),
-            trapFocus: true,
-            clickOutsideToClose: true,
-            clickEscapeToClose: true,
-            escapeToClose: true,
-            hasBackdrop: true,
-            disableParentScroll: true,
-            openFrom: target,
-            closeTo: target,
-        }
     }
 
     onError(response) {
@@ -142,18 +119,5 @@ export default class ProjectsWikiEditController extends ControllerBase {
             this.errors[field] = undefined;
         }
     }
-
-    openActionMenu($mdMenu, ev) {
-        $mdMenu.open(ev);
-    };
-
-    indexBy(order) {
-        this.$state.go('projects.inner.wiki.index-by-' + order);
-    }
-
-    startPage() {
-        this.$state.go('projects.inner.wiki.index');
-    }
-
 
 }

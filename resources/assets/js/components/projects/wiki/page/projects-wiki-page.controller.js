@@ -1,4 +1,3 @@
-import angular from 'angular';
 import * as _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 
@@ -10,27 +9,23 @@ export default class ProjectsWikiPageController extends ControllerBase {
 
     $onInit() {
         this.errors = {};
-        if (this.$stateParams.name) {
+        this.isStart = false;
 
+        if (this.$stateParams.name) {
             this.WikiService.getPageWiki(this.$stateParams.project_id, this.$stateParams.name).then((response) => {
                 if (!_.isEmpty(response.data)) {
                     this.data = response.data;
                 }
             });
-
         } else {
+            this.isStart = true;
+
             this.WikiService.getStartPageWiki(this.$stateParams.project_id).then((response) => {
                 if (!_.isEmpty(response.data)) {
                     this.data = response.data;
                 }
             });
         }
-
-        this.WikiService.getAllWikiPage(this.$stateParams.project_id).then((response) => {
-            if (!_.isEmpty(response.data)) {
-                this.pageList = response.data;
-            }
-        });
     }
 
     indexBy(order) {
@@ -39,33 +34,6 @@ export default class ProjectsWikiPageController extends ControllerBase {
 
     startPage() {
         this.$state.go('projects.inner.wiki.index');
-    }
-
-    setMdDialogConfig(component, target) {
-        let ctrlConfig = [].concat(
-            component.controller.$inject || [],
-            [(...args) => {
-                let ctrl = new component.controller(...args);
-                ctrl.$onInit && ctrl.$onInit();
-                return ctrl;
-            }]
-        );
-
-        return {
-            controller: ctrlConfig,
-            controllerAs: '$ctrl',
-            template: component.template,
-            panelClass: 'modal-custom-dialog',
-            parent: angular.element(document.body),
-            trapFocus: true,
-            clickOutsideToClose: true,
-            clickEscapeToClose: true,
-            escapeToClose: true,
-            hasBackdrop: true,
-            disableParentScroll: true,
-            openFrom: target,
-            closeTo: target
-        }
     }
 
     newPage() {
@@ -81,12 +49,11 @@ export default class ProjectsWikiPageController extends ControllerBase {
 
         this.$mdDialog.show(confirm).then(() => {
             this.WikiService.deleteWikiPage(this.$stateParams.project_id, this.$stateParams.name).then((response) => {
-                console.log(response.data);
+                // console.log(response.data);
                 this.deleteResult = response.data;
                 if (this.deleteResult.success) {
                     this.$mdToast.show(
-                        this.$mdToast.simple()
-                            .textContent('Success deleted!')
+                        this.$mdToast.simple().textContent('Success deleted!')
                     );
                     this.$state.go('projects.inner.wiki.index', {project_id: this.$stateParams.project_id})
                 }
@@ -94,30 +61,13 @@ export default class ProjectsWikiPageController extends ControllerBase {
         });
     }
 
-    showConfirm($event) {
-        // Appending dialog to document.body to cover sidenav in docs app
-        let confirm = this.$mdDialog.confirm()
-            .title('Would you like to delete your debt?')
-            .textContent('All of the banks have agreed to forgive you your debts.')
-            .ariaLabel('Lucky day')
-            .targetEvent($event)
-            .ok('Please do it!')
-            .cancel('Sounds like a scam');
-
-        this.$mdDialog.show(confirm).then(function () {
-            // $scope.status = 'You decided to get rid of your debt.';
-        }, function () {
-            // $scope.status = 'You decided to keep your debt.';
-        });
-    };
-
     goToEdit(name) {
         this.$state.go('projects.inner.wiki.page.edit', {name: name});
     }
 
     openActionMenu($mdMenu, ev) {
         $mdMenu.open(ev);
-    };
+    }
 
     submit() {
         this.data.save().then((response) => {

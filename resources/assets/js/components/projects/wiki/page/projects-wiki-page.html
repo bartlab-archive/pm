@@ -1,79 +1,86 @@
 <div layout-gt-sm="row" layout-align="center start">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-        <!--<div layout-align="start start"  flex-xs="100" flex-sm="100" flex-md="100" flex-gt-md="100" >-->
-            <md-card-header>
-                <md-card-header-text>
-                    <span class="md-headline">{{ $ctrl.data.title }}</span>
-                </md-card-header-text>
-                <md-menu>
-                    <md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openActionMenu($mdMenu, $event)">
-                        <md-icon>more_vert</md-icon>
-                    </md-button>
-                    <md-menu-content width="4">
-                        <md-menu-item>
-                            <md-button ng-click="$ctrl.startPage()">
-                                <md-icon>bookmark</md-icon>
-                                Start page
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button ng-click="$ctrl.indexBy('title')">
-                                <md-icon>title</md-icon>
-                                Index by title
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button ng-click="$ctrl.indexBy('date')">
-                                <md-icon>date_range</md-icon>
-                                Index by date
-                            </md-button>
-                        </md-menu-item>
-                        <md-divider></md-divider>
-                        <md-menu-item show-xs>
-                            <md-button aria-label="label" class="md-button" ng-click="$ctrl.goToEdit($ctrl.data.title)">
-                                <md-icon >edit</md-icon>
-                                Edit
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button aria-label="label" class="md-button" ng-click="$ctrl.newPage()">
-                                <md-icon >fiber_new</md-icon>
-                                New wiki page
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button  aria-label="label" class="md-button" ng-click="$ctrl.watchPage()">
-                                <md-icon >watch_later</md-icon>
-                                Watch
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button aria-label="label" class="md-button" ng-click="$ctrl.delete($event)">
-                                <md-icon >delete</md-icon>
-                                Delete
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button aria-label="label" class="md-button" ng-click="$ctrl.showHistory()">
-                                <md-icon >history</md-icon>
-                                History
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button aria-label="label" class="md-button" ng-click="$ctrl.addFile($event)">
-                                <md-icon >file_upload</md-icon>
-                                Add file
-                            </md-button>
-                        </md-menu-item>
+        <md-card-header>
+            <md-card-header-text>
+                <span class="md-headline">{{ $ctrl.data.title }}</span>
+            </md-card-header-text>
 
+            <md-button class="md-icon-button" ng-click="$ctrl.startPage()" ng-if="!$ctrl.isStart">
+                <md-icon>bookmark</md-icon>
+                <md-tooltip md-direction="down" md-autohide="true">
+                    Start page
+                </md-tooltip>
+            </md-button>
 
-                    </md-menu-content>
-                </md-menu>
-            </md-card-header>
-            <md-card-content>
-                <h1 class="md-display-2"></h1>
-                <div class="md-body-1" markdown-to-html="$ctrl.data.content.text || ''"></div>
-            </md-card-content>
-        <!--</div>-->
+            <md-button class="md-icon-button" ng-click="$ctrl.indexBy('title')">
+                <md-icon>title</md-icon>
+                <md-tooltip md-direction="down" md-autohide="true">
+                    Index by title
+                </md-tooltip>
+            </md-button>
+
+            <md-button class="md-icon-button" ng-click="$ctrl.indexBy('date')">
+                <md-icon>date_range</md-icon>
+                <md-tooltip md-direction="down" md-autohide="true">
+                    Index by date
+                </md-tooltip>
+            </md-button>
+
+            <md-menu>
+                <md-button class="md-icon-button" aria-label="User menu"
+                           ng-click="$ctrl.openActionMenu($mdMenu, $event)">
+                    <md-icon>more_vert</md-icon>
+                </md-button>
+
+                <md-menu-content width="4">
+                    <md-menu-item show-xs>
+                        <md-button aria-label="label" class="md-button" ng-click="$ctrl.goToEdit($ctrl.data.title)">
+                            <md-icon>edit</md-icon>
+                            Edit
+                        </md-button>
+                    </md-menu-item>
+
+                    <md-menu-item>
+                        <md-button aria-label="label" class="md-button" ng-click="$ctrl.newPage()">
+                            <md-icon>fiber_new</md-icon>
+                            New wiki page
+                        </md-button>
+                    </md-menu-item>
+
+                    <md-menu-item>
+                        <md-button aria-label="label" class="md-button" ng-click="$ctrl.watchPage()">
+                            <md-icon>watch_later</md-icon>
+                            Watch
+                        </md-button>
+                    </md-menu-item>
+
+                    <md-menu-item>
+                        <md-button aria-label="label" class="md-button" ng-click="$ctrl.delete($event)">
+                            <md-icon>delete</md-icon>
+                            Delete
+                        </md-button>
+                    </md-menu-item>
+
+                    <md-menu-item>
+                        <md-button aria-label="label" class="md-button" ng-click="$ctrl.showHistory()">
+                            <md-icon>history</md-icon>
+                            History
+                        </md-button>
+                    </md-menu-item>
+
+                    <md-menu-item>
+                        <md-button aria-label="label" class="md-button" ng-click="$ctrl.addFile($event)">
+                            <md-icon>file_upload</md-icon>
+                            Add file
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </md-card-header>
+
+        <md-card-content>
+            <h1 class="md-display-2"></h1>
+            <div class="md-body-1" markdown-to-html="$ctrl.data.content.text || ''"></div>
+        </md-card-content>
     </md-card>
 </div>
