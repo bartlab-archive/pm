@@ -25,36 +25,6 @@
                             md-autohide="true">Index by date
                 </md-tooltip>
             </md-button>
-
-            <md-menu>
-                <md-button class="md-icon-button" aria-label="User menu"
-                           ng-click="$ctrl.openActionMenu($mdMenu, $event)">
-                    <md-icon>more_vert</md-icon>
-                </md-button>
-
-                <md-menu-content width="4">
-                    <md-menu-item>
-                        <md-button ng-click="$ctrl.startPage()">
-                            <md-icon>bookmark</md-icon>
-                            Start page
-                        </md-button>
-                    </md-menu-item>
-
-                    <md-menu-item>
-                        <md-button ng-click="$ctrl.indexBy('title')">
-                            <md-icon>title</md-icon>
-                            Index by title
-                        </md-button>
-                    </md-menu-item>
-
-                    <md-menu-item>
-                        <md-button ng-click="$ctrl.indexBy('date')">
-                            <md-icon>date_range</md-icon>
-                            Index by date
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
         </md-card-header>
 
         <md-card-content>

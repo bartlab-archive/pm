@@ -109,10 +109,6 @@ export default class WikiIndexByController extends ControllerBase {
         parentElement.appendChild(root);
     }
 
-    openActionMenu($mdMenu, ev) {
-        $mdMenu.open(ev);
-    }
-
     indexBy(order){
         this.$state.go('wiki.index-by-' + order);
     }
