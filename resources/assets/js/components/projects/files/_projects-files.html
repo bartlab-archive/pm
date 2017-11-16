@@ -1,0 +1,22 @@
+<div layout="row" layout-align="end start">
+    <md-button class="md-raised">
+        <md-icon>add</md-icon>
+    </md-button>
+</div>
+<div ng-if="$ctrl.files.length" layout="row" layout-align="center start" ng-repeat="row in $ctrl.files">
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">{{ row.filename }}</span>
+                <span class="md-subhead"><b>Date:</b> {{ row.created_on | amDateFormat:'MM.DD.YYYY HH:mm' }}</span>
+                <span class="md-subhead"><b>Size:</b> {{ row.filesize | bytesToSizeUnitsFilter }}</span>
+                <span class="md-subhead"><b>Downloads:</b> {{ row.downloads }}</span>
+                <span class="md-subhead"><b>MD5:</b> {{ row.digest }}</span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button ng-click="$ctrl.download(row.id, row.filename)">Download</md-button>
+            <md-button ng-click="$ctrl.delete(row.id)">Delete</md-button>
+        </md-card-actions>
+    </md-card>
+</div>

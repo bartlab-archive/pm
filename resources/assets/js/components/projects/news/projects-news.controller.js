@@ -12,12 +12,12 @@ export default class ProjectsNewsController extends ControllerBase {
 
     $onInit() {
 
-        this.ProjectsService.getNews(this.$stateParams.id, {})
-            .then((response) => {
-                this.news = response.data
-
-            })
-            .catch(console.log);
+        // this.ProjectsService.getNews(this.$stateParams.id, {})
+        //     .then((response) => {
+        //         this.news = response.data
+        //
+        //     })
+        //     .catch(console.log);
     }
 
 }

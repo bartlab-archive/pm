@@ -43,6 +43,7 @@ export default class AppRun extends InjectableBase {
         this.$mdToast.show(
             this.$mdToast.simple().textContent('Unauthorized')
         );
+
         this.$state.go('login');
     }
 
@@ -50,6 +51,7 @@ export default class AppRun extends InjectableBase {
         this.$mdToast.show(
             this.$mdToast.simple().textContent('Forbidden')
         );
+
         this.$state.go('home');
     }
 
@@ -62,6 +64,7 @@ export default class AppRun extends InjectableBase {
             case 403:
                 this.$rootScope.$broadcast('authForbidden');
                 break;
+
             case 422:
                 break;
 
@@ -70,6 +73,5 @@ export default class AppRun extends InjectableBase {
                     this.$mdToast.simple().textContent('Server error!')
                 );
         }
-        // return false;
     }
 }

@@ -13,7 +13,7 @@ export default class ProjectsFilesController extends ControllerBase {
     }
 
     $onInit() {
-        this.load();
+        // this.load();
     }
 
     download(id, name) {

@@ -12,7 +12,7 @@ import projectsNewsComponent from './news/projects-news.component';
 import projectsDocumentsComponent from './documents/projects-documents.component';
 import projectsFilesComponent from './files/projects-files.component';
 import projectsBoardsComponent from './boards/projects-boards.component';
-
+import projectsRepositoryComponent from './repository/projects-repository.component';
 
 angular.module('app.components.projects', ['ngFileSaver'])
     .config(ProjectsConfig.inst())
@@ -26,4 +26,5 @@ angular.module('app.components.projects', ['ngFileSaver'])
     .component(projectsNewsComponent.name, projectsNewsComponent)
     .component(projectsDocumentsComponent.name, projectsDocumentsComponent)
     .component(projectsFilesComponent.name, projectsFilesComponent)
+    .component(projectsRepositoryComponent.name, projectsRepositoryComponent)
     .component(projectsBoardsComponent.name, projectsBoardsComponent);

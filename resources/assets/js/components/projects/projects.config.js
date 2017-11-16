@@ -11,6 +11,7 @@ import projectsNewsComponent from './news/projects-news.component';
 import projectsDocumentsComponent from './documents/projects-documents.component';
 import projectsFilesComponent from './files/projects-files.component';
 import projectsBoardsComponent from './boards/projects-boards.component';
+import projectsRepositoryComponent from './repository/projects-repository.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -105,8 +106,13 @@ export default class ProjectsConfig extends InjectableBase {
                 url: '/files',
                 component: projectsFilesComponent.name,
             })
+            .state('projects.inner.repository', {
+                url: '/repository',
+                component: projectsRepositoryComponent.name,
+            })
             .state('projects.inner.boards', {
-                url: '/boards/{id:[0-9]}',
+                url: '/boards',
+                // url: '/boards/{id:[0-9]}',
                 component: projectsBoardsComponent.name,
             });
     }

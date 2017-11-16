@@ -121,7 +121,7 @@ export default class LayoutDefaultController extends ControllerBase {
             enable: false,
             alt: [/^wiki\.*/]
         }, {
-            url: '',
+            url: 'projects.inner.repository',
             title: 'Repository',
             name: 'repository',
             enable: false
