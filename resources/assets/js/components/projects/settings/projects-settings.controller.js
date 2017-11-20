@@ -27,6 +27,12 @@ export default class ProjectsSettingsController extends ControllerBase {
     $onInit() {
         this.allModules = this.ProjectsService.modules;
 
+        // active tab name
+        this.page = this.$stateParams.page;
+
+        // tabs for project modules
+        this.tabs = {};
+
         this.versionStatuses = this.ProjectsService.getVersionStatuses();
         this.versionSharings = this.ProjectsService.getVersionSharings();
 
@@ -68,7 +74,9 @@ export default class ProjectsSettingsController extends ControllerBase {
         this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.model = _.get(response, 'data', []);
 
+
             this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
+            this.tabs = Object.assign([], this.model.modules);
 
             if (this.model.parent_project) {
                 this.model.parent_identifier = this.model.parent_project.identifier;
@@ -85,6 +93,23 @@ export default class ProjectsSettingsController extends ControllerBase {
 
             this.initialActivities = _.cloneDeep(this.activities);
         });
+    }
+
+    selectTab(page) {
+        this.$state.go(
+            '.',
+            {page: page},
+            {
+                // prevent the events onStart and onSuccess from firing
+                notify: false,
+                // prevent reload of the current state
+                reload: false,
+                // replace the last record when changing the params so you don't hit the back button and get old params
+                location: 'replace',
+                // inherit the current params on the url
+                inherit: true
+            }
+        )
     }
 
     getActivities() {

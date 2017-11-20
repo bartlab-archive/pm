@@ -71,7 +71,14 @@ export default class ProjectsConfig extends InjectableBase {
                 component: projectsInfoComponent.name,
             })
             .state('projects.inner.settings', {
-                url: '/settings',
+                url: '/settings/{page}',
+                params: {
+                    page: {
+                        value: null,
+                        squash: true,
+                        dynamic: true
+                    }
+                },
                 component: projectsSettingsComponent.name,
             })
             .state('projects.inner.activity', {
