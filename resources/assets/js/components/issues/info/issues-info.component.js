@@ -1,9 +1,8 @@
 import IssuesInfoController from './issues-info.controller';
-import IssuesInfoTemplate from './issues-info.html';
-import './issues-info.scss';
+import issuesInfoTemplate from './issues-info.html';
 
 export default {
     name: 'issuesInfoComponent',
     controller: IssuesInfoController,
-    template: IssuesInfoTemplate
+    template: issuesInfoTemplate
 };

@@ -1,11 +1,11 @@
 import HistoryController from './history.controller';
-import HistoryTemplate from './history.html';
+import historyTemplate from './history.html';
 import './history.scss';
 
 export default {
     name: 'historyComponent',
     controller: HistoryController,
-    template: HistoryTemplate,
+    template: historyTemplate,
     bindings: {
         issueId: '=',
         trackers: '=',

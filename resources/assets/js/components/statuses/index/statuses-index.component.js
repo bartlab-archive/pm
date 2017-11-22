@@ -1,8 +1,8 @@
 import StatusesIndexController from './statuses-index.controller';
-import StatusesIndexTemplate from './statuses-index.html';
+import statusesIndexTemplate from './statuses-index.html';
 
-export default{
+export default {
     name: 'statusesIndexComponent',
     controller: StatusesIndexController,
-    template: StatusesIndexTemplate
+    template: statusesIndexTemplate
 };

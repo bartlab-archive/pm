@@ -1,6 +1,5 @@
-import moment from 'moment';
 import ControllerBase from 'base/controller.base';
-
+import moment from 'moment';
 
 /**
  * @property {$mdDialog} $mdDialog
@@ -9,7 +8,8 @@ import ControllerBase from 'base/controller.base';
  * @property {RolesService} RolesService
  * @property {UsersService} UsersService
  */
-export default class showAddVersionController extends ControllerBase {
+export default class ShowAddVersionController extends ControllerBase {
+
     static get $inject() {
         return ['$mdDialog', 'ProjectsService', '$rootScope', 'RolesService', 'UsersService'];
     }
@@ -33,4 +33,5 @@ export default class showAddVersionController extends ControllerBase {
                 this.$rootScope.$emit('updateProjectInfo');
             });
     }
+
 }

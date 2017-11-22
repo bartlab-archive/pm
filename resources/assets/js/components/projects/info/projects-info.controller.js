@@ -1,6 +1,5 @@
-import _ from 'lodash';
-
 import ControllerBase from 'base/controller.base';
+import _ from 'lodash';
 
 /**
  * @property {ProjectsService} ProjectsService
@@ -61,4 +60,5 @@ export default class ProjectsInfoController extends ControllerBase {
     projectNavigate(identifier) {
         this.$state.go('projects.inner.info', {project_id: identifier});
     }
+
 }

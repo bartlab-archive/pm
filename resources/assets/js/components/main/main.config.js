@@ -89,4 +89,5 @@ export default class MainConfig extends InjectableBase {
                 }
             });
     }
+
 }

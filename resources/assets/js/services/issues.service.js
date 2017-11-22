@@ -1,4 +1,4 @@
-import ServiceBase from "base/service.base";
+import ServiceBase from 'base/service.base';
 import moment from 'moment';
 
 /**
@@ -75,7 +75,8 @@ export default class IssuesService extends ServiceBase {
         return (monthsAgo ? monthsAgo + ' months ' : '') + daysAgo + ' days';
     }
 
-    getIssueStatuses(){
+    getIssueStatuses() {
         return this.Restangular.one('issues').all('statuses').getList({});
     }
+
 }

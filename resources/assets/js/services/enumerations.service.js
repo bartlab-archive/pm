@@ -1,5 +1,4 @@
-import _ from 'lodash';
-import ServiceBase from "base/service.base";
+import ServiceBase from 'base/service.base';
 
 /**
  * @property {Restangular} Restangular
@@ -19,4 +18,5 @@ export default class EnumerationsService extends ServiceBase {
     getList(params) {
         return this.Restangular.all('enumerations').getList(params);
     }
+
 }

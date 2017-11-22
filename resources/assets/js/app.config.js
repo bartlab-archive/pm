@@ -122,4 +122,5 @@ export default class AppConfig extends InjectableBase {
             return date ? moment(date).format('YYYY-MM-DD') : '';
         };
     }
+
 }

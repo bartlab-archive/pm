@@ -1,8 +1,8 @@
 import WorkflowsIndexController from './workflows-index.controller';
-import WorkflowsIndexTemplate from './workflows-index.html';
+import workflowsIndexTemplate from './workflows-index.html';
 
-export default{
+export default {
     name: 'workflowsIndexComponent',
     controller: WorkflowsIndexController,
-    template: WorkflowsIndexTemplate
+    template: workflowsIndexTemplate
 };

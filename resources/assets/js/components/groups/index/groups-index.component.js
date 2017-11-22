@@ -1,8 +1,8 @@
 import GroupsIndexController from './groups-index.controller';
-import GroupsIndexTemplate from './groups-index.html';
+import groupsIndexTemplate from './groups-index.html';
 
-export default{
+export default {
     name: 'groupsIndexComponent',
     controller: GroupsIndexController,
-    template: GroupsIndexTemplate
+    template: groupsIndexTemplate
 };

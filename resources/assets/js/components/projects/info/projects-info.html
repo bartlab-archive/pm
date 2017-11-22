@@ -84,12 +84,14 @@
             </div>
         </md-card-content>
         <md-card-actions layout="row" layout-align="center center">
-            <md-button ng-click="$ctrl.$state.go('projects.inner.news', {project_id: $ctrl.project.identifier})">View all news</md-button>
+            <md-button ng-click="$ctrl.$state.go('projects.inner.news', {project_id: $ctrl.project.identifier})">View
+                all news
+            </md-button>
         </md-card-actions>
     </md-card>
 </div>
 
-<div layout="row" layout-align="center start" ng-if="_.isEmpty($ctrl.project.child_projects)">
+<div layout="row" layout-align="center start">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
         <md-card-title>
             <md-card-title-text>

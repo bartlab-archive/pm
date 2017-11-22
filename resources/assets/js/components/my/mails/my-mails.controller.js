@@ -1,11 +1,12 @@
 import ControllerBase from 'base/controller.base';
+import _ from 'lodash';
 
 /**
  * @property {UsersService} UsersService
  * @property {$rootScope} $rootScope
  * @property {$mdToast} $mdToast
  */
-export default class myMailsController extends ControllerBase {
+export default class MyMailsController extends ControllerBase {
 
     static get $inject() {
         return ['UsersService', '$rootScope', '$mdToast'];
@@ -65,4 +66,5 @@ export default class myMailsController extends ControllerBase {
             this.addEmailForm[field] = undefined;
         }
     }
+
 }

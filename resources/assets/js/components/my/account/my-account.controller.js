@@ -1,8 +1,8 @@
-import angular from 'angular';
-import * as _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 import myEmailsModalTemplate from './my-mails-modal.html';
 import myPasswordModalTemplate from './my-password-modal.html';
+import angular from 'angular';
+import _ from 'lodash';
 
 /**
  * @property {$auth} $auth
@@ -11,7 +11,7 @@ import myPasswordModalTemplate from './my-password-modal.html';
  * @property {UsersService} UsersService
  * @property {$mdDialog} $mdDialog
  */
-export default class mainMyAccountIndexController extends ControllerBase {
+export default class MyAccountController extends ControllerBase {
 
     static get $inject() {
         return ['$auth', '$state', '$mdToast', '$mdDialog', 'UsersService'];

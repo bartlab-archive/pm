@@ -1,5 +1,5 @@
 import ControllerBase from 'base/controller.base';
-import * as _ from "lodash";
+import _ from 'lodash';
 
 /**
  * @property {$state} $state
@@ -78,9 +78,10 @@ export default class IssuesInfoController extends ControllerBase {
 
     delete() {
         let confirm = this.$mdDialog.confirm()
-            .title(`Would you like to delete this issue?`)
-            .ok('Delete!')
+            .title('Are you sure you want to delete the selected issue?')
+            .ok('Delete')
             .cancel('Cancel');
+
         this.$mdDialog.show(confirm).then(() => {
             this.IssuesService.deleteIssue(this.issue.id).then(() => {
                 window.location = 'projects/' + this.issue.project.identifier;
@@ -110,4 +111,5 @@ export default class IssuesInfoController extends ControllerBase {
     closeIssueCard() {
         this.$window.history.back();
     }
+
 }

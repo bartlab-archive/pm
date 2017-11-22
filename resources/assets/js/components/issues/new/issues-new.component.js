@@ -1,9 +1,8 @@
 import IssuesNewController from './issues-new.controller';
-import IssuesNewTemplate from './issues-new.html';
-import './issues-new.scss'
+import issuesNewTemplate from './issues-new.html';
 
 export default {
     name: 'issuesNewComponent',
     controller: IssuesNewController,
-    template: IssuesNewTemplate
+    template: issuesNewTemplate
 };

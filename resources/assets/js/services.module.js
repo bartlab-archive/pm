@@ -1,4 +1,5 @@
 import 'angular';
+
 import ProjectsService from 'services/projects.service';
 import UsersService from 'services/users.service';
 import WikiService from 'services/wiki.service';

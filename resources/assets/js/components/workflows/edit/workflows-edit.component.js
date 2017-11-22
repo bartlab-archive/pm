@@ -1,8 +1,8 @@
 import WorkflowsEditController from './workflows-edit.controller';
-import WorkflowsEditTemplate from './workflows-edit.html';
+import workflowsEditTemplate from './workflows-edit.html';
 
-export default{
+export default {
     name: 'workflowsEditComponent',
     controller: WorkflowsEditController,
-    template: WorkflowsEditTemplate
+    template: workflowsEditTemplate
 };

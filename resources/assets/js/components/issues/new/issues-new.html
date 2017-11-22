@@ -14,7 +14,8 @@
 
                     <md-input-container class="md-block">
                         <label for="subject">Subject</label>
-                        <input id="subject" name="subject" ng-blur="$ctrl.validate()" ng-model="$ctrl.issue.subject" required>
+                        <input id="subject" name="subject" ng-blur="$ctrl.validate()" ng-model="$ctrl.issue.subject"
+                               required>
                         <div ng-messages="editIssue.subject.$error">
                             <div ng-message="required">This field can't be blank.</div>
                         </div>
@@ -108,7 +109,8 @@
         </md-card-content>
 
         <md-card-actions layout="row" layout-align="center center">
-            <md-button class="md-raised md-primary animation-target md-button md-ink-ripple" ng-disabled="$ctrl.error" ng-click="$ctrl.create()">
+            <md-button class="md-raised md-primary animation-target md-button md-ink-ripple" ng-disabled="$ctrl.error"
+                       ng-click="$ctrl.create()">
                 Create
             </md-button>
 

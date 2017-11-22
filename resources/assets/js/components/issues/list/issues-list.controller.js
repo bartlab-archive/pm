@@ -1,6 +1,6 @@
 import ControllerBase from 'base/controller.base';
 import angular from 'angular';
-import * as _ from "lodash";
+import _ from 'lodash';
 
 /**
  * @property {$state} $state
@@ -347,4 +347,5 @@ export default class IssuesListController extends ControllerBase {
             this.list[taskId] = response.data;
         });
     }
+
 }

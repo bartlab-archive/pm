@@ -1,5 +1,5 @@
 import ControllerBase from 'base/controller.base';
-import * as _ from "lodash";
+import _ from 'lodash';
 
 /**
  * @property {$mdSidenav} $mdSidenav
@@ -232,4 +232,5 @@ export default class LayoutDefaultController extends ControllerBase {
             });
         }
     }
+
 }

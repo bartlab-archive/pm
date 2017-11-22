@@ -1,16 +1,17 @@
 import ControllerBase from 'base/controller.base';
 import moment from 'moment';
+import _ from 'lodash';
 
+/**
+ * @property {ProjectsService} ProjectsService
+ * @property {$stateParams} $stateParams
+ * @property {TrackersService} TrackersService
+ * @property {UsersService} UsersService
+ * @property {IssuesService} IssueService
+ * @property {$stateParam} $stateParam
+ */
 export default class ProjectsActivityController extends ControllerBase {
 
-    /**
-     * @property {ProjectsService} ProjectsService
-     * @property {$stateParams} $stateParams
-     * @property {TrackersService} TrackersService
-     * @property {UsersService} UsersService
-     * @property {IssuesService} IssueService
-     * @property {$stateParam} $stateParam
-     */
     static get $inject() {
         return ['ProjectsService', 'TrackersService', '$stateParams', 'UsersService', 'IssuesService', '$stateParams'];
     }
@@ -44,8 +45,8 @@ export default class ProjectsActivityController extends ControllerBase {
 
     getActivity() {
 
-        this.startDate = this.date.subtract(this.substract*30, 'days').format('YYYY-MM-DD');
-        this.endDate = this.date.subtract((this.substract - 1)*30, 'days').format('YYYY-MM-DD');
+        this.startDate = this.date.subtract(this.substract * 30, 'days').format('YYYY-MM-DD');
+        this.endDate = this.date.subtract((this.substract - 1) * 30, 'days').format('YYYY-MM-DD');
 
         this.ProjectsService.getActivity(this.projectId, {
             start_date: this.startDate,
@@ -88,8 +89,9 @@ export default class ProjectsActivityController extends ControllerBase {
         $mdMenu.open(ev);
     };
 
-    getDateRange(){
-        return moment(this.startDate , 'YYYY-MM-DD').format('MM/DD/YYYY') + ' to  ' +
-            moment(this.endDate , 'YYYY-MM-DD').format('MM/DD/YYYY');
+    getDateRange() {
+        return moment(this.startDate, 'YYYY-MM-DD').format('MM/DD/YYYY') + ' to  ' +
+            moment(this.endDate, 'YYYY-MM-DD').format('MM/DD/YYYY');
     }
+
 }

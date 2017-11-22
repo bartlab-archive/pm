@@ -1,5 +1,5 @@
 import ControllerBase from 'base/controller.base';
-import _ from "lodash";
+import _ from 'lodash';
 import moment from 'moment';
 
 /**
@@ -12,7 +12,7 @@ import moment from 'moment';
 export default class HistoryController extends ControllerBase {
 
     static get $inject() {
-        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService','$rootScope'];
+        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService', '$rootScope'];
     }
 
     $onInit() {
@@ -29,7 +29,8 @@ export default class HistoryController extends ControllerBase {
         });
     }
 
-    convertDate(date){
+    convertDate(date) {
         return moment(date).format('DD/MM/YYYY')
     }
+
 }

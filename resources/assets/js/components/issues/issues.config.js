@@ -1,4 +1,4 @@
-import InjectableBase from "base/injectable.base";
+import InjectableBase from 'base/injectable.base';
 import issuesListComponent from './list/issues-list.component';
 import issuesEditCopyComponent from './edit-copy/issues-edit-copy.component';
 import issuesInfoComponent from './info/issues-info.component';
@@ -48,5 +48,6 @@ export default class IssuesConfig extends InjectableBase {
                 component: issuesInfoComponent.name,
             });
     }
+
 }
 

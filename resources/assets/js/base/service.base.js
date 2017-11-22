@@ -10,4 +10,5 @@ export default class ServiceBase extends ObjectBase {
 
     $onInit() {
     }
+
 }

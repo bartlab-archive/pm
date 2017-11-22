@@ -7,7 +7,7 @@ import _ from 'lodash';
  * @property {$rootScope} $rootScope
  * @property {RolesService} RolesService
  */
-export default class ShowEditMemberController extends ControllerBase {
+export default class ProjectsMemberController extends ControllerBase {
 
     static get $inject() {
         return ['$mdDialog', 'ProjectsService', '$rootScope', 'RolesService'];

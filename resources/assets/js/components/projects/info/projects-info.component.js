@@ -1,8 +1,8 @@
 import ProjectsInfoController from './projects-info.controller';
-import ProjectsInfoTemplate from './projects-info.html';
+import projectsInfoTemplate from './projects-info.html';
 
 export default {
     name: 'projectsInfoComponent',
     controller: ProjectsInfoController,
-    template: ProjectsInfoTemplate
+    template: projectsInfoTemplate
 };

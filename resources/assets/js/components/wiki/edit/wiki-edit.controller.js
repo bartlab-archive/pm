@@ -1,6 +1,6 @@
-import * as _ from 'lodash';
 import ControllerBase from 'base/controller.base';
 import wikiPreviewComponent from '../preview/wiki-preview.component';
+import _ from 'lodash';
 
 export default class WikiEditController extends ControllerBase {
 

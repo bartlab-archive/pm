@@ -1,13 +1,13 @@
-import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
-import showEditMemberComponent from 'components/modal/projects/members/show-edit-member/show-edit-member.component';
-import showAddMemberComponent from 'components/modal/projects/members/show-add-member/show-add-member.component';
+import projectsMemberComponent from '../member/projects-member.component';
+// import showAddMemberComponent from 'components/modal/projects/members/show-add-member/show-add-member.component';
 import showAddVersionComponent from 'components/modal/projects/versions/show-add-version/show-add-version.component';
 import showEditVersionComponent from 'components/modal/projects/versions/show-edit-version/show-edit-version.component';
 import showAddIssuesCategoryComponent from 'components/modal/projects/issue-categories/show-add-issue-category/show-add-issue-category.component';
 import showEditIssuesCategoryComponent from 'components/modal/projects/issue-categories/show-edit-issue-category/show-edit-issue-category.component';
 import showAddForumComponent from 'components/modal/projects/forums/show-add-forum/show-add-forum.component';
 import showEditForumComponent from 'components/modal/projects/forums/show-edit-forum/show-edit-forum.component';
+import _ from 'lodash';
 
 /**
  * @property {ProjectsService} ProjectsService
@@ -126,6 +126,7 @@ export default class ProjectsSettingsController extends ControllerBase {
         const forums = _.map(this.model.boards, item => {
             return _.pick(item, ['id', 'name', 'description', 'parent_id']);
         });
+
         delete this.model.boards;
 
         return forums;
@@ -135,6 +136,7 @@ export default class ProjectsSettingsController extends ControllerBase {
         const issueCategories = _.map(this.model.issue_categories, item => {
             return _.pick(item, ['id', 'name', 'assigned_to_id']);
         });
+
         delete this.model.issue_categories;
 
         return issueCategories;
@@ -144,6 +146,7 @@ export default class ProjectsSettingsController extends ControllerBase {
         const versions = _.map(this.model.versions, item => {
             return _.pick(item, ['id', 'name', 'description', 'effective_date', 'wiki_page_title', 'status', 'sharing']);
         });
+
         delete this.model.versions;
 
         return versions;
@@ -179,55 +182,69 @@ export default class ProjectsSettingsController extends ControllerBase {
     }
 
     setMdDialogConfig(component, target, data = {}) {
-        let ctrlConfig = [].concat(
-            component.controller.$inject || [],
-            [(...args) => {
-                let ctrl = new component.controller(...args);
+        // let ctrlConfig = [].concat(
+        //     component.controller.$inject || [],
+        //     [(...args) => {
+        //         let ctrl = new component.controller(...args);
+        //
+        //         // decorator
+        //         _.each(data, (v, k) => {
+        //             ctrl[k] = v;
+        //         });
+        //
+        //         ctrl.$onInit && ctrl.$onInit();
+        //         return ctrl;
+        //     }]
+        // );
+        //
+        // return {
+        //     controller: ctrlConfig,
+        //     controllerAs: '$ctrl',
+        //     template: component.template,
+        //     //panelClass: 'modal-custom-dialog',
+        //     parent: angular.element(document.body),
+        //     trapFocus: true,
+        //     clickOutsideToClose: true,
+        //     clickEscapeToClose: true,
+        //     escapeToClose: true,
+        //     hasBackdrop: true,
+        //     disableParentScroll: true,
+        //     openFrom: target,
+        //     closeTo: target,
+        // }
 
-                // decorator
-                _.each(data, (v, k) => {
-                    ctrl[k] = v;
-                });
-
-                ctrl.$onInit && ctrl.$onInit();
-                return ctrl;
-            }]
-        );
-
+        // this.$mdDialog.show(
         return {
-            controller: ctrlConfig,
+            controller: component.controller,
             controllerAs: '$ctrl',
+            bindToController: true,
+            locals: data,
             template: component.template,
-            //panelClass: 'modal-custom-dialog',
-            parent: angular.element(document.body),
-            trapFocus: true,
             clickOutsideToClose: true,
-            clickEscapeToClose: true,
-            escapeToClose: true,
-            hasBackdrop: true,
-            disableParentScroll: true,
             openFrom: target,
             closeTo: target,
-        }
+        };
+        // );
     }
 
-    addMember($event) {
-        this.$mdDialog.show(
-            this.setMdDialogConfig(showAddMemberComponent, $event.target)
-        );
-    }
+    deleteMember(memberId, name) {
+        let confirm = this.$mdDialog.confirm()
+            .title('Do you want to delete "' + name + '" from project members?')
+            .ok('Delete')
+            .cancel('Cancel');
 
-    deleteMember(memberId) {
-        this.ProjectsService
-            .deleteMember(memberId)
-            .then(() => {
-                this.$rootScope.$emit('updateProjectInfo');
-            });
+        this.$mdDialog.show(confirm).then(() => {
+            this.ProjectsService
+                .deleteMember(memberId)
+                .then(() => {
+                    this.$rootScope.$emit('updateProjectInfo');
+                });
+        });
     }
 
     editMember($event, memberId, roleId, userName) {
         this.$mdDialog.show(
-            this.setMdDialogConfig(showEditMemberComponent, $event.target, {
+            this.setMdDialogConfig(projectsMemberComponent, $event.target, {
                 memberId: memberId,
                 roleId: roleId,
                 userName: userName
@@ -237,7 +254,7 @@ export default class ProjectsSettingsController extends ControllerBase {
 
     addMember($event) {
         this.$mdDialog.show(
-            this.setMdDialogConfig(showAddMemberComponent, $event.target, {
+            this.setMdDialogConfig(projectsMemberComponent, $event.target, {
                 identifier: this.model.identifier,
                 currentMembers: _.map(this.members, 'user_id')
             })
@@ -369,4 +386,5 @@ export default class ProjectsSettingsController extends ControllerBase {
             }
         });
     }
+
 }

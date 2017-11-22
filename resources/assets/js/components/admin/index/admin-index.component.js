@@ -1,8 +1,8 @@
 import AdminIndexController from './admin-index.controller';
-import AdminIndexTemplate from './admin-index.html';
+import adminIndexTemplate from './admin-index.html';
 
-export default{
+export default {
     name: 'adminIndexComponent',
     controller: AdminIndexController,
-    template: AdminIndexTemplate
+    template: adminIndexTemplate
 };

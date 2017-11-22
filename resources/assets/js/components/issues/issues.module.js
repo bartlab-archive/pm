@@ -13,4 +13,4 @@ angular.module('app.components.issues', [])
     .component(issuesNewComponent.name, issuesNewComponent)
     .component(issuesInfoComponent.name, issuesInfoComponent)
     .component(issuesListComponent.name, issuesListComponent);
-    // .component(historyComponent.name, historyComponent);
+// .component(historyComponent.name, historyComponent);

@@ -1,8 +1,8 @@
 import AdminPluginsController from './admin-plugins.controller';
-import AdminPluginsTemplate from './admin-plugins.html';
+import adminPluginsTemplate from './admin-plugins.html';
 
-export default{
+export default {
     name: 'adminPluginsComponent',
     controller: AdminPluginsController,
-    template: AdminPluginsTemplate
+    template: adminPluginsTemplate
 };

@@ -1,8 +1,8 @@
 import FieldsIndexController from './fields-index.controller';
-import FieldsIndexTemplate from './fields-index.html';
+import fieldsIndexTemplate from './fields-index.html';
 
-export default{
+export default {
     name: 'fieldsIndexComponent',
     controller: FieldsIndexController,
-    template: FieldsIndexTemplate
+    template: fieldsIndexTemplate
 };

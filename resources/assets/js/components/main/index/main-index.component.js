@@ -1,9 +1,8 @@
 import MainIndexController from './main-index.controller';
-import MainIndexTemplate from './main-index.html';
-import './main-index.scss';
+import mainIndexTemplate from './main-index.html';
 
 export default {
     name: 'mainIndexComponent',
     controller: MainIndexController,
-    template: MainIndexTemplate
+    template: mainIndexTemplate
 };

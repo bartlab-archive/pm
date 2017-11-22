@@ -1,5 +1,5 @@
 import ControllerBase from 'base/controller.base';
-import * as _ from "lodash";
+import _ from 'lodash';
 
 /**
  * @property {$auth} $auth
@@ -69,4 +69,5 @@ export default class MainRegistrationController extends ControllerBase {
         this.registrationForm[field].$setValidity('server', true);
         this.errors[field] = undefined;
     }
+
 }

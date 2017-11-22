@@ -1,13 +1,13 @@
-import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
-
+import _ from 'lodash';
 
 /**
  * @property {$mdDialog} $mdDialog
  * @property {ProjectsService} ProjectsService
  * @property {$rootScope} $rootScope
  */
-export default class showEditIssueCategoryController extends ControllerBase {
+export default class ShowEditIssueCategoryController extends ControllerBase {
+
     static get $inject() {
         return ['$mdDialog', 'ProjectsService', '$rootScope'];
     }
@@ -27,4 +27,5 @@ export default class showEditIssueCategoryController extends ControllerBase {
                 this.$rootScope.$emit('updateProjectInfo');
             });
     }
+
 }

@@ -44,4 +44,5 @@ export default class UsersConfig extends InjectableBase {
                 component: usersEditComponent.name,
             });
     }
+
 }

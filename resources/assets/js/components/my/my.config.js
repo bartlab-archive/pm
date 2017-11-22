@@ -35,4 +35,5 @@ export default class MyConfig extends InjectableBase {
                 component: myPageComponent.name,
             });
     }
+
 }

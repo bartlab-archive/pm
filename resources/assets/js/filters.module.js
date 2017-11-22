@@ -1,4 +1,5 @@
 import 'angular';
+
 import joinFilter from 'filters/join.filter';
 import nl2pFilter from 'filters/nl2p.filter';
 import wordsFilter from 'filters/words.filter';

@@ -28,11 +28,11 @@ export default class WikiConfig extends InjectableBase {
                     }
 
                     if (match[3]) {
-                        stateParams.name = match[3].replace(' ', '_').replace(/[,./?;:]/,'');
+                        stateParams.name = match[3].replace(' ', '_').replace(/[,./?;:]/, '');
                     }
 
                     if (match[5]) {
-                        stateParams['#'] = match[5].replace(' ', '-').replace(/[,./?;:]/,'');
+                        stateParams['#'] = match[5].replace(' ', '-').replace(/[,./?;:]/, '');
                     }
 
                     let href = this.$stateProvider.$get().href(
@@ -82,4 +82,5 @@ export default class WikiConfig extends InjectableBase {
                 component: wikiIndexByComponent.name,
             });
     }
+
 }

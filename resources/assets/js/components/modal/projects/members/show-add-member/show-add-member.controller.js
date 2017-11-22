@@ -1,5 +1,5 @@
-import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
+import _ from 'lodash';
 
 /**
  * @property {$mdDialog} $mdDialog
@@ -8,7 +8,8 @@ import ControllerBase from 'base/controller.base';
  * @property {RolesService} RolesService
  * @property {UsersService} UsersService
  */
-export default class showAddMemberController extends ControllerBase {
+export default class ShowAddMemberController extends ControllerBase {
+
     static get $inject() {
         return ['$mdDialog', 'ProjectsService', '$rootScope', 'RolesService', 'UsersService'];
     }
@@ -56,4 +57,5 @@ export default class showAddMemberController extends ControllerBase {
                 this.$rootScope.$emit('updateProjectInfo');
             });
     }
+
 }

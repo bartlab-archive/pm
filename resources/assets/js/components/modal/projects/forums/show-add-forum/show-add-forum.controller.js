@@ -7,7 +7,8 @@ import ControllerBase from 'base/controller.base';
  * @property {RolesService} RolesService
  * @property {UsersService} UsersService
  */
-export default class showAddVersionController extends ControllerBase {
+export default class ShowAddForumController extends ControllerBase {
+
     static get $inject() {
         return ['$mdDialog', 'ProjectsService', '$rootScope'];
     }
@@ -26,4 +27,5 @@ export default class showAddVersionController extends ControllerBase {
                 this.$rootScope.$emit('updateProjectInfo');
             });
     }
+
 }

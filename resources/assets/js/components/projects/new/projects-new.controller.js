@@ -27,6 +27,7 @@ export default class ProjectsNewController extends ControllerBase {
         this.errors = {};
         this.projectForm = {};
     }
+
     create(redirect) {
         let data = _.cloneDeep(this.model);
         data.modules = _.keys(_.pickBy(data.modules, (value, key) => value));
@@ -35,12 +36,10 @@ export default class ProjectsNewController extends ControllerBase {
         this.ProjectsService.create(data)
             .then((response) => {
 
-                if (redirect)
-                {
+                if (redirect) {
                     this.$state.go('projects.inner.settings', {project_id: this.model.identifier});
                 }
-                else
-                {
+                else {
                     this.$state.reload();
                 }
                 this.$mdToast.show(
@@ -71,4 +70,5 @@ export default class ProjectsNewController extends ControllerBase {
         this.projectForm[field].$setValidity('server', true);
         this.errors[field] = undefined;
     }
+
 }

@@ -1,8 +1,8 @@
 import AdminInfoController from './admin-info.controller';
-import AdminInfoTemplate from './admin-info.html';
+import adminInfoTemplate from './admin-info.html';
 
-export default{
+export default {
     name: 'adminInfoComponent',
     controller: AdminInfoController,
-    template: AdminInfoTemplate
+    template: adminInfoTemplate
 };

@@ -1,5 +1,5 @@
-import * as _ from 'lodash';
 import ControllerBase from 'base/controller.base';
+import _ from 'lodash';
 
 export default class WikiPageController extends ControllerBase {
 

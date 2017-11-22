@@ -35,4 +35,5 @@ export default class StatusesConfig extends InjectableBase {
                 component: workflowsEditComponent.name,
             });
     }
+
 }

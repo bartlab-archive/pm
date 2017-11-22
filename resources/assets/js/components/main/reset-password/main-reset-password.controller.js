@@ -1,5 +1,5 @@
 import ControllerBase from 'base/controller.base';
 
-export default class mainResetPasswordController extends ControllerBase {
+export default class MainResetPasswordController extends ControllerBase {
 
 }

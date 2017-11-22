@@ -1,4 +1,5 @@
 import 'angular';
+
 import WikiConfig from './wiki.config';
 import wikiPageComponent from './page/wiki-page.component';
 import wikiEditComponent from './edit/wiki-edit.component';

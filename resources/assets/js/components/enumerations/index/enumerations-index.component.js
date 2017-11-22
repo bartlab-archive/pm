@@ -1,8 +1,8 @@
 import EnumerationsIndexController from './enumerations-index.controller';
-import EnumerationsIndexTemplate from './enumerations-index.html';
+import enumerationsIndexTemplate from './enumerations-index.html';
 
-export default{
+export default {
     name: 'enumerationsIndexComponent',
     controller: EnumerationsIndexController,
-    template: EnumerationsIndexTemplate
+    template: enumerationsIndexTemplate
 };

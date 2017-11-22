@@ -1,6 +1,6 @@
+import ControllerBase from 'base/controller.base';
 import _ from 'lodash';
 import moment from 'moment';
-import ControllerBase from 'base/controller.base';
 
 /**
  * @property {$mdDialog} $mdDialog
@@ -9,7 +9,8 @@ import ControllerBase from 'base/controller.base';
  * @property {RolesService} RolesService
  * @property {UsersService} UsersService
  */
-export default class showEditVersionController extends ControllerBase {
+export default class ShowEditVersionController extends ControllerBase {
+
     static get $inject() {
         return ['$mdDialog', 'ProjectsService', '$rootScope', 'RolesService', 'UsersService'];
     }
@@ -43,4 +44,5 @@ export default class showEditVersionController extends ControllerBase {
 
         return _.isEqual(this.initailVersion, this.version);
     }
+
 }

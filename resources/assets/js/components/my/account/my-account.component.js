@@ -1,8 +1,8 @@
-import myAccountController from './my-account.controller';
+import MyAccountController from './my-account.controller';
 import myAccountTemplate from './my-account.html';
 
 export default {
     name: 'myAccountComponent',
-    controller: myAccountController,
+    controller: MyAccountController,
     template: myAccountTemplate
 };

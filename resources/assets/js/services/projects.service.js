@@ -1,5 +1,5 @@
+import ServiceBase from 'base/service.base';
 import _ from 'lodash';
-import ServiceBase from "base/service.base";
 
 /**
  * @property {Restangular} Restangular
@@ -56,7 +56,7 @@ export default class ProjectsService extends ServiceBase {
         return module;
     };
 
-    isModuleEnabled(moduleName, modulesData){
+    isModuleEnabled(moduleName, modulesData) {
         const enabledModules = this.getModules(modulesData);
         return (typeof enabledModules[moduleName] !== 'undefined');
     }
@@ -214,4 +214,5 @@ export default class ProjectsService extends ServiceBase {
     getActivity(identifier, params) {
         return this.Restangular.all('projects').one(identifier, 'activity').customGET('', params);
     }
+
 }

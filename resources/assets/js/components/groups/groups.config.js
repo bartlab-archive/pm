@@ -30,4 +30,5 @@ export default class GroupsConfig extends InjectableBase {
                 component: groupsIndexComponent.name,
             });
     }
+
 }

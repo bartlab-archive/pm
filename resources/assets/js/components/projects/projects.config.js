@@ -123,4 +123,5 @@ export default class ProjectsConfig extends InjectableBase {
                 component: projectsBoardsComponent.name,
             });
     }
+
 }

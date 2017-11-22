@@ -1,8 +1,8 @@
 import SettingsIndexController from './settings-index.controller';
-import SettingsIndexTemplate from './settings-index.html';
+import settingsIndexTemplate from './settings-index.html';
 
-export default{
+export default {
     name: 'settingsIndexComponent',
     controller: SettingsIndexController,
-    template: SettingsIndexTemplate
+    template: settingsIndexTemplate
 };

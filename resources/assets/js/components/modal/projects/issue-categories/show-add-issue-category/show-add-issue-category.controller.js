@@ -5,7 +5,8 @@ import ControllerBase from 'base/controller.base';
  * @property {ProjectsService} ProjectsService
  * @property {$rootScope} $rootScope
  */
-export default class showAddIssueCategoryController extends ControllerBase {
+export default class ShowAddIssueCategoryController extends ControllerBase {
+
     static get $inject() {
         return ['$mdDialog', 'ProjectsService', '$rootScope'];
     }
@@ -24,4 +25,5 @@ export default class showAddIssueCategoryController extends ControllerBase {
                 this.$rootScope.$emit('updateProjectInfo');
             });
     }
+
 }

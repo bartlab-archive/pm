@@ -42,7 +42,8 @@ export default class AdminConfig extends InjectableBase {
             })
             .state('admin.info', {
                 url: '/info',
-                component: adminPluginsComponent.name,
+                component: adminInfoComponent.name,
             });
     }
+
 }

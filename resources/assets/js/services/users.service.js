@@ -1,4 +1,4 @@
-import ServiceBase from "base/service.base";
+import ServiceBase from 'base/service.base';
 
 /**
  * @property {Restangular} Restangular
@@ -285,4 +285,5 @@ export default class UsersService extends ServiceBase {
     changePassword(data) {
         return this.Restangular.one('my').customPUT(data, 'password');
     }
+
 }

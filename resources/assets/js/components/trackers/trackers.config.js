@@ -1,5 +1,5 @@
 import InjectableBase from 'base/injectable.base';
-import trackersIndexComponent from './index/trackers-index.component';
+import TrackersIndexComponent from './index/trackers-index.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -27,7 +27,8 @@ export default class TrackersConfig extends InjectableBase {
             })
             .state('trackers.index', {
                 url: '',
-                component: trackersIndexComponent.name,
+                component: TrackersIndexComponent.name,
             });
     }
+
 }

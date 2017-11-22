@@ -1,8 +1,8 @@
 import UsersListController from './users-list.controller';
-import UsersListTemplate from './users-list.html';
+import usersListTemplate from './users-list.html';
 
-export default{
+export default {
     name: 'usersListComponent',
     controller: UsersListController,
-    template: UsersListTemplate,
+    template: usersListTemplate,
 };

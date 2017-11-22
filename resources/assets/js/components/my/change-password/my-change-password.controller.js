@@ -1,15 +1,13 @@
 import ControllerBase from 'base/controller.base';
+import _ from 'lodash';
 
 /**
  * @property {$mdDialog} $mdDialog
+ * @property {$mdToast} $mdToast
+ * @property {UsersService} UsersService
  */
-export default class myChangePasswordController extends ControllerBase {
+export default class MyChangePasswordController extends ControllerBase {
 
-    /**
-     * @property {$mdDialog} $mdDialog
-     * @property {$mdToast} $mdToast
-     * @property {UsersService} UsersService
-     */
     static get $inject() {
         return ['$mdDialog', '$mdToast', 'UsersService'];
     }
@@ -54,4 +52,5 @@ export default class myChangePasswordController extends ControllerBase {
             })
             .catch((response) => this.onError(response));
     }
+
 }

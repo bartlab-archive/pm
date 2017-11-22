@@ -1,4 +1,5 @@
 import ControllerBase from 'base/controller.base';
+import _ from 'lodash';
 
 /**
  * @property {NewsService} NewsService
@@ -13,15 +14,15 @@ export default class NewsListController extends ControllerBase {
     }
 
     $onInit() {
-        let enabledModules ={};
+        let enabledModules = {};
         const currentProjectId = this.currentProjectId();
 
         this.ProjectsService.one(currentProjectId).then((response) => {
-            enabledModules =  this.ProjectsService.getModules(_.get(response, 'data.enabled_modules', []));
+            enabledModules = this.ProjectsService.getModules(_.get(response, 'data.enabled_modules', []));
 
             if (typeof enabledModules.news === 'undefined') {
                 window.location.href = '/projects/' + currentProjectId;
-            }else{
+            } else {
 
                 this.NewsService.getNews(this.$stateParams.id, {})
                     .then((response) => {

@@ -1,4 +1,4 @@
-import ServiceBase from "base/service.base";
+import ServiceBase from 'base/service.base';
 
 /**
  * @property {Restangular} Restangular
@@ -43,7 +43,7 @@ export default class WikiService extends ServiceBase {
             .get();
     }
 
-    deleteWikiPage(indetifire, title){
+    deleteWikiPage(indetifire, title) {
         return this.Restangular
             .one('projects')
             .one(indetifire)

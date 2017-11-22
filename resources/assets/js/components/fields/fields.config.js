@@ -30,4 +30,5 @@ export default class FieldsConfig extends InjectableBase {
                 component: fieldsIndexComponent.name,
             });
     }
+
 }

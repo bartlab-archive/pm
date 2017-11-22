@@ -1,4 +1,4 @@
-import InjectableBase from "base/injectable.base";
+import InjectableBase from 'base/injectable.base';
 import newsListComponent from './list/news-list.component';
 import newsEditComponent from './edit/news-edit.component';
 import newsViewComponent from './view/news-view.component';
@@ -40,5 +40,6 @@ export default class NewsConfig extends InjectableBase {
                 component: newsEditComponent.name,
             })
     }
+
 }
 

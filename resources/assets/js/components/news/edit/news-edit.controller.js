@@ -1,4 +1,5 @@
 import ControllerBase from 'base/controller.base';
+import _ from 'lodash';
 
 /**
  * @property {NewsService} NewsService
@@ -24,4 +25,5 @@ export default class NewsEditController extends ControllerBase {
             }
         })
     }
+
 }

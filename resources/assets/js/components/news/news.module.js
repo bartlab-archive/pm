@@ -1,4 +1,5 @@
 import 'angular';
+
 import NewsConfig from './news.config';
 import newsEditComponent from './edit/news-edit.component';
 import newsListComponent from './list/news-list.component';

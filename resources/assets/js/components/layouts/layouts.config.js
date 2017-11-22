@@ -22,4 +22,5 @@ export default class LayoutConfig extends InjectableBase {
                 component: layoutDefaultComponent.name
             });
     }
+
 }

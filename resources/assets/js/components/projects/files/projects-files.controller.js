@@ -37,4 +37,5 @@ export default class ProjectsFilesController extends ControllerBase {
                 this.files = response.data;
             });
     }
+
 }

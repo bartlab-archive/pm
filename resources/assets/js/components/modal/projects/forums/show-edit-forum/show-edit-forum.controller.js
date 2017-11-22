@@ -1,12 +1,13 @@
-import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
+import _ from 'lodash';
 
 /**
  * @property {$mdDialog} $mdDialog
  * @property {ProjectsService} ProjectsService
  * @property {$rootScope} $rootScope
  */
-export default class showEditVersionController extends ControllerBase {
+export default class ShowEditForumController extends ControllerBase {
+
     static get $inject() {
         return ['$mdDialog', 'ProjectsService', '$rootScope'];
     }
@@ -54,4 +55,5 @@ export default class showEditVersionController extends ControllerBase {
     isDisabledSaveBtn() {
         return _.isEqual(this.initailForum, this.forum);
     }
+
 }

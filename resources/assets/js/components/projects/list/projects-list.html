@@ -36,47 +36,47 @@
             <!--</md-button>-->
 
             <!--<md-menu>-->
-                <!--<md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openMoreMenu($mdMenu, $event)">-->
-                    <!--<md-icon>more_vert</md-icon>-->
-                <!--</md-button>-->
-                <!--<md-menu-content width="4">-->
-                    <!--<md-menu-item>-->
-                        <!--<md-button>-->
-                            <!--<md-icon>mode_edit</md-icon>-->
-                            <!--Edit-->
-                        <!--</md-button>-->
-                    <!--</md-menu-item>-->
+            <!--<md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openMoreMenu($mdMenu, $event)">-->
+            <!--<md-icon>more_vert</md-icon>-->
+            <!--</md-button>-->
+            <!--<md-menu-content width="4">-->
+            <!--<md-menu-item>-->
+            <!--<md-button>-->
+            <!--<md-icon>mode_edit</md-icon>-->
+            <!--Edit-->
+            <!--</md-button>-->
+            <!--</md-menu-item>-->
 
-                    <!--<md-menu-item>-->
-                        <!--<md-button>-->
-                            <!--<md-icon>timelapse</md-icon>-->
-                            <!--Log time-->
-                        <!--</md-button>-->
-                    <!--</md-menu-item>-->
+            <!--<md-menu-item>-->
+            <!--<md-button>-->
+            <!--<md-icon>timelapse</md-icon>-->
+            <!--Log time-->
+            <!--</md-button>-->
+            <!--</md-menu-item>-->
 
-                    <!--<md-menu-item>-->
-                        <!--<md-button>-->
-                            <!--<md-icon>star_border</md-icon>-->
-                            <!--Watch-->
-                        <!--</md-button>-->
-                    <!--</md-menu-item>-->
+            <!--<md-menu-item>-->
+            <!--<md-button>-->
+            <!--<md-icon>star_border</md-icon>-->
+            <!--Watch-->
+            <!--</md-button>-->
+            <!--</md-menu-item>-->
 
-                    <!--<md-menu-item>-->
-                        <!--<md-button>-->
-                            <!--<md-icon>content_copy</md-icon>-->
-                            <!--Copy-->
-                        <!--</md-button>-->
-                    <!--</md-menu-item>-->
+            <!--<md-menu-item>-->
+            <!--<md-button>-->
+            <!--<md-icon>content_copy</md-icon>-->
+            <!--Copy-->
+            <!--</md-button>-->
+            <!--</md-menu-item>-->
 
-                    <!--<md-menu-divider></md-menu-divider>-->
+            <!--<md-menu-divider></md-menu-divider>-->
 
-                    <!--<md-menu-item>-->
-                        <!--<md-button>-->
-                            <!--<md-icon>delete</md-icon>-->
-                            <!--Delete-->
-                        <!--</md-button>-->
-                    <!--</md-menu-item>-->
-                <!--</md-menu-content>-->
+            <!--<md-menu-item>-->
+            <!--<md-button>-->
+            <!--<md-icon>delete</md-icon>-->
+            <!--Delete-->
+            <!--</md-button>-->
+            <!--</md-menu-item>-->
+            <!--</md-menu-content>-->
             <!--</md-menu>-->
 
 
@@ -126,7 +126,8 @@
                             <div class="md-list-item-text" layout="column">
                                 <h3>{{ project3.name }}</h3>
                                 <p>{{ project3.homepage }}</p>
-                                <p class="md-truncate" ng-bind-html="$ctrl.makeHtml(project3.description) | words: 50"></p>
+                                <p class="md-truncate"
+                                   ng-bind-html="$ctrl.makeHtml(project3.description) | words: 50"></p>
                             </div>
 
                             <md-icon class="md-warn" ng-if="project3.is_my === 1">star_rate</md-icon>

@@ -30,4 +30,5 @@ export default class RolesConfig extends InjectableBase {
                 component: rolesIndexComponent.name,
             });
     }
+
 }

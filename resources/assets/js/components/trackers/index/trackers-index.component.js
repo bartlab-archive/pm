@@ -1,8 +1,8 @@
 import TrackersIndexController from './trackers-index.controller';
-import TrackersIndexTemplate from './trackers-index.html';
+import trackersIndexTemplate from './trackers-index.html';
 
-export default{
+export default {
     name: 'trackersIndexComponent',
     controller: TrackersIndexController,
-    template: TrackersIndexTemplate
+    template: trackersIndexTemplate
 };

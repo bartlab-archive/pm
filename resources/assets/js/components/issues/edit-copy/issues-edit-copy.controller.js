@@ -1,6 +1,5 @@
 import ControllerBase from 'base/controller.base';
-import * as _ from "lodash";
-import moment from 'moment';
+import _ from "lodash";
 
 /**
  * @property {$stateParams} $stateParams
@@ -85,14 +84,12 @@ export default class IssuesEditCopyController extends ControllerBase {
                 'is_private',
                 'closed_on'
             ])).then((response) => {
-
                 if (this.issue = _.get(response, 'data')) {
                     this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
                 }
             });
         } else {
             this.IssuesService.update(this.issue).then((response) => {
-
                 if (_.get(response, 'data')) {
                     this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
                 }

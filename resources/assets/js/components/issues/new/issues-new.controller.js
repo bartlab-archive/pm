@@ -1,5 +1,5 @@
 import ControllerBase from 'base/controller.base';
-import * as _ from "lodash";
+import _ from 'lodash';
 import moment from 'moment';
 
 /**
