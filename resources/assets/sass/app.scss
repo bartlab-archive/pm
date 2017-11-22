@@ -1,25 +1,11 @@
-
 // Fonts
-//@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
-//@import "node_modules/font-awesome/scss/font-awesome";
-//@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic);
-//@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
-@import "../../../node_modules/roboto-fontface/css/roboto/sass/roboto-fontface";
-@import "../../../node_modules/material-design-icons-iconfont/dist/material-design-icons";
-
-// Variables
-//@import "variables";
-
-// Bootstrap
-//@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
-//@import "_spacing.scss";
-
+@import "~roboto-fontface/css/roboto/sass/roboto-fontface";
+@import "~material-design-icons-iconfont/dist/material-design-icons";
 //angular material
-@import "../../../node_modules/angular-material/angular-material.scss";
-@import "../../../node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css";
+@import "~angular-material/angular-material.scss";
 // plugins
-//@import "node_modules/toastr/toastr";
-//@import "node_modules/angular-loading-bar/build/loading-bar";
+@import "~malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css";
+// local
 @import "custom";
 @import "spinner";
 

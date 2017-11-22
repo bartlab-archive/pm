@@ -1,7 +1,7 @@
 body {
   height: initial;
 
-  background: top no-repeat;
+  background: top no-repeat fixed;
 
   @media (max-width: $layout-breakpoint-md - 1) {
     background-image: url("../images/background_1280.png");
