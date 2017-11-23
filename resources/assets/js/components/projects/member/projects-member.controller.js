@@ -1,7 +1,10 @@
 import ControllerBase from 'base/controller.base';
-import _ from 'lodash';
+// import _ from 'lodash';
 
 /**
+ * @property identifier
+ * @property memberId
+ *
  * @property {$mdDialog} $mdDialog
  * @property {ProjectsService} ProjectsService
  * @property {$rootScope} $rootScope
@@ -10,33 +13,65 @@ import _ from 'lodash';
 export default class ProjectsMemberController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdDialog', 'ProjectsService', '$rootScope', 'RolesService'];
+        return ['$mdToast', '$q', '$mdDialog', 'ProjectsService', '$rootScope', 'RolesService', 'UsersService'];
     }
 
     $onInit() {
-        this.RolesService.getList({
-            builtin: 0
-        }).then((response) => {
-            this.roles = _.map(response.data, (item) => {
-                return _.pick(item, ['id', 'name']);
-            });
-        });
+        // if project identifier not set - close dialog
+        if (!this.identifier) {
+            this.cancel();
+        }
 
-        this.role = {
-            role_id: null
-        };
+        this.member = this.member || {id: null, roleId: null, userId: null, name: null};
+
+        // user roles list
+        this.RolesService
+            .getList({
+                builtin: 0
+            })
+            .then((response) => {
+                this.roles = response.data;
+            });
+
+        // if add new member - load users list with out project members
+        if (!this.member.id) {
+            this.$q.all([
+                this.UsersService.getList(),
+                this.ProjectsService.one(this.identifier)
+            ]).then((response) => {
+                let users = response[0].data,
+                    members = response[1].data.members;
+
+                this.users = users.filter((user) => {
+                    return !members.some((member) => {
+                        return member.user_id === user.id;
+                    });
+                });
+            });
+        }
     }
 
-    cancel() {
+    cancel(update) {
         this.$mdDialog.cancel();
+
+        if (update) {
+            this.$mdToast.show(
+                this.$mdToast.simple().textContent('Success saved!').position('bottom left')
+            );
+            this.$rootScope.$emit('updateProjectInfo');
+        }
     }
 
-    updateMember() {
-        this.ProjectsService.updateMember(this.memberId, this.role)
-            .then(() => {
-                this.$mdDialog.cancel();
-                this.$rootScope.$emit('updateProjectInfo');
-            });
+    submit() {
+        if (!this.member.id) {
+            this.ProjectsService
+                .createMember(this.identifier, this.member.userId, this.member.roleId)
+                .then(() => this.cancel(true));
+        } else {
+            this.ProjectsService
+                .updateMember(this.member.id, this.member.roleId)
+                .then(() => this.cancel(true));
+        }
     }
 
 }

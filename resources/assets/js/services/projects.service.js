@@ -98,12 +98,12 @@ export default class ProjectsService extends ServiceBase {
         return this.Restangular.one('projects').one('members', memberId).remove();
     }
 
-    updateMember(memberId, data) {
-        return this.Restangular.one('projects', 'members').customPUT(data, memberId);
+    updateMember(memberId, roleId) {
+        return this.Restangular.one('projects', 'members').customPUT({role_id: roleId}, memberId);
     }
 
-    createMember(identifier, data) {
-        return this.Restangular.one('projects', identifier).all('members').post(data);
+    createMember(identifier, userId, roleId) {
+        return this.Restangular.one('projects', identifier).all('members').post({user_id: userId, role_id: roleId});
     }
 
     /* Versions */

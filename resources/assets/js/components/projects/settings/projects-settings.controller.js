@@ -1,6 +1,5 @@
 import ControllerBase from 'base/controller.base';
 import projectsMemberComponent from '../member/projects-member.component';
-// import showAddMemberComponent from 'components/modal/projects/members/show-add-member/show-add-member.component';
 import showAddVersionComponent from 'components/modal/projects/versions/show-add-version/show-add-version.component';
 import showEditVersionComponent from 'components/modal/projects/versions/show-edit-version/show-edit-version.component';
 import showAddIssuesCategoryComponent from 'components/modal/projects/issue-categories/show-add-issue-category/show-add-issue-category.component';
@@ -21,7 +20,7 @@ import _ from 'lodash';
 export default class ProjectsSettingsController extends ControllerBase {
 
     static get $inject() {
-        return ['ProjectsService', 'UsersService', 'EnumerationsService', '$stateParams', '$rootScope', '$mdDialog', '$state'];
+        return ['$mdToast','ProjectsService', 'UsersService', 'EnumerationsService', '$stateParams', '$rootScope', '$mdDialog', '$state'];
     }
 
     $onInit() {
@@ -51,8 +50,9 @@ export default class ProjectsSettingsController extends ControllerBase {
         this.$rootScope.$on('updateProjectInfo', () => this.load());
 
         this.ProjectsService.getList().then((response) => {
-            const self = this;
-            this.projects = _.filter(response.data, (item) => (item.identifier !== self.model.identifier));
+            // const self = this;
+            this.projects = response.data;
+            // this.projects = _.filter(response.data, (item) => (item.identifier !== self.model.identifier));
         });
 
         this.repositories = [{
@@ -73,7 +73,6 @@ export default class ProjectsSettingsController extends ControllerBase {
     load() {
         this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.model = _.get(response, 'data', []);
-
 
             this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
             this.tabs = Object.assign([], this.model.modules);
@@ -117,6 +116,7 @@ export default class ProjectsSettingsController extends ControllerBase {
         _.each(this.model.enumerations, (v, k) => {
             activities[v.name] = v;
         });
+
         delete this.model.enumerations;
 
         return activities;
@@ -159,6 +159,9 @@ export default class ProjectsSettingsController extends ControllerBase {
                 _.keys(_.pickBy(this.model.modules, (value, key) => value))
             )
             .then(() => {
+                this.$mdToast.show(
+                    this.$mdToast.simple().textContent('Success saved!').position('bottom left')
+                );
                 this.$rootScope.$emit('updateProjectInfo');
             });
     }
@@ -214,6 +217,10 @@ export default class ProjectsSettingsController extends ControllerBase {
         // }
 
         // this.$mdDialog.show(
+
+        // current project identifier
+        data.identifier = this.model.identifier;
+
         return {
             controller: component.controller,
             controllerAs: '$ctrl',
@@ -237,6 +244,9 @@ export default class ProjectsSettingsController extends ControllerBase {
             this.ProjectsService
                 .deleteMember(memberId)
                 .then(() => {
+                    this.$mdToast.show(
+                        this.$mdToast.simple().textContent('Success delete!').position('bottom left')
+                    );
                     this.$rootScope.$emit('updateProjectInfo');
                 });
         });
@@ -245,9 +255,14 @@ export default class ProjectsSettingsController extends ControllerBase {
     editMember($event, memberId, roleId, userName) {
         this.$mdDialog.show(
             this.setMdDialogConfig(projectsMemberComponent, $event.target, {
-                memberId: memberId,
-                roleId: roleId,
-                userName: userName
+                member: {
+                    id: memberId,
+                    roleId: roleId,
+                    name: userName
+                }
+                // memberId: memberId,
+                // roleId: roleId,
+                // userName: userName
             })
         );
     }
@@ -255,8 +270,8 @@ export default class ProjectsSettingsController extends ControllerBase {
     addMember($event) {
         this.$mdDialog.show(
             this.setMdDialogConfig(projectsMemberComponent, $event.target, {
-                identifier: this.model.identifier,
-                currentMembers: _.map(this.members, 'user_id')
+                // identifier: this.model.identifier,
+                // currentMembers: _.map(this.members, 'user_id')
             })
         );
     }

@@ -3,6 +3,7 @@ body {
 
   background: top no-repeat fixed;
 
+  // landscape mode
   @media (max-width: $layout-breakpoint-md - 1) {
     background-image: url("../images/background_1280.png");
   }
@@ -14,6 +15,19 @@ body {
   @media (min-width: $layout-breakpoint-lg + 1) {
     background-image: url("../images/background_4000.png");
   }
+
+  // portrait mode
+  //@media (max-height: $layout-breakpoint-md) and (max-width: $layout-breakpoint-md - 1) {
+  //  background-image: url("../images/background_1920.png");
+  //}
+  //
+  //@media (max-height: $layout-breakpoint-md) and (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg) {
+  //  background-image: url("../images/background_1920.png");
+  //}
+
+  //@media (max-height: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg) {
+  //  background-image: url("../images/background_4000.png");
+  //}
 
   .md-toast-animating {
     overflow: auto !important;
