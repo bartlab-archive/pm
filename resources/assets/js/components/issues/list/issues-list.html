@@ -96,7 +96,7 @@
                 <p>No data to display</p>
             </div>
 
-            <md-list-item class="md-2-line has-context-menu" ng-repeat="row in $ctrl.list" id="issue-{{ row.id }}"
+            <md-list-item class="md-2-line" ng-repeat="row in $ctrl.list" id="issue-{{ row.id }}"
                           ng-click="$ctrl.viewIssue(row)">
                 <md-checkbox ng-model="row.selected" ng-change="$ctrl.onSelectIssue(row)"
                              aria-label="Select issue"></md-checkbox>

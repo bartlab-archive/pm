@@ -20,7 +20,7 @@ import _ from 'lodash';
 export default class ProjectsSettingsController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdToast','ProjectsService', 'UsersService', 'EnumerationsService', '$stateParams', '$rootScope', '$mdDialog', '$state'];
+        return ['$mdToast', 'ProjectsService', 'UsersService', 'EnumerationsService', '$stateParams', '$rootScope', '$mdDialog', '$state'];
     }
 
     $onInit() {
@@ -274,6 +274,10 @@ export default class ProjectsSettingsController extends ControllerBase {
                 // currentMembers: _.map(this.members, 'user_id')
             })
         );
+    }
+
+    openMember(userId) {
+        this.$state.go('users.info', {id: userId});
     }
 
     addVersion($event) {
