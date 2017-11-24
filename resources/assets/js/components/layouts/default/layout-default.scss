@@ -10,6 +10,24 @@ layout-default-component {
     position: fixed;
   }
 
+  .md-nav-bar-wrapper {
+    min-height: 48px;
+    position: relative;
+  }
+
+  md-nav-bar {
+  //  .md-nav-bar {
+  //    md-nav-ink-bar,
+  //    nav {
+        position: fixed;
+        //top: 0;
+        left: 0;
+        width: 100%;
+        background-color: inherit;
+  //    }
+  //  }
+  }
+
   .md-sidenav-right,
   .md-sidenav-left {
     &.fixed {
