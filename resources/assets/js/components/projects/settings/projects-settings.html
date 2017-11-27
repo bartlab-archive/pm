@@ -94,7 +94,10 @@
 
             <md-tab label="Members" md-active="$ctrl.page === 'members'" md-on-select="$ctrl.selectTab('members')">
                 <!--<md-content class="md-padding">-->
-                    <md-list>
+                <div ng-if="$ctrl.members.length === 0" layout-align="center center" layout="row" class="md-padding">
+                    No data to display
+                </div>
+                    <md-list ng-if="$ctrl.members.length !== 0">
                         <md-list-item class="md-2-line" ng-repeat="item in $ctrl.members" ng-click="$ctrl.editMember($event, item.member_id, item.role_id, item.name)">
                             <div class="md-list-item-text">
                                 <h3>{{ item.name }}</h3>
@@ -102,7 +105,7 @@
                             </div>
                             <md-button class="md-secondary md-icon-button"
                                        ng-click="$ctrl.openMember(item.user_id)">
-                                <md-tooltip md-direction="bottom">User</md-tooltip>
+                                <md-tooltip md-direction="bottom">Open user page</md-tooltip>
                                 <md-icon>person</md-icon>
                             </md-button>
                             <md-button class="md-secondary md-icon-button"
@@ -129,9 +132,12 @@
             </md-tab>
 
             <md-tab label="Versions" md-active="$ctrl.page === 'versions'" md-on-select="$ctrl.selectTab('versions')">
-                <md-content class="md-padding">
-                    <md-list>
-                        <md-list-item class="md-3-line" ng-repeat="item in $ctrl.versions">
+                <!--<md-content class="md-padding">-->
+                <div ng-if="!$ctrl.versions.length" layout-align="center center" layout="row" class="md-padding">
+                   No data to display
+                </div>
+                    <md-list ng-if="!!$ctrl.versions.length" >
+                        <md-list-item class="md-3-line" ng-repeat="item in $ctrl.versions" ng-click="$ctrl.editVersion($event, item)">
                             <div class="md-list-item-text">
                                 <h3>
                                     {{ item.name }} | {{ $ctrl.versionStatuses[item.status].name }}
@@ -142,21 +148,30 @@
                             </div>
 
                             <md-button class="md-secondary md-icon-button"
+                                       ng-click="$ctrl.versionPage(item.id)">
+                                <md-tooltip md-direction="bottom">Open version page</md-tooltip>
+                                <md-icon>open_in_browser</md-icon>
+                            </md-button>
+
+                            <md-button class="md-secondary md-icon-button"
+                                       ng-if="!!item.wiki_page_title"
                                        ng-click="$ctrl.versionWikiNavigate(item.wiki_page_title)">
+                                <md-tooltip md-direction="bottom">Open wiki page</md-tooltip>
                                 <md-icon>receipt</md-icon>
                             </md-button>
 
-                            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.editVersion($event, item)">
-                                <md-icon>edit</md-icon>
-                            </md-button>
+                            <!--<md-button class="md-secondary md-icon-button" ng-click="$ctrl.editVersion($event, item)">-->
+                                <!--<md-icon>edit</md-icon>-->
+                            <!--</md-button>-->
 
-                            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.deleteVersion(item.id)">
+                            <md-button class="md-secondary md-icon-button" ng-click="$ctrl.deleteVersion(item.id, item.name)">
+                                <md-tooltip md-direction="bottom">Delete</md-tooltip>
                                 <md-icon>delete</md-icon>
                             </md-button>
                         </md-list-item>
                     </md-list>
 
-                    <div layout-align="center center" layout="row">
+                    <div layout-align="center center" layout="row" class="md-padding">
                         <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.addVersion($event)">
                             New version
                         </md-button>
@@ -165,7 +180,7 @@
                             Close completed versions
                         </md-button>
                     </div>
-                </md-content>
+                <!--</md-content>-->
             </md-tab>
 
             <md-tab label="Issue categories" md-active="$ctrl.page === 'categories'"

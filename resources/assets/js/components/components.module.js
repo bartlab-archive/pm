@@ -17,6 +17,7 @@ import 'components/enumerations/enumerations.module';
 import 'components/settings/settings.module';
 import 'components/auth/auth.module';
 import 'components/wiki/wiki.module';
+import 'components/versions/versions.module';
 
 angular.module('app.components', [
     'app.components.layouts',
@@ -38,4 +39,5 @@ angular.module('app.components', [
     'app.components.settings',
     'app.components.auth',
     'app.components.wiki',
+    'app.components.versions',
 ]);

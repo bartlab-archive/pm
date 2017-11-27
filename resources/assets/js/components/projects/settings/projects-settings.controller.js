@@ -1,7 +1,8 @@
 import ControllerBase from 'base/controller.base';
 import projectsMemberComponent from '../member/projects-member.component';
-import showAddVersionComponent from 'components/modal/projects/versions/show-add-version/show-add-version.component';
-import showEditVersionComponent from 'components/modal/projects/versions/show-edit-version/show-edit-version.component';
+import projectsVersionComponent from '../version/projects-version.component';
+// import showAddVersionComponent from 'components/modal/projects/versions/show-add-version/show-add-version.component';
+// import showEditVersionComponent from 'components/modal/projects/versions/show-edit-version/show-edit-version.component';
 import showAddIssuesCategoryComponent from 'components/modal/projects/issue-categories/show-add-issue-category/show-add-issue-category.component';
 import showEditIssuesCategoryComponent from 'components/modal/projects/issue-categories/show-edit-issue-category/show-edit-issue-category.component';
 import showAddForumComponent from 'components/modal/projects/forums/show-add-forum/show-add-forum.component';
@@ -282,37 +283,57 @@ export default class ProjectsSettingsController extends ControllerBase {
 
     addVersion($event) {
         this.$mdDialog.show(
-            this.setMdDialogConfig(showAddVersionComponent, $event.target, {
-                identifier: this.model.identifier,
+            this.setMdDialogConfig(projectsVersionComponent, $event.target, {
+                // identifier: this.model.identifier,
                 //currentMembers: _.map(this.members, 'user_id')
             })
         );
     }
 
-    deleteVersion(versionId) {
-        this.ProjectsService
-            .deleteVersion(versionId)
-            .then(() => {
-                this.$rootScope.$emit('updateProjectInfo');
-            });
+    deleteVersion(versionId, name) {
+        let confirm = this.$mdDialog.confirm()
+            .title('Do you want to delete "' + name + '" from project versions?')
+            .ok('Delete')
+            .cancel('Cancel');
+
+        this.$mdDialog.show(confirm).then(() => {
+            this.ProjectsService
+                .deleteVersion(versionId)
+                .then(() => {
+                    this.$rootScope.$emit('updateProjectInfo');
+                });
+        });
     }
 
     versionWikiNavigate(wikiPageTitle) {
-        this.$state.go('projects.inner.wiki.page', {name: wikiPageTitle});
+        this.$state.go('wiki.page.view', {name: wikiPageTitle});
     }
 
     editVersion($event, version) {
         this.$mdDialog.show(
-            this.setMdDialogConfig(showEditVersionComponent, $event.target, {version: _.clone(version)})
+            this.setMdDialogConfig(projectsVersionComponent, $event.target, {
+                version: _.clone(version)
+            })
         );
     }
 
+    versionPage(versionId) {
+        this.$state.go('versions.info', {id: versionId});
+    }
+
     closeCompletedVersions() {
-        this.ProjectsService
-            .closeCompletedVersions(this.model.identifier)
-            .then(() => {
-                this.$rootScope.$emit('updateProjectInfo');
-            });
+        let confirm = this.$mdDialog.confirm()
+            .title('Do you want to close all complated versions?')
+            .ok('Close completed')
+            .cancel('Cancel');
+
+        this.$mdDialog.show(confirm).then(() => {
+            this.ProjectsService
+                .closeCompletedVersions(this.model.identifier)
+                .then(() => {
+                    this.$rootScope.$emit('updateProjectInfo');
+                });
+        });
     }
 
     createIssuesCategory($event) {

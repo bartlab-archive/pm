@@ -1,8 +1,11 @@
-<md-dialog flex-xs="100" flex-sm="100" flex-md="50" flex-gt-md="25" aria-label="Add member">
+<md-dialog flex-xs="100" flex-sm="100" flex-md="50" flex-gt-md="25"
+           aria-label="{{ $ctrl.member.id ? $ctrl.member.name : 'New member' }}">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>{{ $ctrl.member.id ? $ctrl.member.name : 'New member' }}</h2>
+
             <span flex></span>
+
             <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
                 <md-icon aria-label="Close dialog">clear</md-icon>
             </md-button>
@@ -11,7 +14,7 @@
 
     <md-dialog-content>
         <div class="md-dialog-content">
-            <form name="MemberForm" ng-submit="$ctrl.submit()">
+            <form name="memberForm" ng-submit="$ctrl.submit()">
                 <md-input-container class="md-icon-float md-block" ng-if="!$ctrl.member.id">
                     <label>Users</label>
 
@@ -23,7 +26,7 @@
 
                     <div class="md-errors-spacer"></div>
 
-                    <div class="errors" ng-messages="MemberForm.userId.$error">
+                    <div class="errors" ng-messages="memberForm.userId.$error">
                         <div ng-message="required">Principal cannot be blank</div>
                     </div>
                 </md-input-container>
@@ -39,14 +42,14 @@
 
                     <div class="md-errors-spacer"></div>
 
-                    <div class="errors" ng-messages="MemberForm.roleId.$error">
+                    <div class="errors" ng-messages="memberForm.roleId.$error">
                         <div ng-message="required">Role cannot be empty</div>
                     </div>
                 </md-input-container>
 
                 <div layout-align="center center" layout="row">
                     <md-button class="md-raised md-primary animation-target" type="submit"
-                               ng-disabled="(!$ctrl.member.id && !$ctrl.member.userId) || !$ctrl.member.roleId">
+                               ng-disabled="memberForm.$invalid">
                         Save
                     </md-button>
                 </div>

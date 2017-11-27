@@ -22,11 +22,7 @@
 </section>
 
 <footer>
-    <div class="bgl">
-        <div class="bgr">
-            Powered by MaybeWorks
-        </div>
-    </div>
+    Powered by MaybeWorks
 </footer>
 
 <script src="{{ asset('js/app.js') }}"></script>
