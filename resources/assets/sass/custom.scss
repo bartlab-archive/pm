@@ -1,7 +1,8 @@
 body {
   height: initial;
-  padding-bottom: 80px;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+
 
   background: top no-repeat fixed;
 
@@ -30,6 +31,24 @@ body {
   //@media (max-height: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg) {
   //  background-image: url("../images/background_4000.png");
   //}
+
+  > section {
+    flex: 1 0 auto;
+  }
+
+  > footer {
+    padding: 40px 0;
+    //position: absolute;
+    //bottom: 0;
+
+    flex: 0 0 auto;
+
+    width: 100%;
+    color: #ced4d9;
+    clear: both;
+    font-size: 0.9em;
+    text-align: center;
+  }
 
   .md-toast-animating {
     overflow: auto !important;
@@ -126,15 +145,4 @@ md-toast.notification {
   .layout-margin-gt-sm > * {
     margin: 0;
   }
-}
-
-#footer {
-  padding: 40px 0;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  color: #ced4d9;
-  clear: both;
-  font-size: 0.9em;
-  text-align: center;
 }
