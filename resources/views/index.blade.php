@@ -18,6 +18,15 @@
         </div>
     </div>
 </div>
+
+
+<div id="footer">
+    <div class="bgl">
+        <div class="bgr">
+            Powered by MaybeWorks
+        </div>
+    </div>
+</div>
 <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

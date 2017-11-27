@@ -1,5 +1,7 @@
 body {
   height: initial;
+  padding-bottom: 80px;
+  position: relative;
 
   background: top no-repeat fixed;
 
@@ -124,4 +126,15 @@ md-toast.notification {
   .layout-margin-gt-sm > * {
     margin: 0;
   }
+}
+
+#footer {
+  padding: 40px 0;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  color: #ced4d9;
+  clear: both;
+  font-size: 0.9em;
+  text-align: center;
 }

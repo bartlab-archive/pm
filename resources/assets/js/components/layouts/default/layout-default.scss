@@ -16,16 +16,11 @@ layout-default-component {
   }
 
   md-nav-bar {
-  //  .md-nav-bar {
-  //    md-nav-ink-bar,
-  //    nav {
-        position: fixed;
-        //top: 0;
-        left: 0;
-        width: 100%;
-        background-color: inherit;
-  //    }
-  //  }
+    position: fixed;
+    left: 0;
+    width: 100%;
+    background-color: inherit;
+    z-index: 10;
   }
 
   .md-sidenav-right,
