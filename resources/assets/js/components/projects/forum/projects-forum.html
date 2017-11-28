@@ -1,20 +1,25 @@
-<div layout="column" layout-align="center center">
+<md-dialog flex-xs="100" flex-sm="100" flex-md="50" flex-gt-md="25"
+           aria-label="{{ $ctrl.forum.id ? $ctrl.forum.name : 'New forum' }}">
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>Edit Forum</h2>
+            <h2>{{ $ctrl.forum.id ? $ctrl.forum.name : 'New forum' }}</h2>
+
             <span flex></span>
+
             <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
                 <md-icon aria-label="Close dialog">clear</md-icon>
             </md-button>
         </div>
     </md-toolbar>
 
-    <div class="popup-content-show-edit-forum">
-        <md-content class="md-padding">
-            <form name="forumForm">
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <form name="forumForm" ng-submit="$ctrl.submit()">
                 <md-input-container class="md-block">
                     <label>Name</label>
+
                     <input ng-model="$ctrl.forum.name" name="name" required>
+
                     <div ng-messages="forumForm.name.$error">
                         <div ng-message="required">
                             Name can't be blank!
@@ -24,7 +29,9 @@
 
                 <md-input-container class="md-block">
                     <label>Description</label>
+
                     <input ng-model="$ctrl.forum.description" name="name" required>
+
                     <div ng-messages="forumForm.description.$error">
                         <div ng-message="required">
                             Description can't be blank!
@@ -34,25 +41,24 @@
 
                 <md-input-container class="md-block">
                     <label>Parent forum</label>
+
                     <md-select ng-model="$ctrl.forum.parent_id">
                         <md-option ng-value="null"></md-option>
                         <md-option
                                 ng-repeat="(key, forum) in $ctrl.currentProjectForums"
-                                ng-value="forum.id"
-                                ng-selectd="forum.id === $ctrl.forum.parent_id">
+                                ng-value="forum.id">
                             {{ forum.name }}
                         </md-option>
                     </md-select>
+
                     <div class="md-errors-spacer"></div>
                 </md-input-container>
 
-                <md-button class="md-raised md-primary animation-target"
-                           ng-disabled="InfoForm.$invalid || $ctrl.isDisabledSaveBtn()"
-                           ng-click="$ctrl.editForum()">
+                <md-button class="md-raised md-primary animation-target" type="submit"
+                           ng-disabled="InfoForm.$invalid">
                     Save
                 </md-button>
             </form>
-        </md-content>
-    </div>
-
-</div>
+        </div>
+    </md-dialog-content>
+</md-dialog>

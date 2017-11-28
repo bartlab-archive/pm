@@ -1,17 +1,14 @@
 import ControllerBase from 'base/controller.base';
-import moment from 'moment';
 
 /**
  * @property {$mdDialog} $mdDialog
  * @property {ProjectsService} ProjectsService
  * @property {$rootScope} $rootScope
- * @property {RolesService} RolesService
- * @property {UsersService} UsersService
  */
-export default class ProjectsVersionController extends ControllerBase {
+export default class ProjectsCategoryController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdDialog', '$mdToast', 'ProjectsService', '$rootScope', 'RolesService', 'UsersService'];
+        return ['$mdDialog', '$mdToast', 'ProjectsService', '$rootScope'];
     }
 
     $onInit() {
@@ -19,9 +16,6 @@ export default class ProjectsVersionController extends ControllerBase {
         if (!this.identifier) {
             this.cancel();
         }
-
-        this.statuses = this.ProjectsService.getVersionStatuses();
-        this.sharings = this.ProjectsService.getVersionSharings();
     }
 
     cancel(update) {
@@ -36,16 +30,11 @@ export default class ProjectsVersionController extends ControllerBase {
     }
 
     submit() {
-        this.version.effective_date ?
-            this.version.effective_date = moment(this.version.effective_date).format('YYYY-MM-DD') : null;
-
-        if (!this.version.id) {
-            this.ProjectsService
-                .createVersion(this.identifier, this.version)
+        if (!this.issueCategory.id) {
+            this.ProjectsService.createIssueCategory(this.identifier, this.issueCategory)
                 .then(() => this.cancel(true));
         } else {
-            this.ProjectsService
-                .editVersion(this.version.id, this.version)
+            this.ProjectsService.editIssueCategory(this.issueCategory.id, this.issueCategory)
                 .then(() => this.cancel(true));
         }
     }

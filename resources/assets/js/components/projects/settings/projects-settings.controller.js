@@ -1,12 +1,14 @@
 import ControllerBase from 'base/controller.base';
 import projectsMemberComponent from '../member/projects-member.component';
 import projectsVersionComponent from '../version/projects-version.component';
+import projectsCategoryComponent from '../cetegory/projects-category.component';
+import projectsForumComponent from '../forum/projects-forum.component';
 // import showAddVersionComponent from 'components/modal/projects/versions/show-add-version/show-add-version.component';
 // import showEditVersionComponent from 'components/modal/projects/versions/show-edit-version/show-edit-version.component';
-import showAddIssuesCategoryComponent from 'components/modal/projects/issue-categories/show-add-issue-category/show-add-issue-category.component';
-import showEditIssuesCategoryComponent from 'components/modal/projects/issue-categories/show-edit-issue-category/show-edit-issue-category.component';
-import showAddForumComponent from 'components/modal/projects/forums/show-add-forum/show-add-forum.component';
-import showEditForumComponent from 'components/modal/projects/forums/show-edit-forum/show-edit-forum.component';
+// import showAddIssuesCategoryComponent from 'components/modal/projects/issue-categories/show-add-issue-category/show-add-issue-category.component';
+// import showEditIssuesCategoryComponent from 'components/modal/projects/issue-categories/show-edit-issue-category/show-edit-issue-category.component';
+// import showAddForumComponent from 'components/modal/projects/forums/show-add-forum/show-add-forum.component';
+// import showEditForumComponent from 'components/modal/projects/forums/show-edit-forum/show-edit-forum.component';
 import _ from 'lodash';
 
 /**
@@ -300,6 +302,9 @@ export default class ProjectsSettingsController extends ControllerBase {
             this.ProjectsService
                 .deleteVersion(versionId)
                 .then(() => {
+                    this.$mdToast.show(
+                        this.$mdToast.simple().textContent('Success delete!').position('bottom left')
+                    );
                     this.$rootScope.$emit('updateProjectInfo');
                 });
         });
@@ -338,8 +343,8 @@ export default class ProjectsSettingsController extends ControllerBase {
 
     createIssuesCategory($event) {
         this.$mdDialog.show(
-            this.setMdDialogConfig(showAddIssuesCategoryComponent, $event.target, {
-                identifier: this.model.identifier,
+            this.setMdDialogConfig(projectsCategoryComponent, $event.target, {
+                // identifier: this.model.identifier,
                 currentMembers: _.omit(this.members, ['id', 'name'])
             })
         );
@@ -347,19 +352,29 @@ export default class ProjectsSettingsController extends ControllerBase {
 
     editIssuesCategory($event, issueCategory) {
         this.$mdDialog.show(
-            this.setMdDialogConfig(showEditIssuesCategoryComponent, $event.target, {
+            this.setMdDialogConfig(projectsCategoryComponent, $event.target, {
                 issueCategory: _.clone(issueCategory),
                 currentMembers: _.omit(this.members, ['id', 'name'])
             })
         );
     }
 
-    deleteIssuesCategory(issueCategoryId) {
-        this.ProjectsService
-            .deleteIssueCategory(issueCategoryId)
-            .then(() => {
-                this.$rootScope.$emit('updateProjectInfo');
-            });
+    deleteIssuesCategory(issueCategoryId, name) {
+        let confirm = this.$mdDialog.confirm()
+            .title('Do you want to delete "' + name + '" from categories?')
+            .ok('Delete')
+            .cancel('Cancel');
+
+        this.$mdDialog.show(confirm).then(() => {
+            this.ProjectsService
+                .deleteIssueCategory(issueCategoryId)
+                .then(() => {
+                    this.$mdToast.show(
+                        this.$mdToast.simple().textContent('Success delete!').position('bottom left')
+                    );
+                    this.$rootScope.$emit('updateProjectInfo');
+                });
+        });
     }
 
     saveWiki() {
@@ -376,7 +391,7 @@ export default class ProjectsSettingsController extends ControllerBase {
 
     createForum($event) {
         this.$mdDialog.show(
-            this.setMdDialogConfig(showAddForumComponent, $event.target, {
+            this.setMdDialogConfig(projectsForumComponent, $event.target, {
                 identifier: this.model.identifier,
                 currentProjectForums: _.omit(this.forums, ['id', 'name'])
             })
@@ -385,19 +400,29 @@ export default class ProjectsSettingsController extends ControllerBase {
 
     editForum($event, forum) {
         this.$mdDialog.show(
-            this.setMdDialogConfig(showEditForumComponent, $event.target, {
+            this.setMdDialogConfig(projectsForumComponent, $event.target, {
                 forum: _.clone(forum),
                 currentProjectForums: _.omit(this.forums, ['id', 'name', 'parent_id'])
             })
         );
     }
 
-    deleteForum(forumId) {
-        this.ProjectsService
-            .deleteForum(forumId)
-            .then(() => {
-                this.$rootScope.$emit('updateProjectInfo');
-            });
+    deleteForum(forumId, name) {
+        let confirm = this.$mdDialog.confirm()
+            .title('Do you want to delete "' + name + '" from project forums?')
+            .ok('Delete')
+            .cancel('Cancel');
+
+        this.$mdDialog.show(confirm).then(() => {
+            this.ProjectsService
+                .deleteForum(forumId)
+                .then(() => {
+                    this.$mdToast.show(
+                        this.$mdToast.simple().textContent('Success delete!').position('bottom left')
+                    );
+                    this.$rootScope.$emit('updateProjectInfo');
+                });
+        });
     }
 
     saveActivity() {

@@ -1,20 +1,25 @@
-<div layout="column" layout-align="center center">
+<md-dialog flex-xs="100" flex-sm="100" flex-md="50" flex-gt-md="25"
+           aria-label="{{ $ctrl.issueCategory.id ? $ctrl.issueCategory.name : 'New issue category' }}">
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>New Issue Category</h2>
+            <h2>{{ $ctrl.issueCategory.id ? $ctrl.issueCategory.name : 'New issue category' }}</h2>
+
             <span flex></span>
+
             <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
                 <md-icon aria-label="Close dialog">clear</md-icon>
             </md-button>
         </div>
     </md-toolbar>
 
-    <div class="popup-content-show-add-issue-category">
-        <md-content class="md-padding">
-            <form name="issueCategoryForm">
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <form name="issueCategoryForm" ng-submit="$ctrl.submit()">
                 <md-input-container class="md-block">
                     <label>Name</label>
+
                     <input ng-model="$ctrl.issueCategory.name" name="name" required>
+
                     <div ng-messages="issueCategoryForm.name.$error">
                         <div ng-message="required">
                             Name can't be blank!
@@ -24,6 +29,7 @@
 
                 <md-input-container class="md-block">
                     <label>Assignee</label>
+
                     <md-select ng-model="$ctrl.issueCategory.assigned_to_id">
                         <md-option></md-option>
                         <md-option
@@ -32,16 +38,15 @@
                             {{ member.name }}
                         </md-option>
                     </md-select>
+
                     <div class="md-errors-spacer"></div>
                 </md-input-container>
 
-                <md-button class="md-raised md-primary animation-target"
-                           ng-disabled="issueCategoryForm.$invalid"
-                           ng-click="$ctrl.createIssueCategory()">
+                <md-button class="md-raised md-primary animation-target" type="submit"
+                           ng-disabled="issueCategoryForm.$invalid">
                     Save
                 </md-button>
             </form>
-        </md-content>
-    </div>
-
-</div>
+        </div>
+    </md-dialog-content>
+</md-dialog>
