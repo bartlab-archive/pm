@@ -5,13 +5,14 @@
             <h1>Administration</h1>
         </md-card-header>
 
-        <md-card-content>
-            <md-list>
-                <md-list-item ng-repeat="row in ::$ctrl.list" ng-click="$ctrl.goto(row.url)">
-                    <md-icon>{{ ::row.icon }}</md-icon>
-                    <p>{{ ::row.name }}</p>
-                </md-list-item>
-            </md-list>
-        </md-card-content>
+        <md-list>
+            <md-list-item ng-repeat="row in ::$ctrl.list" ng-click="$ctrl.goto(row.url)">
+                <md-icon>{{ ::row.icon }}</md-icon>
+
+                <p>{{ ::row.name }}</p>
+
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+        </md-list>
     </md-card>
 </div>
