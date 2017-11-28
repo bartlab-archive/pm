@@ -1,5 +1,5 @@
 import ControllerBase from 'base/controller.base';
-import angular from 'angular';
+// import angular from 'angular';
 import _ from 'lodash';
 
 /**
@@ -42,7 +42,7 @@ export default class IssuesListController extends ControllerBase {
             this.loadFiltersValues();
             // this.load();
             this.$rootScope.$on('updateIssues', () => this.load());
-            this.initScrollbar();
+            // this.initScrollbar();
 
             this.UsersService.getList().then((response) => {
                 this.users = _.keyBy(_.get(response, 'data', null), 'id');
@@ -137,10 +137,10 @@ export default class IssuesListController extends ControllerBase {
         });
     }
 
-    initScrollbar() {
-        angular.element(this.$window).bind('resize', () => this.setScrollbarContainerHeight());
-        this.setScrollbarContainerHeight();
-    }
+    // initScrollbar() {
+    //     angular.element(this.$window).bind('resize', () => this.setScrollbarContainerHeight());
+    //     this.setScrollbarContainerHeight();
+    // }
 
     selectAll() {
         this.selectAllState = !this.selectAllState;
@@ -171,21 +171,21 @@ export default class IssuesListController extends ControllerBase {
         this.selectedGroup.splice(index, 1);
     }
 
-    setScrollbarContainerHeight() {
-        let windowHeight = window.innerHeight;
-
-        if (!this.$stateParams.project_id) {
-            windowHeight += 50;
-        }
-
-        this.scrollBarConfigIssue = {
-            setHeight: windowHeight - 340
-        };
-
-        this.scrollBarConfigDescription = {
-            setHeight: windowHeight - 292
-        };
-    }
+    // setScrollbarContainerHeight() {
+    //     let windowHeight = window.innerHeight;
+    //
+    //     if (!this.$stateParams.project_id) {
+    //         windowHeight += 50;
+    //     }
+    //
+    //     this.scrollBarConfigIssue = {
+    //         setHeight: windowHeight - 340
+    //     };
+    //
+    //     this.scrollBarConfigDescription = {
+    //         setHeight: windowHeight - 292
+    //     };
+    // }
 
     makeHtml(text) {
         return text ? this.$showdown.stripHtml(this.$showdown.makeHtml(text)) : '';

@@ -11,7 +11,7 @@ import 'angular-animate';
 import 'angular-aria';
 import 'ng-showdown';
 import 'angular-file-saver';
-import 'ng-scrollbars';
+// import 'ng-scrollbars';
 
 import 'directives.module';
 import 'filters.module';
@@ -37,7 +37,7 @@ angular
             'restangular',
             'satellizer',
             'ng-showdown',
-            'ngScrollbars',
+            // 'ngScrollbars',
 
             'app.directives',
             'app.filters',

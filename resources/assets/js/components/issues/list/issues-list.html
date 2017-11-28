@@ -90,13 +90,13 @@
             </md-chips>
         </md-card-content>
 
-        <md-list class="md-dense" ng-scrollbars ng-scrollbars-config="$ctrl.scrollBarConfigIssue">
+        <md-list class="md-dense">
             <div ng-if="$ctrl.count == 0" layout-align="center center" layout="row" class="md-padding">
                 No data to display
             </div>
 
             <md-list-item class="md-2-line" ng-repeat="row in $ctrl.list" id="issue-{{ row.id }}"
-                          ng-click="$ctrl.viewIssue(row)">
+                          ng-click="$ctrl.openIssue(row.id)">
                 <md-checkbox ng-model="row.selected" ng-change="$ctrl.onSelectIssue(row)"
                              aria-label="Select issue"></md-checkbox>
 
@@ -237,7 +237,7 @@
             </md-button>
         </md-card-header>
 
-        <md-card-content ng-scrollbars ng-scrollbars-config="$ctrl.scrollBarConfigDescription" class="md-body-1">
+        <md-card-content class="md-body-1">
             <div ng-if="$ctrl.showMore">
                 <p>
                     <b>Priority: </b>

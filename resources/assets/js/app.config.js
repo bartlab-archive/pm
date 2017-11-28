@@ -23,7 +23,7 @@ export default class AppConfig extends InjectableBase {
             '$locationProvider',
             '$authProvider',
             'RestangularProvider',
-            'ScrollBarsProvider',
+            // 'ScrollBarsProvider',
             '$mdDateLocaleProvider',
             '$stateProvider',
         ];
@@ -36,7 +36,7 @@ export default class AppConfig extends InjectableBase {
         this.restConfig();
         this.themeConfig();
         this.showdownConfig();
-        this.scrollBarConfig();
+        // this.scrollBarConfig();
         this.datePickerFormat();
     }
 
@@ -100,22 +100,22 @@ export default class AppConfig extends InjectableBase {
         this.$showdownProvider.setOption('ghMentionsLink', '/');
     }
 
-    scrollBarConfig() {
-        this.ScrollBarsProvider.defaults = {
-            autoHideScrollbar: false,
-            setHeight: 200,
-            scrollInertia: 500,
-            axis: 'y',
-            advanced: {
-                updateOnContentResize: true
-            },
-            scrollButtons: {
-                scrollAmount: 'auto', // scroll amount when button pressed
-                enable: true // enable scrolling buttons by default
-            },
-            theme: 'minimal-dark'
-        };
-    }
+    // scrollBarConfig() {
+    //     this.ScrollBarsProvider.defaults = {
+    //         autoHideScrollbar: false,
+    //         setHeight: 200,
+    //         scrollInertia: 500,
+    //         axis: 'y',
+    //         advanced: {
+    //             updateOnContentResize: true
+    //         },
+    //         scrollButtons: {
+    //             scrollAmount: 'auto', // scroll amount when button pressed
+    //             enable: true // enable scrolling buttons by default
+    //         },
+    //         theme: 'minimal-dark'
+    //     };
+    // }
 
     datePickerFormat() {
         this.$mdDateLocaleProvider.formatDate = function (date) {
