@@ -68,12 +68,10 @@ export default class IssuesInfoController extends ControllerBase {
 
     watch() {
         this.IssuesService.watch(this.issue.id).then(() => this.issue.watch_state = true);
-        //this.$state.go('issues.watch', {project_id: this.$stateParams.project_id, id: this.issue.id});
     }
 
     unwatch() {
         this.IssuesService.unwatch(this.issue.id).then(() => this.issue.watch_state = false);
-        //this.$state.go('issues.unwatch', {project_id: this.$stateParams.project_id, id: this.issue.id});
     }
 
     delete() {

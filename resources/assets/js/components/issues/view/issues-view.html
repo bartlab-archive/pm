@@ -1,0 +1,119 @@
+<md-dialog flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50"
+           aria-label="{{ $ctrl.selectedIssue.id }} | {{ $ctrl.selectedIssue.trackers.name }} | {{ $ctrl.selectedIssue.subject}}">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>{{ $ctrl.selectedIssue.id }} | {{ $ctrl.selectedIssue.trackers.name }} | {{ $ctrl.selectedIssue.subject}}</h2>
+
+            <span flex></span>
+
+            <md-button class="md-icon-button" ng-click="$ctrl.cancel()">
+                <md-icon aria-label="Close dialog">clear</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <!--<div layout-align="start top" layout="column">-->
+                <!--<div layout-align="start top" layout="row">-->
+                    <!--<div flex="10">-->
+                        <!--<img src="//www.gravatar.com/avatar/{{ $ctrl.selectedIssue.user.avatar_hash }}"-->
+                        <!--style="width: 40px; height: 40px; "-->
+                        <!--&gt;-->
+                    <!--</div>-->
+                    <!--<div flex>2</div>-->
+                    <!--<div flex="10">3</div>-->
+                <!--</div>-->
+
+                <!--<div flex layout-align="start top" layout="row">-->
+                    <!--<div flex="80" flex-offset="10">-->
+                        <!--<div markdown-to-html="$ctrl.selectedIssue.description || ''"></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            
+            
+            <ul>
+                <li>
+                    <b>Priority: </b>
+                    {{ $ctrl.prioritiesList[$ctrl.selectedIssue.priority_id] }}
+                </li>
+                <li>
+                    <b>Added by: </b>
+                    <a ui-sref="users.info({id:$ctrl.selectedIssue.author.id})">
+                        {{ $ctrl.selectedIssue.author.firstname }} {{ $ctrl.selectedIssue.author.lastname }}
+                    </a>
+                </li>
+                <li>
+                    <b>Assignee: </b>
+                    <a ui-sref="users.info({id:$ctrl.selectedIssue.user.id})">
+                        {{ $ctrl.selectedIssue.user.firstname }} {{ $ctrl.selectedIssue.user.lastname }}
+                    </a>
+                </li>
+                <li ng-show="$ctrl.selectedIssue.start_date">
+                    <b>Start date: </b>
+                    {{ $ctrl.selectedIssue.start_date }}
+                </li>
+                <li ng-show="$ctrl.selectedIssue.due_date">
+                    <b>Due date: </b>
+                    {{ $ctrl.selectedIssue.due_date }}
+                </li>
+            </ul>
+                <md-divider></md-divider>
+
+            <div markdown-to-html="$ctrl.selectedIssue.description || ''"></div>
+
+            <md-divider></md-divider>
+
+            <history-component
+                    issue-id="$ctrl.selectedIssue.id"
+                    trackers="$ctrl.trackers"
+                    statuses="$ctrl.statuses"
+                    users="$ctrl.users"
+                    projects="$ctrl.projects"
+                    priorities="$ctrl.priorities"
+                    list="$ctrl.list">
+            </history-component>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout-align="end center" layout="row">
+        <md-button class="md-icon-button" ng-click="$ctrl.deleteIssue($ctrl.selectedIssue.id)">
+            <md-icon>delete</md-icon>
+            <md-tooltip md-direction="top">Delete</md-tooltip>
+            <!--Delete-->
+        </md-button>
+
+        <md-button class="md-icon-button" ng-if="$ctrl.selectedIssue.watch_state" ng-click="$ctrl.unwatchIssue($ctrl.selectedIssue.id)">
+            <md-icon>star</md-icon>
+            <md-tooltip md-direction="top">Unwatch</md-tooltip>
+            <!--Unwatch-->
+        </md-button>
+
+        <md-button class="md-icon-button" ng-if="$ctrl.selectedIssue.watch_state == false"
+                   ng-click="$ctrl.watchIssue($ctrl.selectedIssue.id)">
+            <md-icon>star_border</md-icon>
+            <md-tooltip md-direction="top">Watch</md-tooltip>
+            <!--Watch-->
+        </md-button>
+
+        <md-button class="md-icon-button" ng-click="$ctrl.copyIssue($ctrl.selectedIssue.id)">
+            <md-icon>content_copy</md-icon>
+            <md-tooltip md-direction="top">Copy</md-tooltip>
+            <!--Copy-->
+        </md-button>
+
+        <md-button class="md-icon-button" ng-click="$ctrl.editIssue($ctrl.selectedIssue.id)">
+            <md-icon>mode_edit</md-icon>
+            <md-tooltip md-direction="top">Edit</md-tooltip>
+            <!--Edit-->
+        </md-button>
+
+        <md-button class="md-icon-button" ng-click="$ctrl.openIssue($ctrl.selectedIssue.id)">
+            <md-icon>open_in_browser</md-icon>
+            <md-tooltip md-direction="top">Open</md-tooltip>
+            <!--Open-->
+        </md-button>
+
+    </md-dialog-actions>
+</md-dialog>

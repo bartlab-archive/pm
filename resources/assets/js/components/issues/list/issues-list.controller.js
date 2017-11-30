@@ -1,6 +1,8 @@
 import ControllerBase from 'base/controller.base';
 // import angular from 'angular';
 import _ from 'lodash';
+import issuesViewComponent from '../view/issues-view.component';
+import projectsMemberComponent from "../../projects/member/projects-member.component";
 
 /**
  * @property {$state} $state
@@ -212,48 +214,18 @@ export default class IssuesListController extends ControllerBase {
     //     };
     // }
 
-    viewIssue(issue) {
-        this.selectedIssue = issue;
+    viewIssue($event,issue) {
+        // this.selectedIssue = issue;
+
+        this.$mdDialog.show(
+            this.setMdDialogConfig(issuesViewComponent, $event.target, {
+                selectedIssue: issue
+            })
+        );
     }
 
     closeIssueCard() {
         this.selectedIssue = null;
-    }
-
-    openIssue(id) {
-        this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: id});
-    }
-
-    editIssue(id) {
-        this.$state.go('issues.edit', {project_id: this.$stateParams.project_id, id: id});
-    }
-
-    watchIssue(id) {
-        this.IssuesService.watch(id).then(() => this.selectedIssue.watch_state = true);
-        //this.$state.go('issues.watch', {project_id: this.$stateParams.project_id, id: id});
-    }
-
-    unwatchIssue(id) {
-        this.IssuesService.unwatch(id).then(() => this.selectedIssue.watch_state = false);
-        //this.$state.go('issues.unwatch', {project_id: this.$stateParams.project_id, id: id});
-    }
-
-    copyIssue(id) {
-        this.$state.go('issues.copy', {project_id: this.$stateParams.project_id, id: id});
-    }
-
-    deleteIssue(id) {
-        let confirm = this.$mdDialog.confirm()
-            .title(`Would you like to delete this issue?`)
-            .ok('Delete!')
-            .cancel('Cancel');
-        this.$mdDialog.show(confirm).then(() => {
-            this.IssuesService.deleteIssue(id).then(() => {
-                this.$rootScope.$emit('updateIssues');
-            });
-
-            this.selectedGroup = [];
-        });
     }
 
     deleteGroup() {
@@ -346,6 +318,23 @@ export default class IssuesListController extends ControllerBase {
         this.IssuesService.update(this.list[taskId]).then((response) => {
             this.list[taskId] = response.data;
         });
+    }
+
+    setMdDialogConfig(component, target, data = {}) {
+        // current project identifier
+        // data.identifier = this.model.identifier;
+
+        return {
+            controller: component.controller,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: data,
+            template: component.template,
+            clickOutsideToClose: true,
+            openFrom: target,
+            closeTo: target,
+        };
+        // );
     }
 
 }

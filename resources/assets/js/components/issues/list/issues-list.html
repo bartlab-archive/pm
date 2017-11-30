@@ -1,4 +1,4 @@
-<div layout-gt-sm="row" layout-align="center start" class="issues-container">
+<div layout-gt-sm="row" layout-align="center start">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
         <md-card-header>
             <md-button class="md-icon-button" ng-click="$ctrl.selectAll()">
@@ -95,10 +95,11 @@
                 No data to display
             </div>
 
-            <md-list-item class="md-2-line" ng-repeat="row in $ctrl.list" id="issue-{{ row.id }}"
-                          ng-click="$ctrl.openIssue(row.id)">
+            <md-list-item class="md-2-line" ng-repeat="row in $ctrl.list" ng-click="$ctrl.viewIssue($even,row)">
                 <md-checkbox ng-model="row.selected" ng-change="$ctrl.onSelectIssue(row)"
                              aria-label="Select issue"></md-checkbox>
+
+                <img src="//www.gravatar.com/avatar/{{ row.user.avatar_hash }}" class="md-avatar">
 
                 <div class="md-list-item-text" layout="column">
                     <h3>{{ row.id }} | {{ row.trackers.name }} | {{ row.subject}}</h3>
