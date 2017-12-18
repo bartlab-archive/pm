@@ -18,9 +18,9 @@
 
             <!--<div flex></div>-->
 
-            <md-button class="md-icon-button" ng-click="$ctrl.toggleShowMore()">
-                <md-icon>{{ $ctrl.showMore ? 'expand_less' : 'expand_more' }}</md-icon>
-            </md-button>
+            <!--<md-button class="md-icon-button" ng-click="$ctrl.toggleShowMore()">-->
+                <!--<md-icon>{{ $ctrl.showMore ? 'expand_less' : 'expand_more' }}</md-icon>-->
+            <!--</md-button>-->
 
             <!--<md-button class="md-icon-button" ng-click="null">-->
             <!--<md-icon>more_vert</md-icon>-->
@@ -47,7 +47,7 @@
 
                     <md-menu-item ng-if="$ctrl.issue.watch_state">
                         <md-button ng-click="$ctrl.unwatch()">
-                            <md-icon>star_border</md-icon>
+                            <md-icon>star</md-icon>
                             Unwatch
                         </md-button>
                     </md-menu-item>
@@ -81,71 +81,72 @@
         </md-card-header>
 
         <md-card-content>
-            <div ng-show="$ctrl.showMore">
-                <table class="md-body-1">
-                    <tr>
-                        <td><b>Project:</b></td>
-                        <td>
-                            <a ui-sref="projects.inner.info({project_id: $ctrl.issue.project.identifier})">
-                                {{ $ctrl.issue.project.name }}
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><b>Priority:</b></td>
-                        <td>{{ $ctrl.priorityText }}</td>
-                    </tr>
-                    <tr>
-                        <td><b>Added by:</b></td>
-                        <td>
-                            <a ui-sref="users.info({id:$ctrl.issue.author.id})">
-                                {{ $ctrl.issue.author.firstname }} {{ $ctrl.issue.author.lastname }}
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><b>Assignee:</b></td>
-                        <td>
-                            <a ui-sref="users.info({id:$ctrl.issue.user.id})">
-                                {{ $ctrl.issue.user.firstname }} {{ $ctrl.issue.user.lastname }}
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><b>Start date:</b></td>
-                        <td>{{ $ctrl.issue.start_date }}</td>
-                    </tr>
-                    <tr ng-if="$ctrl.issue.due_date">
-                        <td><b>Due date:</b></td>
-                        <td>{{ $ctrl.issue.due_date }}</td>
-                    </tr>
+            <issues-view-component selected-issue="$ctrl.issue"></issues-view-component>
+            <!--<div ng-show="$ctrl.showMore">-->
+                <!--<table class="md-body-1">-->
+                    <!--<tr>-->
+                        <!--<td><b>Project:</b></td>-->
+                        <!--<td>-->
+                            <!--<a ui-sref="projects.inner.info({project_id: $ctrl.issue.project.identifier})">-->
+                                <!--{{ $ctrl.issue.project.name }}-->
+                            <!--</a>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td><b>Priority:</b></td>-->
+                        <!--<td>{{ $ctrl.priorityText }}</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td><b>Added by:</b></td>-->
+                        <!--<td>-->
+                            <!--<a ui-sref="users.info({id:$ctrl.issue.author.id})">-->
+                                <!--{{ $ctrl.issue.author.firstname }} {{ $ctrl.issue.author.lastname }}-->
+                            <!--</a>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td><b>Assignee:</b></td>-->
+                        <!--<td>-->
+                            <!--<a ui-sref="users.info({id:$ctrl.issue.user.id})">-->
+                                <!--{{ $ctrl.issue.user.firstname }} {{ $ctrl.issue.user.lastname }}-->
+                            <!--</a>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td><b>Start date:</b></td>-->
+                        <!--<td>{{ $ctrl.issue.start_date }}</td>-->
+                    <!--</tr>-->
+                    <!--<tr ng-if="$ctrl.issue.due_date">-->
+                        <!--<td><b>Due date:</b></td>-->
+                        <!--<td>{{ $ctrl.issue.due_date }}</td>-->
+                    <!--</tr>-->
 
-                </table>
-            </div>
-            <div markdown-to-html="$ctrl.issue.description || ''"></div>
+                <!--</table>-->
+            <!--</div>-->
+            <!--<div markdown-to-html="$ctrl.issue.description || ''"></div>-->
 
-            <md-divider></md-divider>
+            <!--<md-divider></md-divider>-->
 
-            <div ng-show="$ctrl.issue.child_issues.length">
-                <p>Subtasks:</p>
+            <!--<div ng-show="$ctrl.issue.child_issues.length">-->
+                <!--<p>Subtasks:</p>-->
 
-                <p ng-repeat="childIssue in $ctrl.issue.child_issues">
-                    <a ui-sref="issues.info({id: childIssue.id})">{{ childIssue.subject }}</a>
-                </p>
+                <!--<p ng-repeat="childIssue in $ctrl.issue.child_issues">-->
+                    <!--<a ui-sref="issues.info({id: childIssue.id})">{{ childIssue.subject }}</a>-->
+                <!--</p>-->
 
-                <md-divider></md-divider>
-            </div>
+                <!--<md-divider></md-divider>-->
+            <!--</div>-->
 
-            <history-component
-                    ng-if="$ctrl.issue.id"
-                    issue-id="$ctrl.issue.id"
-                    trackers="$ctrl.trackersList"
-                    statuses="$ctrl.statusesList"
-                    users="$ctrl.users"
-                    projects="$ctrl.projectsList"
-                    priorities="$ctrl.prioritiesList"
-                    list="$ctrl.list">
-            </history-component>
+            <!--<history-component-->
+                    <!--ng-if="$ctrl.issue.id"-->
+                    <!--issue-id="$ctrl.issue.id"-->
+                    <!--trackers="$ctrl.trackersList"-->
+                    <!--statuses="$ctrl.statusesList"-->
+                    <!--users="$ctrl.users"-->
+                    <!--projects="$ctrl.projectsList"-->
+                    <!--priorities="$ctrl.prioritiesList"-->
+                    <!--list="$ctrl.list">-->
+            <!--</history-component>-->
         </md-card-content>
 
         <md-card-actions layout="row" layout-align="center center">

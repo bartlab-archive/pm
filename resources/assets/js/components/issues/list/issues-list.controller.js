@@ -1,8 +1,10 @@
 import ControllerBase from 'base/controller.base';
 // import angular from 'angular';
 import _ from 'lodash';
-import issuesViewComponent from '../view/issues-view.component';
-import projectsMemberComponent from "../../projects/member/projects-member.component";
+// import issuesViewComponent from '../view/issues-view.component';
+// import projectsMemberComponent from "../../projects/member/projects-member.component";
+import issuesViewModalTemplate from '../view-modal/issues-view-modal.html';
+import issuesViewModalController from '../view-modal/issues-view-modal.controller';
 
 /**
  * @property {$state} $state
@@ -218,7 +220,7 @@ export default class IssuesListController extends ControllerBase {
         // this.selectedIssue = issue;
 
         this.$mdDialog.show(
-            this.setMdDialogConfig(issuesViewComponent, $event.target, {
+            this.setMdDialogConfig($event.target, {
                 selectedIssue: issue
             })
         );
@@ -320,16 +322,19 @@ export default class IssuesListController extends ControllerBase {
         });
     }
 
-    setMdDialogConfig(component, target, data = {}) {
+    setMdDialogConfig(target, data = {}) {
         // current project identifier
         // data.identifier = this.model.identifier;
 
         return {
-            controller: component.controller,
+            // controller: function(){
+            //     console.log(this.selectedIssue);
+            // },//component.controller,
+            controller: issuesViewModalController,
             controllerAs: '$ctrl',
             bindToController: true,
             locals: data,
-            template: component.template,
+            template: issuesViewModalTemplate,//'<issues-view-component selected-issue="$ctrl.selectedIssue"></issues-view-component>',//component.template,
             clickOutsideToClose: true,
             openFrom: target,
             closeTo: target,

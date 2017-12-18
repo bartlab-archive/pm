@@ -1,0 +1,38 @@
+<md-button class="md-icon-button" ng-click="$ctrl.deleteIssue($ctrl.selectedIssue.id)">
+    <md-icon>delete</md-icon>
+    <md-tooltip md-direction="top">Delete</md-tooltip>
+    <!--Delete-->
+</md-button>
+
+<md-button class="md-icon-button" ng-if="$ctrl.selectedIssue.watch_state"
+           ng-click="$ctrl.unwatchIssue($ctrl.selectedIssue.id)">
+    <md-icon>star</md-icon>
+    <md-tooltip md-direction="top">Unwatch</md-tooltip>
+    <!--Unwatch-->
+</md-button>
+
+<md-button class="md-icon-button" ng-if="$ctrl.selectedIssue.watch_state == false"
+           ng-click="$ctrl.watchIssue($ctrl.selectedIssue.id)">
+    <md-icon>star_border</md-icon>
+    <md-tooltip md-direction="top">Watch</md-tooltip>
+    <!--Watch-->
+</md-button>
+
+<md-button class="md-icon-button" ng-click="$ctrl.copyIssue($ctrl.selectedIssue.id)">
+    <md-icon>content_copy</md-icon>
+    <md-tooltip md-direction="top">Copy</md-tooltip>
+    <!--Copy-->
+</md-button>
+
+<md-button class="md-icon-button" ng-click="$ctrl.editIssue($ctrl.selectedIssue.id)">
+    <md-icon>mode_edit</md-icon>
+    <md-tooltip md-direction="top">Edit</md-tooltip>
+    <!--Edit-->
+</md-button>
+
+<md-button class="md-icon-button" ng-click="$ctrl.openIssue($ctrl.selectedIssue.id)">
+    <md-icon>open_in_browser</md-icon>
+    <md-tooltip md-direction="top">Open</md-tooltip>
+    <!--Open-->
+</md-button>
+
