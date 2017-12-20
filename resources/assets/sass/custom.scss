@@ -4,19 +4,20 @@ body {
   flex-direction: column;
 
   background: top no-repeat fixed;
+  background-image: url("../images/bg3.svg");
 
   // landscape mode
-  @media (max-width: $layout-breakpoint-md - 1) {
-    background-image: url("../images/background_1280.png");
-  }
-
-  @media (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg) {
-    background-image: url("../images/background_1920.png");
-  }
-
-  @media (min-width: $layout-breakpoint-lg + 1) {
-    background-image: url("../images/background_4000.png");
-  }
+  //@media (max-width: $layout-breakpoint-md - 1) {
+  //  background-image: url("../images/background_1280.png");
+  //}
+  //
+  //@media (min-width: $layout-breakpoint-md) and (max-width: $layout-breakpoint-lg) {
+  //  background-image: url("../images/background_1920.png");
+  //}
+  //
+  //@media (min-width: $layout-breakpoint-lg + 1) {
+  //  background-image: url("../images/background_4000.png");
+  //}
 
   // portrait mode
   //@media (max-height: $layout-breakpoint-md) and (max-width: $layout-breakpoint-md - 1) {
