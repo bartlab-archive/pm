@@ -1,8 +1,9 @@
 <md-dialog flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50"
-           aria-label="{{ $ctrl.selectedIssue.id }} | {{ $ctrl.selectedIssue.trackers.name }} | {{ $ctrl.selectedIssue.subject}}">
+           aria-label="{{ $ctrl.title }}">
     <md-toolbar>
+
         <div class="md-toolbar-tools">
-            <h2>{{ $ctrl.selectedIssue.id }} | {{ $ctrl.selectedIssue.trackers.name }} | {{ $ctrl.selectedIssue.subject}}</h2>
+            <h2>{{ $ctrl.title }}</h2>
 
             <span flex></span>
 
@@ -14,48 +15,12 @@
 
     <md-dialog-content>
         <div class="md-dialog-content">
-           <issues-view-component selected-issue="$ctrl.selectedIssue"></issues-view-component>
+            <issues-view-component selected-issue="$ctrl.selectedIssue" author-info="true"></issues-view-component>
         </div>
     </md-dialog-content>
 
     <md-dialog-actions layout-align="end center" layout="row">
-        <issues-view-actions-component selected-issue="$ctrl.selectedIssue"></issues-view-actions-component>
-        <!--<md-button class="md-icon-button" ng-click="$ctrl.deleteIssue($ctrl.selectedIssue.id)">-->
-            <!--<md-icon>delete</md-icon>-->
-            <!--<md-tooltip md-direction="top">Delete</md-tooltip>-->
-            <!--&lt;!&ndash;Delete&ndash;&gt;-->
-        <!--</md-button>-->
-
-        <!--<md-button class="md-icon-button" ng-if="$ctrl.selectedIssue.watch_state" ng-click="$ctrl.unwatchIssue($ctrl.selectedIssue.id)">-->
-            <!--<md-icon>star</md-icon>-->
-            <!--<md-tooltip md-direction="top">Unwatch</md-tooltip>-->
-            <!--&lt;!&ndash;Unwatch&ndash;&gt;-->
-        <!--</md-button>-->
-
-        <!--<md-button class="md-icon-button" ng-if="$ctrl.selectedIssue.watch_state == false"-->
-                   <!--ng-click="$ctrl.watchIssue($ctrl.selectedIssue.id)">-->
-            <!--<md-icon>star_border</md-icon>-->
-            <!--<md-tooltip md-direction="top">Watch</md-tooltip>-->
-            <!--&lt;!&ndash;Watch&ndash;&gt;-->
-        <!--</md-button>-->
-
-        <!--<md-button class="md-icon-button" ng-click="$ctrl.copyIssue($ctrl.selectedIssue.id)">-->
-            <!--<md-icon>content_copy</md-icon>-->
-            <!--<md-tooltip md-direction="top">Copy</md-tooltip>-->
-            <!--&lt;!&ndash;Copy&ndash;&gt;-->
-        <!--</md-button>-->
-
-        <!--<md-button class="md-icon-button" ng-click="$ctrl.editIssue($ctrl.selectedIssue.id)">-->
-            <!--<md-icon>mode_edit</md-icon>-->
-            <!--<md-tooltip md-direction="top">Edit</md-tooltip>-->
-            <!--&lt;!&ndash;Edit&ndash;&gt;-->
-        <!--</md-button>-->
-
-        <!--<md-button class="md-icon-button" ng-click="$ctrl.openIssue($ctrl.selectedIssue.id)">-->
-            <!--<md-icon>open_in_browser</md-icon>-->
-            <!--<md-tooltip md-direction="top">Open</md-tooltip>-->
-            <!--&lt;!&ndash;Open&ndash;&gt;-->
-        <!--</md-button>-->
-
+        <issues-view-actions-component selected-issue="$ctrl.selectedIssue"
+                                       open-button="true"></issues-view-actions-component>
     </md-dialog-actions>
 </md-dialog>

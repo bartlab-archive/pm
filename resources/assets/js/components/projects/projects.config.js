@@ -50,14 +50,14 @@ export default class ProjectsConfig extends InjectableBase {
                 //     }
                 // }
             })
-            .state('projects.inner.issues', {
-                abstract: true,
-                url: '/issues',
-            })
-            .state('projects.inner.issues.new', {
-                url: '/new',
-                component: 'issuesNewComponent'
-            })
+            // .state('projects.inner.issues', {
+            //     abstract: true,
+            //     url: '/issues',
+            // })
+            // .state('projects.inner.issues.new', {
+            //     url: '/new',
+            //     component: 'issuesNewComponent'
+            // })
             .state('projects.list', {
                 url: '',
                 component: projectsListComponent.name,
@@ -89,10 +89,10 @@ export default class ProjectsConfig extends InjectableBase {
                 url: '/activity/:end_date',
                 component: projectsActivityComponent.name,
             })
-            .state('projects.inner.issues.index', {
-                url: '',
-                component: issuesListComponent.name,
-            })
+            // .state('projects.inner.issues.index', {
+            //     url: '',
+            //     component: issuesListComponent.name,
+            // })
             .state('projects.inner.issues.calendar', {
                 url: '/calendar',
                 component: projectsCalendarComponent.name,

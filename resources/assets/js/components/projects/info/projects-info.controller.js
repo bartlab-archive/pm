@@ -54,7 +54,7 @@ export default class ProjectsInfoController extends ControllerBase {
     }
 
     issueNavigate() {
-        this.$state.go('projects.inner.issues.index', {project_id: this.project.identifier});
+        this.$state.go('issues-inner.index', {project_id: this.project.identifier});
     }
 
     projectNavigate(identifier) {

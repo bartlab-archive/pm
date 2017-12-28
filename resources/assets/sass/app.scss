@@ -2,9 +2,10 @@
 @import "~roboto-fontface/css/roboto/sass/roboto-fontface";
 @import "~material-design-icons-iconfont/dist/material-design-icons";
 //angular material
+@import "variables";
 @import "~angular-material/angular-material.scss";
 // plugins
-@import "~malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css";
+//@import "~malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css";
 // local
 @import "custom";
 @import "spinner";

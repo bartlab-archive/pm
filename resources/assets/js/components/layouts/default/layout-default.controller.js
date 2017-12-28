@@ -40,7 +40,7 @@ export default class LayoutDefaultController extends ControllerBase {
 
         this.newItems = [{
             name: 'Issue',
-            url: 'projects.inner.issues.new',
+            url: 'issues-inner.new',
             icon: 'create',
             module: 'issue_tracking',
             single: true,
@@ -89,7 +89,7 @@ export default class LayoutDefaultController extends ControllerBase {
             name: 'time_tracking',
             enable: false
         }, {
-            url: 'projects.inner.issues.index',
+            url: 'issues-inner.index',
             title: 'Issues',
             name: 'issue_tracking',
             enable: false,

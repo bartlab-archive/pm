@@ -6,6 +6,7 @@ export default {
     controller: IssuesViewActionsController,
     template: issuesViewActionsTemplate,
     bindings:{
-        selectedIssue:'<'
+        selectedIssue:'<',
+        openButton: '<'
     }
 };

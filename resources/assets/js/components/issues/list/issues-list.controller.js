@@ -216,6 +216,10 @@ export default class IssuesListController extends ControllerBase {
     //     };
     // }
 
+    openMoreMenu($mdMenu, ev) {
+        $mdMenu.open(ev);
+    };
+
     viewIssue($event,issue) {
         // this.selectedIssue = issue;
 

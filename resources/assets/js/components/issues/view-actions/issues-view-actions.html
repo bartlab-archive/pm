@@ -30,7 +30,7 @@
     <!--Edit-->
 </md-button>
 
-<md-button class="md-icon-button" ng-click="$ctrl.openIssue($ctrl.selectedIssue.id)">
+<md-button class="md-icon-button" ng-click="$ctrl.openIssue($ctrl.selectedIssue.id)" ng-if="$ctrl.openButton">
     <md-icon>open_in_browser</md-icon>
     <md-tooltip md-direction="top">Open</md-tooltip>
     <!--Open-->

@@ -8,10 +8,11 @@ import ControllerBase from 'base/controller.base';
 export default class IssuesViewController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdDialog', '$mdToast', 'IssuesService', '$rootScope','$state','$stateParams'];
+        return ['$mdDialog', '$mdToast', 'IssuesService', '$rootScope', '$state', '$stateParams'];
     }
 
     $onInit() {
+        this.title = this.selectedIssue.trackers.name + ' #' + this.selectedIssue.id + ': ' + this.selectedIssue.subject;
     }
 
     cancel(update) {

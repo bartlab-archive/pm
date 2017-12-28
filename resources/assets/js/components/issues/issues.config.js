@@ -17,11 +17,7 @@ export default class IssuesConfig extends InjectableBase {
             .state('issues', {
                 abstract: true,
                 data: {
-                    access: '@',
-                    layoutDefault: {
-                        projectId: null,
-                        showProjectMenu: true
-                    }
+                    access: '@'
                 },
                 url: '/issues',
                 parent: 'default',
@@ -31,6 +27,20 @@ export default class IssuesConfig extends InjectableBase {
                     }
                 }
             })
+            .state('issues-inner', {
+                abstract: true,
+                url: '/issues',
+                parent:'projects.inner',
+            })
+            .state('issues-inner.index', {
+                url: '',
+                component: issuesListComponent.name,
+            })
+            .state('issues-inner.new', {
+                url: '/new',
+                component: 'issuesNewComponent'
+            })
+
             .state('issues.list', {
                 url: '',
                 component: issuesListComponent.name,
