@@ -169,7 +169,6 @@ export default class ProjectsSettingsController extends ControllerBase {
             });
     }
 
-
     updateInformation() {
         this.ProjectsService
             .updateInformation(
@@ -182,9 +181,38 @@ export default class ProjectsSettingsController extends ControllerBase {
                     'inherit_members'
                 ])
             )
-            .then(() => {
-                this.$rootScope.$emit('updateProjectInfo');
-            });
+            .then((response) => {
+
+              this.$mdToast.show(
+                this.$mdToast.simple()
+                  .textContent('Project created success')
+              );
+               this.$rootScope.$emit('updateProjectInfo');
+            }).catch((response) => {
+          this.onError(response)
+        });
+    }
+
+    change(field) {
+        this.infoForm[field].$setValidity('server', true);
+        this.errors[field] = undefined;
+    }
+
+    onError(response) {
+
+        if (_.get(response, 'status') === 500) {
+                this.$mdToast.show(
+                this.$mdToast.simple().textContent('Server error')
+            );
+        } else {
+            this.errors = _.get(response, 'data.errors', {});
+            for (let field in this.errors) {
+                if (this.infoForm.hasOwnProperty(field)) {
+                    this.infoForm[field].$touched = true;
+                    this.infoForm[field].$setValidity('server', false);
+                }
+            }
+        }
     }
 
     setMdDialogConfig(component, target, data = {}) {

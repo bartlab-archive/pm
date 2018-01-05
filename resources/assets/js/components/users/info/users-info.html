@@ -1,1 +1,69 @@
-users info
+<div layout="row" layout-align="center start">
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <md-card-header>
+            <md-card-avatar>
+                <img src="{{ ::$ctrl.user.avatar_img }}" class="md-avatar">
+            </md-card-avatar>
+            <md-card-header-text>
+                <span class="md-title">{{ ::$ctrl.user.firstname }} {{ ::$ctrl.user.lastname }}</span>
+                <span class="md-subhead">profile</span>
+            </md-card-header-text>
+            <md-card-actions>
+                <md-button class="md-icon-button" ng-click="$ctrl.editUser($ctrl.user.id)">
+                    <md-icon>mode_edit</md-icon>
+                    <md-tooltip md-direction="top">Edit</md-tooltip>
+                </md-button>
+            </md-card-actions>
+        </md-card-header>
+        <md-list>
+            <md-list-item class="secondary-button-padding">
+                <p>Login: {{ ::$ctrl.user.login }}</p>
+            </md-list-item>
+            <md-list-item class="secondary-button-padding">
+                <p>Registered: <i>{{ ::$ctrl.user.created_on }}</i></p>
+            </md-list-item>
+            <md-list-item class="secondary-button-padding">
+                <p>Last connection: <i>{{ ::$ctrl.user.last_login_on }}</i></p>
+            </md-list-item>
+        </md-list>
+    </md-card>
+</div>
+
+<div layout="row" layout-align="center start">
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">Issues</span>
+            </md-card-title-text>
+        </md-card-title>
+
+        <md-card-content class="md-body-1">
+            <p>Assigned tasks: <md-button ng-click="$ctrl.getIssues('assigned_to_id', $ctrl.user.id)"> {{ ::$ctrl.issues.assigned}} </md-button></p>
+            <p>Tasks created:  <md-button ng-click="$ctrl.getIssues('author_id', $ctrl.user.id)"> {{ ::$ctrl.issues.created}} </md-button></p>
+        </md-card-content>
+    </md-card>
+</div>
+
+<div layout="row" layout-align="center start">
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">Projects</span>
+            </md-card-title-text>
+        </md-card-title>
+
+        <md-card-content class="md-body-1">
+            <md-list ng-repeat="row in ::$ctrl.user.projects">
+                <md-list-item class="secondary-button-padding" ng-click="$ctrl.goToProject(row.identifier)">
+                       {{ row.name }}
+                    <md-card-content class="md-body-1">
+                        <p ng-repeat="(role, members) in ::$ctrl.membersByRole">
+                            ({{ role }} | <i>{{ row.created_on}})</i>
+                        </p>
+                    </md-card-content>
+                </md-list-item>
+            </md-list>
+        </md-card-content>
+    </md-card>
+</div>
+

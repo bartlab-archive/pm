@@ -26,8 +26,14 @@ export default class UsersConfig extends InjectableBase {
                         template: '<ui-view/>'
                     }
                 }
-            })
-            .state('users.list', {
+            }).state('users.inner', {
+                abstract: true,
+                data: {
+                  access: '@'
+                },
+                url: '',
+                template: '<ui-view/>'
+            }).state('users.list', {
                 url: '',
                 component: usersListComponent.name,
             })
@@ -35,11 +41,11 @@ export default class UsersConfig extends InjectableBase {
                 url: '/new',
                 component: usersEditComponent.name,
             })
-            .state('users.info', {
+            .state('users.inner.info', {
                 url: '/:id',
                 component: usersInfoComponent.name,
             })
-            .state('users.edit', {
+            .state('users.inner.edit', {
                 url: '/:id/edit',
                 component: usersEditComponent.name,
             });

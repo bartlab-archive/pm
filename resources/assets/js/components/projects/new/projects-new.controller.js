@@ -10,22 +10,43 @@ import _ from 'lodash';
 export default class ProjectsNewController extends ControllerBase {
 
     static get $inject() {
-        return ['ProjectsService', 'TrackersService', '$mdToast', '$state'];
+        return ['ProjectsService', 'TrackersService', '$mdToast', '$state', '$stateParams'];
     }
 
     $onInit() {
-        this.modules = this.ProjectsService.modules;
+
+        if (this.$state.current.name === 'projects.new') {
+
+          this.cardTitle = 'New project';
+          this.projectForm = {};
+
+        } else {
+
+          this.cardTitle = 'Copy project';
+          this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
+            this.model = _.get(response, 'data', []);
+
+            if (this.model.parent_project) {
+              this.model.parent_identifier = this.model.parent_project.identifier;
+              delete(this.model.parent_project.identifier);
+            }
+
+            this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
+          });
+
+        }
 
         this.ProjectsService.getList().then((response) => {
             this.projects = response.data;
         });
+
+        this.modules = this.ProjectsService.modules;
 
         this.TrackersService.getAll().then((response) => {
             this.trackers = response.data;
         });
 
         this.errors = {};
-        this.projectForm = {};
     }
 
     create(redirect) {
@@ -36,18 +57,23 @@ export default class ProjectsNewController extends ControllerBase {
         this.ProjectsService.create(data)
             .then((response) => {
 
-                if (redirect) {
-                    this.$state.go('projects.inner.settings', {project_id: this.model.identifier});
-                }
-                else {
-                    this.$state.reload();
-                }
+            if (redirect) {
+                this.$state.go('projects.inner.settings', {project_id: this.model.identifier});
+            }
+            else {
+
+              if (this.$state.current.name === 'projects.inner.copy') {
+                this.$state.go('admin.projects');
+              } else {
+                this.$state.reload();
+              }
+            }
                 this.$mdToast.show(
                     this.$mdToast.simple()
-                        .textContent('Project created success')
+                      .textContent('Project created success')
                 );
             })
-            .catch((response) => this.onError(response));
+          .catch((response) => this.onError(response));
     }
 
     onError(response) {
@@ -60,6 +86,7 @@ export default class ProjectsNewController extends ControllerBase {
             this.errors = _.get(response, 'data.errors', {});
             for (let field in this.errors) {
                 if (this.projectForm.hasOwnProperty(field)) {
+                    this.projectForm[field].$touched = true;
                     this.projectForm[field].$setValidity('server', false);
                 }
             }

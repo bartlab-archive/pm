@@ -47,24 +47,23 @@ class ProjectsService
         $this->usersService = $usersService;
     }
 
-    public function all($isClosed = null)
-    {
-        $projects = Project::orderBy('name')
-            ->where('status', Project::ACTIVE_STATUS)
-            ->where('is_public', Project::IS_PUBLIC)
-//            ->whereNull('parent_id') // disabled recursive projects
-            ->with([
-                'members',
-                'versions',
-                'issue_categories',
-                'repositories',
-                'boards',
-//                'childProjectsRecursive', // disabled recursive projects
-            ]);
+	public function all($status = null)
+	{
 
-        if ($isClosed) {
-            $projects->orWhere('status', Project::CLOSED_STATUS);
-        }
+		$projects = Project::orderBy('name')
+//			->where('status', Project::ACTIVE_STATUS)
+//			->where('is_public', Project::IS_PUBLIC)
+			->with([
+				'members',
+				'versions',
+				'issue_categories',
+				'repositories',
+				'boards',
+			]);
+
+		if ($status) {
+			$projects->orWhere('status', $status);
+		}
 
         return $projects->get()->makeVisible(['is_my']);
     }
@@ -122,6 +121,28 @@ class ProjectsService
         $projectTrackers = isset($data['trackers']) ? $data['trackers'] : [];
         unset($data['trackers']);
 
+				$projectWiki = isset($data['wiki']) ? $data['wiki'] : [];
+				unset($data['wiki']);
+
+				$projectVersions =  isset($data['versions']) ? $data['versions'] : [];
+				unset($data['versions']);
+
+				$projectRepositories = isset($data['repositories']) ? $data['repositories'] : [];
+				unset($data['repositories']);
+
+				$projectNews = isset($data['news']) ? $data['news'] : [];
+				unset($data['news']);
+
+				$projectBoards = isset($data['boards']) ? $data['boards'] : [];
+				unset($data['boards']);
+
+				unset($data['enabled_modules']);
+				unset($data['issue_categories']);
+				unset($data['enumerations']);
+				unset($data['child_projects']);
+				unset($data['members']);
+				unset($data['parent_project']);
+
         $project = Project::create($data);
 
         $this->enabledModulesService = app('App\Services\EnabledModulesService');
@@ -135,8 +156,12 @@ class ProjectsService
     public function update($identifier, $data)
     {
         $project = Project::whereIdentifier($identifier)->firstOrFail();
-        $data['parent_id'] = Project::whereIdentifier($data['parent_identifier'])->firstOrFail()->id;
-        unset($data['parent_identifier']);
+
+			if (isset($data['parent_identifier'])) {
+				$data['parent_id'] = Project::whereIdentifier($data['parent_identifier'])->firstOrFail()->id;
+				unset($data['parent_identifier']);
+			}
+
         $project->update($data);
         return $project;
     }
@@ -174,7 +199,6 @@ class ProjectsService
     {
         return $this->attachmentsService->getFullFilePath($id);
     }
-
 
     public function getActivity($projectIdentifier, $params = [])
     {
@@ -347,7 +371,6 @@ class ProjectsService
 
         return $result;
     }
-
 
 //    public function getIssues($identifier, $request)
 //    {

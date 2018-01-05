@@ -50,14 +50,18 @@ export default class ProjectsConfig extends InjectableBase {
                 //     }
                 // }
             })
-            // .state('projects.inner.issues', {
-            //     abstract: true,
-            //     url: '/issues',
-            // })
-            // .state('projects.inner.issues.new', {
-            //     url: '/new',
-            //     component: 'issuesNewComponent'
-            // })
+            .state('projects.inner.copy', {
+                url: '/copy',
+                component: projectsNewComponent.name,
+            })
+            .state('projects.inner.issues', {
+                abstract: true,
+                url: '/issues',
+            })
+            .state('projects.inner.issues.new', {
+                url: '/new',
+                component: 'issuesNewComponent'
+            })
             .state('projects.list', {
                 url: '',
                 component: projectsListComponent.name,

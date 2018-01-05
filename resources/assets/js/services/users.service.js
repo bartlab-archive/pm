@@ -240,6 +240,43 @@ export default class UsersService extends ServiceBase {
         return this.Restangular.all('users').getList(params);
     }
 
+    getMembersList(user){
+        let members = {};
+        _.forEach(user.members, (member, key) => {
+            members[member.project_id] = {
+                role: member.member_roles.roles.name,
+                role_id: member.member_roles.roles.id,
+                created_on:member.created_on,
+                member_id: member.id,
+                inherited_member: false,
+            };
+        });
+         return members;
+    }
+
+    getCountIssues(user){
+        let countIssues = {};
+        countIssues.assigned = 0;
+        countIssues.created = 0;
+        _.forEach(user.issues, (issue) => {
+             if (user.id != issue.author_id) {
+                 ++ countIssues.assigned;
+             } else {
+                 ++ countIssues.created;
+             }
+        });
+
+        return countIssues;
+    }
+
+    updateUserStatus(id, params) {
+        return this.Restangular.one('users', id).customPUT(params, 'updatestatus');
+    }
+
+    deleteUser(id){
+        return this.Restangular.one('users', id).remove();
+    }
+
     getUserInfo() {
         return this.Restangular.one('my').one('account').withHttpConfig({cache: this.cache}).get().then((response) => {
             response.data.hide_mail = !!response.data.hide_mail;
@@ -252,6 +289,10 @@ export default class UsersService extends ServiceBase {
 
     getApiAccessKey() {
         return this.Restangular.one('my').one('api-key').get();
+    }
+
+    update(user) {
+        return this.Restangular.all('users').customPUT(user, user.id);
     }
 
     resetApiAccessKey() {

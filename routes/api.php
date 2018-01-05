@@ -74,6 +74,7 @@ Route::group(
 
                 Route::put('/{identifier}/modules', 'ProjectsController@updateProjectModules');
                 Route::put('/{identifier}/information', 'ProjectsController@updateProjectInformation');
+                Route::put('/{identifier}/updatestatus', 'ProjectsController@updateProjectStatus');
 
                 Route::post('/{identifier}/members', 'ProjectsController@createMember');
                 Route::delete('/members/{memberId}', 'ProjectsController@deleteMember');
@@ -184,7 +185,11 @@ Route::group(
             ],
             function () {
                 Route::get('/', 'UsersController@getList');
-            }
+				Route::get('/{id}', 'UsersController@getUser');
+				Route::put('/{id}/updatestatus', 'UsersController@updateUserStatus');
+				Route::put('/{id}', 'UsersController@update');
+				Route::delete('/{id}', 'UsersController@destroy');
+			}
         );
     }
 );

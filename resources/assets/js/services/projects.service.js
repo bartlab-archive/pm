@@ -65,6 +65,14 @@ export default class ProjectsService extends ServiceBase {
         return this.Restangular.all('projects').getList(params);
     }
 
+    deleteProject(identifier) {
+        return this.Restangular.one('projects', identifier).remove();
+    }
+
+    copyProject(identifier){
+        this.Restangular.one('projects', identifier).copy();
+    }
+
     getMyList() {
         return this.getList().then((response) => {
             return _.filter(response.data, {is_my: 1});
@@ -91,6 +99,10 @@ export default class ProjectsService extends ServiceBase {
 
     updateInformation(identifier, params) {
         return this.Restangular.one('projects', identifier).customPUT(params, 'information');
+    }
+
+    updateProjectStatus(identifier, params) {
+        return this.Restangular.one('projects', identifier).customPUT(params, 'updatestatus');
     }
 
     /* Members */

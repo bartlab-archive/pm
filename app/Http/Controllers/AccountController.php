@@ -47,7 +47,7 @@ class AccountController extends BaseController
 
     public function update($id, UpdateRequest $request)
     {
-        $result = $this->usersService->update($id, $request->except('tokens', 'avatar_hash'));
+        $result = $this->usersService->update($id, $request->except('tokens', 'avatar_hash','members','issues','projects'));
         return response((string)$result, 200);
     }
 

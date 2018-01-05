@@ -129,6 +129,14 @@ class IssuesService
             $query = $query->whereIn('tracker_id', $trackers);
         }
 
+        if ($assigned_to_id = array_get($params, 'assigned_to_id', [])) {
+			$query = $query->where('assigned_to_id', $assigned_to_id);
+		}
+
+		if ($author_id = array_get($params, 'author_id', [])) {
+			$query = $query->where('author_id', $author_id);
+		}
+
         if ($priorities = array_get($params, 'priority_ids', [])) {
             $query = $query->whereIn('priority_id', $priorities);
         }
@@ -140,12 +148,19 @@ class IssuesService
         }
 
         $limit = array_get($params, 'limit');
+        if ($limit) {
+			$result = [
+				'count' => $query->count(),
+				'issues' => $query->offset($offset)->limit($limit)->get()
 
-        $result = [
-            'count' => $query->count(),
-            'issues' => $query->offset($offset)->limit($limit)->get()
+			];
+		} else {
+			$result = [
+				'count' => $query->count(),
+				'issues' => $query->get()
+			];
+		}
 
-        ];
 
         foreach ($result['issues'] as $issue) {
             $issue['watch_state'] = $this->watchersService->isWatched($issue['id']);

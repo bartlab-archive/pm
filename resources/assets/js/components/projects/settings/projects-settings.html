@@ -10,13 +10,13 @@
         <md-tabs md-dynamic-height md-border-bottom>
             <md-tab label="Information" md-on-select="$ctrl.selectTab()">
                 <!--<md-content class="md-padding">-->
-                <form name="infoForm" class="md-padding">
+                <form name="$ctrl.infoForm" class="md-padding">
                     <md-input-container class="md-block">
                         <label>Name</label>
 
                         <input ng-model="$ctrl.model.name" name="name" type="text" required>
 
-                        <div ng-messages="infoForm.name.$error">
+                        <div ng-messages="$ctrl.infoForm.name.$error">
                             <div ng-message="required">
                                 Name can't be blank!
                             </div>
@@ -26,6 +26,9 @@
                     <md-input-container class="md-block">
                         <label>Description</label>
                         <textarea ng-model="$ctrl.model.description" name="description"></textarea>
+                        <div ng-messages="$ctrl.infoForm.description.$error">
+                            <div ng-message="server" ng-bind-html="$ctrl.errors.description | join"></div>
+                        </div>
                     </md-input-container>
 
                     <md-input-container class="md-block">
@@ -35,8 +38,12 @@
 
                     <md-input-container class="md-block">
                         <label>Homepage</label>
-                        <input ng-model="$ctrl.model.homepage" name="homepage" type="text">
+                        <input ng-model="$ctrl.model.homepage" name="homepage" type="text"  ng-change="$ctrl.change('homepage')">
+                        <div ng-messages="$ctrl.infoForm.homepage.$error">
+                            <div ng-message="server" ng-bind-html="$ctrl.errors.homepage | join"></div>
+                        </div>
                     </md-input-container>
+
 
                     <md-input-container class="md-block">
                         <md-checkbox class="md-primary" ng-model="$ctrl.model.is_public" aria-label="Public">
@@ -66,7 +73,7 @@
                     </md-input-container>
 
                     <div layout-align="center center" layout="row">
-                        <md-button class="md-raised md-primary animation-target" ng-disabled="infoForm.$invalid"
+                        <md-button class="md-raised md-primary animation-target" ng-disabled="$ctrl.infoForm.$invalid"
                                    ng-click="$ctrl.updateInformation()">
                             Save
                         </md-button>

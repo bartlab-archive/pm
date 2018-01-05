@@ -29,7 +29,7 @@ class CreateProjectRequest extends FormRequest
         return [
             'name' => 'required|string',
             'identifier' => 'required|string|between:1,100|unique:' . Project::getTableName(),
-            'description' => 'string',
+            'description' => 'nullable|string',
             'homepage' => 'nullable|url',
             'is_public' => 'boolean',
             'parent_identifier' => 'string|exists:' . Project::getTableName() . ',identifier',

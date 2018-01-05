@@ -28,8 +28,8 @@ class UpdateProjectRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'description' => 'string',
-            'homepage' => 'url',
+            'description' => 'nullable|string',
+            'homepage' => 'nullable|url',
             'is_public' => 'boolean',
             'parent_identifier' => 'string|exists:' . Project::getTableName() . ',identifier',
             'inherit_members' => 'boolean',

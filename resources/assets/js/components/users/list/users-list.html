@@ -1,3 +1,88 @@
-<ul>
-    <li ng-repeat="row in $ctrl.list">{{ row.firstname }} {{ row.lastname }}</li>
-</ul>
+<div layout-gt-sm="row" layout-align="center start">
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+
+        <md-card-header>
+            <md-card-header-text>
+                <span class="md-title">Admin user list</span>
+            </md-card-header-text>
+        </md-card-header>
+        <div class="md-padding">
+            <h2>Filters</h2>
+            <div layout="row">
+                <form name="$ctrl.filterForm">
+                    <div class="demo-md-panel-content">
+                        <md-input-container>
+                            <label>Status</label>
+                            <md-select ng-model="$ctrl.filterForm.myOption" ng-change="$ctrl.sortBy()">
+                                <md-option ng-value="key" ng-repeat="(key, item)  in ::$ctrl.statuses">{{item}}</md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <md-input-container class="md-icon-float md-block">
+                            <label>User</label>
+                            <input ng-model="$ctrl.filterForm.text" type="text">
+                        </md-input-container>
+
+                        <div layout-align="center center" >
+                            <md-button class="md-raised md-primary animation-target"
+                                       ng-click="$ctrl.search()">
+                                Search
+                            </md-button>
+                        </div>
+
+                        <div layout-align="center center">
+                            <md-button class="md-raised md-primary animation-target"
+                                       ng-click="$ctrl.clearFilters()">
+                                Clear
+                            </md-button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <md-list>
+            <div ng-repeat="row in $ctrl.list">
+                <md-list-item class="md-3-line" ng-click="$ctrl.goto(row.id)">
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ ::row.firstname }} | {{ ::row.lastname}}</h3>
+                        <p>{{ ::row.login }} | <i>created on: {{ ::row.created_on }}</i></p>
+                    </div>
+                    <md-icon>{{ row.status == '3' ?'lock':'lock_open' }}</md-icon>
+
+                    <md-menu md-position-mode="target-right target">
+                        <md-button aria-label="More actions" class="md-icon-button" ng-click="$mdMenu.open()">
+                            <md-icon>more_vert</md-icon>
+                        </md-button>
+                        <md-menu-content width="3">
+                            <md-menu-item ng-click="$ctrl.editUser(row.id)">
+                                <md-button>
+                                    <md-icon>mode_edit</md-icon>
+                                    Edit
+                                </md-button>
+                            </md-menu-item>
+
+                            <md-menu-item ng-click="$ctrl.lockUser(row.id, row.status)">
+                                <md-button>
+                                    <md-icon>{{ row.status == '3' ?'lock_open':'lock' }}</md-icon>
+                                    {{ row.status == '3' ? 'Unlock' : 'Lock' }}
+                                </md-button>
+                            </md-menu-item>
+
+                            <md-menu-divider></md-menu-divider>
+
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.deleteUser(row.id)">
+                                    <md-icon>delete</md-icon>
+                                    Delete
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </div>
+        </md-list>
+
+    </md-card>
+</div>

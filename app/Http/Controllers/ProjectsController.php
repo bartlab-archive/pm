@@ -8,6 +8,7 @@ use App\Http\Requests\IssueCategories\IssueCategoriesRequest;
 use App\Http\Requests\Projects\CreateProjectRequest;
 use App\Http\Requests\Projects\IndexProjectRequest;
 use App\Http\Requests\Projects\UpdateProjectRequest;
+use App\Http\Requests\Projects\UpdateProjectStatus;
 use App\Http\Requests\Members\CreateMembersRequest;
 use App\Http\Requests\MemberRoles\MemberRolesRequest;
 use App\Http\Requests\Versions\VersionsRequest;
@@ -407,6 +408,12 @@ class ProjectsController extends BaseController
         $result = $this->boardsService->update($forumId, $request->all());
         return response()->json($result, 200);
     }
+
+    public function updateProjectStatus($identifier, UpdateProjectStatus $request)
+	{
+		$this->projectsService->update($identifier, $request->all());
+		return response()->json(true, 200);
+	}
 
     /**
      * @param $identifier
