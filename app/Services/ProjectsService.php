@@ -47,19 +47,20 @@ class ProjectsService
         $this->usersService = $usersService;
     }
 
-	public function all($status = null)
-	{
-
-		$projects = Project::orderBy('name')
-//			->where('status', Project::ACTIVE_STATUS)
-//			->where('is_public', Project::IS_PUBLIC)
-			->with([
-				'members',
-				'versions',
-				'issue_categories',
-				'repositories',
-				'boards',
-			]);
+    public function all($status = null)
+    {
+        $projects = Project::orderBy('name')
+//            ->where('status', Project::ACTIVE_STATUS)
+//            ->where('is_public', Project::IS_PUBLIC)
+//            ->whereNull('parent_id') // disabled recursive projects
+            ->with([
+                'members',
+                'versions',
+//                'issue_categories',
+//                'repositories',
+//                'boards',
+//                'childProjectsRecursive', // disabled recursive projects
+            ]);
 
 		if ($status) {
 			$projects->orWhere('status', $status);
@@ -71,8 +72,7 @@ class ProjectsService
     /**
      * @return mixed
      */
-    public
-    function list()
+    public function list()
     {
         return Project::select('id', 'name')->get();
     }
@@ -81,12 +81,12 @@ class ProjectsService
     {
         return Project::whereIdentifier($identifier)
             ->with([
-                'trackers',
+//                'trackers',
                 'enabled_modules',
-                'issue_categories',
+//                'issue_categories',
                 'versions',
-                'wiki',
-                'repositories',
+//                'wiki',
+//                'repositories',
                 'enumerations',
                 'childProjects'
             ])
@@ -98,12 +98,12 @@ class ProjectsService
                     $query->with(['users', 'member_roles.roles']);
                 }]);
             }])
-            ->with(['boards' => function ($query) {
-                $query->orderBy('position');
-            }])
-            ->with(['news' => function ($query) {
-                $query->orderBy('created_on', 'desc')->take(3);
-            }])
+//            ->with(['boards' => function ($query) {
+//                $query->orderBy('position');
+//            }])
+//            ->with(['news' => function ($query) {
+//                $query->orderBy('created_on', 'desc')->take(3);
+//            }])
             ->firstOrFail();
     }
 

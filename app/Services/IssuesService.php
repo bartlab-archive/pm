@@ -102,71 +102,56 @@ class IssuesService
         return $issue;
     }
 
-    public function all()
+    public function all(array $params = [], array $orderBy = ['updated_on' => 'desc'])
     {
-        return Issue::limit(20)
-            ->with(['trackers', 'user', 'author', 'project'])->get();
-    }
+        $query = Issue::with(['tracker', 'project.trackers', 'user', 'author', 'project', 'status', 'watchers.user', 'priority']);
 
-    public function list(string $id, $params = [], $orderBy = [])
-    {
-        $offset = array_get($params, 'offset', 0);
-
-        if ($id) {
-            $query = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
-                ->select(Issue::getTableName() . '.*', Project::getTableName() . '.identifier')
-                ->where(Project::getTableName() . '.identifier', $id)
-                ->with(['trackers', 'user', 'author', 'project']);
-        } else {
-            $query = Issue::with(['trackers', 'user', 'author', 'project']);
+        if ($project = array_get($params, 'project_identifier')) {
+            $query->whereHas('project', function ($query) use ($project) {
+                $query->where('identifier', $project);
+            });
         }
 
         if ($statuses = array_get($params, 'status_ids', [])) {
-            $query = $query->whereIn('status_id', $statuses);
+            $query->whereIn('status_id', (array)$statuses);
         }
 
         if ($trackers = array_get($params, 'tracker_ids', [])) {
-            $query = $query->whereIn('tracker_id', $trackers);
+            $query->whereIn('tracker_id', (array)$trackers);
         }
 
-        if ($assigned_to_id = array_get($params, 'assigned_to_id', [])) {
-			$query = $query->where('assigned_to_id', $assigned_to_id);
-		}
+        if ($assigned_to_id = array_get($params, 'assigned_to_ids', [])) {
+            $query = $query->whereIn('assigned_to_ids', $assigned_to_id);
+        }
 
-		if ($author_id = array_get($params, 'author_id', [])) {
-			$query = $query->where('author_id', $author_id);
-		}
+        if ($author_id = array_get($params, 'author_ids', [])) {
+            $query = $query->whereIn('author_ids', $author_id);
+        }
 
         if ($priorities = array_get($params, 'priority_ids', [])) {
-            $query = $query->whereIn('priority_id', $priorities);
+            $query->whereIn('priority_id', (array)$priorities);
         }
 
         if (!empty([$orderBy])) {
             foreach ($orderBy as $key => $val) {
-                $query = $query->orderBy($key, $val);
+                $query->orderBy($key, $val);
             }
         }
 
-        $limit = array_get($params, 'limit');
-        if ($limit) {
-			$result = [
-				'count' => $query->count(),
-				'issues' => $query->offset($offset)->limit($limit)->get()
+        $total = $query->count();
+        $limit = array_get($params, 'limit', 20);
+        $offset = array_get($params, 'offset', 0);
 
-			];
-		} else {
-			$result = [
-				'count' => $query->count(),
-				'issues' => $query->get()
-			];
-		}
-
-
-        foreach ($result['issues'] as $issue) {
-            $issue['watch_state'] = $this->watchersService->isWatched($issue['id']);
+        if ($offset > 0 && $offset >= $total) {
+            $offset = $offset - $limit;
         }
 
-        return $result;
+        return [
+            'total' => $total,
+            'limit' => $limit,
+            'offset' => $offset,
+            'issues' => $query->offset($offset)->limit($limit)->get()
+        ];
     }
 
     public function trackersCount($identifier)
@@ -196,16 +181,12 @@ class IssuesService
         return ['trackers' => $result];
     }
 
-    public function deleteById($id)
+    /**
+     * @param array|int $ids
+     * @return int
+     */
+    public function delete($ids)
     {
-        return Issue::find($id)->delete();
+        return Issue::destroy($ids);
     }
-
-//	public function getInfoFroEdit($project_if)
-//	{
-//		$projects = Project::select('name', 'id')->get()->toArray();
-//		$user_ids = Issue::where('project_id', $project_if)->select('assigned_to_id', 'author_id')->get()->toArray();
-//		$users = User::whereIn('id', $user_ids)->get()->toArray();
-//		return ['projects' => $projects, 'users' => $users];
-//	}
 }

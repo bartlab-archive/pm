@@ -68,4 +68,29 @@ class EnabledModulesService
 
         return true;
     }
+
+    /**
+     * Get list enabled modules by project identifier
+     *
+     * @param string $identifier project identifier
+     * @return array
+     */
+    public function getList($identifier){
+        if ($project = $this->projectService->one($identifier)){
+            return $project->enabled_modules;
+        }
+
+        return [];
+    }
+
+    /**
+     * Check module state for project
+     *
+     * @param string $projectIdentifier project identifier
+     * @param string $name module name
+     * @return bool
+     */
+    public function check($projectIdentifier, $name){
+        return in_array($name, array_pluck($this->getList($projectIdentifier), 'name'));
+    }
 }

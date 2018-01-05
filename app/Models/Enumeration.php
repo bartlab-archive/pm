@@ -9,6 +9,9 @@ class Enumeration extends Model
 {
     use ModelTrait;
 
+    const ACTIVE_ON = 1;
+    const ACTIVE_OFF = 0;
+
     protected $table = 'enumerations';
 
     protected $hidden = ['project_id'];
@@ -28,4 +31,9 @@ class Enumeration extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 }

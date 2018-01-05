@@ -56,19 +56,16 @@ export default class AppRun extends InjectableBase {
     }
 
     errorInterceptor(response, deferred, responseHandler) {
-        switch (response.status) {
-            case 401:
+        switch (true) {
+            case (response.status === 401):
                 this.$rootScope.$broadcast('authUnauthorized');
                 break;
 
-            case 403:
+            case (response.status === 403):
                 this.$rootScope.$broadcast('authForbidden');
                 break;
 
-            case 422:
-                break;
-
-            default:
+            case (response.status >= 500):
                 this.$mdToast.show(
                     this.$mdToast.simple().textContent('Server error!')
                 );

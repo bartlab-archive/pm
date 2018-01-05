@@ -28,7 +28,6 @@ use Illuminate\Support\Facades\Auth;
  * @property EnumerationsService $enumerationsService
  * @property IssueCategoriesService $categoriesService
  * @property JournalsService $journalsService
- * @property IssueStatusesService $issueStatusesService
  * @property WatchersService $watchersService
  *
  * @package App\Http\Controllers
@@ -43,7 +42,6 @@ class IssuesController extends BaseController
     protected $enumerationsService;
     protected $journalsService;
     protected $watchersService;
-    protected $issueStatusesService;
 
     public function __construct(
         IssuesService $issueService,
@@ -53,7 +51,6 @@ class IssuesController extends BaseController
         EnumerationsService $enumerationsService,
         IssueCategoriesService $categoriesService,
         JournalsService $journalsService,
-        IssueStatusesService $issueStatusesService,
         WatchersService $watchersService
     )
     {
@@ -65,21 +62,11 @@ class IssuesController extends BaseController
         $this->enumerationsService = $enumerationsService;
         $this->journalsService = $journalsService;
         $this->watchersService = $watchersService;
-        $this->issueStatusesService = $issueStatusesService;
     }
 
-    public function project($identifier, GetIssuesRequest $request)
-    {
-        $data = $this->issueService->list($identifier, $request->all(), ['updated_on' => 'desc']);
-        return response()
-            ->json($data['issues'], 200)
-            ->header('X-Total', $data['count']);
-    }
-
-    public function getIssue($id, Request $request)
+    public function one($id, Request $request)
     {
         $issue = $this->issueService->one($id);
-        $issue['watch_state'] = $this->watchersService->isWatched($id);
 
         $response = [
             'projectsList' => $this->projectsService->list(),
@@ -93,36 +80,30 @@ class IssuesController extends BaseController
         return response()->json($response, 200);
     }
 
-    public function getIssues(Request $request)
+    public function all(GetIssuesRequest $request)
     {
-        $data = $this->issueService->list('', $request);
+        $data = $this->issueService->all($request->all());
 
         return response()
             ->json($data['issues'], 200)
-            ->header('X-Total', $data['count']);
+            ->withHeaders([
+                'X-Total' => $data['total'],
+                'X-Limit' => $data['limit'],
+                'X-Offset' => $data['offset'],
+            ]);
     }
 
-    public function getIssuesFilters(Request $request)
+    public function filters(Request $request)
     {
         return response()->json(
             [
                 'statuses' => $this->statusesService->all(),
                 'trackers' => $this->trackersService->all(),
-                'priorities' => $this->enumerationsService->getList(['type' => $request->enumeration_type])
-            ]
-            , 200);
-    }
-
-    public function getAdditionalInfo(Request $request)
-    {
-        return response()->json(
-            [
-                'projectsList' => $this->projectsService->list(),
-                'trackersList' => $this->trackersService->all(),
-                'statusesList' => $this->statusesService->all(),
-                'prioritiesList' => $this->enumerationsService->getList(['type' => $request->enumeration_type])
-            ],
-            200);
+                'priorities' => $this->enumerationsService->all([
+                    'type' => 'IssuePriority',
+                    'project_identifier' => $request->get('project_identifier')
+                ])
+            ], 200);
     }
 
     public function create(UpdateIssueRequest $request)
@@ -149,15 +130,8 @@ class IssuesController extends BaseController
 
     public function delete($id)
     {
-        return response()->json($this->issueService->deleteById($id), 200);
+        return response()->json($this->issueService->delete($id), 200);
     }
-
-//    public function infoEdit($id, $project_id)
-//    {
-//        $result = $this->issueService->getInfoFroEdit($project_id);
-//
-//        return response()->json([$result], 200);
-//    }
 
     public function getHistory($id)
     {
@@ -166,17 +140,12 @@ class IssuesController extends BaseController
         return response()->json($data, 200);
     }
 
-    public function getIssueStatuses()
-    {
-        return response()->json($this->issueStatusesService->getList(), 200);
-    }
-
     public function watch($id)
     {
         $data = [
             'watchable_type' => 'Issue',
-            'watchable_id'   => $id,
-            'user_id'        => Auth::id()
+            'watchable_id' => $id,
+            'user_id' => Auth::id()
         ];
 
         return response()->json($this->watchersService->startWatching($data), 200);
@@ -186,7 +155,7 @@ class IssuesController extends BaseController
     {
         $data = [
             'watchable_id' => $id,
-            'user_id'      => Auth::id()
+            'user_id' => Auth::id()
         ];
 
         return response()->json($this->watchersService->stopWatching($data), 200);

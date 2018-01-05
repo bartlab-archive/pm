@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ModelTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class ProjectsTracker extends Model
 {
+    use ModelTrait;
+
     protected $table = 'projects_trackers';
 
     public $timestamps = false;

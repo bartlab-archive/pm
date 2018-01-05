@@ -24,11 +24,11 @@ class WatchersService
             ->delete();
     }
 
-    public function isWatched($id)
-    {
-        $watcher = Watcher::where('watchable_id', '=', $id)
-            ->where('user_id', '=', Auth::id())->get()->toArray();
-
-        return !empty($watcher);
-    }
+//    public function isWatched($id)
+//    {
+//        $watcher = Watcher::where('watchable_id', '=', $id)
+//            ->where('user_id', '=', Auth::id())->get()->toArray();
+//
+//        return !empty($watcher);
+//    }
 }

@@ -26,6 +26,7 @@ export default class AppConfig extends InjectableBase {
             // 'ScrollBarsProvider',
             '$mdDateLocaleProvider',
             '$stateProvider',
+            '$qProvider'
         ];
     }
 
@@ -38,6 +39,7 @@ export default class AppConfig extends InjectableBase {
         this.showdownConfig();
         // this.scrollBarConfig();
         this.datePickerFormat();
+        this.qConfig();
     }
 
     themeConfig() {
@@ -123,4 +125,7 @@ export default class AppConfig extends InjectableBase {
         };
     }
 
+    qConfig(){
+        this.$qProvider.errorOnUnhandledRejections(false);
+    }
 }

@@ -41,18 +41,8 @@ class Issue extends Model
 
     protected $table = 'issues';
 
-    const NEW_STATUS = '1';
-    const IN_PROGRESS_STATUS = '2';
-    const RESOLVED_STATUS = '3';
-    const FEEDBACK_STATUS = '4';
-    const CLOSED_STATUS = '5';
-    const REJECTED_STATUS = '6';
     const CREATED_AT = 'created_on';
     const UPDATED_AT = 'updated_on';
-
-    const LOW_PRIORITY = '1';
-    const LOW_NORMAL = '2';
-    const LOW_HIGH = '3';
 
 //    public $timestamps = false;
 
@@ -73,7 +63,7 @@ class Issue extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'assigned_to_id', 'id');
+        return $this->hasOne(User::class, 'id', 'assigned_to_id');
     }
 
     public function author()
@@ -86,7 +76,7 @@ class Issue extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function trackers()
+    public function tracker()
     {
         return $this->hasOne(Tracker::class, 'id', 'tracker_id');
     }
@@ -96,13 +86,23 @@ class Issue extends Model
         return $this->hasMany(Journal::class, 'journalized_id', 'id')->where('journalized_type', 'Issue');
     }
 
-    public function issueStatuse()
+    public function status()
     {
         return $this->hasOne(IssueStatuse::class, 'id', 'status_id');
+    }
+
+    public function priority()
+    {
+        return $this->hasOne(Enumeration::class, 'id', 'priority_id')->where('type', 'IssuePriority');
     }
 
     public function childIssues()
     {
         return $this->hasMany(self::class, 'parent_id', 'id');
+    }
+
+    public function watchers()
+    {
+        return $this->hasMany(Watcher::class, 'watchable_id', 'id')->where('watchable_type', 'Issue');
     }
 }

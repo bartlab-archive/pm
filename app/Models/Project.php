@@ -48,14 +48,19 @@ class Project extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function issues()
-    {
-        return $this->hasMany(Issue::class);
-    }
+//    public function issues()
+//    {
+//        return $this->hasMany(Issue::class);
+//    }
 
+    /**
+     * Project trackers
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function trackers()
     {
-        return $this->belongsToMany(Tracker::class, (new ProjectsTracker())->getTable());
+        return $this->belongsToMany(Tracker::class, ProjectsTracker::getTableName());
     }
 
     public function members()
@@ -63,10 +68,10 @@ class Project extends Model
         return $this->hasMany(Member::class);
     }
 
-	public function news()
-	{
-		return $this->hasMany(News::class, 'project_id', 'id');
-	}
+//	public function news()
+//	{
+//		return $this->hasMany(News::class, 'project_id', 'id');
+//	}
 
     public function versions()
     {
@@ -78,34 +83,34 @@ class Project extends Model
         return $this->hasMany(Enumeration::class);
     }
 
-    public function issue_categories()
-    {
-        return $this->hasMany(IssueCategory::class);
-    }
-
-    public function repositories()
-    {
-        return $this->hasMany(Repository::class);
-    }
-
-    public function boards()
-    {
-        return $this->hasMany(Board::class);
-    }
+//    public function issue_categories()
+//    {
+//        return $this->hasMany(IssueCategory::class);
+//    }
+//
+//    public function repositories()
+//    {
+//        return $this->hasMany(Repository::class);
+//    }
+//
+//    public function boards()
+//    {
+//        return $this->hasMany(Board::class);
+//    }
 
     public function enabled_modules()
     {
         return $this->hasMany(EnabledModule::class);
     }
 
-    public function wiki()
-    {
-        return $this->hasOne(Wiki::class);
-    }
-    
-    public function attachments(){
-        return $this->morphMany(Attachment::class, 'container');
-    }
+//    public function wiki()
+//    {
+//        return $this->hasOne(Wiki::class);
+//    }
+//
+//    public function attachments(){
+//        return $this->morphMany(Attachment::class, 'container');
+//    }
     
     public function getIsMyAttribute()
     {

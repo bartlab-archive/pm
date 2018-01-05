@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Attachment;
+use App\Models\Issue;
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
@@ -17,7 +18,8 @@ class RelationMorphMap extends ServiceProvider
     public function boot()
     {
         Relation::morphMap([
-            Attachment::PROJECT_TYPE => Project::class,
+            'Project' => Project::class,
+            'Issue' => Issue::class,
         ]);
     }
 

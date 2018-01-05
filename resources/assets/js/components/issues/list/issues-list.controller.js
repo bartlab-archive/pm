@@ -1,8 +1,5 @@
 import ControllerBase from 'base/controller.base';
-// import angular from 'angular';
 import _ from 'lodash';
-// import issuesViewComponent from '../view/issues-view.component';
-// import projectsMemberComponent from "../../projects/member/projects-member.component";
 import issuesViewModalTemplate from '../view-modal/issues-view-modal.html';
 import issuesViewModalController from '../view-modal/issues-view-modal.controller';
 
@@ -19,132 +16,105 @@ import issuesViewModalController from '../view-modal/issues-view-modal.controlle
 export default class IssuesListController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$showdown', 'IssuesService', 'ProjectsService', '$stateParams', '$window', '$rootScope', 'TrackersService', 'UsersService', '$mdDialog'];
+        return ['$mdToast', '$state', '$showdown', 'IssuesService', 'ProjectsService', '$stateParams', '$window', '$rootScope', 'TrackersService', 'UsersService', '$mdDialog'];
     }
 
     $onInit() {
-        const currentProjectId = this.currentProjectId();
-        this.ProjectsService.one(currentProjectId).then((response) => {
-            const enabledModules = _.get(response, 'data.enabled_modules', []);
-            if (!this.ProjectsService.isModuleEnabled('issue_tracking', enabledModules) && currentProjectId !== undefined) {
-                this.$state.go('projects.inner.info', {project_id: currentProjectId});
-            }
+        // selected tags for filter
+        this.tags = [];
 
-            this.tags = [];
-            this.items = [];
-            this.statusesList = [];
-            this.prioritiesList = [];
-            this.showMore = false;
-            this.searchText = null;
-            this.selectedIssue = null;
-            this.selectedGroup = [];
-            this.selectAllState = false;
-            this.offset = 0;
-            this.limitPerPage = 20;
-            this.members = this.ProjectsService.getMembersList(_.get(response, 'data', []));
+        // available parameters for the filter
+        this.items = [];
 
-            this.loadFiltersValues();
-            // this.load();
-            this.$rootScope.$on('updateIssues', () => this.load());
-            // this.initScrollbar();
+        // text in filter input
+        this.searchText = '';
 
-            this.UsersService.getList().then((response) => {
-                this.users = _.keyBy(_.get(response, 'data', null), 'id');
-            });
-        });
+        // item selection
+        this.selectedGroup = [];
+        this.selectAllState = false;
 
-        this.ProjectsService.getList().then((response) => {
-            this.projects = _.keyBy(_.get(response, 'data', null), 'id');
-        });
+        // pagination
+        this.perPageList = [20, 50, 100];
+        this.count = 0;
+        this.offset = 0;
+        this.limitPerPage = this.perPageList[0];
+        this.pager = '';
+
+        // issues list
+        this.list = [];
+
+        // available params for all issue
+        this.statusList = [];
+        this.priorityList = [];
+
+        this.loadFiltersValues().then(() => this.load());
+        this.$rootScope.$on('updateIssues', () => this.load());
     }
 
     load() {
-        let params = {
-            'status_ids': [],
-            'tracker_ids': [],
-            'priority_ids': [],
-            'limit': this.limitPerPage,
-            'offset': this.offset
-        };
-
-        if (!_.isEmpty(this.tags)) {
-            _.forEach(this.tags, (item) => {
-                switch (item.type) {
-                    case 'tracker':
-                        params.tracker_ids.push(item.id);
-                        break;
-                    case 'status' :
-                        params.status_ids.push(item.id);
-                        break;
-
-                    case 'priority' :
-                        params.priority_ids.push(item.id);
-                        break;
-                }
-            });
-        }
-
         this.selectAllState = false;
-        this.IssuesService.getListByProject(this.$stateParams.project_id, params)
-            .then((response) => {
-                this.list = _.keyBy(response.data, 'id');
-                this.count = response.headers('X-Total');
-            });
-
         this.selectedGroup = [];
+
+        return this.IssuesService.all()
+            .getList({
+                project_identifier: this.currentProjectId(),
+                limit: this.limitPerPage,
+                offset: this.offset,
+                'status_ids[]': this.tags.filter((e) => e.type === 'status').map((e) => e.id),
+                'tracker_ids[]': this.tags.filter((e) => e.type === 'tracker').map((e) => e.id),
+                'priority_ids[]': this.tags.filter((e) => e.type === 'priority').map((e) => e.id)
+            })
+            .then((response) => {
+                this.list = response.data;
+                this.offset = parseInt(response.headers('X-Offset'));
+                this.limitPerPage = parseInt(response.headers('X-Limit'));
+                this.count = parseInt(response.headers('X-Total'));
+                this.pager = this.getPager();
+            });
+    }
+
+    currentProjectId() {
+        return this.$stateParams.hasOwnProperty('project_id') ? this.$stateParams.project_id : null;
     }
 
     onChangeFilterValue() {
-        this.selectedGroup = [];
         this.offset = 0;
         this.load();
     }
 
     loadFiltersValues() {
-        this.IssuesService.getIssuesFilters({enumeration_type: 'IssuePriority'}).then((response) => {
-            if (!_.isEmpty(response.data)) {
-                this.statuses = _.keyBy(_.get(response, 'data.statuses', null), 'id');
-                this.trackers = _.keyBy(_.get(response, 'data.trackers', null), 'id');
-                this.priorities = _.keyBy(_.get(response, 'data.priorities', null), 'id');
+        return this.IssuesService.filters()
+            .get({
+                project_identifier: this.currentProjectId()
+            })
+            .then((response) => {
+                this.statusList = response.data.statuses.map((e) => {
+                    e.type = 'status';
 
-                if (this.statuses) {
-                    _.forEach(this.statuses, (item) => {
-                        item.type = 'status';
-                        this.statusesList[item.id] = item.name;
-                        this.items.push(item);
+                    // default filter value
+                    if (!e.is_closed) {
+                        this.tags.push(e);
+                    }
 
-                        // apply "status: open" filters on issues load
-                        if (!item.is_closed) {
-                            this.tags.push(item);
-                        }
-                    });
-                }
+                    return e;
+                });
 
-                if (this.trackers) {
-                    _.forEach(this.trackers, (item) => {
-                        item.type = 'tracker';
-                        this.items.push(item);
-                    });
-                }
+                this.priorityList = response.data.priorities.map((e) => {
+                    e.type = 'priority';
+                    return e;
+                });
 
-                if (this.priorities) {
-                    _.forEach(this.priorities, (item) => {
-                        item.type = 'priority';
-                        this.prioritiesList[item.id] = item.name;
-                        this.items.push(item);
-                    });
-                }
-
-                // apply "status: open" filters on issues load
-                this.onChangeFilterValue();
-            }
-        });
+                // filter available parameters
+                this.items.push(
+                    ...this.statusList,
+                    ...this.priorityList,
+                    ...response.data.trackers.map((e) => {
+                        e.type = 'tracker';
+                        return e;
+                    })
+                );
+            });
     }
-
-    // initScrollbar() {
-    //     angular.element(this.$window).bind('resize', () => this.setScrollbarContainerHeight());
-    //     this.setScrollbarContainerHeight();
-    // }
 
     selectAll() {
         this.selectAllState = !this.selectAllState;
@@ -175,63 +145,28 @@ export default class IssuesListController extends ControllerBase {
         this.selectedGroup.splice(index, 1);
     }
 
-    // setScrollbarContainerHeight() {
-    //     let windowHeight = window.innerHeight;
-    //
-    //     if (!this.$stateParams.project_id) {
-    //         windowHeight += 50;
-    //     }
-    //
-    //     this.scrollBarConfigIssue = {
-    //         setHeight: windowHeight - 340
-    //     };
-    //
-    //     this.scrollBarConfigDescription = {
-    //         setHeight: windowHeight - 292
-    //     };
-    // }
+    querySearch() {
+        let items = this.items.filter((e) => {
+                return !this.tags.some((tag) => tag.type === e.type && tag.id === e.id);
+            }),
+            query = this.searchText.toLowerCase();
 
-    makeHtml(text) {
-        return text ? this.$showdown.stripHtml(this.$showdown.makeHtml(text)) : '';
+        if (!query) {
+            return items;
+        }
+
+        return items.filter((e) => {
+            return (e.name.toLowerCase().indexOf(query) !== -1) ||
+                (e.type.toLowerCase().indexOf(query) !== -1);
+        });
     }
 
-    querySearch(query) {
-        let lowercaseQuery = query ? query.toLowerCase() : '';
-
-        return lowercaseQuery ? this.items.filter((value) => {
-            return (value.name.toLowerCase().indexOf(lowercaseQuery) !== -1) ||
-                (value.type.toLowerCase().indexOf(lowercaseQuery) !== -1);
-        }) : this.items;
-
-
-        // return query ? this.items.filter(this.createFilterFor(query)) : [];
-    }
-
-    // createFilterFor(query) {
-    //     let lowercaseQuery = query.toLowerCase();
-    //
-    //     return function filterFn(vegetable) {
-    //         return (vegetable.name.toLowerCase().indexOf(lowercaseQuery) !== -1) ||
-    //             (vegetable.type.toLowerCase().indexOf(lowercaseQuery) !== -1);
-    //     };
-    // }
-
-    openMoreMenu($mdMenu, ev) {
-        $mdMenu.open(ev);
-    };
-
-    viewIssue($event,issue) {
-        // this.selectedIssue = issue;
-
+    viewIssue($event, issue) {
         this.$mdDialog.show(
-            this.setMdDialogConfig($event.target, {
+            this.constructor.setMdDialogConfig($event.target, {
                 selectedIssue: issue
             })
         );
-    }
-
-    closeIssueCard() {
-        this.selectedIssue = null;
     }
 
     deleteGroup() {
@@ -240,6 +175,7 @@ export default class IssuesListController extends ControllerBase {
             .title(`Would you like to delete this ${title_issue}?`)
             .ok('Delete!')
             .cancel('Cancel');
+
         this.$mdDialog.show(confirm).then(() => {
             this.selectedGroup.forEach((issue) => {
                 this.deleteConfirmedIssue(issue.id);
@@ -256,17 +192,10 @@ export default class IssuesListController extends ControllerBase {
         this.selectedGroup = [];
     }
 
-    toggleShowMore() {
-        this.showMore = !this.showMore;
-    }
-
-    openLimitMenu($mdMenu, ev) {
-        $mdMenu.open(ev);
-    };
-
     setLimitPerPage(count) {
         this.limitPerPage = count;
-        this.onChangeFilterValue();
+        this.offset = 0;
+        this.load();
     }
 
     next() {
@@ -283,67 +212,48 @@ export default class IssuesListController extends ControllerBase {
         }
     }
 
-    currentProjectId() {
-        return _.get(this.$state, 'data.layoutDefault.projectId') || _.get(this.$stateParams, 'project_id');
-    }
-
     getPager() {
-        const currentPage = this.offset === 0 ? this.offset + 1 : this.offset;
+        const currentPage = (this.offset === 0 ? this.offset + 1 : this.offset);
         const fromPage = (this.count < this.limitPerPage || this.count < this.offset + this.limitPerPage) ?
             this.count : this.limitPerPage + this.offset;
-        const all = this.count > this.limitPerPage ? ' /' + this.count : '';
+        const all = (this.count > this.limitPerPage ? ' /' + this.count : '');
 
         return currentPage + '-' + fromPage + all;
     }
 
-    assignTo(taskId, memberId) {
-        this.list[taskId].assigned_to_id = memberId;
-        this.list[taskId].project_id = this.list[taskId].project.id;
-        delete this.list[taskId].identifier;
-
-        this.IssuesService.update(this.list[taskId]).then((response) => {
-            this.list[taskId] = response.data;
-        });
-    }
-
-    setPriority(taskId, priorityId) {
-        this.list[taskId].priority_id = priorityId;
-        this.list[taskId].project_id = this.list[taskId].project.id;
-        delete this.list[taskId].identifier;
-
-        this.IssuesService.update(this.list[taskId]).then((response) => {
-            this.list[taskId] = response.data;
-        });
-    }
-
-    setStatus(taskId, statusId) {
-        this.list[taskId].status_id = statusId;
-        this.list[taskId].project_id = this.list[taskId].project.id;
-        delete this.list[taskId].identifier;
-
-        this.IssuesService.update(this.list[taskId]).then((response) => {
-            this.list[taskId] = response.data;
-        });
-    }
-
-    setMdDialogConfig(target, data = {}) {
-        // current project identifier
-        // data.identifier = this.model.identifier;
-
+    static setMdDialogConfig(target, data = {}) {
         return {
-            // controller: function(){
-            //     console.log(this.selectedIssue);
-            // },//component.controller,
             controller: issuesViewModalController,
             controllerAs: '$ctrl',
             bindToController: true,
             locals: data,
-            template: issuesViewModalTemplate,//'<issues-view-component selected-issue="$ctrl.selectedIssue"></issues-view-component>',//component.template,
+            template: issuesViewModalTemplate,
             clickOutsideToClose: true,
             openFrom: target,
             closeTo: target,
         };
-        // );
     }
 
+    openIssue(id) {
+        this.$state.go('issues.info', {id: id});
+    }
+
+    editIssue(id) {
+        this.$state.go('issues.edit', {id: id});
+    }
+
+    copyIssue(id) {
+        this.$state.go('issues.copy', {id: id});
+    }
+
+    deleteIssue(item) {
+        let confirm = this.$mdDialog.confirm()
+            .title('Would you like to delete this issue?')
+            .ok('Delete!')
+            .cancel('Cancel');
+
+        return this.$mdDialog.show(confirm)
+            .then(() => item.remove())
+            .then(() => this.load());
+    }
 }

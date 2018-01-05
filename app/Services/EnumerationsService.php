@@ -31,13 +31,32 @@ class EnumerationsService
      * @param bool $projectIdIsNull
      * @return mixed
      */
-    public function getList($params = [], $projectIdIsNull = true)
-    {
-        $enumerations = Enumeration::orderBy('position');
-        $projectIdIsNull ? $enumerations->whereNull('project_id') : null;
-        !empty($params) ? $enumerations->where($params) : null;
+//    public function getList($params = [], $projectIdIsNull = true)
+//    {
+//        $enumerations = Enumeration::orderBy('position');
+//        $projectIdIsNull ? $enumerations->whereNull('project_id') : null;
+//        !empty($params) ? $enumerations->where($params) : null;
+//
+//        return $enumerations->get();
+//    }
 
-        return $enumerations->get();
+    public function all(array $params = [])
+    {
+        $query = Enumeration::with(['project'])
+            ->where('active', Enumeration::ACTIVE_ON)
+            ->orderBy('position');
+
+        if ($type = array_get($params, 'type')) {
+            $query->where('type', $type);
+        }
+
+        if ($project = array_get($params, 'project_identifier')) {
+            $query->whereNull('project_id')->orWhereHas('project', function ($query) use ($project) {
+                $query->where('identifier', $project);
+            });
+        }
+
+        return $query->get();
     }
 
     /**

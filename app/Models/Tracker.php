@@ -32,4 +32,9 @@ class Tracker extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class, ProjectsTracker::getTableName());
+    }
 }

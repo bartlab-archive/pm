@@ -11,15 +11,8 @@
 
             <div flex></div>
 
-            <!--<p ng-show="$ctrl.selectedGroup.length > 0">Selected items: {{ $ctrl.selectedGroup.length }}</p>-->
-            <!--<md-button ng-show="$ctrl.selectedGroup.length > 0"-->
-                       <!--ng-click="$ctrl.deleteGroup()">-->
-                <!--<md-icon>delete</md-icon>-->
-                <!--Delete-->
-            <!--</md-button>-->
-
             <md-menu ng-show="$ctrl.selectedGroup.length > 0">
-                <md-button class="pages-button" ng-click="$ctrl.openLimitMenu($mdMenu, $event)">
+                <md-button class="pages-button" ng-click="$mdMenu.open()">
                     Selected items: {{ $ctrl.selectedGroup.length }}
                 </md-button>
                 <md-menu-content>
@@ -29,37 +22,17 @@
                             Delete
                         </md-button>
                     </md-menu-item>
-                    <!--<md-menu-item>-->
-                        <!--<md-button ng-click="$ctrl.setLimitPerPage(50)">-->
-                            <!--50-->
-                        <!--</md-button>-->
-                    <!--</md-menu-item>-->
-                    <!--<md-menu-item>-->
-                        <!--<md-button ng-click="$ctrl.setLimitPerPage(100)">-->
-                            <!--100-->
-                        <!--</md-button>-->
-                    <!--</md-menu-item>-->
                 </md-menu-content>
             </md-menu>
 
             <md-menu ng-show="$ctrl.selectedGroup.length === 0">
-                <md-button class="pages-button" ng-click="$ctrl.openLimitMenu($mdMenu, $event)">
-                    {{ $ctrl.getPager() }}
+                <md-button class="pages-button" ng-click="$mdMenu.open()">
+                    {{ $ctrl.pager }}
                 </md-button>
                 <md-menu-content>
-                    <md-menu-item>
-                        <md-button ng-click="$ctrl.setLimitPerPage(20)">
-                            20
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button ng-click="$ctrl.setLimitPerPage(50)">
-                            50
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button ng-click="$ctrl.setLimitPerPage(100)">
-                            100
+                    <md-menu-item ng-repeat="item in ::$ctrl.perPageList">
+                        <md-button ng-click="$ctrl.setLimitPerPage(item)">
+                            {{ ::item }}
                         </md-button>
                     </md-menu-item>
                 </md-menu-content>
@@ -81,7 +54,7 @@
             </md-button>
 
             <md-menu>
-                <md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openMoreMenu($mdMenu, $event)">
+                <md-button class="md-icon-button" aria-label="User menu" ng-click="$mdMenu.open()">
                     <md-icon>more_vert</md-icon>
                 </md-button>
                 <md-menu-content width="4">
@@ -122,24 +95,24 @@
                     delete-hint="Press delete to remove param">
 
                 <md-chip-template>
-                    <strong>{{ $chip.name }}</strong>
-                    <em>({{ $chip.type }})</em>
+                    <strong>{{ ::$chip.name }}</strong>
+                    <em>({{ ::$chip.type }})</em>
                 </md-chip-template>
 
                 <md-autocomplete
                         md-no-cache="true"
                         md-search-text="$ctrl.searchText"
                         md-item-text="item.name"
-                        md-items="item in $ctrl.querySearch($ctrl.searchText)"
+                        md-items="item in $ctrl.querySearch()"
                         md-min-length="0"
                         placeholder="Add filter">
-                    <span md-highlight-text="$ctrl.searchText">{{ ::item.name }} ({{ ::item.type }})</span>
+                    <span md-highlight-text="$ctrl.searchText" md-highlight-flags="i">{{ ::item.name }} ({{ ::item.type }})</span>
                 </md-autocomplete>
             </md-chips>
         </md-card-content>
 
         <md-list class="md-dense">
-            <div ng-if="$ctrl.count == 0" layout-align="center center" layout="row" class="md-padding">
+            <div ng-if="$ctrl.count === 0" layout-align="center center" layout="row" class="md-padding">
                 No data to display
             </div>
 
@@ -147,65 +120,17 @@
                 <md-checkbox ng-model="row.selected" ng-change="$ctrl.onSelectIssue(row)"
                              aria-label="Select issue"></md-checkbox>
 
-                <img src="//www.gravatar.com/avatar/{{ row.user.avatar_hash }}" class="md-avatar">
+                <img src="//www.gravatar.com/avatar/{{ ::row.user.avatar_hash }}" class="md-avatar">
 
                 <div class="md-list-item-text" layout="column">
-                    <h3>{{ row.subject}}</h3>
-                    <h4>
-                        <!--<md-icon>query_builder</md-icon>-->
-                        {{ row.id }} | {{ row.trackers.name }} | {{ $ctrl.statusesList[row.status_id] }} | {{ row.updated_on }}
-                        <!--<md-menu>-->
-                            <!--<md-button class="small" ng-click="$mdMenu.open()">-->
-                                <!--<md-icon>error_outline</md-icon>-->
-                                <!--{{ $ctrl.prioritiesList[row.priority_id] }}-->
-                            <!--</md-button>-->
-                            <!--<md-menu-content width="2">-->
-                                <!--<md-menu-item ng-repeat="(id, priority) in $ctrl.prioritiesList" ng-if="priority">-->
-                                    <!--<md-button ng-click="">-->
-                                        <!--{{ priority }}-->
-                                    <!--</md-button>-->
-                                <!--</md-menu-item>-->
-                            <!--</md-menu-content>-->
-                        <!--</md-menu>-->
-
-                        <!--<md-menu>-->
-                            <!--<md-button class="small" ng-click="$mdMenu.open()">-->
-                                <!--<md-icon>person</md-icon>-->
-                                <!--{{ row.user.firstname }} {{ row.user.lastname }}-->
-                            <!--</md-button>-->
-                            <!--<md-menu-content width="3">-->
-                                <!--<md-menu-item ng-repeat="member in $ctrl.members">-->
-                                    <!--<md-button ng-click="$ctrl.assignTo(row.id, member.user_id)">-->
-                                        <!--{{ member.name }}-->
-                                    <!--</md-button>-->
-                                <!--</md-menu-item>-->
-                            <!--</md-menu-content>-->
-                        <!--</md-menu>-->
-
-                        <!--<md-menu>-->
-                            <!--<md-button class="small" ng-click="$mdMenu.open()">-->
-                                <!--<md-icon>check</md-icon>-->
-                                <!--{{ $ctrl.statusesList[row.status_id] }}-->
-                            <!--</md-button>-->
-                            <!--<md-menu-content width="2">-->
-                                <!--<md-menu-item ng-repeat="(id, status) in $ctrl.statusesList" ng-if="status">-->
-                                    <!--<md-button ng-click="$ctrl.setStatus(row.id, id)">-->
-                                        <!--{{ status }}-->
-                                    <!--</md-button>-->
-                                <!--</md-menu-item>-->
-                            <!--</md-menu-content>-->
-                        <!--</md-menu>-->
+                    <h3>#{{ ::row.id }}: {{ ::row.subject}}</h3>
+                    <h4 layout="row">
+                        <span flex>
+                            {{ ::[row.tracker.name, row.priority.name, row.status.name] | join:' | ' }}
+                        </span>
+                        <span>{{ ::row.updated_on }}</span>
                     </h4>
-                    <!--<p>{{ $ctrl.statusesList[row.status_id] }}</p>-->
                 </div>
-
-                <!--<div class="md-list-item-text" layout="column">-->
-                <!--<span>{{ $ctrl.statusesList[row.status_id] }}</span>-->
-                <!--</div>-->
-<!--<div class="md-secondary">-->
-                <md-icon ng-if="row.is_private">lock</md-icon>
-                <md-icon ng-if="row.priority_id == 5">priority_high</md-icon>
-
 
                 <md-menu-bar>
                     <md-menu md-position-mode="target-right target">
@@ -237,9 +162,10 @@
                                     </md-button>
 
                                     <md-menu-content width="3">
-                                        <md-menu-item ng-repeat="(id, status) in $ctrl.statusesList" ng-if="status">
-                                            <md-button ng-click="$ctrl.setStatus(row.id, id)">
-                                                {{ status }}
+                                        <md-menu-item class="md-indent" ng-repeat="status in ::$ctrl.statusList">
+                                            <md-icon ng-if="status.id === row.status_id">check</md-icon>
+                                            <md-button ng-click="null">
+                                                {{ ::status.name }}
                                             </md-button>
                                         </md-menu-item>
                                     </md-menu-content>
@@ -253,9 +179,10 @@
                                     </md-button>
 
                                     <md-menu-content width="3">
-                                        <md-menu-item>
+                                        <md-menu-item class="md-indent" ng-repeat="tracker in ::row.project.trackers">
+                                            <md-icon ng-if="tracker.id === row.tracker_id">check</md-icon>
                                             <md-button ng-click="null">
-                                                Tracker
+                                                {{ ::tracker.name }}
                                             </md-button>
                                         </md-menu-item>
                                     </md-menu-content>
@@ -269,10 +196,10 @@
                                     </md-button>
 
                                     <md-menu-content width="3">
-                                        <md-menu-item ng-repeat="(id, priority) in $ctrl.prioritiesList"
-                                                      ng-if="priority">
+                                        <md-menu-item class="md-indent" ng-repeat="priority in ::$ctrl.priorityList">
+                                            <md-icon ng-if="priority.id === row.priority_id">check</md-icon>
                                             <md-button ng-click="">
-                                                {{ priority }}
+                                                {{ ::priority.name }}
                                             </md-button>
                                         </md-menu-item>
                                     </md-menu-content>
@@ -286,9 +213,9 @@
                                     </md-button>
 
                                     <md-menu-content width="3">
-                                        <md-menu-item ng-repeat="member in $ctrl.members">
+                                        <md-menu-item ng-repeat="member in ::$ctrl.members">
                                             <md-button ng-click="$ctrl.assignTo(row.id, member.user_id)">
-                                                {{ member.name }}
+                                                {{ ::member.name }}
                                             </md-button>
                                         </md-menu-item>
                                     </md-menu-content>
@@ -317,10 +244,11 @@
                                         % Done
                                     </md-button>
 
-                                    <md-menu-content width="3">
-                                        <md-menu-item>
+                                    <md-menu-content width="2">
+                                        <md-menu-item class="md-indent" ng-repeat="item in [] | range:11">
+                                            <md-icon ng-if="item * 10 === row.done_ratio">check</md-icon>
                                             <md-button ng-click="null">
-                                                % Done
+                                                {{ ::item * 10 }}%
                                             </md-button>
                                         </md-menu-item>
                                     </md-menu-content>
@@ -356,7 +284,7 @@
                             <md-menu-item class="md-indent">
                                 <md-icon>delete</md-icon>
 
-                                <md-button ng-click="$ctrl.deleteIssue(row.id)">
+                                <md-button ng-click="$ctrl.deleteIssue(row)">
                                     Delete
                                 </md-button>
                             </md-menu-item>
@@ -364,7 +292,6 @@
                         </md-menu-content>
                     </md-menu>
                 </md-menu-bar>
-<!--</div>-->
 
                 <md-divider ng-if="!$last"></md-divider>
             </md-list-item>

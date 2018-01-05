@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Attachment extends Model
 {
-    const PROJECT_TYPE = 'Project';
+//    const PROJECT_TYPE = 'Project';
     
     protected $table = 'attachments';
 

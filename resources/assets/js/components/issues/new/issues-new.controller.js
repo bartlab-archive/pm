@@ -17,7 +17,9 @@ export default class IssuesNewController extends ControllerBase {
 
     $onInit() {
 
-        this.issue = {};
+        this.issue = {
+            done:0
+        };
         this.error = true;
         this.usersList = [];
         this.trackersList = [];
@@ -58,7 +60,6 @@ export default class IssuesNewController extends ControllerBase {
         this.issue.due_date = moment(this.issue.due_date).format('YYYY-MM-DD');
         this.issue.start_date = moment(this.issue.start_date).format('YYYY-MM-DD');
         this.IssuesService.create(this.issue).then((response) => {
-
             if (this.issue = _.get(response, 'data')) {
                 this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
             }
@@ -75,7 +76,7 @@ export default class IssuesNewController extends ControllerBase {
     }
 
     cancel() {
-        this.$state.go('projects.inner.issues.index', {project_id: this.$stateParams.project_id});
+        this.$state.go('issues-inner.index', {project_id: this.$stateParams.project_id});
     }
 
 }
