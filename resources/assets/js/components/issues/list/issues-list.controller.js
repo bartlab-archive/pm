@@ -120,7 +120,7 @@ export default class IssuesListController extends ControllerBase {
         this.selectAllState = !this.selectAllState;
         this.selectedGroup = [];
 
-        Object.values(this.list).forEach((item) => {
+        this.list.forEach((item) => {
             item.selected = this.selectAllState;
 
             if (this.selectAllState) {

@@ -11,7 +11,7 @@
 
             <div flex></div>
 
-            <md-menu ng-show="$ctrl.selectedGroup.length > 0">
+            <md-menu ng-if="$ctrl.selectedGroup.length > 0">
                 <md-button class="pages-button" ng-click="$mdMenu.open()">
                     Selected items: {{ $ctrl.selectedGroup.length }}
                 </md-button>
@@ -25,33 +25,33 @@
                 </md-menu-content>
             </md-menu>
 
-            <md-menu ng-show="$ctrl.selectedGroup.length === 0">
-                <md-button class="pages-button" ng-click="$mdMenu.open()">
-                    {{ $ctrl.pager }}
+            <div ng-if="$ctrl.selectedGroup.length === 0">
+                <md-menu ng-show="$ctrl.selectedGroup.length === 0">
+                    <md-button class="pages-button" ng-click="$mdMenu.open()">
+                        {{ $ctrl.pager }}
+                    </md-button>
+                    <md-menu-content>
+                        <md-menu-item ng-repeat="item in ::$ctrl.perPageList">
+                            <md-button ng-click="$ctrl.setLimitPerPage(item)">
+                                {{ ::item }}
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+
+                <md-button
+                        ng-click="$ctrl.previous()"
+                        ng-disabled="$ctrl.offset === 0" class="md-icon-button">
+                    <md-icon>keyboard_arrow_left</md-icon>
                 </md-button>
-                <md-menu-content>
-                    <md-menu-item ng-repeat="item in ::$ctrl.perPageList">
-                        <md-button ng-click="$ctrl.setLimitPerPage(item)">
-                            {{ ::item }}
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
 
-            <md-button
-                    ng-show="$ctrl.selectedGroup.length === 0"
-                    ng-click="$ctrl.previous()"
-                    ng-disabled="$ctrl.offset === 0" class="md-icon-button">
-                <md-icon>keyboard_arrow_left</md-icon>
-            </md-button>
-
-            <md-button
-                    ng-show="$ctrl.selectedGroup.length === 0"
-                    ng-click="$ctrl.next()"
-                    ng-disabled="$ctrl.offset + $ctrl.limitPerPage >= $ctrl.count"
-                    class="md-icon-button">
-                <md-icon>keyboard_arrow_right</md-icon>
-            </md-button>
+                <md-button
+                        ng-click="$ctrl.next()"
+                        ng-disabled="$ctrl.offset + $ctrl.limitPerPage >= $ctrl.count"
+                        class="md-icon-button">
+                    <md-icon>keyboard_arrow_right</md-icon>
+                </md-button>
+            </div>
 
             <md-menu>
                 <md-button class="md-icon-button" aria-label="User menu" ng-click="$mdMenu.open()">
@@ -163,7 +163,7 @@
 
                                     <md-menu-content width="3">
                                         <md-menu-item class="md-indent" ng-repeat="status in ::$ctrl.statusList">
-                                            <md-icon ng-if="status.id === row.status_id">check</md-icon>
+                                            <md-icon ng-if="::row.status_id === status.id">check</md-icon>
                                             <md-button ng-click="null">
                                                 {{ ::status.name }}
                                             </md-button>
@@ -180,7 +180,7 @@
 
                                     <md-menu-content width="3">
                                         <md-menu-item class="md-indent" ng-repeat="tracker in ::row.project.trackers">
-                                            <md-icon ng-if="tracker.id === row.tracker_id">check</md-icon>
+                                            <md-icon ng-if="::row.tracker_id === tracker.id">check</md-icon>
                                             <md-button ng-click="null">
                                                 {{ ::tracker.name }}
                                             </md-button>
@@ -197,7 +197,7 @@
 
                                     <md-menu-content width="3">
                                         <md-menu-item class="md-indent" ng-repeat="priority in ::$ctrl.priorityList">
-                                            <md-icon ng-if="priority.id === row.priority_id">check</md-icon>
+                                            <md-icon ng-if="::row.priority_id === priority.id">check</md-icon>
                                             <md-button ng-click="">
                                                 {{ ::priority.name }}
                                             </md-button>
@@ -246,7 +246,7 @@
 
                                     <md-menu-content width="2">
                                         <md-menu-item class="md-indent" ng-repeat="item in [] | range:11">
-                                            <md-icon ng-if="item * 10 === row.done_ratio">check</md-icon>
+                                            <md-icon ng-if="::row.done_ratio === (item * 10)">check</md-icon>
                                             <md-button ng-click="null">
                                                 {{ ::item * 10 }}%
                                             </md-button>
