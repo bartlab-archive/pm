@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ config('app.locale') }}" ng-app="app">
+<html lang="{{ config('app.locale') }}" ng-app="app" ng-strict-di>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

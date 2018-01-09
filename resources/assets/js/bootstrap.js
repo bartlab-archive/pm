@@ -34,3 +34,7 @@ window.getWatchersCount = () => {
 
     return watchersWithoutDuplicates.length;
 };
+
+window.reloadWithDebugInfo = ()=>{
+    angular.reloadWithDebugInfo();
+};
