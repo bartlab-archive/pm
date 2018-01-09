@@ -29,6 +29,14 @@ export default class IssuesListController extends ControllerBase {
         // text in filter input
         this.searchText = '';
 
+        this.sortList = [
+            {param: 'id:asc', name: 'ID ASC'},
+            {param: 'id:decs', name: 'ID DESC'},
+            {param: 'updated_on:asc', name: 'Updated ASC'},
+            {param: 'updated_on:decs', name: 'Updated DESC'},
+        ];
+        this.sort = this.sortList[3];
+
         // item selection
         this.selectedGroup = [];
         this.selectAllState = false;
@@ -60,6 +68,7 @@ export default class IssuesListController extends ControllerBase {
                 project_identifier: this.currentProjectId(),
                 limit: this.limitPerPage,
                 offset: this.offset,
+                order: this.sort.param,
                 'status_ids[]': this.tags.filter((e) => e.type === 'status').map((e) => e.id),
                 'tracker_ids[]': this.tags.filter((e) => e.type === 'tracker').map((e) => e.id),
                 'priority_ids[]': this.tags.filter((e) => e.type === 'priority').map((e) => e.id)
@@ -190,6 +199,12 @@ export default class IssuesListController extends ControllerBase {
         });
 
         this.selectedGroup = [];
+    }
+
+    setSort(item) {
+        this.sort = item;
+        this.offset = 0;
+        this.load();
     }
 
     setLimitPerPage(count) {

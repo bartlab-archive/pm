@@ -102,7 +102,7 @@ class IssuesService
         return $issue;
     }
 
-    public function all(array $params = [], array $orderBy = ['updated_on' => 'desc'])
+    public function all(array $params = [])
     {
         $query = Issue::with(['tracker', 'project.trackers', 'user', 'author', 'project', 'status', 'watchers.user', 'priority']);
 
@@ -132,8 +132,12 @@ class IssuesService
             $query->whereIn('priority_id', (array)$priorities);
         }
 
-        if (!empty([$orderBy])) {
-            foreach ($orderBy as $key => $val) {
+        if ($order = array_get($params, 'order', ['updated_on' => 'desc'])) {
+            if (is_string($order) && count($split = explode(':', $order))==2) {
+                $order = [$split[0] => $split[1]];
+            }
+
+            foreach ($order as $key => $val) {
                 $query->orderBy($key, $val);
             }
         }
