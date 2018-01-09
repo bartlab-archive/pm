@@ -11,19 +11,158 @@
 
             <div flex></div>
 
-            <md-menu ng-if="$ctrl.selectedGroup.length > 0">
-                <md-button class="pages-button" ng-click="$mdMenu.open()">
-                    Selected items: {{ $ctrl.selectedGroup.length }}
-                </md-button>
-                <md-menu-content>
-                    <md-menu-item>
-                        <md-button ng-click="$ctrl.deleteGroup()">
+            <md-menu-bar ng-if="$ctrl.selectedGroup.length > 0">
+                <md-menu md-position-mode="target-right target">
+                    <md-button aria-label="More actions" ng-click="$mdMenu.open()">
+                        Selected items: {{ $ctrl.selectedGroup.length }}
+                    </md-button>
+
+                    <md-menu-content width="3">
+                        <md-menu-item class="md-indent" ng-click="$ctrl.editIssue(row.id)">
+                            <md-icon>mode_edit</md-icon>
+
+                            <md-button>
+                                Edit
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item class="md-indent">
+                            <md-menu>
+                                <md-button ng-click="$mdMenu.open()">
+                                    Status
+                                </md-button>
+
+                                <md-menu-content width="3">
+                                    <md-menu-item class="md-indent" ng-repeat="status in ::$ctrl.statusList">
+                                        <md-button ng-click="null">
+                                            {{ ::status.name }}
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </md-menu-item>
+
+                        <md-menu-item class="md-indent">
+                            <md-menu>
+                                <md-button ng-click="$mdMenu.open()">
+                                    Tracker
+                                </md-button>
+
+                                <md-menu-content width="3">
+                                    <md-menu-item class="md-indent" ng-repeat="tracker in ::row.project.trackers">
+                                        <md-button ng-click="null">
+                                            {{ ::tracker.name }}
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </md-menu-item>
+
+                        <md-menu-item class="md-indent">
+                            <md-menu>
+                                <md-button ng-click="$mdMenu.open()">
+                                    Priority
+                                </md-button>
+
+                                <md-menu-content width="3">
+                                    <md-menu-item class="md-indent" ng-repeat="priority in ::$ctrl.priorityList">
+                                        <md-button ng-click="">
+                                            {{ ::priority.name }}
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </md-menu-item>
+
+                        <md-menu-item class="md-indent">
+                            <md-menu>
+                                <md-button ng-click="$mdMenu.open()">
+                                    Assignee
+                                </md-button>
+
+                                <md-menu-content width="3">
+                                    <md-menu-item ng-repeat="member in ::$ctrl.members">
+                                        <md-button ng-click="$ctrl.assignTo(row.id, member.user_id)">
+                                            {{ ::member.name }}
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </md-menu-item>
+
+                        <md-menu-item class="md-indent">
+                            <md-menu>
+                                <md-button ng-click="$mdMenu.open()">
+                                    Category
+                                </md-button>
+
+                                <md-menu-content width="3">
+                                    <md-menu-item>
+                                        <md-button ng-click="null">
+                                            Category
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </md-menu-item>
+
+                        <md-menu-item class="md-indent">
+                            <md-menu>
+                                <md-button ng-click="$mdMenu.open()">
+                                    % Done
+                                </md-button>
+
+                                <md-menu-content width="2">
+                                    <md-menu-item class="md-indent" ng-repeat="item in [] | range:11">
+                                        <md-button ng-click="null">
+                                            {{ ::item * 10 }}%
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </md-menu-item>
+
+                        <md-menu-item class="md-indent">
+                            <md-menu>
+                                <md-button ng-click="$mdMenu.open()">
+                                    Watchers
+                                </md-button>
+
+                                <md-menu-content width="3">
+                                    <md-menu-item>
+                                        <md-button ng-click="null">
+                                            Add
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </md-menu-item>
+
+                        <md-menu-item class="md-indent">
                             <md-icon>delete</md-icon>
-                            Delete
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
+
+                            <md-button ng-click="$ctrl.deleteIssue(row)">
+                                Delete
+                            </md-button>
+                        </md-menu-item>
+
+                    </md-menu-content>
+                </md-menu>
+            </md-menu-bar>
+
+            <!--<md-menu ng-if="$ctrl.selectedGroup.length > 0">-->
+            <!--<md-button class="pages-button" ng-click="$mdMenu.open()">-->
+            <!--Selected items: {{ $ctrl.selectedGroup.length }}-->
+            <!--</md-button>-->
+            <!--<md-menu-content>-->
+            <!--<md-menu-item>-->
+            <!--<md-button ng-click="$ctrl.deleteGroup()">-->
+            <!--<md-icon>delete</md-icon>-->
+            <!--Delete-->
+            <!--</md-button>-->
+            <!--</md-menu-item>-->
+            <!--</md-menu-content>-->
+            <!--</md-menu>-->
 
             <div ng-if="$ctrl.selectedGroup.length === 0">
                 <md-menu ng-show="$ctrl.selectedGroup.length === 0">
@@ -51,35 +190,36 @@
                         class="md-icon-button">
                     <md-icon>keyboard_arrow_right</md-icon>
                 </md-button>
+
+
+                <md-menu>
+                    <md-button class="md-icon-button" aria-label="User menu" ng-click="$mdMenu.open()">
+                        <md-icon>more_vert</md-icon>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item ng-click="null">
+                            <md-button>
+                                <md-icon>rss_feed</md-icon>
+                                Atom
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item ng-click="null">
+                            <md-button>
+                                <md-icon>file_download</md-icon>
+                                CSV
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item ng-click="null">
+                            <md-button>
+                                <md-icon>file_download</md-icon>
+                                PDF
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </div>
-
-            <md-menu>
-                <md-button class="md-icon-button" aria-label="User menu" ng-click="$mdMenu.open()">
-                    <md-icon>more_vert</md-icon>
-                </md-button>
-                <md-menu-content width="4">
-                    <md-menu-item ng-click="null">
-                        <md-button>
-                            <md-icon>rss_feed</md-icon>
-                            Atom
-                        </md-button>
-                    </md-menu-item>
-
-                    <md-menu-item ng-click="null">
-                        <md-button>
-                            <md-icon>file_download</md-icon>
-                            CSV
-                        </md-button>
-                    </md-menu-item>
-
-                    <md-menu-item ng-click="null">
-                        <md-button>
-                            <md-icon>file_download</md-icon>
-                            PDF
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
         </md-card-header>
 
         <md-card-content>
