@@ -50,6 +50,7 @@ export default class IssuesListController extends ControllerBase {
 
         // issues list
         this.list = [];
+        this.loadProccess = false;
 
         // available params for all issue
         this.statusList = [];
@@ -62,6 +63,7 @@ export default class IssuesListController extends ControllerBase {
     load() {
         this.selectAllState = false;
         this.selectedGroup = [];
+        this.loadProccess = true;
 
         return this.IssuesService.all()
             .getList({
@@ -79,6 +81,7 @@ export default class IssuesListController extends ControllerBase {
                 this.limitPerPage = parseInt(response.headers('X-Limit'));
                 this.count = parseInt(response.headers('X-Total'));
                 this.pager = this.getPager();
+                this.loadProccess = false;
             });
     }
 

@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Auth;
  */
 class IssuesService
 {
+    const MODULE_NAME = 'issue_tracking';
+
     protected $journalsService;
     protected $journalDetailsService;
     protected $watchersService;
@@ -41,7 +43,9 @@ class IssuesService
 
     public function one($id)
     {
-        return Issue::where('id', $id)->with(['trackers', 'user', 'author', 'project', 'childIssues'])->first();
+        return Issue::where('id', $id)
+            ->with(['tracker','user', 'author', 'project', 'childIssues'])
+            ->first();
     }
 
     public function update($id, array $data)
@@ -110,6 +114,13 @@ class IssuesService
             $query->whereHas('project', function ($query) use ($project) {
                 $query->where('identifier', $project);
             });
+        }else{
+            /*
+             * Need add to where:
+             *  - is module enambled for project
+             *  - is user allow to view issue
+             *  - project status
+             */
         }
 
         if ($statuses = array_get($params, 'status_ids', [])) {
@@ -193,4 +204,5 @@ class IssuesService
     {
         return Issue::destroy($ids);
     }
+
 }

@@ -15,9 +15,9 @@ export default class IssuesService extends ServiceBase {
         // this.cache = this.$cacheFactory('IssuesService');
     }
 
-    one() {
-        return this.Restangular.one('issues');
-    }
+    // one() {
+    //     return this.Restangular.one('issues');
+    // }
 
     all() {
         return this.Restangular.all('issues');

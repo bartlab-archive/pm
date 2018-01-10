@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Issues\GetIssuesRequest;
 use App\Http\Requests\Issues\UpdateIssueRequest;
+use App\Services\EnabledModulesService;
 use App\Services\EnumerationsService;
 use App\Services\IssueCategoriesService;
 use App\Services\IssuesService;
-use App\Services\IssueStatusesService;
 use App\Services\JournalsService;
 use App\Services\ProjectsService;
 use App\Services\StatusesService;
@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Auth;
  * @property IssueCategoriesService $categoriesService
  * @property JournalsService $journalsService
  * @property WatchersService $watchersService
+ * @property EnabledModulesService $enabledModulesService
  *
  * @package App\Http\Controllers
  */
@@ -42,6 +43,7 @@ class IssuesController extends BaseController
     protected $enumerationsService;
     protected $journalsService;
     protected $watchersService;
+    protected $enabledModulesService;
 
     public function __construct(
         IssuesService $issueService,
@@ -51,7 +53,8 @@ class IssuesController extends BaseController
         EnumerationsService $enumerationsService,
         IssueCategoriesService $categoriesService,
         JournalsService $journalsService,
-        WatchersService $watchersService
+        WatchersService $watchersService,
+        EnabledModulesService $enabledModulesService
     )
     {
         $this->issueService = $issueService;
@@ -62,26 +65,52 @@ class IssuesController extends BaseController
         $this->enumerationsService = $enumerationsService;
         $this->journalsService = $journalsService;
         $this->watchersService = $watchersService;
+        $this->enabledModulesService = $enabledModulesService;
     }
 
     public function one($id, Request $request)
     {
-        $issue = $this->issueService->one($id);
+        if (!$issue = $this->issueService->one($id)) {
+            return abort(404);
+        }
 
-        $response = [
-            'projectsList' => $this->projectsService->list(),
-            'trackersList' => $this->trackersService->all(),
-            'statusesList' => $this->statusesService->all(),
-            'prioritiesList' => $this->enumerationsService->getList(['type' => $request->enumeration_type]),
-            'project' => $this->projectsService->one(array_get($issue, 'project.identifier')),
-            'issue' => $issue
-        ];
+        /*
+         * Need check:
+         *  - is module enambled for project
+         *  - is user allow to view issue
+         *  - project status
+         */
+        if (!$issue->project || !$this->enabledModulesService->check(
+            $issue->project->identifier,
+            $this->issueService::MODULE_NAME
+        )) {
+            return abort(403);
+        }
 
-        return response()->json($response, 200);
+        return response()->json($issue, 200);
     }
 
     public function all(GetIssuesRequest $request)
     {
+        if ($projectIdentifier = $request->get('project_identifier')) {
+            if (!$project = $this->projectsService->one($projectIdentifier)) {
+                abort(404);
+            }
+
+            /*
+             * Need check:
+             *  - is module enambled for project
+             *  - is user allow to view issue
+             *  - project status
+             */
+            if (!$this->enabledModulesService->check(
+                $project->identifier,
+                $this->issueService::MODULE_NAME
+            )) {
+                return abort(403);
+            }
+        }
+
         $data = $this->issueService->all($request->all());
 
         return response()
@@ -133,7 +162,7 @@ class IssuesController extends BaseController
         return response()->json($this->issueService->delete($id), 200);
     }
 
-    public function getHistory($id)
+    public function history($id)
     {
         $data = $this->journalsService->getList(['journalized_id' => $id], ['journalDetails', 'user']);
 

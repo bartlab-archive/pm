@@ -20,6 +20,7 @@ export default class AppRun extends InjectableBase {
         this.$transitions.onStart({}, (...args) => this.checkAccess(...args));
         this.$rootScope.$on('authUnauthorized', (...args) => this.authUnauthorized(...args));
         this.$rootScope.$on('authForbidden', (...args) => this.authForbidden(...args));
+        this.$rootScope.$on('notFound', (...args) => this.notFound(...args));
         this.Restangular.setErrorInterceptor((...args) => this.errorInterceptor(...args));
     }
 
@@ -55,6 +56,14 @@ export default class AppRun extends InjectableBase {
         this.$state.go('home');
     }
 
+    notFound() {
+        this.$mdToast.show(
+            this.$mdToast.simple().textContent('Not found')
+        );
+
+        this.$state.go('404');
+    }
+
     errorInterceptor(response, deferred, responseHandler) {
         switch (true) {
             case (response.status === 401):
@@ -63,6 +72,10 @@ export default class AppRun extends InjectableBase {
 
             case (response.status === 403):
                 this.$rootScope.$broadcast('authForbidden');
+                break;
+
+            case (response.status === 404):
+                this.$rootScope.$broadcast('notFound');
                 break;
 
             case (response.status >= 500):

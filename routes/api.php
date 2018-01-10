@@ -156,7 +156,7 @@ Route::group(
 
         Route::group(
             [
-                'middleware' => ['auth', 'module:issue_tracking'],
+                'middleware' => 'auth',
                 'prefix' => 'issues'
             ],
             function () {
@@ -166,7 +166,7 @@ Route::group(
                 Route::get('/{id}', 'IssuesController@one');
                 Route::put('/{id}', 'IssuesController@update');
                 Route::delete('/{id}', 'IssuesController@delete');
-                Route::get('/{id}/history', 'IssuesController@getHistory');
+                Route::get('/{id}/history', 'IssuesController@history');
                 Route::post('/{id}/watch', 'IssuesController@watch');
                 Route::delete('/{id}/watch', 'IssuesController@unwatch');
             }

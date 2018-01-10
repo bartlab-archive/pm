@@ -166,13 +166,13 @@
 
                 <md-button
                         ng-click="$ctrl.previous()"
-                        ng-disabled="$ctrl.offset === 0" class="md-icon-button">
+                        ng-disabled="$ctrl.offset === 0 || $ctrl.loadProccess" class="md-icon-button">
                     <md-icon>keyboard_arrow_left</md-icon>
                 </md-button>
 
                 <md-button
                         ng-click="$ctrl.next()"
-                        ng-disabled="$ctrl.offset + $ctrl.limitPerPage >= $ctrl.count"
+                        ng-disabled="($ctrl.offset + $ctrl.limitPerPage >= $ctrl.count)  || $ctrl.loadProccess"
                         class="md-icon-button">
                     <md-icon>keyboard_arrow_right</md-icon>
                 </md-button>
