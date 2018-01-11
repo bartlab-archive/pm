@@ -26,9 +26,8 @@ export default class ProjectsListController extends ControllerBase {
     }
 
     goto(userId) {
-        this.$state.go('users.inner.info', {id: userId});
+        this.$state.go('users.info', {id: userId});
     }
-
 
     lockUser(userId, status) {
         let confirm = this.$mdDialog.confirm()
