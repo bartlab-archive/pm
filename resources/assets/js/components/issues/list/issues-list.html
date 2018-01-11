@@ -254,7 +254,7 @@
                 No data to display
             </div>
 
-            <md-list-item class="md-2-line" ng-repeat="row in $ctrl.list" ng-click="$ctrl.viewIssue($even,row)">
+            <md-list-item class="md-2-line animate-repeat" style="transition-delay: {{($index * 10)+50}}ms" ng-repeat="row in $ctrl.list" ng-click="$ctrl.viewIssue($even,row)">
                 <md-checkbox ng-model="row.selected" ng-change="$ctrl.onSelectIssue(row)"
                              aria-label="Select issue"></md-checkbox>
 

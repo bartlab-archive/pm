@@ -29,11 +29,12 @@ export default class IssuesListController extends ControllerBase {
         // text in filter input
         this.searchText = '';
 
+        // available parameters for the sorting
         this.sortList = [
-            {param: 'id:asc', name: 'ID ASC'},
-            {param: 'id:decs', name: 'ID DESC'},
-            {param: 'updated_on:asc', name: 'Updated ASC'},
-            {param: 'updated_on:decs', name: 'Updated DESC'},
+            {param: 'id:asc', name: 'ID - Ascending'},
+            {param: 'id:decs', name: 'ID - Descending'},
+            {param: 'updated_on:asc', name: 'Updated - Oldest first'},
+            {param: 'updated_on:decs', name: 'Updated - Newst first'},
         ];
         this.sort = this.sortList[3];
 
