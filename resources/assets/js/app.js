@@ -12,10 +12,7 @@ import 'angular-aria';
 import 'ng-showdown';
 import 'angular-file-saver';
 
-import 'directives.module';
-import 'filters.module';
-import 'services.module';
-import 'components/components.module';
+import 'modules/app.module';
 
 import AppRun from 'app.run';
 import AppConfig from 'app.config';
@@ -37,10 +34,7 @@ angular
             'satellizer',
             'ng-showdown',
 
-            'app.directives',
-            'app.filters',
-            'app.services',
-            'app.components'
+            'app.modules'
         ]
     )
     .config(AppConfig.inst())

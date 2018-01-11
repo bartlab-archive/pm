@@ -1,5 +1,5 @@
-import InjectableBase from 'base/injectable.base';
 import _ from 'lodash';
+import InjectableBase from 'base/injectable.base';
 
 /**
  * Class AppRun
