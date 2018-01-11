@@ -14,8 +14,8 @@ export default class IssuesViewController extends ControllerBase {
     $onInit() {
     }
 
-    cancel(update) {
-        this.$mdDialog.cancel();
+    cancel() {
+        return this.$mdDialog.cancel();
     }
 
     // openIssue(id) {
