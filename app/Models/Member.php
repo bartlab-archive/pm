@@ -35,7 +35,7 @@ class Member extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function users()
+    public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');
     }

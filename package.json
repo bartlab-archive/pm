@@ -22,7 +22,6 @@
     "axios": "^0.15.3",
     "babel-polyfill": "^6.23.0",
     "cross-env": "^3.2.4",
-    "jquery": "^3.1.1",
     "laravel-mix": "0.*",
     "lodash": "^4.17.4",
     "material-design-icons-iconfont": "*",
@@ -33,7 +32,6 @@
     "satellizer": "*"
   },
   "dependencies": {
-    "node-sass": "^4.5.3",
-    "simplebar": "^2.4.3"
+    "node-sass": "^4.5.3"
   }
 }

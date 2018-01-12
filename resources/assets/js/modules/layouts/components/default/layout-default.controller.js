@@ -193,7 +193,7 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     currentProjectId() {
-        return _.get(this.$stateParams, 'project_id');
+        return this.$stateParams.hasOwnProperty('project_id') && this.$stateParams.project_id;
     }
 
     goto(url) {

@@ -106,7 +106,7 @@ class UsersService
     {
         return User::where('id', $id)->with($with)
 			->with(['members' => function ($query) {
-				$query->with(['users', 'member_roles.roles']);
+				$query->with(['user', 'member_roles.roles']);
 			},'issues', 'projects','preference'])
 			->first();
     }

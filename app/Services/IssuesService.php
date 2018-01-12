@@ -44,7 +44,7 @@ class IssuesService
     public function one($id)
     {
         return Issue::where('id', $id)
-            ->with(['tracker','user', 'author', 'project', 'childIssues'])
+            ->with(['tracker', 'user', 'author', 'project', 'childIssues'])
             ->first();
     }
 
@@ -108,13 +108,23 @@ class IssuesService
 
     public function all(array $params = [])
     {
-        $query = Issue::with(['tracker', 'project.trackers', 'user', 'author', 'project', 'status', 'watchers.user', 'priority']);
+        $query = Issue::with([
+            'tracker',
+            'project.members.user',
+            'project.trackers',
+            'user',
+            'author',
+            'project',
+            'status',
+            'watchers.user',
+            'priority'
+        ]);
 
         if ($project = array_get($params, 'project_identifier')) {
             $query->whereHas('project', function ($query) use ($project) {
                 $query->where('identifier', $project);
             });
-        }else{
+        } else {
             /*
              * Need add to where:
              *  - is module enambled for project
@@ -144,7 +154,7 @@ class IssuesService
         }
 
         if ($order = array_get($params, 'order', ['updated_on' => 'desc'])) {
-            if (is_string($order) && count($split = explode(':', $order))==2) {
+            if (is_string($order) && count($split = explode(':', $order)) == 2) {
                 $order = [$split[0] => $split[1]];
             }
 

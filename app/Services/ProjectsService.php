@@ -91,11 +91,11 @@ class ProjectsService
                 'childProjects'
             ])
             ->with(['members' => function ($query) {
-                $query->with(['users', 'member_roles.roles']);
+                $query->with(['user', 'member_roles.roles']);
             }])
             ->with(['parentProject' => function ($query) {
                 $query->with(['members' => function ($query) {
-                    $query->with(['users', 'member_roles.roles']);
+                    $query->with(['user', 'member_roles.roles']);
                 }]);
             }])
 //            ->with(['boards' => function ($query) {
