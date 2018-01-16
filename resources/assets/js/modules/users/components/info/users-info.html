@@ -38,8 +38,8 @@
         </md-card-title>
 
         <md-card-content class="md-body-1">
-            <p>Assigned tasks: <md-button ng-click="$ctrl.getIssues('assigned_to_id', $ctrl.user.id)"> {{ ::$ctrl.issues.assigned}} </md-button></p>
-            <p>Tasks created:  <md-button ng-click="$ctrl.getIssues('author_id', $ctrl.user.id)"> {{ ::$ctrl.issues.created}} </md-button></p>
+            <p>Assigned tasks: <md-button ng-click="$ctrl.getIssues('assigned_to_ids', $ctrl.user)"> {{ ::$ctrl.issues.assigned}} </md-button></p>
+            <p>Tasks created:  <md-button ng-click="$ctrl.getIssues('author_ids', $ctrl.user)"> {{ ::$ctrl.issues.created}} </md-button></p>
         </md-card-content>
     </md-card>
 </div>

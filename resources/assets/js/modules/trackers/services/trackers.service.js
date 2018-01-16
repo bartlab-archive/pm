@@ -17,4 +17,8 @@ export default class TrackersService extends ServiceBase {
         return this.Restangular.all('trackers').getList();
     }
 
+    all() {
+        return this.Restangular.all('trackers');
+    }
+
 }

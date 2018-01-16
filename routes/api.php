@@ -112,6 +112,21 @@ Route::group(
             }
         );
 
+		Route::group(
+			[
+//				'middleware' => 'auth',
+				'prefix' => 'test'
+			],
+			function () {
+				Route::get('/', function (Request $request){
+					$model = new \App\Models\Project();
+					return $model->where($model->getLeftColumnName(), $request->input('lft'))
+						->where($model->getRightColumnName(), $request->input('rgt'))
+						//->first()->getDescendantsAndSelf();
+						->first()->descendantsAndSelf()->get()->toHierarchy();
+				});
+			}
+		);
         Route::group(
             [
                 'middleware' => 'auth',
@@ -185,5 +200,60 @@ Route::group(
 				Route::delete('/{id}', 'UsersController@destroy');
 			}
         );
+
+		Route::group(
+			[
+				'middleware' => 'auth',
+				'prefix' => 'groups'
+			],
+			function () {
+				Route::get('/', 'GroupsController@getList');
+				Route::post('/', 'GroupsController@create');
+				Route::delete('/{id}', 'GroupsController@destroy');
+				Route::get('/{id}', 'GroupsController@one');
+				Route::put('/{id}', 'GroupsController@update');
+			}
+		);
+
+		Route::group(
+			[
+				'middleware' => 'auth',
+				'prefix' => 'issue_statuses'
+			],
+			function () {
+				Route::get('/', 'IssueStatuseController@getList');
+				Route::get('/{id}', 'IssueStatuseController@one');
+				Route::put('/{id}', 'IssueStatuseController@update');
+				Route::post('/', 'IssueStatuseController@create');
+				Route::delete('/{id}', 'IssueStatuseController@destroy');
+
+			}
+		);
+
+		Route::group(
+			[
+				'middleware' => 'auth',
+				'prefix' => 'custom_fields'
+			],
+			function () {
+				Route::get('/', 'CustomFieldsController@getList');
+				Route::get('/{id}', 'CustomFieldsController@one');
+				Route::put('/{id}', 'CustomFieldsController@update');
+				Route::post('/', 'CustomFieldsController@create');
+				Route::delete('/{id}', 'CustomFieldsController@destroy');
+
+			}
+		);
+
+		Route::group(
+			[
+				'middleware' => 'auth',
+				'prefix' => 'settings'
+			],
+			function () {
+				Route::get('/', 'SettingsController@getList');
+
+			}
+		);
     }
 );

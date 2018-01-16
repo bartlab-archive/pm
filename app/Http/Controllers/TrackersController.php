@@ -38,4 +38,9 @@ class TrackersController extends BaseController
     {
         return $this->trackersService->all();
     }
+
+	public function getList(Request $request)
+	{
+		return $this->trackersService->getList($request->all());
+	}
 }

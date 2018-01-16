@@ -19,4 +19,8 @@ export default class EnumerationsService extends ServiceBase {
         return this.Restangular.all('enumerations').getList(params);
     }
 
+    all() {
+        return this.Restangular.all('enumerations');
+    }
+
 }

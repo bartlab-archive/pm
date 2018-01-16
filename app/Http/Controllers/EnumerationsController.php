@@ -37,6 +37,6 @@ class EnumerationsController extends BaseController
      */
     public function getList(Request $request)
     {
-        return $this->enumerationsService->getList($request->all());
+        return $this->enumerationsService->all($request->all());
     }
 }

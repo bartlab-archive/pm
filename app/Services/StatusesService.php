@@ -13,4 +13,9 @@ class StatusesService
         return IssueStatuse::all();
     }
 
+	public function getList()
+	{
+		return IssueStatuse::all();
+	}
+
 }

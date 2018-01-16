@@ -17,4 +17,8 @@ export default class RolesService extends ServiceBase {
         return this.Restangular.all('roles').getList(params);
     }
 
+    all() {
+        return this.Restangular.all('roles');
+    }
+
 }

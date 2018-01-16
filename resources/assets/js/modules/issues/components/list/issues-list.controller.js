@@ -50,6 +50,16 @@ export default class IssuesListController extends ControllerBase {
 
         // issues list
         this.list = [];
+        if (this.$stateParams.hasOwnProperty('assigned_to_ids') && this.$stateParams.assigned_to_ids != null) {
+            // temp added to items list
+            this.items.push({id:this.$stateParams.assigned_to_ids.id,type:'assigned',name:this.$stateParams.assigned_to_ids.firstname + ' ' + this.$stateParams.assigned_to_ids.lastname});
+            this.tags.push({id:this.$stateParams.assigned_to_ids.id,type:'assigned',name:this.$stateParams.assigned_to_ids.firstname + ' ' + this.$stateParams.assigned_to_ids.lastname});
+        }
+        if (this.$stateParams.hasOwnProperty('author_ids') && this.$stateParams.author_ids != null) {
+            // temp added to items list
+                this.items.push({id:this.$stateParams.author_ids.id,type:'created',name:this.$stateParams.author_ids.firstname + ' ' + this.$stateParams.author_ids.lastname});
+            this.tags.push({id:this.$stateParams.author_ids.id,type:'created',name:this.$stateParams.author_ids.firstname + ' ' + this.$stateParams.author_ids.lastname});
+        }
         this.loadProccess = false;
 
         // available params for all issue
@@ -73,7 +83,9 @@ export default class IssuesListController extends ControllerBase {
                 order: this.sort.param,
                 'status_ids[]': this.tags.filter((e) => e.type === 'status').map((e) => e.id),
                 'tracker_ids[]': this.tags.filter((e) => e.type === 'tracker').map((e) => e.id),
-                'priority_ids[]': this.tags.filter((e) => e.type === 'priority').map((e) => e.id)
+                'priority_ids[]': this.tags.filter((e) => e.type === 'priority').map((e) => e.id),
+                'assigned_to_ids[]': this.tags.filter((e) => e.type === 'assigned').map((e) => e.id),
+                'author_ids[]': this.tags.filter((e) => e.type === 'created').map((e) => e.id)
             })
             .then((response) => {
                 this.list = response.data;

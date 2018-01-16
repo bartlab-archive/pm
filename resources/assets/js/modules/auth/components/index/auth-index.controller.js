@@ -10,7 +10,10 @@ export default class AuthIndexController extends ControllerBase {
     }
 
     $onInit() {
-
+        return  this.GroupsService.all()
+            .getList()
+            .then((response) => {
+                this.groups = response.data;
+            });
     }
-
 }

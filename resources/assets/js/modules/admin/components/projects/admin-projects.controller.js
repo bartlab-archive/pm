@@ -30,7 +30,7 @@ export default class AdminProjectsController extends ControllerBase {
     }
 
     goToProject(identifier) {
-          this.$state.go('projects.inner.settings',{project_id:identifier});
+        this.$state.go('projects.inner.settings',{project_id:identifier});
     }
 
     makeHtml(text) {
@@ -85,7 +85,7 @@ export default class AdminProjectsController extends ControllerBase {
       // });
     }
 
-    clearFilters(){
+    clearFilters() {
         this.filterForm.myOption = 0;
         this.filterForm.text = '';
         this.$rootScope.$emit('updateProjects');

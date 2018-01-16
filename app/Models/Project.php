@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use App\Traits\NestedTreeTrait;
+//use App\Traits\NestedTreeTrait;
 use App\Traits\ModelTrait;
 use Auth;
-use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class Project extends Node
 {
-    use NestedTreeTrait;
+    //use NestedTreeTrait;
     use ModelTrait;
 
     const ACTIVE_STATUS = '1';
@@ -34,7 +33,8 @@ class Project extends Model
      *
      * @var array
      */
-    protected $guarded = ['id'];
+    //protected $guarded = ['id'];
+	protected $guarded = array('id', 'parent_id', 'lft', 'rgt', 'depth');
 
     protected $dates = [
         'created_on',

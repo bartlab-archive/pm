@@ -121,29 +121,42 @@ class ProjectsService
         $projectTrackers = isset($data['trackers']) ? $data['trackers'] : [];
         unset($data['trackers']);
 
-				$projectWiki = isset($data['wiki']) ? $data['wiki'] : [];
-				unset($data['wiki']);
+			$projectWiki = isset($data['wiki']) ? $data['wiki'] : [];
+			unset($data['wiki']);
 
-				$projectVersions =  isset($data['versions']) ? $data['versions'] : [];
-				unset($data['versions']);
+			$projectVersions =  isset($data['versions']) ? $data['versions'] : [];
+			unset($data['versions']);
 
-				$projectRepositories = isset($data['repositories']) ? $data['repositories'] : [];
-				unset($data['repositories']);
+			$projectRepositories = isset($data['repositories']) ? $data['repositories'] : [];
+			unset($data['repositories']);
 
-				$projectNews = isset($data['news']) ? $data['news'] : [];
-				unset($data['news']);
+			$projectNews = isset($data['news']) ? $data['news'] : [];
+			unset($data['news']);
 
-				$projectBoards = isset($data['boards']) ? $data['boards'] : [];
-				unset($data['boards']);
+			$projectBoards = isset($data['boards']) ? $data['boards'] : [];
+			unset($data['boards']);
 
-				unset($data['enabled_modules']);
-				unset($data['issue_categories']);
-				unset($data['enumerations']);
-				unset($data['child_projects']);
-				unset($data['members']);
-				unset($data['parent_project']);
+			unset($data['enabled_modules']);
+			unset($data['issue_categories']);
+			unset($data['enumerations']);
+			unset($data['child_projects']);
+			unset($data['members']);
+			unset($data['parent_project']);
 
-        $project = Project::create($data);
+        //$project = Project::create($data);
+		$project = new Project();
+		$project->name = $data['name'];
+		$project->identifier = $data['identifier'];
+		if (isset($data['is_public'])) $project->is_public = $data['is_public'];
+		if (isset($data['description'])) $project->description = $data['description'];
+		if (isset($data['homepage'])) $project->homepage = $data['homepage'];
+		if (isset($data['status'])) $project->status = $data['status'];
+		if (isset($data['rgt'])) $project->rgt = $data['rgt'];
+		if (isset($data['lft'])) $project->lft = $data['lft'];
+		if (isset($data['inherit_members'])) $project->inherit_members = $data['inherit_members'];
+		if (isset($data['default_version_id']))$project->default_version_id = $data['default_version_id'];
+		if (isset($data['parent_id']))$project->parent_id = $data['parent_id'];
+		$project->save();
 
         $this->enabledModulesService = app('App\Services\EnabledModulesService');
         $this->enabledModulesService->massCreate($project->id, $projectModules);
@@ -162,7 +175,20 @@ class ProjectsService
 				unset($data['parent_identifier']);
 			}
 
-        $project->update($data);
+		if (isset($data['name']))  $project->name = $data['name'];
+		if (isset($data['description']))  $project->description = $data['description'];
+		if (isset($data['homepage'])) $project->homepage = $data['homepage'];
+		if (isset($data['is_public'])) $project->is_public = $data['is_public'];
+
+		if (isset($data['status'])) $project->status = $data['status'];
+		if (isset($data['rgt'])) $project->rgt = $data['rgt'];
+		if (isset($data['lft'])) $project->lft = $data['lft'];
+		if (isset($data['inherit_members'])) $project->inherit_members = $data['inherit_members'];
+		if (isset($data['default_version_id']))$project->default_version_id = $data['default_version_id'];
+		if (isset($data['parent_id']))$project->parent_id = $data['parent_id'];
+		$project->save();
+
+        //$project->update($data);
         return $project;
     }
 
@@ -178,7 +204,7 @@ class ProjectsService
         /**
          * Destroy attach issues
          */
-        $project->issues()->delete();
+        //$project->issues()->delete();
 
         /**
          * Destroy project

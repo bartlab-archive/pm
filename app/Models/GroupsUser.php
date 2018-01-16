@@ -9,11 +9,10 @@ class GroupsUser extends Model
     protected $table = 'groups_users';
 
     public $timestamps = false;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $guarded = ['id'];
+    protected $guarded = ['group_id'];
 }

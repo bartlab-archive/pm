@@ -6,11 +6,18 @@ import ControllerBase from 'base/controller.base';
 export default class FieldsIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$state'];
+        return ['$state', 'FieldsService'];
     }
 
     $onInit() {
-
+        return  this.FieldsService.all()
+            .getList()
+            .then((response) => {
+                this.custom_fields = response.data;
+            });
     }
+
+    editFields(id){}
+    deleteFields(id){}
 
 }

@@ -17,7 +17,7 @@ export default class TrackersConfig extends InjectableBase {
                 data: {
                     access: '@'
                 },
-                url: '/statuses',
+                url: '/trackers',
                 parent: 'default',
                 views: {
                     content: {

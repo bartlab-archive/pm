@@ -44,6 +44,7 @@ class EnumerationsService
     {
         $query = Enumeration::with(['project'])
             ->where('active', Enumeration::ACTIVE_ON)
+			//->where('type6', '3')
             ->orderBy('position');
 
         if ($type = array_get($params, 'type')) {

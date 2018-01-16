@@ -26,9 +26,17 @@ export default class FieldsConfig extends InjectableBase {
                 }
             })
             .state('settings.index', {
-                url: '',
+                url: '/{page}',
+                params: {
+                    page: {
+                        value: null,
+                        squash: true,
+                        dynamic: true
+                    }
+                },
                 component: settingsIndexComponent.name,
-            });
+            })
+        ;
     }
 
 }

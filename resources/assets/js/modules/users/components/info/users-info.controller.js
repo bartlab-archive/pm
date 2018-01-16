@@ -45,16 +45,9 @@ export default class UsersInfoController extends ControllerBase {
         this.$state.go('users.inner.edit',{id:userId});
     }
 
-    getIssues(parametr, id){
+    getIssues(parametr, user){
         let params = {};
-        params[parametr] = id;
-        this.IssuesService.getList(params).then((response) => {
-            if (!_.isEmpty(response.data)) {
-
-                this.$state.go('issues.list',{list_iuses:response.data});
-                //console.log(response.data);
-            }
-        });
-
+        params[parametr] = user;
+        this.$state.go('issues.list',params);
     }
 }

@@ -43,6 +43,16 @@ export default class IssuesConfig extends InjectableBase {
 
             .state('issues.list', {
                 url: '',
+                params: {
+                    assigned_to_ids: {
+                        value: null,
+                        dynamic: true
+                    },
+                    author_ids:{
+                        value: null,
+                        dynamic: true
+                    }
+                },
                 component: issuesListComponent.name,
             })
             .state('issues.edit', {

@@ -43,9 +43,10 @@ class IssuesService
 
     public function one($id)
     {
-        return Issue::where('id', $id)
-            ->with(['tracker', 'user', 'author', 'project', 'childIssues'])
-            ->first();
+    	$issue = Issue::where('id', $id)
+			->with(['tracker','user', 'author', 'project', 'childIssues'])
+			->first();
+        return $issue;
     }
 
     public function update($id, array $data)
@@ -108,23 +109,13 @@ class IssuesService
 
     public function all(array $params = [])
     {
-        $query = Issue::with([
-            'tracker',
-            'project.members.user',
-            'project.trackers',
-            'user',
-            'author',
-            'project',
-            'status',
-            'watchers.user',
-            'priority'
-        ]);
+        $query = Issue::with(['tracker', 'project.trackers', 'user', 'author', 'project', 'status', 'watchers.user', 'priority']);
 
         if ($project = array_get($params, 'project_identifier')) {
             $query->whereHas('project', function ($query) use ($project) {
                 $query->where('identifier', $project);
             });
-        } else {
+        }else{
             /*
              * Need add to where:
              *  - is module enambled for project
@@ -142,11 +133,11 @@ class IssuesService
         }
 
         if ($assigned_to_id = array_get($params, 'assigned_to_ids', [])) {
-            $query = $query->whereIn('assigned_to_ids', $assigned_to_id);
+            $query = $query->whereIn('assigned_to_id', $assigned_to_id);
         }
 
         if ($author_id = array_get($params, 'author_ids', [])) {
-            $query = $query->whereIn('author_ids', $author_id);
+            $query = $query->whereIn('author_id', $author_id);
         }
 
         if ($priorities = array_get($params, 'priority_ids', [])) {
@@ -154,7 +145,7 @@ class IssuesService
         }
 
         if ($order = array_get($params, 'order', ['updated_on' => 'desc'])) {
-            if (is_string($order) && count($split = explode(':', $order)) == 2) {
+            if (is_string($order) && count($split = explode(':', $order))==2) {
                 $order = [$split[0] => $split[1]];
             }
 
