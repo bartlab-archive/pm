@@ -23,6 +23,7 @@ export default class ProjectsService extends ServiceBase {
             {id: 'boards', name: 'Forums'},
             {id: 'calendar', name: 'Calendar'},
             {id: 'gantt', name: 'Gantt'},
+            {id: 'agileboard', name: 'Agile'},
         ];
     }
 

@@ -11,6 +11,7 @@ import projectsDocumentsComponent from './components/documents/projects-document
 import projectsFilesComponent from './components/files/projects-files.component';
 import projectsBoardsComponent from './components/boards/projects-boards.component';
 import projectsRepositoryComponent from './components/repository/projects-repository.component';
+import agileboardIndexComponent from './components/agileboard/agileboard-index.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -85,8 +86,8 @@ export default class ProjectsConfig extends InjectableBase {
                 component: projectsSettingsComponent.name,
             })
             .state('projects.inner.activity', {
-                url: '/activity',
-                component: projectsActivityComponent.name,
+            url: '/activity',
+            component: projectsActivityComponent.name,
             })
             .state('projects.inner.activity.date', {
                 url: '/activity/:end_date',
@@ -96,6 +97,10 @@ export default class ProjectsConfig extends InjectableBase {
             //     url: '',
             //     component: issuesListComponent.name,
             // })
+            .state('projects.inner.issues.agileboard', {
+                url: '/agile',
+                component: agileboardIndexComponent.name,
+            })
             .state('projects.inner.issues.calendar', {
                 url: '/calendar',
                 component: projectsCalendarComponent.name,

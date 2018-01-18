@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Events\Dispatcher;
 
 use \Illuminate\Events\Dispatcher;
 

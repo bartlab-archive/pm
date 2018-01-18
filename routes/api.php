@@ -114,6 +114,17 @@ Route::group(
 
 		Route::group(
 			[
+				//'middleware' => 'auth',
+				'prefix' => 'agileboard'
+			],
+			function () {
+				Route::get('/', 'AgileboardController@getList');
+			}
+		);
+
+
+		Route::group(
+			[
 //				'middleware' => 'auth',
 				'prefix' => 'test'
 			],
@@ -127,6 +138,7 @@ Route::group(
 				});
 			}
 		);
+
         Route::group(
             [
                 'middleware' => 'auth',

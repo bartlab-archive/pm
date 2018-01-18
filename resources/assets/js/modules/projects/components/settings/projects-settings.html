@@ -263,6 +263,30 @@
                 <!--</md-content>-->
             </md-tab>
 
+            <md-tab label="Agile" md-active="$ctrl.page === 'agileboard'" md-on-select="$ctrl.selectTab('agileboard')"
+                    ng-if="$ctrl.tabs.agileboard">
+                <!--<md-content class="md-padding">-->
+                <form name="agileForm" class="md-padding">
+                    <md-input-container class="md-block">
+                        <label>agileboard page</label>
+
+                    </md-input-container>
+
+                    <div layout-align="center center" layout="row">
+                        <md-button class="md-raised md-primary animation-target" type="submit"
+                                   ng-disabled="agileForm.$invalid"
+                                   ng-click="$ctrl.saveAgileboard()">
+                            Save
+                        </md-button>
+
+                        <md-button class="md-raised animation-target">
+                            Delete
+                        </md-button>
+                    </div>
+                </form>
+                <!--</md-content>-->
+            </md-tab>
+
             <md-tab label="Repositories" md-active="$ctrl.page === 'repositories'"
                     md-on-select="$ctrl.selectTab('repositories')" ng-if="$ctrl.tabs.repository">
                 <div layout-align="center center" layout="row"

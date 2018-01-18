@@ -1,5 +1,5 @@
 <?php
-namespace Extensions\Eloquent;
+namespace Database\Eloquent;
 
 use Illuminate\Database\Eloquent\Collection as BaseCollection;
 

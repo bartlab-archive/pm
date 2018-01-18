@@ -1,6 +1,6 @@
 <?php
 
-namespace Extensions\Query;
+namespace Database\Query;
 
 use Illuminate\Database\Query\Builder as BaseBuilder;
 

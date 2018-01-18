@@ -1,10 +1,10 @@
 <?php
-namespace Extensions\Eloquent;
+namespace Database\Eloquent;
 
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Extensions\Query\Builder as QueryBuilder;
+use Database\Query\Builder as QueryBuilder;
 
 
 abstract class Model extends BaseModel {
@@ -68,7 +68,7 @@ abstract class Model extends BaseModel {
 	/**
 	 * Get a new query builder instance for the connection.
 	 *
-	 * @return Extensions\Query\Builder
+	 * @return \Extensions\Query\Builder
 	 */
 	protected function newBaseQueryBuilder() {
 		$conn = $this->getConnection();
@@ -81,7 +81,7 @@ abstract class Model extends BaseModel {
 	/**
 	 * Returns a fresh instance from the database.
 	 *
-	 * @return \Baum\Node
+	 * @return Node
 	 */
 	protected function getFreshInstance() {
 		if ( $this->areSoftDeletesEnabled() )

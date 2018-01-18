@@ -1,66 +1,22 @@
 <?php
-namespace App\Models;
 
-//use Illuminate\Database\Eloquent\Model;
-//use Extensions\Eloquent\Collection;
-////use Extensions\Eloquent\Model;
+namespace App\Traits;
 
-use Extensions\Eloquent\Collection as BaumCollection;
-use Extensions\Eloquent\Model as BaumModel;
-//use App\Models\Move;
-
-//use Storage;
-
-
-class Node extends BaumModel
+/**
+ * Class NodeTrait
+ *
+ * This class is intended for generation of nested tree
+ *
+ * @package App\Http\Traits
+ */
+trait NodeTrait
 {
-
-	protected $parentColumn = 'parent_id';
-
-	/**
-	 * Column name for left index.
-	 *
-	 * @var string
-	 */
-	protected $leftColumn = 'lft';
-
-	/**
-	 * Column name for right index.
-	 *
-	 * @var string
-	 */
-	protected $rightColumn = 'rgt';
-
-	/**
-	 * Column name for depth field.
-	 *
-	 * @var string
-	 */
-	protected $depthColumn = 'depth';
-
-	protected $orderColumn = null;
-
-	public function __construct(){
-		$this->boot();
-	}
-
-	//protected $guarded = array('id', 'parent_id', 'lft', 'rgt', 'depth');
-
-	protected static $moveToNewParentId = NULL;
-
-	/**
-	 * Columns which restrict what we consider our Nested Set list
-	 *
-	 * @var array
-	 */
-	protected $scoped = array();
 
 	public static function boot() {
 
 		parent::boot();
 
-		static::creating(function(Node $node) {
-
+		static::creating(function($node) {
 			$node->setDefaultLeftAndRight();
 		});
 
@@ -80,22 +36,17 @@ class Node extends BaumModel
 			$node->destroyDescendants();
 		});
 
-//		if ( static::softDeletesEnabled() ) {
-//			static::restoring(function($node) {
-//				$node->shiftSiblingsForRestore();
-//			});
-//
-//			static::restored(function($node) {
-//				$node->restoreDescendants();
-//			});
-//		}
+		if ( static::softDeletesEnabled() ) {
+			static::restoring(function($node) {
+				$node->shiftSiblingsForRestore();
+			});
+
+			static::restored(function($node) {
+				$node->restoreDescendants();
+			});
+		}
 	}
 
-	/**
-	 * Get the parent column name.
-	 *
-	 * @return string
-	 */
 	public function getParentColumnName() {
 		return $this->parentColumn;
 	}
@@ -132,9 +83,9 @@ class Node extends BaumModel
 	 *
 	 * @return string
 	 */
-	public function getQualifiedLeftColumnName() {
-		return $this->getTable() . '.' . $this->getLeftColumnName();
-	}
+//	public function getQualifiedLeftColumnName() {
+//		return $this->getTable() . '.' . $this->getLeftColumnName();
+//	}
 
 	/**
 	 * Get the value of the model's "left" field.
@@ -240,15 +191,15 @@ class Node extends BaumModel
 	 *
 	 * @return array
 	 */
-	public function getQualifiedScopedColumns() {
-		if ( !$this->isScoped() )
-			return $this->getScopedColumns();
-
-		$prefix = $this->getTable() . '.';
-
-		return array_map(function($c) use ($prefix) {
-			return $prefix . $c; }, $this->getScopedColumns());
-	}
+//	public function getQualifiedScopedColumns() {
+//		if ( !$this->isScoped() )
+//			return $this->getScopedColumns();
+//
+//		$prefix = $this->getTable() . '.';
+//
+//		return array_map(function($c) use ($prefix) {
+//			return $prefix . $c; }, $this->getScopedColumns());
+//	}
 
 	/**
 	 * Returns wether this particular node instance is scoped by certain fields
@@ -300,10 +251,11 @@ class Node extends BaumModel
 	 * Overload new Collection
 	 *
 	 * @param array $models
-	 * @return \Extensions\Eloquent\Collection
+	 * @return \Database\Eloquent\Collection
 	 */
 	public function newCollection(array $models = array()) {
-		return new BaumCollection($models);
+
+		return new \Database\Eloquent\Collection($models);
 	}
 
 	/**
@@ -519,11 +471,11 @@ class Node extends BaumModel
 	 *
 	 * @return \Illuminate\Database\Eloquent\Builder
 	 */
-	public function ancestorsAndSelf() {
-		return $this->newNestedSetQuery()
-			->where($this->getLeftColumnName(), '<=', $this->getLeft())
-			->where($this->getRightColumnName(), '>=', $this->getRight());
-	}
+//	public function ancestorsAndSelf() {
+//		return $this->newNestedSetQuery()
+//			->where($this->getLeftColumnName(), '<=', $this->getLeft())
+//			->where($this->getRightColumnName(), '>=', $this->getRight());
+//	}
 
 	/**
 	 * Get all the ancestor chain from the database including the current node.
@@ -763,13 +715,13 @@ class Node extends BaumModel
 	 * @param NestedSet
 	 * @return boolean
 	 */
-	public function isDescendantOf($other) {
-		return (
-			$this->getLeft() > $other->getLeft()  &&
-			$this->getLeft() < $other->getRight() &&
-			$this->inSameScope($other)
-		);
-	}
+//	public function isDescendantOf($other) {
+//		return (
+//			$this->getLeft() > $other->getLeft()  &&
+//			$this->getLeft() < $other->getRight() &&
+//			$this->inSameScope($other)
+//		);
+//	}
 
 	/**
 	 * Returns true if node is self or a descendant.
@@ -777,13 +729,13 @@ class Node extends BaumModel
 	 * @param NestedSet
 	 * @return boolean
 	 */
-	public function isSelfOrDescendantOf($other) {
-		return (
-			$this->getLeft() >= $other->getLeft() &&
-			$this->getLeft() < $other->getRight() &&
-			$this->inSameScope($other)
-		);
-	}
+//	public function isSelfOrDescendantOf($other) {
+//		return (
+//			$this->getLeft() >= $other->getLeft() &&
+//			$this->getLeft() < $other->getRight() &&
+//			$this->inSameScope($other)
+//		);
+//	}
 
 	/**
 	 * Returns true if node is an ancestor.
@@ -791,13 +743,13 @@ class Node extends BaumModel
 	 * @param NestedSet
 	 * @return boolean
 	 */
-	public function isAncestorOf($other) {
-		return (
-			$this->getLeft() < $other->getLeft()  &&
-			$this->getRight() > $other->getLeft() &&
-			$this->inSameScope($other)
-		);
-	}
+//	public function isAncestorOf($other) {
+//		return (
+//			$this->getLeft() < $other->getLeft()  &&
+//			$this->getRight() > $other->getLeft() &&
+//			$this->inSameScope($other)
+//		);
+//	}
 
 	/**
 	 * Returns true if node is self or an ancestor.
@@ -805,13 +757,13 @@ class Node extends BaumModel
 	 * @param NestedSet
 	 * @return boolean
 	 */
-	public function isSelfOrAncestorOf($other) {
-		return (
-			$this->getLeft() <= $other->getLeft() &&
-			$this->getRight() > $other->getLeft() &&
-			$this->inSameScope($other)
-		);
-	}
+//	public function isSelfOrAncestorOf($other) {
+//		return (
+//			$this->getLeft() <= $other->getLeft() &&
+//			$this->getRight() > $other->getLeft() &&
+//			$this->inSameScope($other)
+//		);
+//	}
 
 	/**
 	 * Returns the first sibling to the left.
@@ -1169,29 +1121,12 @@ class Node extends BaumModel
 	}
 
 	/**
-	 * Maps the provided tree structure into the database using the current node
-	 * as the parent. The provided tree structure will be inserted/updated as the
-	 * descendancy subtree of the current node instance.
-	 *
-	 * @param   array|\Illuminate\Support\Contracts\ArrayableInterface
-	 * @return  boolean
-	 */
-	public function makeTree($nodeList) {
-		$mapper = new SetMapper($this);
-
-		return $mapper->map($nodeList);
-	}
-
-	/**
 	 * Main move method. Here we handle all node movements with the corresponding
 	 * lft/rgt index updates.
-	 *
-	 * @param Baum\Node|int $target
-	 * @param string        $position
-	 * @return  \Node
 	 */
 	protected function moveTo($target, $position) {
-		return Move::to($this, $target, $position);
+		$model = new \Events\Dispatcher\Move($this, $target, $position);
+		return $model::to($this, $target, $position);
 	}
 
 	/**
@@ -1213,7 +1148,7 @@ class Node extends BaumModel
 	/**
 	 * Return an array with the last node we could reach and its nesting level
 	 *
-	 * @param   Baum\Node $node
+	 * @param   Node $node
 	 * @param   integer   $nesting
 	 * @return  array
 	 */
@@ -1227,4 +1162,5 @@ class Node extends BaumModel
 
 		return array($node, $nesting);
 	}
+
 }

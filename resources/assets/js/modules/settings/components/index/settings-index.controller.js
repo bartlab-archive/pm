@@ -14,6 +14,7 @@ export default class SettingsIndexController extends ControllerBase {
     }
 
     load() {
+
         return  this.SettingsService.all()
             .getList()
             .then((response) => {
@@ -24,8 +25,6 @@ export default class SettingsIndexController extends ControllerBase {
                     // }
 
                 });
-
-
 
             });
     }

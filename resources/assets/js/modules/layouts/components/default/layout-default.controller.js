@@ -29,6 +29,7 @@ export default class LayoutDefaultController extends ControllerBase {
             {url: 'home', name: 'Overall activity', icon: 'history'},
             {url: 'my.page', name: 'My page', icon: 'person'},
             {url: 'admin.index', name: 'Administration', icon: 'settings_applications'},
+            // {url: 'agileboard.index', name: 'Agileboard', icon: 'dashboard'},
             // {url: 'home', name: 'Help', icon: 'help'}
         ];
 
@@ -98,6 +99,11 @@ export default class LayoutDefaultController extends ControllerBase {
             url: 'projects.inner.issues.gantt',
             title: 'Gantt',
             name: 'gantt',
+            enable: false
+        }, {
+            url: 'projects.inner.issues.agileboard',
+            title: 'Agile',
+            name: 'agileboard',
             enable: false
         }, {
             url: 'projects.inner.issues.calendar',

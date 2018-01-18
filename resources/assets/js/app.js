@@ -11,6 +11,7 @@ import 'angular-animate';
 import 'angular-aria';
 import 'ng-showdown';
 import 'angular-file-saver';
+import 'angular-drag-and-drop-lists';
 
 import 'modules/app.module';
 
@@ -28,6 +29,7 @@ angular
             'ngMaterial',
             'angularMoment',
             'ngFileSaver',
+            'dndLists',
 
             'ui.router',
             'restangular',

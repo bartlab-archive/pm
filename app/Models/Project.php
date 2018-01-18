@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-//use App\Traits\NestedTreeTrait;
+use Database\Eloquent\Model;
 use App\Traits\ModelTrait;
+use App\Traits\NodeTrait;
 use Auth;
 
-class Project extends Node
+class Project extends Model
 {
-    //use NestedTreeTrait;
+    use NodeTrait;
     use ModelTrait;
 
     const ACTIVE_STATUS = '1';
@@ -22,6 +23,39 @@ class Project extends Node
 
     protected $hidden = ['is_my', 'parent_id'];
 
+	protected $parentColumn = 'parent_id';
+
+	/**
+	 * Column name for left index.
+	 *
+	 * @var string
+	 */
+	protected $leftColumn = 'lft';
+
+	/**
+	 * Column name for right index.
+	 *
+	 * @var string
+	 */
+	protected $rightColumn = 'rgt';
+
+	/**
+	 * Column name for depth field.
+	 *
+	 * @var string
+	 */
+	protected $depthColumn = 'depth';
+
+	protected $orderColumn = null;
+	protected static $moveToNewParentId = NULL;
+
+	/**
+	 * Columns which restrict what we consider our Nested Set list
+	 *
+	 * @var array
+	 */
+	protected $scoped = array();
+
     protected $casts = [
         'is_public' => 'boolean',
     ];
@@ -34,7 +68,7 @@ class Project extends Node
      * @var array
      */
     //protected $guarded = ['id'];
-	protected $guarded = array('id', 'parent_id', 'lft', 'rgt', 'depth');
+	protected $guarded = array('id', 'lft', 'rgt', 'depth');
 
     protected $dates = [
         'created_on',
@@ -163,7 +197,4 @@ class Project extends Node
         return $this->hasMany(self::class, 'parent_id', 'id');
     }
 
-//    public function childProjectsRecursive() { // disabled recursive projects
-//        return $this->childProjects()->with('childProjectsRecursive');
-//    }
 }

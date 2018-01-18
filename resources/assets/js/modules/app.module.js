@@ -18,6 +18,7 @@ import 'modules/settings/settings.module';
 import 'modules/auth/auth.module';
 import 'modules/wiki/wiki.module';
 import 'modules/versions/versions.module';
+import 'modules/agileboard/agileboard.module';
 
 angular.module('app.modules', [
     // core modules
@@ -42,4 +43,5 @@ angular.module('app.modules', [
     'app.modules.workflows',
     'app.modules.auth',
     'app.modules.wiki',
+    'app.modules.agileboard',
 ]);
