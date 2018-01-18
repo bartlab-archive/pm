@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 use App\Traits\ModelTrait;
 use App\Traits\NodeTrait;
 use Auth;
@@ -69,6 +69,7 @@ class Project extends Model
      */
     //protected $guarded = ['id'];
 	protected $guarded = array('id', 'lft', 'rgt', 'depth');
+	//protected $guarded = array('id', 'lft', 'rgt');
 
     protected $dates = [
         'created_on',

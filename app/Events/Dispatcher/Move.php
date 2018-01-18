@@ -1,6 +1,6 @@
 <?php
 
-namespace Events\Dispatcher;
+namespace App\Events\Dispatcher;
 
 use \Illuminate\Events\Dispatcher;
 
@@ -349,7 +349,7 @@ class Move {
 	protected function fireMoveEvent($event, $halt = true) {
 		if ( !isset(static::$dispatcher) ) return true;
 
-		// Basically the same as \Illuminate\Database\Eloquent\Model->fireModelEvent
+		// Basically the same as \Illuminate\Database\Eloquent\NodeModel->fireModelEvent
 		// but we relay the event into the node instance.
 		$event = "eloquent.{$event}: ".get_class($this->node);
 

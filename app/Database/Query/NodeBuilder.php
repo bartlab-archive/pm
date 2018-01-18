@@ -1,10 +1,11 @@
 <?php
 
-namespace Database\Query;
+namespace App\Database\Query;
+
 
 use Illuminate\Database\Query\Builder as BaseBuilder;
 
-class Builder extends BaseBuilder {
+class NodeBuilder extends BaseBuilder {
 
 	/**
 	 * Replace the "order by" clause of the current query.

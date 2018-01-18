@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Traits;
-
 /**
  * Class NodeTrait
  *
@@ -12,9 +11,7 @@ namespace App\Traits;
 trait NodeTrait
 {
 
-	public static function boot() {
-
-		parent::boot();
+	public static function bootNodeTrait() {
 
 		static::creating(function($node) {
 			$node->setDefaultLeftAndRight();
@@ -36,16 +33,17 @@ trait NodeTrait
 			$node->destroyDescendants();
 		});
 
-		if ( static::softDeletesEnabled() ) {
-			static::restoring(function($node) {
-				$node->shiftSiblingsForRestore();
-			});
-
-			static::restored(function($node) {
-				$node->restoreDescendants();
-			});
-		}
+//		if ( static::softDeletesEnabled() ) {
+//			static::restoring(function($node) {
+//				$node->shiftSiblingsForRestore();
+//			});
+//
+//			static::restored(function($node) {
+//				$node->restoreDescendants();
+//			});
+//		}
 	}
+
 
 	public function getParentColumnName() {
 		return $this->parentColumn;
@@ -248,14 +246,14 @@ trait NodeTrait
 	}
 
 	/**
-	 * Overload new Collection
+	 * Overload new NodeCollection
 	 *
 	 * @param array $models
-	 * @return \Database\Eloquent\Collection
+	 * @return \App\Database\Eloquent\NodeCollection
 	 */
 	public function newCollection(array $models = array()) {
 
-		return new \Database\Eloquent\Collection($models);
+		return new \App\Database\Eloquent\NodeCollection($models);
 	}
 
 	/**
@@ -398,7 +396,7 @@ trait NodeTrait
 	/**
 	 * Provides a depth level limit for the query.
 	 *
-	 * @param   query   \Illuminate\Database\Query\Builder
+	 * @param   query   \Illuminate\Database\Query\NodeBuilder
 	 * @param   limit   integer
 	 * @return  \Illuminate\Database\Query\Builder
 	 */
@@ -936,7 +934,17 @@ trait NodeTrait
 	 *
 	 * @return void
 	 */
+
+//	public function newEloquentBuilder($query)
+//	{
+//		$nodeBuilder = new \App\Database\Query\NodeBuilder($query);
+//
+//		return $nodeBuilder;
+//
+//	}
+
 	public function setDefaultLeftAndRight() {
+
 
 		$withHighestRight = $this->newNestedSetQuery()->reOrderBy($this->getRightColumnName(), 'desc')->take(1)->sharedLock()->first();
 
@@ -946,6 +954,8 @@ trait NodeTrait
 		$this->setAttribute($this->getLeftColumnName()  , $maxRgt + 1);
 		$this->setAttribute($this->getRightColumnName() , $maxRgt + 2);
 	}
+
+
 
 	/**
 	 * Store the parent_id if the attribute is modified so as we are able to move
@@ -1125,7 +1135,7 @@ trait NodeTrait
 	 * lft/rgt index updates.
 	 */
 	protected function moveTo($target, $position) {
-		$model = new \Events\Dispatcher\Move($this, $target, $position);
+		$model = new \App\Events\Dispatcher\Move($this, $target, $position);
 		return $model::to($this, $target, $position);
 	}
 

@@ -1,13 +1,13 @@
 <?php
-namespace Database\Eloquent;
+namespace App\Database\Eloquent;
 
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Database\Query\Builder as QueryBuilder;
+use App\Database\Query\NodeBuilder as QueryBuilder;
 
 
-abstract class Model extends BaseModel {
+class NodeModel extends BaseModel {
 
 	/**
 	 * Reloads the model from the database.

@@ -1,9 +1,9 @@
 <?php
-namespace Database\Eloquent;
+namespace App\Database\Eloquent;
 
 use Illuminate\Database\Eloquent\Collection as BaseCollection;
 
-class Collection extends BaseCollection {
+class NodeCollection extends BaseCollection {
 
 	public function toHierarchy() {
 		$dict = $this->getDictionary();
