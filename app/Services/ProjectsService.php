@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Document;
 use App\Models\Issue;
-use App\Models\IssueStatuse;
+use App\Models\IssueStatus;
 use App\Models\Journal;
 use App\Models\JournalDetail;
 use App\Models\Project;
@@ -54,7 +54,7 @@ class ProjectsService
 //            ->where('is_public', Project::IS_PUBLIC)
 //            ->whereNull('parent_id') // disabled recursive projects
             ->with([
-                'members',
+                'users',
                 'versions',
 //                'issue_categories',
 //                'repositories',
@@ -66,7 +66,8 @@ class ProjectsService
 			$projects->orWhere('status', $status);
 		}
 
-        return $projects->get()->makeVisible(['is_my']);
+        return $projects->get();
+//            ->makeVisible(['is_my']);
     }
 
     /**
@@ -79,25 +80,25 @@ class ProjectsService
 
     public function one($identifier)
     {
-        return Project::whereIdentifier($identifier)
+        return Project::where('identifier',$identifier)
             ->with([
 //                'trackers',
-                'enabled_modules',
+                'enabledModules',
 //                'issue_categories',
                 'versions',
 //                'wiki',
 //                'repositories',
                 'enumerations',
-                'childProjects'
+//                'childProjects'
             ])
-            ->with(['members' => function ($query) {
-                $query->with(['user', 'member_roles.roles']);
-            }])
-            ->with(['parentProject' => function ($query) {
-                $query->with(['members' => function ($query) {
-                    $query->with(['user', 'member_roles.roles']);
-                }]);
-            }])
+//            ->with(['members' => function ($query) {
+//                $query->with(['users', 'member_roles.roles']);
+//            }])
+//            ->with(['parentProject' => function ($query) {
+//                $query->with(['members' => function ($query) {
+//                    $query->with(['users', 'member_roles.roles']);
+//                }]);
+//            }])
 //            ->with(['boards' => function ($query) {
 //                $query->orderBy('position');
 //            }])
@@ -155,7 +156,7 @@ class ProjectsService
 
     public function update($identifier, $data)
     {
-        $project = Project::whereIdentifier($identifier)->firstOrFail();
+        $project = Project::where('identifier',$identifier)->firstOrFail();
 
 			if (isset($data['parent_identifier'])) {
 				$data['parent_id'] = Project::whereIdentifier($data['parent_identifier'])->firstOrFail()->id;
@@ -168,7 +169,7 @@ class ProjectsService
 
     public function delete($identifier)
     {
-        $project = Project::whereIdentifier($identifier)->firstOrFail();
+        $project = Project::where('identifier',$identifier)->firstOrFail();
 
         /**
          * Destroy attach trackers
@@ -188,7 +189,7 @@ class ProjectsService
 
     public function getAttachments($identifier)
     {
-        $project = Project::whereIdentifier($identifier)->first();
+        $project = Project::where('identifier',$identifier)->first();
         if ($project) {
             return $project->attachments;
         }
@@ -206,7 +207,7 @@ class ProjectsService
          * @var Issue $issue
          * @var User $user
          * @var Tracker $tracker
-         * @var IssueStatuse $status
+         * @var IssueStatus $status
          * @var Journal $journal
          * @var WikiContentVersion $wiki
          * @var Project $project

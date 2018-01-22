@@ -77,7 +77,7 @@ class EnabledModulesService
      */
     public function getList($identifier){
         if ($project = $this->projectService->one($identifier)){
-            return $project->enabled_modules;
+            return $project->enabledModules;
         }
 
         return [];

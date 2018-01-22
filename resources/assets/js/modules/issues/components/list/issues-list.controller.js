@@ -37,6 +37,22 @@ export default class IssuesListController extends ControllerBase {
         ];
         this.sort = this.sortList[3];
 
+        // group by list
+        this.groupByList = [
+            {param: '', name: 'No group'},
+            {param: 'project', name: 'Project'},
+            {param: 'tracker', name: 'Tracker'},
+            {param: 'status', name: 'Status'},
+            {param: 'priority', name: 'Priority'},
+            {param: 'author', name: 'Author'},
+            {param: 'assigned', name: 'Assignee'},
+            {param: 'category', name: 'Category'},
+            {param: 'version', name: 'Target version'},
+            {param: 'done_ratio', name: '% Done'},
+        ];
+        this.groupBy = this.groupByList[0];
+        this.groupsInfo = [];
+
         // item selection
         this.selectedGroup = [];
         this.selectAllState = false;
@@ -52,13 +68,29 @@ export default class IssuesListController extends ControllerBase {
         this.list = [];
         if (this.$stateParams.hasOwnProperty('assigned_to_ids') && this.$stateParams.assigned_to_ids != null) {
             // temp added to items list
-            this.items.push({id:this.$stateParams.assigned_to_ids.id,type:'assigned',name:this.$stateParams.assigned_to_ids.firstname + ' ' + this.$stateParams.assigned_to_ids.lastname});
-            this.tags.push({id:this.$stateParams.assigned_to_ids.id,type:'assigned',name:this.$stateParams.assigned_to_ids.firstname + ' ' + this.$stateParams.assigned_to_ids.lastname});
+            this.items.push({
+                id: this.$stateParams.assigned_to_ids.id,
+                type: 'assigned',
+                name: this.$stateParams.assigned_to_ids.firstname + ' ' + this.$stateParams.assigned_to_ids.lastname
+            });
+            this.tags.push({
+                id: this.$stateParams.assigned_to_ids.id,
+                type: 'assigned',
+                name: this.$stateParams.assigned_to_ids.firstname + ' ' + this.$stateParams.assigned_to_ids.lastname
+            });
         }
         if (this.$stateParams.hasOwnProperty('author_ids') && this.$stateParams.author_ids != null) {
             // temp added to items list
-                this.items.push({id:this.$stateParams.author_ids.id,type:'created',name:this.$stateParams.author_ids.firstname + ' ' + this.$stateParams.author_ids.lastname});
-            this.tags.push({id:this.$stateParams.author_ids.id,type:'created',name:this.$stateParams.author_ids.firstname + ' ' + this.$stateParams.author_ids.lastname});
+            this.items.push({
+                id: this.$stateParams.author_ids.id,
+                type: 'created',
+                name: this.$stateParams.author_ids.firstname + ' ' + this.$stateParams.author_ids.lastname
+            });
+            this.tags.push({
+                id: this.$stateParams.author_ids.id,
+                type: 'created',
+                name: this.$stateParams.author_ids.firstname + ' ' + this.$stateParams.author_ids.lastname
+            });
         }
         this.loadProccess = false;
 
@@ -81,6 +113,7 @@ export default class IssuesListController extends ControllerBase {
                 limit: this.limitPerPage,
                 offset: this.offset,
                 order: this.sort.param,
+                group: this.groupBy.param,
                 'status_ids[]': this.tags.filter((e) => e.type === 'status').map((e) => e.id),
                 'tracker_ids[]': this.tags.filter((e) => e.type === 'tracker').map((e) => e.id),
                 'priority_ids[]': this.tags.filter((e) => e.type === 'priority').map((e) => e.id),
@@ -89,9 +122,10 @@ export default class IssuesListController extends ControllerBase {
             })
             .then((response) => {
                 this.list = response.data;
-                this.offset = parseInt(response.headers('X-Offset'));
-                this.limitPerPage = parseInt(response.headers('X-Limit'));
-                this.count = parseInt(response.headers('X-Total'));
+                this.offset = parseInt(response.headers('X-Offset')) || 0;
+                this.limitPerPage = parseInt(response.headers('X-Limit')) || 0;
+                this.count = parseInt(response.headers('X-Total')) || 0;
+                this.groupsInfo = response.groups;
                 this.pager = this.getPager();
                 this.loadProccess = false;
             });
@@ -218,6 +252,12 @@ export default class IssuesListController extends ControllerBase {
 
     setSort(item) {
         this.sort = item;
+        this.offset = 0;
+        this.load();
+    }
+
+    setGroupBy(item) {
+        this.groupBy = item;
         this.offset = 0;
         this.load();
     }

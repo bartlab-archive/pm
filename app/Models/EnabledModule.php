@@ -6,10 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class EnabledModule extends Model
 {
-    protected $table = 'enabled_modules';
-
-    public $timestamps = false;
-
     const ENABLED_MODULES_NAME = [
         'issue_tracking',
         'time_tracking',
@@ -23,15 +19,9 @@ class EnabledModule extends Model
         'gantt',
     ];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    public $timestamps = false;
+
     protected $guarded = ['id'];
 
-    /**
-     * @var array
-     */
     protected $hidden = ['project_id', 'id'];
 }

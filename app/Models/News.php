@@ -9,17 +9,10 @@ class News extends Model
 {
     use ModelTrait;
 
-    protected $table = 'news';
-
     protected $hidden = ['project_id'];
 
     public $timestamps = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $guarded = ['id'];
 
     protected $dates = [

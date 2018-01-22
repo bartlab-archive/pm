@@ -105,10 +105,14 @@ class UsersService
     public function getById($id, $with = [])
     {
         return User::where('id', $id)->with($with)
-			->with(['members' => function ($query) {
-				$query->with(['user', 'member_roles.roles']);
-			},'issues', 'projects','preference'])
-			->first();
+            ->with([
+//                'members' => function ($query) {
+//                    $query->with(['user', 'member_roles.roles']);
+//                },
+//                'issues',
+                'projects', 'preference'
+            ])
+            ->first();
     }
 
     public function update($id, $data)
@@ -153,10 +157,10 @@ class UsersService
         return $user->update(['passwd_changed_on' => date('Y-m-d H:i:s')]);
     }
 
-	public function delete($id)
-	{
-		$user = User::where('id', $id)->firstOrFail();
+    public function delete($id)
+    {
+        $user = User::where('id', $id)->firstOrFail();
 
-		return $user->delete();
-	}
+        return $user->delete();
+    }
 }

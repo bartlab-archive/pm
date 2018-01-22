@@ -2,12 +2,18 @@
 
 namespace App\Services;
 
+use App\Models\Enumeration;
 use App\Models\Issue;
-use App\Models\IssueStatuse;
+use App\Models\IssueCategory;
+use App\Models\IssueStatus;
 use App\Models\Journal;
 use App\Models\Project;
 use App\Models\Tracker;
+use App\Models\User;
+use App\Models\Version;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class IssuesService
@@ -43,9 +49,9 @@ class IssuesService
 
     public function one($id)
     {
-    	$issue = Issue::where('id', $id)
-			->with(['tracker','user', 'author', 'project', 'childIssues'])
-			->first();
+        $issue = Issue::where('id', $id)
+            ->with(['tracker', 'user', 'author', 'project', 'childIssues'])
+            ->first();
         return $issue;
     }
 
@@ -109,13 +115,24 @@ class IssuesService
 
     public function all(array $params = [])
     {
-        $query = Issue::with(['tracker', 'project.trackers', 'user', 'author', 'project', 'status', 'watchers.user', 'priority']);
+        $query = Issue::with([
+            'tracker',
+            'project',
+            'project.users',
+            'project.trackers',
+            'assigned',
+            'author',
+            'status',
+            'version',
+            'category',
+            'priority'
+        ]);
 
         if ($project = array_get($params, 'project_identifier')) {
             $query->whereHas('project', function ($query) use ($project) {
                 $query->where('identifier', $project);
             });
-        }else{
+        } else {
             /*
              * Need add to where:
              *  - is module enambled for project
@@ -144,11 +161,49 @@ class IssuesService
             $query->whereIn('priority_id', (array)$priorities);
         }
 
+        $groupCount = null;
+        if ($group = array_get($params, 'group')) {
+            switch ($group) {
+                case 'author':
+                case 'assigned':
+                    $query
+                        ->addSelect(DB::raw('CONCAT(' . $group . '.firstname, " ", ' . $group . '.lastname) as ordering'))
+                        ->references($group);
+                    break;
+
+                case 'done_ratio':
+                    $query->addSelect(DB::raw('CONCAT(' . Issue::getTableName() . '.done_ratio, "%") as ordering'));
+                    break;
+
+                case 'project':
+                case 'tracker':
+                case 'status':
+                case 'priority':
+                case 'category':
+                case 'version':
+                    $query
+                        ->addSelect($group . '.name as ordering')
+                        ->references($group);
+                    break;
+            }
+
+            $query->orderBy('ordering');
+
+            // clone query withou releted columns for calculate count rows in groups
+            $groupCount = (clone $query)
+                ->disableRelationColumns()
+                ->selectRaw('COUNT(' . Issue::getTableName() . '.id) as rows')
+                ->groupBy('ordering')
+                ->get(['rows', 'ordering'])
+                ->pluck('rows', 'ordering');
+        }
+
         if ($order = array_get($params, 'order', ['updated_on' => 'desc'])) {
-            if (is_string($order) && count($split = explode(':', $order))==2) {
+            if (is_string($order) && count($split = explode(':', $order)) == 2) {
                 $order = [$split[0] => $split[1]];
             }
 
+            // add check, if column available
             foreach ($order as $key => $val) {
                 $query->orderBy($key, $val);
             }
@@ -166,35 +221,13 @@ class IssuesService
             'total' => $total,
             'limit' => $limit,
             'offset' => $offset,
-            'issues' => $query->offset($offset)->limit($limit)->get()
+            'groups' => $groupCount,
+            'list' => $query
+//                ->addSelect(Issue::getTableName() . '.*')
+                ->offset($offset)
+                ->limit($limit)
+                ->get()
         ];
-    }
-
-    public function trackersCount($identifier)
-    {
-        $issues = Issue::join(Project::getTableName(), Issue::getTableName() . '.project_id', '=', Project::getTableName() . '.id')
-            ->join(Tracker::getTableName(), Issue::getTableName() . '.tracker_id', '=', Tracker::getTableName() . '.id')
-            ->join(IssueStatuse::getTableName(), Issue::getTableName() . '.status_id', '=', IssueStatuse::getTableName() . '.id')
-            ->select(
-                Tracker::getTableName() . '.name',
-                IssueStatuse::getTableName() . '.is_closed'
-            )
-            ->where(Project::getTableName() . '.identifier', $identifier)
-            ->orderBy('tracker_id', 'is_closed')
-            ->get()
-            ->toArray();
-
-        $result = [];
-        foreach ($issues as $issue) {
-            if ($issue['is_closed']) {
-                isset($result[$issue['name']]['closed']) ? $result[$issue['name']]['closed']++ : $result[$issue['name']]['closed'] = 1;
-            } else {
-                isset($result[$issue['name']]['opened']) ? $result[$issue['name']]['opened']++ : $result[$issue['name']]['opened'] = 1;
-            }
-
-        }
-
-        return ['trackers' => $result];
     }
 
     /**

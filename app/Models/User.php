@@ -3,9 +3,7 @@
 namespace App\Models;
 
 use App\Traits\ModelTrait;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Http\Request;
 
 /**
  * Class User
@@ -36,28 +34,10 @@ class User extends Authenticatable
 {
     use ModelTrait;
 
-    protected $table = 'users';
-
-    /**
-     * Auto create timestamp
-     *
-     * @var bool
-     */
-    public $timestamps = true;
-
-    /**
-     * The name of the "created on" column.
-     *
-     * @var string
-     */
     const CREATED_AT = 'created_on';
-
-    /**
-     * The name of the "updated on" column.
-     *
-     * @var string
-     */
     const UPDATED_AT = 'updated_on';
+
+    public $timestamps = true;
 
     protected $guarded = ['id'];
 
@@ -71,21 +51,16 @@ class User extends Authenticatable
         'admin'
     ];
 
-    protected $appends = ['avatar_hash'];
-
-    public function getAvatarHashAttribute()
-    {
-        return md5(strtolower(trim($this->email->address)));
-    }
+    protected $appends = ['avatar'];
 
     public function email()
     {
-        return $this->hasOne(EmailAddresses::class)->where('is_default', true);
+        return $this->hasOne(EmailAddress::class)->where('is_default', true);
     }
 
     public function additionalEmails()
     {
-        return $this->hasMany(EmailAddresses::class)->where('is_default', false);
+        return $this->hasMany(EmailAddress::class)->where('is_default', false);
     }
 
     public function attachments()
@@ -108,18 +83,13 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class, 'author_id', 'id');
     }
 
-    public function issues()
-    {
-        return $this->hasMany(Issue::class, 'assigned_to_id', 'id');
-    }
-
     public function projects()
     {
-        return $this->belongsToMany(Project::class, (new Member())->getTable(), 'user_id', 'project_id');
+        return $this->belongsToMany(Project::class, Member::getTableName());
     }
 
-	public function members()
-	{
-		return $this->hasMany(Member::class);
-	}
+    public function getAvatarAttribute(){
+        // todo: need check system config for avatar src
+        return '//www.gravatar.com/avatar/'.md5(strtolower(trim($this->email->address)));
+    }
 }

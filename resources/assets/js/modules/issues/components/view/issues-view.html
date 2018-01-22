@@ -10,7 +10,7 @@
     <md-icon class="w-50">create</md-icon>
     <div flex>
         <a ui-sref="users.info({id:$ctrl.selectedIssue.author.id})" ng-click="$ctrl.cancel()" class="md-avatar">
-            <img src="//www.gravatar.com/avatar/{{ $ctrl.selectedIssue.author.avatar_hash }}">
+            <img src="//www.gravatar.com/avatar/{{ $ctrl.selectedIssue.author.avatar }}">
             {{ [$ctrl.selectedIssue.author.firstname, $ctrl.selectedIssue.author.lastname] | join:' ' }}
         </a>
     </div>
@@ -20,7 +20,7 @@
     <md-icon class="w-50">people</md-icon>
     <div flex>
         <a ui-sref="users.info({id:$ctrl.selectedIssue.user.id})" ng-click="$ctrl.cancel()" class="md-avatar">
-            <img src="//www.gravatar.com/avatar/{{ $ctrl.selectedIssue.user.avatar_hash }}">
+            <img src="//www.gravatar.com/avatar/{{ $ctrl.selectedIssue.user.avatar }}">
             {{ [$ctrl.selectedIssue.user.firstname, $ctrl.selectedIssue.user.lastname] | join:' ' }}
         </a>
     </div>

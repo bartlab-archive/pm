@@ -4,7 +4,7 @@ namespace App\Http\Requests\Issues;
 
 
 use App\Models\Enumeration;
-use App\Models\IssueStatuse;
+use App\Models\IssueStatus;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\Tracker;
@@ -42,7 +42,7 @@ class UpdateIssueRequest extends FormRequest
 //			'is_private' => 'boolean',
 			'project_id' => 'required|int|exists:' . Project::getTableName() . ',id',
 			'tracker_id' => 'required|int|exists:' . Tracker::getTableName() . ',id',
-			'status_id' => 'required|int|exists:' . IssueStatuse::getTableName() . ',id'
+			'status_id' => 'required|int|exists:' . IssueStatus::getTableName() . ',id'
 		];
 	}
 }

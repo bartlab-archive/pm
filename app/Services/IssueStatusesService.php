@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Issue;
-use App\Models\IssueStatuse;
+use App\Models\IssueStatus;
 use App\Models\Journal;
 use App\Models\Project;
 use App\Models\Tracker;
@@ -22,7 +22,7 @@ class IssueStatusesService
 {
     public function getList()
     {
-        return IssueStatuse::all();
+        return IssueStatus::all();
     }
 
 }

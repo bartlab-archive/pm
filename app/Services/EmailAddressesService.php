@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\EmailAddresses;
+use App\Models\EmailAddress;
 use App\Models\User;
 
 /**
@@ -35,20 +35,20 @@ class EmailAddressesService
      */
     public function getList($params)
     {
-        return EmailAddresses::where($params)->get();
+        return EmailAddress::where($params)->get();
     }
 
     public function getById($id)
     {
-        return EmailAddresses::where(['id' => $id])->firstOrFail();
+        return EmailAddress::where(['id' => $id])->firstOrFail();
     }
 
     /**
-     * @param EmailAddresses $emailAddress
+     * @param EmailAddress $emailAddress
      * @param array $data
      * @return mixed
      */
-    public function update(EmailAddresses $emailAddress, array $data)
+    public function update(EmailAddress $emailAddress, array $data)
     {
         return $emailAddress->update($data);
     }

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\IssueStatuse;
+use App\Models\IssueStatus;
 
 
 class StatusesService
@@ -10,12 +10,12 @@ class StatusesService
 
     public function all()
     {
-        return IssueStatuse::all();
+        return IssueStatus::all();
     }
 
 	public function getList()
 	{
-		return IssueStatuse::all();
+		return IssueStatus::all();
 	}
 
 }

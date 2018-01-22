@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Issues\GetIssuesRequest;
 use App\Http\Requests\Issues\UpdateIssueRequest;
+use App\Models\Issue;
 use App\Services\EnabledModulesService;
 use App\Services\EnumerationsService;
 use App\Services\IssueCategoriesService;
@@ -81,9 +82,9 @@ class IssuesController extends BaseController
          *  - project status
          */
         if (!$issue->project || !$this->enabledModulesService->check(
-            $issue->project->identifier,
-            $this->issueService::MODULE_NAME
-        )) {
+                $issue->project->identifier,
+                $this->issueService::MODULE_NAME
+            )) {
             return abort(403);
         }
 
@@ -114,7 +115,10 @@ class IssuesController extends BaseController
         $data = $this->issueService->all($request->all());
 
         return response()
-            ->json($data['issues'], 200)
+            ->json([
+                'list' => $data['list'],
+                'groups' => $data['groups']
+            ], 200)
             ->withHeaders([
                 'X-Total' => $data['total'],
                 'X-Limit' => $data['limit'],
@@ -129,7 +133,7 @@ class IssuesController extends BaseController
                 'statuses' => $this->statusesService->all(),
                 'trackers' => $this->trackersService->all(),
                 'priorities' => $this->enumerationsService->all([
-                    'type' => 'IssuePriority',
+                    'type' => Issue::ENUMERATION_PRIORITY,
                     'project_identifier' => $request->get('project_identifier')
                 ])
             ], 200);

@@ -16,11 +16,9 @@ use App\Traits\ModelTrait;
  *
  * @package App\Models
  */
-class IssueStatuse extends Model
+class IssueStatus extends Model
 {
     use ModelTrait;
-
-    protected $table = 'issue_statuses';
 
     protected $casts = [
         'is_closed' => 'boolean',
@@ -28,10 +26,5 @@ class IssueStatuse extends Model
 
     public $timestamps = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $guarded = ['id'];
 }

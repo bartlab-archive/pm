@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 
-use App\Models\EmailAddresses;
+use App\Models\EmailAddress;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ResetPasswordSendTokenRequest extends FormRequest
@@ -26,7 +26,7 @@ class ResetPasswordSendTokenRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|string|email|max:255|exists:' . EmailAddresses::getTableName() . ',address'
+            'email' => 'required|string|email|max:255|exists:' . EmailAddress::getTableName() . ',address'
         ];
     }
 }

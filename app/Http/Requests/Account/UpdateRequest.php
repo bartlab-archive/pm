@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\EmailAddresses;
+use App\Models\EmailAddress;
 use App\Models\UserPreference;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +38,7 @@ class UpdateRequest extends FormRequest
 
                 //This rule validates the exists email address ignore user email
                 'email' => Rule::unique(
-                    EmailAddresses::getTableName(),
+                    EmailAddress::getTableName(),
                     'address'
                 )->ignore(Auth::id(), 'user_id')
             ],

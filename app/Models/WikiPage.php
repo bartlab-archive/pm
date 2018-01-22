@@ -9,43 +9,25 @@ class WikiPage extends Model
 {
     use ModelTrait;
 
-    protected $table = 'wiki_pages';
+    const CREATED_AT = 'created_on';
+    const UPDATED_AT = null;
 
-//    protected $fillable = ['title', 'wiki_id'];
     public $timestamps = false;
 
-    /**
-     * The name of the "created on" column.
-     *
-     * @var string
-     */
-    const CREATED_AT = 'created_on';
-
-    /**
-     * The name of the "updated on" column.
-     *
-     * @var string
-     */
-    const UPDATED_AT = null;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $guarded = ['id'];
 
     protected $dates = [
         'created_on',
     ];
 
-    public static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->{self::CREATED_AT} = $model->freshTimestamp();
-        });
-    }
+//    public static function boot()
+//    {
+//        parent::boot();
+//
+//        static::creating(function ($model) {
+//            $model->{self::CREATED_AT} = $model->freshTimestamp();
+//        });
+//    }
 
     public function content()
     {

@@ -20,7 +20,16 @@ export default class IssuesService extends ServiceBase {
     // }
 
     all() {
-        return this.Restangular.all('issues');
+        return this.Restangular.withConfig((RestangularConfigurer)=>{
+            RestangularConfigurer.addResponseInterceptor((data, operation, what, url, response, deferred) => {
+                if (operation === "getList") {
+                    response.groups = data.groups;
+                    return data.list;
+                }
+
+                return data;
+            });
+        }).all('issues');
     }
 
     filters(){

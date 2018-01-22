@@ -7,10 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
     /**
-     * registration admin setting constant
-     */
-
-    /**
      * @var string
      */
     const setting_register_name = 'self_registration';
@@ -32,7 +28,7 @@ class Setting extends Model
      * 
      * @var integer
      */
-    protected $table = 'settings';
+//    protected $table = 'settings';
     
     public $timestamps = false;
 

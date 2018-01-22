@@ -21,14 +21,7 @@ class JournalDetail extends Model
 {
     use ModelTrait;
 
-    protected $table = 'journal_details';
-
     public $timestamps = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $guarded = ['id'];
 }

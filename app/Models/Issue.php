@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ReferenceTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\ModelTrait;
 
@@ -37,20 +38,14 @@ use App\Traits\ModelTrait;
  */
 class Issue extends Model
 {
-    use ModelTrait;
-
-    protected $table = 'issues';
+    use ModelTrait, ReferenceTrait;
 
     const CREATED_AT = 'created_on';
     const UPDATED_AT = 'updated_on';
 
-//    public $timestamps = false;
+    const ENUMERATION_PRIORITY = 'IssuePriority';
+    const WATCHABLE_TYPE = 'Issue';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $guarded = ['id'];
 
     protected $hidden = ['project_id'];
@@ -61,14 +56,14 @@ class Issue extends Model
         'closed_on'
     ];
 
-    public function user()
+    public function assigned()
     {
-        return $this->hasOne(User::class, 'id', 'assigned_to_id');
+        return $this->belongsTo(User::class, 'assigned_to_id');
     }
 
     public function author()
     {
-        return $this->hasOne(User::class, 'id', 'author_id');
+        return $this->belongsTo(User::class, 'author_id');
     }
 
     public function project()
@@ -78,22 +73,31 @@ class Issue extends Model
 
     public function tracker()
     {
-        return $this->hasOne(Tracker::class, 'id', 'tracker_id');
+        return $this->belongsTo(Tracker::class);
     }
 
     public function journals()
     {
-        return $this->hasMany(Journal::class, 'journalized_id', 'id')->where('journalized_type', 'Issue');
+        return $this
+            ->hasMany(Journal::class, 'journalized_id', 'id')
+            ->where('journalized_type', 'Issue');
     }
 
     public function status()
     {
-        return $this->hasOne(IssueStatuse::class, 'id', 'status_id');
+        return $this->belongsTo(IssueStatus::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(IssueCategory::class);
     }
 
     public function priority()
     {
-        return $this->hasOne(Enumeration::class, 'id', 'priority_id')->where('type', 'IssuePriority');
+        return $this
+            ->belongsTo(Enumeration::class, 'priority_id', 'id')
+            ->where('type', static::ENUMERATION_PRIORITY);
     }
 
     public function childIssues()
@@ -103,6 +107,16 @@ class Issue extends Model
 
     public function watchers()
     {
-        return $this->hasMany(Watcher::class, 'watchable_id', 'id')->where('watchable_type', 'Issue');
+        return $this
+            ->belongsToMany(User::class, Watcher::getTableName(), 'watchable_id')
+            ->where('watchable_type', static::WATCHABLE_TYPE);
+//        return $this
+//            ->hasMany(Watcher::class, 'watchable_id', 'id')
+//            ->where('watchable_type', 'Issue');
+    }
+
+    public function version()
+    {
+        return $this->belongsTo(Version::class, 'fixed_version_id');
     }
 }

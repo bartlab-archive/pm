@@ -172,15 +172,8 @@ class UserPreference extends Model
         'Tokelau Is.' => 'Pacific/Auckland'
     ];
 
-    protected $table = 'user_preferences';
-
     public $timestamps = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $guarded = ['id'];
 
     public function getOthersAttribute($value)

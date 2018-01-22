@@ -24,15 +24,8 @@ class WikiContentVersion extends Model
 {
     use ModelTrait;
 
-    protected $table = 'wiki_content_versions';
-
     public $timestamps = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $guarded = ['id'];
 
     protected $dates = [
