@@ -89,6 +89,7 @@ class ProjectsService
 //                'wiki',
 //                'repositories',
                 'enumerations',
+				'parent',
 //                'childProjects'
             ])
 //            ->with(['members' => function ($query) {

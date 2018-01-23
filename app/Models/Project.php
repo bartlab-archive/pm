@@ -62,4 +62,8 @@ class Project extends Model
     {
         return $this->belongsToMany(User::class, Member::getTableName());
     }
+
+	public function parent() {
+		return $this->hasOne(self::class, 'id', 'parent_id');
+	}
 }

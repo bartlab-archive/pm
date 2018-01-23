@@ -26,9 +26,9 @@ export default class ProjectsNewController extends ControllerBase {
           this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.model = _.get(response, 'data', []);
 
-            if (this.model.parent_project) {
-              this.model.parent_identifier = this.model.parent_project.identifier;
-              delete(this.model.parent_project.identifier);
+            if (this.model.parent) {
+              this.model.parent_identifier = this.model.parent.identifier;
+              delete(this.model.parent.identifier);
             }
 
             this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
@@ -53,7 +53,7 @@ export default class ProjectsNewController extends ControllerBase {
         let data = _.cloneDeep(this.model);
         data.modules = _.keys(_.pickBy(data.modules, (value, key) => value));
         data.trackers = _.keys(_.pickBy(data.trackers, (value, key) => value));
-
+        delete(data.parent);
         this.ProjectsService.create(data)
             .then((response) => {
 

@@ -1,7 +1,5 @@
 <div layout="row" layout-margin  layout-align="center start" style="width: 90%; margin-left: auto;  margin-right: auto;">
     <md-content ng-repeat=" container in ::$ctrl.containers " flex style="overflow-y:auto; height: 95vh;" layout-padding >
-    <!--<md-content layout="row" ng-repeat=" container in ::$ctrl.containers ">-->
-
         <div style="text-align: center; text-transform: uppercase;">
             <h4 class="card-title">{{ container.name }}</h4>
         </div>
@@ -20,7 +18,6 @@
                 </md-card-header>
 
                 <md-card-content class="card-text" style="max-height: 150px; overflow-y: auto; word-wrap:break-word; background: #ffffdd ">
-                    <!---->
                     <p>
                         {{ item.description }}
                     </p>
@@ -28,6 +25,5 @@
 
             </md-card>
         </md-content>
-        <!--<div class="clearfix" style="min-height: 50px"></div>--
-    </md-content>
+   </md-content>
 </div>

@@ -46,11 +46,6 @@ export default class ProjectsSettingsController extends ControllerBase {
         this.load();
         this.$rootScope.$on('updateProjectInfo', () => this.load());
 
-        this.ProjectsService.getList().then((response) => {
-            // const self = this;
-            this.projects = response.data;
-            // this.projects = _.filter(response.data, (item) => (item.identifier !== self.model.identifier));
-        });
 
         this.repositories = [{
             scm: 'Filesystem',
@@ -70,13 +65,12 @@ export default class ProjectsSettingsController extends ControllerBase {
     load() {
         this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
             this.model = _.get(response, 'data', []);
-
             this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
             this.tabs = Object.assign([], this.model.modules);
 
-            if (this.model.parent_project) {
-                this.model.parent_identifier = this.model.parent_project.identifier;
-                delete(this.model.parent_project.identifier);
+            if (this.model.parent) {
+                this.model.parent_identifier = this.model.parent.identifier;
+                delete(this.model.parent.identifier);
             }
 
             this.members = this.ProjectsService.getMembersList(this.model);
@@ -88,6 +82,11 @@ export default class ProjectsSettingsController extends ControllerBase {
             this.activities = this.getActivities();
 
             this.initialActivities = _.cloneDeep(this.activities);
+
+            this.ProjectsService.getList().then((response) => {
+                this.projects = _.filter(response.data, (item) => (item.identifier !== this.model.identifier));
+            });
+
         });
     }
 
