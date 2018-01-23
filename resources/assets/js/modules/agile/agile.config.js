@@ -1,5 +1,5 @@
 import InjectableBase from 'base/injectable.base';
-import agileboardIndexComponent from './components/index/agileboard-index.component';
+import agileIndexComponent from './components/index/agile-index.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -12,12 +12,12 @@ export default class FieldsConfig extends InjectableBase {
 
     $onInit() {
         this.$stateProvider
-            .state('agileboard', {
+            .state('agile', {
                 abstract: true,
                 data: {
                     access: '@'
                 },
-                url: '/agileboard',
+                url: '/agile',
                 parent: 'default',
                 views: {
                     content: {
@@ -25,9 +25,9 @@ export default class FieldsConfig extends InjectableBase {
                     }
                 }
             })
-            .state('agileboard.index', {
+            .state('agile.index', {
                 url: '',
-                component: agileboardIndexComponent.name,
+                component: agileIndexComponent.name,
             });
     }
 

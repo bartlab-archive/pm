@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\ModelTrait;
+use App\Traits\NodeTrait;
 
 class Project extends Model
 {
     use ModelTrait;
+    use NodeTrait;
 
     const ACTIVE_STATUS = '1';
     const CLOSED_STATUS = '5';

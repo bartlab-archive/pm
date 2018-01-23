@@ -115,29 +115,27 @@ Route::group(
 		Route::group(
 			[
 				//'middleware' => 'auth',
-				'prefix' => 'agileboard'
+				'prefix' => 'agile'
 			],
 			function () {
-				Route::get('/', 'AgileboardController@getList');
+				Route::get('/', 'AgileController@getList');
 			}
 		);
 
 
-		Route::group(
-			[
-//				'middleware' => 'auth',
-				'prefix' => 'test'
-			],
-			function () {
-				Route::get('/', function (Request $request){
-					$model = new \App\Models\Project();
-					return $model->where($model->getLeftColumnName(), $request->input('lft'))
-						->where($model->getRightColumnName(), $request->input('rgt'))
-						//->first()->getDescendantsAndSelf();
-						->first()->descendantsAndSelf()->get()->toHierarchy();
-				});
-			}
-		);
+//		Route::group(
+//			[
+//				'prefix' => 'test'
+//			],
+//			function () {
+//				Route::get('/', function (Request $request){
+//					$model = new \App\Models\Project();
+//					return $model->where($model->getLeftColumnName(), $request->input('lft'))
+//						->where($model->getRightColumnName(), $request->input('rgt'))
+//						->first()->descendantsAndSelf()->get()->toHierarchy();
+//				});
+//			}
+//		);
 
         Route::group(
             [

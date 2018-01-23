@@ -84,7 +84,6 @@ class Move {
 	 */
 	public static function to($node, $target, $position) {
 		$instance = new static($node, $target, $position);
-
 		return $instance->perform();
 	}
 
@@ -106,18 +105,12 @@ class Move {
 				$self->updateStructure();
 			});
 
-			$this->target->reload();
-
-			$this->node->setDepthWithSubtree();
-
-			$this->node->reload();
 		}
 
 		$this->fireMoveEvent('moved', false);
 
 		return $this->node;
 	}
-
 	/**
 	 * Runs the SQL query associated with the update of the indexes affected
 	 * by the move operation.
@@ -184,7 +177,6 @@ class Move {
 	 * @return   \Node
 	 */
 	protected function resolveNode($node) {
-		if ( $node instanceof  \Node ) return $node->reload();
 
 		return $this->node->newNestedSetQuery()->find($node);
 	}
@@ -349,7 +341,6 @@ class Move {
 	protected function fireMoveEvent($event, $halt = true) {
 		if ( !isset(static::$dispatcher) ) return true;
 
-		// Basically the same as \Illuminate\Database\Eloquent\NodeModel->fireModelEvent
 		// but we relay the event into the node instance.
 		$event = "eloquent.{$event}: ".get_class($this->node);
 

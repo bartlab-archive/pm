@@ -3,7 +3,7 @@ import ControllerBase from 'base/controller.base';
 /**
  * @property {Object} $state
  */
-export default class AgileboardIndexController extends ControllerBase {
+export default class AgileIndexController extends ControllerBase {
 
     static get $inject() {
         return ['$state','StatusesService','IssuesService','$stateParams'];
@@ -11,10 +11,9 @@ export default class AgileboardIndexController extends ControllerBase {
 
 
     $onInit() {
-
-        // this.loadProjectIsues();
-        //
-         this.loadIsues().then(() => this.load());
+        //console.log(this.$stateParams);
+        //this.loadProjectIsues();
+        this.loadIsues().then(() => this.load());
 
     }
 
@@ -29,36 +28,45 @@ export default class AgileboardIndexController extends ControllerBase {
 
                             if (container.id == item.status.id) {
                                 container.items.push({
-                                    name: item.subject.substr(0, 10),
-                                    description: item.description.substr(0,60)
+                                    name: item.subject.substr(0, 100),
+                                    description: item.description.substr(0,200)
                                 });
                             }
                         });
 
                 });
-                 //console.log(this.containers);
+                 // console.log(this.containers);
             });
     }
 
 
     loadIsues(){
         return this.IssuesService.all()
-            .getList()
+            .getList({
+                project_identifier: this.currentProjectId()
+            })
             .then((response) => {
                 this.list = response.data;
                 console.log(this.list);
             });
     }
 
-    loadProjectIsues(){
-           //console.log(this.$stateParams);
-        // this.ProjectsService.getProjectIssues(this.$stateParams.project_id).then((response) => {
-        //     this.issuesCount = _.get(response, 'data.trackers', []);
-        //
-        // });
-    }
-
     toMoved( item ){
 
     }
+
+    currentProjectId() {
+        return this.$stateParams.hasOwnProperty('project_id') ? this.$stateParams.project_id : null;
+    }
+
+    // loadProjectIsues(){
+    //     return this.IssuesService.all({
+    //         project_identifier: this.currentProjectId()})
+    //         .getList()
+    //         .then((response) => {
+    //             this.list = response.data;
+    //             console.log(this.list);
+    //
+    //         });
+    // }
 }

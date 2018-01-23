@@ -263,19 +263,19 @@
                 <!--</md-content>-->
             </md-tab>
 
-            <md-tab label="Agile" md-active="$ctrl.page === 'agileboard'" md-on-select="$ctrl.selectTab('agileboard')"
-                    ng-if="$ctrl.tabs.agileboard">
+            <md-tab label="Agile" md-active="$ctrl.page === 'agile'" md-on-select="$ctrl.selectTab('agile')"
+                    ng-if="$ctrl.tabs.agile">
                 <!--<md-content class="md-padding">-->
                 <form name="agileForm" class="md-padding">
                     <md-input-container class="md-block">
-                        <label>agileboard page</label>
+                        <label>agile page</label>
 
                     </md-input-container>
 
                     <div layout-align="center center" layout="row">
                         <md-button class="md-raised md-primary animation-target" type="submit"
                                    ng-disabled="agileForm.$invalid"
-                                   ng-click="$ctrl.saveAgileboard()">
+                                   ng-click="$ctrl.saveAgile()">
                             Save
                         </md-button>
 

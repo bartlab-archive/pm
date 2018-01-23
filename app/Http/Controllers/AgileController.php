@@ -12,7 +12,7 @@ use Illuminate\Routing\Controller as BaseController;
  * @property IssueStatuseController $statusesService
  *
  */
-class AgileboardController extends BaseController
+class AgileController extends BaseController
 {
 	/**
 	 * Statuses constructor.
