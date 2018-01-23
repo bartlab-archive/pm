@@ -1,3 +1,29 @@
-<div layout-gt-sm="row" layout-align="center start"  >
-Agile
+<div layout="row" layout-margin  layout-align="center start" style="width: 90%; margin-left: auto;  margin-right: auto;">
+    <md-content ng-repeat=" container in ::$ctrl.containers " flex style="overflow-y:auto; height: 95vh;" layout-padding >
+        <div style="text-align: center; text-transform: uppercase;">
+            <h4 class="card-title">{{ container.name }}</h4>
+        </div>
+
+        <md-content dnd-list="container.items" style="min-height: 50px;" >
+            <!--dnd-moved="$ctrl.toMoved(item)"-->
+            <md-card ng-repeat="item in container.items" dnd-draggable="item"
+                     dnd-type="'item'"
+                     dnd-effect-allowed="all"
+                     dnd-dragstart=""
+                     dnd-moved="container.items.splice($index, 1)"
+                     dnd-dragend="">
+
+                <md-card-header ng-click="" style="background: #607D8B; color:#ffffff; word-wrap:break-word; cursor: pointer">
+                    {{ ::item.subject}}
+                </md-card-header>
+
+                <md-card-content class="card-text" style="max-height: 150px; overflow-y: auto; word-wrap:break-word; background: #ffffdd ">
+                    <p>
+                        {{ item.description }}
+                    </p>
+                </md-card-content>
+
+            </md-card>
+        </md-content>
+    </md-content>
 </div>

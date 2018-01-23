@@ -101,7 +101,7 @@ export default class LayoutDefaultController extends ControllerBase {
             name: 'gantt',
             enable: false
         }, {
-            url: 'projects.inner.issues.agile',
+            url: 'agile.index',
             title: 'Agile',
             name: 'agile',
             enable: false

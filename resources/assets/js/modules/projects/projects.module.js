@@ -17,7 +17,6 @@ import projectsRepositoryComponent from './components/repository/projects-reposi
 import projectsMemberComponent from './components/member/projects-member.component';
 import projectsVersionComponent from './components/version/projects-version.component';
 import projectsCategoryComponent from './components/cetegory/projects-category.component';
-import projectsAgileComponent from './components/agile/project-agile.component';
 
 
 angular.module('app.modules.projects', ['ngFileSaver'])
@@ -38,5 +37,4 @@ angular.module('app.modules.projects', ['ngFileSaver'])
     .component(projectsBoardsComponent.name, projectsBoardsComponent)
     .component(projectsMemberComponent.name, projectsMemberComponent)
     .component(projectsVersionComponent.name, projectsVersionComponent)
-    .component(projectsCategoryComponent.name, projectsCategoryComponent)
-    .component(projectsAgileComponent.name, projectsAgileComponent);
+    .component(projectsCategoryComponent.name, projectsCategoryComponent);

@@ -17,13 +17,9 @@ export default class FieldsConfig extends InjectableBase {
                 data: {
                     access: '@'
                 },
-                url: '/agile',
-                parent: 'default',
-                views: {
-                    content: {
-                        template: '<ui-view/>'
-                    }
-                }
+                url: '/issues/agile',
+                parent:'projects.inner',
+                component: agileIndexComponent.name,
             })
             .state('agile.index', {
                 url: '',

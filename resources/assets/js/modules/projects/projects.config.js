@@ -11,7 +11,8 @@ import projectsDocumentsComponent from './components/documents/projects-document
 import projectsFilesComponent from './components/files/projects-files.component';
 import projectsBoardsComponent from './components/boards/projects-boards.component';
 import projectsRepositoryComponent from './components/repository/projects-repository.component';
-import projectAgileComponent from './components/agile/project-agile.component';
+// import agileIndexComponent from 'modules/agile/components/index/agile-index.component';
+
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -97,10 +98,10 @@ export default class ProjectsConfig extends InjectableBase {
             //     url: '',
             //     component: issuesListComponent.name,
             // })
-            .state('projects.inner.issues.agile', {
-                url: '/agile',
-                component: projectAgileComponent.name,
-            })
+            // .state('projects.inner.issues.agile', {
+            //     url: '{project_id}/issues/agile',
+            //     component: agileIndexComponent.name,
+            // })
             .state('projects.inner.issues.calendar', {
                 url: '/calendar',
                 component: projectsCalendarComponent.name,
