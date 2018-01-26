@@ -106,7 +106,7 @@ export default class LayoutDefaultController extends ControllerBase {
             name: 'agile',
             enable: false
         }, {
-            url: 'projects.inner.issues.calendar',
+            url: 'calendar.index',
             title: 'Calendar',
             name: 'calendar',
             enable: false

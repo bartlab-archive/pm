@@ -4,14 +4,12 @@ import projectsNewComponent from './components/new/projects-new.component';
 import projectsInfoComponent from './components/info/projects-info.component';
 import projectsSettingsComponent from './components/settings/projects-settings.component';
 import projectsActivityComponent from './components/activity/projects-activity.component';
-import projectsCalendarComponent from './components/calendar/projects-calendar.component';
 import projectsGanttComponent from './components/gantt/projects-gantt.component';
 import projectsNewsComponent from './components/news/projects-news.component';
 import projectsDocumentsComponent from './components/documents/projects-documents.component';
 import projectsFilesComponent from './components/files/projects-files.component';
 import projectsBoardsComponent from './components/boards/projects-boards.component';
 import projectsRepositoryComponent from './components/repository/projects-repository.component';
-// import agileIndexComponent from 'modules/agile/components/index/agile-index.component';
 
 
 /**
@@ -93,18 +91,6 @@ export default class ProjectsConfig extends InjectableBase {
             .state('projects.inner.activity.date', {
                 url: '/activity/:end_date',
                 component: projectsActivityComponent.name,
-            })
-            // .state('projects.inner.issues.index', {
-            //     url: '',
-            //     component: issuesListComponent.name,
-            // })
-            // .state('projects.inner.issues.agile', {
-            //     url: '{project_id}/issues/agile',
-            //     component: agileIndexComponent.name,
-            // })
-            .state('projects.inner.issues.calendar', {
-                url: '/calendar',
-                component: projectsCalendarComponent.name,
             })
             .state('projects.inner.issues.gantt', {
                 url: '/gantt',

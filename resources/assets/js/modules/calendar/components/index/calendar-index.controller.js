@@ -1,6 +1,6 @@
 import ControllerBase from 'base/controller.base';
 
-export default class ProjectsCalendarController extends ControllerBase {
+export default class CalendarIndexController extends ControllerBase {
 
     static get $inject() {
 
@@ -29,7 +29,7 @@ export default class ProjectsCalendarController extends ControllerBase {
 
 
 
-      //  this.buildMonth(this.now, this.month);
+        //  this.buildMonth(this.now, this.month);
     }
 
 
@@ -65,28 +65,28 @@ export default class ProjectsCalendarController extends ControllerBase {
 
         let col = new Date(year, month + 1, 0).getDate();
 
-         this.tiles = [];
+        this.tiles = [];
 
-         for (var i = 0; i < col; i++) {
+        for (var i = 0; i < col; i++) {
 
-             var date = new Date(year, month, i+1);
+            var date = new Date(year, month, i+1);
 
-             var localy = this.getLocalDay(date);
+            var localy = this.getLocalDay(date);
 
-             this.tiles.push({
-                 day: date.getDate(),
-                 month: month,
-                 week: this.getWeekDay(localy-1),
-                 number: date.getDay()
-             });
-         }
+            this.tiles.push({
+                day: date.getDate(),
+                month: month,
+                week: this.getWeekDay(localy-1),
+                number: date.getDay()
+            });
+        }
 
-         console.log( this.tiles);
+        console.log( this.tiles);
 
-         return this.tiles;
+        return this.tiles;
     }
 
-     getLocalDay(date) {
+    getLocalDay(date) {
 
         var day = date.getDay();
         if (day == 0) day = 7;
@@ -106,7 +106,7 @@ export default class ProjectsCalendarController extends ControllerBase {
     getWeekDay(date) {
 
         var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ,'Sunday'];
-       // var days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота' ,'Воскресенье'];
+        // var days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота' ,'Воскресенье'];
         return days[date];
     }
 }
