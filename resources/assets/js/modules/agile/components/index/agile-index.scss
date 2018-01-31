@@ -1,0 +1,62 @@
+agile-index-component {
+
+  .dnd-list{
+    background-color: #fafafa;
+  }
+  .dnd-list:hover{
+    background-color: #eceff1;
+  }
+
+  .dnd-list[drop-active=true] {
+    box-shadow: inset 0px 0px 0px 2px #00C;
+  }
+
+  md-content {
+    background: #fff;
+    overflow-y:auto;
+    max-height: 95vh;
+    height: auto;
+  }
+
+  md-card-header{
+    background: #607D8B;
+    color:#ffffff;
+    word-wrap:break-word;
+    cursor: pointer;
+  }
+
+  md-card-content{
+    max-height: 150px;
+    overflow-y: auto;
+    word-wrap:break-word;
+    background: #ffffdd
+  }
+
+  /* Override default scrollbar */
+  .style-3::-webkit-scrollbar{
+    width: 5px;
+  }
+
+  .style-3::-webkit-scrollbar-thumb:hover{
+  }
+
+  .style-3::-webkit-scrollbar-thumb:active{
+  }
+
+  /* Customize Thumb */
+  .style-3::-webkit-scrollbar-thumb{
+    background-color: #F4511E;
+  }
+
+  .style-3::-webkit-scrollbar-button{
+    height: 92px;
+  }
+
+  /* Customize Track */
+  .style-3::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+    border: 0px none #ffffff;
+    border-radius: 10px;
+  }
+}

@@ -3,34 +3,68 @@
         <md-toolbar class="md-warn">
             <div class="md-toolbar-tools">
                 <div class="header">
-                    <i class="material-icons" ng-click="$ctrl.previous($ctrl.info.id)" style="cursor: pointer">keyboard_arrow_left</i>
-                    <span>{{ $ctrl.info.text }}</span>
-                    <i class="material-icons" ng-click="$ctrl.next($ctrl.info.id)" style="cursor: pointer">keyboard_arrow_right</i>
-
+                    <md-icon ng-click="$ctrl.previous($ctrl.myDate)" style="cursor: pointer">keyboard_arrow_left</md-icon>
+                        <span>{{ $ctrl.info.text }}</span>
+                    <md-icon ng-click="$ctrl.next($ctrl.myDate)" style="cursor: pointer">keyboard_arrow_right</md-icon>
+                    <span>  Today at  {{ $ctrl.nowMoment | amDateFormat: 'dddd, MMMM Do YYYY'}} </span>
                 </div>
             </div>
         </md-toolbar>
         <md-content layout-padding="">
-            <md-grid-list md-cols="7"md-row-height="fit" md-gutter="8px">
-                <md-grid-tile ng-repeat="week in $ctrl.weeks"  style="height: 50px"> {{ week}} </md-grid-tile>
-            </md-grid-list>
-            <md-grid-list md-cols-gt-md="7" md-cols="3" md-cols-md="8" md-row-height-gt-md="1:1" md-row-height="fit" md-gutter-gt-md="10px" md-gutter-md="5px" md-gutter="2px">
-                <md-grid-tile ng-repeat="tile in $ctrl.tiles" style="background: #eceff1; text-align: center " >
-                    <div ng-style="{ 'color' : (tile.day == $ctrl.now && tile.month == $ctrl.month) ? 'red' : 'black' }">
-                        <h1 >{{tile.day}} </h1>  &nbsp;
 
-                        <small> {{tile.week}} </small>
+            <md-grid-list md-cols="7" md-row-height="fit" ng-style="{'height':'30px'}">
+                <md-grid-tile ng-repeat="week in $ctrl.weeks" > <h3>{{ ::week}}</h3> </md-grid-tile>
+            </md-grid-list>
+
+
+            <md-grid-list md-cols="7" md-row-height-gt-md="1:1" md-row-height="4:3" ng-repeat="tile in $ctrl.calendar" ng-style="{'padding': '1px'}">
+                <md-grid-tile ng-repeat="value  in tile" class="md-list-item-text" md-colspan-sm="0"   md-colspan-xs="0" ng-style="{'border': 'solid 1px #e5e5e5'}">
+                    <div ng-style="{ 'background' : (value.dateMonth != $ctrl.month) ? '#ffffef' : '#fff', 'width': '100%', 'height': '100%'}">
+
+                        <p ng-style="{ 'color' : (value.dateMoment == $ctrl.nowMoment) ? 'red' : 'black','text-align': 'center'}">
+                            {{::value.date}}
+                        </p>
+
+                        <ng-if="::(value.issues)">
+                        <md-list flex>
+                            <md-list-item ng-repeat="itm in value.issues" ng-style="{ 'list-style':'none'}">
+                                <!--<div class="md-list-item-text" ng-click="$ctrl.openFromLeft(itm)">-->
+                                <div class="md-list-item-text">
+                                    <md-icon ng-style="{'color' : (itm.issues.due_date && itm.issues.due_date == value.dateMoment) ? 'red' : ''}"
+                                             ng-class=" itm.issues.due_date && itm.issues.due_date == value.dateMoment && itm.issues.due_date != itm.issues.start_date? 'rotate-180' : '' ">{{ itm.issues.due_date == itm.issues.start_date?'get_app':'forward' }}</md-icon>
+                                    {{::itm.issues.name}}
+                                    <md-tooltip md-direction="right"
+                                                ng-style="{'height':'auto',
+                                                'width':' 250px',
+                                                'background-color':'#fcfce5',
+                                                'color':'#3d454c' ,
+                                                'text-size':'14px',
+                                                'border':'solid 1px #000',
+                                                'opacity':'1',
+                                                'margin-left': '-120px'}" md-autohide="false">
+                                        Task #{{::itm.issues.id}} {{::itm.issues.name}}<br>
+                                        <md-divider flex></md-divider>
+                                        <strong>Project</strong>: <a href="#">{{::itm.issues.project}}</a><br>
+                                        <strong>Status</strong>: {{::itm.issues.status}}<br>
+                                        <strong>Start date</strong>: {{::itm.issues.start_date}}<br>
+                                        <strong>Due date</strong>: {{::itm.issues.due_date}}<br>
+                                        <strong>Assignee</strong>: {{::itm.issues.assigned}}<br>
+                                        <strong>Priority</strong>: {{::itm.issues.priority}}
+                                     </md-tooltip>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+
+                        </ng-if>
+
                     </div>
-
-                    <md-content>
-                        content
-                    </md-content>
-
-
                 </md-grid-tile>
-
-
             </md-grid-list>
+        </md-content>
+        <md-content layout-padding="2">
+            <md-icon>forward</md-icon> issue beginning this day<br>
+            <md-icon ng-style="{'color': 'red'}" class="rotate-180">forward</md-icon> issue ending this day<br>
+            <md-icon ng-style="{'color': 'red'}">get_app</md-icon>issue beginning and ending this day<br>
         </md-content>
     </md-card>
 </div>

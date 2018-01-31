@@ -1,10 +1,10 @@
-<div layout="row" layout-margin  layout-align="center start" style="width: 90%; margin-left: auto;  margin-right: auto;">
-    <md-content ng-repeat=" container in ::$ctrl.containers " flex style="overflow-y:auto; height: 95vh;" layout-padding >
-        <div style="text-align: center; text-transform: uppercase;">
+<div layout="row" layout-margin  layout-align="center start" >
+    <md-content ng-repeat=" container in $ctrl.containers " flex layout-padding  class="style-3">
+        <div ng-style="{'text-align':'center', 'text-transform': 'uppercase'}">
             <h4 class="card-title">{{ container.name }}</h4>
         </div>
 
-        <md-content dnd-list="container.items" style="min-height: 50px;" >
+        <div class="dnd-list" flex dnd-list="container.items" >
             <!--dnd-moved="$ctrl.toMoved(item)"-->
             <md-card ng-repeat="item in container.items" dnd-draggable="item"
                      dnd-type="'item'"
@@ -13,17 +13,19 @@
                      dnd-moved="container.items.splice($index, 1)"
                      dnd-dragend="">
 
-                <md-card-header ng-click="" style="background: #607D8B; color:#ffffff; word-wrap:break-word; cursor: pointer">
+                <md-card-header ng-click="">
                     {{ ::item.subject}}
                 </md-card-header>
 
-                <md-card-content class="card-text" style="max-height: 150px; overflow-y: auto; word-wrap:break-word; background: #ffffdd ">
-                    <p>
-                        {{ item.description }}
-                    </p>
+                <md-card-content class="card-text">
+                    <small>Author : {{::item.author}}</small><br>
+                    <small>Start date: {{::item.start_date}}</small><br>
+                    <small>Due date: {{::item.due_date}}</small><br>
+                        <md-divider flex></md-divider>
+                    <small>Assigned: {{::item.assigned}}</small>
                 </md-card-content>
 
             </md-card>
-        </md-content>
+        </div>
     </md-content>
 </div>

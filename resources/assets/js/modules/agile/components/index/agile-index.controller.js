@@ -1,6 +1,4 @@
 import ControllerBase from 'base/controller.base';
-import issuesViewModalController from 'modules/issues/components/view-modal/issues-view-modal.controller';
-import issuesViewModalTemplate from 'modules/issues/components/view-modal/issues-view-modal.html';
 
 /**
  * @property {Object} $state
@@ -12,9 +10,7 @@ export default class AgileIndexController extends ControllerBase {
     }
 
     $onInit() {
-
         this.loadIsues().then(() => this.load());
-
     }
 
     load() {
@@ -28,26 +24,19 @@ export default class AgileIndexController extends ControllerBase {
 
                         if (container.id == item.status.id) {
                             container.items.push({
-                                id:item.id,
+                                id: item.id,
                                 subject: item.subject,
-                                description: item.description  //.substr(0,60)
+                                author: item.author.firstname + ' ' + item.author.lastname,
+                                start_date: item.start_date ? item.start_date : 'not set',
+                                due_date: item.due_date ?  item.due_date : 'not set' ,
+                                assigned: item.assigned ? item.assigned && item.assigned.firstname  + ' ' + item.assigned.lastname : 'not assigned',
+                                //description: item.description  //.substr(0,60)
                             });
                         }
                     });
 
                 });
-                //console.log(this.containers);
             });
-    }
-
-    viewIssue($event, issue) {
-        console.log(issue);
-        this.$mdDialog.show(
-            this.constructor.setMdDialogConfig($event.target, {
-                selectedIssue: issue
-            })
-        );
-
     }
 
     static setMdDialogConfig(target, data = {}) {

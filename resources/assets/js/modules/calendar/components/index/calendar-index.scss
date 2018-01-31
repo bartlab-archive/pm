@@ -1,0 +1,34 @@
+calendar-index-component {
+  md-tooltip {
+    //height: auto;
+    //width: 250px;
+    //background-color : #fcfce5;
+    //color: #3d454c ;
+    //text-size : 14px;
+    //border : solid 1px #000;
+    //opacity : 1;
+    //left: 25px;
+    //position: relative;
+    //opacity : 1 ;
+    //margin-left: -120px;
+  }
+  md-content {
+  }
+
+  .rotate-180 {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+
+  .cl-dialog{
+    background-color : #fcfce5;
+  }
+
+  md-dialog{
+    background-color : #fcfce5;
+
+  }
+}

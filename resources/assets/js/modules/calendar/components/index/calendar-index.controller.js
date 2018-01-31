@@ -1,21 +1,24 @@
 import ControllerBase from 'base/controller.base';
+import moment from 'moment';
 
 export default class CalendarIndexController extends ControllerBase {
 
     static get $inject() {
 
-        return ['$stateParams', '$rootScope', '$mdDialog', '$state'];
+        return ['$stateParams', '$rootScope', '$state', 'IssuesService', '$mdDialog'];
     }
 
     $onInit() {
 
-        this.myDate = new Date();
-        this.year = this.myDate.getFullYear();
-        this.month = this.myDate.getMonth();
-        this.now = this.myDate.getDate();
+        this.loadIsues().then(() => this.load());
 
-        this.tiles = this.daysInMonthInfo(this.month,this.year);
+    }
 
+    load() {
+        this.myDate = moment();
+        this.nowMoment = moment().format("YYYY-MM-DD");
+        this.year = moment().year();
+        this.month = moment().month();
         this.weeks = [
             "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"
         ];
@@ -24,89 +27,126 @@ export default class CalendarIndexController extends ControllerBase {
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ];
-        this.buildWeek(this.myDate,this.month);
+
         this.info = { id: this.month, text: this.monthNames[this.month] + ", " + this.year};
 
+        this.issuesList = [];
 
+        console.log( this.list);
 
-        //  this.buildMonth(this.now, this.month);
+        this.list.forEach((item) => {
+            if (item.id) {
+                console.log(item.id);
+                this.issuesList.push({
+                    id: item.id,
+                    name: item.subject,
+                    start_date: item.start_date ? item.start_date : 'not set',
+                    due_date: item.due_date ?  item.due_date : 'not set' ,
+                    status: item.status.name,
+                    assigned: item.assigned ? item.assigned && item.assigned.firstname  + ' ' + item.assigned.lastname : 'not assigned',
+                    priority: item.priority.name,
+                    project: item.project.name
+                });
+            }
+        });
+       this.calendar = this.buildCalendar(this.myDate);
+
     }
 
 
-    previous(id){
+    openFromLeft(itm) {
+        console.log(itm);
+        this.$mdDialog.show(
+            this.$mdDialog.alert()
+                .clickOutsideToClose(true)
+                .title( 'Task #' + itm.issues.id + ' ' + itm.issues.name)
+                .htmlContent('<div class="cl-dialog">' +
+                    'Project: '+  itm.issues.project +
+                    '<p>Priority : ' + itm.issues.priority + '</p>' +
+                    '<p>Status : ' + itm.issues.status + '</p>' +
+                    '<p>Due date : ' + itm.issues.due_date + '</p>' +
+                    '<p>Start date : ' + itm.issues.start_date + '</p>' +
+                    '<p>Assignee : ' + itm.issues.assigned + '</p>' +
+                    '</div>'
+                )
+                .ok('Ok')
+                // // You can specify either sting with query selector
+                // .openFrom('#left')
+                // // or an element
+                // .closeTo(angular.element(document.querySelector('#right')))
+        );
+    };
 
-        id = id-1;
-        if (id < 0) {
-            id = 11;
-            this.year = this.year - 1;
+
+    buildCalendar(date){
+        const startDay = moment(date).clone().startOf('month').startOf('week');
+        const endDay = moment(date).clone().endOf('month').endOf('week');
+        var calendar = [];
+        var index = startDay.clone();
+        while (index.isBefore(endDay, 'day')) {
+            calendar.push(
+                new Array(7).fill(0).map(
+                    function(n, i) {
+                        return {date: index.add(1, 'day').date(), dateMoment: moment(index).format("YYYY-MM-DD"), dateWeek: moment(index).weekday(), dateMonth:moment(index).month() } ;
+                    }
+                )
+            );
         }
 
-        this.info = { id: id, text: this.monthNames[id] + ", " + this.year};
+        if (this.issuesList) {
+            calendar.forEach((item,key) => {
+                item.forEach((itemDt) =>{
+                    itemDt.issues = [];
+                    this.issuesList.forEach((itemIs,key)=>{
 
-        this.tiles = this.daysInMonthInfo(id,this.year);
-    }
-
-    next(id){
-
-        id = id+1;
-        if (id >11) {
-            id = 0;
-            this.year = this.year + 1;
-        }
-
-        this.info = { id: id, text: this.monthNames[id] + ", " + this.year};
-
-        this.tiles = this.daysInMonthInfo(id,this.year);
-
-    }
-
-
-    daysInMonthInfo(month,year) {
-
-        let col = new Date(year, month + 1, 0).getDate();
-
-        this.tiles = [];
-
-        for (var i = 0; i < col; i++) {
-
-            var date = new Date(year, month, i+1);
-
-            var localy = this.getLocalDay(date);
-
-            this.tiles.push({
-                day: date.getDate(),
-                month: month,
-                week: this.getWeekDay(localy-1),
-                number: date.getDay()
+                        if (itemDt.dateMoment == itemIs.start_date || itemDt.dateMoment == itemIs.due_date ) {
+                            itemDt.issues.push({
+                                    issues: itemIs
+                                }
+                            );
+                        }
+                    });
+                });
             });
         }
 
-        console.log( this.tiles);
 
-        return this.tiles;
+        return calendar;
     }
 
-    getLocalDay(date) {
-
-        var day = date.getDay();
-        if (day == 0) day = 7;
-
-        return day;
+    previous(date){
+        let previousDate = date.clone();
+        this.myDate = previousDate.subtract(1, 'months');
+        this.month = this.myDate.month();
+        if (this.month > date.month() ) {
+            this.year = this.year-1;
+        }
+        this.calendar = this.buildCalendar(this.myDate);
+        this.info = { id: this.month, text: this.monthNames[this.month] + ", " + this.year};
     }
 
-    buildWeek(date, month) {
-
+    next(date){
+        let nextDate = date.clone();
+        this.myDate = nextDate.add(1, 'months');
+        this.month = this.myDate.month();
+        if (this.month < date.month() ) {
+            this.year = this.year+1;
+        }
+        this.calendar = this.buildCalendar( this.myDate);
+        this.info = { id: this.month, text: this.monthNames[this.month] + ", " + this.year};
     }
 
-    buildMonth(start, month) {
-        // run buildWeek
+    loadIsues(){
+        return this.IssuesService.all()
+            .getList({
+                project_identifier: this.currentProjectId()
+            })
+            .then((response) => {
+                this.list = response.data;
+            });
     }
 
-
-    getWeekDay(date) {
-
-        var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ,'Sunday'];
-        // var days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота' ,'Воскресенье'];
-        return days[date];
+    currentProjectId() {
+        return this.$stateParams.hasOwnProperty('project_id') ? this.$stateParams.project_id : null;
     }
 }
