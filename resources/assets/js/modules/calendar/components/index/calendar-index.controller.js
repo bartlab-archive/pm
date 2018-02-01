@@ -1,5 +1,7 @@
 import ControllerBase from 'base/controller.base';
 import moment from 'moment';
+import issuesViewModalController from 'modules/issues/components/view-modal/issues-view-modal.controller';
+import issuesViewModalTemplate from 'modules/issues/components/view-modal/issues-view-modal.html';
 
 export default class CalendarIndexController extends ControllerBase {
 
@@ -32,50 +34,29 @@ export default class CalendarIndexController extends ControllerBase {
 
         this.issuesList = [];
 
-        console.log( this.list);
+      //  console.log( this.list);
 
         this.list.forEach((item) => {
             if (item.id) {
-                console.log(item.id);
+                //console.log(item.id);
                 this.issuesList.push({
                     id: item.id,
                     name: item.subject,
                     start_date: item.start_date ? item.start_date : 'not set',
                     due_date: item.due_date ?  item.due_date : 'not set' ,
                     status: item.status.name,
-                    assigned: item.assigned ? item.assigned && item.assigned.firstname  + ' ' + item.assigned.lastname : 'not assigned',
+                    assigned: item.assigned ? item.assigned.firstname  + ' ' + item.assigned.lastname : 'not assigned',
+                    author: item.author ? item.author.firstname  + ' ' + item.author.lastname : '_',
                     priority: item.priority.name,
-                    project: item.project.name
+                    project: item.project.name,
+                    data:item
                 });
             }
         });
+        console.log(this.issuesList);
        this.calendar = this.buildCalendar(this.myDate);
 
     }
-
-
-    openFromLeft(itm) {
-        console.log(itm);
-        this.$mdDialog.show(
-            this.$mdDialog.alert()
-                .clickOutsideToClose(true)
-                .title( 'Task #' + itm.issues.id + ' ' + itm.issues.name)
-                .htmlContent('<div class="cl-dialog">' +
-                    'Project: '+  itm.issues.project +
-                    '<p>Priority : ' + itm.issues.priority + '</p>' +
-                    '<p>Status : ' + itm.issues.status + '</p>' +
-                    '<p>Due date : ' + itm.issues.due_date + '</p>' +
-                    '<p>Start date : ' + itm.issues.start_date + '</p>' +
-                    '<p>Assignee : ' + itm.issues.assigned + '</p>' +
-                    '</div>'
-                )
-                .ok('Ok')
-                // // You can specify either sting with query selector
-                // .openFrom('#left')
-                // // or an element
-                // .closeTo(angular.element(document.querySelector('#right')))
-        );
-    };
 
 
     buildCalendar(date){
@@ -148,5 +129,30 @@ export default class CalendarIndexController extends ControllerBase {
 
     currentProjectId() {
         return this.$stateParams.hasOwnProperty('project_id') ? this.$stateParams.project_id : null;
+    }
+
+    viewIssue($event, issue) {
+        this.$mdDialog.show(
+            this.constructor.setMdDialogConfig($event.target, {
+                selectedIssue: issue
+            })
+        );
+    }
+
+    static setMdDialogConfig(target, data = {}) {
+        return {
+            controller: issuesViewModalController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: data,
+            template: issuesViewModalTemplate,
+            clickOutsideToClose: true,
+            openFrom: target,
+            closeTo: target,
+        };
+    }
+
+    goToProject(identifier){
+        this.$state.go('projects.inner.info', {project_id: identifier});
     }
 }

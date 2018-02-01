@@ -3,9 +3,9 @@ agile-index-component {
   .dnd-list{
     background-color: #fafafa;
   }
-  .dnd-list:hover{
-    background-color: #eceff1;
-  }
+  //.dnd-list:hover{
+  //  background-color: #eceff1;
+  //}
 
   .dnd-list[drop-active=true] {
     box-shadow: inset 0px 0px 0px 2px #00C;
@@ -59,4 +59,13 @@ agile-index-component {
     border: 0px none #ffffff;
     border-radius: 10px;
   }
+
+  .dndPlaceholder{
+    background-color: #F4511E;
+    height: 20px;
+    color: #F4511E;
+    border: 0px none #ffffff;
+    border-radius: 1px;
+  }
+
 }

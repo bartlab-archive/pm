@@ -13,7 +13,7 @@
                      dnd-moved="container.items.splice($index, 1)"
                      dnd-dragend="">
 
-                <md-card-header ng-click="">
+                <md-card-header ng-click="$ctrl.viewIssue($event, item.data)">
                     {{ ::item.subject}}
                 </md-card-header>
 
