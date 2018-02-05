@@ -20,6 +20,7 @@ import 'modules/wiki/wiki.module';
 import 'modules/versions/versions.module';
 import 'modules/agile/agile.module';
 import 'modules/calendar/calendar.module';
+import 'modules/gantt/gantt.module';
 
 angular.module('app.modules', [
     // core modules
@@ -46,4 +47,5 @@ angular.module('app.modules', [
     'app.modules.wiki',
     'app.modules.agile',
     'app.modules.calendar',
+    'app.modules.gantt',
 ]);

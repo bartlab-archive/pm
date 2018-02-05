@@ -4,7 +4,6 @@ import projectsNewComponent from './components/new/projects-new.component';
 import projectsInfoComponent from './components/info/projects-info.component';
 import projectsSettingsComponent from './components/settings/projects-settings.component';
 import projectsActivityComponent from './components/activity/projects-activity.component';
-import projectsGanttComponent from './components/gantt/projects-gantt.component';
 import projectsNewsComponent from './components/news/projects-news.component';
 import projectsDocumentsComponent from './components/documents/projects-documents.component';
 import projectsFilesComponent from './components/files/projects-files.component';
@@ -91,10 +90,6 @@ export default class ProjectsConfig extends InjectableBase {
             .state('projects.inner.activity.date', {
                 url: '/activity/:end_date',
                 component: projectsActivityComponent.name,
-            })
-            .state('projects.inner.issues.gantt', {
-                url: '/gantt',
-                component: projectsGanttComponent.name,
             })
             .state('projects.inner.news', {
                 url: '/news',

@@ -1,0 +1,67 @@
+gantt-index-component {
+
+  .rotate-180 {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+  #horizontal-container {
+    //height: 100px;
+    width: 100%;
+    height: 100%;
+  }
+
+  .repeated-head {
+    border: 1px solid #ddd;
+  //  box-sizing: border-box;
+    display: inline-block;
+    height: 65px;
+    //padding-top: 25px;
+    text-align: center;
+    width: 30px;
+  }
+
+  .repeated-head div{
+    width: 100%;
+    height: 100%;
+    padding-top: 20px;
+  }
+
+  .repeated-head.header {
+    background-color: #f4511e;
+    color: white;
+    width: 65px;
+   transform: rotate(90deg);
+  }
+
+  .repeated-item {
+    border: 1px solid #ddd;
+   // box-sizing: border-box;
+    display: inline-block;
+    //height: 65px;
+    //padding-top: 25px;
+    text-align: center;
+    width: 30px;
+  }
+
+  .repeated-item.header {
+    background-color: #f4511e;
+    width: 65px;
+  }
+
+  md-content {
+    margin: 16px;
+  }
+
+  md-virtual-repeat-container {
+    border: solid 1px grey;
+  }
+
+  tbody tr td {
+    //background-color: #FFFFEF;
+    border: 1px solid rgb(229, 229, 229);
+    cellspacing: 0 ;
+  }
+}

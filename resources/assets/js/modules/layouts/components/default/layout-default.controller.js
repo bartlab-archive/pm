@@ -96,7 +96,7 @@ export default class LayoutDefaultController extends ControllerBase {
             enable: false,
             alt: [/^issues\.*/]
         }, {
-            url: 'projects.inner.issues.gantt',
+            url: 'gantt.index',
             title: 'Gantt',
             name: 'gantt',
             enable: false
