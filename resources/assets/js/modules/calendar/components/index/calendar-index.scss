@@ -7,8 +7,20 @@ calendar-index-component {
     transform: rotate(180deg);
   }
   md-list{
-  /*  background-color: #dff0d8;*/
-    height: 198px; overflow-y:auto;
+    height: 90%;
+    overflow-y:auto;
+    position: absolute;
+    margin-top: 10px;
+  }
+
+  md-list-item.md-no-proxy, md-list-item .md-no-style  {
+    padding: 0px 10px;
+  }
+
+  .data-number{
+    float: right;
+    margin: 2px;
+    font-style: italic;
   }
 
   /* Override default scrollbar */
@@ -28,7 +40,6 @@ calendar-index-component {
   }
 
   .style-3::-webkit-scrollbar-button{
-    height: 20px;
     border: 0px solid #607D8B;
     border-radius: 10px;
   }

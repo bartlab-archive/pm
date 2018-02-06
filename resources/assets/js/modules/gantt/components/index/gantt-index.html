@@ -1,5 +1,5 @@
 <div layout-gt-sm="row" layout-align="center start">
-    <md-card flex-xs="100" flex-sm="100" flex-md="100" flex-gt-md="100" >
+    <md-card flex-xs="100" flex-sm="100" flex-md="100" flex-gt-md="90" >
         <md-toolbar >
             <div class="md-toolbar-tools">
                 <div class="header">
@@ -13,96 +13,74 @@
 
         <div layout="row" layout-sm="column"  style="height: 600px;">
             <div flex="20" style="padding: 5px;">
-                    <table width="100%">
-                        <thead>
-                            <tr>
-                                <td height="65px">Must be a  issues tree</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr  ng-repeat="lst in $ctrl.list">
-                                <td height="21px">
-                                    {{lst.subject | limitTo:30 }}...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div style="height: 22px; color: #f4511e;">Must be a  issues tree</div>
+                <div flex="grow"></div>
+                <div class="divTable">
+                    <div class="divTableBody">
+                        <div class="divTableRow" ng-repeat="lst in $ctrl.list">
+                            <div class="divTableCell" style="height: 20px; padding: 5px;">
+                                {{lst.subject | limitTo:30 }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div flex="80">
                 <md-virtual-repeat-container id="horizontal-container" md-orient-horizontal>
-                    <!--<md-table-container>-->
-                    <table md-table md-row-select ng-model="selected" md-progress="promise">
-                        <thead>
-                            <tr>
-                                <td ng-repeat="item in $ctrl.items"  class="repeated-head" ng-class="{header: item.header}" >
-                                    <div flat ng-style="{ 'background-color' : (item.ddt == $ctrl.nowMoment) ? '#e1fcd9' : ''}">
-                                        <i>{{item.text}}
-                                        </i>
-
-                                    </div>
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="itm in $ctrl.list">
-                                <td ng-repeat="item in $ctrl.items"   class="repeated-item" ng-class="{header: item.header}" height="21px">
+                    <div class="divTable">
+                        <div class="divTableBody">
+                            <div class="divTableRow">
+                                <div class="divTableCell repeated-item " ng-repeat="item in $ctrl.items"
+                                     ng-class="{header: item.header}" ng-style="{ 'background-color' : (item.dow == 0 || item.dow == 6 ) ? '#ffffdd' : ''}">
+                                    {{item.text}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div flex="grow"></div>
+                    <div class="divTable">
+                        <div class="divTableBody">
+                            <div class="divTableRow"  ng-repeat="itm in $ctrl.list">
+                                <div class="divTableCell repeated-item" ng-repeat="item in $ctrl.items" ng-class="{header: item.header}" >
                                     <div ng-style="{ 'background-color' : (item.ddt == $ctrl.nowMoment) ? '#e1fcd9' : ''}">
+
                                         <md-icon ng-style="{'color': '#00C600'}">
 
-                                            {{item.ddt && itm.due_date == item.ddt && itm.start_date == item.ddt ? 'vertical_align_center' : ''}}
+                                        {{item.ddt && itm.due_date == item.ddt && itm.start_date == item.ddt ? 'vertical_align_center' : ''}}
 
-                                            {{item.ddt && itm.start_date == item.ddt && itm.due_date != item.ddt ? 'arrow_back' : ''}}
+                                        {{item.ddt && itm.start_date == item.ddt && itm.due_date != item.ddt ? 'arrow_back' : ''}}
 
-                                            {{item.ddt && itm.due_date == item.ddt  && itm.start_date != item.ddt  ? 'arrow_forward' : ''}}
+                                        {{item.ddt && itm.due_date == item.ddt  && itm.start_date != item.ddt  ? 'arrow_forward' : ''}}
 
-                                            {{item.ddt && itm.start_date && itm.due_date && (itm.due_date > item.ddt) &&  (itm.start_date < item.ddt)? 'remove' : ''}}
+                                        {{item.ddt && itm.start_date && itm.due_date && (itm.due_date > item.ddt) &&  (itm.start_date < item.ddt)? 'remove' : ''}}
 
-                                            <md-tooltip ng-if="itm.due_date== item.ddt || itm.start_date== item.ddt" md-direction="right"
-                                                        ng-style="{'height':'auto',
-                                                    'width':' 250px',
-                                                    'background-color':'#fcfce5',
-                                                    'color':'#3d454c' ,
-                                                    'text-size':'14px',
-                                                    'border':'solid 1px #000',
-                                                    'opacity':'1'
-                                                    }" md-autohide="false">
-                                                Task #{{::itm.id}}  {{::itm.subject | limitTo:45}}... <br>
-                                                <md-divider flex></md-divider>
-                                                <strong>Project: {{::itm.project.name}}</strong><br>
-                                                <strong>Status</strong>: {{::itm.status.name}}<br>
-                                                <strong>Start date</strong>: {{::itm.start_date}}<br>
-                                                <strong>Due date</strong>: {{::itm.due_date}}<br>
-                                                <strong>Assignee</strong>: {{::itm.assigned.firstname}}<br>
-                                                <strong>Author</strong>: {{::itm.author.firstname}}<br>
-                                                <strong>Priority</strong>: {{::itm.priority.name}}
-                                            </md-tooltip>
+                                        <md-tooltip ng-if="itm.due_date== item.ddt || itm.start_date== item.ddt" md-direction="right"
+                                            ng-style="{'height':'auto',
+                                            'width':' 250px',
+                                            'background-color':'#fcfce5',
+                                            'color':'#3d454c' ,
+                                            'text-size':'14px',
+                                            'border':'solid 1px #000',
+                                            'opacity':'1'
+                                            }" md-autohide="false">
+                                            Task #{{::itm.id}}  {{::itm.subject | limitTo:45}}... <br>
+                                            <md-divider flex></md-divider>
+                                            <strong>Project: {{::itm.project.name}}</strong><br>
+                                            <strong>Status</strong>: {{::itm.status.name}}<br>
+                                            <strong>Start date</strong>: {{::itm.start_date}}<br>
+                                            <strong>Due date</strong>: {{::itm.due_date}}<br>
+                                            <strong>Assignee</strong>: {{::itm.assigned.firstname}}<br>
+                                            <strong>Author</strong>: {{::itm.author.firstname}}<br>
+                                            <strong>Priority</strong>: {{::itm.priority.name}}
+                                        </md-tooltip>
 
                                         </md-icon>
                                     </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </md-table-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </md-virtual-repeat-container>
-                <!--<md-virtual-repeat-container id="horizontal-container" md-orient-horizontal>-->
-                    <!--&lt;!&ndash;<md-table-container>&ndash;&gt;-->
-                        <!--<table md-table md-row-select ng-model="selected" md-progress="promise">-->
-                            <!--<thead md-head>-->
-                                <!--<tr md-row md-select="dessert" md-auto-select  md-virtual-repeat="item in $ctrl.items"-->
-                                     <!--class="repeated-item" ng-class="{header: item.header}" >-->
-                                    <!--<td> {{item.text}}</td>-->
-                                <!--</tr>-->
-                            <!--</thead>-->
-
-                            <!--<tbody>-->
-                                <!--<tr ng-repeat="item in $ctrl.items" >-->
-                                    <!--<td> info </td>-->
-                                <!--</tr>-->
-                            <!--</tbody>-->
-                        <!--</table>-->
-                    <!--</md-table-container>-->
-                <!--</md-virtual-repeat-container>-->
             </div>
         </div>
     </md-card>

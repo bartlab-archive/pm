@@ -47,7 +47,8 @@ export default class GanttIndexController extends ControllerBase {
                var mm = index.month()+1;
                    mm =  mm>9? mm : '0'+mm;
                var dd = (d > 9 )? d: '0'+d;
-               calendar.push({ text: d , ddt: moment(index).year()+ '-' + mm + '-' + dd });
+               var date = moment(moment(index).year()+ '-' + mm + '-' + dd);
+               calendar.push({ text: d , ddt: moment(index).year()+ '-' + mm + '-' + dd ,dow: date.day() });
            }
                index.add(1, 'month');
         }

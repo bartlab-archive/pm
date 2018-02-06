@@ -20,9 +20,9 @@
                 <md-grid-tile ng-repeat="value  in tile" class="md-list-item-text" md-colspan-sm="0"   md-colspan-xs="0" ng-style="{'border': 'solid 1px #e5e5e5','height':'auto'}">
                     <div ng-style="{ 'background' : (value.dateMonth != $ctrl.month) ? '#ffffef' : '#fff', 'width': '100%', 'height': '100%'}">
 
-                        <p ng-style="{ 'color' : (value.dateMoment == $ctrl.nowMoment) ? 'red' : 'black','text-align': 'center'}">
+                        <span class="data-number" ng-style="{ 'color' : (value.dateMoment == $ctrl.nowMoment) ? '#0866c6' : 'black',  'font-weight' : (value.dateMoment == $ctrl.nowMoment) ? '600' : 'normal'}">
                             {{::value.date}}
-                        </p>
+                        </span>
 
                         <ng-if="::(value.issues)">
                         <md-list class="style-3">
