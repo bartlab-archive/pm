@@ -48,7 +48,8 @@ export default class IssuesEditCopyController extends ControllerBase {
 
         this.IssuesService.all().one(this.$stateParams.id).get()
             .then((response) => {
-                this.$stateParams.project_id = response.data.project.identifier;
+                this.ProjectsService.setCurrentId(response.data.project.identifier);
+                // this.$stateParams.project_id = response.data.project.identifier;
                 this.issue = response.data;
 
               //  this.$rootScope.$emit('updateProjectInfo');
@@ -68,57 +69,57 @@ export default class IssuesEditCopyController extends ControllerBase {
     }
 
 
-    saveIssue() {
-        if (this.error) {
-            return false;
-        }
-
-        // this.issue.due_date = moment(this.issue.due_date).format('YYYY-MM-DD');
-        // this.issue.start_date = moment(this.issue.start_date).format('YYYY-MM-DD');
-
-        if (this.$state.current.name === 'issues.copy') {
-            this.IssuesService.create(_.pick(this.issue, [
-                'tracker_id',
-                'project_id',
-                'subject',
-                'description',
-                'due_date',
-                'category_id',
-                'status_id',
-                'assigned_to_id',
-                'priority_id',
-                'fixed_version_id',
-                'author_id',
-                'lock_version',
-                'start_date',
-                'done_ratio',
-                'estimated_hours',
-                'parent_id',
-                'root_id',
-                'lft',
-                'rgt',
-                'is_private',
-                'closed_on'
-            ])).then((response) => {
-                if (this.issue = _.get(response, 'data')) {
-                    this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
-                }
-            });
-        } else {
-            this.IssuesService.update(this.issue).then((response) => {
-                if (_.get(response, 'data')) {
-                    this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
-                }
-            });
-        }
-    }
-
-    validate() {
-        this.error = _.isEmpty(this.issue.subject);
-    }
-
-    cancel() {
-        this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
-    }
+    // saveIssue() {
+    //     if (this.error) {
+    //         return false;
+    //     }
+    //
+    //     // this.issue.due_date = moment(this.issue.due_date).format('YYYY-MM-DD');
+    //     // this.issue.start_date = moment(this.issue.start_date).format('YYYY-MM-DD');
+    //
+    //     if (this.$state.current.name === 'issues.copy') {
+    //         this.IssuesService.create(_.pick(this.issue, [
+    //             'tracker_id',
+    //             'project_id',
+    //             'subject',
+    //             'description',
+    //             'due_date',
+    //             'category_id',
+    //             'status_id',
+    //             'assigned_to_id',
+    //             'priority_id',
+    //             'fixed_version_id',
+    //             'author_id',
+    //             'lock_version',
+    //             'start_date',
+    //             'done_ratio',
+    //             'estimated_hours',
+    //             'parent_id',
+    //             'root_id',
+    //             'lft',
+    //             'rgt',
+    //             'is_private',
+    //             'closed_on'
+    //         ])).then((response) => {
+    //             if (this.issue = _.get(response, 'data')) {
+    //                 this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
+    //             }
+    //         });
+    //     } else {
+    //         this.IssuesService.update(this.issue).then((response) => {
+    //             if (_.get(response, 'data')) {
+    //                 this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
+    //             }
+    //         });
+    //     }
+    // }
+    //
+    // validate() {
+    //     this.error = _.isEmpty(this.issue.subject);
+    // }
+    //
+    // cancel() {
+    //     this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
+    // }
 
 }

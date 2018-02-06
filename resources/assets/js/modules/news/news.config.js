@@ -9,10 +9,17 @@ import newsViewComponent from './components/view/news-view.component';
 export default class NewsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider'];
+        return ['$stateProvider','ProjectsServiceProvider'];
     }
 
     $onInit() {
+        this.ProjectsServiceProvider.registerModule({
+                url: 'projects.inner.news',
+                title: 'News',
+                name: 'news',
+                enable: false
+        });
+
         this.$stateProvider
             .state('news', {
                 abstract: true,
@@ -26,6 +33,15 @@ export default class NewsConfig extends InjectableBase {
                         template: '<ui-view/>'
                     }
                 }
+            })
+            .state('news-inner', {
+                abstract: true,
+                url: '/news',
+                parent: 'projects.inner',
+            })
+            .state('news-inner.list', {
+                url: '',
+                component: newsListComponent.name,
             })
             .state('news.index', {
                 url: '/:id',

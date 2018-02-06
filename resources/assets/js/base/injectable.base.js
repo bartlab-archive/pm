@@ -7,20 +7,27 @@ export default class InjectableBase extends ObjectBase {
      *
      * @returns {function(...[*]): Injectable}
      */
-    static inst() {
+    static inst(locals) {
         const self = this;
-        const providerFn = (...args) => new self(...args);
+        const providerFn = (...args) => {
+            const obj = new self(...args);
+
+            // apply locals property
+            if (locals !== null && typeof locals === 'object') {
+                Object.assign(obj,locals);
+            }
+
+            obj.$onInit();
+
+            return obj;
+        };
+        // const providerFn = (...args) => new self(...args);
 
         providerFn.$inject = self.$inject;
         return providerFn;
     }
 
-    constructor(...args) {
-        super(...args);
-
-        this.$onInit();
-    }
-
     $onInit() {
     }
+
 }

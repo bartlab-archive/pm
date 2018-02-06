@@ -3,14 +3,22 @@ import TrackersIndexComponent from './components/index/trackers-index.component'
 
 /**
  * @property {$stateProvider} $stateProvider
+ * @property {object} MainServiceProvider
  */
 export default class TrackersConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider']
+        return ['$stateProvider', 'MainServiceProvider']
     }
 
     $onInit() {
+        this.MainServiceProvider
+            .registerAdminMenu({
+                name: 'Trackers',
+                url: 'trackers.index',
+                icon: 'timelapse'
+            });
+
         this.$stateProvider
             .state('trackers', {
                 abstract: true,

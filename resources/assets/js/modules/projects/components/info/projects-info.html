@@ -14,30 +14,7 @@
     </md-card>
 </div>
 
-<div layout="row" layout-align="center start" ng-if="$ctrl.canShowModule('issue_tracking')">
-    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">Issue tracking</span>
-            </md-card-title-text>
-        </md-card-title>
-
-        <md-card-content class="md-body-1">
-            <p ng-repeat="(trackerName, issue)  in $ctrl.issuesCount">
-                {{ trackerName }}: {{ issue.opened }} | {{ issue.closed }} | {{ issue.closed }}{{ issue.opened }}
-            </p>
-        </md-card-content>
-
-        <md-card-actions layout="row" layout-align="center center">
-            <md-button ui-sref="projects-inner.issues.index" ng-click="$ctrl.issueNavigate()">View all issues
-            </md-button>
-            <md-button ui-sref="projects-inner.issues.calendar" ng-if="canShowModule('calendar')">Calendar</md-button>
-            <md-button ui-sref="projects-inner.issues.gantt">Gantt</md-button>
-        </md-card-actions>
-    </md-card>
-</div>
-
-<div layout="row" layout-align="center start">
+<div layout="row" layout-align="center start" ng-if="$ctrl.project.users">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
         <md-card-title>
             <md-card-title-text>
@@ -45,66 +22,46 @@
             </md-card-title-text>
         </md-card-title>
 
-        <md-card-content class="md-body-1">
-            <p ng-repeat="(role, members) in $ctrl.membersByRole">
-                {{ role }}:
-                <span ng-repeat="(userId, name) in members">
-                    <a ui-sref="users.info({id: userId})">{{ name }}</a><span ng-if="!$last">, </span>
-                </span>
-            </p>
-        </md-card-content>
-    </md-card>
-</div>
 
-<div layout="row" layout-align="center start" ng-if="$ctrl.canShowModule('news')">
-    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">Latest news</span>
-            </md-card-title-text>
-        </md-card-title>
+        <md-list class="md-dense">
+            <!-- todo: group by role -->
+            <div ng-repeat="user in $ctrl.project.users" class="animate-repeat">
+                <md-list-item class="md-2-line" ng-click="$ctrl.goToUser(user)">
 
-        <md-card-content class="md-body-1">
-            <div ng-repeat="news in $ctrl.project.news">
-                <md-button class="md-secondary"
-                           ng-click="$ctrl.$state.go('news.index', {id: news.id})">
-                    {{ news.title }}
-                </md-button>
+                    <img ng-if="::user.avatar" src="{{ ::user.avatar }}" class="md-avatar">
+                    <span ng-if="::!user.avatar" class="md-avatar">{{ ::user.full_name | limitTo:1 }}</span>
 
-                Added by
-                <md-button class="md-secondary"
-                           ng-click="$ctrl.userNavigate(news.author_id)">
-                    {{ $ctrl.members[news.author_id].name }}
-                </md-button>
-                <md-button class="md-secondary"
-                           ng-click="$ctrl.$state.go('projects.inner.activity', {from: news.created_on, project_id: $ctrl.project.identifier})">
-                    {{ $ctrl.IssuesService.timeAgo(news.created_on) }}
-                </md-button>
-                ago
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ ::user.full_name }}</h3>
+
+                        <h4 layout="row">
+                                project role
+                        </h4>
+                    </div>
+
+                    <md-menu-bar>
+                        <md-menu md-position-mode="target-right target">
+                            <md-button aria-label="More actions" class="md-icon-button" ng-click="$mdMenu.open()">
+                                <md-icon>more_vert</md-icon>
+                            </md-button>
+
+                            <md-menu-content width="3">
+                                <md-menu-item class="md-indent" ng-click="null">
+                                    <!--<md-icon>open_in_browser</md-icon>-->
+
+                                    <md-button disabled="disabled">
+                                        coming soon
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </md-menu-bar>
+
+                </md-list-item>
+
+                <md-divider ng-if="!$last"></md-divider>
             </div>
-        </md-card-content>
-        <md-card-actions layout="row" layout-align="center center">
-            <md-button ng-click="$ctrl.$state.go('projects.inner.news', {project_id: $ctrl.project.identifier})">View
-                all news
-            </md-button>
-        </md-card-actions>
-    </md-card>
-</div>
+        </md-list>
 
-<div layout="row" layout-align="center start">
-    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">Subprojects</span>
-            </md-card-title-text>
-        </md-card-title>
-
-        <md-card-content class="md-body-1">
-            <md-button class="md-secondary"
-                       ng-repeat="subProject in $ctrl.project.child_projects"
-                       ng-click="$ctrl.projectNavigate(subProject.identifier)">
-                {{ subProject.name }}
-            </md-button>
-        </md-card-content>
     </md-card>
 </div>

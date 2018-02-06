@@ -76,6 +76,7 @@ class IssuesController extends BaseController
         }
 
         /*
+         * todo:
          * Need check:
          *  - is module enambled for project
          *  - is user allow to view issue
@@ -99,6 +100,7 @@ class IssuesController extends BaseController
             }
 
             /*
+             * todo:
              * Need check:
              *  - is module enambled for project
              *  - is user allow to view issue
@@ -112,11 +114,13 @@ class IssuesController extends BaseController
             }
         }
 
+        // todo: get only needed fields from request
         $data = $this->issueService->all($request->all());
 
         return response()
             ->json([
                 'list' => $data['list'],
+                // todo: move groups info to headers?
                 'groups' => $data['groups']
             ], 200)
             ->withHeaders([

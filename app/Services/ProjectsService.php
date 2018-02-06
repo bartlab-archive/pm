@@ -47,49 +47,95 @@ class ProjectsService
         $this->usersService = $usersService;
     }
 
-    public function all($status = null)
+    public function all(array $params = [])
     {
-        $projects = Project::orderBy('name')
-//            ->where('status', Project::ACTIVE_STATUS)
-//            ->where('is_public', Project::IS_PUBLIC)
-//            ->whereNull('parent_id') // disabled recursive projects
-            ->with([
-                'users',
-                'versions',
-//                'issue_categories',
-//                'repositories',
-//                'boards',
-//                'childProjectsRecursive', // disabled recursive projects
-            ]);
+        $query = Project::with([
+            'users',
+            'versions'
+        ]);
 
-		if ($status) {
-			$projects->orWhere('status', $status);
-		}
+        if ($status = array_get($params, 'status')) {
+            $query->where('status', $status);
+        }
 
-        return $projects->get();
-//            ->makeVisible(['is_my']);
+//        if ($closed = array_get($params, 'closed')) {
+//            $query->orWhere('status', Project::CLOSED_STATUS);
+//        }
+
+        if ($order = array_get($params, 'order', ['name' => 'asc'])) {
+            if (is_string($order) && count($split = explode(':', $order)) == 2) {
+                $order = [$split[0] => $split[1]];
+            }
+
+            // todo: add check, if column available
+            foreach ($order as $key => $val) {
+                $query->orderBy($key, $val);
+            }
+        }
+
+        $total = $query->count();
+        $limit = array_get($params, 'limit', 20);
+        $offset = array_get($params, 'offset', 0);
+
+        if ($offset > 0 && $offset >= $total) {
+            $offset = $offset - $limit;
+        }
+
+        return [
+            'total' => $total,
+            'limit' => $limit,
+            'offset' => $offset,
+            'list' => $query
+                ->offset($offset)
+                ->limit($limit)
+                ->get()
+        ];
     }
+
+//    public function allOld($status = null)
+//    {
+//        $projects = Project::orderBy('name')
+////            ->where('status', Project::ACTIVE_STATUS)
+////            ->where('is_public', Project::IS_PUBLIC)
+////            ->whereNull('parent_id') // disabled recursive projects
+//            ->with([
+//                'users',
+//                'versions',
+////                'issue_categories',
+////                'repositories',
+////                'boards',
+////                'childProjectsRecursive', // disabled recursive projects
+//            ]);
+//
+//        if ($status) {
+//            $projects->orWhere('status', $status);
+//        }
+//
+//        return $projects->get();
+////            ->makeVisible(['is_my']);
+//    }
 
     /**
      * @return mixed
      */
-    public function list()
-    {
-        return Project::select('id', 'name')->get();
-    }
+//    public function list()
+//    {
+//        return Project::select('id', 'name')->get();
+//    }
 
     public function one($identifier)
     {
-        return Project::where('identifier',$identifier)
+        return Project::where('identifier', $identifier)
             ->with([
 //                'trackers',
                 'enabledModules',
+                'users'
 //                'issue_categories',
-                'versions',
+//                'versions',
 //                'wiki',
 //                'repositories',
-                'enumerations',
-				'parent',
+//                'enumerations',
+//                'parent',
 //                'childProjects'
             ])
 //            ->with(['members' => function ($query) {
@@ -106,7 +152,7 @@ class ProjectsService
 //            ->with(['news' => function ($query) {
 //                $query->orderBy('created_on', 'desc')->take(3);
 //            }])
-            ->firstOrFail();
+            ->first();
     }
 
     public function create($data)
@@ -123,29 +169,29 @@ class ProjectsService
         $projectTrackers = isset($data['trackers']) ? $data['trackers'] : [];
         unset($data['trackers']);
 
-		$projectWiki = isset($data['wiki']) ? $data['wiki'] : [];
-		unset($data['wiki']);
+        $projectWiki = isset($data['wiki']) ? $data['wiki'] : [];
+        unset($data['wiki']);
 
-		$projectVersions =  isset($data['versions']) ? $data['versions'] : [];
-		unset($data['versions']);
+        $projectVersions = isset($data['versions']) ? $data['versions'] : [];
+        unset($data['versions']);
 
-		$projectRepositories = isset($data['repositories']) ? $data['repositories'] : [];
-		unset($data['repositories']);
+        $projectRepositories = isset($data['repositories']) ? $data['repositories'] : [];
+        unset($data['repositories']);
 
-		$projectNews = isset($data['news']) ? $data['news'] : [];
-		unset($data['news']);
+        $projectNews = isset($data['news']) ? $data['news'] : [];
+        unset($data['news']);
 
-		$projectBoards = isset($data['boards']) ? $data['boards'] : [];
-		unset($data['boards']);
+        $projectBoards = isset($data['boards']) ? $data['boards'] : [];
+        unset($data['boards']);
 
-		unset($data['enabled_modules']);
-		unset($data['issue_categories']);
-		unset($data['enumerations']);
-		unset($data['child_projects']);
-		unset($data['members']);
-		unset($data['parent_project']);
+        unset($data['enabled_modules']);
+        unset($data['issue_categories']);
+        unset($data['enumerations']);
+        unset($data['child_projects']);
+        unset($data['members']);
+        unset($data['parent_project']);
 
-		$project = Project::create($data);
+        $project = Project::create($data);
 
         $this->enabledModulesService = app('App\Services\EnabledModulesService');
         $this->enabledModulesService->massCreate($project->id, $projectModules);
@@ -157,12 +203,12 @@ class ProjectsService
 
     public function update($identifier, $data)
     {
-        $project = Project::where('identifier',$identifier)->firstOrFail();
+        $project = Project::where('identifier', $identifier)->firstOrFail();
 
-			if (isset($data['parent_identifier'])) {
-				$data['parent_id'] = Project::whereIdentifier($data['parent_identifier'])->firstOrFail()->id;
-				unset($data['parent_identifier']);
-			}
+        if (isset($data['parent_identifier'])) {
+            $data['parent_id'] = Project::whereIdentifier($data['parent_identifier'])->firstOrFail()->id;
+            unset($data['parent_identifier']);
+        }
 
         $project->update($data);
         return $project;
@@ -170,7 +216,7 @@ class ProjectsService
 
     public function delete($identifier)
     {
-        $project = Project::where('identifier',$identifier)->firstOrFail();
+        $project = Project::where('identifier', $identifier)->firstOrFail();
 
         /**
          * Destroy attach trackers
@@ -190,7 +236,7 @@ class ProjectsService
 
     public function getAttachments($identifier)
     {
-        $project = Project::where('identifier',$identifier)->first();
+        $project = Project::where('identifier', $identifier)->first();
         if ($project) {
             return $project->attachments;
         }

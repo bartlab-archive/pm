@@ -3,14 +3,22 @@ import enumerationsIndexComponent from './components/index/enumerations-index.co
 
 /**
  * @property {$stateProvider} $stateProvider
+ * @property {object} MainServiceProvider
  */
 export default class FieldsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider']
+        return ['$stateProvider', 'MainServiceProvider']
     }
 
     $onInit() {
+        this.MainServiceProvider
+            .registerAdminMenu({
+                name: 'Enumerations',
+                url: 'enumerations.index',
+                icon: 'list'
+            });
+
         this.$stateProvider
             .state('enumerations', {
                 abstract: true,

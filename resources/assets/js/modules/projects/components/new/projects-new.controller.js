@@ -15,38 +15,38 @@ export default class ProjectsNewController extends ControllerBase {
 
     $onInit() {
 
-        if (this.$state.current.name === 'projects.new') {
-
-          this.cardTitle = 'New project';
-          this.projectForm = {};
-
-        } else {
-
-          this.cardTitle = 'Copy project';
-          this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
-            this.model = _.get(response, 'data', []);
-
-            if (this.model.parent) {
-              this.model.parent_identifier = this.model.parent.identifier;
-              delete(this.model.parent.identifier);
-            }
-
-            this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
-          });
-
-        }
-
-        this.ProjectsService.getList().then((response) => {
-            this.projects = response.data;
-        });
-
-        this.modules = this.ProjectsService.modules;
-
-        this.TrackersService.getAll().then((response) => {
-            this.trackers = response.data;
-        });
-
-        this.errors = {};
+        // if (this.$state.current.name === 'projects.new') {
+        //
+        //   this.cardTitle = 'New project';
+        //   this.projectForm = {};
+        //
+        // } else {
+        //
+        //   this.cardTitle = 'Copy project';
+        //   this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
+        //     this.model = _.get(response, 'data', []);
+        //
+        //     if (this.model.parent) {
+        //       this.model.parent_identifier = this.model.parent.identifier;
+        //       delete(this.model.parent.identifier);
+        //     }
+        //
+        //     this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
+        //   });
+        //
+        // }
+        //
+        // this.ProjectsService.getList().then((response) => {
+        //     this.projects = response.data;
+        // });
+        //
+        // this.modules = this.ProjectsService.modules;
+        //
+        // this.TrackersService.getAll().then((response) => {
+        //     this.trackers = response.data;
+        // });
+        //
+        // this.errors = {};
     }
 
     create(redirect) {

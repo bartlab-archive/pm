@@ -2,17 +2,46 @@ import InjectableBase from 'base/injectable.base';
 import wikiPageComponent from './components/page/wiki-page.component';
 import wikiEditComponent from './components/edit/wiki-edit.component';
 import wikiIndexByComponent from './components/index-by/wiki-index-by.component';
+import wikiProjectSettingsComponent from './components/project-settings/wiki-project-settings.component';
 
 /**
  * @property {$stateProvider} $stateProvider
+ * @property {$showdownProvider} $showdownProvider
+ * @property {object} ProjectsServiceProvider
+ * @property {object} MainServiceProvider
  */
 export default class WikiConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', '$showdownProvider'];
+        return ['$stateProvider', '$showdownProvider', 'ProjectsServiceProvider', 'MainServiceProvider'];
     }
 
     $onInit() {
+        this.MainServiceProvider
+            .registerNewItemMenu({
+                name: 'Wiki page',
+                url: 'wiki.new',
+                icon: 'receipt',
+                module: 'wiki',
+                single: false,
+                enable: false
+            });
+
+        this.ProjectsServiceProvider
+            .registerModule({
+                url: 'wiki.index',
+                title: 'Wiki',
+                name: 'wiki',
+                enable: false,
+                alt: [/^wiki\.*/]
+            })
+            .registerSettings({
+                url: 'wiki',
+                name: 'Wiki',
+                component: wikiProjectSettingsComponent.name,
+                module: 'wiki'
+            });
+
         this.$showdownProvider.loadExtension({
             type: 'lang',
             regex: /\[\[(.*)\]\]/g,
@@ -20,7 +49,7 @@ export default class WikiConfig extends InjectableBase {
                 let match = string.match(/(([a-z\-_]+)[:])?([^|#]+)?([#]([^|:]+))?([|](.+))?/i);
 
                 // [2] - project, [3] - page, [5] - anchor, [7] - text
-                if (match && ((match[2] || match[3]) || match[5] )) {
+                if (match && ((match[2] || match[3]) || match[5])) {
                     let stateParams = {};
 
                     if (match[2]) {

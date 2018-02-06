@@ -13,10 +13,17 @@ import main500Component from './components/500/main-500.component';
 export default class MainConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider'];
+        return ['$stateProvider', 'MainServiceProvider'];
     }
 
     $onInit() {
+        this.MainServiceProvider
+            .registerAppMenu({
+                url: 'home',
+                name: 'Home',
+                icon: 'home'
+            });
+
         this.$stateProvider
             .state('404', {
                 parent: 'blank',

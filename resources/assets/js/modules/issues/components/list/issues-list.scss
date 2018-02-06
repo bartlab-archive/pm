@@ -1,54 +1,54 @@
 issues-list-component {
 
-  md-content {
-    background: #fff;
-  }
+  //md-content {
+  //  background: #fff;
+  //}
 
-  md-list {
-    padding: 0;
-  }
+  //md-list {
+  //  padding: 0;
+  //}
 
-  .pages-button {
-    margin: 0 6px;
-    height: 40px;
-    min-width: 0;
-    line-height: 24px;
-    padding: 8px;
-  }
+  //.pages-button {
+  //  margin: 0 6px;
+  //  height: 40px;
+  //  min-width: 0;
+  //  line-height: 24px;
+  //  padding: 8px;
+  //}
 
-  .context-menu {
-    position: absolute;
-    z-index: 40;
-    width: 200px;
-    border: 1px solid gainsboro;
-  }
+  //.context-menu {
+  //  position: absolute;
+  //  z-index: 40;
+  //  width: 200px;
+  //  border: 1px solid gainsboro;
+  //}
 
-  .context-menu-item md-icon {
-    margin: 0 4px 4px 0;
-  }
+  //.context-menu-item md-icon {
+  //  margin: 0 4px 4px 0;
+  //}
 
-  .md-icon-button, .pages-button {
-    margin: 6px !important;
-  }
+  //.md-icon-button, .pages-button {
+  //  margin: 6px !important;
+  //}
 
-  .md-list-item-inner {
-    padding-right: 0;
-  }
+  //.md-list-item-inner {
+  //  padding-right: 0;
+  //}
 
   .md-chip-input-container {
     width: 100%;
   }
 
-  .md-button.small {
-    margin: 0;
-    min-height: 27px !important;
-    line-height: 27px !important;
-    font-size: 11px !important;
-
-    .material-icons {
-      font-size: 20px;
-    }
-  }
+  //.md-button.small {
+  //  margin: 0;
+  //  min-height: 27px !important;
+  //  line-height: 27px !important;
+  //  font-size: 11px !important;
+  //
+  //  .material-icons {
+  //    font-size: 20px;
+  //  }
+  //}
 
   //.md-list-item-text {
   //  margin-right: 5px;
@@ -80,20 +80,5 @@ issues-list-component {
   //    }
   //  }
   //}
-
-  .animate-repeat.ng-move,
-  .animate-repeat.ng-enter,
-  .animate-repeat.ng-leave {
-    transition: all linear 0.7s;
-  }
-
-  .animate-repeat.ng-enter,
-  .animate-repeat.ng-leave.ng-leave-active {
-    opacity:0;
-  }
-  .animate-repeat.ng-leave,
-  .animate-repeat.ng-enter.ng-enter-active {
-    opacity:1;
-  }
 
 }

@@ -8,32 +8,36 @@ import moment from 'moment';
 export default class IssuesService extends ServiceBase {
 
     static get $inject() {
-        return ['Restangular', '$cacheFactory'];
+        return ['Restangular', '$cacheFactory', '$stateParams'];
     }
 
     $onInit($injector) {
         // this.cache = this.$cacheFactory('IssuesService');
     }
 
-    // one() {
-    //     return this.Restangular.one('issues');
-    // }
+    config(RestangularConfigurer) {
+        RestangularConfigurer.addResponseInterceptor((data, operation, what, url, response, deferred) => {
+            if (operation === "getList") {
+                response.groups = data.groups;
+                return data.list;
+            }
 
-    all() {
-        return this.Restangular.withConfig((RestangularConfigurer)=>{
-            RestangularConfigurer.addResponseInterceptor((data, operation, what, url, response, deferred) => {
-                if (operation === "getList") {
-                    response.groups = data.groups;
-                    return data.list;
-                }
-
-                return data;
-            });
-        }).all('issues');
+            return data;
+        });
     }
 
-    filters(){
-        return this.all().one('filters');
+    one(id) {
+        return this.Restangular.one('issues', id);
+    }
+
+    all() {
+        return this.Restangular
+            .withConfig((...args) => this.config(...args))
+            .all('issues');
+    }
+
+    filters() {
+        return this.Restangular.all('issues').one('filters');
     }
 
     // getListByProject(identifier, params) {
@@ -78,22 +82,30 @@ export default class IssuesService extends ServiceBase {
     //     return this.Restangular.one(`issues/${id}/watch`).remove();
     // }
 
-    timeAgo(creationDate) {
-        let daysAgo = moment().diff(moment(creationDate, 'YYYY-MM-DD'), 'days');
-        const yearsAgo = Math.floor(daysAgo / 365);
-        if (yearsAgo) {
-            return yearsAgo === 1 ? 'year' : (yearsAgo + ' years');
-        }
-
-        daysAgo -= yearsAgo * 365;
-        const monthsAgo = Math.floor(daysAgo / 30);
-        daysAgo -= monthsAgo * 30;
-
-        return (monthsAgo ? monthsAgo + ' months ' : '') + daysAgo + ' days';
-    }
+    // timeAgo(creationDate) {
+    //     let daysAgo = moment().diff(moment(creationDate, 'YYYY-MM-DD'), 'days');
+    //     const yearsAgo = Math.floor(daysAgo / 365);
+    //     if (yearsAgo) {
+    //         return yearsAgo === 1 ? 'year' : (yearsAgo + ' years');
+    //     }
+    //
+    //     daysAgo -= yearsAgo * 365;
+    //     const monthsAgo = Math.floor(daysAgo / 30);
+    //     daysAgo -= monthsAgo * 30;
+    //
+    //     return (monthsAgo ? monthsAgo + ' months ' : '') + daysAgo + ' days';
+    // }
 
     // getIssueStatuses() {
     //     return this.Restangular.one('issues').all('statuses').getList({});
     // }
+
+    getCurrentId() {
+        return this.$stateParams.hasOwnProperty('id') ? this.$stateParams.id : null;
+    }
+
+    setCurrentId(id) {
+        this.$stateParams.id = id;
+    }
 
 }

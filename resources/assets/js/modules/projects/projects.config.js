@@ -3,24 +3,64 @@ import projectsListComponent from './components/list/projects-list.component';
 import projectsNewComponent from './components/new/projects-new.component';
 import projectsInfoComponent from './components/info/projects-info.component';
 import projectsSettingsComponent from './components/settings/projects-settings.component';
-import projectsActivityComponent from './components/activity/projects-activity.component';
-import projectsNewsComponent from './components/news/projects-news.component';
-import projectsDocumentsComponent from './components/documents/projects-documents.component';
-import projectsFilesComponent from './components/files/projects-files.component';
-import projectsBoardsComponent from './components/boards/projects-boards.component';
-import projectsRepositoryComponent from './components/repository/projects-repository.component';
-
+import projectsSettingsInfoComponent from './components/settings-info/projects-settings-info.component';
+import projectsSettingsMembersComponent from './components/settings-members/projects-settings-members.component';
+import projectsSettingsModulesComponent from './components/settings-modules/projects-settings-modules.component';
 
 /**
  * @property {$stateProvider} $stateProvider
+ * @property {object} MainServiceProvider
  */
 export default class ProjectsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider'];
+        return ['$stateProvider', 'MainServiceProvider','ProjectsServiceProvider'];
     }
 
     $onInit() {
+        this.MainServiceProvider
+            .registerAdminMenu({
+                name: 'Projects',
+                url: 'projects-admin',
+                icon: 'work'
+            })
+            .registerAppMenu({
+                url: 'projects.list',
+                name: 'Projects',
+                icon: 'work'
+            })
+            .registerNewItemMenu({
+                name: 'Version',
+                url: '',
+                icon: 'archive',
+                single: false,
+                enable: false
+            })
+            .registerNewItemMenu({
+                name: 'Project',
+                url: 'projects.new',
+                icon: 'work',
+                single: true,
+                enable: false
+            });
+
+        this.ProjectsServiceProvider
+            .registerSettings({
+                url: '',
+                name: 'Information',
+                component: projectsSettingsInfoComponent.name,
+            })
+            .registerSettings({
+                url: 'modules',
+                name: 'Modules',
+                component: projectsSettingsMembersComponent.name,
+            })
+            .registerSettings({
+                url: 'members',
+                name: 'Members',
+                component: projectsSettingsModulesComponent.name,
+            });
+
         this.$stateProvider
             .state('projects', {
                 abstract: true,
@@ -42,23 +82,10 @@ export default class ProjectsConfig extends InjectableBase {
                 },
                 url: '/{project_id:[a-z][a-z0-9\-\_]{0,99}}',
                 template: '<ui-view/>'
-                // views: {
-                //     content: {
-                //         template: '<ui-view/>'
-                //     }
-                // }
             })
             .state('projects.inner.copy', {
                 url: '/copy',
                 component: projectsNewComponent.name,
-            })
-            .state('projects.inner.issues', {
-                abstract: true,
-                url: '/issues',
-            })
-            .state('projects.inner.issues.new', {
-                url: '/new',
-                component: 'issuesNewComponent'
             })
             .state('projects.list', {
                 url: '',
@@ -83,34 +110,13 @@ export default class ProjectsConfig extends InjectableBase {
                 },
                 component: projectsSettingsComponent.name,
             })
-            .state('projects.inner.activity', {
-            url: '/activity',
-            component: projectsActivityComponent.name,
-            })
-            .state('projects.inner.activity.date', {
-                url: '/activity/:end_date',
-                component: projectsActivityComponent.name,
-            })
-            .state('projects.inner.news', {
-                url: '/news',
-                component: projectsNewsComponent.name,
-            })
-            .state('projects.inner.documents', {
-                url: '/documents',
-                component: projectsDocumentsComponent.name,
-            })
-            .state('projects.inner.files', {
-                url: '/files',
-                component: projectsFilesComponent.name,
-            })
-            .state('projects.inner.repository', {
-                url: '/repository',
-                component: projectsRepositoryComponent.name,
-            })
-            .state('projects.inner.boards', {
-                url: '/boards',
-                // url: '/boards/{id:[0-9]}',
-                component: projectsBoardsComponent.name,
+            .state('projects-admin', {
+                url: '/projects',
+                data: {
+                    isAdmin: true
+                },
+                parent: 'admin',
+                component: projectsListComponent.name,
             });
     }
 

@@ -145,11 +145,76 @@ md-toast.notification {
   }
 }
 
+// menu bar in list item
 md-list-item {
   md-menu-bar {
     padding: 0;
   }
 }
+
+
+md-card {
+  // progress line in card
+  position: relative;
+
+  md-progress-linear {
+    position: absolute;
+  }
+
+  // list in card
+  md-list {
+    padding: 0;
+  }
+
+  // button on card header
+  .card-button {
+    margin: 0 6px;
+    height: 40px;
+    min-width: 0;
+    line-height: 24px;
+    padding: 8px;
+  }
+}
+
+// circle avatar by span tag
+// todo: use theme colors or generate image on backend
+span {
+  &.md-avatar {
+    text-align: center;
+    color: rgb(255, 255, 255);
+    background: rgb(96, 125, 139);
+    line-height: 36px;
+    font-weight: bold;
+  }
+}
+
 //md-menu-item > md-menu .md-button md-icon {
 //  margin: auto 16px auto 0;
 //}
+
+// animate repeat list
+.animate-repeat {
+  &.ng-move,
+  &.ng-enter,
+  &.ng-leave {
+    transition: all linear 0.5s;
+  }
+
+  &.ng-enter,
+  &.ng-leave.ng-leave-active {
+    opacity: 0;
+  }
+
+  &.ng-leave,
+  &.ng-enter.ng-enter-active {
+    opacity: 1;
+  }
+
+  @for $i from 1 through 100 {
+    &:nth-of-type(#{$i}) {
+      transition-delay: #{($i * 5) + 50}ms;
+    }
+  }
+}
+
+

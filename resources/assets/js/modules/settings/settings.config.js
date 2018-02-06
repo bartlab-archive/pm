@@ -3,14 +3,22 @@ import settingsIndexComponent from './components/index/settings-index.component'
 
 /**
  * @property {$stateProvider} $stateProvider
+ * @property {object} MainServiceProvider
  */
 export default class FieldsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider']
+        return ['$stateProvider', 'MainServiceProvider']
     }
 
     $onInit() {
+        this.MainServiceProvider
+            .registerAdminMenu({
+                name: 'Settings',
+                url: 'settings.index',
+                icon: 'settings'
+            });
+
         this.$stateProvider
             .state('settings', {
                 abstract: true,
@@ -35,8 +43,7 @@ export default class FieldsConfig extends InjectableBase {
                     }
                 },
                 component: settingsIndexComponent.name,
-            })
-        ;
+            });
     }
 
 }

@@ -38,7 +38,8 @@ use App\Traits\ModelTrait;
  */
 class Issue extends Model
 {
-    use ModelTrait, ReferenceTrait;
+    use ModelTrait,
+        ReferenceTrait;
 
     const CREATED_AT = 'created_on';
     const UPDATED_AT = 'updated_on';
@@ -46,9 +47,13 @@ class Issue extends Model
     const ENUMERATION_PRIORITY = 'IssuePriority';
     const WATCHABLE_TYPE = 'Issue';
 
-    protected $guarded = ['id'];
+    protected $guarded = [
+        'id'
+    ];
 
-    protected $hidden = ['project_id'];
+    protected $hidden = [
+        'project_id'
+    ];
 
     protected $dates = [
         'created_on',
@@ -100,7 +105,7 @@ class Issue extends Model
             ->where('type', static::ENUMERATION_PRIORITY);
     }
 
-    public function childIssues()
+    public function child()
     {
         return $this->hasMany(self::class, 'parent_id', 'id');
     }

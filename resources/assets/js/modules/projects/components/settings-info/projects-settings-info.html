@@ -1,0 +1,69 @@
+<form name="$ctrl.infoForm" class="md-padding">
+    <md-input-container class="md-block">
+        <label>Name</label>
+
+        <input ng-model="$ctrl.project.name" name="name" type="text" required>
+
+        <div ng-messages="$ctrl.infoForm.name.$error">
+            <div ng-message="required">
+                Name can't be blank!
+            </div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="md-block">
+        <label>Description</label>
+        <textarea ng-model="$ctrl.project.description" name="description"></textarea>
+        <div ng-messages="$ctrl.infoForm.description.$error">
+            <div ng-message="server" ng-bind-html="$ctrl.errors.description | join"></div>
+        </div>
+    </md-input-container>
+
+    <md-input-container class="md-block">
+        <label>Identifier</label>
+        <input ng-model="$ctrl.project.identifier" type="text" ng-readonly="true">
+    </md-input-container>
+
+    <md-input-container class="md-block">
+        <label>Homepage</label>
+        <input ng-model="$ctrl.project.homepage" name="homepage" type="text"  ng-change="$ctrl.change('homepage')">
+        <div ng-messages="$ctrl.infoForm.homepage.$error">
+            <div ng-message="server" ng-bind-html="$ctrl.errors.homepage | join"></div>
+        </div>
+    </md-input-container>
+
+
+    <md-input-container class="md-block">
+        <md-checkbox class="md-primary" ng-model="$ctrl.project.is_public" aria-label="Public">
+            Public
+        </md-checkbox>
+    </md-input-container>
+
+    <md-divider></md-divider>
+
+    <md-input-container class="md-block">
+        <label>Subproject of</label>
+
+        <md-select ng-model="$ctrl.project.parent_identifier">
+            <md-option md-option-empty></md-option>
+            <md-option ng-value="item.identifier" ng-repeat="item in $ctrl.projects">
+                {{ item.name }}
+            </md-option>
+        </md-select>
+    </md-input-container>
+
+    <md-input-container class="md-block">
+        <md-checkbox class="md-primary" ng-model="$ctrl.project.inherit_members"
+                     aria-label="Inherit members"
+                     ng-disabled="!$ctrl.project.parent_identifier">
+            Inherit members
+        </md-checkbox>
+    </md-input-container>
+
+    <div layout-align="center center" layout="row">
+        <md-button class="md-raised md-primary animation-target" ng-disabled="$ctrl.infoForm.$invalid"
+                   ng-click="$ctrl.updateInformation()">
+            Save
+        </md-button>
+    </div>
+</form>

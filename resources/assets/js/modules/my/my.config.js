@@ -8,10 +8,17 @@ import myPageComponent from './components/page/my-page.component';
 export default class MyConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider'];
+        return ['$stateProvider', 'MainServiceProvider'];
     }
 
     $onInit() {
+        this.MainServiceProvider
+            .registerAppMenu({
+                url: 'my.page',
+                name: 'My page',
+                icon: 'person'
+            });
+
         this.$stateProvider
             .state('my', {
                 abstract: true,

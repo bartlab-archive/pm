@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\ModelTrait;
 use App\Traits\NodeTrait;
+use Illuminate\Support\Facades\Auth;
 
 class Project extends Model
 {
     use ModelTrait;
-    use NodeTrait;
+//    use NodeTrait;
 
     const ACTIVE_STATUS = '1';
     const CLOSED_STATUS = '5';
@@ -24,9 +25,15 @@ class Project extends Model
         'is_public' => 'boolean',
     ];
 
+    protected $appends = [
+        'is_my'
+    ];
+
     public $timestamps = false;
 
-    protected $guarded = ['id'];
+    protected $guarded = [
+        'id'
+    ];
 
     protected $dates = [
         'created_on',
@@ -63,7 +70,13 @@ class Project extends Model
         return $this->belongsToMany(User::class, Member::getTableName());
     }
 
-	public function parent() {
-		return $this->hasOne(self::class, 'id', 'parent_id');
-	}
+    public function parent()
+    {
+        return $this->hasOne(self::class, 'id', 'parent_id');
+    }
+
+    public function getIsMyAttribute()
+    {
+        return (int)(Auth::guest() ? false : $this->users()->where('user_id', Auth::user()->id)->exists());
+    }
 }

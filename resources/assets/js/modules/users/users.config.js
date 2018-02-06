@@ -5,14 +5,22 @@ import usersInfoComponent from './components/info/users-info.component';
 
 /**
  * @property {$stateProvider} $stateProvider
+ * @property {object} MainServiceProvider
  */
 export default class UsersConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider'];
+        return ['$stateProvider','MainServiceProvider'];
     }
 
     $onInit() {
+        this.MainServiceProvider
+            .registerAdminMenu({
+                name: 'Users',
+                url: 'users.list',
+                icon: 'person'
+            });
+
         this.$stateProvider
             .state('users', {
                 abstract: true,

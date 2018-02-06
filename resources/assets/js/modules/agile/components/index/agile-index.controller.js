@@ -8,7 +8,7 @@ import issuesViewModalTemplate from 'modules/issues/components/view-modal/issues
 export default class AgileIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$state','StatusesService','IssuesService','$stateParams','$mdDialog'];
+        return ['$state','StatusesService','IssuesService','$stateParams','$mdDialog','ProjectsService'];
     }
 
     $onInit() {
@@ -45,16 +45,16 @@ export default class AgileIndexController extends ControllerBase {
     loadIsues(){
         return this.IssuesService.all()
             .getList({
-                project_identifier: this.currentProjectId()
+                project_identifier: this.ProjectsService.getCurrentId()
             })
             .then((response) => {
                 this.list = response.data;
             });
     }
 
-    currentProjectId() {
-        return this.$stateParams.hasOwnProperty('project_id') ? this.$stateParams.project_id : null;
-    }
+    // currentProjectId() {
+    //     return this.$stateParams.hasOwnProperty('project_id') ? this.$stateParams.project_id : null;
+    // }
 
     toMoved(item){
     }

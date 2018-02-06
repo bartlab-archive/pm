@@ -7,6 +7,7 @@ import lettersFilter from './filters/letters.filter';
 import bytesToSizeUnitsFilter from './filters/bytesToSizeUnits.filter';
 import rangeFilter from './filters/range.filter';
 import DemoDirective from './directives/demo/demo.directive';
+import CompileDirective from './directives/compile/compile.directive';
 import mainIndexComponent from './components/index/main-index.component';
 import mainLoginComponent from './components/login/main-login.component';
 import mainRegistrationComponent from './components/registration/main-registration.component';
@@ -14,6 +15,7 @@ import mainLogoutComponent from './components/logout/main-logout.component';
 import mainResetPasswordComponent from './components/reset-password/main-reset-password.component';
 import main404Component from './components/404/main-404.component';
 import main500Component from './components/500/main-500.component';
+import MainProvider from "./providers/main.provider";
 
 angular.module('app.modules.main', [])
     .config(mainConfig.inst())
@@ -24,6 +26,8 @@ angular.module('app.modules.main', [])
     .filter('bytesToSizeUnitsFilter', bytesToSizeUnitsFilter)
     .filter('range', rangeFilter)
     .directive(DemoDirective.selector, DemoDirective.inst())
+    .directive(CompileDirective.selector, CompileDirective.inst())
+    .provider('MainService', MainProvider)
     .component(mainIndexComponent.name, mainIndexComponent)
     .component(mainLoginComponent.name, mainLoginComponent)
     .component(mainRegistrationComponent.name, mainRegistrationComponent)
@@ -31,3 +35,6 @@ angular.module('app.modules.main', [])
     .component(mainResetPasswordComponent.name, mainResetPasswordComponent)
     .component(main500Component.name, main500Component)
     .component(main404Component.name, main404Component);
+
+
+

@@ -9,16 +9,17 @@ import issuesViewModalController from '../view-modal/issues-view-modal.controlle
  * @property {ProjectsService} ProjectsService
  * @property {$stateParams} $stateParams
  * @property {$rootScope} $rootScope
- * @property {TrackersService} TrackersService
- * @property {UsersService} UsersService
+ * @property {UsersService} $mdDialog
  */
 export default class IssuesListController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdToast', '$state', '$showdown', 'IssuesService', 'ProjectsService', '$stateParams', '$window', '$rootScope', 'TrackersService', 'UsersService', '$mdDialog'];
+        return ['$state', '$showdown', 'IssuesService', 'ProjectsService', '$stateParams', '$rootScope', '$mdDialog'];
     }
 
     $onInit() {
+        this.currentProjectId = this.ProjectsService.getCurrentId();
+
         // selected tags for filter
         this.tags = [];
 
@@ -31,9 +32,9 @@ export default class IssuesListController extends ControllerBase {
         // available parameters for the sorting
         this.sortList = [
             {param: 'id:asc', name: 'ID - Ascending'},
-            {param: 'id:decs', name: 'ID - Descending'},
+            {param: 'id:desc', name: 'ID - Descending'},
             {param: 'updated_on:asc', name: 'Updated - Oldest first'},
-            {param: 'updated_on:decs', name: 'Updated - Newst first'},
+            {param: 'updated_on:desc', name: 'Updated - Newst first'},
         ];
         this.sort = this.sortList[3];
 
@@ -106,10 +107,11 @@ export default class IssuesListController extends ControllerBase {
         this.selectAllState = false;
         this.selectedGroup = [];
         this.loadProccess = true;
+        this.list = [];
 
         return this.IssuesService.all()
             .getList({
-                project_identifier: this.currentProjectId(),
+                project_identifier: this.ProjectsService.getCurrentId(),
                 limit: this.limitPerPage,
                 offset: this.offset,
                 order: this.sort.param,
@@ -131,9 +133,9 @@ export default class IssuesListController extends ControllerBase {
             });
     }
 
-    currentProjectId() {
-        return this.$stateParams.hasOwnProperty('project_id') ? this.$stateParams.project_id : null;
-    }
+    // currentProjectId() {
+    //     return this.$stateParams.hasOwnProperty('project_id') ? this.$stateParams.project_id : null;
+    // }
 
     onChangeFilterValue() {
         this.offset = 0;
@@ -143,7 +145,7 @@ export default class IssuesListController extends ControllerBase {
     loadFiltersValues() {
         return this.IssuesService.filters()
             .get({
-                project_identifier: this.currentProjectId()
+                project_identifier: this.ProjectsService.getCurrentId()
             })
             .then((response) => {
                 this.statusList = response.data.statuses.map((e) => {
@@ -227,28 +229,28 @@ export default class IssuesListController extends ControllerBase {
         );
     }
 
-    deleteGroup() {
-        let title_issue = this.selectedGroup.length > 1 ? 'issues' : 'issue';
-        let confirm = this.$mdDialog.confirm()
-            .title(`Would you like to delete this ${title_issue}?`)
-            .ok('Delete!')
-            .cancel('Cancel');
+    // deleteGroup() {
+    //     let title_issue = this.selectedGroup.length > 1 ? 'issues' : 'issue';
+    //     let confirm = this.$mdDialog.confirm()
+    //         .title(`Would you like to delete this ${title_issue}?`)
+    //         .ok('Delete!')
+    //         .cancel('Cancel');
+    //
+    //     this.$mdDialog.show(confirm).then(() => {
+    //         this.selectedGroup.forEach((issue) => {
+    //             this.deleteConfirmedIssue(issue.id);
+    //         });
+    //         this.selectedGroup = [];
+    //     });
+    // }
 
-        this.$mdDialog.show(confirm).then(() => {
-            this.selectedGroup.forEach((issue) => {
-                this.deleteConfirmedIssue(issue.id);
-            });
-            this.selectedGroup = [];
-        });
-    }
-
-    deleteConfirmedIssue(id) {
-        this.IssuesService.deleteIssue(id).then(() => {
-            this.$rootScope.$emit('updateIssues');
-        });
-
-        this.selectedGroup = [];
-    }
+    // deleteConfirmedIssue(id) {
+    //     this.IssuesService.deleteIssue(id).then(() => {
+    //         this.$rootScope.$emit('updateIssues');
+    //     });
+    //
+    //     this.selectedGroup = [];
+    // }
 
     setSort(item) {
         this.sort = item;

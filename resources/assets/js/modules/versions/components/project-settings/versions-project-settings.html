@@ -1,0 +1,51 @@
+<!--<md-content class="md-padding">-->
+<div ng-if="!$ctrl.versions.length" layout-align="center center" layout="row" class="md-padding">
+    No data to display
+</div>
+<md-list ng-if="!!$ctrl.versions.length">
+    <md-list-item class="md-3-line" ng-repeat="item in $ctrl.versions"
+                  ng-click="$ctrl.editVersion($event, item)">
+        <div class="md-list-item-text">
+            <h3>
+                {{ item.name }} | {{ $ctrl.versionStatuses[item.status].name }}
+                {{ item.effective_date ? '| ' + item.effective_date + ' ': '' }}
+            </h3>
+            <h4>{{ item.description }}</h4>
+            <h4>{{ $ctrl.versionSharings[item.sharing].name }}</h4>
+        </div>
+
+        <md-button class="md-secondary md-icon-button"
+                   ng-click="$ctrl.versionPage(item.id)">
+            <md-tooltip md-direction="bottom">Open version page</md-tooltip>
+            <md-icon>open_in_browser</md-icon>
+        </md-button>
+
+        <md-button class="md-secondary md-icon-button"
+                   ng-if="!!item.wiki_page_title"
+                   ng-click="$ctrl.versionWikiNavigate(item.wiki_page_title)">
+            <md-tooltip md-direction="bottom">Open wiki page</md-tooltip>
+            <md-icon>receipt</md-icon>
+        </md-button>
+
+        <!--<md-button class="md-secondary md-icon-button" ng-click="$ctrl.editVersion($event, item)">-->
+        <!--<md-icon>edit</md-icon>-->
+        <!--</md-button>-->
+
+        <md-button class="md-secondary md-icon-button"
+                   ng-click="$ctrl.deleteVersion(item.id, item.name)">
+            <md-tooltip md-direction="bottom">Delete</md-tooltip>
+            <md-icon>delete</md-icon>
+        </md-button>
+    </md-list-item>
+</md-list>
+
+<div layout-align="center center" layout="row" class="md-padding">
+    <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.addVersion($event)">
+        New version
+    </md-button>
+
+    <md-button class="md-raised animation-target" ng-click="$ctrl.closeCompletedVersions()">
+        Close completed versions
+    </md-button>
+</div>
+<!--</md-content>-->

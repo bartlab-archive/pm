@@ -20,13 +20,13 @@ export default class IssuesViewActionsController extends ControllerBase {
 
     openIssue(id) {
         this.cancel().then(() => {
-            this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: id});
+            this.$state.go('issues.info', {id: id});
         });
     }
 
     editIssue(id) {
         this.cancel().then(() => {
-            this.$state.go('issues.edit', {project_id: this.$stateParams.project_id, id: id});
+            this.$state.go('issues.edit', {id: id});
         });
     }
 
@@ -44,7 +44,7 @@ export default class IssuesViewActionsController extends ControllerBase {
 
     copyIssue(id) {
         this.cancel().then(()=>{
-            this.$state.go('issues.copy', {project_id: this.$stateParams.project_id, id: id});
+            this.$state.go('issues.copy', {id: id});
         });
     }
 

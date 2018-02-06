@@ -1,0 +1,21 @@
+<!--<md-content class="md-padding">-->
+<md-list>
+    <md-list-item class="md-2-line" ng-repeat="item in $ctrl.activities">
+        <div class="md-list-item-text">
+            <h3>{{ item.name }}</h3>
+            <p ng-show="!item.parent_id">System Activity</p>
+        </div>
+        <md-switch class="md-secondary" ng-model="item.active"></md-switch>
+    </md-list-item>
+</md-list>
+
+<div layout-align="center center" layout="row" class="md-padding">
+    <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.saveActivity()">
+        Save
+    </md-button>
+
+    <md-button class="md-raised animation-target" ng-click="$ctrl.resetActivity()">
+        Reset
+    </md-button>
+</div>
+<!--</md-content>-->

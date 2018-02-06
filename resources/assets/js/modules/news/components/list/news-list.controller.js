@@ -14,34 +14,34 @@ export default class NewsListController extends ControllerBase {
     }
 
     $onInit() {
-        let enabledModules = {};
-        const currentProjectId = this.currentProjectId();
-
-        this.ProjectsService.one(currentProjectId).then((response) => {
-            enabledModules = this.ProjectsService.getModules(_.get(response, 'data.enabled_modules', []));
-
-            if (typeof enabledModules.news === 'undefined') {
-                window.location.href = '/projects/' + currentProjectId;
-            } else {
-
-                this.NewsService.getNews(this.$stateParams.id, {})
-                    .then((response) => {
-                        this.news = response.data
-                    })
-                    .catch(console.log);
-            }
-        });
+        // let enabledModules = {};
+        // const currentProjectId = this.ProjectsService.getCurrentId();
+        //
+        // this.ProjectsService.one(currentProjectId).then((response) => {
+        //     enabledModules = this.ProjectsService.getModules(_.get(response, 'data.enabled_modules', []));
+        //
+        //     if (typeof enabledModules.news === 'undefined') {
+        //         window.location.href = '/projects/' + currentProjectId;
+        //     } else {
+        //
+        //         this.NewsService.getNews(this.$stateParams.id, {})
+        //             .then((response) => {
+        //                 this.news = response.data
+        //             })
+        //             .catch(console.log);
+        //     }
+        // });
 
 
     }
 
-    goToNews(id) {
-        this.$state.go('news.edit', {id: id});
-    }
+    // goToNews(id) {
+    //     this.$state.go('news.edit', {id: id});
+    // }
 
-    currentProjectId() {
-        debugger;
-        return _.get(this.$state, 'data.layoutDefault.projectId') || _.get(this.$stateParams, 'project_id');
-    }
+    // currentProjectId() {
+    //     debugger;
+    //     return _.get(this.$state, 'data.layoutDefault.projectId') || _.get(this.$stateParams, 'project_id');
+    // }
 
 }

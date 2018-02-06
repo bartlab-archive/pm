@@ -4,14 +4,22 @@ import workflowsEditComponent from './components/edit/workflows-edit.component';
 
 /**
  * @property {$stateProvider} $stateProvider
+ * @property {object} MainServiceProvider
  */
 export default class StatusesConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider']
+        return ['$stateProvider', 'MainServiceProvider']
     }
 
     $onInit() {
+        this.MainServiceProvider
+            .registerAdminMenu({
+                name: 'Workflow',
+                url: 'workflows.edit',
+                icon: 'assignment_return'
+            });
+
         this.$stateProvider
             .state('workflows', {
                 abstract: true,

@@ -49,10 +49,11 @@ class IssuesService
 
     public function one($id)
     {
-        $issue = Issue::where('id', $id)
-            ->with(['tracker', 'user', 'author', 'project', 'childIssues'])
+        return Issue::where('id', $id)
+            ->with(['tracker', 'assigned', 'author', 'project', 'child'])
             ->first();
-        return $issue;
+
+//        return $issue;
     }
 
     public function update($id, array $data)
@@ -134,6 +135,7 @@ class IssuesService
             });
         } else {
             /*
+             * todo
              * Need add to where:
              *  - is module enambled for project
              *  - is user allow to view issue
@@ -203,7 +205,7 @@ class IssuesService
                 $order = [$split[0] => $split[1]];
             }
 
-            // add check, if column available
+            // todo: add check, if column available
             foreach ($order as $key => $val) {
                 $query->orderBy($key, $val);
             }

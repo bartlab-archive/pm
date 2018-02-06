@@ -51,7 +51,10 @@ class User extends Authenticatable
         'admin'
     ];
 
-    protected $appends = ['avatar'];
+    protected $appends = [
+        'avatar',
+        'full_name'
+    ];
 
     public function email()
     {
@@ -88,8 +91,15 @@ class User extends Authenticatable
         return $this->belongsToMany(Project::class, Member::getTableName());
     }
 
-    public function getAvatarAttribute(){
+    public function getAvatarAttribute()
+    {
         // todo: need check system config for avatar src
-        return '//www.gravatar.com/avatar/'.md5(strtolower(trim($this->email->address)));
+        return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email->address)));
+    }
+
+    public function getFullNameAttribute()
+    {
+        // todo: nedd check system config for user fullname format
+        return $this->firstname . ' ' . $this->lastname;
     }
 }

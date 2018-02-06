@@ -10,8 +10,8 @@
     <md-icon class="w-50">create</md-icon>
     <div flex>
         <a ui-sref="users.info({id:$ctrl.selectedIssue.author.id})" ng-click="$ctrl.cancel()" class="md-avatar">
-            <img src="//www.gravatar.com/avatar/{{ $ctrl.selectedIssue.author.avatar }}">
-            {{ [$ctrl.selectedIssue.author.firstname, $ctrl.selectedIssue.author.lastname] | join:' ' }}
+            <img src="{{ $ctrl.selectedIssue.author.avatar }}">
+            {{ $ctrl.selectedIssue.author.full_name }}
         </a>
     </div>
 </div>
@@ -19,9 +19,9 @@
 <div layout-align="start start" layout="row" class="info-row">
     <md-icon class="w-50">people</md-icon>
     <div flex>
-        <a ui-sref="users.info({id:$ctrl.selectedIssue.user.id})" ng-click="$ctrl.cancel()" class="md-avatar">
-            <img src="//www.gravatar.com/avatar/{{ $ctrl.selectedIssue.user.avatar }}">
-            {{ [$ctrl.selectedIssue.user.firstname, $ctrl.selectedIssue.user.lastname] | join:' ' }}
+        <a ui-sref="users.info({id:$ctrl.selectedIssue.assigned.id})" ng-click="$ctrl.cancel()" class="md-avatar">
+            <img src="{{ $ctrl.selectedIssue.assigned.avatar }}">
+            {{ $ctrl.selectedIssue.assigned.full_name }}
         </a>
     </div>
 </div>

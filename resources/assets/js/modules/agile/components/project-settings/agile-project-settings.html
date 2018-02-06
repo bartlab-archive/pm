@@ -1,0 +1,18 @@
+<form name="agileForm" class="md-padding">
+    <md-input-container class="md-block">
+        <label>agile page</label>
+
+    </md-input-container>
+
+    <div layout-align="center center" layout="row">
+        <md-button class="md-raised md-primary animation-target" type="submit"
+                   ng-disabled="agileForm.$invalid"
+                   ng-click="$ctrl.saveAgile()">
+            Save
+        </md-button>
+
+        <md-button class="md-raised animation-target">
+            Delete
+        </md-button>
+    </div>
+</form>

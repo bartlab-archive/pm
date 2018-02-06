@@ -5,6 +5,7 @@ import _ from 'lodash';
  * @property {$mdSidenav} $mdSidenav
  * @property {$state} $state
  * @property {ProjectsService} ProjectsService
+ * @property {object} MainService
  * @property {UsersService} UsersService
  * @property {$transitions} $transitions
  * @property {$stateParams} $stateParams
@@ -13,143 +14,22 @@ import _ from 'lodash';
 export default class LayoutDefaultController extends ControllerBase {
 
     static get $inject() {
-        return ['$timeout', '$mdSidenav', '$state', 'ProjectsService', 'UsersService', '$transitions', '$stateParams', '$rootScope'];
+        return ['$timeout', '$mdSidenav', '$state', 'ProjectsService', 'MainService', 'UsersService', '$transitions', '$stateParams', '$rootScope'];
     }
 
     $onInit() {
-        this.ProjectsService.getMyList().then((response) => {
-            this.projects = response || {};
-        });
+        // this.ProjectsService.getMyList().then((response) => {
+        //     this.projects = response || {};
+        // });
 
-        this.items = [
-            {url: 'home', name: 'Home', icon: 'home'},
-            {url: 'projects.list', name: 'Projects', icon: 'work'},
-            {url: 'issues.list', name: 'View all issues', icon: 'list'},
-            {url: 'home', name: 'Overall spent time', icon: 'timelapse'},
-            {url: 'home', name: 'Overall activity', icon: 'history'},
-            {url: 'my.page', name: 'My page', icon: 'person'},
-            {url: 'admin.index', name: 'Administration', icon: 'settings_applications'},
-            // {url: 'agile.index', name: 'Agile', icon: 'dashboard'},
-            // {url: 'home', name: 'Help', icon: 'help'}
-        ];
-
-        this.UsersService.getUserInfo().then((response) => {
-            if (_.get(response, 'data.admin')) {
-                this.items.push({url: 'admin.index', name: 'Administration', icon: 'apps'});
-            }
-        });
-
-        this.newItems = [{
-            name: 'Issue',
-            url: 'issues-inner.new',
-            icon: 'create',
-            module: 'issue_tracking',
-            single: true,
-            enable: false
-        }, {
-            name: 'Category',
-            url: '',
-            icon: 'folder',
-            module: 'issue_tracking',
-            single: false,
-            enable: false
-        }, {
-            name: 'Version',
-            url: '',
-            icon: 'archive',
-            single: false,
-            enable: false
-        }, {
-            name: 'Wiki page',
-            url: 'wiki.new',
-            icon: 'receipt',
-            module: 'wiki',
-            single: false,
-            enable: false
-        }, {
-            name: 'File',
-            url: '',
-            icon: 'attach_file',
-            module: 'files',
-            single: false,
-            enable: false
-        }, {
-            name: 'Project',
-            url: 'projects.new',
-            icon: 'work',
-            single: true,
-            enable: false
-        }];
-
-        this.projectItems = [{
-            url: 'projects.inner.info',
-            title: 'Overview'
-        }, {
-            url: 'projects.inner.activity',
-            title: 'Activity',
-            name: 'time_tracking',
-            enable: false
-        }, {
-            url: 'issues-inner.index',
-            title: 'Issues',
-            name: 'issue_tracking',
-            enable: false,
-            alt: [/^issues\.*/]
-        }, {
-            url: 'gantt.index',
-            title: 'Gantt',
-            name: 'gantt',
-            enable: false
-        }, {
-            url: 'agile.index',
-            title: 'Agile',
-            name: 'agile',
-            enable: false
-        }, {
-            url: 'calendar.index',
-            title: 'Calendar',
-            name: 'calendar',
-            enable: false
-        }, {
-            url: 'projects.inner.news',
-            title: 'News',
-            name: 'news',
-            enable: false
-        }, {
-            url: 'projects.inner.documents',
-            title: 'Documents',
-            name: 'documents',
-            enable: false
-        }, {
-            url: 'wiki.index',
-            title: 'Wiki',
-            name: 'wiki',
-            enable: false,
-            alt: [/^wiki\.*/]
-        }, {
-            url: 'projects.inner.repository',
-            title: 'Repository',
-            name: 'repository',
-            enable: false
-        }, {
-            url: 'projects.inner.boards',
-            title: 'Forums',
-            name: 'boards',
-            enable: false
-        }, {
-            url: 'projects.inner.files',
-            title: 'Files',
-            name: 'files',
-            enable: false
-        }, {
-            url: 'projects.inner.settings',
-            title: 'Settings'
-        }];
+        this.items = this.MainService.getAppMenu();
+        this.newItems = this.MainService.getNewItemMenu();
+        this.projectItems = this.ProjectsService.getModules();
 
         this.menuOpen = false;
         this.loadProjectInfo();
 
-        this.$transitions.onSuccess({}, (trans) => this.loadProjectInfo());
+        this.$transitions.onSuccess({}, () => this.loadProjectInfo());
         this.$rootScope.$on('updateProjectInfo', () => this.loadProjectInfo());
     }
 
@@ -171,10 +51,6 @@ export default class LayoutDefaultController extends ControllerBase {
         this.$mdSidenav(menu).toggle();
     }
 
-    openUserMenu($mdMenu, ev) {
-        $mdMenu.open(ev);
-    };
-
     gotToProject(identifier) {
         this.$state.go('projects.inner.info', {project_id: identifier});
         this.toggle('right');
@@ -193,27 +69,19 @@ export default class LayoutDefaultController extends ControllerBase {
         this.toggle();
     }
 
-    newProject() {
-        this.$state.go('projects.new');
-        this.toggle('right');
-    }
-
-    currentProjectId() {
-        return this.$stateParams.hasOwnProperty('project_id') && this.$stateParams.project_id;
-    }
-
     goto(url) {
-        const projectId = this.currentProjectId();
+        const projectId = this.ProjectsService.getCurrentId();
+
         projectId ? this.$state.go(url, {project_id: projectId}) : null;
         _.includes(['projects.new'], url) ? this.$state.go(url, {}) : null;
     }
 
     loadProjectInfo() {
-        const projectIdentifier = this.currentProjectId();
+        const projectIdentifier = this.ProjectsService.getCurrentId();
         this.showProjectMenu = !!projectIdentifier;
 
         if (projectIdentifier) {
-            this.ProjectsService.one(projectIdentifier).then((response) => {
+            this.ProjectsService.one(projectIdentifier).get().then((response) => {
                 let modules = _.get(response, 'data.enabled_modules', []);
 
                 // change visible items in project menu

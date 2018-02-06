@@ -18,7 +18,7 @@
         </md-button>
 
         <md-menu>
-            <md-button class="md-icon-button" aria-label="User menu" ng-click="$ctrl.openUserMenu($mdMenu, $event)">
+            <md-button class="md-icon-button" aria-label="User menu" ng-click="$mdMenu.open()">
                 <md-icon>more_vert</md-icon>
             </md-button>
             <md-menu-content width="4">
@@ -105,14 +105,9 @@
         <md-toolbar>
             <h1 class="md-toolbar-tools">
                 <span>Projects</span>
-                <span flex></span>
-                <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.newProject()">
-                    <md-icon>add</md-icon>
-                </md-button>
             </h1>
         </md-toolbar>
 
-        <!--todo: convert this code into component-->
         <md-list>
             <div ng-repeat="project in $ctrl.projects">
                 <md-list-item class="md-body-1" ng-click="$ctrl.gotToProject(project.identifier)">
@@ -121,37 +116,6 @@
                     </md-button>
                     {{ project.name }}
                 </md-list-item>
-
-                <div ng-repeat="project2 in project.child_projects_recursive">
-                    <md-list style="padding-top: 0px; padding-bottom: 0px;">
-                        <md-list-item class="md-body-1" ng-click="$ctrl.gotToProject(project2.identifier)">
-                            <md-button class="md-icon-button">
-                                <md-icon>subdirectory_arrow_right</md-icon>
-                            </md-button>
-                            <md-button class="md-icon-button">
-                                <md-icon>folder</md-icon>
-                            </md-button>
-                            {{ project2.name }}
-                        </md-list-item>
-
-                        <div ng-repeat="project3 in project2.child_projects_recursive">
-                            <md-list style="padding-top: 0px; padding-bottom: 0px;">
-                                <md-list-item class="md-body-1" ng-click="$ctrl.gotToProject(project3.identifier)">
-                                    <md-button class="md-icon-button">
-                                        <md-icon aria-label=""></md-icon>
-                                    </md-button>
-                                    <md-button class="md-icon-button">
-                                        <md-icon>subdirectory_arrow_right</md-icon>
-                                    </md-button>
-                                    <md-button class="md-icon-button">
-                                        <md-icon>folder</md-icon>
-                                    </md-button>
-                                    {{ project3.name }}
-                                </md-list-item>
-                            </md-list>
-                        </div>
-                    </md-list>
-                </div>
             </div>
         </md-list>
 

@@ -1,0 +1,30 @@
+<div ng-if="!$ctrl.issuesCategories.length" layout-align="center center" layout="row"
+     class="md-padding">
+    No data to display
+</div>
+<md-list>
+    <md-list-item class="md-2-line" ng-repeat="item in $ctrl.issuesCategories"
+                  ng-click="$ctrl.editIssuesCategory($event, item)">
+        <div class="md-list-item-text">
+            <h3>{{ item.name }}</h3>
+            <p>{{ $ctrl.members[item.assigned_to_id].name }}</p>
+        </div>
+
+        <!--<md-button class="md-secondary md-icon-button"-->
+        <!--ng-click="$ctrl.editIssuesCategory($event, item)">-->
+        <!--<md-icon>edit</md-icon>-->
+        <!--</md-button>-->
+
+        <md-button class="md-secondary md-icon-button"
+                   ng-click="$ctrl.deleteIssuesCategory(item.id, item.name)">
+            <md-icon>delete</md-icon>
+        </md-button>
+    </md-list-item>
+</md-list>
+
+<div layout-align="center center" layout="row" class="md-padding">
+    <md-button class="md-raised md-primary animation-target"
+               ng-click="$ctrl.createIssuesCategory($event)">
+        New category
+    </md-button>
+</div>

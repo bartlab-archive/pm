@@ -13,7 +13,7 @@ import 'ng-showdown';
 import 'angular-file-saver';
 import 'angular-drag-and-drop-lists';
 
-import 'modules/app.module';
+import 'modules/app.modules';
 
 import AppRun from 'app.run';
 import AppConfig from 'app.config';

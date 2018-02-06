@@ -3,14 +3,22 @@ import authIndexComponent from './components/index/auth-index.component';
 
 /**
  * @property {$stateProvider} $stateProvider
+ * @property {object} MainServiceProvider
  */
 export default class FieldsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider']
+        return ['$stateProvider', 'MainServiceProvider']
     }
 
     $onInit() {
+        this.MainServiceProvider
+            .registerAdminMenu({
+                name: 'LDAP authentication',
+                url: 'auth.index',
+                icon: 'lock'
+            });
+
         this.$stateProvider
             .state('auth', {
                 abstract: true,
