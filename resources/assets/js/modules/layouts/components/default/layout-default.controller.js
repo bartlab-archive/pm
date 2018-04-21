@@ -14,7 +14,7 @@ import _ from 'lodash';
 export default class LayoutDefaultController extends ControllerBase {
 
     static get $inject() {
-        return ['$timeout', '$mdSidenav', '$state', 'ProjectsService', 'MainService', 'UsersService', '$transitions', '$stateParams', '$rootScope'];
+        return ['$timeout', '$mdSidenav', '$state', 'projectsService', 'mainService', 'usersService', '$transitions', '$stateParams', '$rootScope'];
     }
 
     $onInit() {
@@ -22,15 +22,21 @@ export default class LayoutDefaultController extends ControllerBase {
         //     this.projects = response || {};
         // });
 
-        this.items = this.MainService.getAppMenu();
-        this.newItems = this.MainService.getNewItemMenu();
-        this.projectItems = this.ProjectsService.getModules();
+        this.items = this.mainService.getAppMenu();
+        this.newItems = this.mainService.getNewItemMenu();
+        this.projectItems = this.projectsService.getModules();
 
+        this.setTitle();
         this.menuOpen = false;
         this.loadProjectInfo();
 
         this.$transitions.onSuccess({}, () => this.loadProjectInfo());
         this.$rootScope.$on('updateProjectInfo', () => this.loadProjectInfo());
+    }
+
+    setTitle(title){
+        // todo: get title from config
+        this.title = title || 'MaybeWorks PM';
     }
 
     hlCurrentNavItem() {
@@ -70,24 +76,24 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     goto(url) {
-        const projectId = this.ProjectsService.getCurrentId();
+        const projectId = this.projectsService.getCurrentId();
 
         projectId ? this.$state.go(url, {project_id: projectId}) : null;
         _.includes(['projects.new'], url) ? this.$state.go(url, {}) : null;
     }
 
     loadProjectInfo() {
-        const projectIdentifier = this.ProjectsService.getCurrentId();
+        const projectIdentifier = this.projectsService.getCurrentId();
         this.showProjectMenu = !!projectIdentifier;
 
         if (projectIdentifier) {
-            this.ProjectsService.one(projectIdentifier).get().then((response) => {
-                let modules = _.get(response, 'data.enabled_modules', []);
+            this.projectsService.one(projectIdentifier).then((response) => {
+                let modules = _.get(response, 'data.modules', []);
 
                 // change visible items in project menu
                 this.projectItems.forEach((item) => {
                     if (item.name) {
-                        item.enable = modules.some((value) => value.name === item.name);
+                        item.enable = modules.some((value) => value.name === item.name && value.enabled === true);
                     }
                 });
 
@@ -98,11 +104,15 @@ export default class LayoutDefaultController extends ControllerBase {
 
                 // highlight current item in project menu
                 this.hlCurrentNavItem();
+
+                this.setTitle(response.data.data.name);
             });
         } else {
             this.newItems.forEach((item) => {
                 item.enable = (item.single && this.$state.current.name !== item.url);
             });
+
+            this.setTitle();
         }
     }
 

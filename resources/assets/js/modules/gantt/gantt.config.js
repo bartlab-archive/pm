@@ -1,5 +1,5 @@
 import InjectableBase from 'base/injectable.base';
-import ganttIndexComponent from './components/index/gantt-index.component';
+import GanttIndexComponent from './components/index/gantt-index.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -8,11 +8,11 @@ import ganttIndexComponent from './components/index/gantt-index.component';
 export default class GanttConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'ProjectsServiceProvider'];
+        return ['$stateProvider', 'projectsServiceProvider'];
     }
 
     $onInit() {
-        this.ProjectsServiceProvider.registerModule({
+        this.projectsServiceProvider.registerModule({
             url: 'gantt-inner.index',
             title: 'Gantt',
             name: 'gantt',
@@ -27,7 +27,7 @@ export default class GanttConfig extends InjectableBase {
             })
             .state('gantt-inner.index', {
                 url: '',
-                component: ganttIndexComponent.name,
+                component: GanttIndexComponent.getName(),
             });
     }
 

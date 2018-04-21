@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\EnabledModule;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 /**
  * Class EnabledModulesService
@@ -13,84 +15,87 @@ use App\Models\EnabledModule;
  */
 class EnabledModulesService
 {
-    /**
-     * @var ProjectsService
-     */
     protected $projectService;
 
-    /**
-     * EnabledModulesService constructor.
-     * @param ProjectsService $projectService
-     */
-    function __construct(ProjectsService $projectService)
+    public function __construct(ProjectsService $projectService)
     {
         $this->projectService = $projectService;
     }
 
     /**
-     * Update project enabled modules
-     *
-     * @param string $identifier
-     * @param array $data
-     * @return bool
+     * Get all available modules list
      */
-    public function massUpdate($identifier, $data)
+    public function availableList()
     {
-        $project = $this->projectService->one($identifier);
-
-        EnabledModule::where(['project_id' => $project->id])->delete();
-
-        foreach ($data as $moduleName) {
-            EnabledModule::create([
-                'project_id' => $project->id,
-                'name' => $moduleName
-            ]);
-        }
-
-        return true;
-    }
-
-    /**
-     * Create project enabled modules
-     *
-     * @param int $projectId
-     * @param array $data
-     * @return bool
-     */
-    public function massCreate($projectId, $data)
-    {
-        foreach ($data as $moduleName) {
-            EnabledModule::create([
-                'project_id' => $projectId,
-                'name' => $moduleName
-            ]);
-        }
-
-        return true;
+        return collect(array_map(function ($item) {
+            return (object)$item;
+        }, EnabledModule::$modules));
     }
 
     /**
      * Get list enabled modules by project identifier
      *
      * @param string $identifier project identifier
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection|Collection|static[]
      */
-    public function getList($identifier){
-        if ($project = $this->projectService->one($identifier)){
-            return $project->enabledModules;
-        }
+    public function getByProject(string $identifier)
+    {
+        return EnabledModule::query()
+            ->whereHas('project', function ($query) use ($identifier) {
+                /** @var $query Builder */
+                $query->where('identifier', $identifier);
+            })
+            ->get();
+    }
 
-        return [];
+    public function getEnabledByProject(string $identifier)
+    {
+//        $collection = [];
+        $list = $this->getByProject($identifier)
+            ->pluck('name')
+            ->all();
+
+//        foreach ($this->availableList() as $item){
+//            $item->enabled = \in_array($item->name, $list, true);
+//        }
+        return collect(\array_map(
+            function ($item) use ($list) {
+                $item->enabled = \in_array($item->name, $list, true);
+                return $item;
+            },
+            $this->availableList()->toArray()
+        ));
     }
 
     /**
      * Check module state for project
      *
-     * @param string $projectIdentifier project identifier
+     * @param string $identifier project identifier
      * @param string $name module name
      * @return bool
      */
-    public function check($projectIdentifier, $name){
-        return in_array($name, array_pluck($this->getList($projectIdentifier), 'name'));
+    public function check(string $identifier, $name): bool
+    {
+        return \in_array($name, $this->getByProject($identifier)->pluck('name')->all(), true);
+    }
+
+    public function update(string $identifier, array $data)
+    {
+        $list = $this->getByProject($identifier)->pluck('name')->all();
+        if (!$project = $this->projectService->one($identifier)) {
+            return;
+        }
+
+        foreach ($data as $module) {
+            if ($module['enabled'] && !\in_array($module['name'], $list, true)) {
+                EnabledModule::create(['project_id' => $project->id, 'name' => $module['name']]);
+            }
+
+            if (!$module['enabled'] && \in_array($module['name'], $list, true)) {
+                EnabledModule::query()
+                    ->where(['project_id' => $project->id, 'name' => $module['name']])
+                    ->delete();
+            }
+        }
     }
 }

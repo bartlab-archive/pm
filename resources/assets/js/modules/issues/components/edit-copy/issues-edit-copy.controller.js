@@ -13,7 +13,7 @@ import _ from "lodash";
 export default class IssuesEditCopyController extends ControllerBase {
 
     static get $inject() {
-        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService', '$rootScope'];
+        return ['issuesService', '$state', '$stateParams', '$window', 'projectsService', '$rootScope'];
     }
 
     $onInit() {
@@ -46,16 +46,16 @@ export default class IssuesEditCopyController extends ControllerBase {
         //     this.$rootScope.$emit('updateProjectInfo');
         // });
 
-        this.IssuesService.all().one(this.$stateParams.id).get()
+        this.issuesService.all().one(this.$stateParams.id).get()
             .then((response) => {
-                this.ProjectsService.setCurrentId(response.data.project.identifier);
+                this.projectsService.setCurrentId(response.data.project.identifier);
                 // this.$stateParams.project_id = response.data.project.identifier;
                 this.issue = response.data;
 
               //  this.$rootScope.$emit('updateProjectInfo');
             });
 
-        this.ProjectsService.getList().then((response) => {
+        this.projectsService.getList().then((response) => {
             this.projectsList = response.data;
         });
 

@@ -1,6 +1,6 @@
 import InjectableBase from 'base/injectable.base';
-import workflowsIndexComponent from './components/index/workflows-index.component';
-import workflowsEditComponent from './components/edit/workflows-edit.component';
+import WorkflowsIndexComponent from './components/index/workflows-index.component';
+import WorkflowsEditComponent from './components/edit/workflows-edit.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -9,11 +9,11 @@ import workflowsEditComponent from './components/edit/workflows-edit.component';
 export default class StatusesConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'MainServiceProvider']
+        return ['$stateProvider', 'mainServiceProvider']
     }
 
     $onInit() {
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerAdminMenu({
                 name: 'Workflow',
                 url: 'workflows.edit',
@@ -36,11 +36,11 @@ export default class StatusesConfig extends InjectableBase {
             })
             .state('workflows.index', {
                 url: '',
-                component: workflowsIndexComponent.name,
+                component: WorkflowsIndexComponent.getName(),
             })
             .state('workflows.edit', {
                 url: '/edit',
-                component: workflowsEditComponent.name,
+                component: WorkflowsEditComponent.getName(),
             });
     }
 

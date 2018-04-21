@@ -11,7 +11,7 @@ import moment from 'moment';
 export default class VersionsNewController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdDialog', '$mdToast', 'ProjectsService', '$rootScope', 'RolesService', 'UsersService'];
+        return ['$mdDialog', '$mdToast', 'projectsService', '$rootScope', 'rolesService', 'usersService'];
     }
 
     $onInit() {
@@ -20,8 +20,8 @@ export default class VersionsNewController extends ControllerBase {
             this.cancel();
         }
 
-        this.statuses = this.ProjectsService.getVersionStatuses();
-        this.sharings = this.ProjectsService.getVersionSharings();
+        this.statuses = this.projectsService.getVersionStatuses();
+        this.sharings = this.projectsService.getVersionSharings();
     }
 
     cancel(update) {
@@ -40,11 +40,11 @@ export default class VersionsNewController extends ControllerBase {
             this.version.effective_date = moment(this.version.effective_date).format('YYYY-MM-DD') : null;
 
         if (!this.version.id) {
-            this.ProjectsService
+            this.projectsService
                 .createVersion(this.identifier, this.version)
                 .then(() => this.cancel(true));
         } else {
-            this.ProjectsService
+            this.projectsService
                 .editVersion(this.version.id, this.version)
                 .then(() => this.cancel(true));
         }

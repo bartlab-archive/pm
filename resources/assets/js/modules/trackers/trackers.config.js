@@ -8,11 +8,11 @@ import TrackersIndexComponent from './components/index/trackers-index.component'
 export default class TrackersConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'MainServiceProvider']
+        return ['$stateProvider', 'mainServiceProvider']
     }
 
     $onInit() {
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerAdminMenu({
                 name: 'Trackers',
                 url: 'trackers.index',
@@ -35,7 +35,7 @@ export default class TrackersConfig extends InjectableBase {
             })
             .state('trackers.index', {
                 url: '',
-                component: TrackersIndexComponent.name,
+                component: TrackersIndexComponent.getName(),
             });
     }
 

@@ -5,11 +5,11 @@ import usersEditEmailsModalTemplate from './users-edit-mails-modal.html';
 export default class UsersEditController extends ControllerBase {
 
   static get $inject() {
-      return ['UsersService', '$stateParams','$state', 'ProjectsService','$mdToast', '$mdDialog'];
+      return ['usersService', '$stateParams','$state', 'projectsService','$mdToast', '$mdDialog'];
   }
 
   $onInit() {
-      this.user = this.UsersService.one(this.$stateParams.id).then((response) => {
+      this.user = this.usersService.one(this.$stateParams.id).then((response) => {
 
           if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
               this.model = response.data;
@@ -30,9 +30,9 @@ export default class UsersEditController extends ControllerBase {
           }
       });
 
-      this.languages = this.UsersService.languages;
-      this.timeZone = this.UsersService.timeZone;
-      this.emailNotifications = this.UsersService.getEmailNotifications;
+      this.languages = this.usersService.languages;
+      this.timeZone = this.usersService.timeZone;
+      this.emailNotifications = this.usersService.getEmailNotifications;
       this.apiVisibilityState = false;
   }
 
@@ -74,7 +74,7 @@ export default class UsersEditController extends ControllerBase {
   }
 
   resetApiKey() {
-      this.UsersService.resetApiAccessKey().then((response) => {
+      this.usersService.resetApiAccessKey().then((response) => {
           if (response && response.status === 200) {
               this.model.tokens.api.updated_on = response.data.updated_on;
               this.model.tokens.api.value = response.data.value;
@@ -87,7 +87,7 @@ export default class UsersEditController extends ControllerBase {
   }
 
   resetAtomKey() {
-      this.UsersService.resetAtomAccessKey().then((response) => {
+      this.usersService.resetAtomAccessKey().then((response) => {
           if (response && response.status === 200) {
               this.model.tokens.atom.updated_on = response.data.updated_on;
               this.$mdToast.show(
@@ -102,7 +102,7 @@ export default class UsersEditController extends ControllerBase {
   }
   updateUserInfo() {
 
-      this.UsersService.update(this.model).then(
+      this.usersService.update(this.model).then(
           (response) => {
               if (response && response.status === 200) {
                   this.$mdToast.show(

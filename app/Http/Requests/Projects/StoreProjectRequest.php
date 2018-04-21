@@ -7,7 +7,7 @@ use App\Models\Project;
 use App\Models\Tracker;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateProjectRequest extends FormRequest
+class StoreProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -34,11 +34,11 @@ class CreateProjectRequest extends FormRequest
             'is_public' => 'boolean',
             'parent_identifier' => 'string|exists:' . Project::getTableName() . ',identifier',
             'inherit_members' => 'boolean',
-            'custom_field_values' => 'string',
-            'enabled_module_names' => 'array',
-            'enabled_module_names.*' => 'in:' . implode(',', EnabledModule::ENABLED_MODULES_NAME),
-            'tracker_ids' => 'array',
-            'tracker_ids.*' => 'int|exists:' . Tracker::getTableName() . ',id'
+//            'custom_field_values' => 'string',
+//            'enabled_module_names' => 'array',
+//            'enabled_module_names.*' => 'in:' . implode(',', EnabledModule::ENABLED_MODULES_NAME),
+//            'tracker_ids' => 'array',
+//            'tracker_ids.*' => 'int|exists:' . Tracker::getTableName() . ',id'
         ];
     }
 }

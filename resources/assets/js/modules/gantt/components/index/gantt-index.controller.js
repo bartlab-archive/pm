@@ -4,7 +4,7 @@ import moment from 'moment';
 export default class GanttIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$state','StatusesService','IssuesService','$stateParams'];
+        return ['$state','statusesService','issuesService','$stateParams'];
     }
 
     $onInit() {
@@ -58,7 +58,7 @@ export default class GanttIndexController extends ControllerBase {
     }
 
     loadIsues(){
-        return this.IssuesService.all()
+        return this.issuesService.all()
             .getList({
                 project_identifier: this.currentProjectId()
             })

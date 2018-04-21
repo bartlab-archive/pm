@@ -4,7 +4,7 @@ import _ from 'lodash';
 export default class WikiPageController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$mdDialog', 'WikiService', '$stateParams', '$mdToast', 'ProjectsService'];
+        return ['$state', '$mdDialog', 'wikiService', '$stateParams', '$mdToast', 'projectsService'];
     }
 
     $onInit() {
@@ -12,7 +12,7 @@ export default class WikiPageController extends ControllerBase {
         this.isStart = false;
 
         if (this.$stateParams.name) {
-            this.WikiService.getPageWiki(this.ProjectsService.getCurrentId(), this.$stateParams.name).then((response) => {
+            this.wikiService.getPageWiki(this.projectsService.getCurrentId(), this.$stateParams.name).then((response) => {
                 if (!_.isEmpty(response.data)) {
                     this.data = response.data;
                 }
@@ -20,7 +20,7 @@ export default class WikiPageController extends ControllerBase {
         } else {
             this.isStart = true;
 
-            this.WikiService.getStartPageWiki(this.ProjectsService.getCurrentId()).then((response) => {
+            this.wikiService.getStartPageWiki(this.projectsService.getCurrentId()).then((response) => {
                 if (!_.isEmpty(response.data)) {
                     this.data = response.data;
                 }
@@ -44,14 +44,14 @@ export default class WikiPageController extends ControllerBase {
             .cancel('Cancel');
 
         this.$mdDialog.show(confirm).then(() => {
-            this.WikiService.deleteWikiPage(this.ProjectsService.getCurrentId(), this.$stateParams.name).then((response) => {
+            this.wikiService.deleteWikiPage(this.projectsService.getCurrentId(), this.$stateParams.name).then((response) => {
                 // console.log(response.data);
                 this.deleteResult = response.data;
                 if (this.deleteResult.success) {
                     this.$mdToast.show(
                         this.$mdToast.simple().textContent('Success deleted!')
                     );
-                    this.$state.go('wiki.index', {project_id: this.ProjectsService.getCurrentId()})
+                    this.$state.go('wiki.index', {project_id: this.projectsService.getCurrentId()})
                 }
             });
         });

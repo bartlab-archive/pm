@@ -1,7 +1,7 @@
 import InjectableBase from 'base/injectable.base';
-import usersListComponent from './components/list/users-list.component';
-import usersEditComponent from './components/edit/users-edit.component';
-import usersInfoComponent from './components/info/users-info.component';
+import UsersListComponent from './components/list/users-list.component';
+import UsersEditComponent from './components/edit/users-edit.component';
+import UsersInfoComponent from './components/info/users-info.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -10,11 +10,11 @@ import usersInfoComponent from './components/info/users-info.component';
 export default class UsersConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider','MainServiceProvider'];
+        return ['$stateProvider', 'mainServiceProvider'];
     }
 
     $onInit() {
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerAdminMenu({
                 name: 'Users',
                 url: 'users.list',
@@ -45,19 +45,19 @@ export default class UsersConfig extends InjectableBase {
             // })
             .state('users.list', {
                 url: '',
-                component: usersListComponent.name,
+                component: UsersListComponent.getName(),
             })
             .state('users.new', {
                 url: '/new',
-                component: usersEditComponent.name,
+                component: UsersEditComponent.getName(),
             })
             .state('users.info', {
                 url: '/:id',
-                component: usersInfoComponent.name,
+                component: UsersInfoComponent.getName(),
             })
             .state('users.edit', {
                 url: '/:id/edit',
-                component: usersEditComponent.name,
+                component: UsersEditComponent.getName(),
             });
     }
 

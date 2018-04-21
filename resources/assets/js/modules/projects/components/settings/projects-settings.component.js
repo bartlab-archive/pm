@@ -1,8 +1,15 @@
 import ProjectsSettingsController from './projects-settings.controller';
 import projectsSettingsTemplate from './projects-settings.html';
+import ComponentBase from "base/component.base";
 
-export default {
-    name: 'projectsSettingsComponent',
-    controller: ProjectsSettingsController,
-    template: projectsSettingsTemplate
-};
+export default class ProjectsSettingsComponent extends ComponentBase {
+
+    static get controller() {
+        return ProjectsSettingsController;
+    }
+
+    static get template() {
+        return projectsSettingsTemplate;
+    }
+
+}

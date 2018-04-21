@@ -1,33 +1,65 @@
-<!--<md-content class="md-padding">-->
-<div ng-if="$ctrl.members.length === 0" layout-align="center center" layout="row" class="md-padding">
-    No data to display
-</div>
-<md-list ng-if="$ctrl.members.length !== 0">
-    <md-list-item class="md-2-line" ng-repeat="item in $ctrl.members"
-                  ng-click="$ctrl.editMember($event, item.member_id, item.role_id, item.name)">
-        <div class="md-list-item-text">
-            <h3>{{ item.name }}</h3>
-            <p>{{ item.role }}</p>
-        </div>
-        <md-button class="md-secondary md-icon-button"
-                   ng-click="$ctrl.openMember(item.user_id)">
-            <md-tooltip md-direction="bottom">Open user page</md-tooltip>
-            <md-icon>person</md-icon>
-        </md-button>
-        <md-button class="md-secondary md-icon-button"
-                   ng-if="!item.inherited_member"
-                   ng-click="$ctrl.deleteMember(item.member_id, item.name)">
-            <md-tooltip md-direction="bottom">Delete</md-tooltip>
-            <md-icon>delete</md-icon>
-        </md-button>
-        <!--<md-button class="md-secondary md-icon-button"-->
-        <!--ng-click="$ctrl.editMember($event, item.member_id, item.role_id, item.name)">-->
-        <!--<md-tooltip md-direction="bottom">Edit</md-tooltip>-->
-        <!--<md-icon>edit</md-icon>-->
-        <!--</md-button>-->
-        <md-divider ng-if="!$last"></md-divider>
-    </md-list-item>
-</md-list>
+<!--<div class="md-padding">-->
+    <div ng-if="$ctrl.params.members.length === 0" layout-align="center center" layout="row" class="md-padding">
+        No data to display
+    </div>
+
+    <md-list ng-if="$ctrl.params.members.length !== 0">
+        <md-list-item class="md-2-line" ng-repeat="item in $ctrl.params.members"
+                      ng-click="$ctrl.editMember($event, item.member_id, item.role_id, item.name)">
+            <div class="md-list-item-text">
+                <h3>{{ item.user.full_name }}</h3>
+                <p>{{ item.roles | join:', ' }}</p>
+            </div>
+
+            <md-menu>
+                <md-button class="md-icon-button" aria-label="User menu" ng-click="$mdMenu.open()">
+                    <md-icon>more_vert</md-icon>
+                </md-button>
+
+                <md-menu-content width="3">
+                    <md-menu-item ng-click="null">
+                        <md-button>
+                            <md-icon>person</md-icon>
+                            Profile
+                        </md-button>
+                    </md-menu-item>
+
+                    <md-menu-item ng-click="null">
+                        <md-button>
+                            <md-icon>delete</md-icon>
+                            Delete
+                        </md-button>
+                    </md-menu-item>
+
+                    <!--<md-menu-item ng-click="null">-->
+                        <!--<md-button>-->
+                            <!--<md-icon>file_download</md-icon>-->
+                            <!--PDF-->
+                        <!--</md-button>-->
+                    <!--</md-menu-item>-->
+                </md-menu-content>
+            </md-menu>
+
+            <!--<md-button class="md-secondary md-icon-button"-->
+                       <!--ng-click="$ctrl.openMember(item.user_id)">-->
+                <!--<md-tooltip md-direction="bottom">Open user page</md-tooltip>-->
+                <!--<md-icon>person</md-icon>-->
+            <!--</md-button>-->
+            <!--<md-button class="md-secondary md-icon-button"-->
+                       <!--ng-if="!item.inherited_member"-->
+                       <!--ng-click="$ctrl.deleteMember(item.member_id, item.name)">-->
+                <!--<md-tooltip md-direction="bottom">Delete</md-tooltip>-->
+                <!--<md-icon>delete</md-icon>-->
+            <!--</md-button>-->
+            <!--<md-button class="md-secondary md-icon-button"-->
+            <!--ng-click="$ctrl.editMember($event, item.member_id, item.role_id, item.name)">-->
+            <!--<md-tooltip md-direction="bottom">Edit</md-tooltip>-->
+            <!--<md-icon>edit</md-icon>-->
+            <!--</md-button>-->
+            <md-divider ng-if="!$last"></md-divider>
+        </md-list-item>
+    </md-list>
+<!--</div>-->
 
 <div layout-align="center center" layout="row" class="md-padding">
     <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.addMember($event)">

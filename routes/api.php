@@ -48,14 +48,28 @@ Route::group(
             function () {
                 Route::get('/', 'ProjectsController@index');
                 Route::get('/{identifier}', 'ProjectsController@show');
+                Route::post('/', 'ProjectsController@store');
+                Route::put('/{identifier}', 'ProjectsController@update');
 
-//                Route::post('/', 'ProjectsController@create');
-//                Route::put('/{identifier}', 'ProjectsController@update');
 //                Route::delete('/{identifier}', 'ProjectsController@destroy');
 
-//                Route::put('/{identifier}/modules', 'ProjectsController@updateProjectModules');
+//                Route::get('/{identifier}/modules', 'EnabledModulesController@index');
 //                Route::put('/{identifier}/information', 'ProjectsController@updateProjectInformation');
 //                Route::put('/{identifier}/updatestatus', 'ProjectsController@updateProjectStatus');
+            }
+        );
+
+        Route::group(
+            [
+                'middleware' => 'auth',
+                'prefix' => 'modules'
+            ],
+            function () {
+                Route::get('/', 'EnabledModulesController@index');
+                Route::put('/{identifier}', 'EnabledModulesController@update');
+//                Route::get('/{identifier}', 'EnabledModulesController@show');
+//                Route::post('/', 'ProjectsController@store');
+//                Route::get('/{identifier}', 'EnabledModulesController@show');
             }
         );
 

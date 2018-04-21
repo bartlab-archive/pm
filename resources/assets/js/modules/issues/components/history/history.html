@@ -6,7 +6,7 @@
             Updated by
             <a ui-sref="users.info({id: item.user.id})">{{ item.user.firstname }} {{ item.user.lastname }}</a>
             <a ui-sref="projects.inner.activity.date({project_id: $ctrl.$state.data.layoutDefault.projectId, end_date: item.created_on.split(' ')[0]})">
-                {{ $ctrl.IssuesService.timeAgo(item.created_on) }}
+                {{ $ctrl.issuesService.timeAgo(item.created_on) }}
             </a>
             ago
 

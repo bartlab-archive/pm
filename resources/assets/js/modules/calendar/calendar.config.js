@@ -1,5 +1,5 @@
 import InjectableBase from 'base/injectable.base';
-import calendarIndexComponent from './components/index/calendar-index.component';
+import CalendarIndexComponent from './components/index/calendar-index.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -7,11 +7,11 @@ import calendarIndexComponent from './components/index/calendar-index.component'
 export default class CalendarConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'ProjectsServiceProvider']
+        return ['$stateProvider', 'projectsServiceProvider']
     }
 
     $onInit() {
-        this.ProjectsServiceProvider.registerModule({
+        this.projectsServiceProvider.registerModule({
             url: 'calendar.index',
             title: 'Calendar',
             name: 'calendar',
@@ -27,11 +27,11 @@ export default class CalendarConfig extends InjectableBase {
                 // todo: set parent issue-inner and renname this state (calendar-inner)
                 url: '/issues/calendar',
                 parent: 'projects.inner',
-                component: calendarIndexComponent.name,
+                component: CalendarIndexComponent.getName(),
             })
             .state('calendar.index', {
                 url: '',
-                component: calendarIndexComponent.name,
+                component: CalendarIndexComponent.getName(),
             });
     }
 

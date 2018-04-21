@@ -1,8 +1,14 @@
 import MyPageController from './my-page.controller';
 import myPageTemplate from './my-page.html';
+import ComponentBase from "base/component.base";
 
-export default {
-    name: 'myPageComponent',
-    controller: MyPageController,
-    template: myPageTemplate
-};
+export default class MyPageComponent extends ComponentBase {
+
+    static get controller() {
+        return MyPageController;
+    }
+
+    static get template() {
+        return myPageTemplate;
+    }
+}

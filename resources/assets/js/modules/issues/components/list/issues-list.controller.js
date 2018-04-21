@@ -1,6 +1,6 @@
 import ControllerBase from 'base/controller.base';
 import issuesViewModalTemplate from '../view-modal/issues-view-modal.html';
-import issuesViewModalController from '../view-modal/issues-view-modal.controller';
+import IssuesViewModalController from '../view-modal/issues-view-modal.controller';
 
 /**
  * @property {$state} $state
@@ -14,11 +14,24 @@ import issuesViewModalController from '../view-modal/issues-view-modal.controlle
 export default class IssuesListController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$showdown', 'IssuesService', 'ProjectsService', '$stateParams', '$rootScope', '$mdDialog'];
+        return ['$state', '$showdown', 'issuesService', 'projectsService', '$stateParams', '$rootScope', '$mdDialog'];
+    }
+
+    static setMdDialogConfig(target, data = {}) {
+        return {
+            controller: IssuesViewModalController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: data,
+            template: issuesViewModalTemplate,
+            clickOutsideToClose: true,
+            openFrom: target,
+            closeTo: target,
+        };
     }
 
     $onInit() {
-        this.currentProjectId = this.ProjectsService.getCurrentId();
+        this.currentProjectId = this.projectsService.getCurrentId();
 
         // selected tags for filter
         this.tags = [];
@@ -109,9 +122,9 @@ export default class IssuesListController extends ControllerBase {
         this.loadProccess = true;
         this.list = [];
 
-        return this.IssuesService.all()
+        return this.issuesService.all()
             .getList({
-                project_identifier: this.ProjectsService.getCurrentId(),
+                project_identifier: this.projectsService.getCurrentId(),
                 limit: this.limitPerPage,
                 offset: this.offset,
                 order: this.sort.param,
@@ -143,9 +156,9 @@ export default class IssuesListController extends ControllerBase {
     }
 
     loadFiltersValues() {
-        return this.IssuesService.filters()
+        return this.issuesService.filters()
             .get({
-                project_identifier: this.ProjectsService.getCurrentId()
+                project_identifier: this.projectsService.getCurrentId()
             })
             .then((response) => {
                 this.statusList = response.data.statuses.map((e) => {
@@ -291,19 +304,6 @@ export default class IssuesListController extends ControllerBase {
         const all = (this.count > this.limitPerPage ? ' /' + this.count : '');
 
         return currentPage + '-' + fromPage + all;
-    }
-
-    static setMdDialogConfig(target, data = {}) {
-        return {
-            controller: issuesViewModalController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-            locals: data,
-            template: issuesViewModalTemplate,
-            clickOutsideToClose: true,
-            openFrom: target,
-            closeTo: target,
-        };
     }
 
     openIssue(id) {

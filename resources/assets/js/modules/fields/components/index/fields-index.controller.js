@@ -6,11 +6,11 @@ import ControllerBase from 'base/controller.base';
 export default class FieldsIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', 'FieldsService'];
+        return ['$state', 'fieldsService'];
     }
 
     $onInit() {
-        return  this.FieldsService.all()
+        return  this.fieldsService.all()
             .getList()
             .then((response) => {
                 this.custom_fields = response.data;

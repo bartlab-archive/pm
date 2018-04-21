@@ -1,5 +1,5 @@
 import InjectableBase from 'base/injectable.base';
-import settingsIndexComponent from './components/index/settings-index.component';
+import SettingsIndexComponent from './components/index/settings-index.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -8,11 +8,11 @@ import settingsIndexComponent from './components/index/settings-index.component'
 export default class FieldsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'MainServiceProvider']
+        return ['$stateProvider', 'mainServiceProvider']
     }
 
     $onInit() {
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerAdminMenu({
                 name: 'Settings',
                 url: 'settings.index',
@@ -42,7 +42,7 @@ export default class FieldsConfig extends InjectableBase {
                         dynamic: true
                     }
                 },
-                component: settingsIndexComponent.name,
+                component: SettingsIndexComponent.getName(),
             });
     }
 

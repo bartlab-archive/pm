@@ -1,5 +1,5 @@
 import InjectableBase from 'base/injectable.base';
-import statusesIndexComponent from './components/index/statuses-index.component';
+import StatusesIndexComponent from './components/index/statuses-index.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -27,7 +27,7 @@ export default class StatusesConfig extends InjectableBase {
             })
             .state('statuses.index', {
                 url: '',
-                component: statusesIndexComponent.name,
+                component: StatusesIndexComponent.getName(),
             });
     }
 

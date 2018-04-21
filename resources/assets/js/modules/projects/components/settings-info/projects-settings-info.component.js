@@ -1,11 +1,21 @@
 import ProjectsSettingsInfoController from './projects-settings-info.controller';
 import projectsSettingsInfoTemplate from './projects-settings-info.html';
+import ComponentBase from "base/component.base";
 
-export default {
-    name: 'projectsSettingsInfoComponent',
-    controller: ProjectsSettingsInfoController,
-    template: projectsSettingsInfoTemplate,
-    bindings:{
-        project: '='
+export default class ProjectsSettingsInfoComponent extends ComponentBase {
+
+    static get controller() {
+        return ProjectsSettingsInfoController;
     }
-};
+
+    static get template() {
+        return projectsSettingsInfoTemplate;
+    }
+
+    static get bindings() {
+        return {
+            params: '='
+        };
+    }
+
+}

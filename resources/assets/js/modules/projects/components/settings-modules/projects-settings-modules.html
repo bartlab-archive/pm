@@ -1,13 +1,15 @@
 <!--<md-content class="md-padding">-->
-<md-list>
-    <md-list-item ng-repeat="item in ::$ctrl.allModules">
-        <p> {{ ::item.name }} </p>
-        <md-switch class="md-secondary" ng-model="$ctrl.model.modules[item.id]"></md-switch>
-    </md-list-item>
-</md-list>
+<div class="md-padding">
+    <md-list>
+        <md-list-item ng-repeat="item in ::$ctrl.params.modules">
+            <p> {{ ::item.title }} </p>
+            <md-switch class="md-secondary" ng-model="$ctrl.params.modules[$index].enabled"></md-switch>
+        </md-list-item>
+    </md-list>
+</div>
 
 <div layout-align="center center" layout="row" class="md-padding">
-    <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.updateModules()">
+    <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.submit()">
         Save
     </md-button>
 </div>

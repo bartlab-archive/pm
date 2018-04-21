@@ -8,7 +8,7 @@ import ControllerBase from 'base/controller.base';
 export default class IssuesCategoryController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdDialog', '$mdToast', 'ProjectsService', '$rootScope'];
+        return ['$mdDialog', '$mdToast', 'projectsService', '$rootScope'];
     }
 
     $onInit() {
@@ -31,10 +31,10 @@ export default class IssuesCategoryController extends ControllerBase {
 
     submit() {
         if (!this.issueCategory.id) {
-            this.ProjectsService.createIssueCategory(this.identifier, this.issueCategory)
+            this.projectsService.createIssueCategory(this.identifier, this.issueCategory)
                 .then(() => this.cancel(true));
         } else {
-            this.ProjectsService.editIssueCategory(this.issueCategory.id, this.issueCategory)
+            this.projectsService.editIssueCategory(this.issueCategory.id, this.issueCategory)
                 .then(() => this.cancel(true));
         }
     }

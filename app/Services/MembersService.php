@@ -3,70 +3,38 @@
 namespace App\Services;
 
 use App\Models\Member;
+use Illuminate\Database\Eloquent\Builder;
 
 
 /**
  * Class MembersService
  *
- * @property ProjectsService $projectsService
- *
  * @package App\Services
  */
 class MembersService
 {
-    /**
-     * @var ProjectsService $projectsService
-     */
-    protected $projectsService;
 
-    public function __construct(ProjectsService $projectsService)
+    public function getByProject($identifier, $with = [])
     {
-        $this->projectsService = $projectsService;
+//        $list =  Member::with(['user','roles'])
+        return  Member::with($with)
+            ->whereHas('project', function ($query) use ($identifier) {
+                /** @var $query Builder */
+                $query->where('identifier', $identifier);
+            })
+            ->get();
+//            ->each(function($model){
+//
+//            })
+//            ->toArray();
+
+//        if ($fields){
+//            $list->each(function ($member){
+//
+//            });
+//        }
+//
+//        return $list->toArray();
     }
 
-    /**
-     * Delete members by id
-     *
-     * @param int $memberId
-     * @return bool
-     */
-    public function deleteById($memberId)
-    {
-        return Member::find($memberId)->delete();
-    }
-
-    /**
-     * Edit member
-     *
-     * @param $memberId
-     * @param $data
-     * @return mixed
-     */
-    public function editMember($memberId, $data)
-    {
-        $member = Member::where(['id' => $memberId])->firstOrFail();
-        $member->fill($data);
-        return $member->save();
-    }
-
-    /**
-     * Create member
-     *
-     * @param $identifier
-     * @param $data
-     * @return bool|mixed
-     */
-    public function create($identifier, $data)
-    {
-        $project = $this->projectsService->one($identifier);
-
-        $member = new Member($data);
-        $member->project_id = $project->id;
-
-        if ($member->save()) {
-            return $member->id;
-        }
-
-        return false;
-    }
 }

@@ -7,7 +7,7 @@ export default class CalendarIndexController extends ControllerBase {
 
     static get $inject() {
 
-        return ['$stateParams', '$rootScope', '$state', 'IssuesService', '$mdDialog'];
+        return ['$stateParams', '$rootScope', '$state', 'issuesService', '$mdDialog'];
     }
 
     $onInit() {
@@ -118,7 +118,7 @@ export default class CalendarIndexController extends ControllerBase {
     }
 
     loadIsues(){
-        return this.IssuesService.all()
+        return this.issuesService.all()
             .getList({
                 project_identifier: this.currentProjectId()
             })

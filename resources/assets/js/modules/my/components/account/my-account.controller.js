@@ -14,11 +14,11 @@ import myPasswordModalTemplate from './my-password-modal.html';
 export default class MyAccountController extends ControllerBase {
 
     static get $inject() {
-        return ['$auth', '$state', '$mdToast', '$mdDialog', 'UsersService'];
+        return ['$auth', '$state', '$mdToast', '$mdDialog', 'usersService'];
     }
 
     $onInit() {
-        this.user = this.UsersService.getUserInfo().then((response) => {
+        this.user = this.usersService.getUserInfo().then((response) => {
             if (_.get(response, 'status') === 200 && !_.isEmpty(response.data)) {
                 this.model = response.data;
                 this.model.tokens = this.getTokens(this.model.tokens);
@@ -36,9 +36,9 @@ export default class MyAccountController extends ControllerBase {
             }
         });
 
-        this.languages = this.UsersService.languages;
-        this.timeZone = this.UsersService.timeZone;
-        this.emailNotifications = this.UsersService.getEmailNotifications;
+        this.languages = this.usersService.languages;
+        this.timeZone = this.usersService.timeZone;
+        this.emailNotifications = this.usersService.getEmailNotifications;
         this.apiVisibilityState = false;
     }
 
@@ -95,7 +95,7 @@ export default class MyAccountController extends ControllerBase {
     }
 
     resetApiKey() {
-        this.UsersService.resetApiAccessKey().then((response) => {
+        this.usersService.resetApiAccessKey().then((response) => {
             if (response && response.status === 200) {
                 this.model.tokens.api.updated_on = response.data.updated_on;
                 this.model.tokens.api.value = response.data.value;
@@ -108,7 +108,7 @@ export default class MyAccountController extends ControllerBase {
     }
 
     resetAtomKey() {
-        this.UsersService.resetAtomAccessKey().then((response) => {
+        this.usersService.resetAtomAccessKey().then((response) => {
             if (response && response.status === 200) {
                 this.model.tokens.atom.updated_on = response.data.updated_on;
                 this.$mdToast.show(

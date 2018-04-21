@@ -1,6 +1,6 @@
 import InjectableBase from 'base/injectable.base';
-import boardsListComponent from './components/list/boards-list.component';
-import boardsProjectSettingsComponent from './components/project-settings/boards-project-settings.component';
+import BoardsListComponent from './components/list/boards-list.component';
+import BoardsProjectSettingsComponent from './components/project-settings/boards-project-settings.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -8,11 +8,11 @@ import boardsProjectSettingsComponent from './components/project-settings/boards
 export default class BoardsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'ProjectsServiceProvider'];
+        return ['$stateProvider', 'projectsServiceProvider'];
     }
 
     $onInit() {
-        this.ProjectsServiceProvider
+        this.projectsServiceProvider
             .registerModule({
                 url: 'boards-inner.list',
                 title: 'Forums',
@@ -22,7 +22,7 @@ export default class BoardsConfig extends InjectableBase {
             .registerSettings({
                 url: 'boards',
                 name: 'Forums',
-                component: boardsProjectSettingsComponent.name,
+                component: BoardsProjectSettingsComponent.getName(),
                 module: 'boards'
             });
 
@@ -34,7 +34,7 @@ export default class BoardsConfig extends InjectableBase {
             })
             .state('boards-inner.list', {
                 url: '',
-                component: boardsListComponent.name,
+                component: BoardsListComponent.getName(),
             });
     }
 

@@ -41,15 +41,24 @@ class User extends Authenticatable
 
     protected $guarded = ['id'];
 
-    protected $hidden = [
+//    protected $hidden = [
+//        '*'
+////        'id',
+//        'hashed_password',
+//        'auth_source_id',
+//        'type',
+//        'identity_url',
+//        'salt',
+//        'admin'
+//    ];
+
+//    protected $visible = [
 //        'id',
-        'hashed_password',
-        'auth_source_id',
-        'type',
-        'identity_url',
-        'salt',
-        'admin'
-    ];
+//        'firstname',
+//        'lastname',
+//        'full_name',
+//        'avatar'
+//    ];
 
     protected $appends = [
         'avatar',

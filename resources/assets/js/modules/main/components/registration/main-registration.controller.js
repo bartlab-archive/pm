@@ -10,11 +10,11 @@ import _ from 'lodash';
 export default class MainRegistrationController extends ControllerBase {
 
     static get $inject() {
-        return ['$auth', '$state', '$mdToast', 'UsersService'];
+        return ['$auth', '$state', '$mdToast', 'usersService'];
     }
 
     $onInit() {
-        this.languages = this.UsersService.getLanguage();
+        this.languages = this.usersService.getLanguage();
 
         this.signup = {
             login: '',

@@ -1,6 +1,6 @@
 import InjectableBase from 'base/injectable.base';
-import repositoryListComponent from './components/list/repository-list.component';
-import repositoryProjectSettingsComponent from './components/project-settings/repository-project-settings.component';
+import RepositoryListComponent from './components/list/repository-list.component';
+import RepositoryProjectSettingsComponent from './components/project-settings/repository-project-settings.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -8,11 +8,11 @@ import repositoryProjectSettingsComponent from './components/project-settings/re
 export default class RepositoryConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'ProjectsServiceProvider'];
+        return ['$stateProvider', 'projectsServiceProvider'];
     }
 
     $onInit() {
-        this.ProjectsServiceProvider
+        this.projectsServiceProvider
             .registerModule({
                 url: 'repository-inner.list',
                 title: 'Repository',
@@ -22,7 +22,7 @@ export default class RepositoryConfig extends InjectableBase {
             .registerSettings({
                 url: 'repositories',
                 name: 'Repositories',
-                component: repositoryProjectSettingsComponent.name,
+                component: RepositoryProjectSettingsComponent.getName(),
                 module: 'repository'
             });
 
@@ -34,7 +34,7 @@ export default class RepositoryConfig extends InjectableBase {
             })
             .state('repository-inner.list', {
                 url: '',
-                component: repositoryListComponent.name,
+                component: RepositoryListComponent.getName(),
             });
     }
 

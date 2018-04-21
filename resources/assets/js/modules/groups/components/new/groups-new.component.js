@@ -1,8 +1,14 @@
 import GroupsNewController from './groups-new.controller';
-import GroupsNewTemplate from './groups-new.html';
+import groupsNewTemplate from './groups-new.html';
+import ComponentBase from "base/component.base";
 
-export default {
-    name: 'groupsNewComponent',
-    controller: GroupsNewController,
-    template: GroupsNewTemplate
-};
+export default class groupsNewComponent extends ComponentBase {
+
+    static get controller() {
+        return GroupsNewController;
+    }
+
+    static get template() {
+        return groupsNewTemplate;
+    }
+}

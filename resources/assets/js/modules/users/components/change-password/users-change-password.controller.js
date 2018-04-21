@@ -9,7 +9,7 @@ import _ from 'lodash';
 export default class UsersChangePasswordController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdDialog', '$mdToast', 'UsersService'];
+        return ['$mdDialog', '$mdToast', 'usersService'];
     }
 
     $onInit() {
@@ -41,7 +41,7 @@ export default class UsersChangePasswordController extends ControllerBase {
     }
 
     changePassword() {
-        this.UsersService.changePassword(this.model)
+        this.usersService.changePassword(this.model)
             .then((response) => {
                 if (response && response.status === 200) {
                     this.$mdDialog.cancel();

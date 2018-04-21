@@ -4,6 +4,15 @@ export default class ObjectBase {
         return [];
     }
 
+    // static getName(){
+    //     const self = this;
+    //     return self.name;
+    // }
+
+    static getName() {
+        return this.name[0].toLowerCase() + this.name.slice(1);
+    }
+
     constructor(...args) {
         const self = this.constructor;
 

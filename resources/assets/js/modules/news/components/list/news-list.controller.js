@@ -10,7 +10,7 @@ import _ from 'lodash';
 export default class NewsListController extends ControllerBase {
 
     static get $inject() {
-        return ['NewsService', '$state', '$stateParams', 'ProjectsService'];
+        return ['newsService', '$state', '$stateParams', 'projectsService'];
     }
 
     $onInit() {

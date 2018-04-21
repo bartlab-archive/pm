@@ -229,7 +229,7 @@ export default class UsersService extends ServiceBase {
     }
 
     $onInit($injector) {
-        this.cache = this.$cacheFactory('UsersService');
+        this.cache = this.$cacheFactory('usersService');
     }
 
     one(identifier) {

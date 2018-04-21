@@ -10,6 +10,7 @@
         <md-tabs md-dynamic-height md-border-bottom>
             <md-tab ng-repeat="tab in $ctrl.settingsTabs"
                     label="{{ tab.name }}"
+                    ng-if="tab.enable"
                     md-active="$ctrl.page === tab.url"
                     md-on-select="$ctrl.selectTab(tab.url)">
                 <div compile="tab.componentTag"></div>

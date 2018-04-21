@@ -6,11 +6,11 @@ import ControllerBase from 'base/controller.base';
 export default class StatusesIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', 'StatusesService'];
+        return ['$state', 'statusesService'];
     }
 
     $onInit() {
-        return  this.StatusesService.all()
+        return  this.statusesService.all()
             .getList()
             .then((response) => {
                 this.statuses = response.data;

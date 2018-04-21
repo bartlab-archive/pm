@@ -11,7 +11,7 @@ import InjectableBase from 'base/injectable.base';
 export default class AppRun extends InjectableBase {
 
     static get $inject() {
-        return ['$rootScope', '$auth', '$transitions', 'Restangular', '$mdToast', '$state'];
+        return ['$rootScope', '$auth', '$transitions', 'Restangular', '$mdToast', '$state', '$http'];
     }
 
     $onInit() {
@@ -21,6 +21,8 @@ export default class AppRun extends InjectableBase {
         this.$rootScope.$on('authUnauthorized', (...args) => this.authUnauthorized(...args));
         this.$rootScope.$on('authForbidden', (...args) => this.authForbidden(...args));
         this.$rootScope.$on('notFound', (...args) => this.notFound(...args));
+        this.$rootScope.$on('notAllowed', (...args) => this.notAllowed(...args));
+        this.$rootScope.$on('serverError', (...args) => this.serverError(...args));
         this.Restangular.setErrorInterceptor((...args) => this.errorInterceptor(...args));
     }
 
@@ -62,6 +64,18 @@ export default class AppRun extends InjectableBase {
         );
 
         this.$state.go('404');
+    }
+
+    notAllowed(){
+        this.$mdToast.show(
+            this.$mdToast.simple().textContent('Method Not Allowed')
+        );
+    }
+
+    serverError(){
+        this.$mdToast.show(
+            this.$mdToast.simple().textContent('Server error!')
+        );
     }
 
     errorInterceptor(response, deferred, responseHandler) {

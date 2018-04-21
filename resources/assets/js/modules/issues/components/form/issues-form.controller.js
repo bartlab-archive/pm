@@ -12,7 +12,7 @@ import ControllerBase from 'base/controller.base';
 export default class IssuesFormController extends ControllerBase {
 
     static get $inject() {
-        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService'];
+        return ['issuesService', '$state', '$stateParams', '$window', 'projectsService'];
     }
 
     $onInit() {
@@ -99,7 +99,7 @@ export default class IssuesFormController extends ControllerBase {
     // }
 
     cancel() {
-        const id = this.ProjectsService.getCurrentId();
+        const id = this.projectsService.getCurrentId();
 
         this.$state.go(
             'issues' + (id ? '-inner' : '') + '.list',

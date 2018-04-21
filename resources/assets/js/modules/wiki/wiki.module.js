@@ -1,17 +1,17 @@
 import 'angular';
 import WikiConfig from './wiki.config';
 import WikiService from './services/wiki.service';
-import wikiProjectSettingsComponent from './components/project-settings/wiki-project-settings.component';
-import wikiPageComponent from './components/page/wiki-page.component';
-import wikiEditComponent from './components/edit/wiki-edit.component';
-import wikiIndexByComponent from './components/index-by/wiki-index-by.component';
-import wikiPreviewComponent from './components/preview/wiki-preview.component';
+import WikiProjectSettingsComponent from './components/project-settings/wiki-project-settings.component';
+import WikiPageComponent from './components/page/wiki-page.component';
+import WikiEditComponent from './components/edit/wiki-edit.component';
+import WikiIndexByComponent from './components/index-by/wiki-index-by.component';
+import WikiPreviewComponent from './components/preview/wiki-preview.component';
 
 angular.module('app.modules.wiki', [])
     .config(WikiConfig.inst())
-    .service('WikiService', WikiService)
-    .component(wikiProjectSettingsComponent.name, wikiProjectSettingsComponent)
-    .component(wikiPageComponent.name, wikiPageComponent)
-    .component(wikiEditComponent.name, wikiEditComponent)
-    .component(wikiIndexByComponent.name, wikiIndexByComponent)
-    .component(wikiPreviewComponent.name, wikiPreviewComponent);
+    .service(WikiService.getName(), WikiService)
+    .component(WikiProjectSettingsComponent.getName(), WikiProjectSettingsComponent)
+    .component(WikiPageComponent.getName(), WikiPageComponent)
+    .component(WikiEditComponent.getName(), WikiEditComponent)
+    .component(WikiIndexByComponent.getName(), WikiIndexByComponent)
+    .component(WikiPreviewComponent.getName(), WikiPreviewComponent);

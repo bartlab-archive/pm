@@ -6,11 +6,11 @@ import ControllerBase from 'base/controller.base';
 export default class TrackersIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', 'TrackersService'];
+        return ['$state', 'trackersService'];
     }
 
     $onInit() {
-        return  this.TrackersService.all()
+        return  this.trackersService.all()
             .getList()
             .then((response) => {
                 this.trackers = response.data;

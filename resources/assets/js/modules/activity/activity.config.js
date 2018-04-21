@@ -1,5 +1,5 @@
 import InjectableBase from 'base/injectable.base';
-import activityListComponent from './components/list/activity-list.component';
+import ActivityListComponent from './components/list/activity-list.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -7,11 +7,11 @@ import activityListComponent from './components/list/activity-list.component';
 export default class ActivityConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'ProjectsServiceProvider', 'MainServiceProvider'];
+        return ['$stateProvider', 'projectsServiceProvider', 'mainServiceProvider'];
     }
 
     $onInit() {
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerAppMenu({
                 url: 'activity.list',
                 name: 'Overall activity',
@@ -19,7 +19,7 @@ export default class ActivityConfig extends InjectableBase {
             });
 
 
-        this.ProjectsServiceProvider
+        this.projectsServiceProvider
             .registerModule({
                 url: 'activity-inner.list',
                 title: 'Activity',
@@ -44,11 +44,11 @@ export default class ActivityConfig extends InjectableBase {
             })
             .state('activity.list', {
                 url: '',
-                component: activityListComponent.name,
+                component: ActivityListComponent.getName(),
             })
             .state('activity-inner.list', {
                 url: '',
-                component: activityListComponent.name,
+                component: ActivityListComponent.getName(),
             });
     }
 

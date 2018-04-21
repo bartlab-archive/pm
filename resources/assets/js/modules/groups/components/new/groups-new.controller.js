@@ -3,7 +3,7 @@ import ControllerBase from 'base/controller.base';
 export default class GroupsNewController extends ControllerBase {
 
     static get $inject() {
-      return ['UsersService', '$stateParams','$state', 'GroupsService','$mdToast', '$mdDialog', '$rootScope'];
+      return ['usersService', '$stateParams','$state', 'groupsService','$mdToast', '$mdDialog', '$rootScope'];
     }
 
     $onInit() {
@@ -18,7 +18,7 @@ export default class GroupsNewController extends ControllerBase {
     saveGroup() {
         let data = _.cloneDeep(this.model);
 
-        this.GroupsService.create(data)
+        this.groupsService.create(data)
             .then((response) => {
                  if (response && response.status === 200) {
                      this.$mdToast.show(

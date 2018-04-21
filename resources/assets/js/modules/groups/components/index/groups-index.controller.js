@@ -6,7 +6,7 @@ import ControllerBase from 'base/controller.base';
 export default class GroupsIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', 'GroupsService','$mdDialog','$rootScope'];
+        return ['$state', 'groupsService','$mdDialog','$rootScope'];
     }
 
     $onInit() {
@@ -15,7 +15,7 @@ export default class GroupsIndexController extends ControllerBase {
     }
 
     load() {
-        return  this.GroupsService.all()
+        return  this.groupsService.all()
             .getList()
             .then((response) => {
                 this.groups = response.data;
@@ -37,7 +37,7 @@ export default class GroupsIndexController extends ControllerBase {
             .cancel('Cancel');
 
         this.$mdDialog.show(confirm).then(() => {
-            this.GroupsService.deleteGroup(groupId).then(() => {
+            this.groupsService.deleteGroup(groupId).then(() => {
                  this.$rootScope.$emit('updateGroups');
             });
         });

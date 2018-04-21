@@ -9,7 +9,7 @@ import ControllerBase from 'base/controller.base';
 export default class FilesListController extends ControllerBase {
 
     static get $inject() {
-        return ['FilesService', '$state', '$stateParams', 'FileSaver'];
+        return ['filesService', '$state', '$stateParams', 'FileSaver'];
     }
 
     $onInit() {
@@ -17,7 +17,7 @@ export default class FilesListController extends ControllerBase {
     }
 
     download(id, name) {
-        this.FilesService.getProjectAttachment(id)
+        this.filesService.getProjectAttachment(id)
             .then((response) => {
                 let data = new Blob([response.data], {type: 'application/octet-stream'});
                 this.FileSaver.saveAs(data, name);
@@ -25,14 +25,14 @@ export default class FilesListController extends ControllerBase {
     }
 
     delete(id) {
-        this.FilesService.delete(id)
+        this.filesService.delete(id)
             .then(() => {
                 this.load();
             });
     }
 
     load() {
-        this.FilesService.getProjectAttachments(this.$stateParams.id)
+        this.filesService.getProjectAttachments(this.$stateParams.id)
             .then((response) => {
                 this.files = response.data;
             });

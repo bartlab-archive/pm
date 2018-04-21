@@ -12,15 +12,15 @@ import moment from 'moment';
 export default class HistoryController extends ControllerBase {
 
     static get $inject() {
-        return ['IssuesService', '$state', '$stateParams', '$window', 'ProjectsService', '$rootScope'];
+        return ['issuesService', '$state', '$stateParams', '$window', 'projectsService', '$rootScope'];
     }
 
     $onInit() {
-        this.IssuesService.getHistory(this.issueId).then((response) => {
+        this.issuesService.getHistory(this.issueId).then((response) => {
             this.history = _.keyBy(response.data, 'id');
         });
 
-        this.IssuesService.one(this.issueId).then((response) => {
+        this.issuesService.one(this.issueId).then((response) => {
             _.set(
                 this.$stateParams,
                 'project_id',

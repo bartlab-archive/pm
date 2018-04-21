@@ -1,114 +1,119 @@
-<md-card>
-    <md-toolbar>
-        <div layout="column" layout-padding layout-align="center center">
-            <div class="md-headline md-padding">Sign up</div>
-        </div>
-    </md-toolbar>
+<div layout="row" layout-align="center start">
+    <md-card flex-xs="100" flex-sm="50" flex-md="40" flex-gt-md="25">
+        <md-toolbar>
+            <div layout="column" layout-padding layout-align="center center">
+                <div class="md-headline md-padding">Sign up</div>
+            </div>
+        </md-toolbar>
 
-    <md-card-content>
-        <form name="$ctrl.registrationForm" ng-submit="$ctrl.submit()">
-            <md-input-container class="md-icon-float md-block">
-                <label>Login</label>
-                <input ng-model="$ctrl.signup.login" name="login" type="text" required
-                       ng-change="$ctrl.change('login')">
+        <md-card-content>
+            <form name="$ctrl.registrationForm" ng-submit="$ctrl.submit()">
+                <md-input-container class="md-icon-float md-block">
+                    <label>Login</label>
+                    <input ng-model="$ctrl.signup.login" name="login" type="text" required
+                           ng-change="$ctrl.change('login')">
 
-                <div ng-messages="$ctrl.registrationForm.login.$error">
-                    <div ng-message="required">Login can't be blank</div>
-                    <div ng-message="server" ng-bind-html="$ctrl.errors.login | join"></div>
-                </div>
-            </md-input-container>
+                    <div ng-messages="$ctrl.registrationForm.login.$error">
+                        <div ng-message="required">Login can't be blank</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.errors.login | join"></div>
+                    </div>
+                </md-input-container>
 
-            <md-input-container class="md-icon-float md-block">
-                <label>Password</label>
-                <input ng-model="$ctrl.signup.password" minlength="6"
-                       name="password" type="password" required ng-change="$ctrl.change('password')">
+                <md-input-container class="md-icon-float md-block">
+                    <label>Password</label>
+                    <input ng-model="$ctrl.signup.password" minlength="6"
+                           name="password" type="password" required ng-change="$ctrl.change('password')">
 
-                <div ng-messages="$ctrl.registrationForm.password.$error">
-                    <div ng-message="minlength">The password must be at least 6 characters.</div>
-                    <div ng-message="required">Password can't be blank!</div>
-                    <div ng-message="server" ng-bind-html="$ctrl.errors.password | join"></div>
-                </div>
-            </md-input-container>
+                    <div ng-messages="$ctrl.registrationForm.password.$error">
+                        <div ng-message="minlength">The password must be at least 6 characters.</div>
+                        <div ng-message="required">Password can't be blank!</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.errors.password | join"></div>
+                    </div>
+                </md-input-container>
 
-            <md-input-container class="md-icon-float md-block">
-                <label>Repeat Password</label>
-                <input ng-model="$ctrl.signup.repeatPassword"
-                       ng-pattern="{{ $ctrl.signup.password }}"
-                       name="repeatPassword" minlength="6"
-                       type="password" required ng-change="$ctrl.change('repeatPassword')">
+                <md-input-container class="md-icon-float md-block">
+                    <label>Repeat Password</label>
+                    <input ng-model="$ctrl.signup.repeatPassword"
+                           ng-pattern="{{ $ctrl.signup.password }}"
+                           name="repeatPassword" minlength="6"
+                           type="password" required ng-change="$ctrl.change('repeatPassword')">
 
-                <div ng-messages="$ctrl.registrationForm.repeatPassword.$error">
-                    <div ng-message="minlength">The password must be at least 6 characters.</div>
-                    <div ng-message="required">Password can't be blank!</div>
-                    <div ng-message-exp="['pattern']">Passwords must match!</div>
-                    <div ng-message="server" ng-bind-html="$ctrl.errors.repeatPassword | join"></div>
-                </div>
-            </md-input-container>
+                    <div ng-messages="$ctrl.registrationForm.repeatPassword.$error">
+                        <div ng-message="minlength">The password must be at least 6 characters.</div>
+                        <div ng-message="required">Password can't be blank!</div>
+                        <div ng-message-exp="['pattern']">Passwords must match!</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.errors.repeatPassword | join"></div>
+                    </div>
+                </md-input-container>
 
-            <md-input-container class="md-icon-float md-block">
-                <label>First Name</label>
-                <input ng-model="$ctrl.signup.firstName" name="firstName" type="text" required
-                       ng-change="$ctrl.change('firstName')">
+                <md-input-container class="md-icon-float md-block">
+                    <label>First Name</label>
+                    <input ng-model="$ctrl.signup.firstName" name="firstName" type="text" required
+                           ng-change="$ctrl.change('firstName')">
 
-                <div ng-messages="$ctrl.registrationForm.firstName.$error">
-                    <div ng-message="required">First name can't be blank</div>
-                    <div ng-message="server" ng-bind-html="$ctrl.errors.firstName | join"></div>
-                </div>
-            </md-input-container>
+                    <div ng-messages="$ctrl.registrationForm.firstName.$error">
+                        <div ng-message="required">First name can't be blank</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.errors.firstName | join"></div>
+                    </div>
+                </md-input-container>
 
-            <md-input-container class="md-icon-float md-block">
-                <label>Last Name</label>
-                <input ng-model="$ctrl.signup.lastName" name="lastName" type="text" required
-                       ng-change="$ctrl.change('lastName')">
+                <md-input-container class="md-icon-float md-block">
+                    <label>Last Name</label>
+                    <input ng-model="$ctrl.signup.lastName" name="lastName" type="text" required
+                           ng-change="$ctrl.change('lastName')">
 
-                <div ng-messages="$ctrl.registrationForm.lastName.$error">
-                    <div ng-message="required">Last name can't be blank</div>
-                    <div ng-message="server" ng-bind-html="$ctrl.errors.lastName | join"></div>
-                </div>
-            </md-input-container>
+                    <div ng-messages="$ctrl.registrationForm.lastName.$error">
+                        <div ng-message="required">Last name can't be blank</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.errors.lastName | join"></div>
+                    </div>
+                </md-input-container>
 
-            <md-input-container class="md-icon-float md-block">
-                <label>Email</label>
-                <input ng-model="$ctrl.signup.email" name="email" type="email" ng-pattern="/^.+@.+\..+$/" required
-                       ng-change="$ctrl.change('email')">
+                <md-input-container class="md-icon-float md-block">
+                    <label>Email</label>
+                    <input ng-model="$ctrl.signup.email" name="email" type="email" ng-pattern="/^.+@.+\..+$/" required
+                           ng-change="$ctrl.change('email')">
 
-                <div ng-messages="$ctrl.registrationForm.email.$error">
-                    <div ng-message-exp="['required', 'pattern']">Email is invalid</div>
-                    <div ng-message="server" ng-bind-html="$ctrl.errors.email | join"></div>
-                </div>
-            </md-input-container>
+                    <div ng-messages="$ctrl.registrationForm.email.$error">
+                        <div ng-message-exp="['required', 'pattern']">Email is invalid</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.errors.email | join"></div>
+                    </div>
+                </md-input-container>
 
-            <md-input-container class="md-icon-float md-block">
-                <md-checkbox class="md-primary" name="hideEmail" md-no-ink ng-model="$ctrl.signup.hideEmail"
-                             aria-label="Hide my Email">
-                    Hide my Email
-                </md-checkbox>
-                <div ng-messages="$ctrl.registrationForm.hideEmail.$error">
-                    <div ng-message="server" ng-bind-html="$ctrl.errors.hideEmail | join"></div>
-                </div>
-            </md-input-container>
+                <md-input-container class="md-icon-float md-block">
+                    <md-checkbox class="md-primary" name="hideEmail" md-no-ink ng-model="$ctrl.signup.hideEmail"
+                                 aria-label="Hide my Email">
+                        Hide my Email
+                    </md-checkbox>
+                    <div ng-messages="$ctrl.registrationForm.hideEmail.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.errors.hideEmail | join"></div>
+                    </div>
+                </md-input-container>
 
-            <md-input-container class="md-icon-float md-block">
-                <label>Language</label>
-                <md-select ng-model="$ctrl.signup.lang" name="lang">
-                    <md-option ng-value="language.id" ng-repeat="language in $ctrl.languages">{{ language.name }}
-                    </md-option>
-                </md-select>
-                <div ng-messages="$ctrl.registrationForm.lang.$error">
-                    <div ng-message="server" ng-bind-html="$ctrl.errors.lang | join"></div>
-                </div>
-            </md-input-container>
+                <md-input-container class="md-icon-float md-block">
+                    <label>Language</label>
+                    <md-select ng-model="$ctrl.signup.lang" name="lang">
+                        <md-option ng-value="language.id" ng-repeat="language in $ctrl.languages">{{ language.name }}
+                        </md-option>
+                    </md-select>
+                    <div ng-messages="$ctrl.registrationForm.lang.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.errors.lang | join"></div>
+                    </div>
+                </md-input-container>
 
-            <md-card-actions layout="row" layout-align="center center">
-                <md-button class="md-raised md-primary" type="submit"
-                           ng-disabled="$ctrl.registrationForm.$invalid">Registration
-                </md-button>
-            </md-card-actions>
-        </form>
-    </md-card-content>
-</md-card>
+                <md-card-actions layout="row" layout-align="center center">
+                    <md-button class="md-raised md-primary" type="submit"
+                               ng-disabled="$ctrl.registrationForm.$invalid">Registration
+                    </md-button>
 
-<p layout="row" layout-align="center center">
-    <a ui-sref="login" class="md-body-1">Already have an account? Sign in!</a>
-</p>
+                    <md-button class="md-raised md-default" type="submit" ng-click="$ctrl.$state.go('login')">Sign in
+                    </md-button>
+                </md-card-actions>
+            </form>
+        </md-card-content>
+    </md-card>
+</div>
+
+<!--<p layout="row" layout-align="center center">-->
+<!--<a ui-sref="login" class="md-body-1">Already have an account? Sign in!</a>-->
+<!--</p>-->
 

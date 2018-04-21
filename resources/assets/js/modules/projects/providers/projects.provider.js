@@ -11,18 +11,20 @@ export default class ProjectsProvider extends ProviderBase {
     get $get() {
         return ProjectsService.inst({
             modules: this.modules,
-            settings: this.settings
+            settings: this.settings,
+            create: this.create
         });
     }
 
     $onInit($injector) {
         this.modules = [];
         this.settings = [];
+        this.create = [];
     }
 
     registerModule(data) {
         this.modules.push(Object.assign({
-            // project menu link
+            // project menu link - state name
             url: '',
 
             // project menu title
@@ -43,14 +45,19 @@ export default class ProjectsProvider extends ProviderBase {
 
     registerSettings(data) {
         this.settings.push(Object.assign({
+            // url part
             url: '',
+
+            // settings group name
             name: '',
+
+            // component for settings
             component: '',
+
+            // enabled by module name
             module: ''
         }, data));
 
         return this;
     }
-
-
 }

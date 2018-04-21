@@ -12,4 +12,14 @@ class Role extends Model
     public $timestamps = false;
 
     protected $guarded = ['id'];
+
+//    protected $hidden = [
+//        'id',
+//        'pivot'
+//    ];
+
+//    protected $visible = [
+//        'id',
+//        'name'
+//    ];
 }

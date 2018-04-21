@@ -1,8 +1,8 @@
 import InjectableBase from 'base/injectable.base';
-import wikiPageComponent from './components/page/wiki-page.component';
-import wikiEditComponent from './components/edit/wiki-edit.component';
-import wikiIndexByComponent from './components/index-by/wiki-index-by.component';
-import wikiProjectSettingsComponent from './components/project-settings/wiki-project-settings.component';
+import WikiPageComponent from './components/page/wiki-page.component';
+import WikiEditComponent from './components/edit/wiki-edit.component';
+import WikiIndexByComponent from './components/index-by/wiki-index-by.component';
+import WikiProjectSettingsComponent from './components/project-settings/wiki-project-settings.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -13,11 +13,11 @@ import wikiProjectSettingsComponent from './components/project-settings/wiki-pro
 export default class WikiConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', '$showdownProvider', 'ProjectsServiceProvider', 'MainServiceProvider'];
+        return ['$stateProvider', '$showdownProvider', 'projectsServiceProvider', 'mainServiceProvider'];
     }
 
     $onInit() {
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerNewItemMenu({
                 name: 'Wiki page',
                 url: 'wiki.new',
@@ -27,7 +27,7 @@ export default class WikiConfig extends InjectableBase {
                 enable: false
             });
 
-        this.ProjectsServiceProvider
+        this.projectsServiceProvider
             .registerModule({
                 url: 'wiki.index',
                 title: 'Wiki',
@@ -38,7 +38,7 @@ export default class WikiConfig extends InjectableBase {
             .registerSettings({
                 url: 'wiki',
                 name: 'Wiki',
-                component: wikiProjectSettingsComponent.name,
+                component: WikiProjectSettingsComponent.getName(),
                 module: 'wiki'
             });
 
@@ -88,27 +88,27 @@ export default class WikiConfig extends InjectableBase {
             })
             .state('wiki.index', {
                 url: '',
-                component: wikiPageComponent.name,
+                component: WikiPageComponent.getName(),
             })
             .state('wiki.page.view', {
                 url: '',
-                component: wikiPageComponent.name,
+                component: WikiPageComponent.getName(),
             })
             .state('wiki.page.edit', {
                 url: '/edit',
-                component: wikiEditComponent.name,
+                component: WikiEditComponent.getName(),
             })
             .state('wiki.new', {
                 url: '/new',
-                component: wikiEditComponent.name,
+                component: WikiEditComponent.getName(),
             })
             .state('wiki.index-by-title', {
                 url: '/index',
-                component: wikiIndexByComponent.name,
+                component: WikiIndexByComponent.getName(),
             })
             .state('wiki.index-by-date', {
                 url: '/date_index',
-                component: wikiIndexByComponent.name,
+                component: WikiIndexByComponent.getName(),
             });
     }
 

@@ -1,7 +1,7 @@
 import InjectableBase from 'base/injectable.base';
-import groupsIndexComponent from './components/index/groups-index.component';
-import groupsEditComponent from './components/edit/groups-edit.component';
-import groupsNewComponent from './components/new/groups-new.component';
+import GroupsIndexComponent from './components/index/groups-index.component';
+import GroupsEditComponent from './components/edit/groups-edit.component';
+import GroupsNewComponent from './components/new/groups-new.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -10,11 +10,11 @@ import groupsNewComponent from './components/new/groups-new.component';
 export default class GroupsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'MainServiceProvider']
+        return ['$stateProvider', 'mainServiceProvider']
     }
 
     $onInit() {
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerAdminMenu({
                 name: 'Groups',
                 url: 'groups.index',
@@ -37,13 +37,15 @@ export default class GroupsConfig extends InjectableBase {
             })
             .state('groups.index', {
                 url: '',
-                component: groupsIndexComponent.name,
-            }).state('groups.edit', {
-            url: '/:id/edit',
-            component: groupsEditComponent.name,
-        }).state('groups.new', {
-            url: '/new',
-            component: groupsNewComponent.name,
-        });
+                component: GroupsIndexComponent.getName(),
+            })
+            .state('groups.edit', {
+                url: '/:id/edit',
+                component: GroupsEditComponent.getName(),
+            })
+            .state('groups.new', {
+                url: '/new',
+                component: GroupsNewComponent.getName(),
+            });
     }
 }

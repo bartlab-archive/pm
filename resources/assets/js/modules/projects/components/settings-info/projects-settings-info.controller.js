@@ -2,18 +2,25 @@ import ControllerBase from 'base/controller.base';
 
 /**
  * @property {ProjectsService} ProjectsService
+ * @property {Restangular} project
  */
 export default class ProjectsSettingsInfoController extends ControllerBase {
 
     static get $inject() {
-        return ['ProjectsService'];
+        return ['projectsService'];
     }
 
     $onInit() {
-
+        //console.log(this.project);
     }
 
-    updateInformation() {
+    submit() {
+        // this.project.save();
+        // this.project.save();
+        this.project.save().then(() => {
+            // this.ProjectsService.all().one(this.project.identifier).customPUT(this.project).then(()=>{
+
+        });
         // this.ProjectsService
         //     .updateInformation(
         //         this.model.identifier,
@@ -35,28 +42,6 @@ export default class ProjectsSettingsInfoController extends ControllerBase {
         //     }).catch((response) => {
         //   this.onError(response)
         // });
-    }
-
-    change(field) {
-        // this.infoForm[field].$setValidity('server', true);
-        // this.errors[field] = undefined;
-    }
-
-    onError(response) {
-        //
-        // if (_.get(response, 'status') === 500) {
-        //         this.$mdToast.show(
-        //         this.$mdToast.simple().textContent('Server error')
-        //     );
-        // } else {
-        //     this.errors = _.get(response, 'data.errors', {});
-        //     for (let field in this.errors) {
-        //         if (this.infoForm.hasOwnProperty(field)) {
-        //             this.infoForm[field].$touched = true;
-        //             this.infoForm[field].$setValidity('server', false);
-        //         }
-        //     }
-        // }
     }
 
 }

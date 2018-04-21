@@ -1,6 +1,6 @@
 import InjectableBase from 'base/injectable.base';
-import timesListComponent from './components/list/times-list.component';
-import timesProjectSettingsComponent from './components/project-settings/times-project-settings.component';
+import TimesListComponent from './components/list/times-list.component';
+import TimesProjectSettingsComponent from './components/project-settings/times-project-settings.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -10,22 +10,22 @@ import timesProjectSettingsComponent from './components/project-settings/times-p
 export default class TimesConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'ProjectsServiceProvider', 'MainServiceProvider'];
+        return ['$stateProvider', 'projectsServiceProvider', 'mainServiceProvider'];
     }
 
     $onInit() {
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerAppMenu({
                 url: 'times.list',
                 name: 'Overall spent time',
                 icon: 'timelapse'
             });
 
-        this.ProjectsServiceProvider
+        this.projectsServiceProvider
             .registerSettings({
                 url: 'activities',
                 name: 'Activities (time tracking)',
-                component: timesProjectSettingsComponent.name,
+                component: TimesProjectSettingsComponent.getName(),
                 module: 'time_tracking'
             });
 
@@ -42,7 +42,7 @@ export default class TimesConfig extends InjectableBase {
             })
             .state('times.list', {
                 url: '',
-                component: timesListComponent.name,
+                component: TimesListComponent.getName(),
             });
     }
 

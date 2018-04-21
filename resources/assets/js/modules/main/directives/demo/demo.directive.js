@@ -4,9 +4,9 @@ import './demo.scss';
 
 export default class DemoDirective extends DirectiveBase {
 
-    static get selector() {
-        return 'demo';
-    }
+    // static get selector() {
+    //     return 'demo';
+    // }
 
     $onInit() {
         this.restrict = 'EA';
@@ -15,5 +15,4 @@ export default class DemoDirective extends DirectiveBase {
 
     link(scope, element, attrs, controller, transcludeFn) {
     }
-
 }

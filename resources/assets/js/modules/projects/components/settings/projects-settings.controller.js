@@ -10,13 +10,17 @@ import _ from 'lodash';
 export default class ProjectsSettingsController extends ControllerBase {
 
     static get $inject() {
-        return ['ProjectsService', '$stateParams', '$rootScope','$state'];
+        return ['projectsService', '$stateParams', '$rootScope', '$state'];
     }
 
     $onInit() {
         // settings tabs
-        this.settingsTabs = this.ProjectsService.getSettings().map((e)=>{
-            e.componentTag = '<' + _.kebabCase(e.component) + ' project="$ctrl.model" />';
+        this.settingsTabs = this.projectsService.getSettings().map((e) => {
+            e.componentTag = '<' + _.kebabCase(e.component) + ' params="$ctrl.data" />';
+
+            // disable module, that need enabled state
+            e.enable = !e.module;
+
             return e;
         });
 
@@ -28,31 +32,16 @@ export default class ProjectsSettingsController extends ControllerBase {
     }
 
     load() {
-        // this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
-        //     this.model = _.get(response, 'data', []);
-        //     this.model.modules = this.ProjectsService.getModules(this.model.enabled_modules);
-        //     this.tabs = Object.assign([], this.model.modules);
-        //
-        //     if (this.model.parent) {
-        //         this.model.parent_identifier = this.model.parent.identifier;
-        //         delete(this.model.parent.identifier);
-        //     }
-        //
-        //     this.members = this.ProjectsService.getMembersList(this.model);
-        //
-        //     this.versions = this.getVersions();
-        //     this.issuesCategories = this.getIssueCategories();
-        //     this.forums = this.getForums();
-        //
-        //     this.activities = this.getActivities();
-        //
-        //     this.initialActivities = _.cloneDeep(this.activities);
-        //
-        //     this.ProjectsService.getList().then((response) => {
-        //         this.projects = _.filter(response.data, (item) => (item.identifier !== this.model.identifier));
-        //     });
-        //
-        // });
+        // this.ProjectsService.all().get(this.$stateParams.project_id)
+        this.projectsService.one(this.$stateParams.project_id)
+            .then((response) => {
+                this.model = response.data.data;
+                this.data = response.data;
+
+                this.settingsTabs.forEach((item) => {
+                    item.enable = !item.module || response.data.modules.some(($m) => $m.name === item.module && $m.enabled === true);
+                });
+            });
     }
 
     selectTab(page) {

@@ -9,6 +9,12 @@ class Member extends Model
 {
     use ModelTrait;
 
+//    protected $hidden = [
+//        'id',
+//        'user_id',
+//        'project_id'
+//    ];
+
     public $timestamps = false;
 
     protected $guarded = ['id'];
@@ -16,4 +22,19 @@ class Member extends Model
     protected $dates = [
         'created_on',
     ];
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, MemberRole::getTableName());
+    }
 }

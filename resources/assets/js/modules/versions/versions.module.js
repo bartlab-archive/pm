@@ -1,14 +1,14 @@
 import 'angular';
 import VersionsConfig from './versions.config';
-import versionsInfoComponent from './components/info/versions-info.component';
-import versionsProjectSettingsComponent from './components/project-settings/versions-project-settings.component';
-import versionsNewComponent from './components/new/versions-new.component';
+import VersionsInfoComponent from './components/info/versions-info.component';
+import VersionsProjectSettingsComponent from './components/project-settings/versions-project-settings.component';
+import VersionsNewComponent from './components/new/versions-new.component';
 
 angular.module('app.modules.versions', [])
     .config(VersionsConfig.inst())
 
     // assigne version to project from project settings
-    .component(versionsNewComponent.name, versionsNewComponent)
+    .component(VersionsNewComponent.getName(), VersionsNewComponent)
 
-    .component(versionsProjectSettingsComponent.name, versionsProjectSettingsComponent)
-    .component(versionsInfoComponent.name, versionsInfoComponent);
+    .component(VersionsProjectSettingsComponent.getName(), VersionsProjectSettingsComponent)
+    .component(VersionsInfoComponent.getName(), VersionsInfoComponent);

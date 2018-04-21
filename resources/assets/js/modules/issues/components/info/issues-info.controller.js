@@ -11,14 +11,14 @@ import ControllerBase from 'base/controller.base';
 export default class IssuesInfoController extends ControllerBase {
 
     static get $inject() {
-        return ['IssuesService', '$stateParams', '$rootScope', 'ProjectsService'];
+        return ['issuesService', '$stateParams', '$rootScope', 'projectsService'];
     }
 
     $onInit() {
-        this.IssuesService.one(this.$stateParams.id).get()
+        this.issuesService.one(this.$stateParams.id).get()
             .then((response) => {
                 this.issue = response.data;
-                this.ProjectsService.setCurrentId(response.data.project.identifier);
+                this.projectsService.setCurrentId(response.data.project.identifier);
                 this.$rootScope.$emit('updateProjectInfo');
             });
     }

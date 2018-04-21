@@ -1,13 +1,22 @@
 import IssuesViewController from './issues-view.controller';
 import issuesViewTemplate from './issues-view.html';
 import './issues-view.scss';
+import ComponentBase from "base/component.base";
 
-export default {
-    name: 'issuesViewComponent',
-    controller: IssuesViewController,
-    template: issuesViewTemplate,
-    bindings:{
-        selectedIssue:'<',
-        authorInfo: '<'
+export default class IssuesViewComponent extends ComponentBase {
+
+    static get controller() {
+        return IssuesViewController;
     }
-};
+
+    static get v() {
+        return issuesViewTemplate;
+    }
+
+    static get bindings() {
+        return {
+            selectedIssue: '<',
+            authorInfo: '<'
+        };
+    }
+}

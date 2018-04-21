@@ -1,11 +1,11 @@
 import InjectableBase from 'base/injectable.base';
-import projectsListComponent from './components/list/projects-list.component';
-import projectsNewComponent from './components/new/projects-new.component';
-import projectsInfoComponent from './components/info/projects-info.component';
-import projectsSettingsComponent from './components/settings/projects-settings.component';
-import projectsSettingsInfoComponent from './components/settings-info/projects-settings-info.component';
-import projectsSettingsMembersComponent from './components/settings-members/projects-settings-members.component';
-import projectsSettingsModulesComponent from './components/settings-modules/projects-settings-modules.component';
+import ProjectsListComponent from './components/list/projects-list.component';
+import ProjectsNewComponent from './components/new/projects-new.component';
+import ProjectsInfoComponent from './components/info/projects-info.component';
+import ProjectsSettingsComponent from './components/settings/projects-settings.component';
+import ProjectsSettingsInfoComponent from './components/settings-info/projects-settings-info.component';
+import ProjectsSettingsMembersComponent from './components/settings-members/projects-settings-members.component';
+import ProjectsSettingsModulesComponent from './components/settings-modules/projects-settings-modules.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -14,11 +14,11 @@ import projectsSettingsModulesComponent from './components/settings-modules/proj
 export default class ProjectsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'MainServiceProvider','ProjectsServiceProvider'];
+        return ['$stateProvider', 'mainServiceProvider', 'projectsServiceProvider'];
     }
 
     $onInit() {
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerAdminMenu({
                 name: 'Projects',
                 url: 'projects-admin',
@@ -44,21 +44,21 @@ export default class ProjectsConfig extends InjectableBase {
                 enable: false
             });
 
-        this.ProjectsServiceProvider
+        this.projectsServiceProvider
             .registerSettings({
                 url: '',
                 name: 'Information',
-                component: projectsSettingsInfoComponent.name,
+                component: ProjectsSettingsInfoComponent.getName(),
             })
             .registerSettings({
                 url: 'modules',
                 name: 'Modules',
-                component: projectsSettingsMembersComponent.name,
+                component: ProjectsSettingsModulesComponent.getName(),
             })
             .registerSettings({
                 url: 'members',
                 name: 'Members',
-                component: projectsSettingsModulesComponent.name,
+                component: ProjectsSettingsMembersComponent.getName(),
             });
 
         this.$stateProvider
@@ -85,19 +85,19 @@ export default class ProjectsConfig extends InjectableBase {
             })
             .state('projects.inner.copy', {
                 url: '/copy',
-                component: projectsNewComponent.name,
+                component: ProjectsNewComponent.getName(),
             })
             .state('projects.list', {
                 url: '',
-                component: projectsListComponent.name,
+                component: ProjectsListComponent.getName(),
             })
             .state('projects.new', {
                 url: '/new',
-                component: projectsNewComponent.name,
+                component: ProjectsNewComponent.getName(),
             })
             .state('projects.inner.info', {
                 url: '',
-                component: projectsInfoComponent.name,
+                component: ProjectsInfoComponent.getName(),
             })
             .state('projects.inner.settings', {
                 url: '/settings/{page}',
@@ -108,7 +108,7 @@ export default class ProjectsConfig extends InjectableBase {
                         dynamic: true
                     }
                 },
-                component: projectsSettingsComponent.name,
+                component: ProjectsSettingsComponent.getName(),
             })
             .state('projects-admin', {
                 url: '/projects',
@@ -116,7 +116,7 @@ export default class ProjectsConfig extends InjectableBase {
                     isAdmin: true
                 },
                 parent: 'admin',
-                component: projectsListComponent.name,
+                component: ProjectsListComponent.getName(),
             });
     }
 

@@ -23,8 +23,10 @@ class IndexProjectRequest extends FormRequest
      */
     public function rules()
     {
+        // todo: write rules for request
         return [
-            'closed' => 'string'
+//            'with' =>'in:users,versions,enabledModules',
+//            'closed' => 'string'
         ];
     }
 }

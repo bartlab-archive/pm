@@ -9,7 +9,7 @@ import _ from 'lodash';
 export default class MyMailsController extends ControllerBase {
 
     static get $inject() {
-        return ['UsersService', '$rootScope', '$mdToast'];
+        return ['usersService', '$rootScope', '$mdToast'];
     }
 
     $onInit() {
@@ -19,7 +19,7 @@ export default class MyMailsController extends ControllerBase {
     }
 
     load() {
-        this.UsersService.getAdditionalEmails().then((responce) => {
+        this.usersService.getAdditionalEmails().then((responce) => {
             this.emails = _.keyBy(responce.data, 'id');
         });
 
@@ -28,19 +28,19 @@ export default class MyMailsController extends ControllerBase {
 
 
     updateEmailAddress(id) {
-        this.UsersService.updateAdditionalEmail(id, {notify: this.emails[id].notify}).then(() => {
+        this.usersService.updateAdditionalEmail(id, {notify: this.emails[id].notify}).then(() => {
             this.load();
         });
     }
 
     deleteEmailAddress(id) {
-        this.UsersService.deleteAdditionalEmail(id).then(() => {
+        this.usersService.deleteAdditionalEmail(id).then(() => {
             this.load();
         });
     }
 
     addEmailAddress() {
-        this.UsersService.addAdditionalEmail(this.newEmail).then(() => {
+        this.usersService.addAdditionalEmail(this.newEmail).then(() => {
             this.load();
         }).catch((response) => this.onError(response));
     }

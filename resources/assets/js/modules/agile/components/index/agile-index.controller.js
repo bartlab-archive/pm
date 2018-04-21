@@ -8,7 +8,7 @@ import issuesViewModalTemplate from 'modules/issues/components/view-modal/issues
 export default class AgileIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$state','StatusesService','IssuesService','$stateParams','$mdDialog','ProjectsService'];
+        return ['$state','statusesService','issuesService','$stateParams','$mdDialog','projectsService'];
     }
 
     $onInit() {
@@ -16,7 +16,7 @@ export default class AgileIndexController extends ControllerBase {
     }
 
     load() {
-        return  this.StatusesService.all()
+        return  this.statusesService.all()
             .getList()
             .then((response) => {
                 this.containers = response.data;
@@ -43,9 +43,9 @@ export default class AgileIndexController extends ControllerBase {
     }
 
     loadIsues(){
-        return this.IssuesService.all()
+        return this.issuesService.all()
             .getList({
-                project_identifier: this.ProjectsService.getCurrentId()
+                project_identifier: this.projectsService.getCurrentId()
             })
             .then((response) => {
                 this.list = response.data;

@@ -1,4 +1,6 @@
 import ControllerBase from 'base/controller.base';
+import ProjectsMemberController from "../member/projects-member.controller";
+import projectsMemberTemplate from "../member/projects-member.html";
 // import projectsMemberComponent from '../member/projects-member.component';
 
 /**
@@ -13,63 +15,41 @@ import ControllerBase from 'base/controller.base';
 export default class ProjectsSettingsMembersController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdToast', 'ProjectsService', 'UsersService', 'EnumerationsService', '$stateParams', '$rootScope', '$mdDialog', '$state'];
+        return ['$mdToast', 'projectsService', 'usersService', '$stateParams', '$rootScope', '$mdDialog', '$state'];
+    }
+
+    static setMdDialogConfig(target, data = {}) {
+        return {
+            controller: ProjectsMemberController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: data,
+            template: projectsMemberTemplate,
+            clickOutsideToClose: true,
+            openFrom: target,
+            closeTo: target,
+        };
     }
 
     $onInit() {
 
     }
 
-
-    setMdDialogConfig(component, target, data = {}) {
-        // let ctrlConfig = [].concat(
-        //     component.controller.$inject || [],
-        //     [(...args) => {
-        //         let ctrl = new component.controller(...args);
-        //
-        //         // decorator
-        //         _.each(data, (v, k) => {
-        //             ctrl[k] = v;
-        //         });
-        //
-        //         ctrl.$onInit && ctrl.$onInit();
-        //         return ctrl;
-        //     }]
-        // );
-        //
-        // return {
-        //     controller: ctrlConfig,
-        //     controllerAs: '$ctrl',
-        //     template: component.template,
-        //     //panelClass: 'modal-custom-dialog',
-        //     parent: angular.element(document.body),
-        //     trapFocus: true,
-        //     clickOutsideToClose: true,
-        //     clickEscapeToClose: true,
-        //     escapeToClose: true,
-        //     hasBackdrop: true,
-        //     disableParentScroll: true,
-        //     openFrom: target,
-        //     closeTo: target,
-        // }
-
-        // this.$mdDialog.show(
-
-        // current project identifier
-        data.identifier = this.model.identifier;
-
-        return {
-            controller: component.controller,
-            controllerAs: '$ctrl',
-            bindToController: true,
-            locals: data,
-            template: component.template,
-            clickOutsideToClose: true,
-            openFrom: target,
-            closeTo: target,
-        };
-        // );
-    }
+    // setMdDialogConfig(component, target, data = {}) {
+    //     // current project identifier
+    //     data.identifier = this.model.identifier;
+    //
+    //     return {
+    //         controller: component.controller,
+    //         controllerAs: '$ctrl',
+    //         bindToController: true,
+    //         locals: data,
+    //         template: component.template,
+    //         clickOutsideToClose: true,
+    //         openFrom: target,
+    //         closeTo: target,
+    //     };
+    // }
 
     deleteMember(memberId, name) {
         // let confirm = this.$mdDialog.confirm()
@@ -105,11 +85,17 @@ export default class ProjectsSettingsMembersController extends ControllerBase {
     }
 
     addMember($event) {
+        this.$mdDialog.show(
+            this.constructor.setMdDialogConfig($event.target, {
+                // selectedIssue: issue
+            })
+        );
+
         // this.$mdDialog.show(
         //     this.setMdDialogConfig(projectsMemberComponent, $event.target, {
-        //         // identifier: this.model.identifier,
-        //         // currentMembers: _.map(this.members, 'user_id')
-        //     })
+                // identifier: this.model.identifier,
+                // currentMembers: _.map(this.members, 'user_id')
+            // })
         // );
     }
 

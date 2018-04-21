@@ -19,12 +19,17 @@ export default class InjectableBase extends ObjectBase {
 
             obj.$onInit();
 
-            return obj;
+            // allow rewrite finall object
+            return obj.$return();
         };
         // const providerFn = (...args) => new self(...args);
 
         providerFn.$inject = self.$inject;
         return providerFn;
+    }
+
+    $return(){
+        return this;
     }
 
     $onInit() {

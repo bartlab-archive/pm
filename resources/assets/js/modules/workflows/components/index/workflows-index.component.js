@@ -1,8 +1,14 @@
 import WorkflowsIndexController from './workflows-index.controller';
 import workflowsIndexTemplate from './workflows-index.html';
+import ComponentBase from "base/component.base";
 
-export default {
-    name: 'workflowsIndexComponent',
-    controller: WorkflowsIndexController,
-    template: workflowsIndexTemplate
-};
+export default class WorkflowsIndexComponent extends ComponentBase {
+
+    static get controller() {
+        return WorkflowsIndexController;
+    }
+
+    static get template() {
+        return workflowsIndexTemplate;
+    }
+}

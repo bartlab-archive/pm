@@ -8,17 +8,17 @@ import ControllerBase from 'base/controller.base';
 export default class UsersInfoController extends ControllerBase {
 
     static get $inject() {
-        return ['UsersService', '$stateParams','$state', 'ProjectsService','IssuesService'];
+        return ['usersService', '$stateParams','$state', 'projectsService','issuesService'];
     }
 
     $onInit() {
-        this.UsersService.one(this.$stateParams.id).then((response) => {
+        this.usersService.one(this.$stateParams.id).then((response) => {
             this.user = _.get(response, 'data', []);
             this.projects = this.user.projects;
-            this.members = this.UsersService.getMembersList(this.user);
+            this.members = this.usersService.getMembersList(this.user);
             //this.issues = this.user.issues;
             this.membersByRole = this.getMembersByRole(this.members);
-            this.issues = this.UsersService.getCountIssues(this.user);
+            this.issues = this.usersService.getCountIssues(this.user);
 
         });
     }

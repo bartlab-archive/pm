@@ -6,11 +6,11 @@ import ControllerBase from 'base/controller.base';
 export default class RolesIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$state','RolesService'];
+        return ['$state','rolesService'];
     }
 
     $onInit() {
-        return  this.RolesService.all()
+        return  this.rolesService.all()
             .getList()
             .then((response) => {
                 this.roles = response.data;

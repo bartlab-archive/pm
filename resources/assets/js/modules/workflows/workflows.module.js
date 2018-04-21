@@ -1,9 +1,9 @@
 import 'angular';
 import WorkflowsConfig from './workflows.config';
-import workflowsIndexComponent from './components/index/workflows-index.component';
-import workflowsEditComponent from './components/edit/workflows-edit.component';
+import WorkflowsIndexComponent from './components/index/workflows-index.component';
+import WorkflowsEditComponent from './components/edit/workflows-edit.component';
 
 angular.module('app.modules.workflows', [])
     .config(WorkflowsConfig.inst())
-    .component(workflowsIndexComponent.name, workflowsIndexComponent)
-    .component(workflowsEditComponent.name, workflowsEditComponent);
+    .component(WorkflowsIndexComponent.getName(), WorkflowsIndexComponent)
+    .component(WorkflowsEditComponent.getName(), WorkflowsEditComponent);

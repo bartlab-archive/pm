@@ -5,7 +5,7 @@ import _ from 'lodash';
 export default class WikiEditController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$mdDialog', 'WikiService', '$stateParams', '$mdToast', 'ProjectsService'];
+        return ['$state', '$mdDialog', 'wikiService', '$stateParams', '$mdToast', 'projectsService'];
     }
 
     $onInit() {
@@ -21,7 +21,7 @@ export default class WikiEditController extends ControllerBase {
         };
 
         if (this.$stateParams.name) {
-            this.WikiService.getPageWiki(this.ProjectsService.getCurrentId(), this.$stateParams.name).then((response) => {
+            this.wikiService.getPageWiki(this.projectsService.getCurrentId(), this.$stateParams.name).then((response) => {
                 if (!_.isEmpty(response.data)) {
                     this.page = response.data;
                 }
@@ -41,7 +41,7 @@ export default class WikiEditController extends ControllerBase {
                 parent_id: this.page.parent_id
             };
 
-            this.WikiService.addNewWikiPage(this.ProjectsService.getCurrentId(), queryParams)
+            this.wikiService.addNewWikiPage(this.projectsService.getCurrentId(), queryParams)
                 .then((response) => {
                     if (response && response.status === 201) {
                         this.$mdDialog.cancel();

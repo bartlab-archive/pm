@@ -17,9 +17,12 @@ class Project extends Model
     const ARCHIVED_STATUS = '9';
     const IS_PUBLIC = '1';
 
-    protected $hidden = [
-        'parent_id'
-    ];
+//    protected $hidden = [
+//        'id',
+//        'parent_id',
+//        'lft',
+//        'rgt'
+//    ];
 
     protected $casts = [
         'is_public' => 'boolean',
@@ -39,6 +42,8 @@ class Project extends Model
         'created_on',
         'updated_on',
     ];
+
+    protected $perPage = 20;
 
     /**
      * Project trackers
@@ -77,6 +82,6 @@ class Project extends Model
 
     public function getIsMyAttribute()
     {
-        return (int)(Auth::guest() ? false : $this->users()->where('user_id', Auth::user()->id)->exists());
+        return (Auth::guest() ? false : $this->users()->where('user_id', Auth::user()->id)->exists());
     }
 }

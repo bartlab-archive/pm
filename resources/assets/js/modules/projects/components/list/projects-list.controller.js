@@ -8,7 +8,7 @@ import ControllerBase from 'base/controller.base';
 export default class ProjectsListController extends ControllerBase {
 
     static get $inject() {
-        return ['ProjectsService', '$state', '$showdown', '$window'];
+        return ['projectsService', '$state', '$showdown', '$window'];
     }
 
     $onInit() {
@@ -28,10 +28,15 @@ export default class ProjectsListController extends ControllerBase {
 
         // pagination
         this.perPageList = [20, 50, 100];
-        this.count = 0;
-        this.offset = 0;
+        // this.count = 0;
+        // this.offset = 0;
+        this.meta = {
+            current_page: 1,
+            total: 0
+        };
         this.limitPerPage = this.perPageList[0];
-        this.pager = '';
+        this.links = '';
+        // this.pager = '';
 
         this.loadProccess = false;
 
@@ -42,34 +47,39 @@ export default class ProjectsListController extends ControllerBase {
         this.loadProccess = true;
         this.list = [];
 
-        this.ProjectsService.all()
-            .getList({
+        this.projectsService
+            // .all()
+            .all({
                 // closed: this.showClosed,
-                limit: this.limitPerPage,
-                offset: this.offset,
+                per_page: this.limitPerPage,
+                page: this.meta.current_page,
+                // offset: this.offset,
                 order: this.sort.param,
             })
             .then((response) => {
-                this.list = response.data.map((e) => {
+                this.list = response.data.data.map((e) => {
                     e.description = this.makeHtml(e.description);
                     return e;
                 });
-                this.offset = parseInt(response.headers('X-Offset')) || 0;
-                this.limitPerPage = parseInt(response.headers('X-Limit')) || 0;
-                this.count = parseInt(response.headers('X-Total')) || 0;
-                this.pager = this.getPager();
+                // this.offset = parseInt(response.headers('X-Offset')) || 0;
+                // this.limitPerPage = parseInt(response.headers('X-Limit')) || 0;
+                // this.count = parseInt(response.headers('X-Total')) || 0;
+                this.meta = response.data.meta;
+                this.links = response.data.links;
+                // this.pager = this.getPager();
                 this.loadProccess = false;
             });
     }
 
-    getPager() {
-        const currentPage = (this.offset === 0 ? this.offset + 1 : this.offset);
-        const fromPage = (this.count < this.limitPerPage || this.count < this.offset + this.limitPerPage) ?
-            this.count : this.limitPerPage + this.offset;
-        const all = (this.count > this.limitPerPage ? ' /' + this.count : '');
-
-        return currentPage + '-' + fromPage + all;
-    }
+    // getPager() {
+    // const currentPage = (this.offset === 0 ? this.offset + 1 : this.offset);
+    // const fromPage = (this.count < this.limitPerPage || this.count < this.offset + this.limitPerPage) ?
+    //     this.count : this.limitPerPage + this.offset;
+    // const all = (this.count > this.limitPerPage ? ' /' + this.count : '');
+    //
+    // return currentPage + '-' + fromPage + all;
+    // return this.meta.from + ' - ' + this.meta.to + ' / ' + this.meta.total;
+    // }
 
     goto(identifier) {
         this.$state.go('projects.inner.info', {project_id: identifier});
@@ -88,15 +98,15 @@ export default class ProjectsListController extends ControllerBase {
     }
 
     next() {
-        if (this.offset + this.limitPerPage < this.count) {
-            this.offset += this.limitPerPage;
+        if (this.links.next) {
+            this.meta.current_page++;
             this.load();
         }
     }
 
     previous() {
-        if (this.offset > 0) {
-            this.offset = this.offset - this.limitPerPage;
+        if (this.links.prev) {
+            this.meta.current_page--;
             this.load();
         }
     }

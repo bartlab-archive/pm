@@ -6,12 +6,16 @@ export default class CompileDirective extends DirectiveBase {
         return ['$compile'];
     }
 
-    static get selector() {
-        return 'compile';
-    }
+    // static get selector() {
+    //     return 'compile';
+    // }
+
+    // get restrict(){
+    //     return 'A';
+    // }
 
     $onInit() {
-        this.restrict = 'A';
+        // this.restrict = 'A';
     }
 
     link(scope, element, attrs, controller, transcludeFn) {
@@ -33,5 +37,4 @@ export default class CompileDirective extends DirectiveBase {
             }
         );
     }
-
 }

@@ -1,6 +1,6 @@
 import InjectableBase from 'base/injectable.base';
-import myAccountComponent from './components/account/my-account.component';
-import myPageComponent from './components/page/my-page.component';
+import MyAccountComponent from './components/account/my-account.component';
+import MyPageComponent from './components/page/my-page.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -8,11 +8,11 @@ import myPageComponent from './components/page/my-page.component';
 export default class MyConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'MainServiceProvider'];
+        return ['$stateProvider', 'mainServiceProvider'];
     }
 
     $onInit() {
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerAppMenu({
                 url: 'my.page',
                 name: 'My page',
@@ -35,11 +35,11 @@ export default class MyConfig extends InjectableBase {
             })
             .state('my.account', {
                 url: '/account',
-                component: myAccountComponent.name,
+                component: MyAccountComponent.getName(),
             })
             .state('my.page', {
                 url: '/page',
-                component: myPageComponent.name,
+                component: MyPageComponent.getName(),
             });
     }
 

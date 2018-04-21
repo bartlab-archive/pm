@@ -11,7 +11,7 @@ import _ from 'lodash';
 export default class BoardsNewController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdDialog', '$mdToast', 'ProjectsService', '$rootScope'];
+        return ['$mdDialog', '$mdToast', 'projectsService', '$rootScope'];
     }
 
     $onInit() {
@@ -37,10 +37,10 @@ export default class BoardsNewController extends ControllerBase {
 
     submit() {
         if (!this.forum.id) {
-            this.ProjectsService.createForum(this.identifier, this.forum)
+            this.projectsService.createForum(this.identifier, this.forum)
                 .then(() => this.cancel(true));
         } else {
-            this.ProjectsService.editForum(this.forum.id, this.forum)
+            this.projectsService.editForum(this.forum.id, this.forum)
                 .then(() => this.cancel(true));
         }
     }

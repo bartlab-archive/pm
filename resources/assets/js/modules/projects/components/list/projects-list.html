@@ -16,10 +16,10 @@
             <!--Show closed-->
             <!--</md-switch>-->
 
-            <div ng-if="$ctrl.count > 0">
+            <div ng-if="$ctrl.meta.total > 0">
                 <md-menu>
                     <md-button class="card-button" ng-click="$mdMenu.open()">
-                        {{ $ctrl.pager }}
+                        {{ $ctrl.meta.from + ' - ' + $ctrl.meta.to + ' / ' + $ctrl.meta.total }}
                     </md-button>
 
                     <md-menu-content>
@@ -33,14 +33,14 @@
 
                 <md-button
                         ng-click="$ctrl.previous()"
-                        ng-disabled="$ctrl.offset === 0 || $ctrl.loadProccess"
+                        ng-disabled="!$ctrl.links.prev || $ctrl.loadProccess"
                         class="md-icon-button">
                     <md-icon>keyboard_arrow_left</md-icon>
                 </md-button>
 
                 <md-button
                         ng-click="$ctrl.next()"
-                        ng-disabled="($ctrl.offset + $ctrl.limitPerPage >= $ctrl.count)  || $ctrl.loadProccess"
+                        ng-disabled="!$ctrl.links.next || $ctrl.loadProccess"
                         class="md-icon-button">
                     <md-icon>keyboard_arrow_right</md-icon>
                 </md-button>
@@ -89,7 +89,7 @@
         </md-card-header>
 
         <md-list class="md-dense">
-            <div ng-if="$ctrl.count === 0" layout-align="center center" layout="row" class="md-padding">
+            <div ng-if="$ctrl.meta.total === 0" layout-align="center center" layout="row" class="md-padding">
                 No data to display
             </div>
 
@@ -116,7 +116,7 @@
                             <span>{{ ::project.updated_on }}</span>
                         </h4>
 
-                        <p class="md-truncate" ng-bind-html="project.description | words: 50"></p>
+                        <p class="md-truncate" ng-bind-html="project.description | words: 10"></p>
                     </div>
 
                     <md-menu-bar>

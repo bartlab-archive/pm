@@ -1,5 +1,5 @@
 import InjectableBase from 'base/injectable.base';
-import rolesIndexComponent from './components/index/roles-index.component';
+import RolesIndexComponent from './components/index/roles-index.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -8,11 +8,11 @@ import rolesIndexComponent from './components/index/roles-index.component';
 export default class RolesConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'MainServiceProvider']
+        return ['$stateProvider', 'mainServiceProvider']
     }
 
     $onInit() {
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerAdminMenu({
                 name: 'Roles and permissions',
                 url: 'roles.index',
@@ -35,7 +35,7 @@ export default class RolesConfig extends InjectableBase {
             })
             .state('roles.index', {
                 url: '',
-                component: rolesIndexComponent.name,
+                component: RolesIndexComponent.getName(),
             });
     }
 

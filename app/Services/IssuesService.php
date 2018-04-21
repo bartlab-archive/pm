@@ -2,26 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\Enumeration;
 use App\Models\Issue;
-use App\Models\IssueCategory;
-use App\Models\IssueStatus;
-use App\Models\Journal;
-use App\Models\Project;
-use App\Models\Tracker;
-use App\Models\User;
-use App\Models\Version;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\Auth;
+use \Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Class IssuesService
- *
- * @property JournalsService $journalsService
- * @property JournalDetailsService $journalDetailsService
- * @property WatchersService $watchersService
- * @property ProjectsService $projectsService
  *
  * @package App\Services
  */
@@ -29,89 +15,71 @@ class IssuesService
 {
     const MODULE_NAME = 'issue_tracking';
 
-    protected $journalsService;
-    protected $journalDetailsService;
-    protected $watchersService;
-    protected $projectsService;
-
-    public function __construct(
-        JournalsService $journalsService,
-        JournalDetailsService $journalDetailsService,
-        WatchersService $watchersService,
-        ProjectsService $projectsService
-    )
-    {
-        $this->projectsService = $projectsService;
-        $this->journalsService = $journalsService;
-        $this->journalDetailsService = $journalDetailsService;
-        $this->watchersService = $watchersService;
-    }
-
     public function one($id)
     {
-        return Issue::where('id', $id)
+        return Issue::query()
+            ->where('id', $id)
             ->with(['tracker', 'assigned', 'author', 'project', 'child'])
             ->first();
 
 //        return $issue;
     }
 
-    public function update($id, array $data)
-    {
-        if ($issue = Issue::where('id', $id)->firstOrFail()) {
-            /**
-             * @var Journal $journal
-             */
-            $journal = $this->journalsService->create([
-                'notes' => isset($data['notes']) ? $data['notes'] : null,
-                'journalized_type' => 'Issue',
-                'journalized_id' => $issue->id,
-                'user_id' => Auth::user()->id,
-                'created_on' => date('Y-m-d H:i:s')
-            ]);
-            unset($data['notes']);
-
-            $fields = [
-                'tracker_id',
-                'project_id',
-                'status_id',
-                'assigned_to_id',
-                'done_ratio',
-                'project_id',
-                'priority_id',
-                'priority_id',
-                'subject',
-                'estimated_hours',
-                'description',
-                'due_date',
-                'is_private',
-                'parent_id',
-                'start_date'
-            ];
-
-            foreach ($fields as $field) {
-                if (isset($data[$field]) && $issue[$field] != $data[$field]) {
-                    $this->journalDetailsService->create([
-                        'journal_id' => $journal->id,
-                        'property' => 'attr',
-                        'prop_key' => $field,
-                        'old_value' => $issue[$field],
-                        'value' => $data[$field]
-                    ]);
-                }
-            }
-
-            $issue->update($data);
-            return $issue;
-        }
-
-        return false;
-    }
+//    public function update($id, array $data)
+//    {
+//        if ($issue = Issue::query()->where('id', $id)->firstOrFail()) {
+//            /**
+//             * @var Journal $journal
+//             */
+//            $journal = $this->journalsService->create([
+//                'notes' => isset($data['notes']) ? $data['notes'] : null,
+//                'journalized_type' => 'Issue',
+//                'journalized_id' => $issue->id,
+//                'user_id' => Auth::user()->id,
+//                'created_on' => date('Y-m-d H:i:s')
+//            ]);
+//            unset($data['notes']);
+//
+//            $fields = [
+//                'tracker_id',
+//                'project_id',
+//                'status_id',
+//                'assigned_to_id',
+//                'done_ratio',
+//                'project_id',
+//                'priority_id',
+//                'priority_id',
+//                'subject',
+//                'estimated_hours',
+//                'description',
+//                'due_date',
+//                'is_private',
+//                'parent_id',
+//                'start_date'
+//            ];
+//
+//            foreach ($fields as $field) {
+//                if (isset($data[$field]) && $issue[$field] != $data[$field]) {
+//                    $this->journalDetailsService->create([
+//                        'journal_id' => $journal->id,
+//                        'property' => 'attr',
+//                        'prop_key' => $field,
+//                        'old_value' => $issue[$field],
+//                        'value' => $data[$field]
+//                    ]);
+//                }
+//            }
+//
+//            $issue->update($data);
+//            return $issue;
+//        }
+//
+//        return false;
+//    }
 
     public function create($data)
     {
-        $issue = Issue::create($data);
-        return $issue;
+        return Issue::create($data);
     }
 
     public function all(array $params = [])
@@ -131,6 +99,7 @@ class IssuesService
 
         if ($project = array_get($params, 'project_identifier')) {
             $query->whereHas('project', function ($query) use ($project) {
+                /** @var $query Builder */
                 $query->where('identifier', $project);
             });
         } else {
@@ -225,7 +194,6 @@ class IssuesService
             'offset' => $offset,
             'groups' => $groupCount,
             'list' => $query
-//                ->addSelect(Issue::getTableName() . '.*')
                 ->offset($offset)
                 ->limit($limit)
                 ->get()

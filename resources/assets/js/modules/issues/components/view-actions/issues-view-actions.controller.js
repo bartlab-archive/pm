@@ -8,7 +8,7 @@ import ControllerBase from 'base/controller.base';
 export default class IssuesViewActionsController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdDialog', '$mdToast', 'IssuesService', '$rootScope', '$state', '$stateParams'];
+        return ['$mdDialog', '$mdToast', 'issuesService', '$rootScope', '$state', '$stateParams'];
     }
 
     $onInit() {
@@ -31,13 +31,13 @@ export default class IssuesViewActionsController extends ControllerBase {
     }
 
     watchIssue(id) {
-        this.IssuesService.watch(id).then(() => {
+        this.issuesService.watch(id).then(() => {
             this.selectedIssue.watch_state = true
         });
     }
 
     unwatchIssue(id) {
-        this.IssuesService.unwatch(id).then(() => {
+        this.issuesService.unwatch(id).then(() => {
             this.selectedIssue.watch_state = false
         });
     }
@@ -55,7 +55,7 @@ export default class IssuesViewActionsController extends ControllerBase {
             .cancel('Cancel');
 
         this.$mdDialog.show(confirm).then(() => {
-            this.IssuesService.deleteIssue(id).then(() => {
+            this.issuesService.deleteIssue(id).then(() => {
                 this.$rootScope.$emit('updateIssues');
             });
 

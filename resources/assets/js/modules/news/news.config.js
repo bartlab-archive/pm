@@ -1,7 +1,7 @@
 import InjectableBase from 'base/injectable.base';
-import newsListComponent from './components/list/news-list.component';
-import newsEditComponent from './components/edit/news-edit.component';
-import newsViewComponent from './components/view/news-view.component';
+import NewsListComponent from './components/list/news-list.component';
+import NewsEditComponent from './components/edit/news-edit.component';
+import NewsViewComponent from './components/view/news-view.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -9,15 +9,15 @@ import newsViewComponent from './components/view/news-view.component';
 export default class NewsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider','ProjectsServiceProvider'];
+        return ['$stateProvider', 'projectsServiceProvider'];
     }
 
     $onInit() {
-        this.ProjectsServiceProvider.registerModule({
-                url: 'projects.inner.news',
-                title: 'News',
-                name: 'news',
-                enable: false
+        this.projectsServiceProvider.registerModule({
+            url: 'projects.inner.news',
+            title: 'News',
+            name: 'news',
+            enable: false
         });
 
         this.$stateProvider
@@ -41,19 +41,19 @@ export default class NewsConfig extends InjectableBase {
             })
             .state('news-inner.list', {
                 url: '',
-                component: newsListComponent.name,
+                component: NewsListComponent.getName(),
             })
             .state('news.index', {
                 url: '/:id',
-                component: newsViewComponent.name,
+                component: NewsViewComponent.getName(),
             })
             .state('news.list', {
                 url: '',
-                component: newsListComponent.name,
+                component: NewsListComponent.getName(),
             })
             .state('news.edit', {
                 url: '/:id',
-                component: newsEditComponent.name,
+                component: NewsEditComponent.getName(),
             })
     }
 

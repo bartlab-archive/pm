@@ -9,11 +9,11 @@ import _ from 'lodash';
 export default class NewsEditController extends ControllerBase {
 
     static get $inject() {
-        return ['NewsService', '$stateParams', '$state'];
+        return ['newsService', '$stateParams', '$state'];
     }
 
     $onInit() {
-        this.NewsService.one(this.$stateParams.id).then((response) => {
+        this.newsService.one(this.$stateParams.id).then((response) => {
             this.news = response.data;
         });
     }

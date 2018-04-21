@@ -3,9 +3,9 @@
         <md-card-title>
             <md-card-title-text>
                 <span class="md-headline">Overview</span>
-                <span class="md-subhead" ng-if="$ctrl.project.homepage">
+                <span class="md-subhead" ng-if="$ctrl.project.data.homepage">
                     <md-icon>open_in_new</md-icon>
-                    <a href="{{ $ctrl.project.homepage }}" target="_blank">{{ $ctrl.project.homepage }}</a>
+                    <a href="{{ $ctrl.project.data.homepage }}" target="_blank">{{ $ctrl.project.data.homepage }}</a>
                 </span>
             </md-card-title-text>
         </md-card-title>
@@ -14,7 +14,7 @@
     </md-card>
 </div>
 
-<div layout="row" layout-align="center start" ng-if="$ctrl.project.users">
+<div layout="row" layout-align="center start" ng-if="$ctrl.project.members">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
         <md-card-title>
             <md-card-title-text>
@@ -25,17 +25,17 @@
 
         <md-list class="md-dense">
             <!-- todo: group by role -->
-            <div ng-repeat="user in $ctrl.project.users" class="animate-repeat">
-                <md-list-item class="md-2-line" ng-click="$ctrl.goToUser(user)">
+            <div ng-repeat="member in $ctrl.project.members" class="animate-repeat">
+                <md-list-item class="md-2-line" ng-click="$ctrl.goToUser(member.user)">
 
-                    <img ng-if="::user.avatar" src="{{ ::user.avatar }}" class="md-avatar">
-                    <span ng-if="::!user.avatar" class="md-avatar">{{ ::user.full_name | limitTo:1 }}</span>
+                    <img ng-if="::member.user.avatar" src="{{ ::member.user.avatar }}" class="md-avatar">
+                    <span ng-if="::!member.user.avatar" class="md-avatar">{{ ::member.user.full_name | limitTo:1 }}</span>
 
                     <div class="md-list-item-text" layout="column">
-                        <h3>{{ ::user.full_name }}</h3>
+                        <h3>{{ ::member.user.full_name }}</h3>
 
                         <h4 layout="row">
-                                project role
+                            {{ member.roles | join:', ' }}
                         </h4>
                     </div>
 

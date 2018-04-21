@@ -7,11 +7,11 @@ import ControllerBase from 'base/controller.base';
 export default class AdminIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', 'MainService'];
+        return ['$state', 'mainService'];
     }
 
     $onInit() {
-        this.list = this.MainService.getAdminMenu();
+        this.list = this.mainService.getAdminMenu();
     }
 
     goto(url) {

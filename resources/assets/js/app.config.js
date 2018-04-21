@@ -1,17 +1,18 @@
 import 'angular';
 import InjectableBase from 'base/injectable.base';
 import moment from 'moment';
+import HttpInterceptor from "interceptors/http.interceptor";
 
 /**
+ * @property {object} $showdownProvider
+ * @property {object} $mdThemingProvider
  * @property {object} $urlRouterProvider
  * @property {object} $locationProvider
- * @property {object} $authProvider
- * @property {object} $mdThemingProvider
  * @property {object} RestangularProvider
- * @property {object} $showdownProvider
- * @property {object} ScrollBarsProvider
  * @property {object} $mdDateLocaleProvider
  * @property {object} $stateProvider
+ * @property {object} $qProvider
+ * @property {object} $compileProvider
  */
 export default class AppConfig extends InjectableBase {
 
@@ -23,11 +24,11 @@ export default class AppConfig extends InjectableBase {
             '$locationProvider',
             '$authProvider',
             'RestangularProvider',
-            // 'ScrollBarsProvider',
             '$mdDateLocaleProvider',
             '$stateProvider',
             '$qProvider',
-            '$compileProvider'
+            '$compileProvider',
+            '$httpProvider'
         ];
     }
 
@@ -38,10 +39,14 @@ export default class AppConfig extends InjectableBase {
         this.restConfig();
         this.themeConfig();
         this.showdownConfig();
-        // this.scrollBarConfig();
         this.datePickerFormat();
         this.qConfig();
         this.compileConfig();
+        this.$httpConfig();
+    }
+
+    $httpConfig() {
+        this.$httpProvider.interceptors.push(HttpInterceptor.inst());
     }
 
     themeConfig() {
@@ -90,36 +95,44 @@ export default class AppConfig extends InjectableBase {
             'Content-Type': 'application/json'
         });
         this.RestangularProvider.setFullResponse(true);
+        this.RestangularProvider.addResponseInterceptor((data, operation, what, url, response, deferred) => {
+            let extractedData = data;
+
+            // if (operation === "getList" && data.hasOwnProperty('meta')) {
+            //     extractedData = data.data;
+            //     extractedData.meta = data.meta;
+            //     extractedData.links = data.links;
+            // }
+
+            if (data && data.data) {
+                extractedData = data.data;
+                Object
+                    .keys(data)
+                    .filter((value) => {
+                        return value !== 'data';
+                    })
+                    .reduce((obj, key) => {
+                        extractedData[key] = data[key];
+                        return obj;
+                    }, {});
+            }
+
+            return extractedData;
+        });
     }
 
     showdownConfig() {
-        this.$showdownProvider.setOption('simpleLineBreaks', true);
-        this.$showdownProvider.setOption('simplifiedAutoLink', true);
-        this.$showdownProvider.setOption('noHeaderId', true);
-        this.$showdownProvider.setOption('strikethrough', true);
-        this.$showdownProvider.setOption('ghCodeBlocks', true);
-        this.$showdownProvider.setOption('tasklists', true);
-        this.$showdownProvider.setOption('parseImgDimension', true);
-        this.$showdownProvider.setOption('ghMentions', true);
-        this.$showdownProvider.setOption('ghMentionsLink', '/');
+        this.$showdownProvider
+            .setOption('simpleLineBreaks', true)
+            .setOption('simplifiedAutoLink', true)
+            .setOption('noHeaderId', true)
+            .setOption('strikethrough', true)
+            .setOption('ghCodeBlocks', true)
+            .setOption('tasklists', true)
+            .setOption('parseImgDimension', true)
+            .setOption('ghMentions', true)
+            .setOption('ghMentionsLink', '/');
     }
-
-    // scrollBarConfig() {
-    //     this.ScrollBarsProvider.defaults = {
-    //         autoHideScrollbar: false,
-    //         setHeight: 200,
-    //         scrollInertia: 500,
-    //         axis: 'y',
-    //         advanced: {
-    //             updateOnContentResize: true
-    //         },
-    //         scrollButtons: {
-    //             scrollAmount: 'auto', // scroll amount when button pressed
-    //             enable: true // enable scrolling buttons by default
-    //         },
-    //         theme: 'minimal-dark'
-    //     };
-    // }
 
     datePickerFormat() {
         this.$mdDateLocaleProvider.formatDate = function (date) {
@@ -127,11 +140,11 @@ export default class AppConfig extends InjectableBase {
         };
     }
 
-    qConfig(){
+    qConfig() {
         this.$qProvider.errorOnUnhandledRejections(false);
     }
 
-    compileConfig(){
+    compileConfig() {
         // improve performance
         this.$compileProvider.debugInfoEnabled(false);
         this.$compileProvider.commentDirectivesEnabled(false);

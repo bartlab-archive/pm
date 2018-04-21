@@ -1,5 +1,5 @@
 import InjectableBase from 'base/injectable.base';
-import filesListComponent from './components/list/files-list.component';
+import FilesListComponent from './components/list/files-list.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -9,11 +9,11 @@ import filesListComponent from './components/list/files-list.component';
 export default class FilesConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'ProjectsServiceProvider', 'MainServiceProvider']
+        return ['$stateProvider', 'projectsServiceProvider', 'mainServiceProvider']
     }
 
     $onInit() {
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerNewItemMenu({
                 name: 'File',
                 url: '',
@@ -23,7 +23,7 @@ export default class FilesConfig extends InjectableBase {
                 enable: false
             });
 
-        this.ProjectsServiceProvider.registerModule({
+        this.projectsServiceProvider.registerModule({
             url: 'files-inner.files',
             title: 'Files',
             name: 'files',
@@ -38,7 +38,7 @@ export default class FilesConfig extends InjectableBase {
             })
             .state('files-inner.list', {
                 url: '',
-                component: filesListComponent.name,
+                component: FilesListComponent.getName(),
             });
     }
 

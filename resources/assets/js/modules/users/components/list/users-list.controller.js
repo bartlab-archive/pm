@@ -7,7 +7,7 @@ import ControllerBase from 'base/controller.base';
 export default class ProjectsListController extends ControllerBase {
 
     static get $inject() {
-        return ['UsersService','$state', '$rootScope', '$mdDialog'];
+        return ['usersService','$state', '$rootScope', '$mdDialog'];
     }
 
     $onInit() {
@@ -19,7 +19,7 @@ export default class ProjectsListController extends ControllerBase {
 
     load() {
         this.list = [];
-        this.UsersService.getList().then((response) => {
+        this.usersService.getList().then((response) => {
             this.list = response.data;
         });
 
@@ -41,7 +41,7 @@ export default class ProjectsListController extends ControllerBase {
             } else {
                 status = 3;
             }
-            this.UsersService.updateUserStatus(userId, {'status': status}).then((response) => {
+            this.usersService.updateUserStatus(userId, {'status': status}).then((response) => {
                 this.$rootScope.$emit('updateUsers');
             });
         });
@@ -49,7 +49,7 @@ export default class ProjectsListController extends ControllerBase {
     }
 
     sortBy() {
-        this.UsersService.getList({status: this.filterForm.myOption}).then((response) => {
+        this.usersService.getList({status: this.filterForm.myOption}).then((response) => {
             this.list = response.data;
         });
     }
@@ -67,7 +67,7 @@ export default class ProjectsListController extends ControllerBase {
             .cancel('Cancel');
 
         this.$mdDialog.show(confirm).then(() => {
-            this.UsersService.deleteUser(userId).then(() => {
+            this.usersService.deleteUser(userId).then(() => {
                 this.$rootScope.$emit('updateUsers');
             });
         });

@@ -1,7 +1,7 @@
 import InjectableBase from 'base/injectable.base';
-import adminIndexComponent from './components/index/admin-index.component';
-import adminPluginsComponent from './components/plugins/admin-plugins.component';
-import adminInfoComponent from './components/info/admin-info.component';
+import AdminIndexComponent from './components/index/admin-index.component';
+import AdminPluginsComponent from './components/plugins/admin-plugins.component';
+import AdminInfoComponent from './components/info/admin-info.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -9,12 +9,12 @@ import adminInfoComponent from './components/info/admin-info.component';
 export default class AdminConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'MainServiceProvider']
+        return ['$stateProvider', 'mainServiceProvider']
     }
 
     $onInit() {
         // todo: check user for admin status
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerAppMenu({
                 url: 'admin.index',
                 name: 'Administration',
@@ -47,15 +47,15 @@ export default class AdminConfig extends InjectableBase {
             })
             .state('admin.index', {
                 url: '',
-                component: adminIndexComponent.name,
+                component: AdminIndexComponent.getName(),
             })
             .state('admin.plugins', {
                 url: '/plugins',
-                component: adminPluginsComponent.name,
+                component: AdminPluginsComponent.getName(),
             })
             .state('admin.info', {
                 url: '/info',
-                component: adminInfoComponent.name,
+                component: AdminInfoComponent.getName(),
             });
     }
 

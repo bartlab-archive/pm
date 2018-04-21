@@ -1,5 +1,5 @@
 import InjectableBase from 'base/injectable.base';
-import enumerationsIndexComponent from './components/index/enumerations-index.component';
+import EnumerationsIndexComponent from './components/index/enumerations-index.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -8,11 +8,11 @@ import enumerationsIndexComponent from './components/index/enumerations-index.co
 export default class FieldsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'MainServiceProvider']
+        return ['$stateProvider', 'mainServiceProvider']
     }
 
     $onInit() {
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerAdminMenu({
                 name: 'Enumerations',
                 url: 'enumerations.index',
@@ -35,7 +35,7 @@ export default class FieldsConfig extends InjectableBase {
             })
             .state('enumerations.index', {
                 url: '',
-                component: enumerationsIndexComponent.name,
+                component: EnumerationsIndexComponent.getName(),
             });
     }
 

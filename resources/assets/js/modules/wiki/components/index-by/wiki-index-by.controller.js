@@ -4,14 +4,14 @@ import _ from 'lodash';
 export default class WikiIndexByController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$mdDialog', 'WikiService', '$stateParams', '$mdToast','ProjectsService'];
+        return ['$state', '$mdDialog', 'wikiService', '$stateParams', '$mdToast','projectsService'];
     }
 
     $onInit() {
         this.index_by = 'Index by';
         this.index_mode = false;
 
-        this.WikiService.getAllWikiPage(this.ProjectsService.getCurrentId()).then((response) => {
+        this.wikiService.getAllWikiPage(this.projectsService.getCurrentId()).then((response) => {
             if (!_.isEmpty(response.data)) {
 
                 this.pageList = response.data;
@@ -51,7 +51,7 @@ export default class WikiIndexByController extends ControllerBase {
                 let wikiPage = document.createElement('a');
                 wikiPage.innerHTML = page.title;
                 wikiPage.setAttribute('href', this.$state.href('wiki.page', {
-                    project_id: this.ProjectsService.getCurrentId(),
+                    project_id: this.projectsService.getCurrentId(),
                     name: page.title
                 }));
                 body.appendChild(wikiPage);
@@ -74,7 +74,7 @@ export default class WikiIndexByController extends ControllerBase {
                 let li = document.createElement('LI');
                 let a = document.createElement('A');
                 a.setAttribute('href', this.$state.href('wiki.page', {
-                    project_id: this.ProjectsService.getCurrentId(),
+                    project_id: this.projectsService.getCurrentId(),
                     name: page.title
                 }));
                 a.innerHTML = page.title;
@@ -97,7 +97,7 @@ export default class WikiIndexByController extends ControllerBase {
                 let li = document.createElement('LI');
                 let a = document.createElement('A');
                 a.setAttribute('href', this.$state.href('wiki.page', {
-                    project_id: this.ProjectsService.getCurrentId(),
+                    project_id: this.projectsService.getCurrentId(),
                     name: page.title
                 }));
                 a.innerHTML = page.title;

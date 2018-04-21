@@ -1,6 +1,6 @@
 import InjectableBase from 'base/injectable.base';
-import layoutBlankComponent from './components/blank/layout-blank.component';
-import layoutDefaultComponent from './components/default/layout-default.component';
+import LayoutBlankComponent from './components/blank/layout-blank.component';
+import LayoutDefaultComponent from './components/default/layout-default.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -15,11 +15,11 @@ export default class LayoutConfig extends InjectableBase {
         this.$stateProvider
             .state('blank', {
                 abstract: true,
-                component: layoutBlankComponent.name
+                component: LayoutBlankComponent.getName()
             })
             .state('default', {
                 abstract: true,
-                component: layoutDefaultComponent.name
+                component: LayoutDefaultComponent.getName()
             });
     }
 

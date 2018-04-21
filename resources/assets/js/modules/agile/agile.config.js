@@ -1,6 +1,6 @@
 import InjectableBase from 'base/injectable.base';
-import agileIndexComponent from './components/index/agile-index.component';
-import agileProjectSettingsComponent from './components/project-settings/agile-project-settings.component';
+import AgileIndexComponent from './components/index/agile-index.component';
+import AgileProjectSettingsComponent from './components/project-settings/agile-project-settings.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -8,11 +8,11 @@ import agileProjectSettingsComponent from './components/project-settings/agile-p
 export default class FieldsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'ProjectsServiceProvider']
+        return ['$stateProvider', 'projectsServiceProvider']
     }
 
     $onInit() {
-        this.ProjectsServiceProvider
+        this.projectsServiceProvider
             .registerModule({
                 url: 'agile.index',
                 title: 'Agile',
@@ -22,7 +22,7 @@ export default class FieldsConfig extends InjectableBase {
             .registerSettings({
                 url: 'agile',
                 name: 'Agile',
-                component: agileProjectSettingsComponent.name,
+                component: AgileProjectSettingsComponent.getName(),
                 module: 'agile'
             });
 
@@ -35,11 +35,11 @@ export default class FieldsConfig extends InjectableBase {
                 url: '/issues/agile',
                 // todo: replace to issue inner parent state
                 parent: 'projects.inner',
-                component: agileIndexComponent.name,
+                component: AgileIndexComponent.getName(),
             })
             .state('agile.index', {
                 url: '',
-                component: agileIndexComponent.name,
+                component: AgileIndexComponent.getName(),
             });
     }
 

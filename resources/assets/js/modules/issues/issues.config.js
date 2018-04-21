@@ -1,9 +1,9 @@
 import InjectableBase from 'base/injectable.base';
-import issuesListComponent from './components/list/issues-list.component';
+import IssuesListComponent from './components/list/issues-list.component';
 // import issuesEditCopyComponent from './components/edit-copy/issues-edit-copy.component';
-import issuesInfoComponent from './components/info/issues-info.component';
-import issuesFormComponent from './components/form/issues-form.component';
-import issuesProjectSettingsComponent from './components/project-settings/issues-project-settings.component';
+import IssuesInfoComponent from './components/info/issues-info.component';
+import IssuesFormComponent from './components/form/issues-form.component';
+import IssuesProjectSettingsComponent from './components/project-settings/issues-project-settings.component';
 
 /**
  * @property {object} $stateProvider
@@ -13,11 +13,11 @@ import issuesProjectSettingsComponent from './components/project-settings/issues
 export default class IssuesConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'ProjectsServiceProvider', 'MainServiceProvider'];
+        return ['$stateProvider', 'projectsServiceProvider', 'mainServiceProvider'];
     }
 
     $onInit() {
-        this.ProjectsServiceProvider
+        this.projectsServiceProvider
             .registerModule({
                 url: 'issues-inner.list',
                 title: 'Issues',
@@ -28,11 +28,11 @@ export default class IssuesConfig extends InjectableBase {
             .registerSettings({
                 url: 'categories',
                 name: 'Issue categories',
-                component: issuesProjectSettingsComponent.name,
+                component: IssuesProjectSettingsComponent.getName(),
                 module: 'issue_tracking'
             });
 
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerAdminMenu({
                 name: 'Issue statuses',
                 url: 'statuses.index',
@@ -82,11 +82,11 @@ export default class IssuesConfig extends InjectableBase {
             })
             .state('issues-inner.list', {
                 url: '',
-                component: issuesListComponent.name,
+                component: IssuesListComponent.getName(),
             })
             .state('issues-inner.new', {
                 url: '/new',
-                component: issuesFormComponent.name
+                component: IssuesFormComponent.getName()
             })
             .state('issues.list', {
                 url: '',
@@ -100,21 +100,21 @@ export default class IssuesConfig extends InjectableBase {
                         dynamic: true
                     }
                 },
-                component: issuesListComponent.name,
+                component: IssuesListComponent.getName(),
             })
             .state('issues.edit', {
                 url: '/:id/edit',
-                component: issuesFormComponent.name,
+                component: IssuesFormComponent.getName(),
                 // component: issuesEditCopyComponent.name,
             })
             .state('issues.copy', {
                 url: '/:id/copy',
-                component: issuesFormComponent.name,
+                component: IssuesFormComponent.getName(),
                 // component: issuesEditCopyComponent.name,
             })
             .state('issues.info', {
                 url: '/:id',
-                component: issuesInfoComponent.name,
+                component: IssuesInfoComponent.getName(),
             });
     }
 

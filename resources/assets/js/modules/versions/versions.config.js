@@ -1,6 +1,6 @@
 import InjectableBase from 'base/injectable.base';
-import versionsInfoComponent from './components/info/versions-info.component';
-import versionsProjectSettingsComponent from './components/project-settings/versions-project-settings.component';
+import VersionsInfoComponent from './components/info/versions-info.component';
+import VersionsProjectSettingsComponent from './components/project-settings/versions-project-settings.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -8,15 +8,15 @@ import versionsProjectSettingsComponent from './components/project-settings/vers
 export default class VersionsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'ProjectsServiceProvider'];
+        return ['$stateProvider', 'projectsServiceProvider'];
     }
 
     $onInit() {
-        this.ProjectsServiceProvider
+        this.projectsServiceProvider
             .registerSettings({
                 url: 'versions',
                 name: 'Versions',
-                component: versionsProjectSettingsComponent.name,
+                component: VersionsProjectSettingsComponent.getName(),
             });
 
         this.$stateProvider
@@ -35,7 +35,7 @@ export default class VersionsConfig extends InjectableBase {
             })
             .state('versions.info', {
                 url: '/:id',
-                component: versionsInfoComponent.name,
+                component: VersionsInfoComponent.getName(),
             })
 
     }

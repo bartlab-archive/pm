@@ -3,7 +3,7 @@ import ControllerBase from 'base/controller.base';
 export default class GroupsEditController extends ControllerBase {
 
     static get $inject() {
-      return ['UsersService', '$stateParams','$state', 'GroupsService','$mdToast', '$mdDialog', '$rootScope'];
+      return ['usersService', '$stateParams','$state', 'groupsService','$mdToast', '$mdDialog', '$rootScope'];
     }
 
     $onInit() {
@@ -11,14 +11,14 @@ export default class GroupsEditController extends ControllerBase {
     }
 
     load() {
-        this.group = this.GroupsService.one(this.$stateParams.id).then((response) => {
+        this.group = this.groupsService.one(this.$stateParams.id).then((response) => {
             this.model = response.data;
         });
     }
 
     updateGroup() {
 
-        this.GroupsService.update(this.model).then(
+        this.groupsService.update(this.model).then(
            (response) => {
                 if (response && response.status === 200) {
                     this.$mdToast.show(

@@ -1,5 +1,5 @@
 import InjectableBase from 'base/injectable.base';
-import fieldsIndexComponent from './components/index/fields-index.component';
+import FieldsIndexComponent from './components/index/fields-index.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -8,11 +8,11 @@ import fieldsIndexComponent from './components/index/fields-index.component';
 export default class FieldsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'MainServiceProvider']
+        return ['$stateProvider', 'mainServiceProvider']
     }
 
     $onInit() {
-        this.MainServiceProvider
+        this.mainServiceProvider
             .registerAdminMenu({
                 name: 'Custom fields',
                 url: 'fields.index',
@@ -35,7 +35,7 @@ export default class FieldsConfig extends InjectableBase {
             })
             .state('fields.index', {
                 url: '',
-                component: fieldsIndexComponent.name,
+                component: FieldsIndexComponent.getName(),
             });
     }
 

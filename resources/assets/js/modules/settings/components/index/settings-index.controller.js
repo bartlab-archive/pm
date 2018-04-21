@@ -6,7 +6,7 @@ import ControllerBase from 'base/controller.base';
 export default class SettingsIndexController extends ControllerBase {
 
     static get $inject() {
-        return ['$state','SettingsService'];
+        return ['$state','settingsService'];
     }
 
     $onInit() {
@@ -15,7 +15,7 @@ export default class SettingsIndexController extends ControllerBase {
 
     load() {
 
-        return  this.SettingsService.all()
+        return  this.settingsService.all()
             .getList()
             .then((response) => {
                 response.data.forEach((item)=>{
