@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class RolesResource extends Resource
+class StatusResource extends Resource
 {
     /**
      * Transform the resource collection into an array.
@@ -16,7 +16,10 @@ class RolesResource extends Resource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name
+            'name' => $this->name,
+            'is_closed' => $this->is_closed,
+            'position' => $this->position,
+            'default_done_ratio' => $this->default_done_ratio,
         ];
     }
 }

@@ -8,7 +8,7 @@ import moment from 'moment';
 export default class IssuesService extends ServiceBase {
 
     static get $inject() {
-        return ['Restangular', '$cacheFactory', '$stateParams'];
+        return ['Restangular', '$cacheFactory', '$stateParams', '$http'];
     }
 
     $onInit($injector) {
@@ -36,8 +36,9 @@ export default class IssuesService extends ServiceBase {
             .all('issues');
     }
 
-    filters() {
-        return this.Restangular.all('issues').one('filters');
+    filters(params) {
+        return this.$http.get('/api/v1/issues/filters', {params});
+        // return this.Restangular.all('issues').one('filters');
     }
 
     // getListByProject(identifier, params) {

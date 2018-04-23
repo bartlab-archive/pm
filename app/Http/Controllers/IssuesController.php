@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Issues\GetIssuesRequest;
 use App\Http\Requests\Issues\UpdateIssueRequest;
+use App\Http\Resources\PriorityResource;
+use App\Http\Resources\StatusResource;
+use App\Http\Resources\TrackerResource;
 use App\Models\Issue;
 use App\Services\EnabledModulesService;
 use App\Services\EnumerationsService;
@@ -134,12 +137,14 @@ class IssuesController extends BaseController
     {
         return response()->json(
             [
-                'statuses' => $this->statusesService->all(),
-                'trackers' => $this->trackersService->all(),
-                'priorities' => $this->enumerationsService->all([
-                    'type' => Issue::ENUMERATION_PRIORITY,
-                    'project_identifier' => $request->get('project_identifier')
-                ])
+                'statuses' => StatusResource::collection($this->statusesService->all()),
+                'trackers' => TrackerResource::collection($this->trackersService->all()),
+                'priorities' => PriorityResource::collection(
+                    $this->enumerationsService->all([
+                        'type' => Issue::ENUMERATION_PRIORITY,
+                        'project_identifier' => $request->get('project_identifier')
+                    ])
+                )
             ], 200);
     }
 

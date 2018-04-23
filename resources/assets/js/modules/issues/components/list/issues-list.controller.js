@@ -5,8 +5,8 @@ import IssuesViewModalController from '../view-modal/issues-view-modal.controlle
 /**
  * @property {$state} $state
  * @property {$showdown} $showdown
- * @property {IssuesService} IssuesService
- * @property {ProjectsService} ProjectsService
+ * @property {IssuesService} issuesService
+ * @property {ProjectsService} projectsService
  * @property {$stateParams} $stateParams
  * @property {$rootScope} $rootScope
  * @property {UsersService} $mdDialog
@@ -156,10 +156,13 @@ export default class IssuesListController extends ControllerBase {
     }
 
     loadFiltersValues() {
-        return this.issuesService.filters()
-            .get({
+        return this.issuesService
+            .filters({
                 project_identifier: this.projectsService.getCurrentId()
             })
+            // .get({
+            //     project_identifier: this.projectsService.getCurrentId()
+            // })
             .then((response) => {
                 this.statusList = response.data.statuses.map((e) => {
                     e.type = 'status';
