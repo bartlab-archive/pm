@@ -84,15 +84,18 @@ class UsersService
      * @param array $params
      * @return mixed
      */
-    public function getList($params = [])
+    public function all($params = [])
     {
-        $users = User::orderBy('firstname')->where('firstname', '!=', '');
-        if (isset($params['ids'])) {
-            $users = $users->whereIn('id', $params['ids']);
-            unset($params['ids']);
-        }
+        $users = User::query()
+            ->orderBy('firstname')
+            ->where('firstname', '!=', '');
 
-        !empty($params) ? $users = $users->where($params) : null;
+//        if (isset($params['ids'])) {
+//            $users = $users->whereIn('id', $params['ids']);
+//            unset($params['ids']);
+//        }
+//
+//        !empty($params) ? $users = $users->where($params) : null;
 
         return $users->get();
     }

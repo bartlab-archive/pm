@@ -1,53 +1,40 @@
 import ControllerBase from 'base/controller.base';
+import ProjectsService from "../../services/projects.service";
 
 /**
- * @property identifier
- * @property memberId
+ * @property project
+ * @property member
  *
  * @property {$mdDialog} $mdDialog
- * @property {ProjectsService} ProjectsService
+ * @property {ProjectsService} projectsService
  * @property {$rootScope} $rootScope
- * @property {RolesService} RolesService
+ * @property {RolesService} rolesService
+ * @property {UsersService} usersService
  */
 export default class ProjectsMemberController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdToast', '$q', '$mdDialog', 'projectsService', '$rootScope', 'rolesService', 'usersService'];
+        return ['$mdToast', '$q', '$mdDialog', '$rootScope', 'rolesService', 'usersService', 'projectsService'];
     }
 
     $onInit() {
-        // if project identifier not set - close dialog
-        // if (!this.identifier) {
-        //     this.cancel();
-        // }
-        //
-        // this.member = this.member || {id: null, roleId: null, userId: null, name: null};
-        //
-        // // user roles list
-        // this.rolesService
-        //     .getList({
-        //         builtin: 0
-        //     })
-        //     .then((response) => {
-        //         this.roles = response.data;
-        //     });
-        //
-        // // if add new member - load users list with out project members
-        // if (!this.member.id) {
-        //     this.$q.all([
-        //         this.usersService.getList(),
-        //         this.projectsService.one(this.identifier)
-        //     ]).then((response) => {
-        //         let users = response[0].data,
-        //             members = response[1].data.members;
-        //
-        //         this.users = users.filter((user) => {
-        //             return !members.some((member) => {
-        //                 return member.user_id === user.id;
-        //             });
-        //         });
-        //     });
-        // }
+        this.model = {
+            id: this.member ? this.member.id : null,
+            user: this.member ? this.member.user.id : null,
+            roles: this.member ? this.member.roles.map((role) => role.id) : []
+        };
+
+        this.rolesService.all().then((response) => {
+            this.roles = response.data.data;
+        });
+
+        this.usersService.all().then((response) => {
+            this.users = response.data.data.filter(
+                (user) => !this.project.members.some(
+                    (member) => member.user.id === user.id
+                )
+            );
+        });
     }
 
     cancel(update) {
@@ -62,13 +49,14 @@ export default class ProjectsMemberController extends ControllerBase {
     }
 
     submit() {
-        if (!this.member.id) {
+        // console.log(this.model.roles);
+        if (!this.model.id) {
             this.projectsService
-                .createMember(this.identifier, this.member.userId, this.member.roleId)
+                .addMember(this.projectsService.getCurrentId(), this.model.user, this.model.roles)
                 .then(() => this.cancel(true));
         } else {
             this.projectsService
-                .updateMember(this.member.id, this.member.roleId)
+                .updateMember(this.member.id, this.model.roles)
                 .then(() => this.cancel(true));
         }
     }

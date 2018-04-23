@@ -1,24 +1,21 @@
 import ServiceBase from 'base/service.base';
 
-/**
- * @property {Restangular} Restangular
- * @property {$cacheFactory} $cacheFactory
- */
 export default class RolesService extends ServiceBase {
 
     static get $inject() {
-        return ['Restangular', '$cacheFactory'];
+        return ['$http'];
     }
 
     $onInit($injector) {
     }
 
-    getList(params = []) {
-        return this.Restangular.all('roles').getList(params);
-    }
+    // getList(params = []) {
+    //     return this.Restangular.all('roles').getList(params);
+    // }
 
     all() {
-        return this.Restangular.all('roles');
+        return this.$http.get('/api/v1/roles');
+        // return this.Restangular.all('roles');
     }
 
 }

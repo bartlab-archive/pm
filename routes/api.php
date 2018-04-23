@@ -76,6 +76,18 @@ Route::group(
         Route::group(
             [
                 'middleware' => 'auth',
+                'prefix' => 'members'
+            ],
+            function () {
+                Route::post('/', 'MembersController@store');
+                Route::put('/{id}', 'MembersController@update');
+                Route::delete('/{id}', 'MembersController@destroy');
+            }
+        );
+
+        Route::group(
+            [
+                'middleware' => 'auth',
                 'prefix' => 'trackers'
             ],
             function () {
@@ -109,19 +121,19 @@ Route::group(
                 'prefix' => 'roles'
             ],
             function () {
-                Route::get('/', 'RolesController@getList');
+                Route::get('/', 'RolesController@index');
             }
         );
 
-        Route::group(
-            [
-                'middleware' => 'auth',
-                'prefix' => 'filters'
-            ],
-            function () {
-                Route::get('/', 'IssuesController@getIssuesFilters');
-            }
-        );
+//        Route::group(
+//            [
+//                'middleware' => 'auth',
+//                'prefix' => 'filters'
+//            ],
+//            function () {
+//                Route::get('/', 'IssuesController@getIssuesFilters');
+//            }
+//        );
 
         Route::group(
             [
@@ -160,7 +172,8 @@ Route::group(
                 'prefix' => 'users'
             ],
             function () {
-                Route::get('/', 'UsersController@getList');
+                Route::get('/', 'UsersController@index');
+
 				Route::get('/{id}', 'UsersController@getUser');
 				Route::put('/{id}/updatestatus', 'UsersController@updateUserStatus');
 				Route::put('/{id}', 'UsersController@update');

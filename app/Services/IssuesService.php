@@ -77,11 +77,19 @@ class IssuesService
 //        return false;
 //    }
 
-    public function create($data)
+    /**
+     * @param array $data
+     * @return Issue
+     */
+    public function create(array $data)
     {
         return Issue::create($data);
     }
 
+    /**
+     * @param array $params
+     * @return array
+     */
     public function all(array $params = [])
     {
         $query = Issue::with([

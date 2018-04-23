@@ -225,7 +225,7 @@ export default class UsersService extends ServiceBase {
     }
 
     static get $inject() {
-        return ['Restangular', '$cacheFactory'];
+        return ['Restangular', '$cacheFactory', '$http'];
     }
 
     $onInit($injector) {
@@ -234,6 +234,11 @@ export default class UsersService extends ServiceBase {
 
     one(identifier) {
         return this.Restangular.all('users').one(identifier).get();
+    }
+
+    all() {
+        return this.$http.get('/api/v1/users');
+        // return this.Restangular.all('roles');
     }
 
     getList(params = {}) {

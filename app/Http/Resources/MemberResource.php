@@ -15,6 +15,7 @@ class MemberResource extends Resource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'user' => UserResource::make($this->whenLoaded('user')),
             'roles' => RolesResource::collection($this->whenLoaded('roles'))
         ];

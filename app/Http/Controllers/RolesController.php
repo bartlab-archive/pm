@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Projects\ProjectExistsRequest;
+use App\Http\Resources\RolesResource;
 use App\Services\RolesService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -31,12 +32,10 @@ class RolesController extends BaseController
         $this->rolesService = $rolesService;
     }
 
-    /**
-     * @param Request $request
-     * @return mixed
-     */
-    public function getList(Request $request)
+    public function index()
     {
-        return $this->rolesService->getList($request->all());
+        return RolesResource::collection(
+            $this->rolesService->all()
+        );
     }
 }

@@ -14,26 +14,37 @@ class MemberRolesService
 {
     /**
      * Update member role
-     *
-     * @param int $memberId
-     * @param array $data
-     * @return bool
      */
-    public function update($memberId, $data)
+//    public function update($memberId, $data)
+//    {
+//        return MemberRole::where(['member_id' => $memberId])->update($data);
+//    }
+
+//    public function one($id)
+//    {
+//        return MemberRole::query()->where(['id' => $id])->first();
+//    }
+
+    public function create($memberId, array $roleIds)
     {
-        return MemberRole::where(['member_id' => $memberId])->update($data);
+        foreach ($roleIds as $roleId) {
+            MemberRole::create([
+                'member_id' => $memberId,
+                'role_id' => $roleId
+            ]);
+        }
     }
 
-    /**
-     * Create member role
-     *
-     * @param $data
-     * @return bool
-     */
-    public function create($data)
+    public function update($memberId, array $roleIds)
     {
-        $memberRole =  new MemberRole($data);
-        return $memberRole->save();
+//        MemberRole::query()->where(['member_id' => $memberId])->delete();
+        $this->destroy($memberId);
+        $this->create($memberId, $roleIds);
+    }
+
+    public function destroy($memberId)
+    {
+        MemberRole::query()->where(['member_id' => $memberId])->delete();
     }
 
     /**
@@ -42,8 +53,8 @@ class MemberRolesService
      * @param int $memberId
      * @return bool
      */
-    public function deleteByMemberId($memberId)
-    {
-        return MemberRole::where(['member_id' => $memberId])->delete();
-    }
+//    public function deleteByMemberId($memberId)
+//    {
+//        return MemberRole::where(['member_id' => $memberId])->delete();
+//    }
 }

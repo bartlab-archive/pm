@@ -1,8 +1,8 @@
 <md-dialog flex-xs="100" flex-sm="100" flex-md="50" flex-gt-md="25"
-           aria-label="{{ $ctrl.member.id ? $ctrl.member.name : 'New member' }}">
+           aria-label="{{ $ctrl.member.id ? $ctrl.member.user.full_name : 'New member' }}">
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>{{ $ctrl.member.id ? $ctrl.member.name : 'New member' }}</h2>
+            <h2>{{ $ctrl.member.id ? $ctrl.member.user.full_name : 'New member' }}</h2>
 
             <span flex></span>
 
@@ -18,9 +18,9 @@
                 <md-input-container class="md-icon-float md-block" ng-if="!$ctrl.member.id">
                     <label>Users</label>
 
-                    <md-select ng-model="$ctrl.member.userId" name="userId" required>
+                    <md-select ng-model="$ctrl.model.user" name="userId" required>
                         <md-option ng-repeat="user in $ctrl.users" ng-value="user.id">
-                            {{ user.firstname }} {{ user.lastname }}
+                            {{ user.full_name }}
                         </md-option>
                     </md-select>
 
@@ -34,7 +34,7 @@
                 <md-input-container class="md-icon-float md-block">
                     <label>Roles</label>
 
-                    <md-select ng-model="$ctrl.member.roleId" name="roleId" required>
+                    <md-select ng-model="$ctrl.model.roles" name="roleId" required multiple>
                         <md-option ng-repeat="role in $ctrl.roles" ng-value="role.id">
                             {{ role.name }}
                         </md-option>

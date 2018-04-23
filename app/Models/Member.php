@@ -15,7 +15,10 @@ class Member extends Model
 //        'project_id'
 //    ];
 
-    public $timestamps = false;
+    const CREATED_AT = 'created_on';
+    const UPDATED_AT = null;
+
+    public $timestamps = true;
 
     protected $guarded = ['id'];
 

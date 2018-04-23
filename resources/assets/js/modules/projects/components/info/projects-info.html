@@ -22,7 +22,6 @@
             </md-card-title-text>
         </md-card-title>
 
-
         <md-list class="md-dense">
             <!-- todo: group by role -->
             <div ng-repeat="member in $ctrl.project.members" class="animate-repeat">
@@ -35,7 +34,10 @@
                         <h3>{{ ::member.user.full_name }}</h3>
 
                         <h4 layout="row">
-                            {{ member.roles | join:', ' }}
+                            <span ng-repeat="role in member.roles">
+                                {{ role.name }}
+                                <span ng-if="!$last">, </span>
+                            </span>
                         </h4>
                     </div>
 

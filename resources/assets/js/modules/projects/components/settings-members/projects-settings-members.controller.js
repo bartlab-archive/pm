@@ -4,9 +4,8 @@ import projectsMemberTemplate from "../member/projects-member.html";
 // import projectsMemberComponent from '../member/projects-member.component';
 
 /**
- * @property {ProjectsService} ProjectsService
- * @property {UsersService} UsersService
- * @property {EnumerationsService} EnumerationsService
+ * @property {ProjectsService} projectsService
+ * @property {UsersService} usersService
  * @property {$stateParams} $stateParams
  * @property {$rootScope} $rootScope
  * @property {$mdDialog} $mdDialog
@@ -35,72 +34,43 @@ export default class ProjectsSettingsMembersController extends ControllerBase {
 
     }
 
-    // setMdDialogConfig(component, target, data = {}) {
-    //     // current project identifier
-    //     data.identifier = this.model.identifier;
-    //
-    //     return {
-    //         controller: component.controller,
-    //         controllerAs: '$ctrl',
-    //         bindToController: true,
-    //         locals: data,
-    //         template: component.template,
-    //         clickOutsideToClose: true,
-    //         openFrom: target,
-    //         closeTo: target,
-    //     };
-    // }
+    deleteMember(member) {
+        let confirm = this.$mdDialog.confirm()
+            .title('Do you want to delete "' + member.user.full_name + '" from project members?')
+            .ok('Delete')
+            .cancel('Cancel');
 
-    deleteMember(memberId, name) {
-        // let confirm = this.$mdDialog.confirm()
-        //     .title('Do you want to delete "' + name + '" from project members?')
-        //     .ok('Delete')
-        //     .cancel('Cancel');
-        //
-        // this.$mdDialog.show(confirm).then(() => {
-        //     this.ProjectsService
-        //         .deleteMember(memberId)
-        //         .then(() => {
-        //             this.$mdToast.show(
-        //                 this.$mdToast.simple().textContent('Success delete!').position('bottom left')
-        //             );
-        //             this.$rootScope.$emit('updateProjectInfo');
-        //         });
-        // });
+        this.$mdDialog.show(confirm)
+            .then(() => this.projectsService.deleteMember(member.id))
+            .then(() => {
+                this.$mdToast.show(
+                    this.$mdToast.simple().textContent('Success delete!').position('bottom left')
+                );
+                this.$rootScope.$emit('updateProjectInfo');
+            });
     }
 
-    editMember($event, memberId, roleId, userName) {
-        // this.$mdDialog.show(
-        //     this.setMdDialogConfig(projectsMemberComponent, $event.target, {
-        //         member: {
-        //             id: memberId,
-        //             roleId: roleId,
-        //             name: userName
-        //         }
-        //         // memberId: memberId,
-        //         // roleId: roleId,
-        //         // userName: userName
-        //     })
-        // );
+    editMember($event, member) {
+        this.$mdDialog.show(
+            this.constructor.setMdDialogConfig($event.target, {
+                project: this.params,
+                member: member
+                // selectedIssue: issue
+            })
+        );
     }
 
     addMember($event) {
         this.$mdDialog.show(
             this.constructor.setMdDialogConfig($event.target, {
+                project: this.params
                 // selectedIssue: issue
             })
         );
-
-        // this.$mdDialog.show(
-        //     this.setMdDialogConfig(projectsMemberComponent, $event.target, {
-                // identifier: this.model.identifier,
-                // currentMembers: _.map(this.members, 'user_id')
-            // })
-        // );
     }
 
-    openMember(userId) {
-        // this.$state.go('users.info', {id: userId});
+    openMember(member) {
+        this.$state.go('users.info', {id: member.user.id});
     }
 
 }

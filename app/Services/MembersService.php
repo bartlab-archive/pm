@@ -17,7 +17,7 @@ class MembersService
     public function getByProject($identifier, $with = [])
     {
 //        $list =  Member::with(['user','roles'])
-        return  Member::with($with)
+        return Member::with($with)
             ->whereHas('project', function ($query) use ($identifier) {
                 /** @var $query Builder */
                 $query->where('identifier', $identifier);
@@ -37,4 +37,21 @@ class MembersService
 //        return $list->toArray();
     }
 
+    public function one($id)
+    {
+        return Member::query()->where(['id' => $id])->first();
+    }
+
+    public function create($projectId, $userId)
+    {
+        return Member::create([
+            'project_id' => $projectId,
+            'user_id' => $userId,
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        Member::query()->where(['id' => $id])->delete();
+    }
 }

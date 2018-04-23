@@ -18,14 +18,22 @@ class RolesService
     /**
      * Get roles list
      *
-     * @param array $params
      * @return mixed
      */
-    public function getList($params = [])
+    public function all(array $params = [])
     {
-        $roles = Role::orderBy('position');
-        !empty($params) ? $roles->where($params) : null;
+        $query = Role::query()
+            ->orderBy('position');
 
-        return $roles->get();
+        if (array_get($params, 'builtin', false) === false) {
+            $query->where(['builtin' => 0]);
+        }
+
+        return $query->get();
+    }
+
+    public function one($id)
+    {
+        return Role::query()->where(['id' => $id])->first();
     }
 }
