@@ -66,10 +66,11 @@ class ProjectsService
 //        ];
     }
 
-    public function one($identifier)
+    public function one($identifier, $with = [])
     {
         return Project::query()
             ->where('identifier', $identifier)
+            ->with($with)
 //            ->with([
 //                'enabledModules',
 //                'users'

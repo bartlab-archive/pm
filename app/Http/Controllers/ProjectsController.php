@@ -50,31 +50,32 @@ class ProjectsController extends BaseController
 
     public function show($identifier)
     {
-        if (!$project = $this->projectsService->one($identifier)) {
+        if (!$project = $this->projectsService->one($identifier, ['members.user', 'members.roles', 'enabledModules'])) {
             abort(404);
         }
 
         // todo: check project status
 
-        return ProjectResource::make($project)
-            ->additional([
-                'modules' => ModuleResource::collection(
-                    $this->enabledModulesService->getEnabledByProject($identifier)
-                ),
-                'members' => MemberResource::collection(
-                    $this->membersService->getByProject($identifier, ['user', 'roles'])
-                )
-            ]);
+        return ProjectResource::make($project);
+//            ->additional([
+//                'modules' => ModuleResource::collection(
+//                    $this->enabledModulesService->getEnabledByProject($identifier)
+//                ),
+//                'members' => MemberResource::collection(
+//                    $this->membersService->getByProject($identifier, ['user', 'roles'])
+//                )
+//            ]);
     }
 
     public function store(StoreProjectRequest $request)
     {
-        return ProjectResource::make(
-            $this->projectsService->create($request->all())
-        );
+//        return ProjectResource::make(
+        $this->projectsService->create($request->all());
+//        );
     }
 
-    public function update($identifier){
+    public function update($identifier)
+    {
 //        return '123';
     }
 }

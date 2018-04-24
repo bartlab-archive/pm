@@ -16,8 +16,8 @@ class ModuleResource extends Resource
     {
         return [
             'name' => $this->name,
-            'title' => $this->title,
-            'enabled' => $this->enabled
+//            'title' => $this->title,
+//            'enabled' => $this->enabled
         ];
     }
 }

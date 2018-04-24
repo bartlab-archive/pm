@@ -48,24 +48,20 @@ class EnabledModulesService
             ->get();
     }
 
-    public function getEnabledByProject(string $identifier)
-    {
-//        $collection = [];
-        $list = $this->getByProject($identifier)
-            ->pluck('name')
-            ->all();
-
-//        foreach ($this->availableList() as $item){
-//            $item->enabled = \in_array($item->name, $list, true);
-//        }
-        return collect(\array_map(
-            function ($item) use ($list) {
-                $item->enabled = \in_array($item->name, $list, true);
-                return $item;
-            },
-            $this->availableList()->toArray()
-        ));
-    }
+//    public function getEnabledByProject(string $identifier)
+//    {
+//        $list = $this->getByProject($identifier)
+//            ->pluck('name')
+//            ->all();
+//
+//        return collect(\array_map(
+//            function ($item) use ($list) {
+//                $item->enabled = \in_array($item->name, $list, true);
+//                return $item;
+//            },
+//            $this->availableList()->toArray()
+//        ));
+//    }
 
     /**
      * Check module state for project
@@ -82,16 +78,17 @@ class EnabledModulesService
     public function update(string $identifier, array $data)
     {
         $list = $this->getByProject($identifier)->pluck('name')->all();
+
         if (!$project = $this->projectService->one($identifier)) {
             return;
         }
 
         foreach ($data as $module) {
-            if ($module['enabled'] && !\in_array($module['name'], $list, true)) {
+            if (!empty($module['enable']) && !\in_array($module['name'], $list, true)) {
                 EnabledModule::create(['project_id' => $project->id, 'name' => $module['name']]);
             }
 
-            if (!$module['enabled'] && \in_array($module['name'], $list, true)) {
+            if (empty($module['enable']) && \in_array($module['name'], $list, true)) {
                 EnabledModule::query()
                     ->where(['project_id' => $project->id, 'name' => $module['name']])
                     ->delete();

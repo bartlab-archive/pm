@@ -13,39 +13,10 @@ import InjectableBase from "base/injectable.base";
 export default class ProjectsService extends InjectableBase {
 
     static get $inject() {
-        return ['Restangular', '$cacheFactory', '$stateParams', '$rootScope', '$http'];
+        return ['$stateParams', '$http'];
     }
 
     $onInit() {
-        // console.log(this,this.constructor.provider,this.provider);
-        // console.log('ProjectsService');
-        // this.cache = this.$cacheFactory(this.name);
-        // this.project = {};
-
-        // this.rest = this.Restangular
-        // .setDefaultHttpFields({cache: true})
-        //     .setRestangularFields({
-        //         id: 'identifier'
-        //     })
-        //     .addResponseInterceptor((data, operation, what, url, response, deferred) => {
-        //         if (operation === 'put') {
-        //             // console.log('updateProjectInfo');
-        //             this.$rootScope.$emit('updateProjectInfo');
-        //         }
-        //         // console.log(operation);
-        //         return data;
-        //     })
-        //     .setRequestInterceptor((element, operation, route, url) => {
-        //         // delete(element.identifier);
-        //         if (operation === 'put' || operation === 'post') {
-        //             element.modules ? delete(element.modules) : '';
-        //             element.members ? delete(element.members) : '';
-        //         }
-        //
-        //         return element;
-        //     })
-        // .withConfig((...args) => this.config(...args))
-        // .all('projects');
     }
 
     getModules() {
@@ -55,7 +26,7 @@ export default class ProjectsService extends InjectableBase {
                 url: 'projects.inner.info',
                 title: 'Overview'
             }],
-            this.modules,
+            this.modules.map((module) => Object.assign({}, module)),
             [{
                 url: 'projects.inner.settings',
                 title: 'Settings'
@@ -76,10 +47,10 @@ export default class ProjectsService extends InjectableBase {
         // return this.rest;
     }
 
-    enabledModules(id) {
-        return this.$http.get('/api/v1/modules/' + id);
+    // enabledModules(id) {
+    //     return this.$http.get('/api/v1/modules/' + id);
         // return this.rest.one(id).all('modules');
-    }
+    // }
 
     updateModules(id, modules) {
         return this.$http.put('/api/v1/modules/' + id, modules);

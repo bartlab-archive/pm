@@ -27,8 +27,10 @@ class ProjectResource extends Resource
             'identifier' => $this->identifier,
             'status' => $this->status,
             'is_my' => $this->is_my,
-            'users' => UserResource::collection($this->whenLoaded('users')),
+            'members' => MemberResource::collection($this->whenLoaded('members')),
+//        'members'=>$this->members,
             'trackers' => TrackerResource::collection($this->whenLoaded('trackers')),
+            'modules' => ModuleResource::collection($this->whenLoaded('enabledModules')),
         ];
     }
 }

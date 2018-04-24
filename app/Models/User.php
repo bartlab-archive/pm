@@ -75,10 +75,10 @@ class User extends Authenticatable
         return $this->hasMany(EmailAddress::class)->where('is_default', false);
     }
 
-    public function attachments()
-    {
-        return $this->hasMany(Attachment::class, 'author_id', 'id');
-    }
+//    public function attachments()
+//    {
+//        return $this->hasMany(Attachment::class, 'author_id', 'id');
+//    }
 
     public function preference()
     {

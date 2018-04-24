@@ -21,61 +21,7 @@ class IssuesService
             ->where('id', $id)
             ->with(['tracker', 'assigned', 'author', 'project', 'child'])
             ->first();
-
-//        return $issue;
     }
-
-//    public function update($id, array $data)
-//    {
-//        if ($issue = Issue::query()->where('id', $id)->firstOrFail()) {
-//            /**
-//             * @var Journal $journal
-//             */
-//            $journal = $this->journalsService->create([
-//                'notes' => isset($data['notes']) ? $data['notes'] : null,
-//                'journalized_type' => 'Issue',
-//                'journalized_id' => $issue->id,
-//                'user_id' => Auth::user()->id,
-//                'created_on' => date('Y-m-d H:i:s')
-//            ]);
-//            unset($data['notes']);
-//
-//            $fields = [
-//                'tracker_id',
-//                'project_id',
-//                'status_id',
-//                'assigned_to_id',
-//                'done_ratio',
-//                'project_id',
-//                'priority_id',
-//                'priority_id',
-//                'subject',
-//                'estimated_hours',
-//                'description',
-//                'due_date',
-//                'is_private',
-//                'parent_id',
-//                'start_date'
-//            ];
-//
-//            foreach ($fields as $field) {
-//                if (isset($data[$field]) && $issue[$field] != $data[$field]) {
-//                    $this->journalDetailsService->create([
-//                        'journal_id' => $journal->id,
-//                        'property' => 'attr',
-//                        'prop_key' => $field,
-//                        'old_value' => $issue[$field],
-//                        'value' => $data[$field]
-//                    ]);
-//                }
-//            }
-//
-//            $issue->update($data);
-//            return $issue;
-//        }
-//
-//        return false;
-//    }
 
     /**
      * @param array $data
@@ -91,7 +37,9 @@ class IssuesService
         $query = Issue::with([
             'tracker',
             'project',
-            'project.users',
+            'project.members',
+            'project.members.user',
+            'project.members.roles',
             'project.trackers',
             'assigned',
             'author',

@@ -70,9 +70,10 @@ class Project extends Model
         return $this->hasMany(EnabledModule::class);
     }
 
-    public function users()
+    public function members()
     {
-        return $this->belongsToMany(User::class, Member::getTableName());
+//        return $this->belongsToMany(User::class, Member::getTableName());
+        return $this->hasMany(Member::class);
     }
 
     public function parent()
@@ -82,6 +83,6 @@ class Project extends Model
 
     public function getIsMyAttribute()
     {
-        return (Auth::guest() ? false : $this->users()->where('user_id', Auth::user()->id)->exists());
+        return (Auth::guest() ? false : $this->members()->where('user_id', Auth::user()->id)->exists());
     }
 }

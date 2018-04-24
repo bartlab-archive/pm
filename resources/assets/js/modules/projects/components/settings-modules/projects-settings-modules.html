@@ -1,9 +1,9 @@
 <!--<md-content class="md-padding">-->
 <div class="md-padding">
     <md-list>
-        <md-list-item ng-repeat="item in ::$ctrl.params.modules">
+        <md-list-item ng-repeat="item in ::$ctrl.modules">
             <p> {{ ::item.title }} </p>
-            <md-switch class="md-secondary" ng-model="$ctrl.params.modules[$index].enabled"></md-switch>
+            <md-switch class="md-secondary" ng-model="$ctrl.modules[$index].enable"></md-switch>
         </md-list-item>
     </md-list>
 </div>

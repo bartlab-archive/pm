@@ -16,7 +16,7 @@ export default class ProjectsSettingsController extends ControllerBase {
     $onInit() {
         // settings tabs
         this.settingsTabs = this.projectsService.getSettings().map((e) => {
-            e.componentTag = '<' + _.kebabCase(e.component) + ' params="$ctrl.data" />';
+            e.componentTag = '<' + _.kebabCase(e.component) + ' params="$ctrl.model" />';
 
             // disable module, that need enabled state
             e.enable = !e.module;
@@ -36,10 +36,10 @@ export default class ProjectsSettingsController extends ControllerBase {
         this.projectsService.one(this.$stateParams.project_id)
             .then((response) => {
                 this.model = response.data.data;
-                this.data = response.data;
+                // this.data = response.data;
 
                 this.settingsTabs.forEach((item) => {
-                    item.enable = !item.module || response.data.modules.some(($m) => $m.name === item.module && $m.enabled === true);
+                    item.enable = !item.module || this.model.modules.some(($m) => $m.name === item.module);
                 });
             });
     }

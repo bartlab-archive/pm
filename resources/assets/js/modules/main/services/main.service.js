@@ -19,7 +19,7 @@ export default class MainService extends InjectableBase {
     }
 
     getNewItemMenu() {
-        return this.newItemMenu;
+        return this.newItemMenu.map((item) => Object.assign({}, item));
     }
 
     getAdminMenu() {

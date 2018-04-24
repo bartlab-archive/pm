@@ -88,12 +88,12 @@ export default class LayoutDefaultController extends ControllerBase {
 
         if (projectIdentifier) {
             this.projectsService.one(projectIdentifier).then((response) => {
-                let modules = _.get(response, 'data.modules', []);
+                let modules = _.get(response, 'data.data.modules', []);
 
                 // change visible items in project menu
                 this.projectItems.forEach((item) => {
                     if (item.name) {
-                        item.enable = modules.some((value) => value.name === item.name && value.enabled === true);
+                        item.enable = modules.some((value) => value.name === item.name);
                     }
                 });
 
