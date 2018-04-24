@@ -73,10 +73,16 @@ export default class IssuesListController extends ControllerBase {
 
         // pagination
         this.perPageList = [20, 50, 100];
-        this.count = 0;
-        this.offset = 0;
+        // this.count = 0;
+        // this.offset = 0;
+        // this.limitPerPage = this.perPageList[0];
+        // this.pager = '';
+        this.meta = {
+            current_page: 1,
+            total: 0
+        };
         this.limitPerPage = this.perPageList[0];
-        this.pager = '';
+        this.links = {};
 
         // issues list
         this.list = [];
@@ -122,11 +128,14 @@ export default class IssuesListController extends ControllerBase {
         this.loadProccess = true;
         this.list = [];
 
-        return this.issuesService.all()
-            .getList({
+        return this.issuesService//.all()
+            .all({
                 project_identifier: this.projectsService.getCurrentId(),
-                limit: this.limitPerPage,
-                offset: this.offset,
+                // limit: this.limitPerPage,
+                // offset: this.offset,
+                per_page: this.limitPerPage,
+                page: this.meta.current_page,
+
                 order: this.sort.param,
                 group: this.groupBy.param,
                 'status_ids[]': this.tags.filter((e) => e.type === 'status').map((e) => e.id),
@@ -136,12 +145,14 @@ export default class IssuesListController extends ControllerBase {
                 'author_ids[]': this.tags.filter((e) => e.type === 'created').map((e) => e.id)
             })
             .then((response) => {
-                this.list = response.data;
-                this.offset = parseInt(response.headers('X-Offset')) || 0;
-                this.limitPerPage = parseInt(response.headers('X-Limit')) || 0;
-                this.count = parseInt(response.headers('X-Total')) || 0;
-                this.groupsInfo = response.groups;
-                this.pager = this.getPager();
+                this.list = response.data.data;
+                // this.offset = parseInt(response.headers('X-Offset')) || 0;
+                // this.limitPerPage = parseInt(response.headers('X-Limit')) || 0;
+                // this.count = parseInt(response.headers('X-Total')) || 0;
+                this.meta = response.data.meta;
+                this.links = response.data.links;
+                this.groupsInfo = response.data.groups;
+                // this.pager = this.getPager();
                 this.loadProccess = false;
             });
     }
@@ -151,7 +162,7 @@ export default class IssuesListController extends ControllerBase {
     // }
 
     onChangeFilterValue() {
-        this.offset = 0;
+        this.meta.current_page = 1;
         this.load();
     }
 
@@ -270,44 +281,58 @@ export default class IssuesListController extends ControllerBase {
 
     setSort(item) {
         this.sort = item;
-        this.offset = 0;
+        this.meta.current_page = 1;
         this.load();
     }
 
     setGroupBy(item) {
         this.groupBy = item;
-        this.offset = 0;
+        this.meta.current_page = 1;
         this.load();
     }
 
     setLimitPerPage(count) {
         this.limitPerPage = count;
-        this.offset = 0;
+        this.meta.current_page = 1;
         this.load();
     }
 
+    // next() {
+    //     if (this.offset + this.limitPerPage < this.count) {
+    //         this.offset += this.limitPerPage;
+    //         this.load();
+    //     }
+    // }
+    //
+    // previous() {
+    //     if (this.offset > 0) {
+    //         this.offset = this.offset - this.limitPerPage;
+    //         this.load();
+    //     }
+    // }
+
     next() {
-        if (this.offset + this.limitPerPage < this.count) {
-            this.offset += this.limitPerPage;
+        if (this.links.next) {
+            this.meta.current_page++;
             this.load();
         }
     }
 
     previous() {
-        if (this.offset > 0) {
-            this.offset = this.offset - this.limitPerPage;
+        if (this.links.prev) {
+            this.meta.current_page--;
             this.load();
         }
     }
 
-    getPager() {
-        const currentPage = (this.offset === 0 ? this.offset + 1 : this.offset);
-        const fromPage = (this.count < this.limitPerPage || this.count < this.offset + this.limitPerPage) ?
-            this.count : this.limitPerPage + this.offset;
-        const all = (this.count > this.limitPerPage ? ' /' + this.count : '');
-
-        return currentPage + '-' + fromPage + all;
-    }
+    // getPager() {
+    //     const currentPage = (this.offset === 0 ? this.offset + 1 : this.offset);
+    //     const fromPage = (this.count < this.limitPerPage || this.count < this.offset + this.limitPerPage) ?
+    //         this.count : this.limitPerPage + this.offset;
+    //     const all = (this.count > this.limitPerPage ? ' /' + this.count : '');
+    //
+    //     return currentPage + '-' + fromPage + all;
+    // }
 
     openIssue(id) {
         this.$state.go('issues.info', {id: id});

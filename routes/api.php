@@ -154,7 +154,7 @@ Route::group(
             ],
             function () {
                 // todo: no valid resources (actions) name?
-                Route::get('/', 'IssuesController@all');
+                Route::get('/', 'IssuesController@index');
                 Route::post('/', 'IssuesController@create');
                 Route::get('/filters', 'IssuesController@filters');
                 Route::get('/{id}', 'IssuesController@one');

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Issues\GetIssuesRequest;
 use App\Http\Requests\Issues\UpdateIssueRequest;
+use App\Http\Resources\IssueCollection;
+use App\Http\Resources\IssueResource;
 use App\Http\Resources\PriorityResource;
 use App\Http\Resources\StatusResource;
 use App\Http\Resources\TrackerResource;
@@ -95,7 +97,7 @@ class IssuesController extends BaseController
         return response()->json($issue, 200);
     }
 
-    public function all(GetIssuesRequest $request)
+    public function index(GetIssuesRequest $request)
     {
         if ($projectIdentifier = $request->get('project_identifier')) {
             if (!$project = $this->projectsService->one($projectIdentifier)) {
@@ -109,43 +111,29 @@ class IssuesController extends BaseController
              *  - is user allow to view issue
              *  - project status
              */
-            if (!$this->enabledModulesService->check(
-                $project->identifier,
-                $this->issueService::MODULE_NAME
-            )) {
+            if (!$this->enabledModulesService->check($project->identifier, $this->issueService::MODULE_NAME)) {
                 return abort(403);
             }
         }
 
         // todo: get only needed fields from request
-        $data = $this->issueService->all($request->all());
-
-        return response()
-            ->json([
-                'list' => $data['list'],
-                // todo: move groups info to headers?
-                'groups' => $data['groups']
-            ], 200)
-            ->withHeaders([
-                'X-Total' => $data['total'],
-                'X-Limit' => $data['limit'],
-                'X-Offset' => $data['offset'],
-            ]);
+        return IssueCollection::make(
+            $this->issueService->all($request->all())
+        );
     }
 
     public function filters(Request $request)
     {
-        return response()->json(
-            [
-                'statuses' => StatusResource::collection($this->statusesService->all()),
-                'trackers' => TrackerResource::collection($this->trackersService->all()),
-                'priorities' => PriorityResource::collection(
-                    $this->enumerationsService->all([
-                        'type' => Issue::ENUMERATION_PRIORITY,
-                        'project_identifier' => $request->get('project_identifier')
-                    ])
-                )
-            ], 200);
+        return response([
+            'statuses' => StatusResource::collection($this->statusesService->all()),
+            'trackers' => TrackerResource::collection($this->trackersService->all()),
+            'priorities' => PriorityResource::collection(
+                $this->enumerationsService->all([
+                    'type' => Issue::ENUMERATION_PRIORITY,
+                    'project_identifier' => $request->get('project_identifier')
+                ])
+            )
+        ]);
     }
 
     public function create(UpdateIssueRequest $request)

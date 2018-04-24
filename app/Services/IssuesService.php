@@ -86,10 +86,6 @@ class IssuesService
         return Issue::create($data);
     }
 
-    /**
-     * @param array $params
-     * @return array
-     */
     public function all(array $params = [])
     {
         $query = Issue::with([
@@ -178,7 +174,7 @@ class IssuesService
         }
 
         if ($order = array_get($params, 'order', ['updated_on' => 'desc'])) {
-            if (is_string($order) && count($split = explode(':', $order)) == 2) {
+            if (\is_string($order) && \count($split = explode(':', $order)) === 2) {
                 $order = [$split[0] => $split[1]];
             }
 
@@ -188,24 +184,33 @@ class IssuesService
             }
         }
 
-        $total = $query->count();
-        $limit = array_get($params, 'limit', 20);
-        $offset = array_get($params, 'offset', 0);
+//        $total = $query->count();
+//        $limit = array_get($params, 'limit', 20);
+//        $offset = array_get($params, 'offset', 0);
+//
+//        if ($offset > 0 && $offset >= $total) {
+//            $offset = $offset - $limit;
+//        }
+        $data = $query->paginate(array_get($params, 'per_page', 20));
+        $data->groups = $groupCount;
 
-        if ($offset > 0 && $offset >= $total) {
-            $offset = $offset - $limit;
-        }
+        return $data;
 
-        return [
-            'total' => $total,
-            'limit' => $limit,
-            'offset' => $offset,
-            'groups' => $groupCount,
-            'list' => $query
-                ->offset($offset)
-                ->limit($limit)
-                ->get()
-        ];
+//        return [
+//            'groups' => $groupCount,
+//            'list' => $query->paginate(array_get($params, 'per_page', 20))
+//        ];
+
+//        return [
+//            'total' => $total,
+//            'limit' => $limit,
+//            'offset' => $offset,
+//            'groups' => $groupCount,
+//            'list' => $query
+//                ->offset($offset)
+//                ->limit($limit)
+//                ->get()
+//        ];
     }
 
     /**

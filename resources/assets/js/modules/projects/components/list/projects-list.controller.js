@@ -35,7 +35,7 @@ export default class ProjectsListController extends ControllerBase {
             total: 0
         };
         this.limitPerPage = this.perPageList[0];
-        this.links = '';
+        this.links = {};
         // this.pager = '';
 
         this.loadProccess = false;
@@ -87,13 +87,13 @@ export default class ProjectsListController extends ControllerBase {
 
     setSort(item) {
         this.sort = item;
-        this.offset = 0;
+        this.meta.current_page = 1;
         this.load();
     }
 
     setLimitPerPage(count) {
         this.limitPerPage = count;
-        this.offset = 0;
+        this.meta.current_page = 1;
         this.load();
     }
 

@@ -30,10 +30,11 @@ export default class IssuesService extends ServiceBase {
         return this.Restangular.one('issues', id);
     }
 
-    all() {
-        return this.Restangular
-            .withConfig((...args) => this.config(...args))
-            .all('issues');
+    all(params) {
+        // return this.Restangular
+        //     .withConfig((...args) => this.config(...args))
+        //     .all('issues');
+        return this.$http.get('/api/v1/issues', {params});
     }
 
     filters(params) {

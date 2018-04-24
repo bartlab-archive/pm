@@ -61,8 +61,8 @@ class User extends Authenticatable
 //    ];
 
     protected $appends = [
-        'avatar',
-        'full_name'
+//        'avatar',
+//        'full_name'
     ];
 
     public function email()
@@ -103,7 +103,7 @@ class User extends Authenticatable
     public function getAvatarAttribute()
     {
         // todo: need check system config for avatar src
-        return '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email->address)));
+        return $this->email ? '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email->address))) : '';
     }
 
     public function getFullNameAttribute()

@@ -31,10 +31,10 @@
                 </md-menu>
             </md-menu-bar>
 
-            <div ng-if="$ctrl.selectedGroup.length === 0 && $ctrl.count > 0">
+            <div ng-if="$ctrl.selectedGroup.length === 0 && $ctrl.meta.total > 0">
                 <md-menu>
                     <md-button class="card-button" ng-click="$mdMenu.open()">
-                        {{ $ctrl.pager }}
+                        {{ $ctrl.meta.from + ' - ' + $ctrl.meta.to + ' / ' + $ctrl.meta.total }}
                     </md-button>
                     <md-menu-content>
                         <md-menu-item ng-repeat="item in ::$ctrl.perPageList">
@@ -47,13 +47,14 @@
 
                 <md-button
                         ng-click="$ctrl.previous()"
-                        ng-disabled="$ctrl.offset === 0 || $ctrl.loadProccess" class="md-icon-button">
+                        ng-disabled="!$ctrl.links.prev || $ctrl.loadProccess"
+                        class="md-icon-button">
                     <md-icon>keyboard_arrow_left</md-icon>
                 </md-button>
 
                 <md-button
                         ng-click="$ctrl.next()"
-                        ng-disabled="($ctrl.offset + $ctrl.limitPerPage >= $ctrl.count)  || $ctrl.loadProccess"
+                        ng-disabled="!$ctrl.links.next || $ctrl.loadProccess"
                         class="md-icon-button">
                     <md-icon>keyboard_arrow_right</md-icon>
                 </md-button>
@@ -163,7 +164,7 @@
                     <md-checkbox ng-model="row.selected" ng-change="$ctrl.onSelectIssue(row)"
                                  aria-label="Select issue"></md-checkbox>
 
-                    <img ng-if="::row.assigned.avatar" src="{{ ::row.assigned.avatar }}" class="md-avatar">
+                    <img ng-if="::row.assigned.avatar" ng-src="{{ ::row.assigned.avatar }}" class="md-avatar">
                     <span ng-if="::!row.assigned.avatar" class="md-avatar">{{ ::row.subject | limitTo:1 }}</span>
 
                     <div class="md-list-item-text" layout="column">
