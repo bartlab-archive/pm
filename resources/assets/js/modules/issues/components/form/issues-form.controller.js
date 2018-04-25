@@ -12,38 +12,29 @@ import ControllerBase from 'base/controller.base';
 export default class IssuesFormController extends ControllerBase {
 
     static get $inject() {
-        return ['issuesService', '$state', '$stateParams', '$window', 'projectsService'];
+        return ['issuesService', '$state', '$stateParams', '$window', 'projectsService', '$rootScope'];
     }
 
     $onInit() {
-        // this.IssuesService.filters()
-        //     .get({
-        //         project_identifier: this.currentProjectId()
-        //     })
-        //     .then((response) => {
-        //
-        //         this.params = response.data;
-        //
-        //         if (this.$stateParams.hasOwnProperty('id')) {
-        //             this.IssuesService.one(this.$stateParams.project_id).then((response) => {
-        //
-        //             });
-        //         }
-        //     });
+        this.load();
+    }
 
+    load() {
+        if (this.$stateParams.id) {
+            this.issuesService.one(this.$stateParams.id)
+                .then((response) => {
+                    this.issue = response.data.data;
+                    this.projectsService.setCurrentId(this.issue.project.identifier);
+                    this.$rootScope.$emit('updateProjectInfo');
+                });
+        }
 
-        // this.issue = {
-        //     done:0
-        // };
-        // this.error = true;
-        // this.usersList = [];
-        // this.trackersList = [];
-        // this.projectsList = [];
-        // this.statusesList = [];
-        // this.categoriesList = [];
-        // this.prioritiesList = [];
-        //
-        // this.init();
+        // if (!this.$stateParams.id || !this.projectId) {
+            this.projectsService.all()
+                .then((response) => {
+                    this.projects = response.data.data;
+                });
+        // }
     }
 
     // currentProjectId() {
@@ -98,13 +89,13 @@ export default class IssuesFormController extends ControllerBase {
     //         || !this.issue.assigned_to_id;
     // }
 
-    cancel() {
-        const id = this.projectsService.getCurrentId();
-
-        this.$state.go(
-            'issues' + (id ? '-inner' : '') + '.list',
-            (id ? {project_id: id} : null)
-        );
-    }
+    // cancel() {
+    //     const id = this.projectsService.getCurrentId();
+    //
+    //     this.$state.go(
+    //         'issues' + (id ? '-inner' : '') + '.list',
+    //         (id ? {project_id: id} : null)
+    //     );
+    // }
 
 }

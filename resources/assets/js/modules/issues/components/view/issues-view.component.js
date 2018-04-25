@@ -9,7 +9,7 @@ export default class IssuesViewComponent extends ComponentBase {
         return IssuesViewController;
     }
 
-    static get v() {
+    static get template() {
         return issuesViewTemplate;
     }
 

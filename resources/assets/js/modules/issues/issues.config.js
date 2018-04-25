@@ -7,8 +7,8 @@ import IssuesProjectSettingsComponent from './components/project-settings/issues
 
 /**
  * @property {object} $stateProvider
- * @property {object} ProjectsServiceProvider
- * @property {object} MainServiceProvider
+ * @property {object} projectsServiceProvider
+ * @property {object} mainServiceProvider
  */
 export default class IssuesConfig extends InjectableBase {
 
@@ -48,7 +48,7 @@ export default class IssuesConfig extends InjectableBase {
                 url: 'issues-inner.new',
                 icon: 'create',
                 module: 'issue_tracking',
-                single: true,
+                single: 'issues.new',
                 enable: false
             })
             .registerNewItemMenu({
@@ -83,6 +83,10 @@ export default class IssuesConfig extends InjectableBase {
             .state('issues-inner.list', {
                 url: '',
                 component: IssuesListComponent.getName(),
+            })
+            .state('issues.new', {
+                url: '/new',
+                component: IssuesFormComponent.getName()
             })
             .state('issues-inner.new', {
                 url: '/new',

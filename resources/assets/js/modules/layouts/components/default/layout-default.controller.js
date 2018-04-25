@@ -34,7 +34,7 @@ export default class LayoutDefaultController extends ControllerBase {
         this.$rootScope.$on('updateProjectInfo', () => this.loadProjectInfo());
     }
 
-    setTitle(title){
+    setTitle(title) {
         // todo: get title from config
         this.title = title || 'MaybeWorks PM';
     }
@@ -75,11 +75,25 @@ export default class LayoutDefaultController extends ControllerBase {
         this.toggle();
     }
 
-    goto(url) {
+    openProjectPage(item){
         const projectId = this.projectsService.getCurrentId();
 
-        projectId ? this.$state.go(url, {project_id: projectId}) : null;
-        _.includes(['projects.new'], url) ? this.$state.go(url, {}) : null;
+        if (projectId){
+            this.$state.go(item.url, {project_id: projectId})
+        }
+    }
+
+    openNewItemPage(item) {
+        const projectId = this.projectsService.getCurrentId();
+        const url = projectId || typeof item.single !== 'string' ? item.url : item.single;
+
+        this.$state.go(
+            url,
+            projectId ? {project_id: projectId} : undefined
+        );
+
+        // projectId ? this.$state.go(item.url, {project_id: projectId}) : null;
+        // _.includes(['projects.new'], item.url) ? this.$state.go(url, {}) : null;
     }
 
     loadProjectInfo() {
@@ -109,7 +123,7 @@ export default class LayoutDefaultController extends ControllerBase {
             });
         } else {
             this.newItems.forEach((item) => {
-                item.enable = (item.single && this.$state.current.name !== item.url);
+                item.enable = (item.single && (this.$state.current.name !== item.url && this.$state.current.name !== item.single ));
             });
 
             this.setTitle();

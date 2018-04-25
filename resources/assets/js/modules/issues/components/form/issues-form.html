@@ -13,7 +13,7 @@
             <form name="editIssue">
                 <md-input-container class="md-block">
                     <label for="subject">Subject</label>
-                    <input id="subject" name="subject" ng-blur="$ctrl.validate()" ng-model="$ctrl.issue.subject"
+                    <input id="subject" name="subject" ng-model="$ctrl.issue.subject"
                            required>
                     <div ng-messages="editIssue.subject.$error">
                         <div ng-message="required">This field can't be blank.</div>
@@ -23,8 +23,8 @@
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
                         <label>Project</label>
-                        <md-select ng-model="$ctrl.issue.project_id" ng-change="$ctrl.validate()" required>
-                            <md-option ng-repeat="item in $ctrl.projectsList" ng-value="item.id">
+                        <md-select ng-model="$ctrl.issue.project_id" required>
+                            <md-option ng-repeat="item in $ctrl.projects" ng-value="item.id">
                                 {{ item.name }}
                             </md-option>
                         </md-select>
@@ -32,7 +32,7 @@
 
                     <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
                         <label>Tracker</label>
-                        <md-select ng-model="$ctrl.issue.tracker_id" ng-change="$ctrl.validate()" required>
+                        <md-select ng-model="$ctrl.issue.tracker_id" required>
                             <md-option ng-repeat="item in $ctrl.trackersList" ng-value="item.id">
                                 {{ item.name }}
                             </md-option>
@@ -43,7 +43,7 @@
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
                         <label>Status</label>
-                        <md-select ng-model="$ctrl.issue.status_id" ng-change="$ctrl.validate()" required>
+                        <md-select ng-model="$ctrl.issue.status_id" required>
                             <md-option ng-repeat="item in $ctrl.statusesList" ng-value="item.id">
                                 {{ item.name }}
                             </md-option>
@@ -52,7 +52,7 @@
 
                     <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
                         <label>Priority</label>
-                        <md-select ng-model="$ctrl.issue.priority_id" ng-change="$ctrl.validate()" required>
+                        <md-select ng-model="$ctrl.issue.priority_id" required>
                             <md-option ng-repeat="item in $ctrl.prioritiesList" ng-value="item.id">
                                 {{ item.name }}
                             </md-option>
@@ -63,7 +63,7 @@
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
                         <label>Assignee</label>
-                        <md-select ng-model="$ctrl.issue.assigned_to_id" ng-change="$ctrl.validate()">
+                        <md-select ng-model="$ctrl.issue.assigned_to_id">
                             <md-option ng-repeat="member in $ctrl.usersList" ng-value="member.user_id">
                                 {{ member.users.firstname }} {{ member.users.lastname }}
                             </md-option>
@@ -72,7 +72,7 @@
 
                     <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
                         <label>Category</label>
-                        <md-select ng-model="$ctrl.issue.category_id" ng-change="$ctrl.validate()">
+                        <md-select ng-model="$ctrl.issue.category_id">
                             <md-option ng-repeat="item in $ctrl.categoriesList" ng-value="item.id">
                                 {{ item.name }}
                             </md-option>
@@ -104,7 +104,7 @@
                     <md-input-container class="md-block" flex-md="50" flex-gt-md="16">
                         <label>% Done</label>
                         <!--<input name="estimate" ng-model="$ctrl.issue.done">-->
-                        <md-select ng-model="$ctrl.issue.done" ng-change="$ctrl.validate()">
+                        <md-select ng-model="$ctrl.issue.done">
                             <md-option ng-repeat="n in [] | range:11" ng-value="n">
                                 {{ n * 10 }}%
                             </md-option>

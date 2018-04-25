@@ -17,9 +17,9 @@ class StatusResource extends Resource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'is_closed' => $this->is_closed,
-            'position' => $this->position,
-            'default_done_ratio' => $this->default_done_ratio,
+//            'is_closed' => $this->is_closed,
+//            'position' => $this->position,
+//            'default_done_ratio' => $this->default_done_ratio,
         ];
     }
 }

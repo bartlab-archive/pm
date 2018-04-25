@@ -157,7 +157,7 @@ Route::group(
                 Route::get('/', 'IssuesController@index');
                 Route::post('/', 'IssuesController@create');
                 Route::get('/filters', 'IssuesController@filters');
-                Route::get('/{id}', 'IssuesController@one');
+                Route::get('/{id}', 'IssuesController@show');
                 Route::put('/{id}', 'IssuesController@update');
                 Route::delete('/{id}', 'IssuesController@delete');
                 Route::get('/{id}/history', 'IssuesController@history');

@@ -15,10 +15,10 @@ export default class IssuesInfoController extends ControllerBase {
     }
 
     $onInit() {
-        this.issuesService.one(this.$stateParams.id).get()
+        this.issuesService.one(this.$stateParams.id)
             .then((response) => {
-                this.issue = response.data;
-                this.projectsService.setCurrentId(response.data.project.identifier);
+                this.issue = response.data.data;
+                this.projectsService.setCurrentId(this.issue.project.identifier);
                 this.$rootScope.$emit('updateProjectInfo');
             });
     }

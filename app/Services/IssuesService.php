@@ -19,7 +19,15 @@ class IssuesService
     {
         return Issue::query()
             ->where('id', $id)
-            ->with(['tracker', 'assigned', 'author', 'project', 'child'])
+            ->with([
+                'tracker',
+                'assigned',
+                'author',
+                'project',
+                'project.trackers',
+                'project.members.user',
+                'child'
+            ])
             ->first();
     }
 

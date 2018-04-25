@@ -72,7 +72,7 @@
         <md-nav-bar class="md-primary md-hue-2"
                     md-selected-nav-item="$ctrl.currentNavItem"
                     nav-bar-aria-label="Project navigation links">
-            <md-nav-item ng-repeat="item in ::$ctrl.projectItems" md-nav-click="$ctrl.goto(item.url)"
+            <md-nav-item ng-repeat="item in ::$ctrl.projectItems" md-nav-click="$ctrl.openProjectPage(item)"
                          name="{{ ::item.url }}" ng-if="!item.name || item.enable">
                 {{ ::item.title }}
             </md-nav-item>
@@ -89,7 +89,7 @@
         </md-fab-trigger>
 
         <md-fab-actions>
-            <md-button class="md-fab md-raised md-mini" ng-click="$ctrl.goto(item.url)"
+            <md-button class="md-fab md-raised md-mini" ng-click="$ctrl.openNewItemPage(item)"
                        ng-repeat="item in ::$ctrl.newItems" ng-if="item.enable">
                 <md-tooltip md-direction="left" md-visible="$ctrl.menuOpen"
                             md-autohide="true">{{ ::item.name }}

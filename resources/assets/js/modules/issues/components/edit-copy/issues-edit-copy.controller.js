@@ -17,18 +17,18 @@ export default class IssuesEditCopyController extends ControllerBase {
     }
 
     $onInit() {
-        this.usersList = [];
-        this.trackersList = [];
-        this.projectsList = [];
-        this.statusesList = [];
-        this.categoriesList = [];
-        this.prioritiesList = [];
+        // this.usersList = [];
+        // this.trackersList = [];
+        // this.projectsList = [];
+        // this.statusesList = [];
+        // this.categoriesList = [];
+        // this.prioritiesList = [];
         this.cardTitle = (this.$state.current.name === 'issues.copy' ? 'Copy' : 'Edit');
 
-        this.loadIssue();
+        this.load();
     }
 
-    loadIssue() {
+    load() {
         // this.IssuesService.all().one(this.$stateParams.id).get().then((response) => {
         //
         //     console.log(response);
@@ -46,7 +46,7 @@ export default class IssuesEditCopyController extends ControllerBase {
         //     this.$rootScope.$emit('updateProjectInfo');
         // });
 
-        this.issuesService.all().one(this.$stateParams.id).get()
+        this.issuesService.one(this.$stateParams.id)
             .then((response) => {
                 this.projectsService.setCurrentId(response.data.project.identifier);
                 // this.$stateParams.project_id = response.data.project.identifier;
@@ -55,9 +55,9 @@ export default class IssuesEditCopyController extends ControllerBase {
               //  this.$rootScope.$emit('updateProjectInfo');
             });
 
-        this.projectsService.getList().then((response) => {
-            this.projectsList = response.data;
-        });
+        // this.projectsService.getList().then((response) => {
+        //     this.projectsList = response.data;
+        // });
 
 
 

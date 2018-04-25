@@ -14,7 +14,7 @@ class IssueResource extends Resource
      */
     public function toArray($request)
     {
-        return [
+        $result = [
             'id' => $this->id,
             'tracker_id' => $this->tracker_id,
             'subject' => $this->subject,
@@ -36,7 +36,7 @@ class IssueResource extends Resource
             'root_id' => $this->root_id,
             'is_private' => $this->is_private,
             'closed_on' => $this->closed_on,
-            'ordering' => $this->ordering ?? '',
+//            'ordering' => $this->ordering ?? '',
             'tracker' => TrackerResource::make($this->whenLoaded('tracker')),
             'project' => ProjectResource::make($this->whenLoaded('project')),
             'assigned' => UserResource::make($this->whenLoaded('assigned')),
@@ -46,12 +46,22 @@ class IssueResource extends Resource
 //            'category' => StatusResource::make($this->whenLoaded('category')),
             'priority' => PriorityResource::make($this->whenLoaded('priority')),
         ];
+
+        if ($this->ordering){
+            $result['ordering'] = $this->ordering;
+        }
+
+        return $result;
     }
 
-    public function with($request)
-    {
-        return [
-            'groups' => $this->resource->groups,
-        ];
-    }
+//    public function with($request)
+//    {
+//        $result = [];
+//
+//        if ($this->resource->groups) {
+//            $result['groups'] = $this->resource->groups;
+//        }
+//
+//        return $result;
+//    }
 }

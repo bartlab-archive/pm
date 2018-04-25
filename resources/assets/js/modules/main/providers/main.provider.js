@@ -50,7 +50,7 @@ export default class MainProvider extends ProviderBase {
             // module name
             module: '',
 
-            // depends on project
+            // depends on project, bool or url string
             single: true,
 
             // enabled by default

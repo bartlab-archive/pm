@@ -1,5 +1,5 @@
 import ServiceBase from 'base/service.base';
-import moment from 'moment';
+// import moment from 'moment';
 
 /**
  * @property {Restangular} Restangular
@@ -8,26 +8,27 @@ import moment from 'moment';
 export default class IssuesService extends ServiceBase {
 
     static get $inject() {
-        return ['Restangular', '$cacheFactory', '$stateParams', '$http'];
+        return ['$stateParams', '$http'];
     }
 
     $onInit($injector) {
         // this.cache = this.$cacheFactory('IssuesService');
     }
 
-    config(RestangularConfigurer) {
-        RestangularConfigurer.addResponseInterceptor((data, operation, what, url, response, deferred) => {
-            if (operation === "getList") {
-                response.groups = data.groups;
-                return data.list;
-            }
-
-            return data;
-        });
-    }
+    // config(RestangularConfigurer) {
+    //     RestangularConfigurer.addResponseInterceptor((data, operation, what, url, response, deferred) => {
+    //         if (operation === "getList") {
+    //             response.groups = data.groups;
+    //             return data.list;
+    //         }
+    //
+    //         return data;
+    //     });
+    // }
 
     one(id) {
-        return this.Restangular.one('issues', id);
+        // return this.Restangular.one('issues', id);
+        return this.$http.get('/api/v1/issues/' + id);
     }
 
     all(params) {

@@ -74,7 +74,7 @@ class IssuesController extends BaseController
         $this->enabledModulesService = $enabledModulesService;
     }
 
-    public function one($id, Request $request)
+    public function show($id, Request $request)
     {
         if (!$issue = $this->issueService->one($id)) {
             return abort(404);
@@ -94,7 +94,8 @@ class IssuesController extends BaseController
             return abort(403);
         }
 
-        return response()->json($issue, 200);
+        return IssueResource::make($issue);
+//        return response()->json($issue, 200);
     }
 
     public function index(GetIssuesRequest $request)
