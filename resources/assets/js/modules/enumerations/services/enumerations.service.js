@@ -7,7 +7,7 @@ import ServiceBase from 'base/service.base';
 export default class EnumerationsService extends ServiceBase {
 
     static get $inject() {
-        return ['Restangular', '$cacheFactory'];
+        return ['Restangular', '$cacheFactory', '$http'];
     }
 
     $onInit($injector) {
@@ -15,12 +15,13 @@ export default class EnumerationsService extends ServiceBase {
         // this.project = {};
     }
 
-    getList(params) {
-        return this.Restangular.all('enumerations').getList(params);
-    }
+    // getList(params) {
+    // return this.Restangular.all('enumerations').getList(params);
+    // }
 
-    all() {
-        return this.Restangular.all('enumerations');
+    all(params) {
+        // return this.Restangular.all('enumerations');
+        return this.$http.get('/api/v1/enumerations', {params});
     }
 
 }

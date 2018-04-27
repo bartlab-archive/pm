@@ -14,16 +14,26 @@ use App\Models\IssueCategory;
 class IssueCategoriesService
 {
 
-    protected $projectsService;
+//    protected $projectsService;
 
-    public function __construct(ProjectsService $projectsService)
+    public function all($identifier)
     {
-        $this->projectsService = $projectsService;
+        return IssueCategory::query()
+//            ->with(['project'])
+            ->whereHas('project', function ($query) use ($identifier) {
+                $query->where('identifier', $identifier);
+            })
+            ->get();
     }
 
-    public function getCategoriesList($project_id) {
-        return IssueCategory::where('project_id', $project_id)->select('id', 'name')->get();
-    }
+//    public function __construct(ProjectsService $projectsService)
+//    {
+//        $this->projectsService = $projectsService;
+//    }
+//
+//    public function getCategoriesList($project_id) {
+//        return IssueCategory::where('project_id', $project_id)->select('id', 'name')->get();
+//    }
 
     /**
      * Delete IssueCategory by id
@@ -31,10 +41,10 @@ class IssueCategoriesService
      * @param int $issueCategoryId
      * @return bool
      */
-    public function deleteById($issueCategoryId)
-    {
-        return IssueCategory::find($issueCategoryId)->delete();
-    }
+//    public function deleteById($issueCategoryId)
+//    {
+//        return IssueCategory::find($issueCategoryId)->delete();
+//    }
 
     /**
      * Create IssueCategory
@@ -43,14 +53,14 @@ class IssueCategoriesService
      * @param $data
      * @return bool
      */
-    public function create($identifier, $data)
-    {
-        $project = $this->projectsService->one($identifier);
-        $data['project_id'] = $project->id;
-
-        $issueCategory = new IssueCategory($data);
-        return $issueCategory->save();
-    }
+//    public function create($identifier, $data)
+//    {
+//        $project = $this->projectsService->one($identifier);
+//        $data['project_id'] = $project->id;
+//
+//        $issueCategory = new IssueCategory($data);
+//        return $issueCategory->save();
+//    }
 
     /**
      * Edit IssueCategory
@@ -59,8 +69,8 @@ class IssueCategoriesService
      * @param $data
      * @return mixed
      */
-    public function update($issueCategoryId, $data)
-    {
-        return IssueCategory::where(['id' => $issueCategoryId])->update($data);
-    }
+//    public function update($issueCategoryId, $data)
+//    {
+//        return IssueCategory::where(['id' => $issueCategoryId])->update($data);
+//    }
 }

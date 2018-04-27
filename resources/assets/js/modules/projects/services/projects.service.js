@@ -49,7 +49,7 @@ export default class ProjectsService extends InjectableBase {
 
     // enabledModules(id) {
     //     return this.$http.get('/api/v1/modules/' + id);
-        // return this.rest.one(id).all('modules');
+    // return this.rest.one(id).all('modules');
     // }
 
     updateModules(id, modules) {
@@ -69,7 +69,7 @@ export default class ProjectsService extends InjectableBase {
     }
 
     getCurrentId() {
-        return this.$stateParams.hasOwnProperty('project_id') ? this.$stateParams.project_id : null;
+        return this.$stateParams.hasOwnProperty('project_id') ? this.$stateParams.project_id : undefined;
     }
 
     setCurrentId(id) {

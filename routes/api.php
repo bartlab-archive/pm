@@ -95,15 +95,15 @@ Route::group(
             }
         );
 
-		Route::group(
-			[
-				//'middleware' => 'auth',
-				'prefix' => 'agile'
-			],
-			function () {
-				Route::get('/', 'AgileController@getList');
-			}
-		);
+        Route::group(
+            [
+                //'middleware' => 'auth',
+                'prefix' => 'agile'
+            ],
+            function () {
+                Route::get('/', 'AgileController@getList');
+            }
+        );
 
         Route::group(
             [
@@ -111,7 +111,7 @@ Route::group(
                 'prefix' => 'enumerations'
             ],
             function () {
-                Route::get('/', 'EnumerationsController@getList');
+                Route::get('/', 'EnumerationsController@index');
             }
         );
 
@@ -122,6 +122,26 @@ Route::group(
             ],
             function () {
                 Route::get('/', 'RolesController@index');
+            }
+        );
+
+        Route::group(
+            [
+                'middleware' => 'auth',
+                'prefix' => 'issues_categories'
+            ],
+            function () {
+                Route::get('/{identifier}', 'IssueCategoriesController@index');
+            }
+        );
+
+        Route::group(
+            [
+                'middleware' => 'auth',
+                'prefix' => 'statuses'
+            ],
+            function () {
+                Route::get('/', 'StatusesController@index');
             }
         );
 
@@ -174,67 +194,67 @@ Route::group(
             function () {
                 Route::get('/', 'UsersController@index');
 
-				Route::get('/{id}', 'UsersController@getUser');
-				Route::put('/{id}/updatestatus', 'UsersController@updateUserStatus');
-				Route::put('/{id}', 'UsersController@update');
-				Route::delete('/{id}', 'UsersController@destroy');
-			}
+                Route::get('/{id}', 'UsersController@getUser');
+                Route::put('/{id}/updatestatus', 'UsersController@updateUserStatus');
+                Route::put('/{id}', 'UsersController@update');
+                Route::delete('/{id}', 'UsersController@destroy');
+            }
         );
 
-		Route::group(
-			[
-				'middleware' => 'auth',
-				'prefix' => 'groups'
-			],
-			function () {
-				Route::get('/', 'GroupsController@getList');
-				Route::post('/', 'GroupsController@create');
-				Route::delete('/{id}', 'GroupsController@destroy');
-				Route::get('/{id}', 'GroupsController@one');
-				Route::put('/{id}', 'GroupsController@update');
-			}
-		);
+        Route::group(
+            [
+                'middleware' => 'auth',
+                'prefix' => 'groups'
+            ],
+            function () {
+                Route::get('/', 'GroupsController@getList');
+                Route::post('/', 'GroupsController@create');
+                Route::delete('/{id}', 'GroupsController@destroy');
+                Route::get('/{id}', 'GroupsController@one');
+                Route::put('/{id}', 'GroupsController@update');
+            }
+        );
 
-		// todo: move to issues group
-		Route::group(
-			[
-				'middleware' => 'auth',
-				'prefix' => 'issue_statuses'
-			],
-			function () {
-				Route::get('/', 'IssueStatuseController@getList');
-				Route::get('/{id}', 'IssueStatuseController@one');
-				Route::put('/{id}', 'IssueStatuseController@update');
-				Route::post('/', 'IssueStatuseController@create');
-				Route::delete('/{id}', 'IssueStatuseController@destroy');
+        // todo: move to issues group
+        Route::group(
+            [
+                'middleware' => 'auth',
+                'prefix' => 'issue_statuses'
+            ],
+            function () {
+                Route::get('/', 'IssueStatuseController@getList');
+                Route::get('/{id}', 'IssueStatuseController@one');
+                Route::put('/{id}', 'IssueStatuseController@update');
+                Route::post('/', 'IssueStatuseController@create');
+                Route::delete('/{id}', 'IssueStatuseController@destroy');
 
-			}
-		);
+            }
+        );
 
-		Route::group(
-			[
-				'middleware' => 'auth',
-				'prefix' => 'custom_fields'
-			],
-			function () {
-				Route::get('/', 'CustomFieldsController@getList');
-				Route::get('/{id}', 'CustomFieldsController@one');
-				Route::put('/{id}', 'CustomFieldsController@update');
-				Route::post('/', 'CustomFieldsController@create');
-				Route::delete('/{id}', 'CustomFieldsController@destroy');
+        Route::group(
+            [
+                'middleware' => 'auth',
+                'prefix' => 'custom_fields'
+            ],
+            function () {
+                Route::get('/', 'CustomFieldsController@getList');
+                Route::get('/{id}', 'CustomFieldsController@one');
+                Route::put('/{id}', 'CustomFieldsController@update');
+                Route::post('/', 'CustomFieldsController@create');
+                Route::delete('/{id}', 'CustomFieldsController@destroy');
 
-			}
-		);
+            }
+        );
 
-		Route::group(
-			[
-				'middleware' => 'auth',
-				'prefix' => 'settings'
-			],
-			function () {
-				Route::get('/', 'SettingsController@getList');
+        Route::group(
+            [
+                'middleware' => 'auth',
+                'prefix' => 'settings'
+            ],
+            function () {
+                Route::get('/', 'SettingsController@getList');
 
-			}
-		);
+            }
+        );
     }
 );

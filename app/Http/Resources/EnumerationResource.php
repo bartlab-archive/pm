@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class TrackerResource extends Resource
+class EnumerationResource extends Resource
 {
     /**
      * Transform the resource collection into an array.
@@ -17,11 +17,12 @@ class TrackerResource extends Resource
         return [
             'id' => $this->id,
             'name' => $this->name,
-//            'is_in_chlog' => $this->is_in_chlog,
-//            'position' => $this->position,
-//            'is_in_roadmap' => $this->is_in_roadmap,
-            'fields_bits' => $this->fields_bits,
-            'default_status_id' => $this->default_status_id
+//            'position' => $this->name,
+            'is_default' => $this->is_default,
+            'type' => $this->type,
+//            'active' => $this->active,
+//            'parent_id' => $this->parent_id,
+//            'position_name' => $this->position_name,
         ];
     }
 }

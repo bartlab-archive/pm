@@ -29,7 +29,7 @@ class ProjectsService
 //        }
 
         if ($order = array_get($params, 'order', ['name' => 'asc'])) {
-            if (is_string($order) && count($split = explode(':', $order)) == 2) {
+            if (\is_string($order) && \count($split = \explode(':', $order)) === 2) {
                 $order = [$split[0] => $split[1]];
             }
 

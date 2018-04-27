@@ -43,6 +43,22 @@ export default class IssuesService extends ServiceBase {
         // return this.Restangular.all('issues').one('filters');
     }
 
+    statuses() {
+        return this.$http.get('/api/v1/statuses');
+    }
+
+    categories(identifier) {
+        return this.$http.get('/api/v1/issues_categories/' + identifier)
+    }
+
+    create(params) {
+        return this.$http.post('/api/v1/issues', params)
+    }
+
+    update(params) {
+        return this.$http.put('/api/v1/issues', params)
+    }
+
     // getListByProject(identifier, params) {
     //     return this.Restangular.one('projects', identifier).all('issues').post(params);
     // }

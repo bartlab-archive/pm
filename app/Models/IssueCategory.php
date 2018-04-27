@@ -19,4 +19,9 @@ class IssueCategory extends Model
     {
         return $this->hasMany(Issue::class);
     }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 }

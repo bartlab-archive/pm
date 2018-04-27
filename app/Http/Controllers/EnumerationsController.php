@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\EnumerationResource;
 use App\Services\EnumerationsService;
 use App\Services\RolesService;
 use Illuminate\Http\Request;
@@ -35,8 +36,10 @@ class EnumerationsController extends BaseController
      * @param Request $request
      * @return mixed
      */
-    public function getList(Request $request)
+    public function index(Request $request)
     {
-        return $this->enumerationsService->all($request->all());
+        return EnumerationResource::collection(
+            $this->enumerationsService->all($request->only(['type', 'project_identifier']))
+        );
     }
 }

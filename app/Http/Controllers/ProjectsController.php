@@ -43,7 +43,12 @@ class ProjectsController extends BaseController
     {
         return ProjectResource::collection(
             $this->projectsService->all(
-                $request->only(['status', 'order', 'per_page', 'page'])
+                array_merge(
+                    $request->only(['status', 'order', 'per_page', 'page']),
+                    [
+                        'with' => ['trackers','members.user']
+                    ]
+                )
             )
         );
     }

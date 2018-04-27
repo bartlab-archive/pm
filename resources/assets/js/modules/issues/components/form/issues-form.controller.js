@@ -1,101 +1,134 @@
 import ControllerBase from 'base/controller.base';
-// import _ from 'lodash';
+import _ from 'lodash';
 // import moment from 'moment';
 
 /**
+ * @property {IssuesService} issuesService
  * @property {$stateParams} $stateParams
- * @property {IssuesService} IssuesService
- * @property {ProjectsService} ProjectsService
- * @property {$window} $window
- * @property {$state} $state
+ * @property {ProjectsService} projectsService
+ * @property {EnumerationsService} enumerationsService
+ * @property {$rootScope} $rootScope
+ * @property {$q} $q
  */
 export default class IssuesFormController extends ControllerBase {
 
     static get $inject() {
-        return ['issuesService', '$state', '$stateParams', '$window', 'projectsService', '$rootScope'];
+        return ['issuesService', '$stateParams', 'projectsService', '$rootScope', '$q', 'enumerationsService'];
     }
 
     $onInit() {
+        this.title = this.$stateParams.id ? '#' : 'New issue';
+        this.issue = {
+            id: this.$stateParams.id,
+            done_ratio: 0,
+            project: {
+                identifier: this.projectsService.getCurrentId()
+            }
+        };
+        this.categories = [];
+        this.searchText = '';
+        this.watchers = [];
         this.load();
     }
 
     load() {
-        if (this.$stateParams.id) {
-            this.issuesService.one(this.$stateParams.id)
-                .then((response) => {
-                    this.issue = response.data.data;
+        this.$q
+            .all([
+                this.projectsService.all(),
+                (this.$stateParams.id ? this.issuesService.one(this.$stateParams.id) : undefined),
+                this.issuesService.statuses(),
+                this.enumerationsService.all({type: 'IssuePriority'}),
+            ])
+            .then((response) => {
+                this.projects = _.get(response, '0.data.data');
+                this.issue = Object.assign(this.issue, _.get(response, '1.data.data'));
+                this.statuses = _.get(response, '2.data.data');
+                this.priorities = _.get(response, '3.data.data');
+
+                if (this.issue.id) {
+                    this.title = this.issue.tracker.name + ' #' + this.issue.id + ': ' + this.issue.subject;
+
                     this.projectsService.setCurrentId(this.issue.project.identifier);
                     this.$rootScope.$emit('updateProjectInfo');
-                });
-        }
+                } else {
+                    this.issue.priority_id = _.get(
+                        _.find(this.priorities, 'is_default'),
+                        'id'
+                    );
+                }
 
-        // if (!this.$stateParams.id || !this.projectId) {
-            this.projectsService.all()
-                .then((response) => {
-                    this.projects = response.data.data;
-                });
-        // }
+                this.changeProject();
+            });
     }
 
-    // currentProjectId() {
-    //     return this.$stateParams.hasOwnProperty('project_id') ? this.$stateParams.project_id : null;
-    // }
+    changeProject(fromSelect = false) {
+        if (this.issue.project.identifier) {
+            this.selectedProject = this.projects.find((project) => project.identifier === this.issue.project.identifier);
+        } else {
+            this.selectedProject = _.first(this.projects);
+            this.issue.project.identifier = _.get(this.selectedProject, 'identifier');
+        }
 
-    // currentIssueId() {
-    //     return this.$stateParams.hasOwnProperty('id') ? this.$stateParams.id : null;
-    // }
+        if (!this.issue.id || fromSelect) {
+            // todo: save tracker and state if edit issue and ids exists
+            this.issue.tracker_id = _.get(this.selectedProject, 'trackers.0.id');
+            this.issue.status_id = _.get(this.selectedProject, 'trackers.0.default_status_id');
+        }
 
-    // init() {
-    // this.loadProject();
-    // this.loadAdditionalInfo();
-    // }
+        // todo: save/add assign user if edit issue
 
-    // loadProject() {
-    //     this.ProjectsService.one(this.$stateParams.project_id).then((response) => {
-    //         this.issue.project_id = _.get(response, 'data.id');
-    //         this.usersList = _.get(response, 'data.members', []);
-    //         this.categoriesList = _.get(response, 'data.issue_categories', []);
-    //     });
-    // }
-    //
-    // loadAdditionalInfo() {
-    //     this.IssuesService.getAdditionalInfo({enumeration_type: 'IssuePriority'}).then((response) => {
-    //         this.trackersList = _.get(response, 'data.trackersList', []);
-    //         this.projectsList = _.get(response, 'data.projectsList', []);
-    //         this.statusesList = _.get(response, 'data.statusesList', []);
-    //         this.prioritiesList = _.get(response, 'data.prioritiesList', []);
-    //     });
-    // }
-    //
-    // create() {
-    //     if (this.error) {
-    //         return false;
-    //     }
-    //     this.issue.due_date = moment(this.issue.due_date).format('YYYY-MM-DD');
-    //     this.issue.start_date = moment(this.issue.start_date).format('YYYY-MM-DD');
-    //     this.IssuesService.create(this.issue).then((response) => {
-    //         if (this.issue = _.get(response, 'data')) {
-    //             this.$state.go('issues.info', {project_id: this.$stateParams.project_id, id: this.issue.id});
-    //         }
-    //     });
-    // }
-    //
-    // validate() {
-    //     this.error = !this.issue.subject
-    //         || !this.issue.status_id
-    //         || !this.issue.priority_id
-    //         || !this.issue.tracker_id
-    //         || !this.issue.project_id
-    //         || !this.issue.assigned_to_id;
-    // }
+        if (this.selectedProject.identifier) {
+            this.issuesService.categories(this.selectedProject.identifier).then((response) => {
+                this.categories = response.data.data;
+            });
+        }
+    }
 
-    // cancel() {
-    //     const id = this.projectsService.getCurrentId();
-    //
-    //     this.$state.go(
-    //         'issues' + (id ? '-inner' : '') + '.list',
-    //         (id ? {project_id: id} : null)
-    //     );
-    // }
+    querySearch() {
+        let items = _.get(this.selectedProject, 'members', [])
+                .filter((e) => !this.watchers.some((watcher) => watcher.user.id === e.user.id)),
+            query = this.searchText.toLowerCase();
+
+        if (!query) {
+            return items;
+        }
+
+        return items.filter((e) => e.user.full_name.toLowerCase().indexOf(query) !== -1);
+    }
+
+    submit() {
+        // todo: proccess errors
+        this.issuesService
+            .create({
+                // todo: project id
+                // id: 2402,
+                tracker_id: this.issue.tracker_id,
+                subject: this.issue.subject,
+                description: this.issue.description,
+                due_date: this.issue.due_date,
+                category_id: this.issue.category_id,
+                status_id: this.issue.status_id,
+                assigned_to_id: this.issue.assigned_to_id,
+                priority_id: this.issue.priority_id,
+                // fixed_version_id: this.issue.fixed_version_id,
+                // author_id: this.issue.tracker_id,
+                // lock_version: this.issue.tracker_id,
+                // created_on: '',
+                // updated_on: '',
+                start_date: this.issue.start_date,
+                done_ratio: this.issue.done_ratio,
+                estimated_hours: this.issue.estimated_hours,
+                parent_id: this.issue.parent_id,
+                // root_id: this.issue.tracker_id,
+                is_private: this.issue.is_private,
+                // closed_on: null
+                wathers: this.watchers.map((watcher) => watcher.user.id)
+            })
+            .then((response) => {
+                this.$mdToast.show(
+                    this.$mdToast.simple().textContent('Issue #0 created.').position('bottom left')
+                );
+            });
+    }
 
 }

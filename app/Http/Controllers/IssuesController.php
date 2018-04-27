@@ -139,11 +139,15 @@ class IssuesController extends BaseController
 
     public function create(UpdateIssueRequest $request)
     {
-        $data = $request->all();
-        $data['author_id'] = Auth::id();
-        $data['start_date'] = Carbon::create()->format('Y-m-d');
+//        $data = $request->all();
+//        $data['author_id'] = Auth::id();
+//        $data['start_date'] = Carbon::create()->format('Y-m-d');
 
-        return response()->json($this->issueService->create($data), 200);
+        // todo: get only needed fields from request
+        return IssueResource::make(
+//            $this->issueService->create($request->all())
+        );
+//        return response()->json($this->issueService->create($data), 200);
     }
 
     public function update($id, UpdateIssueRequest $request)
