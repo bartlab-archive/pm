@@ -5,6 +5,7 @@
 /public/css
 /public/js
 /public/fonts
+/public/images
 /storage/*.key
 /vendor
 /.idea
@@ -14,3 +15,5 @@ Homestead.yaml
 npm-debug.log
 .env
 Будет удалено public/mix-manifest.json
+.phpstorm.meta.php
+_ide_helper.php
