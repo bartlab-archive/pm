@@ -3,7 +3,7 @@ import InjectableBase from "base/injectable.base";
 export default class HttpInterceptor extends InjectableBase {
 
     static get $inject() {
-        return ['$rootScope'];
+        return ['$rootScope', '$q'];
     }
 
     $return() {
@@ -45,6 +45,8 @@ export default class HttpInterceptor extends InjectableBase {
             case (response.status >= 500):
                 this.$rootScope.$broadcast('serverError');
         }
+
+        return this.$q.reject(response);
     }
 
 

@@ -19,33 +19,38 @@ export default class IssuesViewActionsController extends ControllerBase {
     }
 
     openIssue(id) {
-        this.cancel().then(() => {
-            this.$state.go('issues.info', {id: id});
-        });
+        this.cancel()
+            .then(() => {
+                this.$state.go('issues.info', {id: id});
+            });
     }
 
     editIssue(id) {
-        this.cancel().then(() => {
-            this.$state.go('issues.edit', {id: id});
-        });
+        this.cancel()
+            .then(() => {
+                this.$state.go('issues.edit', {id: id});
+            });
     }
 
     watchIssue(id) {
-        this.issuesService.watch(id).then(() => {
-            this.selectedIssue.watch_state = true
-        });
+        this.issuesService.watch(id)
+            .then(() => {
+                this.selectedIssue.watch_state = true
+            });
     }
 
     unwatchIssue(id) {
-        this.issuesService.unwatch(id).then(() => {
-            this.selectedIssue.watch_state = false
-        });
+        this.issuesService.unwatch(id)
+            .then(() => {
+                this.selectedIssue.watch_state = false
+            });
     }
 
     copyIssue(id) {
-        this.cancel().then(()=>{
-            this.$state.go('issues.copy', {id: id});
-        });
+        this.cancel()
+            .then(() => {
+                this.$state.go('issues-inner.copy', {id: id});
+            });
     }
 
     deleteIssue(id) {

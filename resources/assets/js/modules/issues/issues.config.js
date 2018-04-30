@@ -111,7 +111,7 @@ export default class IssuesConfig extends InjectableBase {
                 component: IssuesFormComponent.getName(),
                 // component: issuesEditCopyComponent.name,
             })
-            .state('issues.copy', {
+            .state('issues-inner.copy', {
                 url: '/:id/copy',
                 component: IssuesFormComponent.getName(),
                 // component: issuesEditCopyComponent.name,

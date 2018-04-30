@@ -10,13 +10,15 @@
         </md-card-header>
 
         <md-card-content>
-            <form name="editIssue" ng-submit="$ctrl.submit()">
+            <form name="$ctrl.form" ng-submit="$ctrl.submit()">
                 <md-input-container class="md-block">
                     <label for="subject">Subject</label>
                     <input id="subject" name="subject" ng-model="$ctrl.issue.subject"
-                           required>
-                    <div ng-messages="editIssue.subject.$error">
+                           required ng-change="$ctrl.change('subject')">
+                    <div ng-messages="$ctrl.form.subject.$error">
                         <div ng-message="required">This field can't be blank.</div>
+
+                        <div ng-message="server" ng-bind-html="$ctrl.form.subject.$error.serverMessage"></div>
                     </div>
                 </md-input-container>
 
@@ -28,6 +30,12 @@
                                 {{ item.name }}
                             </md-option>
                         </md-select>
+
+                        <!--<div ng-messages="$ctrl.form.identifier.$error">-->
+                            <!--<div ng-message="required">Name can't be blank!</div>-->
+
+                            <!--<div ng-message="server" ng-bind-html="$ctrl.errors.name | join"></div>-->
+                        <!--</div>-->
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
@@ -147,7 +155,8 @@
         </md-card-content>
 
         <md-card-actions layout="row" layout-align="center center">
-            <md-button class="md-raised md-primary animation-target md-button md-ink-ripple" ng-disabled="$ctrl.error"
+            <md-button class="md-raised md-primary animation-target md-button md-ink-ripple"
+                       ng-disabled="$ctrl.form.$invalid"
                        ng-click="$ctrl.submit()">
                 Create
             </md-button>

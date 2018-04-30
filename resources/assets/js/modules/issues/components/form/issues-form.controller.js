@@ -13,11 +13,14 @@ import _ from 'lodash';
 export default class IssuesFormController extends ControllerBase {
 
     static get $inject() {
-        return ['issuesService', '$stateParams', 'projectsService', '$rootScope', '$q', 'enumerationsService'];
+        return [
+            'issuesService', '$stateParams', 'projectsService', '$rootScope', '$q',
+            'enumerationsService', '$mdToast', '$filter', '$state'
+        ];
     }
 
     $onInit() {
-        this.title = this.$stateParams.id ? '#' : 'New issue';
+        this.title = this.$stateParams.id && !this.isCopy() ? '#' : 'New issue';
         this.issue = {
             id: this.$stateParams.id,
             done_ratio: 0,
@@ -28,7 +31,12 @@ export default class IssuesFormController extends ControllerBase {
         this.categories = [];
         this.searchText = '';
         this.watchers = [];
+        // this.errors = {};
         this.load();
+    }
+
+    isCopy() {
+        return this.$state.current.name === 'issues-inner.copy';
     }
 
     load() {
@@ -45,12 +53,13 @@ export default class IssuesFormController extends ControllerBase {
                 this.statuses = _.get(response, '2.data.data');
                 this.priorities = _.get(response, '3.data.data');
 
-                if (this.issue.id) {
+                if (!this.isCopy() && this.issue.id) {
                     this.title = this.issue.tracker.name + ' #' + this.issue.id + ': ' + this.issue.subject;
 
                     this.projectsService.setCurrentId(this.issue.project.identifier);
                     this.$rootScope.$emit('updateProjectInfo');
                 } else {
+                    this.issue.id = undefined;
                     this.issue.priority_id = _.get(
                         _.find(this.priorities, 'is_default'),
                         'id'
@@ -70,7 +79,7 @@ export default class IssuesFormController extends ControllerBase {
         }
 
         if (!this.issue.id || fromSelect) {
-            // todo: save tracker and state if edit issue and ids exists
+            // todo: save tracker/state if edit/copt issue and id's exists
             this.issue.tracker_id = _.get(this.selectedProject, 'trackers.0.id');
             this.issue.status_id = _.get(this.selectedProject, 'trackers.0.default_status_id');
         }
@@ -98,8 +107,8 @@ export default class IssuesFormController extends ControllerBase {
 
     submit() {
         // todo: proccess errors
-        this.issuesService
-            .create({
+        this.issuesService[this.issue.id ? 'create' : 'update'](
+            {
                 // todo: project id
                 // id: 2402,
                 tracker_id: this.issue.tracker_id,
@@ -122,13 +131,38 @@ export default class IssuesFormController extends ControllerBase {
                 // root_id: this.issue.tracker_id,
                 is_private: this.issue.is_private,
                 // closed_on: null
-                wathers: this.watchers.map((watcher) => watcher.user.id)
+                project_identifier: this.issue.project.identifier,
+                watchers: this.watchers.map((watcher) => watcher.user.id)
             })
             .then((response) => {
                 this.$mdToast.show(
-                    this.$mdToast.simple().textContent('Issue #0 created.').position('bottom left')
+                    this.$mdToast.simple().textContent('Issue #' + response.data.data.id + ' created.').position('bottom left')
                 );
+            })
+            .catch((response) => {
+                // console.log(response)
+                if (response.status === 422) {
+                    this.$mdToast.show(
+                        this.$mdToast.simple().textContent(response.data.message).position('bottom left')
+                    );
+                }
+
+                this.errors = response.data.errors;
+
+                for (const field of Object.keys(response.data.errors)) {
+                    if (this.form.hasOwnProperty(field)) {
+                        this.form[field].$touched = true;
+                        this.form[field].$setValidity('server', false);
+                        this.form[field].$error.serverMessage = this.$filter('join')(response.data.errors[field]);
+                    }
+                }
             });
+    }
+
+    change(field) {
+        this.form[field].$setValidity('server', true);
+        // this.errors[field] = undefined;
+        this.form[field].$error.serverMessage = undefined;
     }
 
 }

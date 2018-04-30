@@ -343,7 +343,7 @@ export default class IssuesListController extends ControllerBase {
     }
 
     copyIssue(id) {
-        this.$state.go('issues.copy', {id: id});
+        this.$state.go('issues-inner.copy', {id: id});
     }
 
     deleteIssue(item) {
