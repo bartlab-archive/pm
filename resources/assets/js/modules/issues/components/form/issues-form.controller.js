@@ -39,6 +39,10 @@ export default class IssuesFormController extends ControllerBase {
         return this.$state.current.name === 'issues-inner.copy';
     }
 
+    isNew() {
+        return !this.issue.id;
+    }
+
     load() {
         this.$q
             .all([
@@ -106,41 +110,45 @@ export default class IssuesFormController extends ControllerBase {
     }
 
     submit() {
-        // todo: proccess errors
-        this.issuesService[this.issue.id ? 'create' : 'update'](
-            {
-                // todo: project id
-                // id: 2402,
-                tracker_id: this.issue.tracker_id,
-                subject: this.issue.subject,
-                description: this.issue.description,
-                due_date: this.issue.due_date,
-                category_id: this.issue.category_id,
-                status_id: this.issue.status_id,
-                assigned_to_id: this.issue.assigned_to_id,
-                priority_id: this.issue.priority_id,
-                // fixed_version_id: this.issue.fixed_version_id,
-                // author_id: this.issue.tracker_id,
-                // lock_version: this.issue.tracker_id,
-                // created_on: '',
-                // updated_on: '',
-                start_date: this.issue.start_date,
-                done_ratio: this.issue.done_ratio,
-                estimated_hours: this.issue.estimated_hours,
-                parent_id: this.issue.parent_id,
-                // root_id: this.issue.tracker_id,
-                is_private: this.issue.is_private,
-                // closed_on: null
-                project_identifier: this.issue.project.identifier,
-                watchers: this.watchers.map((watcher) => watcher.user.id)
-            })
+        const model = {
+            // todo: project id
+            // id: 2402,
+            tracker_id: this.issue.tracker_id,
+            subject: this.issue.subject,
+            description: this.issue.description,
+            due_date: this.issue.due_date,
+            category_id: this.issue.category_id,
+            status_id: this.issue.status_id,
+            assigned_to_id: this.issue.assigned_to_id,
+            priority_id: this.issue.priority_id,
+            // fixed_version_id: this.issue.fixed_version_id,
+            // author_id: this.issue.tracker_id,
+            // lock_version: this.issue.tracker_id,
+            // created_on: '',
+            // updated_on: '',
+            start_date: this.issue.start_date,
+            done_ratio: this.issue.done_ratio,
+            estimated_hours: this.issue.estimated_hours,
+            parent_id: this.issue.parent_id,
+            // root_id: this.issue.tracker_id,
+            is_private: this.issue.is_private,
+            // closed_on: null
+            project_identifier: this.issue.project.identifier,
+            watchers: this.watchers.map((watcher) => watcher.user.id)
+        };
+
+        (this.isNew() ? this.issuesService.create(model) : this.issuesService.update(this.issue.id, model))
             .then((response) => {
+                const id = response.data.data.id;
+                const message = this.isNew() ? 'Issue #' + id + ' created.' : 'Successful update.';
+
                 this.$mdToast.show(
-                    this.$mdToast.simple().textContent('Issue #' + response.data.data.id + ' created.').position('bottom left')
+                    this.$mdToast.simple().textContent(message).position('bottom left')
                 );
+
+                this.$state.go('issues.info', {id});
             })
             .catch((response) => {
-                // console.log(response)
                 if (response.status === 422) {
                     this.$mdToast.show(
                         this.$mdToast.simple().textContent(response.data.message).position('bottom left')

@@ -55,8 +55,8 @@ export default class IssuesService extends ServiceBase {
         return this.$http.post('/api/v1/issues', params)
     }
 
-    update(params) {
-        return this.$http.put('/api/v1/issues', params)
+    update(id, params) {
+        return this.$http.put('/api/v1/issues/' + id, params)
     }
 
     // getListByProject(identifier, params) {

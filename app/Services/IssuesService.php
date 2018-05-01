@@ -24,6 +24,7 @@ class IssuesService
                 'assigned',
                 'author',
                 'project',
+                'watchers',
                 'project.trackers',
                 'project.members.user',
                 'child'
@@ -54,7 +55,8 @@ class IssuesService
             'status',
             'version',
             'category',
-            'priority'
+            'priority',
+//            'watchers'
         ]);
 
         if ($project = array_get($params, 'project_identifier')) {
