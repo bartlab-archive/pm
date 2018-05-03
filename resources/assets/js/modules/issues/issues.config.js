@@ -4,6 +4,8 @@ import IssuesListComponent from './components/list/issues-list.component';
 import IssuesInfoComponent from './components/info/issues-info.component';
 import IssuesFormComponent from './components/form/issues-form.component';
 import IssuesProjectSettingsComponent from './components/project-settings/issues-project-settings.component';
+import IssuesImportsComponent from './components/imports/issues-imports.component';
+import IssuesReportComponent from './components/report/issues-report.component';
 
 /**
  * @property {object} $stateProvider
@@ -84,14 +86,6 @@ export default class IssuesConfig extends InjectableBase {
                 url: '',
                 component: IssuesListComponent.getName(),
             })
-            .state('issues.new', {
-                url: '/new',
-                component: IssuesFormComponent.getName()
-            })
-            .state('issues-inner.new', {
-                url: '/new',
-                component: IssuesFormComponent.getName()
-            })
             .state('issues.list', {
                 url: '',
                 params: {
@@ -105,6 +99,22 @@ export default class IssuesConfig extends InjectableBase {
                     }
                 },
                 component: IssuesListComponent.getName(),
+            })
+            .state('issues-inner.report', {
+                url: '/report',
+                component: IssuesReportComponent.getName()
+            })
+            .state('issues.imports', {
+                url: '/imports',
+                component: IssuesImportsComponent.getName()
+            })
+            .state('issues.new', {
+                url: '/new',
+                component: IssuesFormComponent.getName()
+            })
+            .state('issues-inner.new', {
+                url: '/new',
+                component: IssuesFormComponent.getName()
             })
             .state('issues.edit', {
                 url: '/:id/edit',

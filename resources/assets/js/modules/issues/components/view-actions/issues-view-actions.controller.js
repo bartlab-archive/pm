@@ -2,13 +2,14 @@ import ControllerBase from 'base/controller.base';
 
 /**
  * @property {$mdDialog} $mdDialog
- * @property {ProjectsService} ProjectsService
+ * @property {ProjectsService} projectsService
  * @property {$rootScope} $rootScope
+ * @property {$state} $state
  */
 export default class IssuesViewActionsController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdDialog', '$mdToast', 'issuesService', '$rootScope', '$state', '$stateParams'];
+        return ['$mdDialog', 'issuesService', '$rootScope', '$state', 'projectsService'];
     }
 
     $onInit() {
@@ -21,15 +22,13 @@ export default class IssuesViewActionsController extends ControllerBase {
     openIssue(id) {
         this.cancel()
             .then(() => {
-                this.$state.go('issues.info', {id: id});
+                this.$state.go('issues.info', {id});
             });
     }
 
     editIssue(id) {
-        this.cancel()
-            .then(() => {
-                this.$state.go('issues.edit', {id: id});
-            });
+        this.$state.go('issues.edit', {id});
+        this.cancel();
     }
 
     watchIssue(id) {
@@ -46,11 +45,12 @@ export default class IssuesViewActionsController extends ControllerBase {
             });
     }
 
-    copyIssue(id) {
-        this.cancel()
-            .then(() => {
-                this.$state.go('issues-inner.copy', {id: id});
-            });
+    copyIssue(issue) {
+        this.$state.go('issues-inner.copy', {
+            id: issue.id,
+            project_id: issue.project.identifier
+        });
+        this.cancel();
     }
 
     deleteIssue(id) {

@@ -6,24 +6,13 @@ export default class CompileDirective extends DirectiveBase {
         return ['$compile'];
     }
 
-    // static get selector() {
-    //     return 'compile';
-    // }
-
-    // get restrict(){
-    //     return 'A';
-    // }
-
     $onInit() {
-        // this.restrict = 'A';
     }
 
     link(scope, element, attrs, controller, transcludeFn) {
+        // watch the 'compile' expression for changes
         scope.$watch(
-            (scope) => {
-                // watch the 'compile' expression for changes
-                return scope.$eval(attrs.compile);
-            },
+            (scope) => scope.$eval(attrs.compile),
             (value) => {
                 // when the 'compile' expression changes
                 // assign it into the current DOM

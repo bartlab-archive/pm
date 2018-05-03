@@ -15,7 +15,7 @@ export default class ProjectsInfoController extends ControllerBase {
         this.projectsService
             .one(this.projectsService.getCurrentId())
             .then((response) => {
-                this.project = response.data;
+                this.project = response.data.data;
             });
     }
 

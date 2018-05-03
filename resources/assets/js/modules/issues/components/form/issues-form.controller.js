@@ -9,6 +9,7 @@ import _ from 'lodash';
  * @property {EnumerationsService} enumerationsService
  * @property {$rootScope} $rootScope
  * @property {$q} $q
+ * @property {$state} $state
  */
 export default class IssuesFormController extends ControllerBase {
 
@@ -171,6 +172,15 @@ export default class IssuesFormController extends ControllerBase {
         this.form[field].$setValidity('server', true);
         // this.errors[field] = undefined;
         this.form[field].$error.serverMessage = undefined;
+    }
+
+    cancel() {
+        if (this.$stateParams.id) {
+            this.$state.go('issues.info', {id: this.$stateParams.id});
+        } else {
+            const projectId = this.projectsService.getCurrentId();
+            this.$state.go((projectId ? 'issues-inner' : 'issues') + '.list', {project_id: projectId});
+        }
     }
 
 }

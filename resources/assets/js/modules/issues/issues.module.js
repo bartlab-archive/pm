@@ -10,6 +10,8 @@ import IssuesViewComponent from './components/view/issues-view.component';
 import IssuesViewActionsComponent from './components/view-actions/issues-view-actions.component';
 // import historyComponent from './history/history.component';
 import IssuesCategoryComponent from './components/cetegory/issues-category.component';
+import IssuesImportsComponent from './components/imports/issues-imports.component';
+import IssuesReportComponent from './components/report/issues-report.component';
 
 angular.module('app.modules.issues', [])
     .config(IssuesConfig.inst())
@@ -21,5 +23,9 @@ angular.module('app.modules.issues', [])
     .component(IssuesListComponent.getName(), IssuesListComponent)
     .component(IssuesViewComponent.getName(), IssuesViewComponent)
     .component(IssuesViewActionsComponent.getName(), IssuesViewActionsComponent)
+    .component(IssuesImportsComponent.getName(), IssuesImportsComponent)
+    .component(IssuesReportComponent.getName(), IssuesReportComponent)
     .component(IssuesCategoryComponent.getName(), IssuesCategoryComponent);
 // .component(historyComponent.name, historyComponent);
+
+// todo: make register issues menu, like in project

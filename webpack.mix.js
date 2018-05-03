@@ -1,5 +1,4 @@
 const {mix} = require('laravel-mix');
-
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -20,5 +19,10 @@ mix.js('resources/assets/js/app.js', 'public/js')
                 path.resolve('./node_modules')
             ]
         },
-        plugins: []
+        // plugins: []
     });
+
+mix.browserSync({
+    port: process.env.MIX_PORT || 3000,
+    proxy: process.env.APP_URL || 'localhost'
+});

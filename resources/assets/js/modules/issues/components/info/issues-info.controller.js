@@ -2,25 +2,37 @@ import ControllerBase from 'base/controller.base';
 
 /**
  * @property {$state} $state
- * @property {$window} $window
- * @property {IssuesService} IssuesService
+ * @property {IssuesService} issuesService
  * @property {$stateParams} $stateParams
  * @property {$rootScope} $rootScope
- * @property {UsersService} UsersService
+ * @property {ProjectsService} projectsService
  */
 export default class IssuesInfoController extends ControllerBase {
 
     static get $inject() {
-        return ['issuesService', '$stateParams', '$rootScope', 'projectsService'];
+        return ['issuesService', '$stateParams', '$rootScope', 'projectsService', '$state'];
     }
 
     $onInit() {
-        this.issuesService.one(this.$stateParams.id)
+        this.issuesService
+            .one(this.$stateParams.id)
             .then((response) => {
                 this.issue = response.data.data;
                 this.projectsService.setCurrentId(this.issue.project.identifier);
                 this.$rootScope.$emit('updateProjectInfo');
             });
     }
+
+    // openList() {
+    //     this.$state.go('issues-inner.list', {project_id: this.projectsService.getCurrentId()});
+    // }
+    //
+    // openImports() {
+    //     this.$state.go('issues.imports');
+    // }
+    //
+    // openReport() {
+    //     this.$state.go('issues-inner.report', {project_id: this.projectsService.getCurrentId()});
+    // }
 
 }

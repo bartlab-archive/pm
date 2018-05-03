@@ -4,13 +4,11 @@ import './demo.scss';
 
 export default class DemoDirective extends DirectiveBase {
 
-    // static get selector() {
-    //     return 'demo';
-    // }
+    get template() {
+        return demoTemplate;
+    }
 
     $onInit() {
-        this.restrict = 'EA';
-        this.template = demoTemplate;
     }
 
     link(scope, element, attrs, controller, transcludeFn) {
