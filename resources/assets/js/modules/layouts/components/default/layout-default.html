@@ -46,7 +46,7 @@
     </div>
 </md-toolbar>
 
-<section>
+<section ng-class="{'with-project-menu': $ctrl.showProjectMenu}">
     <md-sidenav class="md-sidenav-left fixed"
                 md-component-id="left"
                 md-whiteframe="4"
@@ -79,7 +79,20 @@
         </md-nav-bar>
     </div>
 
-    <div ui-view="content"></div>
+    <div class="q-nav-container" hide show-gt-sm>
+        <div class="q-nav">
+            <div class="q-nav-items">
+                <div class="q-nav-item" ng-repeat="item in ::$ctrl.items">
+                    <a ui-sref="{{ ::item.url }}">
+                        <md-icon>{{ ::item.icon }}</md-icon>
+                        <span>{{ ::item.name }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-view-container layout-margin-gt-sm" ui-view="content"></div>
 
     <md-fab-speed-dial md-open="$ctrl.menuOpen" md-direction="up" class="md-scale md-fab-top-righ">
         <md-fab-trigger>
@@ -110,11 +123,9 @@
 
         <md-list>
             <div ng-repeat="project in $ctrl.projects">
-                <md-list-item class="md-body-1" ng-click="$ctrl.gotToProject(project.identifier)">
-                    <md-button class="md-icon-button">
-                        <md-icon>folder</md-icon>
-                    </md-button>
-                    {{ project.name }}
+                <md-list-item class="md-1-line" ng-click="$ctrl.gotToProject(project.identifier)">
+                    <span class="md-avatar">{{ ::project.avatar  }}</span>
+                    {{ ::project.name }}
                 </md-list-item>
             </div>
         </md-list>

@@ -33,6 +33,7 @@ export default class IssuesFormController extends ControllerBase {
         this.searchText = '';
         this.watchers = [];
         // this.errors = {};
+        this.loadProccess = false;
         this.load();
     }
 
@@ -45,6 +46,7 @@ export default class IssuesFormController extends ControllerBase {
     }
 
     load() {
+        this.loadProccess = true;
         this.$q
             .all([
                 this.projectsService.all(),
@@ -71,6 +73,7 @@ export default class IssuesFormController extends ControllerBase {
                     );
                 }
 
+                this.loadProccess = false;
                 this.changeProject();
             });
     }

@@ -146,7 +146,7 @@ export default class AppConfig extends InjectableBase {
 
     compileConfig() {
         // improve performance
-        this.$compileProvider.debugInfoEnabled(false);
+        this.$compileProvider.debugInfoEnabled(process.env.NODE_ENV === 'development');
         this.$compileProvider.commentDirectivesEnabled(false);
         this.$compileProvider.cssClassDirectivesEnabled(false);
     }

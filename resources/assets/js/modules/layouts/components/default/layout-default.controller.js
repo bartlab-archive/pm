@@ -14,24 +14,38 @@ import _ from 'lodash';
 export default class LayoutDefaultController extends ControllerBase {
 
     static get $inject() {
-        return ['$timeout', '$mdSidenav', '$state', 'projectsService', 'mainService', 'usersService', '$transitions', '$stateParams', '$rootScope'];
+        return ['$timeout', '$mdSidenav', '$state', 'projectsService', 'mainService', 'usersService',
+            '$transitions', '$stateParams', '$rootScope', '$filter'];
     }
 
     $onInit() {
-        // this.ProjectsService.getMyList().then((response) => {
-        //     this.projects = response || {};
-        // });
+        // todo: show current user avatar in main menu
 
         this.items = this.mainService.getAppMenu();
         this.newItems = this.mainService.getNewItemMenu();
         this.projectItems = this.projectsService.getModules();
 
-        this.setTitle();
+        // this.setTitle();
         this.menuOpen = false;
         this.loadProjectInfo();
+        this.loadMyProjects();
 
         this.$transitions.onSuccess({}, () => this.loadProjectInfo());
         this.$rootScope.$on('updateProjectInfo', () => this.loadProjectInfo());
+    }
+
+    loadMyProjects() {
+        // todo: add is_my param to request
+        // todo: load only needed info from projects list
+        this.projectsService
+            .all()
+            .then((response) => {
+                this.projects = response.data.data.map((project) => {
+                    project.name = this.$filter('words')(project.name, 3);
+                    project.avatar = this.$filter('limitTo')(project.name, 1);
+                    return project;
+                });
+            });
     }
 
     setTitle(title) {
@@ -75,10 +89,10 @@ export default class LayoutDefaultController extends ControllerBase {
         this.toggle();
     }
 
-    openProjectPage(item){
+    openProjectPage(item) {
         const projectId = this.projectsService.getCurrentId();
 
-        if (projectId){
+        if (projectId) {
             this.$state.go(item.url, {project_id: projectId})
         }
     }
@@ -99,7 +113,7 @@ export default class LayoutDefaultController extends ControllerBase {
 
     loadProjectInfo() {
         const projectIdentifier = this.projectsService.getCurrentId();
-        this.showProjectMenu = !!projectIdentifier;
+        this.showProjectMenu = !!projectIdentifier || _.get(this.$state, 'current.data.layout.insideProject');
 
         if (projectIdentifier) {
             this.projectsService.one(projectIdentifier).then((response) => {
@@ -124,7 +138,7 @@ export default class LayoutDefaultController extends ControllerBase {
             });
         } else {
             this.newItems.forEach((item) => {
-                item.enable = (item.single && (this.$state.current.name !== item.url && this.$state.current.name !== item.single ));
+                item.enable = (item.single && (this.$state.current.name !== item.url && this.$state.current.name !== item.single));
             });
 
             this.setTitle();

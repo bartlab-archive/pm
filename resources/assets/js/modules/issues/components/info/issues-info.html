@@ -1,5 +1,8 @@
-<div layout-gt-sm="row" layout-align="center start" ng-cloak>
-    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="60">
+<!--<div layout-gt-sm="row" layout-align="center start" ng-cloak>-->
+    <!--<md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="60">-->
+    <md-card>
+        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
+
         <md-card-header>
             <md-card-avatar>
                 <img ng-src="{{ ::$ctrl.issue.author.avatar }}" class="md-user-avatar">
@@ -87,4 +90,4 @@
             </issues-view-actions-component>
         </md-card-actions>
     </md-card>
-</div>
+<!--</div>-->

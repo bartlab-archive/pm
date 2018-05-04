@@ -1,6 +1,5 @@
 import InjectableBase from 'base/injectable.base';
 import IssuesListComponent from './components/list/issues-list.component';
-// import issuesEditCopyComponent from './components/edit-copy/issues-edit-copy.component';
 import IssuesInfoComponent from './components/info/issues-info.component';
 import IssuesFormComponent from './components/form/issues-form.component';
 import IssuesProjectSettingsComponent from './components/project-settings/issues-project-settings.component';
@@ -79,6 +78,11 @@ export default class IssuesConfig extends InjectableBase {
             })
             .state('issues-inner', {
                 abstract: true,
+                data: {
+                    layout: {
+                        insideProject: true
+                    }
+                },
                 url: '/issues',
                 parent: 'projects.inner',
             })
@@ -117,6 +121,11 @@ export default class IssuesConfig extends InjectableBase {
                 component: IssuesFormComponent.getName()
             })
             .state('issues.edit', {
+                data: {
+                    layout: {
+                        insideProject: true
+                    }
+                },
                 url: '/:id/edit',
                 component: IssuesFormComponent.getName(),
                 // component: issuesEditCopyComponent.name,
@@ -128,6 +137,11 @@ export default class IssuesConfig extends InjectableBase {
             })
             .state('issues.info', {
                 url: '/:id',
+                data: {
+                    layout: {
+                        insideProject: true
+                    }
+                },
                 component: IssuesInfoComponent.getName(),
             });
     }
