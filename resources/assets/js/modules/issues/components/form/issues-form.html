@@ -1,172 +1,184 @@
 <!--<div layout-gt-sm="row" layout-align="center start">-->
-    <!--<md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">-->
-    <md-card>
-        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
+<!--<md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">-->
+<md-card>
+    <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
 
-        <md-card-header>
-            <h1 flex>{{ $ctrl.title }}</h1>
-            <div>
-                <md-switch ng-model="$ctrl.issue.is_private" aria-label="Private">
-                    Private
-                </md-switch>
+    <md-card-header>
+        <h1 flex>{{ $ctrl.title }}</h1>
+        <div>
+            <md-switch ng-model="$ctrl.issue.is_private" aria-label="Private">
+                Private
+            </md-switch>
+        </div>
+    </md-card-header>
+
+    <md-card-content>
+        <form name="$ctrl.form" ng-submit="$ctrl.submit()">
+            <md-input-container class="md-block">
+                <label for="subject">Subject</label>
+                <input id="subject" name="subject" ng-model="$ctrl.issue.subject"
+                       required ng-change="$ctrl.change('subject')">
+                <div ng-messages="$ctrl.form.subject.$error">
+                    <div ng-message="required">This field can't be blank.</div>
+
+                    <div ng-message="server" ng-bind-html="$ctrl.form.subject.$error.serverMessage"></div>
+                </div>
+            </md-input-container>
+
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
+                    <label>Project</label>
+                    <md-select ng-model="$ctrl.issue.project.identifier" required ng-change="$ctrl.changeProject(true)">
+                        <md-option ng-repeat="item in $ctrl.projects" ng-value="::item.identifier">
+                            {{ ::item.name }}
+                        </md-option>
+                    </md-select>
+
+                    <!--<div ng-messages="$ctrl.form.identifier.$error">-->
+                    <!--<div ng-message="required">Name can't be blank!</div>-->
+
+                    <!--<div ng-message="server" ng-bind-html="$ctrl.errors.name | join"></div>-->
+                    <!--</div>-->
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
+                    <label>Tracker</label>
+                    <md-select ng-model="$ctrl.issue.tracker_id" required>
+                        <md-option ng-repeat="item in $ctrl.selectedProject.trackers" ng-value="::item.id">
+                            {{ ::item.name }}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
             </div>
-        </md-card-header>
 
-        <md-card-content>
-            <form name="$ctrl.form" ng-submit="$ctrl.submit()">
-                <md-input-container class="md-block">
-                    <label for="subject">Subject</label>
-                    <input id="subject" name="subject" ng-model="$ctrl.issue.subject"
-                           required ng-change="$ctrl.change('subject')">
-                    <div ng-messages="$ctrl.form.subject.$error">
-                        <div ng-message="required">This field can't be blank.</div>
-
-                        <div ng-message="server" ng-bind-html="$ctrl.form.subject.$error.serverMessage"></div>
-                    </div>
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
+                    <label>Status</label>
+                    <md-select ng-model="$ctrl.issue.status_id" required>
+                        <md-option ng-repeat="item in ::$ctrl.statuses" ng-value="::item.id">
+                            {{ ::item.name }}
+                        </md-option>
+                    </md-select>
                 </md-input-container>
 
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
-                        <label>Project</label>
-                        <md-select ng-model="$ctrl.issue.project.identifier" required ng-change="$ctrl.changeProject(true)">
-                            <md-option ng-repeat="item in ::$ctrl.projects" ng-value="::item.identifier">
-                                {{ ::item.name }}
-                            </md-option>
-                        </md-select>
+                <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
+                    <label>Priority</label>
+                    <md-select ng-model="$ctrl.issue.priority_id" required>
+                        <md-option ng-repeat="item in ::$ctrl.priorities" ng-value="::item.id">
+                            {{ ::item.name }}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
 
-                        <!--<div ng-messages="$ctrl.form.identifier.$error">-->
-                            <!--<div ng-message="required">Name can't be blank!</div>-->
-
-                            <!--<div ng-message="server" ng-bind-html="$ctrl.errors.name | join"></div>-->
-                        <!--</div>-->
-                    </md-input-container>
-
-                    <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
-                        <label>Tracker</label>
-                        <md-select ng-model="$ctrl.issue.tracker_id" required>
-                            <md-option ng-repeat="item in $ctrl.selectedProject.trackers" ng-value="::item.id">
-                                {{ ::item.name }}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                </div>
-
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
-                        <label>Status</label>
-                        <md-select ng-model="$ctrl.issue.status_id" required>
-                            <md-option ng-repeat="item in ::$ctrl.statuses" ng-value="::item.id">
-                                {{ ::item.name }}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
-                        <label>Priority</label>
-                        <md-select ng-model="$ctrl.issue.priority_id" required>
-                            <md-option ng-repeat="item in ::$ctrl.priorities" ng-value="::item.id">
-                                {{ ::item.name }}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                </div>
-
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
-                        <label>Assignee</label>
-                        <md-select ng-model="$ctrl.issue.assigned_to_id">
-                            <md-option ng-repeat="member in $ctrl.selectedProject.members" ng-value="::member.user.id">
-                                {{ ::member.user.full_name }}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <md-input-container class="md-block" flex-md="50" flex-gt-md="50" ng-if="$ctrl.categories.length > 0">
-                        <label>Category</label>
-                        <md-select ng-model="$ctrl.issue.category_id">
-                            <md-option ng-value=""></md-option>
-                            <md-option ng-repeat="item in ::$ctrl.categories" ng-value="::item.id">
-                                {{ ::item.name }}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                </div>
-
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-block" flex-md="50" flex-gt-md="25">
-                        <label>Start date</label>
-                        <md-datepicker ng-model="$ctrl.issue.start_date"></md-datepicker>
-                    </md-input-container>
-
-                    <md-input-container class="md-block" flex-md="50" flex-gt-md="25">
-                        <label>Due date</label>
-                        <md-datepicker ng-model="$ctrl.issue.due_date"></md-datepicker>
-                    </md-input-container>
-
-                    <md-input-container class="md-block" flex-md="50" flex-gt-md="16">
-                        <label>Parent task</label>
-                        <input name="estimate" ng-model="$ctrl.issue.parent_id" placeholder="id">
-                    </md-input-container>
-
-                    <md-input-container class="md-block" flex-md="50" flex-gt-md="16">
-                        <label>Estimated time</label>
-                        <input name="estimate" ng-model="$ctrl.issue.estimated_hours" placeholder="hours">
-                    </md-input-container>
-
-                    <md-input-container class="md-block" flex-md="50" flex-gt-md="16">
-                        <label>% Done</label>
-                        <!--<input name="estimate" ng-model="$ctrl.issue.done">-->
-                        <md-select ng-model="$ctrl.issue.done_ratio">
-                            <md-option ng-repeat="n in [] | range:11" ng-value="n">
-                                {{ ::(n * 10) }}%
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-                </div>
-
-                <md-input-container class="md-block">
-                    <label>Watchers</label>
-                    <md-chips
-                            ng-model="$ctrl.watchers"
-                            readonly="false"
-                            md-removable="true"
-                            md-require-match="true"
-                            delete-button-label="Remove watcher"
-                            delete-hint="Press delete to remove watcher">
-
-                        <md-chip-template>
-                            <strong>{{ ::$chip.user.full_name }}</strong>
-                        </md-chip-template>
-
-                        <md-autocomplete
-                                md-no-cache="true"
-                                md-search-text="$ctrl.searchText"
-                                md-item-text="item.user.full_name"
-                                md-items="item in $ctrl.querySearch()"
-                                md-min-length="0"
-                                placeholder="Add">
-                            <span md-highlight-text="$ctrl.searchText" md-highlight-flags="i">{{ ::item.user.full_name }}</span>
-                        </md-autocomplete>
-                    </md-chips>
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
+                    <label>Assignee</label>
+                    <md-select ng-model="$ctrl.issue.assigned_to_id">
+                        <md-option ng-repeat="member in $ctrl.selectedProject.members" ng-value="::member.user.id">
+                            {{ ::member.user.full_name }}
+                        </md-option>
+                    </md-select>
                 </md-input-container>
 
-                <md-input-container class="md-block">
-                    <label>Description</label>
-                    <textarea ng-model="$ctrl.issue.description" rows="5"></textarea>
+                <md-input-container class="md-block" flex-md="50" flex-gt-md="50" ng-if="$ctrl.categories.length > 0">
+                    <label>Category</label>
+                    <md-select ng-model="$ctrl.issue.category_id">
+                        <md-option ng-value=""></md-option>
+                        <md-option ng-repeat="item in ::$ctrl.categories" ng-value="::item.id">
+                            {{ ::item.name }}
+                        </md-option>
+                    </md-select>
                 </md-input-container>
-            </form>
-        </md-card-content>
+            </div>
 
-        <md-card-actions layout="row" layout-align="center center">
-            <md-button class="md-raised md-primary animation-target md-button md-ink-ripple"
-                       ng-disabled="$ctrl.form.$invalid"
-                       ng-click="$ctrl.submit()">
-                Create
-            </md-button>
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-md="50" flex-gt-md="25">
+                    <label>Start date</label>
+                    <md-datepicker ng-model="$ctrl.issue.start_date"></md-datepicker>
+                </md-input-container>
 
-            <md-button class="md-raised md-default animation-target md-button md-ink-ripple" ng-click="$ctrl.cancel()">
-                Cancel
-            </md-button>
-        </md-card-actions>
-    </md-card>
+                <md-input-container class="md-block" flex-md="50" flex-gt-md="25">
+                    <label>Due date</label>
+                    <md-datepicker ng-model="$ctrl.issue.due_date"></md-datepicker>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-md="50" flex-gt-md="16">
+                    <label>Parent task</label>
+                    <input name="estimate" ng-model="$ctrl.issue.parent_id" placeholder="id">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-md="50" flex-gt-md="16">
+                    <label>Estimated time</label>
+                    <input name="estimate" ng-model="$ctrl.issue.estimated_hours" placeholder="hours">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-md="50" flex-gt-md="16">
+                    <label>% Done</label>
+                    <!--<input name="estimate" ng-model="$ctrl.issue.done">-->
+                    <md-select ng-model="$ctrl.issue.done_ratio">
+                        <md-option ng-repeat="n in [] | range:11" ng-value="n">
+                            {{ ::(n * 10) }}%
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+
+            <md-input-container class="md-block">
+                <label>Watchers</label>
+                <md-chips
+                        ng-model="$ctrl.watchers"
+                        readonly="false"
+                        md-removable="true"
+                        md-require-match="true"
+                        delete-button-label="Remove watcher"
+                        delete-hint="Press delete to remove watcher">
+
+                    <md-chip-template>
+                        <strong>{{ ::$chip.user.full_name }}</strong>
+                    </md-chip-template>
+
+                    <md-autocomplete
+                            md-no-cache="true"
+                            md-search-text="$ctrl.searchText"
+                            md-item-text="item.user.full_name"
+                            md-items="item in $ctrl.querySearch()"
+                            md-min-length="0"
+                            placeholder="Add">
+                        <span md-highlight-text="$ctrl.searchText"
+                              md-highlight-flags="i">{{ ::item.user.full_name }}</span>
+                    </md-autocomplete>
+                </md-chips>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Description</label>
+                <textarea ng-model="$ctrl.issue.description" rows="5"></textarea>
+            </md-input-container>
+        </form>
+    </md-card-content>
+
+    <md-card-actions layout="row" layout-align="center center">
+        <md-button class="md-raised md-primary animation-target md-button md-ink-ripple"
+                   ng-disabled="$ctrl.loadProccess || $ctrl.form.$invalid"
+                   ng-click="$ctrl.submit()">
+            {{ ::$ctrl.isNew ? 'Create' : 'Submit' }}
+        </md-button>
+
+        <md-button class="md-raised md-default animation-target md-button md-ink-ripple"
+                   ng-disabled="$ctrl.loadProccess ||$ctrl.form.$invalid" ng-click="$ctrl.submit(true)"
+                   ng-if="::$ctrl.isNew">
+            Create and continue
+        </md-button>
+
+        <md-button class="md-raised md-default animation-target md-button md-ink-ripple" ng-click="$ctrl.preview()"
+                   ng-disabled="$ctrl.loadProccess">
+            Preview
+        </md-button>
+
+        <md-button class="md-raised md-default animation-target md-button md-ink-ripple" ng-click="$ctrl.cancel()">
+            Cancel
+        </md-button>
+    </md-card-actions>
+</md-card>
 <!--</div>-->

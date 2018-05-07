@@ -23,6 +23,7 @@ export default class AppRun extends InjectableBase {
         this.$rootScope.$on('notFound', (...args) => this.notFound(...args));
         this.$rootScope.$on('notAllowed', (...args) => this.notAllowed(...args));
         this.$rootScope.$on('serverError', (...args) => this.serverError(...args));
+        this.$rootScope.$on('tooManyRequests', (...args) => this.tooManyRequests(...args));
         this.Restangular.setErrorInterceptor((...args) => this.errorInterceptor(...args));
     }
 
@@ -69,6 +70,12 @@ export default class AppRun extends InjectableBase {
     notAllowed(){
         this.$mdToast.show(
             this.$mdToast.simple().textContent('Method Not Allowed')
+        );
+    }
+
+    tooManyRequests(){
+        this.$mdToast.show(
+            this.$mdToast.simple().textContent('Too Many Requests!')
         );
     }
 

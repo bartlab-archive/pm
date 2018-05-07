@@ -20,12 +20,15 @@ class ProjectsService
 //            'enabledModules'
 //        ]);
 
-        if ($status = array_get($params, 'status')) {
+        // todo: make status active and closed
+        if ($status = array_get($params, 'status', Project::STATUS_ACTIVE)) {
             $query->where('status', $status);
         }
 
+        // todo: get only pablic and my project
+
 //        if ($closed = array_get($params, 'closed')) {
-//            $query->orWhere('status', Project::CLOSED_STATUS);
+//            $query->orWhere('status', Project::STATUS_ACTIVE);
 //        }
 
         if ($order = array_get($params, 'order', ['name' => 'asc'])) {
@@ -39,31 +42,12 @@ class ProjectsService
             }
         }
 
-//        $total = $query->count();
-//        $limit = array_get($params, 'limit', 20);
-//        $offset = array_get($params, 'offset', 0);
+        if ($perPage = array_get($params, 'per_page')){
+            return $query
+                ->paginate($perPage);
+        }
 
-//        if ($offset > 0 && $offset >= $total) {
-//            $offset = $offset - $limit;
-//        }
-
-//        $query->setPerPage($limit);
-//        $query->paginate(1);
-
-        return $query
-//            ->setPerPage(array_get($params, 'per_page', 20))
-            ->paginate(array_get($params, 'per_page', 20));
-//        return [
-//            'total' => $total,
-//            'limit' => $limit,
-//            'offset' => $offset,
-//            'list' => $query
-//                ->offset($offset)
-//                ->limit($limit)
-//                ->get()
-//                ->paginate(100)
-        // public function paginate($perPage = null, $columns = ['*'], $pageName = 'page', $page = null)
-//        ];
+        return $query->get();
     }
 
     public function one($identifier, $with = [])

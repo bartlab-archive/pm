@@ -21,7 +21,6 @@ export default class IssuesFormController extends ControllerBase {
     }
 
     $onInit() {
-        this.title = this.$stateParams.id && !this.isCopy() ? '#' : 'New issue';
         this.issue = {
             id: this.$stateParams.id,
             done_ratio: 0,
@@ -29,20 +28,29 @@ export default class IssuesFormController extends ControllerBase {
                 identifier: this.projectsService.getCurrentId()
             }
         };
+
         this.categories = [];
         this.searchText = '';
         this.watchers = [];
-        // this.errors = {};
-        this.loadProccess = false;
+        this.isNew = (this.$state.current.name === 'issues-inner.copy' || !this.issue.id);
+        this.title = !this.isNew ? '#' : 'New issue';
+        // cache state for ng-if
+        // this.buttonsStateCreate = !this.isNew();
+        // this.loadProccess = true;
         this.load();
     }
 
-    isCopy() {
-        return this.$state.current.name === 'issues-inner.copy';
-    }
+    // isCopy() {
+    //     return this.$state.current.name === 'issues-inner.copy';
+    // }
 
-    isNew() {
-        return !this.issue.id;
+    // isNew(test = 0) {
+    //     console.log(test);
+    //     return this.isCopy() || !this.issue.id;
+    // }
+
+    preview() {
+        // todo: make preview issue
     }
 
     load() {
@@ -50,7 +58,7 @@ export default class IssuesFormController extends ControllerBase {
         this.$q
             .all([
                 this.projectsService.all(),
-                (this.$stateParams.id ? this.issuesService.one(this.$stateParams.id) : undefined),
+                (this.$stateParams.id ? this.issuesService.one(this.issue.id) : undefined),
                 this.issuesService.statuses(),
                 this.enumerationsService.all({type: 'IssuePriority'}),
             ])
@@ -60,7 +68,8 @@ export default class IssuesFormController extends ControllerBase {
                 this.statuses = _.get(response, '2.data.data');
                 this.priorities = _.get(response, '3.data.data');
 
-                if (!this.isCopy() && this.issue.id) {
+                if (!this.isNew) {
+                    // todo: create title by template and check data exists
                     this.title = this.issue.tracker.name + ' #' + this.issue.id + ': ' + this.issue.subject;
 
                     this.projectsService.setCurrentId(this.issue.project.identifier);
@@ -113,9 +122,8 @@ export default class IssuesFormController extends ControllerBase {
         return items.filter((e) => e.user.full_name.toLowerCase().indexOf(query) !== -1);
     }
 
-    submit() {
+    submit(createAndContinue = false) {
         const model = {
-            // todo: project id
             // id: 2402,
             tracker_id: this.issue.tracker_id,
             subject: this.issue.subject,
@@ -141,16 +149,29 @@ export default class IssuesFormController extends ControllerBase {
             watchers: this.watchers.map((watcher) => watcher.user.id)
         };
 
-        (this.isNew() ? this.issuesService.create(model) : this.issuesService.update(this.issue.id, model))
+        (this.isNew ? this.issuesService.create(model) : this.issuesService.update(this.issue.id, model))
             .then((response) => {
                 const id = response.data.data.id;
-                const message = this.isNew() ? 'Issue #' + id + ' created.' : 'Successful update.';
+                // todo: make link for #id in message
+                const message = this.isNew ? 'Issue #' + id + ' created.' : 'Successful update.';
 
                 this.$mdToast.show(
                     this.$mdToast.simple().textContent(message).position('bottom left')
                 );
 
-                this.$state.go('issues.info', {id});
+                this.$state.go(
+                    createAndContinue ? 'issues-inner.new' : 'issues.info',
+                    // todo: get project identifier from response
+                    createAndContinue ? {project_id: this.issue.project.identifier} : {id},
+                    // {reload: true, inherit: false, notify: true}
+                    createAndContinue ? {reload: false, inherit: false, notify: true} : undefined
+                );
+                // if (createAndContinue) {
+                //     // this.$state.go('issues-inner.new', {project_id: response.data.data.project.identifier});
+                //     this.$state.go('issues-inner.new', {project_id: this.issue.project.identifier}, {reload: true});
+                // } else {
+                //     this.$state.go('issues.info', {id});
+                // }
             })
             .catch((response) => {
                 if (response.status === 422) {

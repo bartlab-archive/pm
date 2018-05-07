@@ -27,23 +27,27 @@ export default class HttpInterceptor extends InjectableBase {
     responseError(response) {
         switch (true) {
             case (response.status === 401):
-                this.$rootScope.$broadcast('authUnauthorized');
+                this.$rootScope.$emit('authUnauthorized');
                 break;
 
             case (response.status === 403):
-                this.$rootScope.$broadcast('authForbidden');
+                this.$rootScope.$emit('authForbidden');
                 break;
 
             case (response.status === 404):
-                this.$rootScope.$broadcast('notFound');
+                this.$rootScope.$emit('notFound');
                 break;
 
             case (response.status === 405):
-                this.$rootScope.$broadcast('notAllowed');
+                this.$rootScope.$emit('notAllowed');
+                break;
+
+            case (response.status === 429):
+                this.$rootScope.$emit('tooManyRequests');
                 break;
 
             case (response.status >= 500):
-                this.$rootScope.$broadcast('serverError');
+                this.$rootScope.$emit('serverError');
         }
 
         return this.$q.reject(response);

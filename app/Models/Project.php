@@ -12,9 +12,9 @@ class Project extends Model
     use ModelTrait;
 //    use NodeTrait;
 
-    const ACTIVE_STATUS = '1';
-    const CLOSED_STATUS = '5';
-    const ARCHIVED_STATUS = '9';
+    const STATUS_ACTIVE = '1';
+    const STATUS_CLOSED = '5';
+    const STATUS_ARCHIVED = '9';
     const IS_PUBLIC = '1';
 
 //    protected $hidden = [

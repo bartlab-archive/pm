@@ -15,7 +15,7 @@ export default class LayoutDefaultController extends ControllerBase {
 
     static get $inject() {
         return ['$timeout', '$mdSidenav', '$state', 'projectsService', 'mainService', 'usersService',
-            '$transitions', '$stateParams', '$rootScope', '$filter'];
+            '$transitions', '$stateParams', '$rootScope', '$filter', '$scope'];
     }
 
     $onInit() {
@@ -31,7 +31,11 @@ export default class LayoutDefaultController extends ControllerBase {
         this.loadMyProjects();
 
         this.$transitions.onSuccess({}, () => this.loadProjectInfo());
-        this.$rootScope.$on('updateProjectInfo', () => this.loadProjectInfo());
+        this.updateProjectInfo = this.$rootScope.$on('updateProjectInfo', () => this.loadProjectInfo());
+    }
+
+    $onDestroy() {
+        this.updateProjectInfo();
     }
 
     loadMyProjects() {

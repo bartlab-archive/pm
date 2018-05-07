@@ -10,7 +10,7 @@ import _ from 'lodash';
 export default class ProjectsSettingsController extends ControllerBase {
 
     static get $inject() {
-        return ['projectsService', '$stateParams', '$rootScope', '$state'];
+        return ['projectsService', '$stateParams', '$rootScope', '$state','$scope'];
     }
 
     $onInit() {
@@ -28,7 +28,12 @@ export default class ProjectsSettingsController extends ControllerBase {
         this.page = this.$stateParams.page;
 
         this.load();
-        this.$rootScope.$on('updateProjectInfo', () => this.load());
+        this.updateProjectInfo = this.$rootScope.$on('updateProjectInfo', () => this.load());
+        // this.$scope.$on('$destroy', () => this.updateProjectInfo());
+    }
+
+    $onDestroy() {
+        this.updateProjectInfo();
     }
 
     load() {
