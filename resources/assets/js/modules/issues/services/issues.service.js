@@ -93,13 +93,16 @@ export default class IssuesService extends ServiceBase {
     //     return this.Restangular.one('issues', id).one('history').get();
     // }
     //
-    // watch(id) {
-    //     return this.Restangular.one(`issues/${id}/watch`).post();
-    // }
-    //
-    // unwatch(id) {
-    //     return this.Restangular.one(`issues/${id}/watch`).remove();
-    // }
+
+    // todo: move to self module/service
+    watch(id) {
+        return this.$http.post('/api/v1/watchers/Issue/'+id)
+    }
+
+    // todo: move to self module/service
+    unwatch(id) {
+        return this.$http.delete('/api/v1/watchers/Issue/' + id)
+    }
 
     // timeAgo(creationDate) {
     //     let daysAgo = moment().diff(moment(creationDate, 'YYYY-MM-DD'), 'days');
@@ -119,12 +122,12 @@ export default class IssuesService extends ServiceBase {
     //     return this.Restangular.one('issues').all('statuses').getList({});
     // }
 
-    getCurrentId() {
-        return this.$stateParams.hasOwnProperty('id') ? this.$stateParams.id : null;
-    }
-
-    setCurrentId(id) {
-        this.$stateParams.id = id;
-    }
+    // getCurrentId() {
+    //     return this.$stateParams.hasOwnProperty('id') ? this.$stateParams.id : null;
+    // }
+    //
+    // setCurrentId(id) {
+    //     this.$stateParams.id = id;
+    // }
 
 }

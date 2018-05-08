@@ -117,7 +117,7 @@
                             <span>{{ ::project.updated_on }}</span>
                         </h4>
 
-                        <p class="md-truncate" ng-bind-html="project.description | words: 50"></p>
+                        <p class="md-truncate">{{ ::project.description | words: 50 }}</p>
                     </div>
 
                     <md-menu-bar>

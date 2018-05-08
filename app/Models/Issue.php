@@ -45,7 +45,7 @@ class Issue extends Model
     const UPDATED_AT = 'updated_on';
 
     const ENUMERATION_PRIORITY = 'IssuePriority';
-    const WATCHABLE_TYPE = 'Issue';
+//    const WATCHABLE_TYPE = 'Issue';
 
     protected $guarded = [
         'id'
@@ -58,6 +58,32 @@ class Issue extends Model
     protected $dates = [
         'created_on',
         'updated_on',
+        'closed_on'
+    ];
+
+    protected $fillable = [
+        'tracker_id',
+        'project_id',
+        'subject',
+        'description' .
+        'due_date',
+        'category_id',
+        'status_id',
+        'assigned_to_id',
+        'priority_id',
+        'fixed_version_id',
+        'author_id',
+        'lock_version',
+//        'created_on',
+//        'updated_on',
+        'start_date',
+        'done_ratio',
+        'estimated_hours',
+        'parent_id',
+//        'root_id',
+//        'lft',
+//        'rgt',
+        'is_private',
         'closed_on'
     ];
 
@@ -112,13 +138,12 @@ class Issue extends Model
 
     public function watchers()
     {
-        return $this
-            ->belongsToMany(User::class, Watcher::getTableName(), 'watchable_id')
-            ->where('watchable_type', static::WATCHABLE_TYPE);
-//        return $this
-//            ->hasMany(Watcher::class, 'watchable_id', 'id')
-//            ->where('watchable_type', 'Issue');
+        return $this->morphToMany(User::class, 'watchable', Watcher::getTableName(), 'watchable_id');
     }
+
+//    public function watchable(){
+//        return $this
+//    }
 
     public function version()
     {

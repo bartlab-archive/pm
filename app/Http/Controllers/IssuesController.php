@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Issues\GetIssuesRequest;
-use App\Http\Requests\Issues\UpdateIssueRequest;
+use App\Http\Requests\Issues\StoreIssueRequest;
 use App\Http\Resources\IssueCollection;
 use App\Http\Resources\IssueResource;
 use App\Http\Resources\PriorityResource;
@@ -137,44 +137,45 @@ class IssuesController extends BaseController
         ]);
     }
 
-    public function create(UpdateIssueRequest $request)
+    public function create(StoreIssueRequest $request)
     {
-        if ($projectIdentifier = $request->get('project_identifier')) {
-            if (!$project = $this->projectsService->one($projectIdentifier)) {
-                abort(404);
-            }
-
-            /*
-             * todo:
-             * Need check:
-             *  - is module enambled for project
-             *  - is user allow to view issue
-             *  - project status
-             */
-            if (!$this->enabledModulesService->check($project->identifier, $this->issueService::MODULE_NAME)) {
-                return abort(403);
-            }
+        if (!$project = $this->projectsService->one($request->get('project_identifier'))) {
+            abort(404);
         }
-//        $data = $request->all();
-//        $data['author_id'] = Auth::id();
-//        $data['start_date'] = Carbon::create()->format('Y-m-d');
 
-        // todo: get only needed fields from request
-        return IssueResource::make(
-            $this->issueService->create(
-                array_merge(
-                    $request->except(['project_identifier', 'watchers']),
-                    [
-                        'project_id' => $project->id,
-                        'author_id' => Auth::id()
-                    ]
-                )
+        /*
+         * todo:
+         * Need check:
+         *  - is module enambled for project
+         *  - is user allow to view issue
+         *  - project status
+         */
+        if (!$this->enabledModulesService->check($project->identifier, $this->issueService::MODULE_NAME)) {
+            return abort(403);
+        }
+
+        // create new issue
+        $issue = $this->issueService->create(
+            array_merge(
+                $request->validated(),
+                [
+                    'project_id' => $project->id,
+                    'author_id' => Auth::id()
+                ]
             )
         );
-//        return response()->json($this->issueService->create($data), 200);
+
+        // add watchers
+        $this->watchersService->massCreate([
+            'watchable_type' => $this->issueService->morph(),
+            'watchable_id' => $issue->id,
+            'users' => $request->input('watchers', [])
+        ]);
+
+        return IssueResource::make($issue);
     }
 
-    public function update($id, UpdateIssueRequest $request)
+    public function update($id, StoreIssueRequest $request)
     {
         $data = $request->except(['id', 'trackers', 'user', 'author', 'statusText', 'project', 'watch_state']);
         $data['start_date'] = Carbon::parse($data['start_date'])->format('Y-m-d');

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 class IssuesService
 {
     const MODULE_NAME = 'issue_tracking';
+//    const WATCHER_TYPE = 'Issue';
 
     public function one($id)
     {
@@ -56,7 +57,7 @@ class IssuesService
             'version',
             'category',
             'priority',
-//            'watchers'
+            'watchers'
         ]);
 
         if ($project = array_get($params, 'project_identifier')) {
@@ -178,6 +179,10 @@ class IssuesService
     public function delete($ids)
     {
         return Issue::destroy($ids);
+    }
+
+    public function morph(){
+        return Issue::query()->getModel()->getMorphClass(); //Issue::WATCHABLE_TYPE;
     }
 
 }

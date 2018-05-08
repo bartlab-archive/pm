@@ -152,7 +152,7 @@ export default class IssuesFormController extends ControllerBase {
         (this.isNew ? this.issuesService.create(model) : this.issuesService.update(this.issue.id, model))
             .then((response) => {
                 const id = response.data.data.id;
-                // todo: make link for #id in message
+                // todo: make link for #id in message or button "open" in toast message
                 const message = this.isNew ? 'Issue #' + id + ' created.' : 'Successful update.';
 
                 this.$mdToast.show(

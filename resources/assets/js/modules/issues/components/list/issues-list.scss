@@ -50,9 +50,13 @@ issues-list-component {
   //  }
   //}
 
-  //.md-list-item-text {
-  //  margin-right: 5px;
-  //}
+  .md-list-item-text {
+    //  margin-right: 5px;
+    .description {
+      //opacity: 0.5;
+      color: rgba(0, 0, 0, 0.4)
+    }
+  }
 
   //
   //.empty-list-div {

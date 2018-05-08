@@ -5,15 +5,15 @@
         <!--Delete-->
     </md-button>
 
-    <md-button class="md-icon-button" ng-if="$ctrl.selectedIssue.watch_state"
-               ng-click="$ctrl.unwatchIssue($ctrl.selectedIssue.id)">
+    <md-button class="md-icon-button" ng-if="$ctrl.selectedIssue.is_watcheble"
+               ng-click="$ctrl.unwatch($ctrl.selectedIssue.id)">
         <md-icon>star</md-icon>
         <md-tooltip md-direction="top">Unwatch</md-tooltip>
         <!--Unwatch-->
     </md-button>
 
-    <md-button class="md-icon-button" ng-if="$ctrl.selectedIssue.watch_state == false"
-               ng-click="$ctrl.watchIssue($ctrl.selectedIssue.id)">
+    <md-button class="md-icon-button" ng-if="!$ctrl.selectedIssue.is_watcheble"
+               ng-click="$ctrl.watch($ctrl.selectedIssue.id)">
         <md-icon>star_border</md-icon>
         <md-tooltip md-direction="top">Watch</md-tooltip>
         <!--Watch-->

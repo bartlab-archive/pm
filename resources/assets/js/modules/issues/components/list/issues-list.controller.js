@@ -10,11 +10,12 @@ import IssuesViewModalController from '../view-modal/issues-view-modal.controlle
  * @property {$stateParams} $stateParams
  * @property {$rootScope} $rootScope
  * @property {UsersService} $mdDialog
+ * @property {$filter} $filter
  */
 export default class IssuesListController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$showdown', 'issuesService', 'projectsService', '$stateParams', '$rootScope', '$mdDialog'];
+        return ['$state', '$showdown', 'issuesService', 'projectsService', '$stateParams', '$rootScope', '$mdDialog', '$filter'];
     }
 
     static setMdDialogConfig(target, data = {}) {
@@ -145,7 +146,11 @@ export default class IssuesListController extends ControllerBase {
                 'author_ids[]': this.tags.filter((e) => e.type === 'created').map((e) => e.id)
             })
             .then((response) => {
-                this.list = response.data.data;
+                // todo: map data for prepare issues and not use filter  in html
+                this.list = response.data.data.map((issue) => {
+                    issue.descriptionHtml = this.makeHtml(issue.description);
+                    return issue;
+                });
                 // this.offset = parseInt(response.headers('X-Offset')) || 0;
                 // this.limitPerPage = parseInt(response.headers('X-Limit')) || 0;
                 // this.count = parseInt(response.headers('X-Total')) || 0;
@@ -155,6 +160,10 @@ export default class IssuesListController extends ControllerBase {
                 // this.pager = this.getPager();
                 this.loadProccess = false;
             });
+    }
+
+    makeHtml(text) {
+        return text ? this.$filter('words')(this.$showdown.stripHtml(this.$showdown.makeHtml(text)), 20) : '';
     }
 
     // currentProjectId() {
@@ -167,6 +176,7 @@ export default class IssuesListController extends ControllerBase {
     }
 
     loadFiltersValues() {
+        // todo: separate for responses, remove filter api point
         return this.issuesService
             .filters({
                 project_identifier: this.projectsService.getCurrentId()

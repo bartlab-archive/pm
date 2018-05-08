@@ -46,7 +46,10 @@ class IssueResource extends Resource
 //            'version' => StatusResource::make($this->whenLoaded('version')),
 //            'category' => StatusResource::make($this->whenLoaded('category')),
                 'priority' => PriorityResource::make($this->whenLoaded('priority')),
-                'watchers' => WatcherResource::make($this->whenLoaded('watchers')),
+                'watchers' => UserResource::collection($this->whenLoaded('watchers')),
+                'is_watcheble' => $this->whenLoaded('watchers', function () {
+                    return $this->watchers->contains('id', \Auth::id());
+                })
             ],
             ($this->ordering ? ['ordering' => $this->ordering] : [])
         );

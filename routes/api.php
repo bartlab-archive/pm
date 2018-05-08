@@ -97,6 +97,17 @@ Route::group(
 
         Route::group(
             [
+                'middleware' => 'auth',
+                'prefix' => 'watchers'
+            ],
+            function () {
+                Route::post('/{type}/{id}', 'WatchersController@create');
+                Route::delete('/{type}/{id}', 'WatchersController@delete');
+            }
+        );
+
+        Route::group(
+            [
                 //'middleware' => 'auth',
                 'prefix' => 'agile'
             ],
@@ -180,9 +191,9 @@ Route::group(
                 Route::get('/{id}', 'IssuesController@show');
                 Route::put('/{id}', 'IssuesController@update');
                 Route::delete('/{id}', 'IssuesController@delete');
-                Route::get('/{id}/history', 'IssuesController@history');
-                Route::post('/{id}/watch', 'IssuesController@watch');
-                Route::delete('/{id}/watch', 'IssuesController@unwatch');
+//                Route::get('/{id}/history', 'IssuesController@history');
+//                Route::post('/{id}/watch', 'IssuesController@watch');
+//                Route::delete('/{id}/watch', 'IssuesController@unwatch');
             }
         );
 

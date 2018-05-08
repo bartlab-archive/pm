@@ -15,7 +15,7 @@ export default class IssuesViewActionsController extends ControllerBase {
     $onInit() {
     }
 
-    cancel(update) {
+    cancel() {
         return this.$mdDialog.cancel();
     }
 
@@ -31,17 +31,17 @@ export default class IssuesViewActionsController extends ControllerBase {
         this.cancel();
     }
 
-    watchIssue(id) {
-        this.issuesService.watch(id)
+    watch(id) {
+        this.issuesService.watch({id, type: 'Issue'})
             .then(() => {
-                this.selectedIssue.watch_state = true
+                this.selectedIssue.is_watcheble = true
             });
     }
 
-    unwatchIssue(id) {
+    unwatch(id) {
         this.issuesService.unwatch(id)
             .then(() => {
-                this.selectedIssue.watch_state = false
+                this.selectedIssue.is_watcheble = false
             });
     }
 

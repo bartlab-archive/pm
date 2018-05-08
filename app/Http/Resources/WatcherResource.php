@@ -16,6 +16,8 @@ class WatcherResource extends Resource
     {
         return parent::toArray($request);
 //        return [
+//            'id' => $this->pivot->id,
+//            'user' => UserResource::make($this)
 //            'id' => $this->id,
 //            'name' => $this->name,
 //            'position' => $this->position,
