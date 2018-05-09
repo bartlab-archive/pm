@@ -2,14 +2,14 @@ import ControllerBase from 'base/controller.base';
 
 /**
  * @property {$mdDialog} $mdDialog
- * @property {ProjectsService} projectsService
  * @property {$rootScope} $rootScope
  * @property {$state} $state
+ * @property {object} issue
  */
 export default class IssuesViewActionsController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdDialog', 'issuesService', '$rootScope', '$state', 'projectsService'];
+        return ['$mdDialog', 'issuesService', '$rootScope', '$state'];
     }
 
     $onInit() {
@@ -19,48 +19,49 @@ export default class IssuesViewActionsController extends ControllerBase {
         return this.$mdDialog.cancel();
     }
 
-    openIssue(id) {
-        this.cancel()
+    // openIssue() {
+    //     // console.log($event);
+    //     this.cancel()
+    //         .then(() => {
+    //             this.$state.go('issues.info', {id: this.issue.id});
+    //         });
+    // }
+    //
+    // editIssue() {
+    //     this.$state.go('issues.edit', {id: this.issue.id});
+    //     this.cancel();
+    // }
+
+    watch() {
+        this.issuesService.watch(this.issue.id)
             .then(() => {
-                this.$state.go('issues.info', {id});
+                this.issue.is_watcheble = true
             });
     }
 
-    editIssue(id) {
-        this.$state.go('issues.edit', {id});
-        this.cancel();
-    }
-
-    watch(id) {
-        this.issuesService.watch({id, type: 'Issue'})
+    unwatch() {
+        this.issuesService.unwatch(this.issue.id)
             .then(() => {
-                this.selectedIssue.is_watcheble = true
+                this.issue.is_watcheble = false
             });
     }
 
-    unwatch(id) {
-        this.issuesService.unwatch(id)
-            .then(() => {
-                this.selectedIssue.is_watcheble = false
-            });
-    }
+    // copyIssue() {
+    //     this.$state.go('issues-inner.copy', {
+    //         id: this.issue.id,
+    //         project_id: this.issue.project.identifier
+    //     });
+    //     this.cancel();
+    // }
 
-    copyIssue(issue) {
-        this.$state.go('issues-inner.copy', {
-            id: issue.id,
-            project_id: issue.project.identifier
-        });
-        this.cancel();
-    }
-
-    deleteIssue(id) {
+    deleteIssue() {
         let confirm = this.$mdDialog.confirm()
             .title(`Would you like to delete this issue?`)
             .ok('Delete!')
             .cancel('Cancel');
 
         this.$mdDialog.show(confirm).then(() => {
-            this.issuesService.deleteIssue(id).then(() => {
+            this.issuesService.deleteIssue(this.issue.id).then(() => {
                 this.$rootScope.$emit('updateIssues');
             });
 

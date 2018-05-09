@@ -259,6 +259,13 @@ export default class IssuesListController extends ControllerBase {
     }
 
     viewIssue($event, issue) {
+        // if ctrl or meta key press - process link click
+        if ($event.ctrlKey || $event.metaKey) {
+            return;
+        }
+
+        $event.preventDefault();
+
         this.$mdDialog.show(
             this.constructor.setMdDialogConfig($event.target, {
                 selectedIssue: issue
@@ -344,13 +351,13 @@ export default class IssuesListController extends ControllerBase {
     //     return currentPage + '-' + fromPage + all;
     // }
 
-    openIssue(id) {
-        this.$state.go('issues.info', {id: id});
-    }
+    // openIssue(id) {
+    //     this.$state.go('issues.info', {id: id});
+    // }
 
-    editIssue(id) {
-        this.$state.go('issues.edit', {id: id});
-    }
+    // editIssue(id) {
+    //     this.$state.go('issues.edit', {id: id});
+    // }
 
     copyIssue(item) {
         this.$state.go('issues-inner.copy', {id: item.id, project_id: item.project.identifier});

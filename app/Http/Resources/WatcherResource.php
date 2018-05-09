@@ -14,19 +14,11 @@ class WatcherResource extends Resource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
-//        return [
-//            'id' => $this->pivot->id,
-//            'user' => UserResource::make($this)
-//            'id' => $this->id,
-//            'name' => $this->name,
-//            'position' => $this->position,
-//            'is_default' => $this->is_default,
-//            'type' => $this->type,
-//            'active' => $this->active,
-//            'parent_id' => $this->parent_id,
-//            'position_name' => $this->position_name,
-//            'project' => $this->project
-//        ];
+//        return parent::toArray($request);
+        return [
+            'id' => $this->watchable_id,
+            'type' => $this->watchable_type,
+            'user_id' => $this->user_id,
+        ];
     }
 }

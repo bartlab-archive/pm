@@ -151,11 +151,27 @@
                 </md-chips>
             </md-input-container>
 
-            <md-input-container class="md-block">
-                <label>Description</label>
-                <textarea ng-model="$ctrl.issue.description" rows="5"></textarea>
+            <md-input-container class="md-block" ng-if="$ctrl.showDescription">
+                <label>
+                    Description
+                </label>
+                <textarea ng-model="$ctrl.issue.description" rows="5" ng-if="$ctrl.showDescription"></textarea>
             </md-input-container>
+
+            <div layout="row" layout-align="center center" ng-if="!$ctrl.isNew">
+                <md-button class="md-icon-button" ng-click="$ctrl.showDescription = !$ctrl.showDescription">
+                    <md-icon>{{ $ctrl.showDescription ? 'expand_less' : 'expand_more' }}</md-icon>
+                    <md-tooltip md-direction="top">Description</md-tooltip>
+                </md-button>
+            </div>
         </form>
+
+        <md-input-container class="md-block" ng-if="!$ctrl.isNew">
+            <label>
+                Notes
+            </label>
+            <textarea ng-model="$ctrl.notes" rows="5"></textarea>
+        </md-input-container>
     </md-card-content>
 
     <md-card-actions layout="row" layout-align="center center">

@@ -28,6 +28,7 @@ export default class AppRun extends InjectableBase {
     }
 
     checkAccess(trans) {
+        // console.log(trans.router.stateService.href(trans.to(), trans.params(),{absolute: true}));
         const access = _.get(trans.$to(), 'data.access', false);
 
         if (access) {

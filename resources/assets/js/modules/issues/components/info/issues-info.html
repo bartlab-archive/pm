@@ -1,93 +1,91 @@
 <!--<div layout-gt-sm="row" layout-align="center start" ng-cloak>-->
-    <!--<md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="60">-->
-    <md-card>
-        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
+<!--<md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="60">-->
+<md-card>
+    <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
 
-        <md-card-header>
-            <md-card-avatar>
-                <img ng-src="{{ ::$ctrl.issue.author.avatar }}" class="md-user-avatar">
-            </md-card-avatar>
+    <md-card-header>
+        <md-card-avatar>
+            <img ng-src="{{ ::$ctrl.issue.author.avatar }}" class="md-user-avatar">
+        </md-card-avatar>
 
-            <md-card-header-text>
+        <md-card-header-text>
                 <span class="md-title">
                     <md-icon ng-if="$ctrl.issue.is_private">lock</md-icon>
                      {{ ::$ctrl.issue.tracker.name }} #{{ ::$ctrl.issue.id }}: {{ ::$ctrl.issue.subject }}
                 </span>
 
-                <span class="md-subhead">
+            <span class="md-subhead">
                     <span>Added by: </span>
                     <a ui-sref="users.info({id:$ctrl.issue.author.id})">{{ ::$ctrl.issue.author.full_name }}</a>
                 </span>
-            </md-card-header-text>
+        </md-card-header-text>
 
-            <md-menu>
-                <md-button class="md-icon-button" aria-label="User menu" ng-click="$mdMenu.open()">
-                    <md-icon>more_vert</md-icon>
-                </md-button>
+        <md-menu>
+            <md-button class="md-icon-button" aria-label="User menu" ng-click="$mdMenu.open()">
+                <md-icon>more_vert</md-icon>
+            </md-button>
 
-                <md-menu-content width="3">
-                    <!--<md-menu-item ng-click="$ctrl.openList()">-->
-                    <!--<md-button>-->
-                    <!--<md-icon>list</md-icon>-->
-                    <!--View all issues-->
-                    <!--</md-button>-->
-                    <!--</md-menu-item>-->
+            <md-menu-content width="3">
+                <!--<md-menu-item ng-click="$ctrl.openList()">-->
+                <!--<md-button>-->
+                <!--<md-icon>list</md-icon>-->
+                <!--View all issues-->
+                <!--</md-button>-->
+                <!--</md-menu-item>-->
 
-                    <!--<md-menu-item ng-click="$ctrl.openReport()">-->
-                    <!--<md-button>-->
-                    <!--<md-icon>pageview</md-icon>-->
-                    <!--Summary-->
-                    <!--</md-button>-->
-                    <!--</md-menu-item>-->
+                <!--<md-menu-item ng-click="$ctrl.openReport()">-->
+                <!--<md-button>-->
+                <!--<md-icon>pageview</md-icon>-->
+                <!--Summary-->
+                <!--</md-button>-->
+                <!--</md-menu-item>-->
 
-                    <!--<md-menu-item>-->
-                    <!--<md-button>-->
-                    <!--<md-icon>timeline</md-icon>-->
-                    <!--Gant-->
-                    <!--</md-button>-->
-                    <!--</md-menu-item>-->
+                <!--<md-menu-item>-->
+                <!--<md-button>-->
+                <!--<md-icon>timeline</md-icon>-->
+                <!--Gant-->
+                <!--</md-button>-->
+                <!--</md-menu-item>-->
 
-                    <!--<md-menu-item>-->
-                    <!--<md-button>-->
-                    <!--<md-icon>date_range</md-icon>-->
-                    <!--Calendar-->
-                    <!--</md-button>-->
-                    <!--</md-menu-item>-->
+                <!--<md-menu-item>-->
+                <!--<md-button>-->
+                <!--<md-icon>date_range</md-icon>-->
+                <!--Calendar-->
+                <!--</md-button>-->
+                <!--</md-menu-item>-->
 
-                    <!--<md-menu-item ng-click="$ctrl.openImports()">-->
-                    <!--<md-button>-->
-                    <!--<md-icon>file_upload</md-icon>-->
-                    <!--Import-->
-                    <!--</md-button>-->
-                    <!--</md-menu-item>-->
+                <!--<md-menu-item ng-click="$ctrl.openImports()">-->
+                <!--<md-button>-->
+                <!--<md-icon>file_upload</md-icon>-->
+                <!--Import-->
+                <!--</md-button>-->
+                <!--</md-menu-item>-->
 
-                    <!--<md-divider></md-divider>-->
+                <!--<md-divider></md-divider>-->
 
-                    <md-menu-item>
-                        <md-button>
-                            <md-icon>rss_feed</md-icon>
-                            Atom
-                        </md-button>
-                    </md-menu-item>
+                <md-menu-item>
+                    <md-button>
+                        <md-icon>rss_feed</md-icon>
+                        Atom
+                    </md-button>
+                </md-menu-item>
 
-                    <md-menu-item>
-                        <md-button>
-                            <md-icon>file_download</md-icon>
-                            PDF
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
-        </md-card-header>
+                <md-menu-item>
+                    <md-button>
+                        <md-icon>file_download</md-icon>
+                        PDF
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+    </md-card-header>
 
-        <md-card-content>
-            <issues-view-component selected-issue="$ctrl.issue" author-info="false"></issues-view-component>
-        </md-card-content>
+    <md-card-content>
+        <issues-view-component selected-issue="$ctrl.issue" author-info="false"></issues-view-component>
+    </md-card-content>
 
-        <md-card-actions layout="row" layout-align="center center">
-            <issues-view-actions-component selected-issue="$ctrl.issue"
-                                           open-button="false">
-            </issues-view-actions-component>
-        </md-card-actions>
-    </md-card>
+    <md-card-actions layout="row" layout-align="center center">
+        <issues-view-actions-component issue="$ctrl.issue" open-button="false"></issues-view-actions-component>
+    </md-card-actions>
+</md-card>
 <!--</div>-->

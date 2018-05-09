@@ -161,7 +161,7 @@
                 ($ctrl.groupsInfo[row.ordering] ? ' (' + $ctrl.groupsInfo[row.ordering] + ')' : '' )
                 ) }}
             </md-subheader>
-            <md-list-item class="md-2-line" ng-click="$ctrl.viewIssue($even,row)">
+            <md-list-item class="md-2-line" ng-click="$ctrl.viewIssue($event,row)" ui-sref="issues.info({id: row.id})">
                 <md-checkbox ng-model="row.selected" ng-change="$ctrl.onSelectIssue(row)"
                              aria-label="Select issue"></md-checkbox>
 
@@ -193,18 +193,18 @@
                         </md-button>
 
                         <md-menu-content width="3">
-                            <md-menu-item class="md-indent" ng-click="$ctrl.openIssue(row.id)">
+                            <md-menu-item class="md-indent">
                                 <md-icon>open_in_browser</md-icon>
 
-                                <md-button>
+                                <md-button ui-sref="issues.info({id: row.id})">
                                     Open
                                 </md-button>
                             </md-menu-item>
 
-                            <md-menu-item class="md-indent" ng-click="$ctrl.editIssue(row.id)">
+                            <md-menu-item class="md-indent">
                                 <md-icon>mode_edit</md-icon>
 
-                                <md-button>
+                                <md-button ui-sref="issues.edit({id: row.id})">
                                     Edit
                                 </md-button>
                             </md-menu-item>
@@ -349,10 +349,11 @@
                                 </md-menu>
                             </md-menu-item>
 
-                            <md-menu-item class="md-indent" ng-click="$ctrl.copyIssue(row)">
+                            <md-menu-item class="md-indent">
                                 <md-icon>content_copy</md-icon>
 
-                                <md-button>
+                                <md-button
+                                        ui-sref="issues-inner.copy({id: row.id, project_id: row.project.identifier})">
                                     Copy
                                 </md-button>
                             </md-menu-item>

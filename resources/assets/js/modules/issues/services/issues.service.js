@@ -96,12 +96,12 @@ export default class IssuesService extends ServiceBase {
 
     // todo: move to self module/service
     watch(id) {
-        return this.$http.post('/api/v1/watchers/Issue/'+id)
+        return this.$http.post('/api/v1/issues/' + id + '/watch')
     }
 
     // todo: move to self module/service
     unwatch(id) {
-        return this.$http.delete('/api/v1/watchers/Issue/' + id)
+        return this.$http.delete('/api/v1/issues/' + id + '/watch')
     }
 
     // timeAgo(creationDate) {

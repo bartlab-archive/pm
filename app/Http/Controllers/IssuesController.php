@@ -9,6 +9,7 @@ use App\Http\Resources\IssueResource;
 use App\Http\Resources\PriorityResource;
 use App\Http\Resources\StatusResource;
 use App\Http\Resources\TrackerResource;
+use App\Http\Resources\WatcherResource;
 use App\Models\Issue;
 use App\Services\EnabledModulesService;
 use App\Services\EnumerationsService;
@@ -166,11 +167,11 @@ class IssuesController extends BaseController
         );
 
         // add watchers
-        $this->watchersService->massCreate([
-            'watchable_type' => $this->issueService->morph(),
-            'watchable_id' => $issue->id,
-            'users' => $request->input('watchers', [])
-        ]);
+        $this->watchersService->massCreate(
+            $issue->id,
+            $this->issueService->morph(),
+            $request->input('watchers', [])
+        );
 
         return IssueResource::make($issue);
     }
@@ -193,31 +194,29 @@ class IssuesController extends BaseController
         return response()->json($this->issueService->delete($id), 200);
     }
 
-    public function history($id)
-    {
-        $data = $this->journalsService->getList(['journalized_id' => $id], ['journalDetails', 'user']);
-
-        return response()->json($data, 200);
-    }
+//    public function history($id)
+//    {
+//        $data = $this->journalsService->getList(['journalized_id' => $id], ['journalDetails', 'user']);
+//
+//        return response()->json($data, 200);
+//    }
 
     public function watch($id)
     {
-        $data = [
-            'watchable_type' => 'Issue',
-            'watchable_id' => $id,
-            'user_id' => Auth::id()
-        ];
-
-        return response()->json($this->watchersService->startWatching($data), 200);
+        return WatcherResource::make(
+            $this->watchersService->create($id, $this->issueService->morph(), \Auth::id())
+        );
     }
 
     public function unwatch($id)
     {
-        $data = [
-            'watchable_id' => $id,
-            'user_id' => Auth::id()
-        ];
+        if (!$watcher = $this->watchersService->one($id, $this->issueService->morph(), \Auth::id())) {
+            abort(404);
+        }
 
-        return response()->json($this->watchersService->stopWatching($data), 200);
+        $this->watchersService->delete($watcher->id);
+
+        // return deleted row
+        return WatcherResource::make($watcher);
     }
 }

@@ -34,6 +34,7 @@ export default class IssuesFormController extends ControllerBase {
         this.watchers = [];
         this.isNew = (this.$state.current.name === 'issues-inner.copy' || !this.issue.id);
         this.title = !this.isNew ? '#' : 'New issue';
+        this.showDescription = this.isNew;
         // cache state for ng-if
         // this.buttonsStateCreate = !this.isNew();
         // this.loadProccess = true;

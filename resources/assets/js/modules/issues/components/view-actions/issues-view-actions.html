@@ -1,37 +1,39 @@
 <md-card-icon-actions>
-    <md-button class="md-icon-button" ng-click="$ctrl.deleteIssue($ctrl.selectedIssue.id)">
+    <md-button class="md-icon-button" ng-click="$ctrl.deleteIssue()">
         <md-icon>delete</md-icon>
         <md-tooltip md-direction="top">Delete</md-tooltip>
         <!--Delete-->
     </md-button>
 
-    <md-button class="md-icon-button" ng-if="$ctrl.selectedIssue.is_watcheble"
-               ng-click="$ctrl.unwatch($ctrl.selectedIssue.id)">
+    <md-button class="md-icon-button" ng-if="$ctrl.issue.is_watcheble"
+               ng-click="$ctrl.unwatch()">
         <md-icon>star</md-icon>
         <md-tooltip md-direction="top">Unwatch</md-tooltip>
         <!--Unwatch-->
     </md-button>
 
-    <md-button class="md-icon-button" ng-if="!$ctrl.selectedIssue.is_watcheble"
-               ng-click="$ctrl.watch($ctrl.selectedIssue.id)">
+    <md-button class="md-icon-button" ng-if="!$ctrl.issue.is_watcheble"
+               ng-click="$ctrl.watch()">
         <md-icon>star_border</md-icon>
         <md-tooltip md-direction="top">Watch</md-tooltip>
         <!--Watch-->
     </md-button>
 
-    <md-button class="md-icon-button" ng-click="$ctrl.copyIssue($ctrl.selectedIssue)">
+    <md-button class="md-icon-button" ng-click="$ctrl.cancel()"
+               ui-sref="issues-inner.copy({id: $ctrl.issue.id,project_id: $ctrl.issue.project.identifier})">
         <md-icon>content_copy</md-icon>
         <md-tooltip md-direction="top">Copy</md-tooltip>
         <!--Copy-->
     </md-button>
 
-    <md-button class="md-icon-button" ng-click="$ctrl.editIssue($ctrl.selectedIssue.id)">
+    <md-button class="md-icon-button" ng-click="$ctrl.cancel()" ui-sref="issues.edit({id: $ctrl.issue.id})">
         <md-icon>mode_edit</md-icon>
         <md-tooltip md-direction="top">Edit</md-tooltip>
         <!--Edit-->
     </md-button>
 
-    <md-button class="md-icon-button" ng-click="$ctrl.openIssue($ctrl.selectedIssue.id)" ng-if="$ctrl.openButton">
+    <md-button class="md-icon-button" ng-click="$ctrl.cancel()" ui-sref="issues.info({id: $ctrl.issue.id})"
+               ng-if="$ctrl.openButton">
         <md-icon>open_in_browser</md-icon>
         <md-tooltip md-direction="top">Open</md-tooltip>
         <!--Open-->

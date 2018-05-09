@@ -14,7 +14,7 @@ export default class IssuesViewActionsComponent extends ComponentBase {
 
     static get bindings() {
         return {
-            selectedIssue: '<',
+            issue: '<',
             openButton: '<'
         };
     }
