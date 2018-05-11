@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 class IssuesService
 {
     const MODULE_NAME = 'issue_tracking';
+
 //    const WATCHER_TYPE = 'Issue';
 
     public function one($id)
@@ -28,7 +29,9 @@ class IssuesService
                 'watchers',
                 'project.trackers',
                 'project.members.user',
-                'child'
+                'child',
+                'journals.user',
+                'journals.details',
             ])
             ->first();
     }
@@ -172,6 +175,16 @@ class IssuesService
 //        ];
     }
 
+    public function update($id, $data)
+    {
+        if (($issue = Issue::query()->where(['id' => $id])->first()) && $issue->update($data)) {
+            return $issue;
+        }
+
+        return false;
+//        return Issue::update($data);
+    }
+
     /**
      * @param array|int $ids
      * @return int
@@ -181,7 +194,8 @@ class IssuesService
         return Issue::destroy($ids);
     }
 
-    public function morph(){
+    public function morph()
+    {
         return Issue::query()->getModel()->getMorphClass(); //Issue::WATCHABLE_TYPE;
     }
 

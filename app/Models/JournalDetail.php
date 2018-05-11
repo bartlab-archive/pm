@@ -24,4 +24,9 @@ class JournalDetail extends Model
     public $timestamps = false;
 
     protected $guarded = ['id'];
+
+//    public function journal()
+//    {
+//        return $this->belongsToMany(Journal::getTableName());
+//    }
 }

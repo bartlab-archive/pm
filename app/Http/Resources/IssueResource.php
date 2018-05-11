@@ -49,7 +49,8 @@ class IssueResource extends Resource
                 'watchers' => UserResource::collection($this->whenLoaded('watchers')),
                 'is_watcheble' => $this->whenLoaded('watchers', function () {
                     return $this->watchers->contains('id', \Auth::id());
-                })
+                }),
+                'journals' => JournalResource::collection($this->whenLoaded('journals')),
             ],
             ($this->ordering ? ['ordering' => $this->ordering] : [])
         );

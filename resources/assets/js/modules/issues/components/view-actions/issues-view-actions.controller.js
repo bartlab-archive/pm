@@ -13,6 +13,8 @@ export default class IssuesViewActionsController extends ControllerBase {
     }
 
     $onInit() {
+        // todo: add "log time" button if time traking module enabled
+        // todo: notify for journals items exists
     }
 
     cancel() {

@@ -65,7 +65,7 @@ class Issue extends Model
         'tracker_id',
         'project_id',
         'subject',
-        'description' .
+        'description',
         'due_date',
         'category_id',
         'status_id',
@@ -107,12 +107,12 @@ class Issue extends Model
         return $this->belongsTo(Tracker::class);
     }
 
-    public function journals()
-    {
-        return $this
-            ->hasMany(Journal::class, 'journalized_id', 'id')
-            ->where('journalized_type', 'Issue');
-    }
+//    public function journals()
+//    {
+//        return $this
+//            ->hasMany(Journal::class, 'journalized_id', 'id')
+//            ->where('journalized_type', 'Issue');
+//    }
 
     public function status()
     {
@@ -139,6 +139,11 @@ class Issue extends Model
     public function watchers()
     {
         return $this->morphToMany(User::class, 'watchable', Watcher::getTableName(), 'watchable_id');
+    }
+
+    public function journals()
+    {
+        return $this->morphMany(Journal::class, 'journalized');
     }
 
 //    public function watchable(){

@@ -117,7 +117,7 @@
                     <label>% Done</label>
                     <!--<input name="estimate" ng-model="$ctrl.issue.done">-->
                     <md-select ng-model="$ctrl.issue.done_ratio">
-                        <md-option ng-repeat="n in [] | range:11" ng-value="n">
+                        <md-option ng-repeat="n in [] | range:11" ng-value="n * 10">
                             {{ ::(n * 10) }}%
                         </md-option>
                     </md-select>
@@ -155,7 +155,7 @@
                 <label>
                     Description
                 </label>
-                <textarea ng-model="$ctrl.issue.description" rows="5" ng-if="$ctrl.showDescription"></textarea>
+                <textarea ng-model="$ctrl.issue.description" rows="5"></textarea>
             </md-input-container>
 
             <div layout="row" layout-align="center center" ng-if="!$ctrl.isNew">
@@ -170,8 +170,12 @@
             <label>
                 Notes
             </label>
-            <textarea ng-model="$ctrl.notes" rows="5"></textarea>
+            <textarea ng-model="$ctrl.notes.text" rows="5"></textarea>
         </md-input-container>
+
+        <md-switch ng-model="$ctrl.notes.is_private" aria-label="Private notes">
+            Private notes
+        </md-switch>
     </md-card-content>
 
     <md-card-actions layout="row" layout-align="center center">

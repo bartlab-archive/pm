@@ -15,7 +15,7 @@ export default class ActivityConfig extends InjectableBase {
             .registerAppMenu({
                 url: 'activity.list',
                 name: 'Overall activity',
-                icon: 'history'
+                icon: 'access_time'
             });
 
 

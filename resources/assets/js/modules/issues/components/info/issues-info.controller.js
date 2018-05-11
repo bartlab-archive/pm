@@ -14,6 +14,13 @@ export default class IssuesInfoController extends ControllerBase {
     }
 
     $onInit() {
+        // todo: show parent issue info
+        // todo: show crated/updated info
+        // todo: markdown for h1-h5 tags
+        this.load();
+    }
+
+    load(){
         this.loadProccess = true;
         this.issuesService
             .one(this.$stateParams.id)

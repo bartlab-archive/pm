@@ -1,0 +1,24 @@
+<div ng-repeat="journal in ::$ctrl.journals">
+    <span>
+        <span>Updated by</span>
+        <span class="md-avatar">
+            <img src="{{ ::journal.user.avatar }}">
+        </span>
+        <a ui-sref="users.info({id:journal.user.id})" ng-click="$ctrl.cancel()">{{ ::journal.user.full_name }}</a>
+        <strong>
+            <md-tooltip md-direction="top">{{ ::journal.created_on }}</md-tooltip>
+            {{ ::journal.created_on_from_now }}
+        </strong>
+        <span>ago</span>
+    </span>
+    <ul ng-if="::journal.details">
+        <li ng-repeat="detail in ::journal.details">
+            <strong>{{ ::detail.title }}</strong>
+            <span>changed from </span>
+            <em>{{ ::detail.old_value }}</em>
+            <span> to </span>
+            <em>{{ ::detail.value }}</em>
+        </li>
+    </ul>
+    <p markdown-to-html="journal.notes || ''"></p>
+</div>

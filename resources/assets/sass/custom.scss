@@ -158,16 +158,18 @@ md-card {
 
 // circle avatar by span tag
 // todo: use theme colors or generate image on backend
-span {
-  &.md-avatar {
-    text-align: center;
-    color: rgb(255, 255, 255);
-    background: rgb(96, 125, 139);
-    line-height: 36px;
-    font-weight: bold;
-    justify-content: center;
-    align-items: center;
-    display: flex !important;
+md-list-item {
+  span {
+    &.md-avatar {
+      text-align: center;
+      color: rgb(255, 255, 255);
+      background: rgb(96, 125, 139);
+      line-height: 36px;
+      font-weight: bold;
+      justify-content: center;
+      align-items: center;
+      display: flex !important;
+    }
   }
 }
 

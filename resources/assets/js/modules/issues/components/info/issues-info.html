@@ -20,6 +20,39 @@
                 </span>
         </md-card-header-text>
 
+        <div flex></div>
+
+        <md-button class="md-icon-button" ng-click="$ctrl.load()">
+            <md-icon>refresh</md-icon>
+        </md-button>
+
+        <md-menu>
+            <md-button class="card-button" ng-click="$mdMenu.open()">
+                1 of 100
+            </md-button>
+            <md-menu-content>
+                <md-menu-item>
+                    <md-button>
+                        coming soon
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+
+        <md-button
+                ng-click="$ctrl.previous()"
+                ng-disabled="!$ctrl.links.prev || $ctrl.loadProccess"
+                class="md-icon-button">
+            <md-icon>keyboard_arrow_left</md-icon>
+        </md-button>
+
+        <md-button
+                ng-click="$ctrl.next()"
+                ng-disabled="!$ctrl.links.next || $ctrl.loadProccess"
+                class="md-icon-button">
+            <md-icon>keyboard_arrow_right</md-icon>
+        </md-button>
+
         <md-menu>
             <md-button class="md-icon-button" aria-label="User menu" ng-click="$mdMenu.open()">
                 <md-icon>more_vert</md-icon>

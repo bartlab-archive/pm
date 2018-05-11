@@ -1,6 +1,6 @@
 import ControllerBase from 'base/controller.base';
 import _ from 'lodash';
-// import moment from 'moment';
+import moment from 'moment';
 
 /**
  * @property {IssuesService} issuesService
@@ -124,12 +124,12 @@ export default class IssuesFormController extends ControllerBase {
     }
 
     submit(createAndContinue = false) {
-        const model = {
+        let model = {
             // id: 2402,
             tracker_id: this.issue.tracker_id,
             subject: this.issue.subject,
             description: this.issue.description,
-            due_date: this.issue.due_date,
+            due_date: moment(this.issue.due_date).format('YYYY-MM-DD'),
             category_id: this.issue.category_id,
             status_id: this.issue.status_id,
             assigned_to_id: this.issue.assigned_to_id,
@@ -139,7 +139,7 @@ export default class IssuesFormController extends ControllerBase {
             // lock_version: this.issue.tracker_id,
             // created_on: '',
             // updated_on: '',
-            start_date: this.issue.start_date,
+            start_date:  moment(this.issue.start_date).format('YYYY-MM-DD'),
             done_ratio: this.issue.done_ratio,
             estimated_hours: this.issue.estimated_hours,
             parent_id: this.issue.parent_id,
@@ -147,8 +147,13 @@ export default class IssuesFormController extends ControllerBase {
             is_private: this.issue.is_private,
             // closed_on: null
             project_identifier: this.issue.project.identifier,
-            watchers: this.watchers.map((watcher) => watcher.user.id)
+            watchers: this.watchers.map((watcher) => watcher.user.id),
         };
+
+        if (!this.isNew){
+            model.notes = this.notes.text;
+            model.notes_privat = this.notes.is_private;
+        }
 
         (this.isNew ? this.issuesService.create(model) : this.issuesService.update(this.issue.id, model))
             .then((response) => {

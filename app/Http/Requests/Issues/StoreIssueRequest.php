@@ -34,8 +34,9 @@ class StoreIssueRequest extends FormRequest
             'watchers' => 'array',
             'watchers.*' => 'int|exists:' . User::getTableName() . ',id',
 
-            'assigned_to_id' => 'int|exists:' . User::getTableName() . ',id',
+            'assigned_to_id' => 'nullable|int|exists:' . User::getTableName() . ',id',
             'category_id' => 'int|nullable',
+            'done_ratio' => 'int|nullable|max:100',
             'due_date' => 'date|nullable|after_or_equal:start_date',
             'estimated_hours' => 'numeric|nullable',
             'start_date' => 'date|nullable',

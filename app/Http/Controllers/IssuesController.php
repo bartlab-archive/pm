@@ -178,15 +178,45 @@ class IssuesController extends BaseController
 
     public function update($id, StoreIssueRequest $request)
     {
-        $data = $request->except(['id', 'trackers', 'user', 'author', 'statusText', 'project', 'watch_state']);
-        $data['start_date'] = Carbon::parse($data['start_date'])->format('Y-m-d');
-        $data['due_date'] = Carbon::parse($data['due_date'])->format('Y-m-d');
+//        $data = $request->except(['id', 'trackers', 'user', 'author', 'statusText', 'project', 'watch_state']);
+//        $data['start_date'] = Carbon::parse($data['start_date'])->format('Y-m-d');
+//        $data['due_date'] = Carbon::parse($data['due_date'])->format('Y-m-d');
 
-        if ($this->issueService->update($id, $data)) {
-            return response()->json($this->issueService->one($id), 200);
+//        if ($this->issueService->update($id, $data)) {
+//            return response()->json($this->issueService->one($id), 200);
+//        }
+
+//        return response()->json('Not Found', 404);
+
+        if (!$project = $this->projectsService->one($request->get('project_identifier'))) {
+            abort(404);
         }
 
-        return response()->json('Not Found', 404);
+        /*
+         * todo:
+         * Need check:
+         *  - is module enambled for project
+         *  - is user allow to view issue
+         *  - project status
+         */
+        if (!$this->enabledModulesService->check($project->identifier, $this->issueService::MODULE_NAME)) {
+            return abort(403);
+        }
+
+        if (!$this->issueService->one($id)) {
+            return abort(404);
+        }
+
+        // todo: show for change watchers and add item to journal
+        if (!$issue = $this->issueService->update($id, array_merge(
+                $request->validated(),
+                ['project_id' => $project->id]
+            )
+        )){
+            return abort( 422);
+        }
+
+        return IssueResource::make($issue);
     }
 
     public function delete($id)

@@ -30,18 +30,24 @@ class Journal extends Model
         'created_on',
     ];
 
-    public function journalDetails()
+    protected $fillable = [
+        'user_id',
+        'notes',
+        'private_notes'
+    ];
+
+    public function details()
     {
-        return $this->hasMany(JournalDetail::class, 'journal_id', 'id');
+        return $this->hasMany(JournalDetail::class);
+    }
+
+    public function journalized()
+    {
+        return $this->morphTo('journalized');
     }
 
     public function user()
     {
-        return $this->hasOne(User::class, 'id', 'user_id');
-    }
-
-    public function issue()
-    {
-        return$this->belongsTo(Issue::class, 'journalized_id', 'id');
+        return $this->belongsTo(User::class);
     }
 }

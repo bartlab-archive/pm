@@ -1,4 +1,5 @@
 import ControllerBase from 'base/controller.base';
+// import moment from 'moment';
 
 /**
  * @property {$mdDialog} $mdDialog
@@ -12,6 +13,7 @@ export default class IssuesViewController extends ControllerBase {
     }
 
     $onInit() {
+        // todo: add tooltip for icons in left side
     }
 
     cancel() {
