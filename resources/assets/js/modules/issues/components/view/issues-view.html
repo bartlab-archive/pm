@@ -41,7 +41,8 @@
     </div>
 </div>
 
-<div layout-align="start start" layout="row" class="info-row" ng-if="$ctrl.selectedIssue.journals">
+<div layout-align="start start" layout="row" class="info-row"
+     ng-if="$ctrl.selectedIssue.journals && $ctrl.selectedIssue.journals.length != 0">
     <md-icon class="w-50">history</md-icon>
     <div flex>
         <issues-history-component issue="$ctrl.selectedIssue"></issues-history-component>

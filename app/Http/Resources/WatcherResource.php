@@ -19,6 +19,7 @@ class WatcherResource extends Resource
             'id' => $this->watchable_id,
             'type' => $this->watchable_type,
             'user_id' => $this->user_id,
+//            'user' => UserResource::make($this->whenLoaded('user')),
         ];
     }
 }

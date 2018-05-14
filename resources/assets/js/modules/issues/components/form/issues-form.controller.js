@@ -26,7 +26,8 @@ export default class IssuesFormController extends ControllerBase {
             done_ratio: 0,
             project: {
                 identifier: this.projectsService.getCurrentId()
-            }
+            },
+            watchers: []
         };
 
         this.categories = [];
@@ -68,6 +69,11 @@ export default class IssuesFormController extends ControllerBase {
                 this.issue = Object.assign(this.issue, _.get(response, '1.data.data'));
                 this.statuses = _.get(response, '2.data.data');
                 this.priorities = _.get(response, '3.data.data');
+                this.watchers = this.issue.watchers.map((watcher) => {
+                    return {
+                        user: watcher
+                    }
+                });
 
                 if (!this.isNew) {
                     // todo: create title by template and check data exists
@@ -129,7 +135,7 @@ export default class IssuesFormController extends ControllerBase {
             tracker_id: this.issue.tracker_id,
             subject: this.issue.subject,
             description: this.issue.description,
-            due_date: moment(this.issue.due_date).format('YYYY-MM-DD'),
+            due_date: this.issue.due_date ? moment(this.issue.due_date).format('YYYY-MM-DD') : null,
             category_id: this.issue.category_id,
             status_id: this.issue.status_id,
             assigned_to_id: this.issue.assigned_to_id,
@@ -139,7 +145,7 @@ export default class IssuesFormController extends ControllerBase {
             // lock_version: this.issue.tracker_id,
             // created_on: '',
             // updated_on: '',
-            start_date:  moment(this.issue.start_date).format('YYYY-MM-DD'),
+            start_date: this.issue.start_date ? moment(this.issue.start_date).format('YYYY-MM-DD') : null,
             done_ratio: this.issue.done_ratio,
             estimated_hours: this.issue.estimated_hours,
             parent_id: this.issue.parent_id,
@@ -150,9 +156,9 @@ export default class IssuesFormController extends ControllerBase {
             watchers: this.watchers.map((watcher) => watcher.user.id),
         };
 
-        if (!this.isNew){
-            model.notes = this.notes.text;
-            model.notes_privat = this.notes.is_private;
+        if (!this.isNew) {
+            model.notes = this.notes;
+            model.private_notes = this.notes_private;
         }
 
         (this.isNew ? this.issuesService.create(model) : this.issuesService.update(this.issue.id, model))

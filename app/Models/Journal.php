@@ -22,7 +22,7 @@ class Journal extends Model
 {
     use ModelTrait;
 
-    public $timestamps = false;
+//    public $timestamps = true;
 
     protected $guarded = ['id'];
 
@@ -35,6 +35,13 @@ class Journal extends Model
         'notes',
         'private_notes'
     ];
+
+    protected $casts = [
+        'private_notes' => 'boolean',
+    ];
+
+    const CREATED_AT = 'created_on';
+    const UPDATED_AT = null;
 
     public function details()
     {

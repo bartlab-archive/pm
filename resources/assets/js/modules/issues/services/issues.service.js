@@ -59,6 +59,10 @@ export default class IssuesService extends ServiceBase {
         return this.$http.put('/api/v1/issues/' + id, params)
     }
 
+    remove(id){
+        return this.$http.delete('/api/v1/issues/' + id)
+    }
+
     // getListByProject(identifier, params) {
     //     return this.Restangular.one('projects', identifier).all('issues').post(params);
     // }

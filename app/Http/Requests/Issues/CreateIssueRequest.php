@@ -2,16 +2,14 @@
 
 namespace App\Http\Requests\Issues;
 
-
 use App\Models\Enumeration;
 use App\Models\IssueStatus;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\Tracker;
-
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreIssueRequest extends FormRequest
+class CreateIssueRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -37,8 +35,9 @@ class StoreIssueRequest extends FormRequest
             'assigned_to_id' => 'nullable|int|exists:' . User::getTableName() . ',id',
             'category_id' => 'int|nullable',
             'done_ratio' => 'int|nullable|max:100',
-            'due_date' => 'date|nullable|after_or_equal:start_date',
+            'due_date' => 'nullable|date|after_or_equal:start_date',
             'estimated_hours' => 'numeric|nullable',
+            // todo: add required_if for start_date if due_date exists
             'start_date' => 'date|nullable',
             'subject' => 'required|string',
             'description' => 'string|nullable',

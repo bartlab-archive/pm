@@ -56,15 +56,16 @@ export default class IssuesViewActionsController extends ControllerBase {
     //     this.cancel();
     // }
 
-    deleteIssue() {
+    remove() {
         let confirm = this.$mdDialog.confirm()
             .title(`Would you like to delete this issue?`)
             .ok('Delete!')
             .cancel('Cancel');
 
         this.$mdDialog.show(confirm).then(() => {
-            this.issuesService.deleteIssue(this.issue.id).then(() => {
-                this.$rootScope.$emit('updateIssues');
+            this.issuesService.remove(this.issue.id).then(() => {
+                // this.$state.go('issues-inner.list',{});
+                this.$rootScope.$emit('deleteIssues');
             });
 
             this.selectedGroup = [];

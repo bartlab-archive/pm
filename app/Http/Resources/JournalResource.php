@@ -14,12 +14,15 @@ class JournalResource extends Resource
      */
     public function toArray($request)
     {
-        // todo: check for private_notes
         return [
             'created_on' => $this->created_on->format('Y-m-d H:i:s'),
-            'notes' => $this->notes,
+            'notes' => (!$this->private_notes || ($this->user_id === \Auth::id())) ? $this->notes : '',
             'user' => UserResource::make($this->whenLoaded('user')),
-            'details' => JournalDetailResource::collection($this->whenLoaded('details'))
+            'details' => JournalDetailResource::collection($this->whenLoaded('details')),
+            // show private flag
+            $this->mergeWhen($this->private_notes && $this->user_id === \Auth::id(), [
+                'private' => true
+            ])
         ];
     }
 }

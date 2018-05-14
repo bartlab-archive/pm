@@ -202,3 +202,18 @@ md-list-item {
   }
 }
 
+.md-chips {
+  md-chip {
+    //cursor: default;
+    border-radius: 0;
+    //display: block;
+    //height: $chip-height;
+    //line-height: $chip-height;
+    //@include rtl(margin, $chip-margin, rtl-value($chip-margin));
+    //padding: $chip-padding;
+    //@include rtl(float, left, right);
+    //box-sizing: border-box;
+    //max-width: 100%;
+    //position: relative;
+  }
+}

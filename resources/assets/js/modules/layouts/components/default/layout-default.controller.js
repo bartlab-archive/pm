@@ -104,7 +104,7 @@ export default class LayoutDefaultController extends ControllerBase {
     openNewItemPage(item) {
         const projectId = this.projectsService.getCurrentId();
         const url = projectId || typeof item.single !== 'string' ? item.url : item.single;
-        console.log(projectId);
+        // console.log(projectId);
 
         this.$state.go(
             url,

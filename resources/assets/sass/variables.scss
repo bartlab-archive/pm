@@ -4,4 +4,6 @@ $font-size:   10px !default;
   @return $multiplier * $font-size;
 }
 
-$chip-font-size: rem(1.4) !default;
+$chip-delete-icon-size: rem(1.4) !default;
+$chip-height: rem(3.0) !default;
+$chip-font-size: rem(1.2) !default;

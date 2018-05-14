@@ -15,8 +15,6 @@ class IssuesService
 {
     const MODULE_NAME = 'issue_tracking';
 
-//    const WATCHER_TYPE = 'Issue';
-
     public function one($id)
     {
         return Issue::query()
@@ -36,13 +34,16 @@ class IssuesService
             ->first();
     }
 
-    /**
-     * @param array $data
-     * @return Issue
-     */
     public function create(array $data)
     {
-        return Issue::create($data);
+        if ($issue = Issue::create($data)) {
+            // save watchers
+            $issue->watchers()->sync(array_get($data, 'watchers'));
+
+            return $issue;
+        }
+
+        return false;
     }
 
     public function all(array $params = [])
@@ -146,57 +147,92 @@ class IssuesService
             }
         }
 
-//        $total = $query->count();
-//        $limit = array_get($params, 'limit', 20);
-//        $offset = array_get($params, 'offset', 0);
-//
-//        if ($offset > 0 && $offset >= $total) {
-//            $offset = $offset - $limit;
-//        }
         $data = $query->paginate(array_get($params, 'per_page', 20));
         $data->groups = $groupCount;
 
         return $data;
-
-//        return [
-//            'groups' => $groupCount,
-//            'list' => $query->paginate(array_get($params, 'per_page', 20))
-//        ];
-
-//        return [
-//            'total' => $total,
-//            'limit' => $limit,
-//            'offset' => $offset,
-//            'groups' => $groupCount,
-//            'list' => $query
-//                ->offset($offset)
-//                ->limit($limit)
-//                ->get()
-//        ];
     }
 
     public function update($id, $data)
     {
-        if (($issue = Issue::query()->where(['id' => $id])->first()) && $issue->update($data)) {
-            return $issue;
+        if ($issue = Issue::query()->where(['id' => $id])->first()) {
+            $issue->fill($data);
+            $journalDetails = [];
+
+            // get changed attributes
+            foreach ($issue->getDirty() as $key => $value) {
+                $journalDetails[] = [
+                    'property' => 'attr',
+                    'prop_key' => $key,
+                    'old_value' => $issue->getOriginal($key),
+                    'value' => $value,
+                ];
+            }
+
+            // save watchers
+            $issue->watchers()->sync(array_get($data, 'watchers'));
+
+            if ($issue->save()) {
+                // save journal if notes exists or fileds change
+                $notes = array_get($data, 'notes');
+
+                if ($journalDetails || $notes) {
+                    $issue
+                        ->journals()
+                        ->create([
+                            'notes' => $notes,
+                            'private_notes' => array_get($data, 'private_notes', 0),
+                            'user_id' => array_get($data, 'user_id')
+                        ])
+                        ->details()
+                        ->createMany($journalDetails);
+                }
+
+                return $issue;
+            }
         }
 
         return false;
-//        return Issue::update($data);
     }
 
-    /**
-     * @param array|int $ids
-     * @return int
-     */
-    public function delete($ids)
+    public function delete($id)
     {
-        return Issue::destroy($ids);
+        if ($issue = Issue::query()->where(['id' => $id])->first()) {
+            $issue->watchers()->detach();
+
+            foreach ($issue->journals as $journal) {
+                $journal->details()->delete();
+                $journal->delete();
+            }
+
+            // todo: fix parent id on releted and child issues
+
+            $issue->delete();
+
+            return true;
+        }
+
+        return false;
     }
 
-    public function morph()
+    public function watch($id, $userId)
     {
-        return Issue::query()->getModel()->getMorphClass(); //Issue::WATCHABLE_TYPE;
+        if ($issue = Issue::query()->where(['id' => $id])->first()) {
+            $issue->watchers()->attach($userId);
+            return true;
+        }
+
+        return false;
+    }
+
+    public function unwatch($id, $userId)
+    {
+        if ($issue = Issue::query()->where(['id' => $id])->first()) {
+            $issue->watchers()->detach($userId);
+            return true;
+        }
+
+        return false;
     }
 
 }

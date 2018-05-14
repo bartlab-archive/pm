@@ -50,7 +50,7 @@ class IssueResource extends Resource
                 'is_watcheble' => $this->whenLoaded('watchers', function () {
                     return $this->watchers->contains('id', \Auth::id());
                 }),
-                'journals' => JournalResource::collection($this->whenLoaded('journals')),
+                'journals' => JournalCollection::make($this->whenLoaded('journals')),
             ],
             ($this->ordering ? ['ordering' => $this->ordering] : [])
         );
