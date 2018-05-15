@@ -59,6 +59,7 @@ Route::group(
             }
         );
 
+        // todo: move to projects group
         Route::group(
             [
                 'middleware' => 'auth',
@@ -73,6 +74,7 @@ Route::group(
             }
         );
 
+        // todo: move to projects group
         Route::group(
             [
                 'middleware' => 'auth',
@@ -136,6 +138,7 @@ Route::group(
             }
         );
 
+        // todo: move to issues group (?)
         Route::group(
             [
                 'middleware' => 'auth',
@@ -156,6 +159,17 @@ Route::group(
             }
         );
 
+        Route::group(
+            [
+                'middleware' => 'auth',
+                'prefix' => 'wikis'
+            ],
+            function () {
+//                Route::get('/', 'WikiesController@index');
+                Route::get('/{identifier}/{name?}', 'WikisController@show');
+            }
+        );
+
 //        Route::group(
 //            [
 //                'middleware' => 'auth',
@@ -166,17 +180,17 @@ Route::group(
 //            }
 //        );
 
-        Route::group(
-            [
-                'middleware' => 'auth',
-                'prefix' => 'news'
-            ],
-            function () {
-                Route::get('/', 'NewsController@index');
-                Route::get('/{id}', 'NewsController@show');
-                Route::put('{id}', 'NewsController@update');
-            }
-        );
+//        Route::group(
+//            [
+//                'middleware' => 'auth',
+//                'prefix' => 'news'
+//            ],
+//            function () {
+//                Route::get('/', 'NewsController@index');
+//                Route::get('/{id}', 'NewsController@show');
+//                Route::put('{id}', 'NewsController@update');
+//            }
+//        );
 
         Route::group(
             [
@@ -226,7 +240,7 @@ Route::group(
             }
         );
 
-        // todo: move to issues group
+        // todo: move to issues group (?)
         Route::group(
             [
                 'middleware' => 'auth',

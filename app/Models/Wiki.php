@@ -11,12 +11,17 @@ class Wiki extends Model
 
     protected $hidden = ['project_id'];
 
-    public $timestamps = false;
+//    public $timestamps = false;
 
     protected $guarded = ['id'];
 
-    public function page()
+    public function pages()
     {
         return $this->hasMany(WikiPage::class);
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
     }
 }

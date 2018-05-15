@@ -12,7 +12,7 @@ class WikiContent extends Model
     const CREATED_AT = null;
     const UPDATED_AT = 'updated_on';
 
-    public $timestamps = false;
+//    public $timestamps = false;
 
     protected $guarded = ['id'];
 
@@ -28,4 +28,14 @@ class WikiContent extends Model
 //            $model->{self::UPDATED_AT} = $model->freshTimestamp();
 //        });
 //    }
+
+    public function page()
+    {
+        return $this->belongsTo(WikiPage::class);
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

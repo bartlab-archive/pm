@@ -1,6 +1,7 @@
 import 'angular';
 import InjectableBase from 'base/injectable.base';
 import moment from 'moment';
+import _ from 'lodash';
 import HttpInterceptor from "interceptors/http.interceptor";
 
 /**
@@ -125,13 +126,25 @@ export default class AppConfig extends InjectableBase {
         this.$showdownProvider
             .setOption('simpleLineBreaks', true)
             .setOption('simplifiedAutoLink', true)
-            .setOption('noHeaderId', true)
+            .setOption('excludeTrailingPunctuationFromURLs', true)
+            // .setOption('noHeaderId', true)
+            .setOption('ghCompatibleHeaderId', true)
             .setOption('strikethrough', true)
             .setOption('ghCodeBlocks', true)
             .setOption('tasklists', true)
-            .setOption('parseImgDimension', true)
-            .setOption('ghMentions', true)
-            .setOption('ghMentionsLink', '/');
+            // .setOption('underline', true)
+            .setOption('parseImgDimension', true);
+        // .setOption('ghMentions', true)
+        // .setOption('ghMentionsLink', '/');
+
+        // lagacy convert <H> tag
+        this.$showdownProvider.loadExtension({
+            type: 'lang',
+            regex: /(h([1-6])\.)/g,
+            replace: (...args) => {
+                return _.padEnd('', +args[2], '#');
+            }
+        });
     }
 
     datePickerFormat() {

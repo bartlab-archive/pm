@@ -37,6 +37,12 @@ export default class IssuesHistoryController extends ControllerBase {
                             detail.title = '% Done';
                             break;
 
+                        case 'description':
+                            detail.title = 'Description';
+                            detail.old_value = '...';
+                            detail.value = '...';
+                            break;
+
                         default:
                             detail.title = _.capitalize(detail.prop_key);
                     }

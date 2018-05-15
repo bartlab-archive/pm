@@ -18,9 +18,10 @@ export default class IssuesInfoController extends ControllerBase {
         // todo: show crated/updated info
         // todo: markdown for h1-h5 tags
         this.load();
+        this.$rootScope.$on('deldeteIssues', () => this.$state.go('issues-inner.list', {project_id: this.projectsService.getCurrentId()}));
     }
 
-    load(){
+    load() {
         this.loadProccess = true;
         this.issuesService
             .one(this.$stateParams.id)

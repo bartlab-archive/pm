@@ -181,7 +181,8 @@ md-list-item {
 .animate-repeat {
   &.ng-move,
   &.ng-enter,
-  &.ng-leave {
+  &.ng-leave
+  {
     transition: all linear 0.5s;
   }
 
@@ -197,7 +198,7 @@ md-list-item {
 
   @for $i from 1 through 100 {
     &:nth-of-type(#{$i}) {
-      transition-delay: #{($i * 5) + 50}ms;
+      transition-delay: #{($i * 5) + 10}ms;
     }
   }
 }
@@ -216,4 +217,15 @@ md-list-item {
     //max-width: 100%;
     //position: relative;
   }
+}
+
+div pre {
+  margin: 1em 1em 1em 1.6em;
+  padding: 8px;
+  background-color: #fafafa;
+  border: 1px solid #e2e2e2;
+  border-radius: 3px;
+  width: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
 }

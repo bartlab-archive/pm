@@ -24,7 +24,7 @@ class WikiContentVersion extends Model
 {
     use ModelTrait;
 
-    public $timestamps = false;
+//    public $timestamps = false;
 
     protected $guarded = ['id'];
 
@@ -34,11 +34,15 @@ class WikiContentVersion extends Model
 
     public function author()
     {
-        return $this->hasOne(User::class, 'id', 'author_id');
+        return $this->belongsTo(User::class, 'id', 'author_id');
     }
 
-    public function wikiPage()
+    public function page()
     {
-        return $this->hasOne(WikiPage::class, 'id', 'page_id');
+        return $this->belongsTo(WikiPage::class, 'id', 'page_id');
+    }
+
+    public function content(){
+        return $this->belongsTo(WikiContent::class);
     }
 }

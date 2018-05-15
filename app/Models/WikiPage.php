@@ -12,7 +12,7 @@ class WikiPage extends Model
     const CREATED_AT = 'created_on';
     const UPDATED_AT = null;
 
-    public $timestamps = false;
+//    public $timestamps = false;
 
     protected $guarded = ['id'];
 
@@ -20,18 +20,14 @@ class WikiPage extends Model
         'created_on',
     ];
 
-//    public static function boot()
-//    {
-//        parent::boot();
-//
-//        static::creating(function ($model) {
-//            $model->{self::CREATED_AT} = $model->freshTimestamp();
-//        });
-//    }
-
     public function content()
     {
         return $this->hasOne(WikiContent::class, 'page_id');
+    }
+
+    public function wiki()
+    {
+        return $this->belongsTo(Wiki::class);
     }
 
 }

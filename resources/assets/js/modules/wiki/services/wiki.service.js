@@ -3,53 +3,57 @@ import ServiceBase from 'base/service.base';
 /**
  * @property {Restangular} Restangular
  */
-export default class WikiService extends ServiceBase {
+export default class WikisService extends ServiceBase {
 
     static get $inject() {
-        return ['Restangular'];
+        return ['$http'];
     }
 
-    getStartPageWiki(indetifire) {
-        return this.Restangular
-            .one('projects')
-            .one(indetifire)
-            .one('wiki')
-            .get();
+    one(indetifire, name = undefined) {
+        return this.$http.get('/api/v1/wikis/' + indetifire + (name ? '/' + name : ''));
     }
 
-    getPageWiki(indetifire, title) {
-        return this.Restangular
-            .one('projects')
-            .one(indetifire)
-            .one('wiki')
-            .one(title)
-            .get();
-    }
-
-    addNewWikiPage(indetifire, params) {
-        return this.Restangular
-            .one('projects')
-            .one(indetifire)
-            .one('new')
-            .post(null, params);
-    }
-
-    getAllWikiPage(indetifire) {
-        return this.Restangular
-            .one('projects')
-            .one(indetifire)
-            .one('wiki')
-            .one('all')
-            .get();
-    }
-
-    deleteWikiPage(indetifire, title) {
-        return this.Restangular
-            .one('projects')
-            .one(indetifire)
-            .one('wiki')
-            .one(title)
-            .remove()
-    }
+    // getStartPageWiki(indetifire) {
+    //     return this.Restangular
+    //         .one('projects')
+    //         .one(indetifire)
+    //         .one('wiki')
+    //         .get();
+    // }
+    //
+    // getPageWiki(indetifire, title) {
+    //     return this.Restangular
+    //         .one('projects')
+    //         .one(indetifire)
+    //         .one('wiki')
+    //         .one(title)
+    //         .get();
+    // }
+    //
+    // addNewWikiPage(indetifire, params) {
+    //     return this.Restangular
+    //         .one('projects')
+    //         .one(indetifire)
+    //         .one('new')
+    //         .post(null, params);
+    // }
+    //
+    // getAllWikiPage(indetifire) {
+    //     return this.Restangular
+    //         .one('projects')
+    //         .one(indetifire)
+    //         .one('wiki')
+    //         .one('all')
+    //         .get();
+    // }
+    //
+    // deleteWikiPage(indetifire, title) {
+    //     return this.Restangular
+    //         .one('projects')
+    //         .one(indetifire)
+    //         .one('wiki')
+    //         .one(title)
+    //         .remove()
+    // }
 
 }
