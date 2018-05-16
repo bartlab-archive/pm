@@ -23,6 +23,18 @@ class WikisController extends BaseController
 
         return WikiPageResource::make($wiki);
     }
+
+    public function create($identifier, $name)
+    {
+    }
+
+    public function update($identifier, $name)
+    {
+    }
+
+    public function destroy($identifier, $name)
+    {
+    }
 //
 //    public function getWikiPageMarkDown($identifier, $page_title = null)
 //    {

@@ -132,7 +132,6 @@ md-list-item {
   }
 }
 
-
 md-card {
   // progress line in card
   position: relative;
@@ -181,8 +180,7 @@ md-list-item {
 .animate-repeat {
   &.ng-move,
   &.ng-enter,
-  &.ng-leave
-  {
+  &.ng-leave {
     transition: all linear 0.5s;
   }
 
@@ -219,13 +217,15 @@ md-list-item {
   }
 }
 
-div pre {
-  margin: 1em 1em 1em 1.6em;
-  padding: 8px;
-  background-color: #fafafa;
-  border: 1px solid #e2e2e2;
-  border-radius: 3px;
-  width: auto;
-  overflow-x: auto;
-  overflow-y: hidden;
+.markdown {
+  pre {
+    margin: 1em 1em 1em 1.6em;
+    padding: 8px;
+    background-color: #fafafa;
+    border: 1px solid #e2e2e2;
+    border-radius: 3px;
+    width: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
 }

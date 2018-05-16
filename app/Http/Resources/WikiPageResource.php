@@ -16,6 +16,7 @@ class WikiPageResource extends Resource
     {
         return [
             'title' => $this->title,
+            'parent_id' => $this->parent_id,
             'created_on' => $this->created_on->format('Y-m-d H:i:s'),
             'content' => WikiContentResource::make($this->whenLoaded('content')),
         ];

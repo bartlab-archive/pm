@@ -2,6 +2,8 @@ import ControllerBase from 'base/controller.base';
 
 /*
 todo: breadcrumbs for wiki page
+todo: rename button
+todo: lock button
  */
 export default class WikiPageController extends ControllerBase {
 
@@ -10,9 +12,10 @@ export default class WikiPageController extends ControllerBase {
     }
 
     $onInit() {
-        // this.errors = {};
-        // this.isStart = !this.$stateParams.name;
+        this.load();
+    }
 
+    load() {
         this.wikisService
             .one(this.projectsService.getCurrentId(), this.$stateParams.name)
             .then((response) => {
@@ -22,22 +25,6 @@ export default class WikiPageController extends ControllerBase {
                     this.page = response.data.data;
                 }
             });
-
-        // if (this.$stateParams.name) {
-        //     this.wikiService.getPageWiki(this.projectsService.getCurrentId(), this.$stateParams.name).then((response) => {
-        //         if (!_.isEmpty(response.data)) {
-        //             this.data = response.data;
-        //         }
-        //     });
-        // } else {
-        //     this.isStart = true;
-        //
-        //     this.wikiService.getStartPageWiki(this.projectsService.getCurrentId()).then((response) => {
-        //         if (!_.isEmpty(response.data)) {
-        //             this.data = response.data;
-        //         }
-        //     });
-        // }
     }
 
     // indexBy(order) {

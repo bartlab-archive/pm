@@ -29,7 +29,8 @@
     "ng-showdown": "*",
     "restangular": "*",
     "roboto-fontface": "^0.9.0",
-    "satellizer": "*"
+    "satellizer": "*",
+    "simplemde": "*"
   },
   "dependencies": {
     "angular-drag-and-drop-lists": "^2.1.0",

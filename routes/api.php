@@ -59,7 +59,7 @@ Route::group(
             }
         );
 
-        // todo: move to projects group
+        // todo: move to projects group (?)
         Route::group(
             [
                 'middleware' => 'auth',
@@ -166,7 +166,13 @@ Route::group(
             ],
             function () {
 //                Route::get('/', 'WikiesController@index');
+                Route::post('/{identifier}', 'WikisController@store');
+                Route::put('/{identifier}/{name}', 'WikisController@update');
                 Route::get('/{identifier}/{name?}', 'WikisController@show');
+                Route::delete('/{identifier}/{name}', 'WikisController@destroy');
+
+                Route::post('/{identifier}/{name}/watch', 'WikisController@watch');
+                Route::delete('/{identifier}/{name}/watch', 'WikisController@unwatch');
             }
         );
 

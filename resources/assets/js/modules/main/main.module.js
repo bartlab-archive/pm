@@ -8,6 +8,7 @@ import BytesToSizeUnitsFilter from './filters/bytesToSizeUnits.filter';
 import RangeFilter from './filters/range.filter';
 import DemoDirective from './directives/demo/demo.directive';
 import CompileDirective from './directives/compile/compile.directive';
+import SimplemdeDirective from './directives/simplemde/simplemde.directive';
 import MainIndexComponent from './components/index/main-index.component';
 import MainLoginComponent from './components/login/main-login.component';
 import MainRegistrationComponent from './components/registration/main-registration.component';
@@ -27,6 +28,7 @@ angular.module('app.modules.main', [])
     .filter(RangeFilter.getName(), RangeFilter.inst())
     .directive(DemoDirective.getName(), DemoDirective.inst())
     .directive(CompileDirective.getName(), CompileDirective.inst())
+    .directive(SimplemdeDirective.getName(), SimplemdeDirective.inst())
     .provider(MainProvider.getName(), MainProvider)
     .component(MainIndexComponent.getName(), MainIndexComponent)
     .component(MainLoginComponent.getName(), MainLoginComponent)

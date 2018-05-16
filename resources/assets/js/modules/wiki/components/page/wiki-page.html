@@ -3,41 +3,63 @@
 <md-card>
     <md-card-header>
         <md-card-header-text>
-            <span class="md-headline">{{ $ctrl.page.title }}</span>
+            <span class="md-headline">[{{ $ctrl.page.title }}]</span>
         </md-card-header-text>
 
-        <md-button class="md-icon-button" ng-click="$ctrl.startPage()" ng-if="!$ctrl.isStart">
-            <md-icon>bookmark</md-icon>
+        <md-button class="md-icon-button" ng-click="$ctrl.load()">
+            <md-icon>refresh</md-icon>
             <md-tooltip md-direction="down" md-autohide="true">
-                Start page
-            </md-tooltip>
-        </md-button>
-
-        <md-button class="md-icon-button" ng-click="$ctrl.indexBy('title')">
-            <md-icon>title</md-icon>
-            <md-tooltip md-direction="down" md-autohide="true">
-                Index by title
-            </md-tooltip>
-        </md-button>
-
-        <md-button class="md-icon-button" ng-click="$ctrl.indexBy('date')">
-            <md-icon>date_range</md-icon>
-            <md-tooltip md-direction="down" md-autohide="true">
-                Index by date
+                Refresh
             </md-tooltip>
         </md-button>
 
         <md-menu>
-            <md-button class="md-icon-button" aria-label="User menu"
-                       ng-click="$ctrl.openActionMenu($mdMenu, $event)">
+            <md-button class="md-icon-button" aria-label="User menu" ng-click="$mdMenu.open()">
                 <md-icon>more_vert</md-icon>
             </md-button>
 
-            <md-menu-content width="4">
-                <md-menu-item show-xs>
-                    <md-button aria-label="label" class="md-button" ng-click="null">
-                        <!--<md-icon>edit</md-icon>-->
-                        coming soon
+            <md-menu-content width="3">
+                <md-menu-item>
+                    <md-button>
+                        <md-icon>bookmark</md-icon>
+                        Start page
+                    </md-button>
+                </md-menu-item>
+
+                <md-menu-item>
+                    <md-button>
+                        <md-icon>title</md-icon>
+                        Index by title
+                    </md-button>
+                </md-menu-item>
+
+                <md-menu-item>
+                    <md-button>
+                        <md-icon>date_range</md-icon>
+                        Index by date
+                    </md-button>
+                </md-menu-item>
+
+                <md-divider></md-divider>
+
+                <md-menu-item>
+                    <md-button>
+                        <md-icon>file_download</md-icon>
+                        PDF
+                    </md-button>
+                </md-menu-item>
+
+                <md-menu-item>
+                    <md-button>
+                        <md-icon>file_download</md-icon>
+                        HTML
+                    </md-button>
+                </md-menu-item>
+
+                <md-menu-item>
+                    <md-button>
+                        <md-icon>file_download</md-icon>
+                        TXT
                     </md-button>
                 </md-menu-item>
             </md-menu-content>
@@ -45,7 +67,7 @@
     </md-card-header>
 
     <md-card-content>
-        <div class="md-body-1" markdown-to-html="$ctrl.page.content.text || ''"></div>
+        <div class="markdown" markdown-to-html="$ctrl.page.content.text || ''"></div>
     </md-card-content>
 
     <md-card-actions layout="row" layout-align="center center">
@@ -70,7 +92,7 @@
             <md-tooltip md-direction="top">Add file</md-tooltip>
         </md-button>
 
-        <md-button class="md-icon-button">
+        <md-button class="md-icon-button" ui-sref="wiki.page.edit({name:$ctrl.page.title})">
             <md-icon>edit</md-icon>
             <md-tooltip md-direction="top">Edit</md-tooltip>
         </md-button>

@@ -13,6 +13,14 @@ export default class WikisService extends ServiceBase {
         return this.$http.get('/api/v1/wikis/' + indetifire + (name ? '/' + name : ''));
     }
 
+    create(indetifire, data) {
+        return this.$http.post('/api/v1/wikis/' + indetifire, data);
+    }
+
+    update(indetifire, name, data) {
+        return this.$http.put('/api/v1/wikis/' + indetifire + '/' + name, data);
+    }
+
     // getStartPageWiki(indetifire) {
     //     return this.Restangular
     //         .one('projects')
