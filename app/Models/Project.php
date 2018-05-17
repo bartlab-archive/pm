@@ -81,6 +81,7 @@ class Project extends Model
         return $this->hasOne(self::class, 'id', 'parent_id');
     }
 
+    // todo: remove from model
     public function getIsMyAttribute()
     {
         return (Auth::guest() ? false : $this->members()->where('user_id', Auth::user()->id)->exists());

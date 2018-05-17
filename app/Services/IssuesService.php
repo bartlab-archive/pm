@@ -51,7 +51,7 @@ class IssuesService
         $query = Issue::with([
             'tracker',
             'project',
-            'project.members',
+//            'project.members',
             'project.members.user',
             'project.members.roles',
             'project.trackers',

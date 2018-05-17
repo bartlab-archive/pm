@@ -74,4 +74,12 @@ export default class WikiFormController extends ControllerBase {
             });
     }
 
+    cancel(){
+        if (this.isNew) {
+            this.$state.go('wiki.index');
+        }else{
+            this.$state.go('wiki.page.view', {name: this.page.title});
+        }
+    }
+
 }

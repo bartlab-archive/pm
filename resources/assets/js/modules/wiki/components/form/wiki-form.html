@@ -9,7 +9,7 @@
 
     <md-card-content>
         <form name="$ctrl.pageWiki">
-            <md-input-container class="md-icon-float md-block" ng-if="!$ctrl.page.title">
+            <md-input-container class="md-icon-float md-block" ng-if="::!$ctrl.page.title">
                 <label>Title</label>
 
                 <input ng-model="$ctrl.page.title" ng-change="$ctrl.change('title')" name="title" type="text">
@@ -58,7 +58,7 @@
                     Preview
                 </md-button>
 
-                <md-button class="md-raised animation-target" ng-click="$ctrl.goTo($ctrl.page.title)">
+                <md-button class="md-raised animation-target" ng-click="$ctrl.cancel()">
                     Cancel
                 </md-button>
             </div>

@@ -38,8 +38,7 @@ use App\Traits\ModelTrait;
  */
 class Issue extends Model
 {
-    use ModelTrait,
-        ReferenceTrait;
+    use ModelTrait, ReferenceTrait;
 
     const CREATED_AT = 'created_on';
     const UPDATED_AT = 'updated_on';

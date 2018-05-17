@@ -41,3 +41,7 @@ angular
     )
     .config(AppConfig.inst())
     .run(AppRun.inst());
+
+/*
+todo: code format by Google and Airbnb recomendations
+ */

@@ -127,7 +127,7 @@ class IssuesController extends BaseController
         ]);
     }
 
-    public function create(CreateIssueRequest $request)
+    public function store(CreateIssueRequest $request)
     {
         if (!$project = $this->projectsService->one($request->get('project_identifier'))) {
             abort(404);
@@ -199,7 +199,7 @@ class IssuesController extends BaseController
         return IssueResource::make($issue);
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         // todo: full check issue and project
         if (!$this->issueService->delete($id)){

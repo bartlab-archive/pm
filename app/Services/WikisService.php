@@ -40,6 +40,11 @@ class WikisService
             ->first();
     }
 
+    public function create($identifier, $data)
+    {
+
+    }
+
 //    protected $projectsService;
 
 //    public function __construct(ProjectsService $projectsService)

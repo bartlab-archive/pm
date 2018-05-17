@@ -272,11 +272,11 @@
                                     </md-button>
 
                                     <md-menu-content width="3">
-                                        <md-menu-item class="md-indent" ng-repeat="member in ::row.project.users">
-                                            <md-icon ng-if="::(row.assigned_to_id === member.id)">check</md-icon>
+                                        <md-menu-item class="md-indent" ng-repeat="member in ::row.project.members">
+                                            <md-icon ng-if="::(row.assigned_to_id === member.user.id)">check</md-icon>
                                             <md-button ng-click="null"
-                                                       ng-disabled="::row.assigned_to_id === member.id">
-                                                {{ ::member.full_name }}
+                                                       ng-disabled="::row.assigned_to_id === member.user.id">
+                                                {{ ::member.user.full_name }}
                                             </md-button>
                                         </md-menu-item>
                                     </md-menu-content>

@@ -204,13 +204,12 @@ Route::group(
                 'prefix' => 'issues'
             ],
             function () {
-                // todo: no valid resources (actions) name?
                 Route::get('/', 'IssuesController@index');
-                Route::post('/', 'IssuesController@create');
+                Route::post('/', 'IssuesController@store');
                 Route::get('/filters', 'IssuesController@filters');
                 Route::get('/{id}', 'IssuesController@show');
                 Route::put('/{id}', 'IssuesController@update');
-                Route::delete('/{id}', 'IssuesController@delete');
+                Route::delete('/{id}', 'IssuesController@destroy');
 //                Route::get('/{id}/history', 'IssuesController@history');
                 Route::post('/{id}/watch', 'IssuesController@watch');
                 Route::delete('/{id}/watch', 'IssuesController@unwatch');

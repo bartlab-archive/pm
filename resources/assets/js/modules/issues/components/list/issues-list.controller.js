@@ -55,7 +55,7 @@ export default class IssuesListController extends ControllerBase {
         // group by list
         this.groupByList = [
             {param: '', name: 'No group'},
-            {param: 'project', name: 'Project'},
+            (!this.currentProjectId ? {param: 'project', name: 'Project'} : undefined),
             {param: 'tracker', name: 'Tracker'},
             {param: 'status', name: 'Status'},
             {param: 'priority', name: 'Priority'},
@@ -64,7 +64,7 @@ export default class IssuesListController extends ControllerBase {
             {param: 'category', name: 'Category'},
             {param: 'version', name: 'Target version'},
             {param: 'done_ratio', name: '% Done'},
-        ];
+        ].filter((item) => item !== undefined);
         this.groupBy = this.groupByList[0];
         this.groupsInfo = [];
 

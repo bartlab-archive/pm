@@ -75,9 +75,12 @@ class ReferenceBuilder extends QueryBuilder
      */
     protected function addNestedRelations($name, Relation $relation)
     {
-        $nestedRelations = $this->relationsNestedUnder($name);
+        // get nested ralation and remove deeply
+        $nestedRelations = array_filter($this->relationsNestedUnder($name), function ($name) {
+            return !Str::contains($name, '.');
+        }, ARRAY_FILTER_USE_KEY);
 
-        if (count($nestedRelations) <= 0) {
+        if (\count($nestedRelations) === 0) {
             // if no nested relation - remove from eager load
             $this->disableEagerLoad($name);
             return;
@@ -153,7 +156,7 @@ class ReferenceBuilder extends QueryBuilder
      */
     protected function isReferencedInQuery($name)
     {
-        if (in_array($name, $this->references)) {
+        if (\in_array($name, $this->references, true)) {
             return true;
         }
 
@@ -197,7 +200,7 @@ class ReferenceBuilder extends QueryBuilder
     protected function selectFromQuery($table, $column, $as = null)
     {
         $this->query->addSelect(
-            implode('.', [$table, $column]) . (!is_null($as) ? ' as ' . $as : '')
+            implode('.', [$table, $column]) . ($as !== null ? ' as ' . $as : '')
         );
     }
 
@@ -209,8 +212,8 @@ class ReferenceBuilder extends QueryBuilder
      */
     public function references($relations)
     {
-        if (!is_array($relations)) {
-            $relations = func_get_args();
+        if (!\is_array($relations)) {
+            $relations = \func_get_args();
         }
 
         $this->references = $relations;
@@ -244,7 +247,7 @@ class ReferenceBuilder extends QueryBuilder
      */
     public function find($id, $columns = ['*'])
     {
-        if (is_array($id)) {
+        if (\is_array($id)) {
             return $this->findMany($id, $columns);
         }
 
@@ -259,8 +262,8 @@ class ReferenceBuilder extends QueryBuilder
     public function with($relations)
     {
         //if passing the relations as arguments, pass on to eloquents with
-        if (is_string($relations)) {
-            $relations = func_get_args();
+        if (\is_string($relations)) {
+            $relations = \func_get_args();
         }
 
         $includes = null;
@@ -270,7 +273,7 @@ class ReferenceBuilder extends QueryBuilder
         } catch (\BadMethodCallException $e) {
         }
 
-        if (is_array($includes)) {
+        if (\is_array($includes)) {
             $relations = array_merge($relations, $includes);
             $this->references(array_keys($this->parseRelations($relations)));
         }

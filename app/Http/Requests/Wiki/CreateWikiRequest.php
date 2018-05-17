@@ -3,9 +3,10 @@
 namespace App\Http\Requests\Wiki;
 
 use App\Models\User;
+use App\Models\WikiPage;
 use Illuminate\Foundation\Http\FormRequest;
 
-class WikiRequest extends FormRequest
+class CreateWikiRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +26,10 @@ class WikiRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_page' => 'string|max:255',
-            'status' => 'int',
+            'comment' => 'nullable|string',
+            'content' => 'string|max:1024',
+            'parent_id' => 'nullable|int|exists:' . WikiPage::getTableName() . ',id',
+            'title' => 'string|max:255'
         ];
     }
 }

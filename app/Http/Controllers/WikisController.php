@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Wiki\CreateWikiRequest;
 use App\Http\Resources\WikiPageResource;
 use App\Services\WikisService;
 use Illuminate\Routing\Controller as BaseController;
@@ -24,8 +25,13 @@ class WikisController extends BaseController
         return WikiPageResource::make($wiki);
     }
 
-    public function create($identifier, $name)
+    public function create($identifier, CreateWikiRequest $request)
     {
+        if (!$wiki = $this->wikisService->create($identifier, $request->validated())) {
+            abort(422);
+        }
+
+        return WikiPageResource::make($wiki);
     }
 
     public function update($identifier, $name)
@@ -33,6 +39,14 @@ class WikisController extends BaseController
     }
 
     public function destroy($identifier, $name)
+    {
+    }
+
+    public function watch($identifier, $id)
+    {
+    }
+
+    public function unwatch($identifier, $id)
     {
     }
 //
