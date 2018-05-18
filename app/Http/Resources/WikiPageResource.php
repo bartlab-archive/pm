@@ -15,6 +15,7 @@ class WikiPageResource extends Resource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'title' => $this->title,
             'parent_id' => $this->parent_id,
             'created_on' => $this->created_on->format('Y-m-d H:i:s'),

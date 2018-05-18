@@ -57,7 +57,7 @@ export default class IssuesFormController extends ControllerBase {
 
     load() {
         this.loadProccess = true;
-        this.$q
+        return this.$q
             .all([
                 this.projectsService.all(),
                 (this.$stateParams.id ? this.issuesService.one(this.issue.id) : undefined),
@@ -65,6 +65,7 @@ export default class IssuesFormController extends ControllerBase {
                 this.enumerationsService.all({type: 'IssuePriority'}),
             ])
             .then((response) => {
+                // todo: destruct respomse array
                 this.projects = _.get(response, '0.data.data');
                 this.issue = Object.assign(this.issue, _.get(response, '1.data.data'));
                 this.statuses = _.get(response, '2.data.data');

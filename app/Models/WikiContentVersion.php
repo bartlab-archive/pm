@@ -32,17 +32,24 @@ class WikiContentVersion extends Model
         'updated_on',
     ];
 
+//    protected $fillable = [
+//        'author_id',
+//        'data',
+
+//    ];
+
     public function author()
     {
         return $this->belongsTo(User::class, 'id', 'author_id');
     }
 
-    public function page()
-    {
-        return $this->belongsTo(WikiPage::class, 'id', 'page_id');
-    }
+//    public function page()
+//    {
+//        return $this->belongsTo(WikiPage::class, 'id', 'page_id');
+//    }
 
-    public function content(){
+    public function content()
+    {
         return $this->belongsTo(WikiContent::class);
     }
 }

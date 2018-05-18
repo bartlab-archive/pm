@@ -9,6 +9,10 @@ export default class WikisService extends ServiceBase {
         return ['$http'];
     }
 
+    all(indetifire) {
+        return this.$http.get('/api/v1/wikis/' + indetifire);
+    }
+
     one(indetifire, name = undefined) {
         return this.$http.get('/api/v1/wikis/' + indetifire + (name ? '/' + name : ''));
     }

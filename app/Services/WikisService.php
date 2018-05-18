@@ -2,19 +2,26 @@
 
 namespace App\Services;
 
-//use App\Http\Requests\WikiRequest;
-//use App\Models\Project;
-//use App\Models\Wiki;
-//use App\Models\WikiContent;
-//use App\Models\WikiPage;
-//use Auth;
 use App\Models\Wiki;
 use App\Models\WikiPage;
 
 class WikisService
 {
 
-    public function startPage($identifier)
+    public function all($identifier)
+    {
+        return WikiPage::query()
+            ->with([
+//                'wiki',
+                'content.author'
+            ])
+            ->whereHas('wiki.project', function ($query) use ($identifier) {
+                /** @var $query Builder */
+                $query->where('identifier', $identifier);
+            })->get();
+    }
+
+    public function base($identifier)
     {
         return Wiki::query()->whereHas('project', function ($query) use ($identifier) {
             /** @var $query Builder */
@@ -26,12 +33,12 @@ class WikisService
     {
         return WikiPage::query()
             ->with([
-                'wiki',
+//                'wiki',
                 'content.author'
             ])
             ->where(
                 'title',
-                $name ?? (($page = $this->startPage($identifier)) ? $page->start_page : 'Wiki')
+                $name ?? (($page = $this->base($identifier)) ? $page->start_page : 'Wiki')
             )
             ->whereHas('wiki.project', function ($query) use ($identifier) {
                 /** @var $query Builder */
@@ -41,6 +48,43 @@ class WikisService
     }
 
     public function create($identifier, $data)
+    {
+        $base = $this->base($identifier);
+
+        if ($base && $page = $base->pages()->create($data)) {
+            /** @var $page WikiPage */
+            $page
+                ->content()->create($data)
+                ->versions()->create($data);
+            // todo: check version storage
+
+            return $page;
+        }
+
+        return false;
+    }
+
+    public function update($identifier, $name, $data)
+    {
+
+    }
+
+    public function watch($identifier, $name, $userId)
+    {
+
+    }
+
+    public function unwatch($identifier, $name, $userId)
+    {
+
+    }
+
+    public function lock($identifier, $name)
+    {
+
+    }
+
+    public function unlock($identifier, $name)
     {
 
     }

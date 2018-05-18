@@ -16,6 +16,13 @@ class WikisController extends BaseController
         $this->wikisService = $wikisService;
     }
 
+    public function index($identifier)
+    {
+        return WikiPageResource::collection(
+            $this->wikisService->all($identifier)
+        );
+    }
+
     public function show($identifier, $name = null)
     {
         if (!$wiki = $this->wikisService->one($identifier, $name)) {
@@ -27,7 +34,17 @@ class WikisController extends BaseController
 
     public function create($identifier, CreateWikiRequest $request)
     {
-        if (!$wiki = $this->wikisService->create($identifier, $request->validated())) {
+        $wiki = $this->wikisService->create(
+            $identifier,
+            array_merge(
+                $request->validated(),
+                [
+                    'author_id' => \Auth::id()
+                ]
+            )
+        );
+
+        if (!$wiki) {
             abort(422);
         }
 

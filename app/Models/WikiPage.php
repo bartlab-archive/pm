@@ -20,6 +20,12 @@ class WikiPage extends Model
         'created_on',
     ];
 
+    protected $fillable = [
+        'title',
+        'parent_id',
+        'author_id'
+    ];
+
     public function content()
     {
         return $this->hasOne(WikiContent::class, 'page_id');

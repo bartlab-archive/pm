@@ -165,7 +165,7 @@ Route::group(
                 'prefix' => 'wikis'
             ],
             function () {
-//                Route::get('/', 'WikiesController@index');
+                Route::get('{identifier}/', 'WikisController@index');
                 Route::post('/{identifier}', 'WikisController@store');
                 Route::put('/{identifier}/{name}', 'WikisController@update');
                 Route::get('/{identifier}/{name?}', 'WikisController@show');

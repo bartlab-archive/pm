@@ -20,6 +20,12 @@ class WikiContent extends Model
         'updated_on',
     ];
 
+    protected $fillable = [
+        'author_id',
+        'text',
+        'comments'
+    ];
+
 //    public static function boot()
 //    {
 //        parent::boot();
@@ -37,5 +43,10 @@ class WikiContent extends Model
     public function author()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function versions()
+    {
+        return $this->hasMany(WikiContentVersion::class);
     }
 }

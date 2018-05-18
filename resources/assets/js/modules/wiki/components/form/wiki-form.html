@@ -34,7 +34,7 @@
                 <md-select ng-model="$ctrl.page.parent_id" placeholder="Select a parent page">
                     <md-option ng-value="null">No parent</md-option>
 
-                    <md-option ng-repeat="page in $ctrl.pages"
+                    <md-option ng-repeat="page in $ctrl.list"
                                value="{{ page.id }}"
                                ng-if="$ctrl.page.id != page.id">
                         {{ page.title }}

@@ -3,7 +3,7 @@ import ControllerBase from 'base/controller.base';
 export default class WikiFormController extends ControllerBase {
 
     static get $inject() {
-        return ['wikisService', 'projectsService', '$stateParams', '$filter', '$state', '$mdToast'];
+        return ['wikisService', 'projectsService', '$stateParams', '$filter', '$state', '$mdToast', '$q'];
     }
 
     $onInit() {
@@ -24,14 +24,20 @@ export default class WikiFormController extends ControllerBase {
     }
 
     load() {
-        return this.wikisService
-            .one(this.projectsService.getCurrentId(), this.$stateParams.name)
-            .then((response) => {
-                if (response.status !== 204) {
-                    this.page = response.data.data;
+        return this.$q
+            .all([
+                this.wikisService.one(this.projectsService.getCurrentId(), this.$stateParams.name),
+                this.wikisService.all(this.projectsService.getCurrentId()),
+            ])
+            .then(([page, list]) => {
+                if (page.status !== 204) {
+                    this.page = page.data.data;
                 } else {
                     this.isNew = true;
                 }
+
+                // todo: hide childs of current page and curent page
+                this.list = list.data.data;
             });
     }
 
@@ -41,6 +47,8 @@ export default class WikiFormController extends ControllerBase {
             content: this.page.content.text,
             parent_id: this.page.parent_id,
             comment: this.comment,
+            // todo: need post version?
+            // version:
         };
 
         if (this.isNew) {
@@ -74,10 +82,10 @@ export default class WikiFormController extends ControllerBase {
             });
     }
 
-    cancel(){
+    cancel() {
         if (this.isNew) {
             this.$state.go('wiki.index');
-        }else{
+        } else {
             this.$state.go('wiki.page.view', {name: this.page.title});
         }
     }
