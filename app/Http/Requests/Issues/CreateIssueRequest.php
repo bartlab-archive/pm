@@ -4,10 +4,13 @@ namespace App\Http\Requests\Issues;
 
 use App\Models\Enumeration;
 use App\Models\IssueStatus;
+use App\Models\IssueCategory;
+use App\Models\Issue;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\Tracker;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateIssueRequest extends FormRequest
 {
@@ -28,21 +31,33 @@ class CreateIssueRequest extends FormRequest
      */
     public function rules()
     {
+        $project = Project::query()
+            ->where('identifier', $this->project_identifier)
+            ->first();
+
         return [
             'watchers' => 'array',
             'watchers.*' => 'int|exists:' . User::getTableName() . ',id',
 
             'assigned_to_id' => 'nullable|int|exists:' . User::getTableName() . ',id',
-            'category_id' => 'int|nullable',
-            'done_ratio' => 'int|nullable|max:100',
+            'category_id'  => [
+                'int',
+                'nullable',
+                Rule::exists(IssueCategory::getTableName(), 'id')
+                    ->where('project_id', $project->id)
+            ],
+            'done_ratio' => 'int|nullable|min:0|max:100',
             'due_date' => 'nullable|date|after_or_equal:start_date',
             'estimated_hours' => 'numeric|nullable',
-            // todo: add required_if for start_date if due_date exists
             'start_date' => 'date|nullable',
-            'subject' => 'required|string',
+            'subject' => 'required|string|max:255',
             'description' => 'string|nullable',
-            // todo: add type for check priority_id in Enumeration table
-            'priority_id' => 'required|int|exists:' . Enumeration::getTableName() . ',id',
+            'priority_id' => [
+                'required',
+                'int',
+                Rule::exists(Enumeration::getTableName(), 'id')
+                    ->where('type', Issue::ENUMERATION_PRIORITY)
+            ],
 			'is_private' => 'boolean',
             'project_identifier' => 'required|string|exists:' . Project::getTableName() . ',identifier',
             'tracker_id' => 'required|int|exists:' . Tracker::getTableName() . ',id',
