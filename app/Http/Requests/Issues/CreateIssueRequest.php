@@ -31,6 +31,7 @@ class CreateIssueRequest extends FormRequest
      */
     public function rules()
     {
+        // todo: move project validation to external validation class
         $project = Project::query()
             ->where('identifier', $this->project_identifier)
             ->first();
@@ -44,13 +45,20 @@ class CreateIssueRequest extends FormRequest
                 'int',
                 'nullable',
                 Rule::exists(IssueCategory::getTableName(), 'id')
-                    ->where('project_id', $project->id)
+                    ->where('project_id', $project ? $project->id : null)
             ],
             'done_ratio' => 'int|nullable|min:0|max:100',
             'due_date' => 'nullable|date|after_or_equal:start_date',
             'estimated_hours' => 'numeric|nullable',
+            'parent_id' => [
+                'int',
+                'nullable',
+                Rule::exists(Issue::getTableName(), 'id')
+                    ->where('project_id', $project ? $project->id : null)
+            ],
+            // todo: add required_if for start_date if due_date exists (tried, but didin't work)
             'start_date' => 'date|nullable',
-            'subject' => 'required|string|max:255',
+            'subject' => 'required|string',
             'description' => 'string|nullable',
             'priority_id' => [
                 'required',

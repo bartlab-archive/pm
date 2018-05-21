@@ -195,7 +195,8 @@ export default class IssuesFormController extends ControllerBase {
 
                 this.errors = response.data.errors;
 
-                for (const field of Object.keys(response.data.errors)) {
+                for (let field of Object.keys(response.data.errors)) {
+                    field = field.replace(/\..*/, ''); // to slice additional id's if it exists
                     if (this.form.hasOwnProperty(field)) {
                         this.form[field].$touched = true;
                         this.form[field].$setValidity('server', false);
