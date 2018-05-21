@@ -26,6 +26,10 @@ class WikiContent extends Model
         'comments'
     ];
 
+//    protected $attributes = [
+//        'version' => 1,
+//    ];
+
 //    public static function boot()
 //    {
 //        parent::boot();

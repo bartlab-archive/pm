@@ -2,8 +2,19 @@ import ControllerBase from 'base/controller.base';
 
 /*
 todo: breadcrumbs for wiki page
-todo: rename button
-todo: lock button
+todo: chanhe icon for lock button
+todo: chanhe icon for watch button
+ */
+
+/**
+ * WikiPageController
+ *
+ * @property {$state} $state
+ * @property {$mdDialog} $mdDialog
+ * @property {$stateParams} $stateParams
+ * @property {$mdToast} $mdToast
+ * @property {projectsService} projectsService
+ * @property {wikisService} wikisService
  */
 export default class WikiPageController extends ControllerBase {
 
@@ -16,7 +27,7 @@ export default class WikiPageController extends ControllerBase {
     }
 
     load() {
-        this.wikisService
+        return this.wikisService
             .one(this.projectsService.getCurrentId(), this.$stateParams.name)
             .then((response) => {
                 if (response.status === 204) {

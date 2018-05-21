@@ -24,6 +24,8 @@ class WikiContentVersion extends Model
 {
     use ModelTrait;
 
+    const CREATED_AT = null;
+    const UPDATED_AT = 'updated_on';
 //    public $timestamps = false;
 
     protected $guarded = ['id'];
@@ -36,6 +38,10 @@ class WikiContentVersion extends Model
 //        'author_id',
 //        'data',
 
+//    ];
+
+//    protected $attributes = [
+//        'version' => 1,
 //    ];
 
     public function author()
@@ -52,4 +58,9 @@ class WikiContentVersion extends Model
     {
         return $this->belongsTo(WikiContent::class);
     }
+
+//    public function setTextAttribute($value)
+//    {
+//        $this->attributes['data'] = $value;
+//    }
 }

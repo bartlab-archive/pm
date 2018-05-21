@@ -14,15 +14,15 @@ export default class WikisService extends ServiceBase {
     }
 
     one(indetifire, name = undefined) {
-        return this.$http.get('/api/v1/wikis/' + indetifire + (name ? '/' + name : ''));
+        return this.$http.get('/api/v1/wikis/page/' + indetifire + (name ? '/' + name : ''));
     }
 
     create(indetifire, data) {
-        return this.$http.post('/api/v1/wikis/' + indetifire, data);
+        return this.$http.post('/api/v1/wikis/page/' + indetifire, data);
     }
 
     update(indetifire, name, data) {
-        return this.$http.put('/api/v1/wikis/' + indetifire + '/' + name, data);
+        return this.$http.put('/api/v1/wikis/page/' + indetifire + '/' + name, data);
     }
 
     // getStartPageWiki(indetifire) {

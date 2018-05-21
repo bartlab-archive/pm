@@ -165,14 +165,18 @@ Route::group(
                 'prefix' => 'wikis'
             ],
             function () {
-                Route::get('{identifier}/', 'WikisController@index');
-                Route::post('/{identifier}', 'WikisController@store');
-                Route::put('/{identifier}/{name}', 'WikisController@update');
-                Route::get('/{identifier}/{name?}', 'WikisController@show');
-                Route::delete('/{identifier}/{name}', 'WikisController@destroy');
+                Route::get('/page/{identifier}/{name?}', 'WikisController@show');
+                Route::post('/page/{identifier}', 'WikisController@store');
+                Route::put('/page/{identifier}/{name}', 'WikisController@update');
+                Route::delete('/page/{identifier}/{name}', 'WikisController@destroy');
 
-                Route::post('/{identifier}/{name}/watch', 'WikisController@watch');
-                Route::delete('/{identifier}/{name}/watch', 'WikisController@unwatch');
+                Route::post('/page/{identifier}/{name}/watch', 'WikisController@watch');
+                Route::delete('/page/{identifier}/{name}/watch', 'WikisController@unwatch');
+
+                Route::post('/page/{identifier}/{name}/lock', 'WikisController@lock');
+                Route::delete('/page/{identifier}/{name}/unlock', 'WikisController@unlock');
+
+                Route::get('/{identifier}', 'WikisController@index');
             }
         );
 
@@ -288,3 +292,7 @@ Route::group(
         );
     }
 );
+
+Route::any('{all}', function () {
+    abort(404);
+})->where('all', '.*');

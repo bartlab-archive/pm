@@ -83,6 +83,16 @@
         </md-button>
 
         <md-button class="md-icon-button">
+            <md-icon>lock_open</md-icon>
+            <md-tooltip md-direction="top">Lock</md-tooltip>
+        </md-button>
+
+        <md-button class="md-icon-button" ui-sref="wiki.page.rename({name:$ctrl.page.title})">
+            <md-icon>link</md-icon>
+            <md-tooltip md-direction="top">Rename</md-tooltip>
+        </md-button>
+
+        <md-button class="md-icon-button" ui-sref="wiki.page.history({name:$ctrl.page.title})">
             <md-icon>history</md-icon>
             <md-tooltip md-direction="top">History</md-tooltip>
         </md-button>

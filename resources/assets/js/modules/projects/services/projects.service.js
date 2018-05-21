@@ -75,4 +75,14 @@ export default class ProjectsService extends InjectableBase {
     setCurrentId(id) {
         this.$stateParams.project_id = id;
     }
+
+    // async getCurrent() {
+    //     const ID = this.getCurrentId();
+    //
+    //     if (!ID) {
+    //         return false;
+    //     }
+    //
+    //     return await this.one(ID);
+    // }
 }

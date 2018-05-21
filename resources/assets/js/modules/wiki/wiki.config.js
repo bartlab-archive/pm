@@ -1,5 +1,7 @@
 import InjectableBase from 'base/injectable.base';
 import WikiPageComponent from './components/page/wiki-page.component';
+import WikiHistoryComponent from './components/history/wiki-history.component';
+import WikiRenameComponent from './components/rename/wiki-rename.component';
 // import WikiEditComponent from './components/edit/wiki-edit.component';
 import WikiFormComponent from './components/form/wiki-form.component';
 import WikiIndexByComponent from './components/index-by/wiki-index-by.component';
@@ -98,6 +100,14 @@ export default class WikiConfig extends InjectableBase {
             .state('wiki.page.edit', {
                 url: '/edit',
                 component: WikiFormComponent.getName(),
+            })
+            .state('wiki.page.history', {
+                url: '/history',
+                component: WikiHistoryComponent.getName(),
+            })
+            .state('wiki.page.rename', {
+                url: '/rename',
+                component: WikiRenameComponent.getName(),
             })
             .state('wiki.new', {
                 url: '/new',

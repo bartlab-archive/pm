@@ -54,8 +54,9 @@ class WikisService
         if ($base && $page = $base->pages()->create($data)) {
             /** @var $page WikiPage */
             $page
-                ->content()->create($data)
-                ->versions()->create($data);
+                ->content()->create($data);
+//                ->versions()->create($data);
+
             // todo: check version storage
 
             return $page;

@@ -18,28 +18,34 @@ export default class WikiFormController extends ControllerBase {
             parent_id: null
         };
 
+        this.loadList();
+
         if (!this.isNew) {
             this.load();
         }
     }
 
     load() {
-        return this.$q
-            .all([
-                this.wikisService.one(this.projectsService.getCurrentId(), this.$stateParams.name),
-                this.wikisService.all(this.projectsService.getCurrentId()),
-            ])
-            .then(([page, list]) => {
-                if (page.status !== 204) {
-                    this.page = page.data.data;
+        return this.wikisService
+            .one(this.projectsService.getCurrentId(), this.$stateParams.name)
+            .then((response) => {
+                if (response.status !== 204) {
+                    this.page = response.data.data;
                 } else {
                     this.isNew = true;
                 }
-
-                // todo: hide childs of current page and curent page
-                this.list = list.data.data;
             });
     }
+
+    loadList() {
+        return this.wikisService
+            .all(this.projectsService.getCurrentId())
+            .then((response) => {
+                // todo: hide childs of current page and curent page
+                this.list = response.data.data;
+            });
+    }
+
 
     submit() {
         const projectId = this.projectsService.getCurrentId();

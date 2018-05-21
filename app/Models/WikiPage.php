@@ -23,7 +23,7 @@ class WikiPage extends Model
     protected $fillable = [
         'title',
         'parent_id',
-        'author_id'
+//        'author_id'
     ];
 
     public function content()

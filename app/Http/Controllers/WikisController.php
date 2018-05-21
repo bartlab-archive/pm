@@ -18,6 +18,9 @@ class WikisController extends BaseController
 
     public function index($identifier)
     {
+        /*
+         * todo: check project and permissions
+         */
         return WikiPageResource::collection(
             $this->wikisService->all($identifier)
         );
@@ -25,6 +28,10 @@ class WikisController extends BaseController
 
     public function show($identifier, $name = null)
     {
+        /*
+         * todo: check project and permissions
+         */
+
         if (!$wiki = $this->wikisService->one($identifier, $name)) {
             return response(null, 204);
         }
@@ -32,8 +39,12 @@ class WikisController extends BaseController
         return WikiPageResource::make($wiki);
     }
 
-    public function create($identifier, CreateWikiRequest $request)
+    public function store($identifier, CreateWikiRequest $request)
     {
+        /*
+         * todo: check project and permissions
+         */
+
         $wiki = $this->wikisService->create(
             $identifier,
             array_merge(
@@ -59,11 +70,19 @@ class WikisController extends BaseController
     {
     }
 
-    public function watch($identifier, $id)
+    public function watch($identifier, $name)
     {
     }
 
-    public function unwatch($identifier, $id)
+    public function unwatch($identifier, $name)
+    {
+    }
+
+    public function lock($identifier, $name)
+    {
+    }
+
+    public function unlock($identifier, $name)
     {
     }
 //
