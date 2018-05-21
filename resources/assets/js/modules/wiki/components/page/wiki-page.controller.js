@@ -27,9 +27,12 @@ export default class WikiPageController extends ControllerBase {
     }
 
     load() {
+        this.loadProccess = true;
         return this.wikisService
             .one(this.projectsService.getCurrentId(), this.$stateParams.name)
             .then((response) => {
+                this.loadProccess = false;
+
                 if (response.status === 204) {
                     this.$state.go('wiki.page.edit', {name: this.$stateParams.name});
                 } else {

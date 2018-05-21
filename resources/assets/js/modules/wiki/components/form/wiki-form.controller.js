@@ -9,20 +9,26 @@ export default class WikiFormController extends ControllerBase {
     $onInit() {
         this.isNew = !this.$stateParams.name;
         this.title = this.isNew ? 'New wiki page' : this.$stateParams.name;
+        this.comments = '';
 
         this.page = {
             title: this.$stateParams.name,
             content: {
-                text: '',
+                text: this.$stateParams.name ? '# ' + this.$stateParams.name : '',
             },
             parent_id: null
         };
 
-        this.loadList();
+        this.loadProccess = true;
+        this.loadList()
+            .then(() => {
+                return !this.isNew ? this.load() : true;
+            })
+            .then(() => {
+                this.loadProccess = false;
+            });
 
-        if (!this.isNew) {
-            this.load();
-        }
+
     }
 
     load() {
@@ -50,9 +56,9 @@ export default class WikiFormController extends ControllerBase {
     submit() {
         const projectId = this.projectsService.getCurrentId();
         let model = {
-            content: this.page.content.text,
+            text: this.page.content.text,
             parent_id: this.page.parent_id,
-            comment: this.comment,
+            comments: this.comments,
             // todo: need post version?
             // version:
         };

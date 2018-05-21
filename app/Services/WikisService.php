@@ -12,7 +12,6 @@ class WikisService
     {
         return WikiPage::query()
             ->with([
-//                'wiki',
                 'content.author'
             ])
             ->whereHas('wiki.project', function ($query) use ($identifier) {
@@ -33,7 +32,6 @@ class WikisService
     {
         return WikiPage::query()
             ->with([
-//                'wiki',
                 'content.author'
             ])
             ->where(
@@ -53,11 +51,12 @@ class WikisService
 
         if ($base && $page = $base->pages()->create($data)) {
             /** @var $page WikiPage */
-            $page
-                ->content()->create($data);
-//                ->versions()->create($data);
+            $data['page_id'] = $page->id;
+            $data['data'] = array_get($data, 'text');
 
-            // todo: check version storage
+            $page
+                ->content()->create($data)
+                ->versions()->create($data);
 
             return $page;
         }

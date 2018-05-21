@@ -25,6 +25,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         // todo: make all route patters
 //        Route::pattern('identifier', '[a-z][a-z0-9-_]{0,99}');
+//        Route::pattern('wiki', '[^,./?;:|]+');
 
         parent::boot();
     }

@@ -34,15 +34,16 @@ class WikiContentVersion extends Model
         'updated_on',
     ];
 
-//    protected $fillable = [
-//        'author_id',
-//        'data',
+    protected $fillable = [
+        'author_id',
+        'data',
+        'page_id',
+        'comments'
+    ];
 
-//    ];
-
-//    protected $attributes = [
-//        'version' => 1,
-//    ];
+    protected $attributes = [
+        'version' => 1,
+    ];
 
     public function author()
     {

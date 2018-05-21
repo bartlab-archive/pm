@@ -26,10 +26,10 @@ class CreateWikiRequest extends FormRequest
     {
         return [
             'title' => 'string|max:255',
-            'content' => 'string|max:1024',
+            'text' => 'string',
             // todo: check parent_id and project
             'parent_id' => 'nullable|int|exists:' . WikiPage::getTableName() . ',id',
-            'comment' => 'nullable|string'
+            'comments' => 'nullable|string'
         ];
     }
 }

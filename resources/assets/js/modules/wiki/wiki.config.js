@@ -2,7 +2,6 @@ import InjectableBase from 'base/injectable.base';
 import WikiPageComponent from './components/page/wiki-page.component';
 import WikiHistoryComponent from './components/history/wiki-history.component';
 import WikiRenameComponent from './components/rename/wiki-rename.component';
-// import WikiEditComponent from './components/edit/wiki-edit.component';
 import WikiFormComponent from './components/form/wiki-form.component';
 import WikiIndexByComponent from './components/index-by/wiki-index-by.component';
 import WikiProjectSettingsComponent from './components/project-settings/wiki-project-settings.component';
@@ -10,8 +9,8 @@ import WikiProjectSettingsComponent from './components/project-settings/wiki-pro
 /**
  * @property {$stateProvider} $stateProvider
  * @property {$showdownProvider} $showdownProvider
- * @property {object} ProjectsServiceProvider
- * @property {object} MainServiceProvider
+ * @property {projectsServiceProvider} ProjectsServiceProvider
+ * @property {mainServiceProvider} MainServiceProvider
  */
 export default class WikiConfig extends InjectableBase {
 
