@@ -27,7 +27,7 @@ export default class ServerFieldDirective extends DirectiveBase {
 
     validators(ctrl, modelValue, viewValue) {
         if (ctrl.$previousValue !== viewValue) {
-            // ctrl.$server = undefined;
+            ctrl.$server = undefined;
         }
 
         ctrl.$previousValue = ctrl.$viewValue;
