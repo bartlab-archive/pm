@@ -31,6 +31,7 @@
                     <label>Project</label>
 
                     <md-select name="project_identifier" ng-model="$ctrl.issue.project.identifier"
+                               ng-model-options="{ allowInvalid: true }"
                                required server-field
                                ng-change="$ctrl.changeProject(true)">
                         <md-option ng-repeat="item in $ctrl.projects" ng-value="::item.identifier">

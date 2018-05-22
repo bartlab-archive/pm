@@ -36,8 +36,6 @@ export default class ServerFormDirective extends DirectiveBase {
 
                 ctrl[field].$server = this.$filter('join')(values[field]);
                 ctrl[field].$validate();
-
-                // console.log(ctrl[field].$name, ctrl[field]);
             }
         }
     }

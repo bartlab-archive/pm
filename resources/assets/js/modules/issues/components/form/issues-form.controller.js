@@ -115,7 +115,7 @@ export default class IssuesFormController extends ControllerBase {
             this.issue.status_id = _.get(this.selectedProject, 'trackers.0.default_status_id');
         }
 
-        // todo: save/add assign user if edit issue
+        // todo: save/add assigned to issue user if edit
 
         if (this.selectedProject.identifier) {
             this.issuesService.categories(this.selectedProject.identifier).then((response) => {
@@ -185,12 +185,6 @@ export default class IssuesFormController extends ControllerBase {
                     // {reload: true, inherit: false, notify: true}
                     createAndContinue ? {reload: false, inherit: false, notify: true} : undefined
                 );
-                // if (createAndContinue) {
-                //     // this.$state.go('issues-inner.new', {project_id: response.data.data.project.identifier});
-                //     this.$state.go('issues-inner.new', {project_id: this.issue.project.identifier}, {reload: true});
-                // } else {
-                //     this.$state.go('issues.info', {id});
-                // }
             })
             .catch((response) => {
                 if (response.status === 422) {
@@ -200,22 +194,7 @@ export default class IssuesFormController extends ControllerBase {
                 }
 
                 this.errors = response.data.errors;
-
-                // for (let field of Object.keys(response.data.errors)) {
-                //     field = field.replace(/\..*/, ''); // to slice additional id's if it exists
-                //     if (this.form.hasOwnProperty(field)) {
-                //         this.form[field].$touched = true;
-                //         this.form[field].$setValidity('server', false);
-                //         this.form[field].$error.serverMessage = this.$filter('join')(response.data.errors[field]);
-                //     }
-                // }
             });
-    }
-
-    change(field) {
-        this.form[field].$setValidity('server', true);
-        // this.errors[field] = undefined;
-        this.form[field].$error.serverMessage = undefined;
     }
 
     cancel() {
