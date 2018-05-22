@@ -9,6 +9,8 @@ import RangeFilter from './filters/range.filter';
 import DemoDirective from './directives/demo/demo.directive';
 import CompileDirective from './directives/compile/compile.directive';
 import SimplemdeDirective from './directives/simplemde/simplemde.directive';
+import ServerFormDirective from './directives/server-form/server-form.directive';
+import ServerFieldDirective from './directives/server-field/server-field.directive';
 import MainIndexComponent from './components/index/main-index.component';
 import MainLoginComponent from './components/login/main-login.component';
 import MainRegistrationComponent from './components/registration/main-registration.component';
@@ -29,6 +31,8 @@ angular.module('app.modules.main', [])
     .directive(DemoDirective.getName(), DemoDirective.inst())
     .directive(CompileDirective.getName(), CompileDirective.inst())
     .directive(SimplemdeDirective.getName(), SimplemdeDirective.inst())
+    .directive(ServerFormDirective.getName(), ServerFormDirective.inst())
+    .directive(ServerFieldDirective.getName(), ServerFieldDirective.inst())
     .provider(MainProvider.getName(), MainProvider)
     .component(MainIndexComponent.getName(), MainIndexComponent)
     .component(MainLoginComponent.getName(), MainLoginComponent)

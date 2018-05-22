@@ -10,30 +10,34 @@
     </md-card-header>
 
     <md-card-content>
-        <form name="$ctrl.pageWiki">
+        <form name="$ctrl.form" novalidate server-form="$ctrl.errors">
             <md-input-container class="md-icon-float md-block" ng-if="::!$ctrl.page.title">
                 <label>Title</label>
 
-                <input ng-model="$ctrl.page.title" ng-change="$ctrl.change('title')" name="title" type="text">
+                <input ng-model="$ctrl.page.title" name="title" type="text" required>
 
-                <div ng-messages="$ctrl.pageWiki.title.$error">
-                    <div ng-message="server" ng-bind-html="$ctrl.errors.title | join"></div>
+                <div ng-messages="$ctrl.form.title.$error">
+                    <div ng-message="required">This field can't be blank.</div>
+                    <div ng-message="server" ng-bind-html="$ctrl.form.title.$server"></div>
                 </div>
             </md-input-container>
 
             <md-input-container class="md-block">
                 <label>Content</label>
 
-                <textarea name="text" ng-model="$ctrl.page.content.text" ng-change="$ctrl.change('text')"
+                <textarea name="text" ng-model="$ctrl.page.content.text" server-field
                           md-select-on-focus rows="5"></textarea>
 
-                <div ng-messages="$ctrl.pageWiki.text.$error">
-                    <div ng-message="server" ng-bind-html="$ctrl.errors.text | join"></div>
+                <div ng-messages="$ctrl.form.text.$error">
+                    <div ng-message="server" ng-bind-html="$ctrl.form.text.$server"></div>
                 </div>
             </md-input-container>
 
             <md-input-container class="md-block" flex-gt-sm>
-                <md-select ng-model="$ctrl.page.parent_id" placeholder="Select a parent page">
+                <label>Parent page</label>
+
+                <md-select ng-model="$ctrl.page.parent_id" placeholder="Select a parent page" name="parent_id"
+                           server-field>
                     <md-option ng-value="null">No parent</md-option>
 
                     <md-option ng-repeat="page in $ctrl.list"
@@ -42,20 +46,31 @@
                         {{ page.title }}
                     </md-option>
                 </md-select>
+
+                <div ng-messages="$ctrl.form.parent_id.$error">
+                    <div ng-message="server" ng-bind-html="$ctrl.form.parent_id.$server"></div>
+                </div>
             </md-input-container>
 
             <md-input-container class="md-icon-float md-block">
                 <label>Comment</label>
 
-                <input ng-model="$ctrl.comments" type="text">
+                <input ng-model="$ctrl.comments" type="text" name="comments" server-field>
+
+                <div ng-messages="$ctrl.form.comments.$error">
+                    <div ng-message="server" ng-bind-html="$ctrl.form.comments.$server"></div>
+                </div>
             </md-input-container>
 
             <div layout-align="center center" layout="row">
-                <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.submit(false)">
+                <md-button class="md-raised md-primary animation-target"
+                           ng-disabled="$ctrl.loadProccess || $ctrl.form.$invalid"
+                           ng-click="$ctrl.submit(false)">
                     Save
                 </md-button>
 
-                <md-button class="md-raised animation-target" ng-disabled="!$ctrl.page.content.text"
+                <md-button class="md-raised animation-target"
+                           ng-disabled="!$ctrl.page.content.text"
                            ng-click="$ctrl.showPreview($event)">
                     Preview
                 </md-button>

@@ -25,9 +25,10 @@ class CreateWikiRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'string|max:255',
-            'text' => 'string',
-            // todo: check parent_id and project
+            // todo: valid title check - [^,./?;:|]+
+            'title' => 'required|string|max:255',
+            'text' => 'nullable|string',
+            // todo: check parent_id and relation parent to project
             'parent_id' => 'nullable|int|exists:' . WikiPage::getTableName() . ',id',
             'comments' => 'nullable|string'
         ];

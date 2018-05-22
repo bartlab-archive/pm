@@ -2,6 +2,12 @@ import ControllerBase from 'base/controller.base';
 import _ from 'lodash';
 import moment from 'moment';
 
+/*
+todo: check field due_date as required if start_date filled
+todo: check server validate for watchers
+todo: check server validate for Private and Private notes switch
+ */
+
 /**
  * @property {IssuesService} issuesService
  * @property {$stateParams} $stateParams
@@ -195,14 +201,14 @@ export default class IssuesFormController extends ControllerBase {
 
                 this.errors = response.data.errors;
 
-                for (let field of Object.keys(response.data.errors)) {
-                    field = field.replace(/\..*/, ''); // to slice additional id's if it exists
-                    if (this.form.hasOwnProperty(field)) {
-                        this.form[field].$touched = true;
-                        this.form[field].$setValidity('server', false);
-                        this.form[field].$error.serverMessage = this.$filter('join')(response.data.errors[field]);
-                    }
-                }
+                // for (let field of Object.keys(response.data.errors)) {
+                //     field = field.replace(/\..*/, ''); // to slice additional id's if it exists
+                //     if (this.form.hasOwnProperty(field)) {
+                //         this.form[field].$touched = true;
+                //         this.form[field].$setValidity('server', false);
+                //         this.form[field].$error.serverMessage = this.$filter('join')(response.data.errors[field]);
+                //     }
+                // }
             });
     }
 

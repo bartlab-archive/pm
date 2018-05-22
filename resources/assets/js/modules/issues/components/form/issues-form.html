@@ -13,52 +13,49 @@
     </md-card-header>
 
     <md-card-content>
-        <form name="$ctrl.form" ng-submit="$ctrl.submit()">
+        <form name="$ctrl.form" ng-submit="$ctrl.submit()" novalidate server-form="$ctrl.errors">
             <md-input-container class="md-block">
                 <label for="subject">Subject</label>
-                <input id="subject" name="subject" ng-model="$ctrl.issue.subject"
-                       required ng-change="$ctrl.change('subject')">
-                <div ng-messages="$ctrl.form.subject.$error">
-                    <div ng-message="required">This field can't be blank.</div>
 
-                    <div ng-message="server" ng-bind-html="$ctrl.form.subject.$error.serverMessage"></div>
+                <input id="subject" name="subject" ng-model="$ctrl.issue.subject"
+                       required server-field>
+
+                <div ng-messages="$ctrl.form.subject.$error">
+                    <div ng-message="required">Subject cannot be blank</div>
+                    <div ng-message="server" ng-bind-html="$ctrl.form.subject.$server"></div>
                 </div>
             </md-input-container>
 
             <div layout-gt-sm="row">
                 <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
                     <label>Project</label>
-                    <md-select name="project_identifier" ng-model="$ctrl.issue.project.identifier" required ng-change="$ctrl.changeProject(true)">
+
+                    <md-select name="project_identifier" ng-model="$ctrl.issue.project.identifier"
+                               required server-field
+                               ng-change="$ctrl.changeProject(true)">
                         <md-option ng-repeat="item in $ctrl.projects" ng-value="::item.identifier">
                             {{ ::item.name }}
                         </md-option>
                     </md-select>
 
-                    <!--<div ng-messages="$ctrl.form.identifier.$error">-->
-                    <!--<div ng-message="required">Name can't be blank!</div>-->
-
-                    <!--<div ng-message="server" ng-bind-html="$ctrl.errors.name | join"></div>-->
-                    <!--</div>-->
-
-                    <div ng-messages="$ctrl.form.identifier.$error">
+                    <div ng-messages="$ctrl.form.project_identifier.$error">
                         <div ng-message="required">This field can't be blank.</div>
-
-                        <div ng-message="server" ng-bind-html="$ctrl.form.identifier.$error.serverMessage"></div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.project_identifier.$server"></div>
                     </div>
-
                 </md-input-container>
 
                 <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
                     <label>Tracker</label>
-                    <md-select name="tracker_id" ng-model="$ctrl.issue.tracker_id" required>
+
+                    <md-select name="tracker_id" ng-model="$ctrl.issue.tracker_id" required server-field>
                         <md-option ng-repeat="item in $ctrl.selectedProject.trackers" ng-value="::item.id">
                             {{ ::item.name }}
                         </md-option>
                     </md-select>
+
                     <div ng-messages="$ctrl.form.tracker_id.$error">
                         <div ng-message="required">This field can't be blank.</div>
-
-                        <div ng-message="server" ng-bind-html="$ctrl.form.tracker_id.$error.serverMessage"></div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.tracker_id.$server"></div>
                     </div>
                 </md-input-container>
             </div>
@@ -66,29 +63,31 @@
             <div layout-gt-sm="row">
                 <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
                     <label>Status</label>
-                    <md-select name="status_id" ng-model="$ctrl.issue.status_id" required>
+
+                    <md-select name="status_id" ng-model="$ctrl.issue.status_id" required server-field>
                         <md-option ng-repeat="item in ::$ctrl.statuses" ng-value="::item.id">
                             {{ ::item.name }}
                         </md-option>
                     </md-select>
+
                     <div ng-messages="$ctrl.form.status_id.$error">
                         <div ng-message="required">This field can't be blank.</div>
-
-                        <div ng-message="server" ng-bind-html="$ctrl.form.status_id.$error.serverMessage"></div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.status_id.$server"></div>
                     </div>
                 </md-input-container>
 
                 <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
                     <label>Priority</label>
-                    <md-select name="priority_id" ng-model="$ctrl.issue.priority_id" required>
+
+                    <md-select name="priority_id" ng-model="$ctrl.issue.priority_id" required server-field>
                         <md-option ng-repeat="item in ::$ctrl.priorities" ng-value="::item.id">
                             {{ ::item.name }}
                         </md-option>
                     </md-select>
+
                     <div ng-messages="$ctrl.form.priority_id.$error">
                         <div ng-message="required">This field can't be blank.</div>
-
-                        <div ng-message="server" ng-bind-html="$ctrl.form.priority_id.$error.serverMessage"></div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.priority_id.$server"></div>
                     </div>
                 </md-input-container>
             </div>
@@ -96,30 +95,32 @@
             <div layout-gt-sm="row">
                 <md-input-container class="md-block" flex-md="50" flex-gt-md="50">
                     <label>Assignee</label>
-                    <md-select name="assigned_to_id" ng-model="$ctrl.issue.assigned_to_id">
+
+                    <md-select name="assigned_to_id" ng-model="$ctrl.issue.assigned_to_id" server-field>
                         <md-option ng-repeat="member in $ctrl.selectedProject.members" ng-value="::member.user.id">
                             {{ ::member.user.full_name }}
                         </md-option>
                     </md-select>
+
                     <div ng-messages="$ctrl.form.assigned_to_id.$error">
                         <div ng-message="required">This field can't be blank.</div>
-
-                        <div ng-message="server" ng-bind-html="$ctrl.form.assigned_to_id.$error.serverMessage"></div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.assigned_to_id.$server"></div>
                     </div>
                 </md-input-container>
 
                 <md-input-container class="md-block" flex-md="50" flex-gt-md="50" ng-if="$ctrl.categories.length > 0">
                     <label>Category</label>
-                    <md-select name="category_id" ng-model="$ctrl.issue.category_id">
+
+                    <md-select name="category_id" ng-model="$ctrl.issue.category_id" server-field>
                         <md-option ng-value=""></md-option>
                         <md-option ng-repeat="item in ::$ctrl.categories" ng-value="::item.id">
                             {{ ::item.name }}
                         </md-option>
                     </md-select>
+
                     <div ng-messages="$ctrl.form.category_id.$error">
                         <div ng-message="required">This field can't be blank.</div>
-
-                        <div ng-message="server" ng-bind-html="$ctrl.form.category_id.$error.serverMessage"></div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.category_id.$server"></div>
                     </div>
                 </md-input-container>
             </div>
@@ -127,65 +128,65 @@
             <div layout-gt-sm="row">
                 <md-input-container class="md-block" flex-md="50" flex-gt-md="25">
                     <label>Start date</label>
-                    <md-datepicker name="start_date" ng-model="$ctrl.issue.start_date"></md-datepicker>
-                    <div ng-messages="$ctrl.form.start_date.$error">
-                        <div ng-message="required">This field can't be blank.</div>
 
-                        <div ng-message="server" ng-bind-html="$ctrl.form.start_date.$error.serverMessage"></div>
+                    <md-datepicker name="start_date" ng-model="$ctrl.issue.start_date" server-field></md-datepicker>
+
+                    <div ng-messages="$ctrl.form.start_date.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.start_date.$server"></div>
                     </div>
                 </md-input-container>
 
-
                 <md-input-container class="md-block" flex-md="50" flex-gt-md="25">
                     <label>Due date</label>
-                    <!--todo: check field as required if start_date filled-->
-                    <md-datepicker name="due_date" ng-model="$ctrl.issue.due_date"></md-datepicker>
-                    <div ng-messages="$ctrl.form.due_date.$error">
-                        <div ng-message="required">This field can't be blank.</div>
 
-                        <div ng-message="server" ng-bind-html="$ctrl.form.due_date.$error.serverMessage"></div>
+                    <md-datepicker name="due_date" ng-model="$ctrl.issue.due_date" server-field></md-datepicker>
+
+                    <div ng-messages="$ctrl.form.due_date.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.due_date.$server"></div>
                     </div>
                 </md-input-container>
 
                 <md-input-container class="md-block" flex-md="50" flex-gt-md="16">
                     <label>Parent task</label>
-                    <input name="parent_id" ng-model="$ctrl.issue.parent_id" ng-change="$ctrl.change('parent_id')" placeholder="id">
-                    <div ng-messages="$ctrl.form.parent_id.$error">
 
-                        <div ng-message="server" ng-bind-html="$ctrl.form.parent_id.$error.serverMessage"></div>
+                    <input name="parent_id" ng-model="$ctrl.issue.parent_id" server-field
+                           placeholder="id">
+
+                    <div ng-messages="$ctrl.form.parent_id.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.parent_id.$server"></div>
                     </div>
                 </md-input-container>
 
                 <md-input-container class="md-block" flex-md="50" flex-gt-md="16">
                     <label>Estimated time</label>
-                    <input type="number" name="estimated_hours" ng-model="$ctrl.issue.estimated_hours" placeholder="hours">
-                    <div ng-messages="$ctrl.form.estimated_hours.$error">
-                        <div ng-message="required">This field can't be blank.</div>
 
-                        <div ng-message="server" ng-bind-html="$ctrl.form.estimated_hours.$error.serverMessage"></div>
+                    <input type="number" name="estimated_hours" ng-model="$ctrl.issue.estimated_hours"
+                           placeholder="hours" server-field>
+
+                    <div ng-messages="$ctrl.form.estimated_hours.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.estimated_hours.$server"></div>
                     </div>
                 </md-input-container>
 
                 <md-input-container class="md-block" flex-md="50" flex-gt-md="16">
                     <label>% Done</label>
-                    <!--<input name="estimate" ng-model="$ctrl.issue.done">-->
-                    <md-select name="done_ratio" ng-model="$ctrl.issue.done_ratio">
+
+                    <md-select name="done_ratio" ng-model="$ctrl.issue.done_ratio" server-field>
                         <md-option ng-repeat="n in [] | range:11" ng-value="n * 10">
                             {{ ::(n * 10) }}%
                         </md-option>
                     </md-select>
-                    <div ng-messages="$ctrl.form.done_ratio.$error">
-                        <div ng-message="required">This field can't be blank.</div>
 
-                        <div ng-message="server" ng-bind-html="$ctrl.form.done_ratio.$error.serverMessage"></div>
+                    <div ng-messages="$ctrl.form.done_ratio.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.done_ratio.$server"></div>
                     </div>
                 </md-input-container>
             </div>
 
             <md-input-container class="md-block">
                 <label>Watchers</label>
+
                 <md-chips
-                        name="watchers"
                         ng-model="$ctrl.watchers"
                         readonly="false"
                         md-removable="true"
@@ -208,22 +209,15 @@
                               md-highlight-flags="i">{{ ::item.user.full_name }}</span>
                     </md-autocomplete>
                 </md-chips>
-                <div ng-messages="$ctrl.form.watchers.$error">
-                    <div ng-message="required">This field can't be blank.</div>
-
-                    <div ng-message="server" ng-bind-html="$ctrl.form.watchers.$error.serverMessage"></div>
-                </div>
             </md-input-container>
 
             <md-input-container class="md-block" ng-if="$ctrl.showDescription">
-                <label>
-                    Description
-                </label>
-                <textarea name="description" ng-model="$ctrl.issue.description" rows="5"></textarea>
-                <div ng-messages="$ctrl.form.description.$error">
-                    <div ng-message="required">This field can't be blank.</div>
+                <label>Description</label>
 
-                    <div ng-message="server" ng-bind-html="$ctrl.form.description.$error.serverMessage"></div>
+                <textarea name="description" server-field ng-model="$ctrl.issue.description" rows="5"></textarea>
+
+                <div ng-messages="$ctrl.form.description.$error">
+                    <div ng-message="server" ng-bind-html="$ctrl.form.description.$server"></div>
                 </div>
             </md-input-container>
 
@@ -236,14 +230,12 @@
         </form>
 
         <md-input-container class="md-block" ng-if="!$ctrl.isNew">
-            <label>
-                Notes
-            </label>
-            <textarea ng-model="$ctrl.notes" rows="5"></textarea>
-            <div ng-messages="$ctrl.form.notes.$error">
-                <div ng-message="required">This field can't be blank.</div>
+            <label>Notes</label>
 
-                <div ng-message="server" ng-bind-html="$ctrl.form.notes.$error.serverMessage"></div>
+            <textarea ng-model="$ctrl.notes" rows="5" server-field></textarea>
+
+            <div ng-messages="$ctrl.form.notes.$error">
+                <div ng-message="server" ng-bind-html="$ctrl.form.notes.$server"></div>
             </div>
         </md-input-container>
 

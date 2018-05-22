@@ -32,41 +32,44 @@ class CreateIssueRequest extends FormRequest
     public function rules()
     {
         // todo: move project validation to external validation class
-        $project = Project::query()
-            ->where('identifier', $this->project_identifier)
-            ->first();
+        // todo: rewrite validate with project identifier
+//        $project = Project::query()
+//            ->where('identifier', $this->project_identifier)
+//            ->first();
 
         return [
             'watchers' => 'array',
             'watchers.*' => 'int|exists:' . User::getTableName() . ',id',
 
             'assigned_to_id' => 'nullable|int|exists:' . User::getTableName() . ',id',
-            'category_id'  => [
-                'int',
-                'nullable',
-                Rule::exists(IssueCategory::getTableName(), 'id')
-                    ->where('project_id', $project ? $project->id : null)
-            ],
-            'done_ratio' => 'int|nullable|min:0|max:100',
+            'category_id' => 'nullable|int|exists:' . IssueCategory::getTableName() . ',id',
+//            'category_id' => [
+//                'nullable',
+//                'int',
+//                Rule::exists(IssueCategory::getTableName(), 'id')
+//                    ->where('project_id', $project ? $project->id : null)
+//            ],
+            'done_ratio' => 'nullable|int|min:0|max:100',
             'due_date' => 'nullable|date|after_or_equal:start_date',
-            'estimated_hours' => 'numeric|nullable',
-            'parent_id' => [
-                'int',
-                'nullable',
-                Rule::exists(Issue::getTableName(), 'id')
-                    ->where('project_id', $project ? $project->id : null)
-            ],
+            'estimated_hours' => 'nullable|numeric',
+            'parent_id' => 'nullable|int|exists:' . Issue::getTableName() . ',id',
+//            'parent_id' => [
+//                'nullable',
+//                'int',
+//                Rule::exists(Issue::getTableName(), 'id')
+//                    ->where('project_id', $project ? $project->id : null)
+//            ],
             // todo: add required_if for start_date if due_date exists (tried, but didin't work)
-            'start_date' => 'date|nullable',
+            'start_date' => 'nullable|date',
             'subject' => 'required|string',
-            'description' => 'string|nullable',
+            'description' => 'nullable|string',
             'priority_id' => [
                 'required',
                 'int',
                 Rule::exists(Enumeration::getTableName(), 'id')
                     ->where('type', Issue::ENUMERATION_PRIORITY)
             ],
-			'is_private' => 'boolean',
+            'is_private' => 'boolean',
             'project_identifier' => 'required|string|exists:' . Project::getTableName() . ',identifier',
             'tracker_id' => 'required|int|exists:' . Tracker::getTableName() . ',id',
             'status_id' => 'required|int|exists:' . IssueStatus::getTableName() . ',id'

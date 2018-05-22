@@ -67,6 +67,8 @@ export default class WikiFormController extends ControllerBase {
             model.title = this.page.title;
         }
 
+        // console.log(this.page);
+
         return (this.isNew ? this.wikisService.create(projectId, model) : this.wikisService.update(projectId, this.page.title, model))
             .then((response) => {
                 this.$mdToast.show(
@@ -84,13 +86,14 @@ export default class WikiFormController extends ControllerBase {
 
                 this.errors = response.data.errors;
 
-                for (const field of Object.keys(response.data.errors)) {
-                    if (this.form.hasOwnProperty(field)) {
-                        this.form[field].$touched = true;
-                        this.form[field].$setValidity('server', false);
-                        this.form[field].$error.serverMessage = this.$filter('join')(response.data.errors[field]);
-                    }
-                }
+                // for (const field of Object.keys(response.data.errors)) {
+                //     if (this.form.hasOwnProperty(field)) {
+                //         this.form[field].$touched = true;
+                //         this.form[field].$setValidity('server', false);
+                //         this.form[field].$error.serverMessage = this.$filter('join')(response.data.errors[field]);
+                //         console.log(this.form[field].$error);
+                //     }
+                // }
             });
     }
 

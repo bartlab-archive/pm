@@ -24,7 +24,7 @@ class UpdateIssueRequest extends CreateIssueRequest
         return array_merge(
             parent::rules(),
             [
-                'notes' => 'string|nullable',
+                'notes' => 'nullable|string',
                 'private_notes' => 'boolean',
             ]
         );
