@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Services\ProjectsService;
 use Illuminate\Http\Resources\Json\Resource;
+use App\Models\Project;
 
 class ProjectResource extends Resource
 {
@@ -14,11 +16,14 @@ class ProjectResource extends Resource
      */
     public function toArray($request)
     {
+        $parent = Project::query()->where('id', $this->parent_id)->first();
+
         return [
+            'project_id' => $this->identifier,
             'name' => $this->name,
             'description' => $this->description,
             'homepage' => $this->homepage,
-            'parent_id' => $this->parent_id,
+            'parent_identifier' => $parent ? $parent->identifier : null,
             'is_public' => $this->is_public,
             'inherit_members' => $this->inherit_members,
             'default_version_id' => $this->default_version_id,

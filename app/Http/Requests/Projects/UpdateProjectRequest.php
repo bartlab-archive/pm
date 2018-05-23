@@ -35,8 +35,9 @@ class UpdateProjectRequest extends FormRequest
             'inherit_members' => 'boolean',
             'custom_field_values' => 'string',
 
-            'enabled_module_names' => 'array',
-            'enabled_module_names.*' => 'in:' . implode(',', EnabledModule::ENABLED_MODULES_NAME),
+            // todo: check ENABLED_MODULES_NAME
+//            'enabled_module_names' => 'array',
+//            'enabled_module_names.*' => 'in:' . implode(',', EnabledModule::ENABLED_MODULES_NAME),
 
             'tracker_ids' => 'array',
             'tracker_ids.*' => 'int|exists:' . Tracker::getTableName() . ',id'

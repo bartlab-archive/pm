@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Projects\IndexProjectRequest;
 use App\Http\Requests\Projects\StoreProjectRequest;
+use App\Http\Requests\Projects\UpdateProjectRequest;
 use App\Http\Resources\MemberResource;
 use App\Http\Resources\ModuleResource;
 use App\Http\Resources\ProjectResource;
@@ -74,13 +75,20 @@ class ProjectsController extends BaseController
 
     public function store(StoreProjectRequest $request)
     {
-//        return ProjectResource::make(
-        $this->projectsService->create($request->all());
-//        );
+        return ProjectResource::make(
+            $this->projectsService->create($request->all())
+        );
     }
 
-    public function update($identifier)
+    public function update(UpdateProjectRequest $request)
     {
-//        return '123';
+//        if (!$this->projectsService->one($request->get('project_identifier'))) {
+//            abort(404);
+//        }
+
+
+        return ProjectResource::make(
+            $this->projectsService->update($request->all())
+        );
     }
 }

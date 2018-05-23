@@ -7,41 +7,26 @@ import ControllerBase from 'base/controller.base';
 export default class ProjectsSettingsInfoController extends ControllerBase {
 
     static get $inject() {
-        return ['projectsService'];
+        return ['projectsService', '$scope', '$mdToast', '$state'];
     }
 
     $onInit() {
-        //console.log(this.project);
+      this.errors = {};
+      this.form = null;
     }
 
     submit() {
-        // this.project.save();
-        // this.project.save();
-        this.project.save().then(() => {
-            // this.ProjectsService.all().one(this.project.identifier).customPUT(this.project).then(()=>{
 
-        });
-        // this.ProjectsService
-        //     .updateInformation(
-        //         this.model.identifier,
-        //         _.pick(this.model, [
-        //             'name',
-        //             'description',
-        //             'homepage',
-        //             'parent_identifier',
-        //             'inherit_members'
-        //         ])
-        //     )
-        //     .then((response) => {
-        //
-        //       this.$mdToast.show(
-        //         this.$mdToast.simple()
-        //           .textContent('Project created success')
-        //       );
-        //        this.$rootScope.$emit('updateProjectInfo');
-        //     }).catch((response) => {
-        //   this.onError(response)
-        // });
+      // access child scope
+      this.projectsService.put(this.$scope.$$childHead.$ctrl.project).then((response) => {
+        this.$mdToast.show(
+          this.$mdToast.simple()
+            .textContent('Project created success')
+        );
+
+        this.$state.reload();
+      });
+
     }
 
 }

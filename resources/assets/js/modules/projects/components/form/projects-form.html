@@ -1,4 +1,4 @@
-<form name="$ctrl.form" ng-submit="$ctrl.submit()">
+<form name="$ctrl.form" ng-submit="$ctrl.submit()" novalidate server-form="$ctrl.errors">
     <md-input-container class="md-block">
         <label>Name</label>
 
@@ -6,7 +6,8 @@
                type="text"
                required
                ng-change="$ctrl.change('name')"
-               ng-model="$ctrl.project.name">
+               ng-model="$ctrl.project.name"
+               server-field>
 
         <div ng-messages="$ctrl.form.name.$error">
             <div ng-message="required">Name can't be blank!</div>
@@ -20,7 +21,8 @@
 
         <textarea name="description"
                   ng-model="$ctrl.project.description"
-                  ng-change="$ctrl.change('description')">
+                  ng-change="$ctrl.change('description')"
+                  server-field>
         </textarea>
     </md-input-container>
 
@@ -33,7 +35,8 @@
                md-maxlength="100"
                ng-pattern="/^[a-z]([a-z0-9\-\_]+)?$/"
                ng-change="$ctrl.change('identifier')"
-               required>
+               required
+               server-field>
 
         <div class="md-caption">
             Length between 1 and 100 characters. Only lower case letters (a-z), numbers, dashes and
@@ -58,7 +61,8 @@
         <input name="homepage"
                type="text"
                ng-model="$ctrl.project.homepage"
-               ng-change="$ctrl.change('homepage')">
+               ng-change="$ctrl.change('homepage')"
+               server-field>
 
         <div ng-messages="$ctrl.form.homepage.$error">
             <div ng-message="server" ng-bind-html="$ctrl.errors.homepage | join"></div>
@@ -74,10 +78,11 @@
     <md-input-container class="md-block">
         <label>Subproject of</label>
 
-        <md-select ng-model="$ctrl.project.parent_identifier">
+        <md-select ng-model="$ctrl.project.parent_identifier" name="parent_identifier"
+                   server-field>
             <md-option md-option-empty></md-option>
 
-            <md-option ng-value="item.identifier"
+            <md-option value="{{ item.identifier }}"
                        ng-repeat="item in $ctrl.projects">
                 {{ item.name }}
             </md-option>
@@ -89,7 +94,8 @@
         <md-checkbox class="md-primary"
                      ng-model="$ctrl.project.inherit_members"
                      aria-label="Inherit members"
-                     ng-disabled="!$ctrl.project.parent_identifier">
+                     ng-disabled="!$ctrl.project.parent_identifier"
+                     server-field>
             Inherit members
         </md-checkbox>
     </md-input-container>

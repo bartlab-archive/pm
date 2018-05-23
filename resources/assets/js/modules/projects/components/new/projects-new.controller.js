@@ -1,6 +1,7 @@
 import ControllerBase from 'base/controller.base';
 import _ from 'lodash';
 
+// todo: server validation disabled for checkboxes
 /**
  * @property {ProjectsService} ProjectsService
  * @property {TrackersService} TrackersService
@@ -28,7 +29,7 @@ export default class ProjectsNewController extends ControllerBase {
     }
 
     create(redirect) {
-        this.projectsService.all().post(this.project)
+        this.projectsService.post(this.project)
             .then((response) => {
                 this.$mdToast.show(
                     this.$mdToast.simple()
@@ -36,7 +37,7 @@ export default class ProjectsNewController extends ControllerBase {
                 );
 
                 if (redirect || this.isCopy) {
-                    this.$state.go('projects.inner.settings', {project_id: response.data.identifier});
+                    this.$state.go('projects.inner.settings', {project_id: response.data.data.identifier});
                 } else {
                     this.$state.reload();
                 }

@@ -47,6 +47,14 @@ export default class ProjectsService extends InjectableBase {
         // return this.rest;
     }
 
+    post(params) {
+      return this.$http.post('/api/v1/projects', params)
+    }
+
+    put(params) {
+      return this.$http.put('/api/v1/projects/' + params.identifier, params);
+    }
+
     // enabledModules(id) {
     //     return this.$http.get('/api/v1/modules/' + id);
     // return this.rest.one(id).all('modules');

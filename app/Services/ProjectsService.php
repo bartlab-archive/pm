@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Member;
 use App\Models\Project;
 
 /**
@@ -63,6 +64,62 @@ class ProjectsService
     }
 
     public function create($data){
-        return Project::create($data);
+
+        $parent = $this->one($data['parent_identifier']);
+        $data['parent_id'] = $parent->id;
+
+        $model = Project::create($data);
+
+        if($model->inherit_members) {
+
+            $members = Member::query()
+                ->where('project_id', $model->parent_id)
+                ->get();
+
+            foreach($members as $member) {
+                // todo: what about intersect of members between original and parent ?
+                $new_member = $member->replicate();
+                $new_member->project_id = $model->id;
+                $new_member->push();
+            }
+        }
+
+        return $model;
+    }
+
+    public function update($data) {
+
+        $parent = $this->one($data['parent_identifier']);
+        $data['parent_id'] = $parent->id;
+
+        $model = Project::query()->where('identifier', $data['identifier'])->first();
+
+        if($model) {
+
+            $model->fill($data);
+
+            if($model->save()) {
+
+                if(! $model->inherit_members) {
+                    // todo: delete previously inherited members based on members_roles inherited_from column
+                }
+
+                if($model->inherit_members) {
+
+                    $members = Member::query()
+                        ->where('project_id', $model->parent_id)
+                        ->get();
+
+                    foreach($members as $member) {
+                        $new_member = $member->replicate();
+                        $new_member->project_id = $model->id;
+                        $new_member->push();
+                    }
+                }
+
+            }
+        }
+
+        return $model;
     }
 }
