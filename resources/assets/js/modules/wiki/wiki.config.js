@@ -85,6 +85,7 @@ export default class WikiConfig extends InjectableBase {
                 parent: 'projects.inner'
             })
             .state('wiki.page', {
+                // todo: upper case first char?
                 url: '/{name:[^,./?;:|]+}',
                 abstract: true,
             })

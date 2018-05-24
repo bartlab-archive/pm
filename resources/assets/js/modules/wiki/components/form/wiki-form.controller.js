@@ -14,44 +14,40 @@ export default class WikiFormController extends ControllerBase {
         this.page = {
             title: this.$stateParams.name,
             content: {
-                text: this.$stateParams.name ? '# ' + this.$stateParams.name : '',
+                text: '',
             },
-            parent_id: null
+            parent_id: undefined
         };
 
-        this.loadProccess = true;
-        this.loadList()
-            .then(() => {
-                return !this.isNew ? this.load() : true;
-            })
-            .then(() => {
-                this.loadProccess = false;
-            });
-
-
+        this.load();
     }
 
     load() {
-        return this.wikisService
-            .one(this.projectsService.getCurrentId(), this.$stateParams.name)
-            .then((response) => {
-                if (response.status !== 204) {
-                    this.page = response.data.data;
+        this.loadProccess = true;
+
+        return this.$q
+            .all([
+                this.wikisService.all(this.projectsService.getCurrentId()),
+                !this.isNew ? this.wikisService.one(this.projectsService.getCurrentId(), this.$stateParams.name) : undefined
+            ])
+            .then(([list, page]) => {
+                if (page && page.status !== 204) {
+                    Object.assign(this.page, page.data.data);
                 } else {
                     this.isNew = true;
+                    if (this.$stateParams.name) {
+                        this.page.content.text = '# ' + this.$stateParams.name;
+                    }
                 }
+
+                // filter pages list by parent id for current page
+                this.list = this.page.id ? list.filter((item) => {
+                    return !item.parents_ids.some((id) => this.page.id === id);
+                }) : list.data.data;
+
+                this.loadProccess = false;
             });
     }
-
-    loadList() {
-        return this.wikisService
-            .all(this.projectsService.getCurrentId())
-            .then((response) => {
-                // todo: hide childs of current page and curent page
-                this.list = response.data.data;
-            });
-    }
-
 
     submit() {
         const projectId = this.projectsService.getCurrentId();
@@ -66,8 +62,6 @@ export default class WikiFormController extends ControllerBase {
         if (this.isNew) {
             model.title = this.page.title;
         }
-
-        // console.log(this.page);
 
         return (this.isNew ? this.wikisService.create(projectId, model) : this.wikisService.update(projectId, this.page.title, model))
             .then((response) => {
@@ -85,15 +79,6 @@ export default class WikiFormController extends ControllerBase {
                 }
 
                 this.errors = response.data.errors;
-
-                // for (const field of Object.keys(response.data.errors)) {
-                //     if (this.form.hasOwnProperty(field)) {
-                //         this.form[field].$touched = true;
-                //         this.form[field].$setValidity('server', false);
-                //         this.form[field].$error.serverMessage = this.$filter('join')(response.data.errors[field]);
-                //         console.log(this.form[field].$error);
-                //     }
-                // }
             });
     }
 

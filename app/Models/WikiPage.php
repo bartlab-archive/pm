@@ -36,4 +36,14 @@ class WikiPage extends Model
         return $this->belongsTo(Wiki::class);
     }
 
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'parent_id');
+    }
+
+//    public function childs()
+//    {
+//        return $this->hasMany(self::class, 'parent_id')->with(['childs']);
+//    }
+
 }

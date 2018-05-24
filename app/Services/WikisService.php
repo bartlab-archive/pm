@@ -12,20 +12,38 @@ class WikisService
     {
         return WikiPage::query()
             ->with([
+//                'childs',
                 'content.author'
             ])
             ->whereHas('wiki.project', function ($query) use ($identifier) {
-                /** @var $query Builder */
+                /** @var $query \Illuminate\Database\Eloquent\Builder */
                 $query->where('identifier', $identifier);
-            })->get();
+            })
+//            ->where(['parent_id' => null])
+            ->get()
+            ->map(function ($page) {
+                $current = $page;
+                $parents_ids = [];
+
+                while ($current->parent) {
+                    $parents_ids[] = $current->parent->id;
+                    $current = $current->parent;
+                }
+
+                $page->parents_ids = $parents_ids;
+
+                return $page;
+            });
     }
 
     public function base($identifier)
     {
-        return Wiki::query()->whereHas('project', function ($query) use ($identifier) {
-            /** @var $query Builder */
-            $query->where('identifier', $identifier);
-        })->first();
+        return Wiki::query()
+            ->whereHas('project', function ($query) use ($identifier) {
+                /** @var $query \Illuminate\Database\Eloquent\Builder */
+                $query->where('identifier', $identifier);
+            })
+            ->first();
     }
 
     public function one($identifier, $name = null)
@@ -39,7 +57,7 @@ class WikisService
                 $name ?? (($page = $this->base($identifier)) ? $page->start_page : 'Wiki')
             )
             ->whereHas('wiki.project', function ($query) use ($identifier) {
-                /** @var $query Builder */
+                /** @var $query \Illuminate\Database\Eloquent\Builder */
                 $query->where('identifier', $identifier);
             })
             ->first();

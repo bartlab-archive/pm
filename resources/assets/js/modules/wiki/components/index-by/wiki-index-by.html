@@ -1,36 +1,8 @@
 <div layout-gt-sm="row" layout-align="center start">
-    <md-card layout="column" ng-cloak flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-        <md-card-header>
-            <md-card-header-text>
-                <span class="md-headline">{{ $ctrl.index_by }}</span>
-            </md-card-header-text>
-
-            <md-button class="md-icon-button" ng-click="$ctrl.startPage()">
-                <md-icon>bookmark</md-icon>
-                <md-tooltip md-direction="down"
-                            md-autohide="true">Start page
-                </md-tooltip>
-            </md-button>
-
-            <md-button ng-if="!$ctrl.index_mode" class="md-icon-button" ng-click="$ctrl.indexBy('title')">
-                <md-icon>title</md-icon>
-                <md-tooltip md-direction="down"
-                            md-autohide="true">Index by title
-                </md-tooltip>
-            </md-button>
-
-            <md-button ng-if="$ctrl.index_mode" class="md-icon-button" ng-click="$ctrl.indexBy('date')">
-                <md-icon>date_range</md-icon>
-                <md-tooltip md-direction="down"
-                            md-autohide="true">Index by date
-                </md-tooltip>
-            </md-button>
-        </md-card-header>
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
 
         <md-card-content>
-            <div id="indexBy"></div>
+            coming soon
         </md-card-content>
     </md-card>
 </div>
-
-
