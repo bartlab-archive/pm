@@ -76,7 +76,7 @@ class ProjectsController extends BaseController
     public function store(StoreProjectRequest $request)
     {
         return ProjectResource::make(
-            $this->projectsService->create($request->all())
+            $this->projectsService->create($request->validated())
         );
     }
 
@@ -88,7 +88,7 @@ class ProjectsController extends BaseController
 
 
         return ProjectResource::make(
-            $this->projectsService->update($request->all())
+            $this->projectsService->update($request->validated())
         );
     }
 }

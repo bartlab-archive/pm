@@ -18,13 +18,13 @@ export default class ProjectsSettingsInfoController extends ControllerBase {
     submit() {
 
       // access child scope
-      this.projectsService.put(this.$scope.$$childHead.$ctrl.project).then((response) => {
+      this.projectsService.update(this.params.data).then((response) => {
         this.$mdToast.show(
           this.$mdToast.simple()
-            .textContent('Project created success')
+            .textContent('Project updated successfully')
         );
 
-        this.$state.reload();
+        this.$state.go('projects.inner.settings', {project_id: response.data.data.identifier});
       });
 
     }

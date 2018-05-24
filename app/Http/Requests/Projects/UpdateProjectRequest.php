@@ -6,6 +6,7 @@ use App\Models\EnabledModule;
 use App\Models\Project;
 use App\Models\Tracker;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateProjectRequest extends FormRequest
 {
@@ -28,6 +29,14 @@ class UpdateProjectRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
+            'prev_identifier' => 'required|string|between:1,100',
+            'new_identifier' => [
+                'required',
+                'string',
+                'between:1,100',
+                // use identifier as PK for ignoring, because id is not accessible here
+                'unique:' . Project::getTableName() . ',identifier,' . $this->prev_identifier . ',identifier'
+            ],
             'description' => 'nullable|string',
             'homepage' => 'nullable|url',
             'is_public' => 'boolean',

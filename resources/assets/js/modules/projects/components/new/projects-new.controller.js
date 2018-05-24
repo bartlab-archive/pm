@@ -29,7 +29,7 @@ export default class ProjectsNewController extends ControllerBase {
     }
 
     create(redirect) {
-        this.projectsService.post(this.project)
+        this.projectsService.create(this.project)
             .then((response) => {
                 this.$mdToast.show(
                     this.$mdToast.simple()

@@ -16,14 +16,12 @@ class ProjectResource extends Resource
      */
     public function toArray($request)
     {
-        $parent = Project::query()->where('id', $this->parent_id)->first();
-
         return [
             'project_id' => $this->identifier,
             'name' => $this->name,
             'description' => $this->description,
             'homepage' => $this->homepage,
-            'parent_identifier' => $parent ? $parent->identifier : null,
+            'parent' => self::make($this->whenLoaded('parent')),
             'is_public' => $this->is_public,
             'inherit_members' => $this->inherit_members,
             'default_version_id' => $this->default_version_id,

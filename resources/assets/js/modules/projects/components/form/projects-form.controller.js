@@ -12,31 +12,20 @@ export default class ProjectsFormController extends ControllerBase {
 
     $onInit() {
         this.errors = this.errors || {};
-        this.$scope.$watch(() => this.errors, () => this.onError());
+        this.$scope.$watch(() => this.errors);
 
         if(this.$stateParams.project_id) {
             this.projectsService.one(this.$stateParams.project_id).then((response) => {
                this.project = response.data.data;
+               this.project.parent_identifier = this.project.parent.identifier;
+               this.project.prev_identifier = this.project.identifier;
+               this.project.new_identifier = this.project.identifier;
             });
         }
 
         this.projectsService.all().then((response) => {
             this.projects = response.data.data;
         });
-    }
-
-    onError() {
-        for (let field in this.errors) {
-            if (this.form.hasOwnProperty(field)) {
-                this.form[field].$touched = true;
-                this.form[field].$setValidity('server', false);
-            }
-        }
-    }
-
-    change(field) {
-        this.form[field].$setValidity('server', true);
-        this.errors[field] = undefined;
     }
 
 }

@@ -26,6 +26,7 @@ class Project extends Model
 
     protected $casts = [
         'is_public' => 'boolean',
+        'inherit_members' => 'boolean'
     ];
 
     protected $appends = [
@@ -50,14 +51,14 @@ class Project extends Model
         'homepage',
         'is_public',
         'parent_id',
-        'created_on',
-        'updated_on',
+//        'created_on',
+//        'updated_on',
         'identifier',
         'status',
-        'lft',
-        'rgt',
+//        'lft',
+//        'rgt',
         'inherit_members',
-        'default_version_id',
+//        'default_version_id',
     ];
 
     protected $perPage = 20;

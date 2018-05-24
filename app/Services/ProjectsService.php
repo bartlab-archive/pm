@@ -53,6 +53,8 @@ class ProjectsService
 
     public function one($identifier, $with = [])
     {
+        $with[] = 'parent';
+
         return Project::query()
             ->where('identifier', $identifier)
             ->with($with)
@@ -62,6 +64,15 @@ class ProjectsService
 //            ])
             ->first();
     }
+
+    public function base($identifier)
+    {
+        return Project::query()->whereHas('members', function ($query) use ($identifier) {
+            /** @var $query Builder */
+            $query->where('identifier', $identifier);
+        })->first();
+    }
+
 
     public function create($data){
 
@@ -89,35 +100,39 @@ class ProjectsService
 
     public function update($data) {
 
-        $parent = $this->one($data['parent_identifier']);
-        $data['parent_id'] = $parent->id;
+        if(isset($data['parent_identifier'])) {
+            $parent = $this->one($data['parent_identifier']);
+            $data['parent_id'] = $parent->id;
+        }
 
-        $model = Project::query()->where('identifier', $data['identifier'])->first();
+        $search_identifier = $data['prev_identifier'];
 
-        if($model) {
+        if(isset($data['prev_identifier']) && isset($data['new_identifier']) &&
+            $data['prev_identifier'] !== $data['new_identifier']) {
 
-            $model->fill($data);
+            $data['identifier'] = $data['new_identifier'];
+        }
 
-            if($model->save()) {
+        $model = Project::query()->where('identifier', $search_identifier)->first();
+        $prev_parent_id = $model->parent_id;
+
+        if($model && $model->update($data)) {
 
                 if(! $model->inherit_members) {
                     // todo: delete previously inherited members based on members_roles inherited_from column
                 }
 
-                if($model->inherit_members) {
+                // do not copy members if update request doesn't change parent project
+                if($prev_parent_id !== $model->parent_id && $model->inherit_members) {
 
-                    $members = Member::query()
-                        ->where('project_id', $model->parent_id)
-                        ->get();
+                    $parent_members = $model->parent->members;
 
-                    foreach($members as $member) {
+                    foreach($parent_members as $member) {
                         $new_member = $member->replicate();
                         $new_member->project_id = $model->id;
                         $new_member->push();
                     }
                 }
-
-            }
         }
 
         return $model;
