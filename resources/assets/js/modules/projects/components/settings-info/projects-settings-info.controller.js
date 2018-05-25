@@ -24,7 +24,7 @@ export default class ProjectsSettingsInfoController extends ControllerBase {
             .textContent('Project updated successfully')
         );
 
-        this.$state.go('projects.inner.settings', {project_id: response.data.data.identifier});
+        this.$state.reload();
       });
 
     }

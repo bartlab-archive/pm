@@ -18,8 +18,6 @@ export default class ProjectsFormController extends ControllerBase {
             this.projectsService.one(this.$stateParams.project_id).then((response) => {
                this.project = response.data.data;
                this.project.parent_identifier = this.project.parent.identifier;
-               this.project.prev_identifier = this.project.identifier;
-               this.project.new_identifier = this.project.identifier;
             });
         }
 

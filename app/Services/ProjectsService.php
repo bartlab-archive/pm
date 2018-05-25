@@ -53,8 +53,6 @@ class ProjectsService
 
     public function one($identifier, $with = [])
     {
-        $with[] = 'parent';
-
         return Project::query()
             ->where('identifier', $identifier)
             ->with($with)
@@ -63,14 +61,6 @@ class ProjectsService
 //                'users'
 //            ])
             ->first();
-    }
-
-    public function base($identifier)
-    {
-        return Project::query()->whereHas('members', function ($query) use ($identifier) {
-            /** @var $query Builder */
-            $query->where('identifier', $identifier);
-        })->first();
     }
 
 
@@ -101,19 +91,11 @@ class ProjectsService
     public function update($data) {
 
         if(isset($data['parent_identifier'])) {
-            $parent = $this->one($data['parent_identifier']);
+            $parent = $this->one($data['parent_identifier'], ['parent']);
             $data['parent_id'] = $parent->id;
         }
 
-        $search_identifier = $data['prev_identifier'];
-
-        if(isset($data['prev_identifier']) && isset($data['new_identifier']) &&
-            $data['prev_identifier'] !== $data['new_identifier']) {
-
-            $data['identifier'] = $data['new_identifier'];
-        }
-
-        $model = Project::query()->where('identifier', $search_identifier)->first();
+        $model = Project::query()->where('identifier', $data['identifier'])->first();
         $prev_parent_id = $model->parent_id;
 
         if($model && $model->update($data)) {
@@ -128,9 +110,7 @@ class ProjectsService
                     $parent_members = $model->parent->members;
 
                     foreach($parent_members as $member) {
-                        $new_member = $member->replicate();
-                        $new_member->project_id = $model->id;
-                        $new_member->push();
+                        $member->replicate()->fill(['project_id' => $model->id])->push();
                     }
                 }
         }

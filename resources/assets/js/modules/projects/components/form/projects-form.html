@@ -11,7 +11,7 @@
         <div ng-messages="$ctrl.form.name.$error">
             <div ng-message="required">Name can't be blank!</div>
 
-            <div ng-message="server" ng-bind-html="$ctrl.errors.name | join"></div>
+            <div ng-message="server" ng-bind-html="$ctrl.form.name.$server"></div>
         </div>
     </md-input-container>
 
@@ -24,16 +24,17 @@
         </textarea>
 
         <div ng-messages="$ctrl.form.description.$error">
-            <div ng-message="server" ng-bind-html="$ctrl.errors.description | join"></div>
+            <div ng-message="server" ng-bind-html="$ctrl.form.description.$server"></div>
         </div>
     </md-input-container>
 
     <md-input-container class="md-block">
         <label>Identifier</label>
 
-        <input ng-model="$ctrl.project.new_identifier"
+        <input ng-model="$ctrl.project.identifier"
                type="text"
-               name="new_identifier"
+               name="identifier"
+               disabled
                md-maxlength="100"
                ng-pattern="/^[a-z]([a-z0-9\-\_]+)?$/"
                required
@@ -45,14 +46,14 @@
             Once saved, the identifier cannot be changed.
         </div>
 
-        <div ng-messages="$ctrl.form.new_identifier.$error">
+        <div ng-messages="$ctrl.form.identifier.$error">
             <div ng-message="required">Identifier can't be blank!</div>
 
             <div ng-message="pattern">Identifier is invalid</div>
 
             <div ng-message="md-maxlength">Identifier has to be less than 100 characters long.</div>
 
-            <div ng-message="server" ng-bind-html="$ctrl.errors.new_identifier | join"></div>
+            <div ng-message="server" ng-bind-html="$ctrl.form.identifier.$server"></div>
         </div>
     </md-input-container>
 
@@ -65,7 +66,7 @@
                server-field>
 
         <div ng-messages="$ctrl.form.homepage.$error">
-            <div ng-message="server" ng-bind-html="$ctrl.errors.homepage | join"></div>
+            <div ng-message="server" ng-bind-html="$ctrl.form.homepage.$server"></div>
         </div>
     </md-input-container>
 
@@ -89,7 +90,7 @@
         </md-select>
 
         <div ng-messages="$ctrl.form.parent_identifier.$error">
-            <div ng-message="server" ng-bind-html="$ctrl.errors.parent_identifier | join"></div>
+            <div ng-message="server" ng-bind-html="$ctrl.form.parent_identifier.$server"></div>
         </div>
         <!--<div class="md-errors-spacer"></div>-->
     </md-input-container>

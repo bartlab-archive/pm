@@ -56,7 +56,7 @@ class ProjectsController extends BaseController
 
     public function show($identifier)
     {
-        if (!$project = $this->projectsService->one($identifier, ['members.user', 'members.roles', 'enabledModules'])) {
+        if (!$project = $this->projectsService->one($identifier, ['parent', 'members.user', 'members.roles', 'enabledModules'])) {
             abort(404);
         }
 
