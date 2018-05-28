@@ -1,5 +1,4 @@
 import ControllerBase from 'base/controller.base';
-import IssueCategoriesService from "../../services/issue-categories.service";
 
 /**
  * @property {$mdDialog} $mdDialog
@@ -9,7 +8,7 @@ import IssueCategoriesService from "../../services/issue-categories.service";
 export default class IssuesCategoryController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdDialog', '$mdToast', '$rootScope', 'issueCategoriesService'];
+        return ['$mdDialog', '$mdToast', '$rootScope', 'issuesCategoriesService'];
     }
 
     $onInit() {
@@ -31,9 +30,10 @@ export default class IssuesCategoryController extends ControllerBase {
     }
 
     submit() {
-        if (! this.issueCategory.id) {
-            this.issueCategoriesService.create(this.project.identifier, this.issueCategory)
-              .then(() => this.cancel(true));
+        if (!this.issueCategory.id) {
+            this.issuesCategoriesService
+                .create(this.project.identifier, this.issueCategory)
+                .then(() => this.cancel(true));
         } else {
             // this.projectsService.editIssueCategory(this.issueCategory.id, this.issueCategory)
             //     .then(() => this.cancel(true));

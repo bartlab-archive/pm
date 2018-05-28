@@ -14,12 +14,12 @@ use App\Models\IssueCategory;
 class IssueCategoriesService
 {
 
-    protected $projectsService;
-
-    public function __construct(ProjectsService $projectsService)
-    {
-        $this->projectsService = $projectsService;
-    }
+//    protected $projectsService;
+//
+//    public function __construct(ProjectsService $projectsService)
+//    {
+//        $this->projectsService = $projectsService;
+//    }
 
     public function one($id)
     {
@@ -58,20 +58,9 @@ class IssueCategoriesService
 //        return IssueCategory::find($issueCategoryId)->delete();
 //    }
 
-    /**
-     * Create IssueCategory
-     *
-     * @param $identifier
-     * @param $data
-     * @return bool
-     */
-    public function create($identifier, $data)
+    public function create($data)
     {
-        $project = $this->projectsService->one($identifier);
-        $data['project_id'] = $project->id;
-
-        $issueCategory = new IssueCategory($data);
-        return $issueCategory->save();
+        return IssueCategory::create($data);
     }
 
     /**

@@ -38,7 +38,8 @@ class IssueCategoriesController extends BaseController
         );
     }
 
-    public function show($id) {
+    public function show($id)
+    {
 
         if (!$issueCategory = $this->issueCategoriesService->one($id)) {
             return abort(404);
@@ -53,17 +54,27 @@ class IssueCategoriesController extends BaseController
             abort(404);
         }
 
-        $issueCategory = $this->issueCategoriesService->create($identifier, $request->validated());
-
-        return IssuesCategoryResource::make($issueCategory);
+        return IssuesCategoryResource::make(
+            $this->issueCategoriesService->create(
+                $identifier,
+                array_merge(
+                    $request->validated(),
+                    [
+                        'project_id' => $project->id
+                    ]
+                )
+            )
+        );
 
     }
 
-    public function update($request) {
+    public function update($request)
+    {
 
     }
 
-    public function destroy($request) {
+    public function destroy($request)
+    {
 
     }
 }

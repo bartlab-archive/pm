@@ -155,6 +155,7 @@ class IssuesService
 
     public function update($id, $data)
     {
+        // todo: change to call "$this->one()" method
         if ($issue = Issue::query()->where(['id' => $id])->first()) {
             $issue->fill($data);
             $journalDetails = [];

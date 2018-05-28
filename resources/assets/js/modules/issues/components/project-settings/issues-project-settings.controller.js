@@ -11,34 +11,35 @@ export default class IssuesProjectSettingsController extends ControllerBase {
     }
 
     $onInit() {
-      this.project = this.params;
-      // this.issuesCategories = this.project.
+        // todo: remove temp variable
+        this.project = this.params;
+        // this.issuesCategories = this.project.
     }
 
     static setMdDialogConfig(target, data = {}) {
-      return {
-        controller: IssuesCategoryController,
-        controllerAs: '$ctrl',
-        bindToController: true,
-        locals: data,
-        template: issuesCategoryTemplate,
-        clickOutsideToClose: true,
-        openFrom: target,
-        closeTo: target,
-      };
+        return {
+            controller: IssuesCategoryController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: data,
+            template: issuesCategoryTemplate,
+            clickOutsideToClose: true,
+            openFrom: target,
+            closeTo: target,
+        };
     }
 
     createIssuesCategory($event) {
-      if ($event.ctrlKey || $event.metaKey) {
-        return;
-      }
+        // if ($event.ctrlKey || $event.metaKey) {
+        //   return;
+        // }
+        //
+        // $event.preventDefault();
 
-      $event.preventDefault();
-
-      this.$mdDialog.show(
-        this.constructor.setMdDialogConfig($event.target, {
-          project: this.project
-        })
-      );
+        this.$mdDialog.show(
+            this.constructor.setMdDialogConfig($event.target, {
+                project: this.project
+            })
+        );
     }
 }

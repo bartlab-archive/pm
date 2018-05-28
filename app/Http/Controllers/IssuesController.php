@@ -155,6 +155,11 @@ class IssuesController extends BaseController
             )
         );
 
+        if (!$issue) {
+            // todo: add error message
+            return abort(422);
+        }
+
         return IssueResource::make($issue);
     }
 

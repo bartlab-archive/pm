@@ -149,6 +149,7 @@ Route::group(
                 Route::post('/{identifier}', 'IssueCategoriesController@store');
                 Route::put('/{identifier}', 'IssueCategoriesController@update');
                 Route::delete('/{identifier}', 'IssueCategoriesController@destroy');
+                // todo: remove "category" from link
                 Route::get('/category/{id}', 'IssueCategoriesController@show');
             }
         );

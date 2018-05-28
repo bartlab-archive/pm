@@ -43,7 +43,7 @@ class ProjectsService
             }
         }
 
-        if ($perPage = array_get($params, 'per_page')){
+        if ($perPage = array_get($params, 'per_page')) {
             return $query
                 ->paginate($perPage);
         }
@@ -64,53 +64,46 @@ class ProjectsService
     }
 
 
-    public function create($data){
+    public function create($data)
+    {
 
-        $parent = $this->one($data['parent_identifier']);
-        $data['parent_id'] = $parent->id;
-
-        $model = Project::create($data);
-
-        if($model->inherit_members) {
-
-            $parent_members = $model->parent->members;
-
-            foreach($parent_members as $member) {
-                // todo: what about intersect of members between original and parent ?
-                $member->replicate()->fill(['project_id' => $model->id])->push();
+        if ($project = Project::create($data)) {
+            if ($project->inherit_members) {
+                // todo: check parent and parent members for null
+                foreach ($project->parent->members as $member) {
+                    // todo: what about intersect of members between original and parent ?
+                    $member->replicate()->fill(['project_id' => $project->id])->push();
+                }
             }
+
+            return $project;
         }
 
-        return $model;
+        return false;
     }
 
-    public function update($identifier, $data) {
+    public function update($identifier, $data)
+    {
+        if ($project = $this->one($identifier)) {
+            $prevParentId = $project->parent_id;
 
-        if(isset($data['parent_identifier'])) {
-            $parent = $this->one($data['parent_identifier'], ['parent']);
-            $data['parent_id'] = $parent->id;
-        }
-
-        $model = $this->one($identifier);
-        $prev_parent_id = $model->parent_id;
-
-        if($model && $model->update($data)) {
-
-                if(! $model->inherit_members) {
+            if ($project->update($data)) {
+                if (!$project->inherit_members) {
                     // todo: delete previously inherited members based on members_roles inherited_from column
                 }
 
                 // do not copy members if update request doesn't change parent project
-                if($prev_parent_id !== $model->parent_id && $model->inherit_members) {
-
-                    $parent_members = $model->parent->members;
-
-                    foreach($parent_members as $member) {
-                        $member->replicate()->fill(['project_id' => $model->id])->push();
+                if ($prevParentId !== $project->parent_id && $project->inherit_members) {
+                    // todo: check parent and parent members for null
+                    foreach ($project->parent->members as $member) {
+                        $member->replicate()->fill(['project_id' => $project->id])->push();
                     }
                 }
+
+                return $project;
+            }
         }
 
-        return $model;
+        return false;
     }
 }

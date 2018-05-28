@@ -47,7 +47,7 @@ class ProjectsController extends BaseController
                 array_merge(
                     $request->only(['status', 'order', 'per_page', 'page']),
                     [
-                        'with' => ['trackers','members.user']
+                        'with' => ['trackers', 'members.user']
                     ]
                 )
             )
@@ -75,9 +75,30 @@ class ProjectsController extends BaseController
 
     public function store(StoreProjectRequest $request)
     {
-        return ProjectResource::make(
-            $this->projectsService->create($request->validated())
+        if (($parentIdentifier = $request->input('parent_identifier')) && (!$parent = $this->projectsService->one($parentIdentifier))) {
+            // todo: is it valid response code?
+            abort(404);
+        }
+
+        /*
+         * todo: check parent project status and user roles
+         */
+
+        $project = $this->projectsService->create(
+            array_merge(
+                $request->validated(),
+                [
+                    'parent_id' => $parentIdentifier ? $parent->id : null
+                ]
+            )
         );
+
+        if (!$project) {
+            // todo: add error message
+            return abort(422);
+        }
+
+        return ProjectResource::make($project);
     }
 
     public function update($identifier, UpdateProjectRequest $request)
@@ -86,8 +107,31 @@ class ProjectsController extends BaseController
             abort(404);
         }
 
-        return ProjectResource::make(
-            $this->projectsService->update($identifier, $request->validated())
+        if (($parentIdentifier = $request->input('parent_identifier')) && (!$parent = $this->projectsService->one($parentIdentifier))) {
+            // todo: is it valid response code?
+            abort(404);
+        }
+
+        /*
+         * todo: check parent project status and user roles
+         * todo: check updated project for status and user roles
+         */
+
+        $project = $this->projectsService->update(
+            $identifier,
+            array_merge(
+                $request->validated(),
+                [
+                    'parent_id' => $parentIdentifier ? $parent->id : null
+                ]
+            )
         );
+
+        if (!$project) {
+            // todo: add error message
+            return abort(422);
+        }
+
+        return ProjectResource::make($project);
     }
 }

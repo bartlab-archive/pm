@@ -1,6 +1,6 @@
+import ComponentBase from "base/component.base";
 import IssuesCategoryController from './issues-category.controller';
 import issuesCategoryTemplate from './issues-category.html';
-import ComponentBase from "base/component.base";
 
 export default class IssuesCategoryComponent extends ComponentBase {
 
