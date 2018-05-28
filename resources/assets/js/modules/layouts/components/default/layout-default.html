@@ -1,136 +1,141 @@
-<md-toolbar class="md-hue-2">
-    <div class="md-toolbar-tools">
-        <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggle()">
-            <md-icon>menu</md-icon>
-        </md-button>
-
-        <h2 flex>
-            <span hide-sm hide-xs>{{ $ctrl.title }}</span>
-        </h2>
-
-        <div class="md-block toolbar-input-container">
-            <md-icon>search</md-icon>
-            <input type="text" placeholder="Search" class="toolbar-input">
-        </div>
-
-        <md-button class="md-icon-button" ng-click="$ctrl.toggle('right')" aria-label="My Projects">
-            <md-icon>work</md-icon>
-        </md-button>
-
-        <md-menu>
-            <md-button class="md-icon-button" aria-label="User menu" ng-click="$mdMenu.open()">
-                <md-icon>more_vert</md-icon>
-            </md-button>
-            <md-menu-content width="4">
-                <md-menu-item>
-                    <md-button ng-click="$ctrl.myAccount()">
-                        <md-icon>account_circle</md-icon>
-                        Profile
+<div>
+    <section ng-class="{'with-project-menu': $ctrl.showProjectMenu}">
+        <md-sidenav class="md-sidenav-left fixed"
+                    md-component-id="left"
+                    md-whiteframe="4"
+                    md-disable-scroll-target="body">
+            <md-toolbar>
+                <h1 class="md-toolbar-tools">
+                    <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggle()">
+                        <md-icon>menu</md-icon>
                     </md-button>
-                </md-menu-item>
-                <md-menu-item>
-                    <md-button>
-                        <md-icon>settings</md-icon>
-                        Settings
-                    </md-button>
-                </md-menu-item>
-                <md-menu-divider></md-menu-divider>
-                <md-menu-item>
-                    <md-button ng-click="$ctrl.logout()">
-                        <md-icon>exit_to_app</md-icon>
-                        Logout
-                    </md-button>
-                </md-menu-item>
-            </md-menu-content>
-        </md-menu>
-    </div>
-</md-toolbar>
+                    <span>Menu</span>
+                </h1>
+            </md-toolbar>
 
-<section ng-class="{'with-project-menu': $ctrl.showProjectMenu}">
-    <md-sidenav class="md-sidenav-left fixed"
-                md-component-id="left"
-                md-whiteframe="4"
-                md-disable-scroll-target="body">
-        <md-toolbar>
-            <h1 class="md-toolbar-tools">
+            <md-list-item ng-repeat="item in ::$ctrl.items" ng-click="$ctrl.menuClick(item)">
+                <md-button class="md-icon-button">
+                    <md-icon>{{ ::item.icon }}</md-icon>
+                </md-button>
+                {{ ::item.name }}
+            </md-list-item>
+        </md-sidenav>
+
+        <md-toolbar class="md-hue-2">
+            <div class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggle()">
                     <md-icon>menu</md-icon>
                 </md-button>
-                <span>Menu</span>
-            </h1>
+
+                <h2 flex>
+                    <span hide-sm hide-xs>{{ $ctrl.title }}</span>
+                </h2>
+
+                <div class="md-block toolbar-input-container">
+                    <md-icon>search</md-icon>
+                    <input type="text" placeholder="Search" class="toolbar-input">
+                </div>
+
+                <md-button class="md-icon-button" ng-click="$ctrl.toggle('right')" aria-label="My Projects">
+                    <md-icon>work</md-icon>
+                </md-button>
+
+                <md-menu>
+                    <md-button class="md-icon-button" aria-label="User menu" ng-click="$mdMenu.open()">
+                        <md-icon>more_vert</md-icon>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="$ctrl.myAccount()">
+                                <md-icon>account_circle</md-icon>
+                                Profile
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button>
+                                <md-icon>settings</md-icon>
+                                Settings
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item>
+                            <md-button ng-click="$ctrl.logout()">
+                                <md-icon>exit_to_app</md-icon>
+                                Logout
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
         </md-toolbar>
 
-        <md-list-item ng-repeat="item in ::$ctrl.items" ng-click="$ctrl.menuClick(item)">
-            <md-button class="md-icon-button">
-                <md-icon>{{ ::item.icon }}</md-icon>
-            </md-button>
-            {{ ::item.name }}
-        </md-list-item>
-    </md-sidenav>
+        <div class="md-nav-bar-wrapper" ng-if="$ctrl.showProjectMenu">
+            <md-nav-bar class="md-primary md-hue-2"
+                        md-selected-nav-item="$ctrl.currentNavItem"
+                        nav-bar-aria-label="Project navigation links">
+                <md-nav-item ng-repeat="item in ::$ctrl.projectItems" md-nav-click="$ctrl.openProjectPage(item)"
+                             name="{{ ::item.url }}" ng-if="!item.name || item.enable">
+                    {{ ::item.title }}
+                </md-nav-item>
+            </md-nav-bar>
+        </div>
 
-    <div class="md-nav-bar-wrapper" ng-if="$ctrl.showProjectMenu">
-        <md-nav-bar class="md-primary md-hue-2"
-                    md-selected-nav-item="$ctrl.currentNavItem"
-                    nav-bar-aria-label="Project navigation links">
-            <md-nav-item ng-repeat="item in ::$ctrl.projectItems" md-nav-click="$ctrl.openProjectPage(item)"
-                         name="{{ ::item.url }}" ng-if="!item.name || item.enable">
-                {{ ::item.title }}
-            </md-nav-item>
-        </md-nav-bar>
-    </div>
-
-    <div class="q-nav-container" hide show-gt-sm>
-        <div class="q-nav">
-            <div class="q-nav-items">
-                <div class="q-nav-item" ng-repeat="item in ::$ctrl.items">
-                    <a ui-sref="{{ ::item.url }}">
-                        <md-icon>{{ ::item.icon }}</md-icon>
-                        <span>{{ ::item.name }}</span>
-                    </a>
+        <div class="q-nav-container" hide show-gt-sm>
+            <div class="q-nav">
+                <div class="q-nav-items">
+                    <div class="q-nav-item" ng-repeat="item in ::$ctrl.items">
+                        <a ui-sref="{{ ::item.url }}">
+                            <md-icon>{{ ::item.icon }}</md-icon>
+                            <span>{{ ::item.name }}</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!--<md-content>-->
-        <div class="content-view-container layout-margin-gt-sm" ui-view="content"></div>
-    <!--</md-content>-->
+        <md-content>
+            <div class="content-view-container layout-margin-gt-sm" ui-view="content"></div>
+        </md-content>
 
-    <md-fab-speed-dial md-open="$ctrl.menuOpen" md-direction="up" class="md-scale md-fab-top-righ">
-        <md-fab-trigger>
-            <md-button aria-label="menu" class="md-fab md-warn">
-                <md-icon>add</md-icon>
-            </md-button>
-        </md-fab-trigger>
+        <md-fab-speed-dial md-open="$ctrl.menuOpen" md-direction="up" class="md-scale md-fab-top-righ">
+            <md-fab-trigger>
+                <md-button aria-label="menu" class="md-fab md-warn">
+                    <md-icon>add</md-icon>
+                </md-button>
+            </md-fab-trigger>
 
-        <md-fab-actions>
-            <md-button class="md-fab md-raised md-mini" ng-click="$ctrl.openNewItemPage(item)"
-                       ng-repeat="item in ::$ctrl.newItems" ng-if="item.enable">
-                <md-tooltip md-direction="left" md-visible="$ctrl.menuOpen"
-                            md-autohide="true">{{ ::item.name }}
-                </md-tooltip>
-                <md-icon>{{ ::item.icon }}</md-icon>
-            </md-button>
-        </md-fab-actions>
-    </md-fab-speed-dial>
+            <md-fab-actions>
+                <md-button class="md-fab md-raised md-mini" ng-click="$ctrl.openNewItemPage(item)"
+                           ng-repeat="item in ::$ctrl.newItems" ng-if="item.enable">
+                    <md-tooltip md-direction="left" md-visible="$ctrl.menuOpen"
+                                md-autohide="true">{{ ::item.name }}
+                    </md-tooltip>
+                    <md-icon>{{ ::item.icon }}</md-icon>
+                </md-button>
+            </md-fab-actions>
+        </md-fab-speed-dial>
 
-    <md-sidenav class="md-sidenav-right md-whiteframe-4dp"
-                md-component-id="right"
-                md-disable-scroll-target="body">
-        <md-toolbar>
-            <h1 class="md-toolbar-tools">
-                <span>Projects</span>
-            </h1>
-        </md-toolbar>
+        <md-sidenav class="md-sidenav-right md-whiteframe-4dp"
+                    md-component-id="right"
+                    md-disable-scroll-target="body">
+            <md-toolbar>
+                <h1 class="md-toolbar-tools">
+                    <span flex>Projects</span>
+                    <md-button class="md-icon-button">
+                        <md-icon>add</md-icon>
+                    </md-button>
+                </h1>
+            </md-toolbar>
 
-        <md-list>
-            <div ng-repeat="project in $ctrl.projects">
-                <md-list-item class="md-1-line" ng-click="$ctrl.gotToProject(project.identifier)">
-                    <span class="md-avatar">{{ ::project.avatar  }}</span>
-                    {{ ::project.name }}
-                </md-list-item>
-            </div>
-        </md-list>
+            <md-list>
+                <div ng-repeat="project in $ctrl.projects">
+                    <md-list-item class="md-1-line" ng-click="$ctrl.gotToProject(project.identifier)">
+                        <span class="md-avatar">{{ ::project.avatar  }}</span>
+                        {{ ::project.name }}
+                    </md-list-item>
+                </div>
+            </md-list>
 
-    </md-sidenav>
-</section>
+        </md-sidenav>
+    </section>
+</div>

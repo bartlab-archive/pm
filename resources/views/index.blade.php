@@ -11,7 +11,7 @@
     <title>PM</title>
 </head>
 <body>
-<section>
+{{--<section>--}}
     <div ui-view>
         <div class="spinner-wrapper">
             <div class="spinner">
@@ -20,11 +20,11 @@
             </div>
         </div>
     </div>
-</section>
+{{--</section>--}}
 
-<footer>
-    Powered by MaybeWorks
-</footer>
+{{--<footer>--}}
+    {{--Powered by MaybeWorks--}}
+{{--</footer>--}}
 
 <script src="{{ asset('js/app.js') }}"></script>
 </body>

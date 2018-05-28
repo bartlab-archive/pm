@@ -1,10 +1,45 @@
 layout-default-component {
 
-  flex: 1;
+  //flex: 1;
   //display: flex;
   //flex-direction: column;
   //align-items: center;
   //justify-content: center;
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  overflow: hidden;
+  height: 100%;
+  display: block;
+
+  > div {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: hidden;
+
+    > section {
+      height: calc(100% + 0px);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+
+      > md-content {
+        overflow-x: hidden;
+        overflow-y: auto;
+        flex: 1;
+        //flex-basis: 0%;
+        flex-basis: 0.000000001px;
+      }
+    }
+  }
 
   md-fab-speed-dial {
     position: fixed;
@@ -13,7 +48,7 @@ layout-default-component {
   }
 
   md-sidenav.md-sidenav-right {
-    position: fixed;
+    //position: fixed;
   }
 
   .md-nav-bar-wrapper {
@@ -22,17 +57,33 @@ layout-default-component {
   }
 
   md-nav-bar {
-    position: fixed;
-    left: 0;
-    width: 100%;
-    background-color: inherit;
-    z-index: 10;
+    //  position: fixed;
+    //  left: 0;
+    //  width: 100%;
+    //  background-color: inherit;
+    //  z-index: 10;
   }
 
-  .md-sidenav-right,
-  .md-sidenav-left {
-    &.fixed {
-      position: fixed;
+  //.md-sidenav-right,
+  //.md-sidenav-left {
+  md-sidenav {
+    //&.fixed {
+    //position: fixed;
+    //}
+
+    position: fixed;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    > md-list {
+      flex: 1;
+      //flex-basis: 0%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+      flex-basis: 0.000000001px;
     }
 
     .md-button.md-icon-button {
@@ -44,11 +95,11 @@ layout-default-component {
     z-index: 10;
 
     > .md-toolbar-tools {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background-color: inherit;
+      //position: fixed;
+      //top: 0;
+      //left: 0;
+      //width: 100%;
+      //background-color: inherit;
     }
   }
 
@@ -88,7 +139,7 @@ layout-default-component {
     margin: 0 96px;
   }
 
-  .with-project-menu  {
+  .with-project-menu {
     .q-nav-container {
       top: 112px;
     }
@@ -103,7 +154,7 @@ layout-default-component {
 
     //.with-project-menu{
     //    top: 112px;
-      //@extend: section
+    //@extend: section
     //}
 
     .q-nav {
