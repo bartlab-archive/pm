@@ -73,29 +73,25 @@ class ProjectsService
 
         if($model->inherit_members) {
 
-            $members = Member::query()
-                ->where('project_id', $model->parent_id)
-                ->get();
+            $parent_members = $model->parent->members;
 
-            foreach($members as $member) {
+            foreach($parent_members as $member) {
                 // todo: what about intersect of members between original and parent ?
-                $new_member = $member->replicate();
-                $new_member->project_id = $model->id;
-                $new_member->push();
+                $member->replicate()->fill(['project_id' => $model->id])->push();
             }
         }
 
         return $model;
     }
 
-    public function update($data) {
+    public function update($identifier, $data) {
 
         if(isset($data['parent_identifier'])) {
             $parent = $this->one($data['parent_identifier'], ['parent']);
             $data['parent_id'] = $parent->id;
         }
 
-        $model = Project::query()->where('identifier', $data['identifier'])->first();
+        $model = $this->one($identifier);
         $prev_parent_id = $model->parent_id;
 
         if($model && $model->update($data)) {

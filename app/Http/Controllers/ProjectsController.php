@@ -80,15 +80,14 @@ class ProjectsController extends BaseController
         );
     }
 
-    public function update(UpdateProjectRequest $request)
+    public function update($identifier, UpdateProjectRequest $request)
     {
-//        if (!$this->projectsService->one($request->get('project_identifier'))) {
-//            abort(404);
-//        }
-
+        if (!$this->projectsService->one($identifier)) {
+            abort(404);
+        }
 
         return ProjectResource::make(
-            $this->projectsService->update($request->validated())
+            $this->projectsService->update($identifier, $request->validated())
         );
     }
 }

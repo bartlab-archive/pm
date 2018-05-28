@@ -29,20 +29,19 @@ class UpdateProjectRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'identifier' => 'required|string|between:1,100',
             'description' => 'nullable|string',
             'homepage' => 'nullable|url',
             'is_public' => 'boolean',
             'parent_identifier' => 'string|exists:' . Project::getTableName() . ',identifier',
             'inherit_members' => 'boolean',
-            'custom_field_values' => 'string',
+//            'custom_field_values' => 'string',
 
             // todo: check ENABLED_MODULES_NAME
 //            'enabled_module_names' => 'array',
 //            'enabled_module_names.*' => 'in:' . implode(',', EnabledModule::ENABLED_MODULES_NAME),
 
-            'tracker_ids' => 'array',
-            'tracker_ids.*' => 'int|exists:' . Tracker::getTableName() . ',id'
+//            'tracker_ids' => 'array',
+//            'tracker_ids.*' => 'int|exists:' . Tracker::getTableName() . ',id'
         ];
     }
 }

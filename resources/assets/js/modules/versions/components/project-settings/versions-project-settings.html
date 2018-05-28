@@ -1,6 +1,9 @@
 <!--<md-content class="md-padding">-->
 <div ng-if="!$ctrl.versions.length" layout-align="center center" layout="row" class="md-padding">
-    No data to display
+    <div layout-align="center center" layout="row"
+         class="md-padding">
+        coming soon
+    </div>
 </div>
 <md-list ng-if="!!$ctrl.versions.length">
     <md-list-item class="md-3-line" ng-repeat="item in $ctrl.versions"

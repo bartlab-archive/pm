@@ -8,13 +8,15 @@ import IssuesListComponent from './components/list/issues-list.component';
 import IssuesViewComponent from './components/view/issues-view.component';
 import IssuesViewActionsComponent from './components/view-actions/issues-view-actions.component';
 import IssuesHistoryComponent from './components/history/issues-history.component';
-import IssuesCategoryComponent from './components/cetegory/issues-category.component';
+import IssuesCategoryComponent from './components/category/issues-category.component';
 import IssuesImportsComponent from './components/imports/issues-imports.component';
 import IssuesReportComponent from './components/report/issues-report.component';
+import IssueCategoriesService from "./services/issue-categories.service";
 
 angular.module('app.modules.issues', [])
     .config(IssuesConfig.inst())
     .service(IssuesService.getName(), IssuesService)
+    .service(IssueCategoriesService.getName(), IssueCategoriesService)
     .component(IssuesProjectSettingsComponent.getName(), IssuesProjectSettingsComponent)
     .component(IssuesFormComponent.getName(), IssuesFormComponent)
     .component(IssuesInfoComponent.getName(), IssuesInfoComponent)

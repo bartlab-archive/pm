@@ -14,7 +14,24 @@ use App\Models\IssueCategory;
 class IssueCategoriesService
 {
 
-//    protected $projectsService;
+    protected $projectsService;
+
+    public function __construct(ProjectsService $projectsService)
+    {
+        $this->projectsService = $projectsService;
+    }
+
+    public function one($id)
+    {
+        return IssueCategory::query()
+            ->where('id', $id)
+            ->with([
+                'issues',
+                'project',
+                'assigned'
+            ])
+            ->first();
+    }
 
     public function all($identifier)
     {
@@ -26,11 +43,6 @@ class IssueCategoriesService
             ->get();
     }
 
-//    public function __construct(ProjectsService $projectsService)
-//    {
-//        $this->projectsService = $projectsService;
-//    }
-//
 //    public function getCategoriesList($project_id) {
 //        return IssueCategory::where('project_id', $project_id)->select('id', 'name')->get();
 //    }
@@ -53,14 +65,14 @@ class IssueCategoriesService
      * @param $data
      * @return bool
      */
-//    public function create($identifier, $data)
-//    {
-//        $project = $this->projectsService->one($identifier);
-//        $data['project_id'] = $project->id;
-//
-//        $issueCategory = new IssueCategory($data);
-//        return $issueCategory->save();
-//    }
+    public function create($identifier, $data)
+    {
+        $project = $this->projectsService->one($identifier);
+        $data['project_id'] = $project->id;
+
+        $issueCategory = new IssueCategory($data);
+        return $issueCategory->save();
+    }
 
     /**
      * Edit IssueCategory

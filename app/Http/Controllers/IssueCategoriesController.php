@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IssueCategories\IssueCategoriesRequest;
 use App\Http\Resources\IssuesCategoryResource;
 use App\Services\IssueCategoriesService;
 use App\Services\ProjectsService;
@@ -35,5 +36,34 @@ class IssueCategoriesController extends BaseController
         return IssuesCategoryResource::collection(
             $this->issueCategoriesService->all($identifier)
         );
+    }
+
+    public function show($id) {
+
+        if (!$issueCategory = $this->issueCategoriesService->one($id)) {
+            return abort(404);
+        }
+
+        return IssuesCategoryResource::make($issueCategory);
+    }
+
+    public function store($identifier, IssueCategoriesRequest $request)
+    {
+        if (!$project = $this->projectsService->one($identifier)) {
+            abort(404);
+        }
+
+        $issueCategory = $this->issueCategoriesService->create($identifier, $request->validated());
+
+        return IssuesCategoryResource::make($issueCategory);
+
+    }
+
+    public function update($request) {
+
+    }
+
+    public function destroy($request) {
+
     }
 }

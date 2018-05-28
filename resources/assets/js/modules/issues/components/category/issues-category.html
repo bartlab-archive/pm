@@ -33,9 +33,9 @@
                     <md-select ng-model="$ctrl.issueCategory.assigned_to_id">
                         <md-option></md-option>
                         <md-option
-                                ng-repeat="(key, member) in $ctrl.currentMembers"
-                                ng-value="member.user_id">
-                            {{ member.name }}
+                                ng-repeat="(key, member) in $ctrl.project.members"
+                                ng-value="member.user.id">
+                            {{ member.user.full_name }}
                         </md-option>
                     </md-select>
 

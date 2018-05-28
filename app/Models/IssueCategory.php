@@ -9,19 +9,26 @@ class IssueCategory extends Model
 {
     use ModelTrait;
 
-    protected $hidden = ['project_id'];
-
     public $timestamps = false;
 
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'name',
+        'project_id',
+        'assigned_to_id'
+    ];
 
     public function issues()
     {
-        return $this->hasMany(Issue::class);
+        return $this->hasMany(Issue::class, 'category_id');
     }
 
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function assigned() {
+        // todo: may be need to create Principal model as in original redmine
+        return $this->belongsTo(User::class, 'assigned_to_id');
     }
 }

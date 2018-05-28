@@ -146,6 +146,10 @@ Route::group(
             ],
             function () {
                 Route::get('/{identifier}', 'IssueCategoriesController@index');
+                Route::post('/{identifier}', 'IssueCategoriesController@store');
+                Route::put('/{identifier}', 'IssueCategoriesController@update');
+                Route::delete('/{identifier}', 'IssueCategoriesController@destroy');
+                Route::get('/category/{id}', 'IssueCategoriesController@show');
             }
         );
 
