@@ -26,7 +26,9 @@ export default class ProjectsSettingsController extends ControllerBase {
 
         // active tab name
         this.page = this.$stateParams.page;
-
+        this.model = {
+            modules: []
+        };
         this.load();
         this.updateProjectInfo = this.$rootScope.$on('updateProjectInfo', () => this.load());
         // this.$scope.$on('$destroy', () => this.updateProjectInfo());
@@ -40,7 +42,8 @@ export default class ProjectsSettingsController extends ControllerBase {
         // this.ProjectsService.all().get(this.$stateParams.project_id)
         this.projectsService.one(this.$stateParams.project_id)
             .then((response) => {
-                this.model = response.data.data;
+                // this.model = response.data.data;
+                this.model = Object.assign(this.model,response.data.data);
                 // this.data = response.data;
 
                 this.settingsTabs.forEach((item) => {

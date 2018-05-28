@@ -14,25 +14,21 @@ export default class ProjectsSettingsModulesController extends ControllerBase {
         this.modules = this.projectsService.getModules()
             .filter((module) => !!module.name);
 
-        this.$scope.$watch(() => this.params, (newVal) => {
-            if (newVal) {
-                this.modules = this.modules.map((module) => {
-                    module.enable = newVal.modules.some((pModule) => pModule.name === module.name);
-                    return module;
-                });
-            }
+        this.$scope.$watch(() => this.params.modules, (newVal) => {
+            this.modules.forEach((module) => {
+                module.enable = newVal.some((pModule) => pModule.name === module.name);
+            });
         });
     }
 
     submit() {
-        let data = [];
-
-        this.modules.forEach((module) => {
-            data.push({name: module.name, enable: module.enable});
-        });
-
         this.projectsService
-            .updateModules(this.projectsService.getCurrentId(), data)
+            .updateModules(
+                this.projectsService.getCurrentId(),
+                this.modules.map((module) => {
+                    return {name: module.name, enable: module.enable};
+                })
+            )
             .then(() => this.$rootScope.$emit('updateProjectInfo'));
     }
 
