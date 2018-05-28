@@ -1,4 +1,5 @@
 import ControllerBase from 'base/controller.base';
+import _ from "lodash";
 
 /**
  * @property {ProjectsService} ProjectsService
@@ -7,7 +8,7 @@ import ControllerBase from 'base/controller.base';
 export default class ProjectsSettingsInfoController extends ControllerBase {
 
     static get $inject() {
-        return ['projectsService', '$scope', '$mdToast', '$state','$rootScope'];
+        return ['projectsService', '$mdToast', '$state', '$rootScope'];
     }
 
     $onInit() {
@@ -16,7 +17,17 @@ export default class ProjectsSettingsInfoController extends ControllerBase {
     }
 
     submit() {
-        this.projectsService.update(this.params.data)
+        // this.projectsService.update(this.params)
+        this.projectsService
+            .update({
+                name: this.params.name,
+                description: this.params.description,
+                homepage: this.params.homepage,
+                is_public: this.params.is_public,
+                // todo: change field name?
+                parent_identifier: this.params.parent_identifier,
+                inherit_members: this.params.inherit_members,
+            })
             .then(() => {
                 this.$mdToast.show(
                     this.$mdToast.simple()
@@ -24,6 +35,9 @@ export default class ProjectsSettingsInfoController extends ControllerBase {
                 );
 
                 this.$rootScope.$emit('updateProjectInfo');
+            })
+            .catch((response) => {
+                this.errors = _.get(response, 'data.errors', {});
             });
 
     }

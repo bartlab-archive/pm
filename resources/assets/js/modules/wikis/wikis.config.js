@@ -1,10 +1,10 @@
 import InjectableBase from 'base/injectable.base';
-import WikiPageComponent from './components/page/wiki-page.component';
-import WikiHistoryComponent from './components/history/wiki-history.component';
-import WikiRenameComponent from './components/rename/wiki-rename.component';
-import WikiFormComponent from './components/form/wiki-form.component';
-import WikiIndexByComponent from './components/index-by/wiki-index-by.component';
-import WikiProjectSettingsComponent from './components/project-settings/wiki-project-settings.component';
+import WikisPageComponent from './components/page/wikis-page.component';
+import WikisHistoryComponent from './components/history/wikis-history.component';
+import WikisRenameComponent from './components/rename/wikis-rename.component';
+import WikisFormComponent from './components/form/wikis-form.component';
+import WikisIndexByComponent from './components/index-by/wikis-index-by.component';
+import WikisProjectSettingsComponent from './components/project-settings/wikis-project-settings.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -12,7 +12,7 @@ import WikiProjectSettingsComponent from './components/project-settings/wiki-pro
  * @property {projectsServiceProvider} ProjectsServiceProvider
  * @property {mainServiceProvider} MainServiceProvider
  */
-export default class WikiConfig extends InjectableBase {
+export default class WikisConfig extends InjectableBase {
 
     static get $inject() {
         return ['$stateProvider', '$showdownProvider', 'projectsServiceProvider', 'mainServiceProvider'];
@@ -40,7 +40,7 @@ export default class WikiConfig extends InjectableBase {
             .registerSettings({
                 url: 'wiki',
                 name: 'Wiki',
-                component: WikiProjectSettingsComponent.getName(),
+                component: WikisProjectSettingsComponent.getName(),
                 module: 'wiki'
             });
 
@@ -91,35 +91,35 @@ export default class WikiConfig extends InjectableBase {
             })
             .state('wiki.index', {
                 url: '',
-                component: WikiPageComponent.getName(),
+                component: WikisPageComponent.getName(),
             })
             .state('wiki.page.view', {
                 url: '',
-                component: WikiPageComponent.getName(),
+                component: WikisPageComponent.getName(),
             })
             .state('wiki.page.edit', {
                 url: '/edit',
-                component: WikiFormComponent.getName(),
+                component: WikisFormComponent.getName(),
             })
             .state('wiki.page.history', {
                 url: '/history',
-                component: WikiHistoryComponent.getName(),
+                component: WikisHistoryComponent.getName(),
             })
             .state('wiki.page.rename', {
                 url: '/rename',
-                component: WikiRenameComponent.getName(),
+                component: WikisRenameComponent.getName(),
             })
             .state('wiki.new', {
                 url: '/new',
-                component: WikiFormComponent.getName(),
+                component: WikisFormComponent.getName(),
             })
             .state('wiki.index-by-title', {
                 url: '/index',
-                component: WikiIndexByComponent.getName(),
+                component: WikisIndexByComponent.getName(),
             })
             .state('wiki.index-by-date', {
                 url: '/date_index',
-                component: WikiIndexByComponent.getName(),
+                component: WikisIndexByComponent.getName(),
             });
     }
 

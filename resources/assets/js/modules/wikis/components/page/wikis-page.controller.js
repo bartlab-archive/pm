@@ -16,7 +16,7 @@ todo: chanhe icon for watch button
  * @property {projectsService} projectsService
  * @property {wikisService} wikisService
  */
-export default class WikiPageController extends ControllerBase {
+export default class WikisPageController extends ControllerBase {
 
     static get $inject() {
         return ['$state', '$mdDialog', 'wikisService', '$stateParams', '$mdToast', 'projectsService'];

@@ -1,6 +1,6 @@
 import ControllerBase from 'base/controller.base';
 
-export default class WikiRenameController extends ControllerBase {
+export default class WikisRenameController extends ControllerBase {
 
     static get $inject() {
         return [];

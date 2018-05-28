@@ -10,7 +10,6 @@
 
         <div ng-messages="$ctrl.form.name.$error">
             <div ng-message="required">Name can't be blank!</div>
-
             <div ng-message="server" ng-bind-html="$ctrl.form.name.$server"></div>
         </div>
     </md-input-container>
@@ -34,8 +33,8 @@
         <input ng-model="$ctrl.project.identifier"
                type="text"
                name="identifier"
-               disabled
                md-maxlength="100"
+               ng-disabled="!$ctrl.isNew"
                ng-pattern="/^[a-z]([a-z0-9\-\_]+)?$/"
                required
                server-field>
@@ -48,11 +47,8 @@
 
         <div ng-messages="$ctrl.form.identifier.$error">
             <div ng-message="required">Identifier can't be blank!</div>
-
             <div ng-message="pattern">Identifier is invalid</div>
-
             <div ng-message="md-maxlength">Identifier has to be less than 100 characters long.</div>
-
             <div ng-message="server" ng-bind-html="$ctrl.form.identifier.$server"></div>
         </div>
     </md-input-container>

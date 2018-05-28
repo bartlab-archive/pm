@@ -1,7 +1,7 @@
 import ControllerBase from 'base/controller.base';
-import _ from 'lodash';
+// import _ from 'lodash';
 
-export default class WikiIndexByController extends ControllerBase {
+export default class WikisIndexByController extends ControllerBase {
 
     // static get $inject() {
     //     return ['$state', '$mdDialog', 'wikiService', '$stateParams', '$mdToast','projectsService'];

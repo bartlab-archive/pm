@@ -17,8 +17,7 @@ class ProjectResource extends Resource
     public function toArray($request)
     {
         return [
-            'project_id' => $this->identifier,
-            'name' => $this->name,
+            'name' => $this->name,//.time(),
             'description' => $this->description,
             'homepage' => $this->homepage,
             'parent' => self::make($this->whenLoaded('parent')),

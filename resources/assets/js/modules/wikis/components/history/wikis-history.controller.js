@@ -1,15 +1,12 @@
 import ControllerBase from 'base/controller.base';
 
-/**
- */
-export default class WikiProjectSettingsController extends ControllerBase {
+export default class WikisHistoryController extends ControllerBase {
 
     static get $inject() {
         return [];
     }
 
     $onInit() {
-
     }
 
 }

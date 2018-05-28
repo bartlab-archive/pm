@@ -10,14 +10,13 @@ import _ from 'lodash';
 export default class ProjectsSettingsController extends ControllerBase {
 
     static get $inject() {
-        return ['projectsService', '$stateParams', '$rootScope', '$state','$scope'];
+        return ['projectsService', '$stateParams', '$rootScope', '$state', '$scope'];
     }
 
     $onInit() {
         // settings tabs
         this.settingsTabs = this.projectsService.getSettings().map((e) => {
             e.componentTag = '<' + _.kebabCase(e.component) + ' params="$ctrl.model" />';
-
             // disable module, that need enabled state
             e.enable = !e.module;
 
@@ -31,7 +30,6 @@ export default class ProjectsSettingsController extends ControllerBase {
         };
         this.load();
         this.updateProjectInfo = this.$rootScope.$on('updateProjectInfo', () => this.load());
-        // this.$scope.$on('$destroy', () => this.updateProjectInfo());
     }
 
     $onDestroy() {
@@ -39,12 +37,10 @@ export default class ProjectsSettingsController extends ControllerBase {
     }
 
     load() {
-        // this.ProjectsService.all().get(this.$stateParams.project_id)
-        this.projectsService.one(this.$stateParams.project_id)
+        this.projectsService
+            .one(this.$stateParams.project_id)
             .then((response) => {
-                // this.model = response.data.data;
-                this.model = Object.assign(this.model,response.data.data);
-                // this.data = response.data;
+                Object.assign(this.model, response.data.data);
 
                 this.settingsTabs.forEach((item) => {
                     item.enable = !item.module || this.model.modules.some(($m) => $m.name === item.module);

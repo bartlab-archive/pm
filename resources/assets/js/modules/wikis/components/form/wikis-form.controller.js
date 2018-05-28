@@ -1,6 +1,6 @@
 import ControllerBase from 'base/controller.base';
 
-export default class WikiFormController extends ControllerBase {
+export default class WikisFormController extends ControllerBase {
 
     static get $inject() {
         return ['wikisService', 'projectsService', '$stateParams', '$filter', '$state', '$mdToast', '$q'];
@@ -41,7 +41,7 @@ export default class WikiFormController extends ControllerBase {
                 }
 
                 // filter pages list by parent id for current page
-                this.list = this.page.id ? list.filter((item) => {
+                this.list = this.page.id ? list.data.data.filter((item) => {
                     return !item.parents_ids.some((id) => this.page.id === id);
                 }) : list.data.data;
 

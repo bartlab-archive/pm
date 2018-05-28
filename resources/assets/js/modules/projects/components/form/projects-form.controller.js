@@ -1,5 +1,8 @@
 import ControllerBase from 'base/controller.base';
 
+/*
+todo: disable identifier for edit project
+ */
 /**
  * @property {ProjectsService} ProjectsService
  * @property {$scope} $scope
@@ -11,15 +14,7 @@ export default class ProjectsFormController extends ControllerBase {
     }
 
     $onInit() {
-        this.errors = this.errors || {};
-        this.$scope.$watch(() => this.errors);
-
-        if(this.$stateParams.project_id) {
-            this.projectsService.one(this.$stateParams.project_id).then((response) => {
-               this.project = response.data.data;
-               this.project.parent_identifier = this.project.parent.identifier;
-            });
-        }
+        this.isNew = !this.projectsService.getCurrentId();
 
         this.projectsService.all().then((response) => {
             this.projects = response.data.data;

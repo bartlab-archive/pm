@@ -16,7 +16,7 @@ import 'modules/fields/fields.module';
 import 'modules/enumerations/enumerations.module';
 import 'modules/settings/settings.module';
 import 'modules/auth/auth.module';
-import 'modules/wiki/wiki.module';
+import 'modules/wikis/wikis.module';
 import 'modules/versions/versions.module';
 import 'modules/agile/agile.module';
 import 'modules/calendar/calendar.module';
@@ -51,7 +51,7 @@ angular.module('app.modules', [
     'app.modules.trackers',
     'app.modules.workflows',
     'app.modules.auth',
-    'app.modules.wiki',
+    'app.modules.wikis',
     'app.modules.agile',
     'app.modules.calendar',
     'app.modules.gantt',
