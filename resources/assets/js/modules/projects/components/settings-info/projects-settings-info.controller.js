@@ -3,7 +3,6 @@ import _ from "lodash";
 
 /**
  * @property {ProjectsService} ProjectsService
- * @property {Restangular} project
  */
 export default class ProjectsSettingsInfoController extends ControllerBase {
 
@@ -19,15 +18,18 @@ export default class ProjectsSettingsInfoController extends ControllerBase {
     submit() {
         // this.projectsService.update(this.params)
         this.projectsService
-            .update({
-                name: this.params.name,
-                description: this.params.description,
-                homepage: this.params.homepage,
-                is_public: this.params.is_public,
-                // todo: change field name?
-                parent_identifier: this.params.parent_identifier,
-                inherit_members: this.params.inherit_members,
-            })
+            .update(
+                this.projectsService.getCurrentId(),
+                {
+                    name: this.params.name,
+                    description: this.params.description,
+                    homepage: this.params.homepage,
+                    is_public: this.params.is_public,
+                    // todo: change field name?
+                    parent_identifier: this.params.parent_identifier,
+                    inherit_members: this.params.inherit_members,
+                }
+            )
             .then(() => {
                 this.$mdToast.show(
                     this.$mdToast.simple()

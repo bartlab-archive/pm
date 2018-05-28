@@ -7,7 +7,7 @@
     <md-list-item class="md-2-line" ng-repeat="item in $ctrl.params.members"
                   ng-click="$ctrl.editMember($event, item)">
 
-        <img ng-if="::item.user.avatar" src="{{ ::item.user.avatar }}" class="md-avatar">
+        <img ng-if="::item.user.avatar" ng-src="{{ ::item.user.avatar }}" class="md-avatar">
         <span ng-if="::!item.user.avatar" class="md-avatar">{{ ::item.user.full_name | limitTo:1 }}</span>
 
         <div class="md-list-item-text">

@@ -27,7 +27,7 @@
             <div ng-repeat="member in $ctrl.project.members" class="animate-repeat">
                 <md-list-item class="md-2-line" ng-click="$ctrl.goToUser(member.user)">
 
-                    <img ng-if="::member.user.avatar" src="{{ ::member.user.avatar }}" class="md-avatar">
+                    <img ng-if="::member.user.avatar" ng-src="{{ ::member.user.avatar }}" class="md-avatar">
                     <span ng-if="::!member.user.avatar" class="md-avatar">{{ ::member.user.full_name | limitTo:1 }}</span>
 
                     <div class="md-list-item-text" layout="column">

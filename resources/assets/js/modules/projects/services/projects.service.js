@@ -48,11 +48,11 @@ export default class ProjectsService extends InjectableBase {
     }
 
     create(params) {
-      return this.$http.post('/api/v1/projects', params)
+        return this.$http.post('/api/v1/projects', params)
     }
 
-    update(params) {
-      return this.$http.put('/api/v1/projects/' + params.identifier, params);
+    update(identifier, params) {
+        return this.$http.put('/api/v1/projects/' + identifier, params);
     }
 
     // enabledModules(id) {
