@@ -2,7 +2,7 @@
      class="md-padding">
     <div layout-align="center center" layout="row"
          class="md-padding">
-        coming soon
+        No data
     </div>
 </div>
 <md-list>
@@ -10,16 +10,16 @@
                   ng-click="$ctrl.editIssuesCategory($event, item)">
         <div class="md-list-item-text">
             <h3>{{ item.name }}</h3>
-            <p>{{ $ctrl.members[item.assigned_to_id].name }}</p>
+            <p>{{ item.assigned.full_name }}</p>
         </div>
 
-        <!--<md-button class="md-secondary md-icon-button"-->
-        <!--ng-click="$ctrl.editIssuesCategory($event, item)">-->
-        <!--<md-icon>edit</md-icon>-->
-        <!--</md-button>-->
+        <md-button class="md-secondary md-icon-button"
+        ng-click="$ctrl.editIssuesCategory($event, item)">
+        <md-icon>edit</md-icon>
+        </md-button>
 
         <md-button class="md-secondary md-icon-button"
-                   ng-click="$ctrl.deleteIssuesCategory(item.id, item.name)">
+                   ng-click="$ctrl.deleteIssuesCategory(item)">
             <md-icon>delete</md-icon>
         </md-button>
     </md-list-item>

@@ -34,14 +34,14 @@ class IssueCategoriesController extends BaseController
         }
 
         return IssuesCategoryResource::collection(
-            $this->issueCategoriesService->all($identifier)
+            $this->issueCategoriesService->all($identifier, ['assigned'])
         );
     }
 
     public function show($id)
     {
 
-        if (!$issueCategory = $this->issueCategoriesService->one($id)) {
+        if (!$issueCategory = $this->issueCategoriesService->one($id, ['issues', 'project', 'assigned'])) {
             return abort(404);
         }
 
@@ -56,7 +56,6 @@ class IssueCategoriesController extends BaseController
 
         return IssuesCategoryResource::make(
             $this->issueCategoriesService->create(
-                $identifier,
                 array_merge(
                     $request->validated(),
                     [
@@ -68,13 +67,37 @@ class IssueCategoriesController extends BaseController
 
     }
 
-    public function update($request)
+    public function update($id, IssueCategoriesRequest $request)
     {
+
+//        if (!$this->enabledModulesService->check($project->identifier, $this->issueCategoriesService::MODULE_NAME)) {
+//            return abort(403);
+//        }
+
+        if (!$issueCategory = $this->issueCategoriesService->one($id, ['issues', 'project', 'assigned'])) {
+            return abort(404);
+        }
+
+        $updateResult = $this->issueCategoriesService->update(
+            $issueCategory,
+            $request->validated()
+        );
+
+        if (!$updateResult) {
+            // todo: add error message
+            return abort(422);
+        } else {
+            return IssuesCategoryResource::make($updateResult);
+        }
 
     }
 
-    public function destroy($request)
+    public function destroy($id)
     {
+        if (!$this->issueCategoriesService->delete($id)){
+            return abort(422);
+        }
 
+        return response(null, 204);
     }
 }

@@ -21,22 +21,18 @@ class IssueCategoriesService
 //        $this->projectsService = $projectsService;
 //    }
 
-    public function one($id)
+    public function one($id, $with = [])
     {
         return IssueCategory::query()
             ->where('id', $id)
-            ->with([
-                'issues',
-                'project',
-                'assigned'
-            ])
+            ->with($with)
             ->first();
     }
 
-    public function all($identifier)
+    public function all($identifier, $with = [])
     {
         return IssueCategory::query()
-//            ->with(['project'])
+            ->with($with)
             ->whereHas('project', function ($query) use ($identifier) {
                 $query->where('identifier', $identifier);
             })
@@ -50,13 +46,13 @@ class IssueCategoriesService
     /**
      * Delete IssueCategory by id
      *
-     * @param int $issueCategoryId
+     * @param int $id
      * @return bool
      */
-//    public function deleteById($issueCategoryId)
-//    {
-//        return IssueCategory::find($issueCategoryId)->delete();
-//    }
+    public function delete($id)
+    {
+        return IssueCategory::find($id)->delete();
+    }
 
     public function create($data)
     {
@@ -66,12 +62,16 @@ class IssueCategoriesService
     /**
      * Edit IssueCategory
      *
-     * @param $issueCategoryId
+     * @param $model
      * @param $data
      * @return mixed
      */
-//    public function update($issueCategoryId, $data)
-//    {
-//        return IssueCategory::where(['id' => $issueCategoryId])->update($data);
-//    }
+    public function update(IssueCategory $model, $data)
+    {
+        if($model->update($data)) {
+            return $model;
+        }
+
+        return false;
+    }
 }

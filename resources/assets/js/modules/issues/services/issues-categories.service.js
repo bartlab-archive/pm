@@ -9,12 +9,24 @@ export default class IssuesCategoriesService extends ServiceBase {
     $onInit($injector) {
     }
 
-    one(identifier) {
-        return this.$http.get('/api/v1/issues_categories/' + identifier);
+    one(id) {
+        return this.$http.get('/api/v1/issues_categories/' + id);
     }
 
     create(identifier, params) {
         return this.$http.post('/api/v1/issues_categories/' + identifier, params)
+    }
+
+    update(id, params) {
+      return this.$http.put('/api/v1/issues_categories/' + id, params)
+    }
+
+    listByProject(identifier) {
+      return this.$http.get('/api/v1/issues_categories/' + identifier);
+    }
+
+    delete(id) {
+      return this.$http.delete('/api/v1/issues_categories/' + id);
     }
 
 }

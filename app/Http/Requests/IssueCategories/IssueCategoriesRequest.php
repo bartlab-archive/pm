@@ -27,6 +27,9 @@ class IssueCategoriesRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'assigned_to_id' => 'exists:' . User::getTableName() . ',id'
+            // todo: add check is assigned_to_id is member of related project
+//                            Rule::exists(Member::getTableName(), 'user_id')
+//                                ->where('project_id', $project->id)
         ];
     }
 }

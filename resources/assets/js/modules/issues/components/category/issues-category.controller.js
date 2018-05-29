@@ -12,9 +12,14 @@ export default class IssuesCategoryController extends ControllerBase {
     }
 
     $onInit() {
+        this.errors = {};
+        this.form = null;
         // if project identifier not set - close dialog
         if (!this.project.identifier) {
             this.cancel();
+        }
+        if(this.issueCategory) {
+          this.issueCategory.assigned_to_id = this.issueCategory.assigned.id
         }
     }
 
@@ -25,7 +30,7 @@ export default class IssuesCategoryController extends ControllerBase {
             this.$mdToast.show(
                 this.$mdToast.simple().textContent('Success saved!').position('bottom left')
             );
-            this.$rootScope.$emit('updateProjectInfo');
+            this.$rootScope.$emit('updateIssuesCategories');
         }
     }
 
@@ -33,10 +38,19 @@ export default class IssuesCategoryController extends ControllerBase {
         if (!this.issueCategory.id) {
             this.issuesCategoriesService
                 .create(this.project.identifier, this.issueCategory)
-                .then(() => this.cancel(true));
+                .then(() => this.cancel(true))
+                .catch((response) => {
+                    this.errors = _.get(response, 'data.errors', {});
+                  });
         } else {
-            // this.projectsService.editIssueCategory(this.issueCategory.id, this.issueCategory)
-            //     .then(() => this.cancel(true));
+            this.issuesCategoriesService
+              .update(this.issueCategory.id, this.issueCategory)
+              .then((response) => {
+                this.cancel(true)
+              })
+              .catch((response) => {
+                this.errors = _.get(response, 'data.errors', {});
+              });
         }
     }
 
