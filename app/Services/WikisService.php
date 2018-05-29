@@ -54,6 +54,7 @@ class WikisService
             ])
             ->where(
                 'title',
+                // todo: is $base === false, get default wiki page name from config
                 $name ?? (($page = $this->base($identifier)) ? $page->start_page : 'Wiki')
             )
             ->whereHas('wiki.project', function ($query) use ($identifier) {

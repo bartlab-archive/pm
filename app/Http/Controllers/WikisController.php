@@ -85,6 +85,14 @@ class WikisController extends BaseController
     public function unlock($identifier, $name)
     {
     }
+
+    public function showStart($identifier)
+    {
+    }
+
+    public function storeStart($identifier)
+    {
+    }
 //
 //    public function getWikiPageMarkDown($identifier, $page_title = null)
 //    {
