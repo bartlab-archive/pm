@@ -66,8 +66,10 @@ class IssueCategoriesService
      * @param $data
      * @return mixed
      */
-    public function update(IssueCategory $model, $data)
+    public function update($id, $data)
     {
+        $model = $this->one($id);
+
         if($model->update($data)) {
             return $model;
         }

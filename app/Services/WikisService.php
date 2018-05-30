@@ -64,7 +64,33 @@ class WikisService
             ->first();
     }
 
-    public function create($identifier, $data)
+    public function oneWiki($project_id, $with = []) {
+        return Wiki::query()
+            ->where('project_id', $project_id)
+            ->with($with)
+            ->first();
+    }
+
+    public function createWiki($identifier, $data) {
+
+        if (!$this->base($identifier)) {
+            return Wiki::query()->create($data);
+        }
+
+        return false;
+    }
+
+    public function updateWiki($project_id, $data, $with = []) {
+
+        $wiki = $this->oneWiki($project_id, $with);
+        if ($wiki && $wiki->update($data)) {
+            return $wiki;
+        }
+
+        return false;
+    }
+
+    public function createPage($identifier, $data)
     {
         $base = $this->base($identifier);
 

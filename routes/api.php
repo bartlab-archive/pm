@@ -183,6 +183,7 @@ Route::group(
                 Route::get('/{identifier}', 'WikisController@index');
                 Route::get('/{identifier}/start', 'WikisController@showStart');
                 Route::post('/{identifier}/start', 'WikisController@storeStart');
+                Route::put('/{identifier}/start', 'WikisController@updateStart');
             }
         );
 

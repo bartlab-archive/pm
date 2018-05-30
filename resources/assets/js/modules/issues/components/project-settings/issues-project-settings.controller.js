@@ -11,15 +11,14 @@ export default class IssuesProjectSettingsController extends ControllerBase {
     }
 
     $onInit() {
-      this.loadIssueCategories();
-      this.updateIssuesCategories = this.$rootScope.$on('updateIssuesCategories', () => this.loadIssueCategories());
+        this.load();
+        this.$rootScope.$on('updateIssuesCategories', () => this.load());
     }
 
-    loadIssueCategories() {
-      console.log('loadIssueCategories...');
-      this.issuesCategoriesService.listByProject(this.params.identifier).then((response) => {
-        this.issuesCategories = response.data.data;
-      });
+    load() {
+        this.issuesCategoriesService.getList(this.params.identifier).then((response) => {
+            this.categories = response.data.data;
+        });
     }
 
     static setMdDialogConfig(target, data = {}) {
@@ -35,7 +34,7 @@ export default class IssuesProjectSettingsController extends ControllerBase {
         };
     }
 
-    createIssuesCategory($event) {
+    create($event) {
         // if ($event.ctrlKey || $event.metaKey) {
         //   return;
         // }
@@ -49,29 +48,30 @@ export default class IssuesProjectSettingsController extends ControllerBase {
         );
     }
 
-    editIssuesCategory($event, item) {
-      this.$mdDialog.show(
-        this.constructor.setMdDialogConfig($event.target, {
-          project: this.params,
-          issueCategory: item
-        })
-      );
+    edit($event, item) {
+        this.$mdDialog.show(
+            this.constructor.setMdDialogConfig($event.target, {
+                project: this.params,
+                issueCategory: item
+            })
+        );
     }
 
-    deleteIssuesCategory(item) {
-      let confirm = this.$mdDialog.confirm()
-        .title('Do you want to delete "' + item.name + '" issue category?')
-        .ok('Delete')
-        .cancel('Cancel');
+    delete(item) {
+        let confirm = this.$mdDialog.confirm()
+            .title('Do you want to delete "' + item.name + '" issue category?')
+            .ok('Delete')
+            .cancel('Cancel');
 
-      this.$mdDialog.show(confirm)
-        .then(() => this.issuesCategoriesService.delete(item.id))
-        .then(() => {
-          this.loadIssueCategories();
-          this.$mdToast.show(
-            this.$mdToast.simple().textContent('Success delete!').position('bottom left')
-          );
-        });
+        this.$mdDialog
+            .show(confirm)
+            .then(() => this.issuesCategoriesService.remove(item.id))
+            .then(() => {
+                this.$rootScope.$emit('updateIssuesCategories');
+                this.$mdToast.show(
+                    this.$mdToast.simple().textContent('Success delete!').position('bottom left')
+                );
+            });
     }
 
 }

@@ -14,7 +14,7 @@
 
     <md-dialog-content>
         <div class="md-dialog-content">
-            <form name="$ctrl.issueCategoryForm" ng-submit="$ctrl.submit()" novalidate server-form="$ctrl.errors">
+            <form name="$ctrl.form" ng-submit="$ctrl.submit()" novalidate server-form="$ctrl.errors">
                 <md-input-container class="md-block">
                     <label>Name</label>
 
@@ -28,7 +28,7 @@
 
                     <div ng-messages="$ctrl.issueCategoryForm.name.$error">
                         <div ng-message="required">Name can't be blank!</div>
-                        <div ng-message="server" ng-bind-html="$ctrl.issueCategoryForm.name.$server | join"></div>
+                        <div ng-message="server" ng-bind-html="$ctrl.issueCategoryForm.name.$server"></div>
                     </div>
                 </md-input-container>
 
@@ -47,7 +47,7 @@
                     <div class="md-errors-spacer"></div>
 
                     <div ng-messages="$ctrl.issueCategoryForm.assigned_to_id.$error">
-                        <div ng-message="server" ng-bind-html="$ctrl.issueCategoryForm.assigned_to_id.$server | join"></div>
+                        <div ng-message="server" ng-bind-html="$ctrl.issueCategoryForm.assigned_to_id.$server"></div>
                     </div>
                 </md-input-container>
 

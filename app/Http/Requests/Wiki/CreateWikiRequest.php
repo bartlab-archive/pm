@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Wiki;
 
-use App\Models\WikiPage;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateWikiRequest extends FormRequest
@@ -25,12 +24,7 @@ class CreateWikiRequest extends FormRequest
     public function rules()
     {
         return [
-            // todo: valid title check - [^,./?;:|]+
-            'title' => 'required|string|max:255',
-            'text' => 'nullable|string',
-            // todo: check parent_id and relation parent to project
-            'parent_id' => 'nullable|int|exists:' . WikiPage::getTableName() . ',id',
-            'comments' => 'nullable|string'
+            'start_page' => 'required|string|max:255',
         ];
     }
 }

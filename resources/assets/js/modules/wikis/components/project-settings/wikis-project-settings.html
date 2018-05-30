@@ -1,21 +1,21 @@
-<form name="wikiForm" class="md-padding">
+<form name="form" class="md-padding">
     <md-input-container class="md-block">
         <label>Start page</label>
 
-        <input ng-model="$ctrl.model.wiki.start_page" name="wiki" type="text" required
+        <input ng-model="$ctrl.wiki.start_page" name="wiki" type="text" required
                ng-pattern="/^[A-z0-9,./?;:|]+$/">
 
         <div class="md-caption">Unallowed characters: , . / ? ; : |</div>
 
-        <div ng-messages="wikiForm.wiki.$error">
-            <div ng-message="required">Start page cannot be blank</div>
-            <div ng-message="pattern">Start page is invalid</div>
+        <div ng-messages="$ctrl.form.start_page.$error">
+            <div ng-message="server" ng-bind-html="$ctrl.form.start_page.$server"></div>
         </div>
+
     </md-input-container>
 
     <div layout-align="center center" layout="row">
         <md-button class="md-raised md-primary animation-target" type="submit"
-                   ng-disabled="wikiForm.$invalid"
+                   ng-disabled="form.$invalid"
                    ng-click="$ctrl.saveWiki()"
         >
             Save

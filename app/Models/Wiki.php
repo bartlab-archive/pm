@@ -11,7 +11,14 @@ class Wiki extends Model
 
     protected $hidden = ['project_id'];
 
-//    public $timestamps = false;
+    public $timestamps = false;
+
+    protected $fillable = [
+        'id',
+        'project_id',
+        'start_page',
+        'status'
+    ];
 
     protected $guarded = ['id'];
 

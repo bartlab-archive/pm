@@ -21,11 +21,11 @@ export default class IssuesCategoriesService extends ServiceBase {
       return this.$http.put('/api/v1/issues_categories/' + id, params)
     }
 
-    listByProject(identifier) {
+    getList(identifier) {
       return this.$http.get('/api/v1/issues_categories/' + identifier);
     }
 
-    delete(id) {
+    remove(id) {
       return this.$http.delete('/api/v1/issues_categories/' + id);
     }
 

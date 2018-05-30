@@ -2,18 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\WikiPage\CreateWikiPageRequest;
 use App\Http\Requests\Wiki\CreateWikiRequest;
 use App\Http\Resources\WikiPageResource;
+use App\Http\Resources\WikiResource;
 use App\Services\WikisService;
+use App\Services\ProjectsService;
 use Illuminate\Routing\Controller as BaseController;
 
 class WikisController extends BaseController
 {
     protected $wikisService;
 
-    public function __construct(WikisService $wikisService)
+    public function __construct(
+        WikisService $wikisService,
+        ProjectsService $projectsService
+    )
     {
         $this->wikisService = $wikisService;
+        $this->projectsService = $projectsService;
     }
 
     public function index($identifier)
@@ -39,13 +46,17 @@ class WikisController extends BaseController
         return WikiPageResource::make($wiki);
     }
 
-    public function store($identifier, CreateWikiRequest $request)
+    public function store($identifier, CreateWikiPageRequest $request)
     {
         /*
-         * todo: check project and permissions
+         * todo: check permissions
          */
 
-        $wiki = $this->wikisService->create(
+        if (!$project = $this->projectsService->one($identifier)) {
+            abort(404);
+        }
+
+        $wiki = $this->wikisService->createPage(
             $identifier,
             array_merge(
                 $request->validated(),
@@ -88,10 +99,48 @@ class WikisController extends BaseController
 
     public function showStart($identifier)
     {
+        if (!$project = $this->projectsService->one($identifier)) {
+            abort(404);
+        }
+
+        if (!$wiki = $this->wikisService->oneWiki($project->id, ['project'])) {
+            abort(204);
+        }
+
+        return WikiResource::make($wiki);
     }
 
-    public function storeStart($identifier)
+    public function storeStart($identifier, CreateWikiRequest $request)
     {
+        if (!$project = $this->projectsService->one($identifier)) {
+            abort(404);
+        }
+
+        return  WikiResource::make(
+            $this->wikisService->createWiki(
+                $identifier,
+                array_merge($request->validated(), ['project_id' => $project->id])
+            )
+        );
+    }
+
+    public function updateStart($identifier, CreateWikiRequest $request)
+    {
+        if (!$project = $this->projectsService->one($identifier)) {
+            abort(404);
+        }
+
+        if (!$wiki = $this->wikisService->oneWiki($project->id)) {
+            abort(404);
+        }
+
+        return  WikiResource::make(
+            $this->wikisService->updateWiki(
+                $project->id,
+                $request->validated(),
+                ['project']
+            )
+        );
     }
 //
 //    public function getWikiPageMarkDown($identifier, $page_title = null)

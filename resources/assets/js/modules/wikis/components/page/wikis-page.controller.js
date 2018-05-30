@@ -24,6 +24,7 @@ export default class WikisPageController extends ControllerBase {
 
     $onInit() {
         this.load();
+        this.defaultPageTitle = 'Wiki';
     }
 
     load() {

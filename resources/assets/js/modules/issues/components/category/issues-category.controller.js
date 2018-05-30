@@ -18,7 +18,7 @@ export default class IssuesCategoryController extends ControllerBase {
         if (!this.project.identifier) {
             this.cancel();
         }
-        if(this.issueCategory) {
+        if (this.issueCategory) {
           this.issueCategory.assigned_to_id = this.issueCategory.assigned.id
         }
     }
@@ -35,23 +35,13 @@ export default class IssuesCategoryController extends ControllerBase {
     }
 
     submit() {
-        if (!this.issueCategory.id) {
-            this.issuesCategoriesService
-                .create(this.project.identifier, this.issueCategory)
-                .then(() => this.cancel(true))
-                .catch((response) => {
-                    this.errors = _.get(response, 'data.errors', {});
-                  });
-        } else {
-            this.issuesCategoriesService
-              .update(this.issueCategory.id, this.issueCategory)
-              .then((response) => {
-                this.cancel(true)
-              })
-              .catch((response) => {
-                this.errors = _.get(response, 'data.errors', {});
-              });
-        }
+        (this.issueCategory.id ?
+            this.issuesCategoriesService.update(this.issueCategory.id, this.issueCategory) :
+            this.issuesCategoriesService.create(this.project.identifier, this.issueCategory))
+            .then(() => this.cancel(true))
+            .catch((response) => {
+              this.errors = _.get(response, 'data.errors', {});
+            });
     }
 
 }

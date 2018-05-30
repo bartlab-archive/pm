@@ -78,17 +78,13 @@ class IssueCategoriesController extends BaseController
             return abort(404);
         }
 
-        $updateResult = $this->issueCategoriesService->update(
-            $issueCategory,
-            $request->validated()
-        );
 
-        if (!$updateResult) {
+        if (!$updateResult = $this->issueCategoriesService->update($id, $request->validated())) {
             // todo: add error message
             return abort(422);
-        } else {
-            return IssuesCategoryResource::make($updateResult);
         }
+
+        return IssuesCategoryResource::make($updateResult);
 
     }
 
