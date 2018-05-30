@@ -25,15 +25,18 @@ export default class ProjectsProvider extends ProviderBase {
     registerModule(data) {
         this.modules.push(Object.assign({
             // project menu link - state name
+            // todo: change to "state" ?
             url: '',
 
             // project menu title
             title: '',
 
             // module name
+            // todo: remove, use "enabled" param
             name: '',
 
             // enabled by default
+            // todo: (true|false|module|callback)
             enable: false,
 
             // url regexp for detect active menu item
@@ -46,16 +49,27 @@ export default class ProjectsProvider extends ProviderBase {
     registerSettings(data) {
         this.settings.push(Object.assign({
             // url part
+            // todo: change to "part" ?
             url: '',
 
             // settings group name
+            // todo: chage to "title"
             name: '',
 
             // component for settings
             component: '',
 
             // enabled by module name
-            module: ''
+            // todo: remove, use new enable param
+            module: '',
+
+            // todo: new enable param
+            // enable: {
+            //     // true|false
+            //     create: true,
+            //     // true|false|module|callback
+            //     edit: true,
+            // }
         }, data));
 
         return this;

@@ -2,20 +2,22 @@ import ControllerBase from 'base/controller.base';
 import _ from 'lodash';
 
 /**
+ * @property {$timeout} $timeout
  * @property {$mdSidenav} $mdSidenav
  * @property {$state} $state
- * @property {ProjectsService} ProjectsService
- * @property {object} MainService
- * @property {UsersService} UsersService
+ * @property {ProjectsService} projectsService
+ * @property {MainService} mainService
+ * @property {UsersService} usersService
  * @property {$transitions} $transitions
  * @property {$stateParams} $stateParams
  * @property {$rootScope} $rootScope
+ * @property {$filter} $filter
  */
 export default class LayoutDefaultController extends ControllerBase {
 
     static get $inject() {
         return ['$timeout', '$mdSidenav', '$state', 'projectsService', 'mainService', 'usersService',
-            '$transitions', '$stateParams', '$rootScope', '$filter', '$scope'];
+            '$transitions', '$stateParams', '$rootScope', '$filter'];
     }
 
     $onInit() {
@@ -31,7 +33,10 @@ export default class LayoutDefaultController extends ControllerBase {
         this.loadMyProjects();
 
         this.$transitions.onSuccess({}, () => this.loadProjectInfo());
-        this.updateProjectInfo = this.$rootScope.$on('updateProjectInfo', () => this.loadProjectInfo());
+        this.updateProjectInfo = this.$rootScope.$on('updateProjectInfo', () => {
+            this.loadProjectInfo();
+            this.loadMyProjects();
+        });
     }
 
     $onDestroy() {
@@ -75,40 +80,44 @@ export default class LayoutDefaultController extends ControllerBase {
         this.$mdSidenav(menu).toggle();
     }
 
+    // todo: replace to ui-sref directive
     gotToProject(identifier) {
         this.$state.go('projects.inner.info', {project_id: identifier});
         this.toggle('right');
     }
 
+    // todo: replace to ui-sref directive
     myAccount() {
         this.$state.go('my.account');
     }
 
+    // todo: replace to ui-sref directive
     logout() {
         this.$state.go('logout');
     }
 
+    // todo: replace to ui-sref directive
     menuClick(item) {
         this.$state.go(item.url);
         this.toggle();
     }
 
-    openProjectPage(item) {
-        const projectId = this.projectsService.getCurrentId();
-
-        if (projectId) {
-            this.$state.go(item.url, {project_id: projectId})
-        }
-    }
+    // openProjectPage(item) {
+    //     const projectId = this.projectsService.getCurrentId();
+    //
+    //     if (projectId) {
+    //         this.$state.go(item.url, {project_id: projectId})
+    //     }
+    // }
 
     openNewItemPage(item) {
-        const projectId = this.projectsService.getCurrentId();
-        const url = projectId || typeof item.single !== 'string' ? item.url : item.single;
+        // const projectId = this.projectsService.getCurrentId();
+        const url = this.projectId || typeof item.single !== 'string' ? item.url : item.single;
         // console.log(projectId);
 
         this.$state.go(
             url,
-            projectId ? {project_id: projectId} : undefined
+            this.projectId ? {project_id: this.projectId} : undefined
         );
 
         // projectId ? this.$state.go(item.url, {project_id: projectId}) : null;
@@ -116,11 +125,12 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     loadProjectInfo() {
-        const projectIdentifier = this.projectsService.getCurrentId();
-        this.showProjectMenu = !!projectIdentifier || _.get(this.$state, 'current.data.layout.insideProject');
+        // const projectIdentifier = this.projectsService.getCurrentId();
+        this.projectId = this.projectsService.getCurrentId();
+        this.showProjectMenu = !!this.projectId || _.get(this.$state, 'current.data.layout.insideProject');
 
-        if (projectIdentifier) {
-            this.projectsService.one(projectIdentifier).then((response) => {
+        if (this.projectId) {
+            this.projectsService.one(this.projectId).then((response) => {
                 let modules = _.get(response, 'data.data.modules', []);
 
                 // change visible items in project menu

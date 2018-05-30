@@ -73,7 +73,9 @@
             <md-nav-bar class="md-primary md-hue-2"
                         md-selected-nav-item="$ctrl.currentNavItem"
                         nav-bar-aria-label="Project navigation links">
-                <md-nav-item ng-repeat="item in ::$ctrl.projectItems" md-nav-click="$ctrl.openProjectPage(item)"
+                <md-nav-item ng-repeat="item in ::$ctrl.projectItems"
+                             md-nav-sref="{{ ::item.url }}" sref-opts="{project_id: $ctrl.projectId}"
+                             aria-label="{{ ::item.title }}"
                              name="{{ ::item.url }}" ng-if="!item.name || item.enable">
                     {{ ::item.title }}
                 </md-nav-item>

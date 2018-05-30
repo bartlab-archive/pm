@@ -68,10 +68,8 @@ class IssueCategoriesService
      */
     public function update($id, $data)
     {
-        $model = $this->one($id);
-
-        if($model->update($data)) {
-            return $model;
+        if (($category = $this->one($id)) && $category->update($data)) {
+            return $category;
         }
 
         return false;

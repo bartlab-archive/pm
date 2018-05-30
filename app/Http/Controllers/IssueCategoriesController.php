@@ -74,7 +74,7 @@ class IssueCategoriesController extends BaseController
 //            return abort(403);
 //        }
 
-        if (!$issueCategory = $this->issueCategoriesService->one($id, ['issues', 'project', 'assigned'])) {
+        if (!$this->issueCategoriesService->one($id)) {
             return abort(404);
         }
 
