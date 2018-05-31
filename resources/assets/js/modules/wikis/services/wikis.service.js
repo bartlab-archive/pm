@@ -10,31 +10,31 @@ export default class WikisService extends ServiceBase {
     }
 
     all(indetifire) {
-        return this.$http.get('/api/v1/wikis/' + indetifire);
+        return this.$http.get(`/api/v1/wikis/${indetifire}`);
     }
 
     one(indetifire, name = undefined) {
-        return this.$http.get('/api/v1/wikis/' + indetifire + '/page' + (name ? '/' + name : ''));
+        return this.$http.get(`/api/v1/wikis/${indetifire}/page${name ? '/' + name : ''}`);
     }
 
     createWiki(indetifire, data) {
-        return this.$http.post('/api/v1/wikis/' + indetifire + '/start', data);
+        return this.$http.post(`/api/v1/wikis/${indetifire}/start`, data);
     }
 
     updateWiki(indetifire, data) {
-        return this.$http.put('/api/v1/wikis/' + indetifire + '/start', data);
+        return this.$http.put(`/api/v1/wikis/${indetifire}/start`, data);
     }
 
     createPage(indetifire, data) {
-        return this.$http.post('/api/v1/wikis/' + indetifire + '/page', data);
+        return this.$http.post(`/api/v1/wikis/${indetifire}/page`, data);
     }
 
     update(indetifire, name, data) {
-        return this.$http.put('/api/v1/wikis/' + indetifire + '/page/' + name, data);
+        return this.$http.put(`/api/v1/wikis/${indetifire}/page/` + name, data);
     }
 
     getStartPageWiki(indetifire) {
-        return this.$http.get('/api/v1/wikis/' + indetifire + '/start');
+        return this.$http.get(`/api/v1/wikis/${indetifire}/start`);
     }
 
     // getStartPageWiki(indetifire) {

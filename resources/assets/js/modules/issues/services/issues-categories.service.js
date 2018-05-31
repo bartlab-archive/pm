@@ -10,23 +10,23 @@ export default class IssuesCategoriesService extends ServiceBase {
     }
 
     one(id) {
-        return this.$http.get('/api/v1/issues_categories/' + id);
+        return this.$http.get(`/api/v1/issues_categories/${id}`);
     }
 
     create(identifier, params) {
-        return this.$http.post('/api/v1/issues_categories/' + identifier, params)
+        return this.$http.post(`/api/v1/issues_categories/${identifier}`, params)
     }
 
     update(id, params) {
-      return this.$http.put('/api/v1/issues_categories/' + id, params)
+      return this.$http.put(`/api/v1/issues_categories/${id}`, params)
     }
 
     list(identifier) {
-      return this.$http.get('/api/v1/issues_categories/' + identifier);
+      return this.$http.get(`/api/v1/issues_categories/${identifier}`);
     }
 
     remove(id) {
-      return this.$http.delete('/api/v1/issues_categories/' + id);
+      return this.$http.delete(`/api/v1/issues_categories/${id}`);
     }
 
 }

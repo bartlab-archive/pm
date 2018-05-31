@@ -39,7 +39,7 @@ export default class ProjectsService extends InjectableBase {
 
     one(id) {
         // return this.Restangular.one('projects', id);
-        return this.$http.get('/api/v1/projects/' + id);
+        return this.$http.get(`/api/v1/projects/${id}`);
     }
 
     all(params) {
@@ -52,7 +52,7 @@ export default class ProjectsService extends InjectableBase {
     }
 
     update(identifier, params) {
-        return this.$http.put('/api/v1/projects/' + identifier, params);
+        return this.$http.put(`/api/v1/projects/${identifier}`, params);
     }
 
     // enabledModules(id) {
@@ -61,7 +61,7 @@ export default class ProjectsService extends InjectableBase {
     // }
 
     updateModules(id, modules) {
-        return this.$http.put('/api/v1/modules/' + id, modules);
+        return this.$http.put(`/api/v1/modules/${id}`, modules);
     }
 
     addMember(identifier, user, roles) {
@@ -69,11 +69,11 @@ export default class ProjectsService extends InjectableBase {
     }
 
     updateMember(id, roles) {
-        return this.$http.put('/api/v1/members/' + id, {roles});
+        return this.$http.put(`/api/v1/members/${id}`, {roles});
     }
 
     deleteMember(id) {
-        return this.$http.delete('/api/v1/members/' + id);
+        return this.$http.delete(`/api/v1/members/${id}`);
     }
 
     getCurrentId() {

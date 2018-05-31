@@ -28,14 +28,14 @@ export default class IssuesService extends ServiceBase {
 
     one(id) {
         // return this.Restangular.one('issues', id);
-        return this.$http.get('/api/v1/issues/' + id);
+        return this.$http.get(`/api/v1/issues/${id}`);
     }
 
     all(params) {
         // return this.Restangular
         //     .withConfig((...args) => this.config(...args))
         //     .all('issues');
-        return this.$http.get('/api/v1/issues', {params});
+        return this.$http.get(`/api/v1/issues`, {params});
     }
 
     filters(params) {
@@ -48,19 +48,19 @@ export default class IssuesService extends ServiceBase {
     }
 
     categories(identifier) {
-        return this.$http.get('/api/v1/issues_categories/' + identifier)
+        return this.$http.get(`/api/v1/issues_categories/${identifier}`);
     }
 
     create(params) {
-        return this.$http.post('/api/v1/issues', params)
+        return this.$http.post('/api/v1/issues', params);
     }
 
     update(id, params) {
-        return this.$http.put('/api/v1/issues/' + id, params)
+        return this.$http.put(`/api/v1/issues/${id}`, params);
     }
 
     remove(id){
-        return this.$http.delete('/api/v1/issues/' + id)
+        return this.$http.delete(`/api/v1/issues/${id}`);
     }
 
     // getListByProject(identifier, params) {
@@ -100,12 +100,12 @@ export default class IssuesService extends ServiceBase {
 
     // todo: move to self module/service
     watch(id) {
-        return this.$http.post('/api/v1/issues/' + id + '/watch')
+        return this.$http.post(`/api/v1/issues/${id}/watch`);
     }
 
     // todo: move to self module/service
     unwatch(id) {
-        return this.$http.delete('/api/v1/issues/' + id + '/watch')
+        return this.$http.delete(`/api/v1/issues/${id}/watch`)
     }
 
     // timeAgo(creationDate) {
