@@ -14,7 +14,7 @@ export default class InjectableBase extends ObjectBase {
 
             // apply locals property
             if (locals !== null && typeof locals === 'object') {
-                Object.assign(obj,locals);
+                Object.assign(obj, locals);
             }
 
             obj.$onInit();
@@ -28,7 +28,7 @@ export default class InjectableBase extends ObjectBase {
         return providerFn;
     }
 
-    $return(){
+    $return() {
         return this;
     }
 

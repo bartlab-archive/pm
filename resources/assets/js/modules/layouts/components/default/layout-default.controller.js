@@ -1,5 +1,6 @@
 import ControllerBase from 'base/controller.base';
 import _ from 'lodash';
+import 'angular';
 
 /**
  * @property {$timeout} $timeout
@@ -133,11 +134,13 @@ export default class LayoutDefaultController extends ControllerBase {
             this.projectsService.one(this.projectId).then((response) => {
                 let modules = _.get(response, 'data.data.modules', []);
 
-                // change visible items in project menu
-                this.projectItems.forEach((item) => {
+                // change visible items in project menu and generate sref string
+                this.projectItems = this.projectItems.map((item) => {
                     if (item.name) {
                         item.enable = modules.some((value) => value.name === item.name);
                     }
+                    item.sref = item.url + '({project_id:"' + this.projectId + '"})';
+                    return angular.extend({},item);
                 });
 
                 // change visible items in add menu
