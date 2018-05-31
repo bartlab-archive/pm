@@ -103,7 +103,7 @@ class WikisController extends BaseController
             abort(404);
         }
 
-        if (!$wiki = $this->wikisService->oneWiki($project->id, ['project'])) {
+        if (!$wiki = $this->wikisService->oneWiki($project->id)) {
             abort(204);
         }
 
@@ -137,8 +137,7 @@ class WikisController extends BaseController
         return  WikiResource::make(
             $this->wikisService->updateWiki(
                 $project->id,
-                $request->validated(),
-                ['project']
+                $request->validated()
             )
         );
     }

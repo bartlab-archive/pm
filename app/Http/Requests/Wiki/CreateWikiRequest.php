@@ -24,7 +24,12 @@ class CreateWikiRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_page' => 'required|string|max:255',
+            'start_page' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[^,.\/?;:|]+$/']
+        ,
         ];
     }
 }

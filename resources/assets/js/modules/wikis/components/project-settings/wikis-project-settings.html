@@ -1,13 +1,15 @@
-<form name="form" class="md-padding">
+<form name="$ctrl.form" class="md-padding" novalidate server-form="$ctrl.errors">
     <md-input-container class="md-block">
         <label>Start page</label>
 
-        <input ng-model="$ctrl.wiki.start_page" name="wiki" type="text" required
+        <input ng-model="$ctrl.wiki.start_page" name="start_page" type="text" required server-field
                ng-pattern="/^[A-z0-9,./?;:|]+$/">
 
         <div class="md-caption">Unallowed characters: , . / ? ; : |</div>
 
         <div ng-messages="$ctrl.form.start_page.$error">
+            <div ng-message="required">Start page cannot be blank</div>
+            <div ng-message="pattern">Start page is invalid</div>
             <div ng-message="server" ng-bind-html="$ctrl.form.start_page.$server"></div>
         </div>
 
@@ -15,9 +17,8 @@
 
     <div layout-align="center center" layout="row">
         <md-button class="md-raised md-primary animation-target" type="submit"
-                   ng-disabled="form.$invalid"
-                   ng-click="$ctrl.saveWiki()"
-        >
+                   ng-disabled="$ctrl.form.$invalid"
+                   ng-click="$ctrl.submit()">
             Save
         </md-button>
 

@@ -1,4 +1,4 @@
-<div ng-if="!$ctrl.issuesCategories.length" layout-align="center center" layout="row"
+<div ng-if="!$ctrl.categories.length" layout-align="center center" layout="row"
      class="md-padding">
     <div layout-align="center center" layout="row"
          class="md-padding">
@@ -6,22 +6,35 @@
     </div>
 </div>
 <md-list>
-    <md-list-item class="md-2-line" ng-repeat="item in ::$ctrl.categories"
-                  ng-click="$ctrl.editIssuesCategory($event, item)">
+    <md-list-item class="md-2-line" ng-repeat="item in $ctrl.categories"
+                  ng-click="$ctrl.edit($event, item)">
         <div class="md-list-item-text">
             <h3>{{ ::item.name }}</h3>
             <p>{{ ::item.assigned.full_name }}</p>
         </div>
 
-        <md-button class="md-secondary md-icon-button"
-        ng-click="$ctrl.edit($event, item)">
-        <md-icon>edit</md-icon>
-        </md-button>
+        <md-menu>
+            <md-button class="md-icon-button" aria-label="Issue category menu" ng-click="$mdMenu.open()">
+                <md-icon>more_vert</md-icon>
+            </md-button>
+            <md-menu-content width="3">
+                <md-menu-item ng-click="$ctrl.edit($event, item)">
+                    <md-button>
+                        <md-icon>edit</md-icon>
+                        Edit
+                    </md-button>
+                </md-menu-item>
 
-        <md-button class="md-secondary md-icon-button"
-                   ng-click="$ctrl.delete(item)">
-            <md-icon>delete</md-icon>
-        </md-button>
+                <md-menu-item ng-click="$ctrl.remove(item)">
+                    <md-button>
+                        <md-icon>delete</md-icon>
+                        Delete
+                    </md-button>
+                </md-menu-item>
+
+            </md-menu-content>
+        </md-menu>
+
     </md-list-item>
 </md-list>
 

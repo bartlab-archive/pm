@@ -64,9 +64,9 @@ class WikisService
             ->first();
     }
 
-    public function oneWiki($project_id, $with = []) {
+    public function oneWiki($projectId, $with = []) {
         return Wiki::query()
-            ->where('project_id', $project_id)
+            ->where('project_id', $projectId)
             ->with($with)
             ->first();
     }
@@ -80,9 +80,9 @@ class WikisService
         return false;
     }
 
-    public function updateWiki($project_id, $data, $with = []) {
+    public function updateWiki($projectId, $data, $with = []) {
 
-        $wiki = $this->oneWiki($project_id, $with);
+        $wiki = $this->oneWiki($projectId, $with);
         if ($wiki && $wiki->update($data)) {
             return $wiki;
         }

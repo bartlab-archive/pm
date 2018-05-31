@@ -21,7 +21,7 @@ export default class IssuesCategoriesService extends ServiceBase {
       return this.$http.put('/api/v1/issues_categories/' + id, params)
     }
 
-    getList(identifier) {
+    list(identifier) {
       return this.$http.get('/api/v1/issues_categories/' + identifier);
     }
 

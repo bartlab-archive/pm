@@ -90,9 +90,13 @@ class IssueCategoriesController extends BaseController
 
     public function destroy($id)
     {
-        if (!$this->issueCategoriesService->delete($id)){
-            return abort(422);
+        if (!$this->issueCategoriesService->one($id)) {
+            return abort(404);
         }
+
+        $this->issueCategoriesService->delete($id);
+
+        //todo: add 422 code response if deleting was not done
 
         return response(null, 204);
     }

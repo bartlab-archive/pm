@@ -16,7 +16,6 @@ class WikiResource extends Resource
     {
         return [
             'id' => $this->id,
-            'project' => ProjectResource::make($this->whenLoaded('project')),
             'start_page' => $this->start_page,
             'status' => $this->status
         ];

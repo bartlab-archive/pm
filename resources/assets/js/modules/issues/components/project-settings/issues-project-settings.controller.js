@@ -11,12 +11,17 @@ export default class IssuesProjectSettingsController extends ControllerBase {
     }
 
     $onInit() {
+        this.categories = [];
         this.load();
-        this.$rootScope.$on('updateIssuesCategories', () => this.load());
+        this.updateIssuesCategories = this.$rootScope.$on('updateIssuesCategories', () => this.load());
+    }
+
+    $onDestroy() {
+        this.updateIssuesCategories();
     }
 
     load() {
-        this.issuesCategoriesService.getList(this.params.identifier).then((response) => {
+        this.issuesCategoriesService.list(this.params.identifier).then((response) => {
             this.categories = response.data.data;
         });
     }
@@ -57,7 +62,7 @@ export default class IssuesProjectSettingsController extends ControllerBase {
         );
     }
 
-    delete(item) {
+    remove(item) {
         let confirm = this.$mdDialog.confirm()
             .title('Do you want to delete "' + item.name + '" issue category?')
             .ok('Delete')

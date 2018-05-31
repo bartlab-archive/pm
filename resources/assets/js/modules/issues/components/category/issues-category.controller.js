@@ -18,9 +18,6 @@ export default class IssuesCategoryController extends ControllerBase {
         if (!this.project.identifier) {
             this.cancel();
         }
-        if (this.issueCategory) {
-          this.issueCategory.assigned_to_id = this.issueCategory.assigned.id
-        }
     }
 
     cancel(update) {
@@ -35,9 +32,15 @@ export default class IssuesCategoryController extends ControllerBase {
     }
 
     submit() {
+        let requestObject = {
+            id: this.issueCategory.id,
+            assigned_to_id: this.issueCategory.assigned ? this.issueCategory.assigned.id : null,
+            name: this.issueCategory.name
+        };
+
         (this.issueCategory.id ?
-            this.issuesCategoriesService.update(this.issueCategory.id, this.issueCategory) :
-            this.issuesCategoriesService.create(this.project.identifier, this.issueCategory))
+            this.issuesCategoriesService.update(requestObject.id, requestObject) :
+            this.issuesCategoriesService.create(this.project.identifier, requestObject))
             .then(() => this.cancel(true))
             .catch((response) => {
               this.errors = _.get(response, 'data.errors', {});

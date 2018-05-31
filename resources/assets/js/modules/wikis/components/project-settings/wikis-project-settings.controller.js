@@ -18,10 +18,9 @@ export default class WikisProjectSettingsController extends ControllerBase {
                 }
                 this.wiki = response.data.data;
             })
-            .catch(this.catchResponse)
     }
 
-    saveWiki() {
+    submit() {
         (this.wiki.id ?
             this.wikisService.updateWiki(this.projectsService.getCurrentId(), {start_page: this.wiki.start_page}) :
             this.wikisService.createWiki(this.projectsService.getCurrentId(), {start_page: this.wiki.start_page})
@@ -32,17 +31,14 @@ export default class WikisProjectSettingsController extends ControllerBase {
                 this.$mdToast.simple().textContent('Success saved!').position('bottom left')
             );
         })
-        .catch(this.catchResponse)
+        .catch((response) => {
+            if (response.status === 422) {
+                this.$mdToast.show(
+                    this.$mdToast.simple().textContent(response.data.message).position('bottom left')
+                );
+            }
+
+            this.errors = response.data.errors;
+        })
     }
-
-    catchResponse(response)  {
-        if (response.status === 422) {
-            this.$mdToast.show(
-                this.$mdToast.simple().textContent(response.data.message).position('bottom left')
-            );
-        }
-
-        this.errors = response.data.errors;
-    }
-
 }

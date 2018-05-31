@@ -13,7 +13,9 @@ export default class AuthIndexController extends ControllerBase {
         return  this.groupsService.all()
             .getList()
             .then((response) => {
-                this.groups = response.data;
+                // todo: is it correct to access via response.data ? (usually response.data.data)
+                // check is it array or object, of array - use _.merge
+                this.groups = response.data; response.data;
             });
     }
 }

@@ -18,24 +18,24 @@
                 <md-input-container class="md-block">
                     <label>Name</label>
 
-                    <input ng-model="$ctrl.issueCategory.name" name="name" required>
+                    <input ng-model="$ctrl.issueCategory.name" name="name" required server-field>
 
-                    <!--<div ng-messages="issueCategoryForm.name.$error">-->
+                    <!--<div ng-messages="form.name.$error">-->
                         <!--<div ng-message="required">-->
                             <!--Name can't be blank!-->
                         <!--</div>-->
                     <!--</div>-->
 
-                    <div ng-messages="$ctrl.issueCategoryForm.name.$error">
+                    <div ng-messages="$ctrl.form.name.$error">
                         <div ng-message="required">Name can't be blank!</div>
-                        <div ng-message="server" ng-bind-html="$ctrl.issueCategoryForm.name.$server"></div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.name.$server"></div>
                     </div>
                 </md-input-container>
 
                 <md-input-container class="md-block">
                     <label>Assignee</label>
 
-                    <md-select ng-model="$ctrl.issueCategory.assigned_to_id">
+                    <md-select ng-model="$ctrl.issueCategory.assigned.id" server-field>
                         <md-option></md-option>
                         <md-option
                                 ng-repeat="(key, member) in $ctrl.project.members"
@@ -46,13 +46,13 @@
 
                     <div class="md-errors-spacer"></div>
 
-                    <div ng-messages="$ctrl.issueCategoryForm.assigned_to_id.$error">
-                        <div ng-message="server" ng-bind-html="$ctrl.issueCategoryForm.assigned_to_id.$server"></div>
+                    <div ng-messages="$ctrl.form.assigned_to_id.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.assigned_to_id.$server"></div>
                     </div>
                 </md-input-container>
 
                 <md-button class="md-raised md-primary animation-target" type="submit"
-                           ng-disabled="issueCategoryForm.$invalid">
+                           ng-disabled="$ctrl.form.$invalid">
                     Save
                 </md-button>
             </form>

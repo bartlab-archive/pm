@@ -14,7 +14,6 @@ class Wiki extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id',
         'project_id',
         'start_page',
         'status'
