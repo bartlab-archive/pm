@@ -30,54 +30,10 @@ export default class WikisService extends ServiceBase {
     }
 
     update(indetifire, name, data) {
-        return this.$http.put(`/api/v1/wikis/${indetifire}/page/` + name, data);
+        return this.$http.put(`/api/v1/wikis/${indetifire}/page/${name}`, data);
     }
 
-    getStartPageWiki(indetifire) {
+    getWiki(indetifire) {
         return this.$http.get(`/api/v1/wikis/${indetifire}/start`);
     }
-
-    // getStartPageWiki(indetifire) {
-    //     return this.Restangular
-    //         .one('projects')
-    //         .one(indetifire)
-    //         .one('wiki')
-    //         .get();
-    // }
-    //
-    // getPageWiki(indetifire, title) {
-    //     return this.Restangular
-    //         .one('projects')
-    //         .one(indetifire)
-    //         .one('wiki')
-    //         .one(title)
-    //         .get();
-    // }
-    //
-    // addNewWikiPage(indetifire, params) {
-    //     return this.Restangular
-    //         .one('projects')
-    //         .one(indetifire)
-    //         .one('new')
-    //         .post(null, params);
-    // }
-    //
-    // getAllWikiPage(indetifire) {
-    //     return this.Restangular
-    //         .one('projects')
-    //         .one(indetifire)
-    //         .one('wiki')
-    //         .one('all')
-    //         .get();
-    // }
-    //
-    // deleteWikiPage(indetifire, title) {
-    //     return this.Restangular
-    //         .one('projects')
-    //         .one(indetifire)
-    //         .one('wiki')
-    //         .one(title)
-    //         .remove()
-    // }
-
 }

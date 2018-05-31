@@ -23,12 +23,13 @@ export default class FilesConfig extends InjectableBase {
                 enable: false
             });
 
-        this.projectsServiceProvider.registerModule({
-            url: 'files-inner.files',
-            title: 'Files',
-            name: 'files',
-            enable: false
-        });
+        this.projectsServiceProvider
+            .registerModule({
+                url: 'files-inner.list',
+                title: 'Files',
+                name: 'files',
+                enable: false
+            });
 
         this.$stateProvider
             .state('files-inner', {

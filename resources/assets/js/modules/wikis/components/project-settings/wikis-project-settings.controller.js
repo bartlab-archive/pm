@@ -11,7 +11,7 @@ export default class WikisProjectSettingsController extends ControllerBase {
 
     $onInit() {
         this.wikisService
-            .getStartPageWiki(this.projectsService.getCurrentId())
+            .getWiki(this.projectsService.getCurrentId())
             .then((response) => {
                 if(response.status == 204) {
                     return;
