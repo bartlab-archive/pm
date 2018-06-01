@@ -103,44 +103,37 @@ export default class LayoutDefaultController extends ControllerBase {
         this.toggle();
     }
 
-    // openProjectPage(item) {
-    //     const projectId = this.projectsService.getCurrentId();
-    //
-    //     if (projectId) {
-    //         this.$state.go(item.url, {project_id: projectId})
-    //     }
-    // }
+    openProjectPage(item) {
+        const projectId = this.projectsService.getCurrentId();
+
+        if (projectId) {
+            this.$state.go(item.url, {project_id: projectId})
+        }
+    }
 
     openNewItemPage(item) {
-        // const projectId = this.projectsService.getCurrentId();
-        const url = this.projectId || typeof item.single !== 'string' ? item.url : item.single;
-        // console.log(projectId);
+        const projectId = this.projectsService.getCurrentId();
+        const url = projectId || typeof item.single !== 'string' ? item.url : item.single;
 
         this.$state.go(
             url,
-            this.projectId ? {project_id: this.projectId} : undefined
+            projectId ? {project_id: projectId} : undefined
         );
-
-        // projectId ? this.$state.go(item.url, {project_id: projectId}) : null;
-        // _.includes(['projects.new'], item.url) ? this.$state.go(url, {}) : null;
     }
 
     loadProjectInfo() {
-        // const projectIdentifier = this.projectsService.getCurrentId();
-        this.projectId = this.projectsService.getCurrentId();
-        this.showProjectMenu = !!this.projectId || _.get(this.$state, 'current.data.layout.insideProject');
+        const projectIdentifier = this.projectsService.getCurrentId();
+        this.showProjectMenu = !!projectIdentifier || _.get(this.$state, 'current.data.layout.insideProject');
 
-        if (this.projectId) {
-            this.projectsService.one(this.projectId).then((response) => {
+        if (projectIdentifier) {
+            this.projectsService.one(projectIdentifier).then((response) => {
                 let modules = _.get(response, 'data.data.modules', []);
 
                 // change visible items in project menu and generate sref string
-                this.projectItems = this.projectItems.map((item) => {
+                this.projectItems.forEach((item) => {
                     if (item.name) {
                         item.enable = modules.some((value) => value.name === item.name);
                     }
-                    item.sref = item.url + '({project_id:"' + this.projectId + '"})';
-                    return angular.extend({},item);
                 });
 
                 // change visible items in add menu
