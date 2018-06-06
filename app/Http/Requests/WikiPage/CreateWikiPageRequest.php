@@ -26,7 +26,8 @@ class CreateWikiPageRequest extends FormRequest
     {
         return [
             // todo: valid title check - [^,./?;:|]+
-            'title' => 'required|string|max:255',
+            // todo: check for exists
+            'title' => 'required|string|max:255|unique:' . WikiPage::getTableName(),
             'text' => 'nullable|string',
             // todo: check parent_id and relation parent to project
             'parent_id' => 'nullable|int|exists:' . WikiPage::getTableName() . ',id',

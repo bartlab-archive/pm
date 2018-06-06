@@ -11,34 +11,34 @@ export default class WikisProjectSettingsController extends ControllerBase {
 
     $onInit() {
         this.wikisService
-            .getWiki(this.projectsService.getCurrentId())
+            .oneWiki(this.projectsService.getCurrentId())
             .then((response) => {
-                if(response.status == 204) {
-                    return;
-                }
                 this.wiki = response.data.data;
             })
     }
 
     submit() {
-        (this.wiki.id ?
-            this.wikisService.updateWiki(this.projectsService.getCurrentId(), {start_page: this.wiki.start_page}) :
-            this.wikisService.createWiki(this.projectsService.getCurrentId(), {start_page: this.wiki.start_page})
-        )
-        .then((response) => {
-            Object.assign(this.wiki, response.data.data);
-            this.$mdToast.show(
-                this.$mdToast.simple().textContent('Success saved!').position('bottom left')
-            );
-        })
-        .catch((response) => {
-            if (response.status === 422) {
-                this.$mdToast.show(
-                    this.$mdToast.simple().textContent(response.data.message).position('bottom left')
-                );
-            }
+        const projectId = this.projectsService.getCurrentId();
+        const model = {
+            start_page: this.wiki.start_page
+        };
 
-            this.errors = response.data.errors;
-        })
+        (this.wiki.id ? this.wikisService.updateWiki(projectId, model) : this.wikisService.createWiki(projectId, model))
+            .then((response) => {
+                Object.assign(this.wiki, response.data.data);
+
+                this.$mdToast.show(
+                    this.$mdToast.simple().textContent('Success saved!').position('bottom left')
+                );
+            })
+            .catch((response) => {
+                if (response.status === 422) {
+                    this.$mdToast.show(
+                        this.$mdToast.simple().textContent(response.data.message).position('bottom left')
+                    );
+                }
+
+                this.errors = response.data.errors;
+            })
     }
 }

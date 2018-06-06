@@ -3,7 +3,7 @@
         <label>Start page</label>
 
         <input ng-model="$ctrl.wiki.start_page" name="start_page" type="text" required server-field
-               ng-pattern="/^[A-z0-9,./?;:|]+$/">
+               ng-pattern="/^[^,\.\/\?\;\:\|\s]*$/">
 
         <div class="md-caption">Unallowed characters: , . / ? ; : |</div>
 

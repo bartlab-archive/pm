@@ -16,6 +16,10 @@ class WikiPage extends Model
 
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'protected' => 'boolean',
+    ];
+
     protected $dates = [
         'created_on',
     ];
@@ -23,6 +27,7 @@ class WikiPage extends Model
     protected $fillable = [
         'title',
         'parent_id',
+        'protected'
 //        'author_id'
     ];
 
@@ -39,6 +44,11 @@ class WikiPage extends Model
     public function parent()
     {
         return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    public function watchers()
+    {
+        return $this->morphToMany(User::class, 'watchable', Watcher::getTableName(), 'watchable_id');
     }
 
 //    public function childs()

@@ -24,19 +24,23 @@ export default class WikisFormController extends ControllerBase {
 
     load() {
         this.loadProccess = true;
+        const projectId = this.projectsService.getCurrentId();
 
         return this.$q
             .all([
-                this.wikisService.all(this.projectsService.getCurrentId()),
-                !this.isNew ? this.wikisService.one(this.projectsService.getCurrentId(), this.$stateParams.name) : undefined
+                this.wikisService.allPages(projectId),
+                !this.isNew ? this.wikisService.onePage(projectId, this.$stateParams.name) : undefined
             ])
             .then(([list, page]) => {
-                if (page && page.status !== 204) {
+                if (page) {
                     Object.assign(this.page, page.data.data);
-                } else {
+                }
+
+                // new page
+                if (!this.page.id) {
                     this.isNew = true;
-                    if (this.$stateParams.name) {
-                        this.page.content.text = '# ' + this.$stateParams.name;
+                    if (this.page.title) {
+                        this.page.content.text = '# ' + this.page.title;
                     }
                 }
 
@@ -63,7 +67,7 @@ export default class WikisFormController extends ControllerBase {
             model.title = this.page.title;
         }
 
-        return (this.isNew ? this.wikisService.create(projectId, model) : this.wikisService.update(projectId, this.page.title, model))
+        return (this.isNew ? this.wikisService.createPage(projectId, model) : this.wikisService.updatePage(projectId, this.page.id, model))
             .then((response) => {
                 this.$mdToast.show(
                     this.$mdToast.simple().textContent('Success saved!').position('bottom left')
@@ -83,11 +87,10 @@ export default class WikisFormController extends ControllerBase {
     }
 
     cancel() {
-        if (this.isNew) {
-            this.$state.go('wiki.index');
-        } else {
-            this.$state.go('wiki.page.view', {name: this.page.title});
-        }
+        this.$state.go(
+            this.isNew ? 'wiki.index' : 'wiki.page.view',
+            this.isNew ? undefined : {name: this.page.title}
+        );
     }
 
 }

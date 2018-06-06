@@ -75,7 +75,11 @@ class ProjectsController extends BaseController
 
     public function store(StoreProjectRequest $request)
     {
-        if (($parentIdentifier = $request->input('parent_identifier')) && (!$parent = $this->projectsService->one($parentIdentifier))) {
+        // todo: dont throw 404, if parent not found?
+        if (
+            ($parentIdentifier = $request->input('parent_identifier')) &&
+            (!$parent = $this->projectsService->one($parentIdentifier))
+        ) {
             // todo: is it valid response code?
             abort(404);
         }
@@ -107,6 +111,7 @@ class ProjectsController extends BaseController
             abort(404);
         }
 
+        // todo: dont throw 404, if parent not found?
         if (($parentIdentifier = $request->input('parent_identifier')) && (!$parent = $this->projectsService->one($parentIdentifier))) {
             // todo: is it valid response code?
             abort(404);

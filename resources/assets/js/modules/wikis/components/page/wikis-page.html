@@ -79,12 +79,36 @@
             <md-tooltip md-direction="top">Delete</md-tooltip>
         </md-button>
 
-        <md-button class="md-icon-button">
+        <!--<md-button class="md-icon-button">-->
+            <!--<md-icon>star_border</md-icon>-->
+            <!--<md-tooltip md-direction="top">Watch</md-tooltip>-->
+        <!--</md-button>-->
+
+        <md-button class="md-icon-button" ng-if="$ctrl.page.is_watcheble"
+                   ng-click="$ctrl.unwatch()">
+            <md-icon>star</md-icon>
+            <md-tooltip md-direction="top">Unwatch</md-tooltip>
+        </md-button>
+
+        <md-button class="md-icon-button" ng-if="!$ctrl.page.is_watcheble"
+                   ng-click="$ctrl.watch()">
             <md-icon>star_border</md-icon>
             <md-tooltip md-direction="top">Watch</md-tooltip>
         </md-button>
 
-        <md-button class="md-icon-button">
+        <!--<md-button class="md-icon-button">-->
+            <!--<md-icon>lock_open</md-icon>-->
+            <!--<md-tooltip md-direction="top">Lock</md-tooltip>-->
+        <!--</md-button>-->
+
+        <md-button class="md-icon-button" ng-if="$ctrl.page.protected"
+                   ng-click="$ctrl.unlock()">
+            <md-icon>lock</md-icon>
+            <md-tooltip md-direction="top">Unlock</md-tooltip>
+        </md-button>
+
+        <md-button class="md-icon-button" ng-if="!$ctrl.page.protected"
+                   ng-click="$ctrl.lock()">
             <md-icon>lock_open</md-icon>
             <md-tooltip md-direction="top">Lock</md-tooltip>
         </md-button>

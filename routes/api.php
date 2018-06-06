@@ -169,23 +169,44 @@ Route::group(
                 'prefix' => 'wikis'
             ],
             function () {
-                Route::get('/{identifier}/page/{name?}', 'WikisController@show');
-                Route::post('/{identifier}/page', 'WikisController@store');
-                Route::put('/{identifier}/page/{name}', 'WikisController@update');
-                Route::delete('/{identifier}/page/{name}', 'WikisController@destroy');
+                Route::get('/{identifier}/pages', 'WikiPagesController@index');
+                Route::post('/{identifier}/pages', 'WikiPagesController@store');
+                Route::get('/{identifier}/pages/{name}', 'WikiPagesController@show');
 
-                Route::post('/{identifier}/page/{name}/watch', 'WikisController@watch');
-                Route::delete('/{identifier}/page/{name}/watch', 'WikisController@unwatch');
+                Route::put('/{identifier}/pages/{id}', 'WikiPagesController@update');
+                Route::delete('/{identifier}/pages/{id}', 'WikiPagesController@destroy');
 
-                Route::post('/{identifier}/page/{name}/lock', 'WikisController@lock');
-                Route::delete('/{identifier}/page/{name}/unlock', 'WikisController@unlock');
+                Route::post('/{identifier}/pages/{id}/watch', 'WikiPagesController@watch');
+                Route::delete('/{identifier}/pages/{id}/watch', 'WikiPagesController@unwatch');
 
-                Route::get('/{identifier}', 'WikisController@index');
-                Route::get('/{identifier}/start', 'WikisController@showStart');
-                Route::post('/{identifier}/start', 'WikisController@storeStart');
-                Route::put('/{identifier}/start', 'WikisController@updateStart');
+                Route::post('/{identifier}/pages/{id}/lock', 'WikiPagesController@lock');
+                Route::delete('/{identifier}/pages/{id}/unlock', 'WikiPagesController@unlock');
+
+                Route::get('/{identifier}', 'WikisController@show');
+                Route::post('/{identifier}', 'WikisController@store');
+                Route::put('/{identifier}', 'WikisController@update');
             }
         );
+
+//        Route::group(
+//            [
+//                'middleware' => 'auth',
+//                'prefix' => 'wiki_pages'
+//            ],
+//            function () {
+//                Route::get('/{$identifier}', 'WikiPagesController@index');
+//                Route::post('/{$identifier}', 'WikiPagesController@store');
+//                Route::get('/{$identifier}/{name}', 'WikiPagesController@show');
+//                Route::put('/{id}', 'WikiPagesController@update');
+//                Route::delete('/{id}', 'WikiPagesController@destroy');
+//
+//                Route::post('/{id}/watch', 'WikiPagesController@watch');
+//                Route::delete('/{id}/watch', 'WikiPagesController@unwatch');
+//
+//                Route::post('/{id}/lock', 'WikiPagesController@lock');
+//                Route::delete('/{id}/unlock', 'WikiPagesController@unlock');
+//            }
+//        );
 
 //        Route::group(
 //            [

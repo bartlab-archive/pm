@@ -53,6 +53,10 @@ class ProjectsService
 
     public function one($identifier, $with = [])
     {
+        if (!$identifier){
+            return false;
+        }
+
         return Project::query()
             ->where('identifier', $identifier)
             ->with($with)

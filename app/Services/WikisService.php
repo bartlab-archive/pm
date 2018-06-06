@@ -8,16 +8,16 @@ use App\Models\WikiPage;
 class WikisService
 {
 
-    public function all($identifier)
+    public function allPages($projectId)
     {
         return WikiPage::query()
             ->with([
 //                'childs',
                 'content.author'
             ])
-            ->whereHas('wiki.project', function ($query) use ($identifier) {
+            ->whereHas('wiki', function ($query) use ($projectId) {
                 /** @var $query \Illuminate\Database\Eloquent\Builder */
-                $query->where('identifier', $identifier);
+                $query->where('project_id', $projectId);
             })
 //            ->where(['parent_id' => null])
             ->get()
@@ -36,65 +36,69 @@ class WikisService
             });
     }
 
-    public function base($identifier)
-    {
-        return Wiki::query()
-            ->whereHas('project', function ($query) use ($identifier) {
-                /** @var $query \Illuminate\Database\Eloquent\Builder */
-                $query->where('identifier', $identifier);
-            })
-            ->first();
-    }
-
-    public function one($identifier, $name = null)
+    public function onePageById($id)
     {
         return WikiPage::query()
             ->with([
+                'watchers',
                 'content.author'
             ])
-            ->where(
-                'title',
-                // todo: is $base === false, get default wiki page name from config
-                $name ?? (($page = $this->base($identifier)) ? $page->start_page : 'Wiki')
-            )
-            ->whereHas('wiki.project', function ($query) use ($identifier) {
-                /** @var $query \Illuminate\Database\Eloquent\Builder */
-                $query->where('identifier', $identifier);
-            })
+            ->where(['id' => $id])
             ->first();
     }
 
-    public function oneWiki($projectId, $with = []) {
+    public function onePageByName($projectId, $name, $orNew = false)
+    {
+        return WikiPage::query()
+                ->with([
+                    'watchers',
+                    'content.author'
+                ])
+                ->where(['title' => $name])
+                ->whereHas('wiki', function ($query) use ($projectId) {
+                    /** @var $query \Illuminate\Database\Eloquent\Builder */
+                    $query->where('project_id', $projectId);
+                })
+                ->first() ?? ($orNew ? new WikiPage(['title' => $name]) : null);
+    }
+
+    public function oneWikiById($id, array $with = [], $orNew = false)
+    {
         return Wiki::query()
-            ->where('project_id', $projectId)
-            ->with($with)
-            ->first();
+                ->with($with)
+                ->where(['id' => $id])
+                ->first() ?? ($orNew ? new Wiki() : null);
     }
 
-    public function createWiki($identifier, $data) {
+    public function oneWikiByProjectId($projectId, array $with = [], $orNew = false)
+    {
+        return Wiki::query()
+                ->with($with)
+                ->where(['project_id' => $projectId])
+                ->first() ?? ($orNew ? new Wiki() : null);
+    }
 
-        if (!$this->base($identifier)) {
+    public function createWiki(array $data)
+    {
+        if (!$wiki = $this->oneWikiByProjectId($data['project_id'])) {
             return Wiki::query()->create($data);
         }
 
-        return false;
+        return $wiki;
     }
 
-    public function updateWiki($projectId, $data, $with = []) {
-
-        $wiki = $this->oneWiki($projectId, $with);
-        if ($wiki && $wiki->update($data)) {
+    public function updateWiki($projectId, array $data, array $with = [])
+    {
+        if (($wiki = $this->oneWikiByProjectId($projectId, $with)) && $wiki->update($data)) {
             return $wiki;
         }
 
         return false;
     }
 
-    public function createPage($identifier, $data)
+    public function createPage(array $data)
     {
-        $base = $this->base($identifier);
-
-        if ($base && $page = $base->pages()->create($data)) {
+        if (($base = $this->oneWikiByProjectId($data['project_id'])) && $page = $base->pages()->create($data)) {
             /** @var $page WikiPage */
             $data['page_id'] = $page->id;
             $data['data'] = array_get($data, 'text');
@@ -109,132 +113,50 @@ class WikisService
         return false;
     }
 
-    public function update($identifier, $name, $data)
+    public function updatePage($projectId, $name, $data)
     {
 
     }
 
-    public function watch($identifier, $name, $userId)
+    public function watchPage($id, $userId)
     {
+        /** @var $page WikiPage */
+        if ($page = $this->onePageById($id)) {
+            $page->watchers()->attach($userId);
+            return true;
+        }
 
+        return false;
     }
 
-    public function unwatch($identifier, $name, $userId)
+    public function unwatchPage($id, $userId)
     {
+        /** @var $page WikiPage */
+        if ($page = $this->onePageById($id)) {
+            $page->watchers()->detach($userId);
+            return true;
+        }
 
+        return false;
     }
 
-    public function lock($identifier, $name)
+    public function lockPage($id)
     {
+        /** @var $page WikiPage */
+        if ($page = $this->onePageById($id)) {
+            return $page->update(['protected' => true]);
+        }
 
+        return false;
     }
 
-    public function unlock($identifier, $name)
+    public function unlockPage($id)
     {
+        /** @var $page WikiPage */
+        if ($page = $this->onePageById($id)) {
+            return $page->update(['protected' => false]);
+        }
 
+        return false;
     }
-
-//    protected $projectsService;
-
-//    public function __construct(ProjectsService $projectsService)
-//    {
-//        $this->projectsService = $projectsService;
-//    }
-//
-//    public function getWikiPageMarkDown($identifier, $page_title = null)
-//    {
-//        $project = $this->projectsService->one($identifier);
-//
-//        $wiki_content = $project->wiki
-//            ->page()
-//            ->with('content');
-//
-//        if ($page_title) {
-//            $wiki_content->where('title', $page_title);
-//        } else {
-//            $wiki_content
-//                ->where('parent_id', null)
-//                ->orderBy('created_on', 'asc');
-//        }
-//
-//        return $wiki_content->first();
-//
-//    }
-//
-//    public function setWikiPageMarkDown($request, $identifier, $wiki_id, $name = null)
-//    {
-//        $project = $this->projectsService->one($identifier);
-//        $wiki_page = $project->wiki->page();
-//
-//        if ($name) {
-//            $name = str_replace(' ', '_', $name);
-//            $wiki_page->where('title', $wiki_id);
-//            $wiki_id = $name;
-//        } else {
-//            $wiki_page->where('id', $wiki_id);
-//        }
-//
-//        $wiki_page = $wiki_page
-//            ->with(['content' => function ($q) use ($wiki_id) {
-//                $q->where('id', $wiki_id);
-//            }])
-//            ->firstOrFail();
-//
-//        $wiki_page->update(['title' => array_get($request, 'title')]);
-//        $wiki_page->title = str_replace(' ', '_', array_get($request, 'title'));
-//        $wiki_page->parent_id = array_get($request, 'parent_id') == 'null' ? null : array_get($request, 'parent_id');
-//        $wiki_page->save();
-//        $wiki_page->content()->update($request['content']);
-//        return $wiki_page;
-//    }
-//
-//    public function addNewWiki($request, $identifier)
-//    {
-//        $project = $this->projectsService->one($identifier);
-//        $wiki = $project->wiki;
-//
-//        $new_page = $wiki->page()->create([
-//            'title' => str_replace(' ', '_', array_get($request, 'title')),
-//            'parent_id' => array_get($request, 'parent_id'),
-//        ]);
-//
-//
-//        $new_page_content = $new_page->content()->create([
-//            'author_id' => Auth::user()->id,
-//            'text' => array_get($request, 'text'),
-//            'version' => 1
-//        ]);
-//
-//        return response()->json(array_merge($new_page_content->toArray(), ['title' => $new_page->title]), 201);
-//    }
-//
-//    public function deleteWikiPage($identifier, $title)
-//    {
-//        $success = false;
-//        $message = '';
-//        $project = $this->projectsService->one($identifier);
-//        $wiki = $project->wiki;
-//        $delete_page = $wiki->page()->where('title', $title)->firstOrFail();
-//        try {
-//            $success = $delete_page->delete();
-//
-//        } catch (Exception $e) {
-//            $message = $e->getMessage();
-//        }
-//
-//
-//        return response()->json(['success' => $success, 'message' => $message], 200);
-//
-//    }
-//
-//    public function getAllWikiPage($identifier)
-//    {
-//        $project = $this->projectsService->one($identifier);
-//        return $project->wiki->page()->with('content')->get();
-//    }
-//
-//    public function update($wikiId, $data)
-//    {
-//        return Wiki::where(['id' => $wikiId])->update($data);
-//    }
 }

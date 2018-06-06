@@ -9,31 +9,47 @@ export default class WikisService extends ServiceBase {
         return ['$http'];
     }
 
-    all(indetifire) {
+    oneWiki(indetifire) {
         return this.$http.get(`/api/v1/wikis/${indetifire}`);
     }
 
-    one(indetifire, name = undefined) {
-        return this.$http.get(`/api/v1/wikis/${indetifire}/page${name ? '/' + name : ''}`);
-    }
-
     createWiki(indetifire, data) {
-        return this.$http.post(`/api/v1/wikis/${indetifire}/start`, data);
+        return this.$http.post(`/api/v1/wikis/${indetifire}`, data);
     }
 
     updateWiki(indetifire, data) {
-        return this.$http.put(`/api/v1/wikis/${indetifire}/start`, data);
+        return this.$http.put(`/api/v1/wikis/${indetifire}`, data);
+    }
+
+    allPages(indetifire) {
+        return this.$http.get(`/api/v1/wikis/${indetifire}/pages`);
+    }
+
+    onePage(indetifire, name) {
+        return this.$http.get(`/api/v1/wikis/${indetifire}/pages/${name}`);
     }
 
     createPage(indetifire, data) {
-        return this.$http.post(`/api/v1/wikis/${indetifire}/page`, data);
+        return this.$http.post(`/api/v1/wikis/${indetifire}/pages`, data);
     }
 
-    update(indetifire, name, data) {
-        return this.$http.put(`/api/v1/wikis/${indetifire}/page/${name}`, data);
+    updatePage(indetifire, data) {
+        return this.$http.put(`/api/v1/wikis/${indetifire}/pages/${id}`, data);
     }
 
-    getWiki(indetifire) {
-        return this.$http.get(`/api/v1/wikis/${indetifire}/start`);
+    watch(indetifire, id) {
+        return this.$http.post(`/api/v1/wikis/${indetifire}/pages/${id}/watch`);
+    }
+
+    unwatch(indetifire, id) {
+        return this.$http.delete(`/api/v1/wikis/${indetifire}/pages/${id}/watch`)
+    }
+
+    lock(indetifire, id) {
+        return this.$http.post(`/api/v1/wikis/${indetifire}/pages/${id}/lock`);
+    }
+
+    unlock(indetifire, id) {
+        return this.$http.delete(`/api/v1/wikis/${indetifire}/pages/${id}/unlock`)
     }
 }

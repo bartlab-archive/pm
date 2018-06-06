@@ -248,6 +248,7 @@ class IssuesController extends BaseController
             return abort(404);
         }
 
+        // todo: get project from ProjectService
         if (!$issue->project) {
             abort(404);
         }
@@ -259,6 +260,7 @@ class IssuesController extends BaseController
          *  - is user allow to view issue
          *  - project status
          */
+        // todo: return 404
         if (!$this->enabledModulesService->check($issue->project->identifier, $this->issueService::MODULE_NAME)) {
             return abort(403);
         }

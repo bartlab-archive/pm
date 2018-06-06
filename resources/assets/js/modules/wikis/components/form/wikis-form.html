@@ -14,7 +14,7 @@
             <md-input-container class="md-icon-float md-block" ng-if="::!$ctrl.page.title">
                 <label>Title</label>
 
-                <input ng-model="$ctrl.page.title" name="title" type="text" required>
+                <input ng-model="$ctrl.page.title" name="title" type="text" required server-field>
 
                 <div ng-messages="$ctrl.form.title.$error">
                     <div ng-message="required">This field can't be blank.</div>

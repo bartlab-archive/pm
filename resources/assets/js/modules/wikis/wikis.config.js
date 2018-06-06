@@ -44,6 +44,7 @@ export default class WikisConfig extends InjectableBase {
                 module: 'wiki'
             });
 
+        // todo: check page exists. if page by link not found - add "parent" param to link
         this.$showdownProvider.loadExtension({
             type: 'lang',
             regex: /\[\[(.*)\]\]/g,
