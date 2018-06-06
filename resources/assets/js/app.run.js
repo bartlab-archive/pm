@@ -84,6 +84,9 @@ export default class AppRun extends InjectableBase {
         this.$mdToast.show(
             this.$mdToast.simple().textContent('Server error!')
         );
+
+        // todo: go to "500" page?
+        // this.$state.go('500');
     }
 
     errorInterceptor(response, deferred, responseHandler) {
