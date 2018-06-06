@@ -23,7 +23,8 @@ class WikiContent extends Model
     protected $fillable = [
         'author_id',
         'text',
-        'comments'
+        'comments',
+        'version'
     ];
 
     protected $attributes = [

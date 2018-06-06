@@ -33,7 +33,7 @@ export default class WikisService extends ServiceBase {
         return this.$http.post(`/api/v1/wikis/${indetifire}/pages`, data);
     }
 
-    updatePage(indetifire, data) {
+    updatePage(indetifire, id, data) {
         return this.$http.put(`/api/v1/wikis/${indetifire}/pages/${id}`, data);
     }
 

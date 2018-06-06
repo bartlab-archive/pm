@@ -39,6 +39,7 @@ class CreateIssueRequest extends FormRequest
 
         return [
             'watchers' => 'array',
+            // todo: add distinct rules?
             'watchers.*' => 'int|exists:' . User::getTableName() . ',id',
 
             'assigned_to_id' => 'nullable|int|exists:' . User::getTableName() . ',id',

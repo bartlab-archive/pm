@@ -38,7 +38,8 @@ class WikiContentVersion extends Model
         'author_id',
         'data',
         'page_id',
-        'comments'
+        'comments',
+        'version'
     ];
 
     protected $attributes = [
@@ -59,6 +60,11 @@ class WikiContentVersion extends Model
     {
         return $this->belongsTo(WikiContent::class);
     }
+
+//    public function setTextAttribute($value)
+//    {
+//        $this->attributes['data'] = $value;
+//    }
 
 //    public function setTextAttribute($value)
 //    {

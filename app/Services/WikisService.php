@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Wiki;
+use App\Models\WikiContent;
+use App\Models\WikiContentVersion;
 use App\Models\WikiPage;
 
 class WikisService
@@ -103,6 +105,7 @@ class WikisService
             $data['page_id'] = $page->id;
             $data['data'] = array_get($data, 'text');
 
+            // todo: split save data
             $page
                 ->content()->create($data)
                 ->versions()->create($data);
@@ -113,10 +116,67 @@ class WikisService
         return false;
     }
 
-    public function updatePage($projectId, $name, $data)
+    public function updatePage($id, $data)
     {
+        /** @var $page WikiPage */
+        if (!$page = $this->onePageById($id)) {
+            return false;
+        }
 
+        if (!$page->update(array_only($data, ['parent_id']))) {
+            return false;
+        }
+
+        /** @var $content WikiContent */
+        if (!$content = $page->content) {
+            $content = $page->content()->make();
+        }else{
+            $content->version++;
+        }
+
+        if (!$content->fill(array_only($data, ['text', 'comments']))->save()) {
+            return false;
+        }
+
+        if (!$content->versions()->make(
+            array_merge(
+                array_only($data, ['author_id', 'text', 'comments']),
+                ['version' => $content->version, 'page_id' => $page->id]
+            )
+        )->save()) {
+            return false;
+        }
+
+        return $page;
     }
+
+//    public function oneContentById($id)
+//    {
+//        return WikiContent::query()
+//            ->where(['id' => $id])
+//            ->first();
+//    }
+//
+//    public function updateContent($id, array $data)
+//    {
+//        if ($content = $this->oneContentById($id)) {
+//            return $content->update(array_only($data, ['page_id', 'text', 'comments', 'version']));
+//        }
+//
+//        return false;
+//    }
+
+//    public function createVersion(array $data)
+//    {
+//        return WikiContentVersion::create(
+//            array_only($data, ['page_id', 'author_id', 'data', 'comments', 'version'])
+//        );
+//        if ($content = $this->oneContent($id)) {
+//            return $content->update(array_only($data, ['text', 'comments', 'version']));
+//        }
+//
+//        return false;
+//    }
 
     public function watchPage($id, $userId)
     {

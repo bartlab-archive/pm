@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\WikiPage\CreateWikiPageRequest;
+use App\Http\Requests\WikiPage\UpdateWikiPageRequest;
 use App\Http\Resources\WikiPageResource;
 use App\Services\WikisService;
 use App\Services\ProjectsService;
@@ -76,8 +77,30 @@ class WikiPagesController extends BaseController
         return WikiPageResource::make($wiki);
     }
 
-    public function update($identifier, $id)
+    public function update($identifier, $id, UpdateWikiPageRequest $request)
     {
+        /*
+         * todo: check permissions
+         */
+        if (!$project = $this->projectsService->one($identifier)) {
+            abort(404);
+        }
+
+        $wiki = $this->wikisService->updatePage(
+            $id,
+            array_merge(
+                $request->validated(),
+                [
+                    'author_id' => \Auth::id(),
+                ]
+            )
+        );
+
+        if (!$wiki) {
+            abort(422);
+        }
+
+        return WikiPageResource::make($wiki);
     }
 
     public function destroy($identifier, $id)
