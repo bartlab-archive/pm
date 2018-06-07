@@ -51,9 +51,9 @@ class WikiPage extends Model
         return $this->morphToMany(User::class, 'watchable', Watcher::getTableName(), 'watchable_id');
     }
 
-//    public function childs()
-//    {
-//        return $this->hasMany(self::class, 'parent_id')->with(['childs']);
-//    }
+    public function childs()
+    {
+        return $this->hasMany(self::class, 'parent_id');
+    }
 
 }

@@ -10,17 +10,14 @@ use App\Models\WikiPage;
 class WikisService
 {
 
-    public function allPages($projectId)
+    public function allPages($wikiId)
     {
         return WikiPage::query()
             ->with([
 //                'childs',
                 'content.author'
             ])
-            ->whereHas('wiki', function ($query) use ($projectId) {
-                /** @var $query \Illuminate\Database\Eloquent\Builder */
-                $query->where('project_id', $projectId);
-            })
+            ->where(['wiki_id' => $wikiId])
 //            ->where(['parent_id' => null])
             ->get()
             ->map(function ($page) {
@@ -49,19 +46,15 @@ class WikisService
             ->first();
     }
 
-    public function onePageByName($projectId, $name, $orNew = false)
+    public function onePageByName($wikiId, $name, $orNew = false)
     {
         return WikiPage::query()
                 ->with([
                     'watchers',
                     'content.author'
                 ])
-                ->where(['title' => $name])
-                ->whereHas('wiki', function ($query) use ($projectId) {
-                    /** @var $query \Illuminate\Database\Eloquent\Builder */
-                    $query->where('project_id', $projectId);
-                })
-                ->first() ?? ($orNew ? new WikiPage(['title' => $name]) : null);
+                ->where(['title' => $name, 'wiki_id' => $wikiId])
+                ->first() ?? ($orNew ? WikiPage::make(['title' => $name]) : null);
     }
 
     public function oneWikiById($id, array $with = [], $orNew = false)
@@ -69,7 +62,7 @@ class WikisService
         return Wiki::query()
                 ->with($with)
                 ->where(['id' => $id])
-                ->first() ?? ($orNew ? new Wiki() : null);
+                ->first() ?? ($orNew ? Wiki::make() : null);
     }
 
     public function oneWikiByProjectId($projectId, array $with = [], $orNew = false)
@@ -77,13 +70,17 @@ class WikisService
         return Wiki::query()
                 ->with($with)
                 ->where(['project_id' => $projectId])
-                ->first() ?? ($orNew ? new Wiki() : null);
+                ->first() ?? ($orNew ? Wiki::make() : null);
     }
 
-    public function createWiki(array $data)
+    public function createWiki($projectId, array $data)
     {
-        if (!$wiki = $this->oneWikiByProjectId($data['project_id'])) {
-            return Wiki::query()->create($data);
+        if (!$wiki = $this->oneWikiByProjectId($projectId)) {
+            $wiki = Wiki::make(array_only($data, ['start_page']));
+
+            if (!$wiki->save()) {
+                return false;
+            }
         }
 
         return $wiki;
@@ -91,24 +88,39 @@ class WikisService
 
     public function updateWiki($projectId, array $data, array $with = [])
     {
-        if (($wiki = $this->oneWikiByProjectId($projectId, $with)) && $wiki->update($data)) {
+        if (($wiki = $this->oneWikiByProjectId($projectId, $with)) && $wiki->update(array_only($data, ['start_page']))) {
             return $wiki;
         }
 
         return false;
     }
 
-    public function createPage(array $data)
+    public function createPage($wikiId, array $data)
     {
-        if (($base = $this->oneWikiByProjectId($data['project_id'])) && $page = $base->pages()->create($data)) {
-            /** @var $page WikiPage */
-            $data['page_id'] = $page->id;
-            $data['data'] = array_get($data, 'text');
+        if ($wiki = $this->oneWikiById($wikiId)) {
 
-            // todo: split save data
-            $page
-                ->content()->create($data)
-                ->versions()->create($data);
+            /** @var $page WikiPage */
+            $page = $wiki->pages()->make(array_only($data, ['title', 'parent_id']));
+
+            if (!$page->save()) {
+                return false;
+            }
+
+            /** @var $content WikiContent */
+            $content = $page->content()->make(array_only($data, ['author_id', 'text', 'comments']));
+
+            if (!$content->save()) {
+                return false;
+            }
+
+            if (!$content->versions()->make(
+                array_merge(
+                    array_only($data, ['author_id', 'comments']),
+                    ['version' => $content->version, 'data' => $content->text, 'page_id' => $page->id]
+                )
+            )->save()) {
+                return false;
+            }
 
             return $page;
         }
@@ -130,59 +142,35 @@ class WikisService
         /** @var $content WikiContent */
         if (!$content = $page->content) {
             $content = $page->content()->make();
-        }else{
+        } else {
             $content->version++;
         }
 
-        if (!$content->fill(array_only($data, ['text', 'comments']))->save()) {
-            return false;
-        }
+        // save only if text changed
+        if ($content->text !== array_get($data, 'text')) {
+            if (!$content->fill(array_only($data, ['text', 'comments']))->save()) {
+                return false;
+            }
 
-        if (!$content->versions()->make(
-            array_merge(
-                array_only($data, ['author_id', 'text', 'comments']),
-                ['version' => $content->version, 'page_id' => $page->id]
-            )
-        )->save()) {
-            return false;
+            if (!$content->versions()->make(
+                array_merge(
+                    array_only($data, ['author_id', 'comments']),
+                    ['version' => $content->version, 'data' => $content->text, 'page_id' => $page->id]
+                )
+            )->save()) {
+                return false;
+            }
         }
 
         return $page;
     }
-
-//    public function oneContentById($id)
-//    {
-//        return WikiContent::query()
-//            ->where(['id' => $id])
-//            ->first();
-//    }
-//
-//    public function updateContent($id, array $data)
-//    {
-//        if ($content = $this->oneContentById($id)) {
-//            return $content->update(array_only($data, ['page_id', 'text', 'comments', 'version']));
-//        }
-//
-//        return false;
-//    }
-
-//    public function createVersion(array $data)
-//    {
-//        return WikiContentVersion::create(
-//            array_only($data, ['page_id', 'author_id', 'data', 'comments', 'version'])
-//        );
-//        if ($content = $this->oneContent($id)) {
-//            return $content->update(array_only($data, ['text', 'comments', 'version']));
-//        }
-//
-//        return false;
-//    }
 
     public function watchPage($id, $userId)
     {
         /** @var $page WikiPage */
         if ($page = $this->onePageById($id)) {
             $page->watchers()->attach($userId);
+
             return true;
         }
 
@@ -194,6 +182,7 @@ class WikisService
         /** @var $page WikiPage */
         if ($page = $this->onePageById($id)) {
             $page->watchers()->detach($userId);
+
             return true;
         }
 
@@ -215,6 +204,21 @@ class WikisService
         /** @var $page WikiPage */
         if ($page = $this->onePageById($id)) {
             return $page->update(['protected' => false]);
+        }
+
+        return false;
+    }
+
+    public function deletePage($id)
+    {
+        /** @var $page WikiPage */
+        if ($page = $this->onePageById($id)) {
+            $page->watchers()->detach();
+            $page->childs()->update(['parent_id' => null]);
+
+            // todo: delete redirects?
+
+            return $page->delete();
         }
 
         return false;

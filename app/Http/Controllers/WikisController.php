@@ -47,13 +47,11 @@ class WikisController extends BaseController
             abort(404);
         }
 
-        return WikiResource::make(
-            $this->wikisService->createWiki(
-                array_merge(
-                    $request->validated(),
-                    ['project_id' => $project->id])
-            )
-        );
+        if (!$wiki = $this->wikisService->createWiki($project->id, $request->validated())) {
+            abort(422);
+        }
+
+        return WikiResource::make($wiki);
     }
 
     public function update($identifier, WikiRequest $request)
@@ -62,14 +60,15 @@ class WikisController extends BaseController
             abort(404);
         }
 
-//        if (!$this->wikisService->oneWikiByProjectId($project->id)) {
-//            abort(404);
-//        }
-
         if (!$wiki = $this->wikisService->updateWiki($project->id, $request->validated())) {
             abort(422);
         }
 
         return WikiResource::make($wiki);
+    }
+
+    public function destroy($identifier)
+    {
+
     }
 }

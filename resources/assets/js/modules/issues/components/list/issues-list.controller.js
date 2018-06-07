@@ -120,7 +120,9 @@ export default class IssuesListController extends ControllerBase {
         this.priorityList = [];
 
         this.loadFiltersValues().then(() => this.load());
+        // todo: remove event on destroy
         this.$rootScope.$on('updateIssues', () => this.load());
+        // todo: add listener for "deldeteIssue"
     }
 
     load() {

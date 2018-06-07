@@ -37,6 +37,10 @@ export default class WikisService extends ServiceBase {
         return this.$http.put(`/api/v1/wikis/${indetifire}/pages/${id}`, data);
     }
 
+    removePage(indetifire, id) {
+        return this.$http.delete(`/api/v1/wikis/${indetifire}/pages/${id}`)
+    }
+
     watch(indetifire, id) {
         return this.$http.post(`/api/v1/wikis/${indetifire}/pages/${id}/watch`);
     }

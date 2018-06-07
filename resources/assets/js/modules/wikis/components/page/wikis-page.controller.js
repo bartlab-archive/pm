@@ -114,4 +114,21 @@ export default class WikisPageController extends ControllerBase {
                 this.page.protected = false
             });
     }
+
+    remove() {
+        let confirm = this.$mdDialog.confirm()
+            .title(`Would you like to delete this page?`)
+            .ok('Delete!')
+            .cancel('Cancel');
+
+        this.$mdDialog.show(confirm).then(() => {
+            this.wikisService.removePage(this.projectsService.getCurrentId(), this.page.id).then(() => {
+                this.$state.go('wiki.index');
+
+                this.$rootScope.$emit('deldeteWikiPage');
+            });
+
+            this.selectedGroup = [];
+        });
+    }
 }

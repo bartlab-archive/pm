@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 
+/*
+ * todo: change Route definitions for use the callable array syntax - Route::get('smth', [SomeController::class, 'methodName']);
+ */
+
 /**
  * Route group
  *
@@ -185,6 +189,7 @@ Route::group(
                 Route::get('/{identifier}', 'WikisController@show');
                 Route::post('/{identifier}', 'WikisController@store');
                 Route::put('/{identifier}', 'WikisController@update');
+                Route::delete('/{identifier}', 'WikisController@destroy');
             }
         );
 

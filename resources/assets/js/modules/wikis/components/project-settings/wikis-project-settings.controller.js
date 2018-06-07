@@ -1,6 +1,6 @@
 import ControllerBase from 'base/controller.base';
-import WikisService from "../../services/wikis.service";
 
+// todo: add action for delete button
 /**
  */
 export default class WikisProjectSettingsController extends ControllerBase {

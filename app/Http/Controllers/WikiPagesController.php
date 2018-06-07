@@ -29,11 +29,15 @@ class WikiPagesController extends BaseController
             abort(404);
         }
 
+        if (!$wiki = $this->wikisService->oneWikiByProjectId($project->id)) {
+            abort(404);
+        }
+
         /*
          * todo: check project and permissions
          */
         return WikiPageResource::collection(
-            $this->wikisService->allPages($project->id)
+            $this->wikisService->allPages($wiki->id)
         );
     }
 
@@ -43,11 +47,15 @@ class WikiPagesController extends BaseController
             abort(404);
         }
 
+        if (!$wiki = $this->wikisService->oneWikiByProjectId($project->id)) {
+            abort(404);
+        }
+
         /*
          * todo: check project and permissions
          */
         return WikiPageResource::make(
-            $this->wikisService->onePageByName($project->id, $name, true)
+            $this->wikisService->onePageByName($wiki->id, $name, true)
         );
     }
 
@@ -60,21 +68,23 @@ class WikiPagesController extends BaseController
             abort(404);
         }
 
-        $wiki = $this->wikisService->createPage(
+        if (!$wiki = $this->wikisService->oneWikiByProjectId($project->id)) {
+            abort(404);
+        }
+
+        $page = $this->wikisService->createPage(
+            $wiki->id,
             array_merge(
                 $request->validated(),
-                [
-                    'author_id' => \Auth::id(),
-                    'project_id' => $project->id
-                ]
+                ['author_id' => \Auth::id()]
             )
         );
 
-        if (!$wiki) {
+        if (!$page) {
             abort(422);
         }
 
-        return WikiPageResource::make($wiki);
+        return WikiPageResource::make($page);
     }
 
     public function update($identifier, $id, UpdateWikiPageRequest $request)
@@ -86,31 +96,50 @@ class WikiPagesController extends BaseController
             abort(404);
         }
 
-        $wiki = $this->wikisService->updatePage(
+        if (!$this->wikisService->oneWikiByProjectId($project->id)) {
+            abort(404);
+        }
+
+        $page = $this->wikisService->updatePage(
             $id,
             array_merge(
                 $request->validated(),
-                [
-                    'author_id' => \Auth::id(),
-                ]
+                ['author_id' => \Auth::id()]
             )
         );
 
-        if (!$wiki) {
+        if (!$page) {
             abort(422);
         }
 
-        return WikiPageResource::make($wiki);
+        return WikiPageResource::make($page);
     }
 
     public function destroy($identifier, $id)
     {
+        if (!$project = $this->projectsService->one($identifier)) {
+            abort(404);
+        }
+
+        if (!$this->wikisService->deletePage($id)) {
+            abort(422);
+        }
+
+        return response(null, 204);
     }
 
     public function watch($identifier, $id)
     {
-        if (!$this->projectsService->one($identifier) || !$this->wikisService->onePageById($id)) {
-            return abort(404);
+        if (!$project = $this->projectsService->one($identifier)) {
+            abort(404);
+        }
+
+        if (!$this->wikisService->oneWikiByProjectId($project->id)) {
+            abort(404);
+        }
+
+        if (!$this->wikisService->onePageById($id)) {
+            abort(404);
         }
 
         /*
@@ -129,8 +158,16 @@ class WikiPagesController extends BaseController
 
     public function unwatch($identifier, $id)
     {
-        if (!$this->projectsService->one($identifier) || !$this->wikisService->onePageById($id)) {
-            return abort(404);
+        if (!$project = $this->projectsService->one($identifier)) {
+            abort(404);
+        }
+
+        if (!$this->wikisService->oneWikiByProjectId($project->id)) {
+            abort(404);
+        }
+
+        if (!$this->wikisService->onePageById($id)) {
+            abort(404);
         }
 
         /*
@@ -141,7 +178,7 @@ class WikiPagesController extends BaseController
          *  - project status
          */
         if (!$this->wikisService->unwatchPage($id, \Auth::id())) {
-            return abort(422);
+            abort(422);
         }
 
         return response(null, 204);
@@ -149,8 +186,16 @@ class WikiPagesController extends BaseController
 
     public function lock($identifier, $id)
     {
-        if (!$this->projectsService->one($identifier) || !$this->wikisService->onePageById($id)) {
-            return abort(404);
+        if (!$project = $this->projectsService->one($identifier)) {
+            abort(404);
+        }
+
+        if (!$this->wikisService->oneWikiByProjectId($project->id)) {
+            abort(404);
+        }
+
+        if (!$this->wikisService->onePageById($id)) {
+            abort(404);
         }
 
         /*
@@ -161,7 +206,7 @@ class WikiPagesController extends BaseController
          *  - project status
          */
         if (!$this->wikisService->lockPage($id)) {
-            return abort(422);
+            abort(422);
         }
 
         return response(null, 204);
@@ -169,8 +214,16 @@ class WikiPagesController extends BaseController
 
     public function unlock($identifier, $id)
     {
-        if (!$this->projectsService->one($identifier) || !$this->wikisService->onePageById($id)) {
-            return abort(404);
+        if (!$project = $this->projectsService->one($identifier)) {
+            abort(404);
+        }
+
+        if (!$this->wikisService->oneWikiByProjectId($project->id)) {
+            abort(404);
+        }
+
+        if (!$this->wikisService->onePageById($id)) {
+            abort(404);
         }
 
         /*
@@ -181,7 +234,7 @@ class WikiPagesController extends BaseController
          *  - project status
          */
         if (!$this->wikisService->unlockPage($id)) {
-            return abort(422);
+            abort(422);
         }
 
         return response(null, 204);

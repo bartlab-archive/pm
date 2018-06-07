@@ -81,7 +81,7 @@ class IssuesController extends BaseController
              *  - project status
              */
             if (!$this->enabledModulesService->check($project->identifier, $this->issueService::MODULE_NAME)) {
-                return abort(403);
+                abort(403);
             }
         }
 
@@ -94,7 +94,7 @@ class IssuesController extends BaseController
     public function show($id, Request $request)
     {
         if (!$issue = $this->issueService->one($id)) {
-            return abort(404);
+            abort(404);
         }
         /*
          * todo:
@@ -107,7 +107,7 @@ class IssuesController extends BaseController
                 $issue->project->identifier,
                 $this->issueService::MODULE_NAME
             )) {
-            return abort(403);
+            abort(403);
         }
 
         return IssueResource::make($issue);
@@ -141,7 +141,7 @@ class IssuesController extends BaseController
          *  - project status
          */
         if (!$this->enabledModulesService->check($project->identifier, $this->issueService::MODULE_NAME)) {
-            return abort(403);
+            abort(403);
         }
 
         // create new issue
@@ -157,7 +157,7 @@ class IssuesController extends BaseController
 
         if (!$issue) {
             // todo: add error message
-            return abort(422);
+            abort(422);
         }
 
         return IssueResource::make($issue);
@@ -177,11 +177,11 @@ class IssuesController extends BaseController
          *  - project status
          */
         if (!$this->enabledModulesService->check($project->identifier, $this->issueService::MODULE_NAME)) {
-            return abort(403);
+            abort(403);
         }
 
         if (!$this->issueService->one($id)) {
-            return abort(404);
+            abort(404);
         }
 
         // todo: show for change watchers and add items to journal
@@ -198,7 +198,7 @@ class IssuesController extends BaseController
 
         if (!$issue) {
             // todo: add error message
-            return abort(422);
+            abort(422);
         }
 
         return IssueResource::make($issue);
@@ -208,7 +208,7 @@ class IssuesController extends BaseController
     {
         // todo: full check issue and project
         if (!$this->issueService->delete($id)){
-            return abort(422);
+            abort(422);
         }
 
         return response(null, 204);
@@ -217,7 +217,7 @@ class IssuesController extends BaseController
     public function watch($id)
     {
         if (!$issue = $this->issueService->one($id)) {
-            return abort(404);
+            abort(404);
         }
 
         if (!$issue->project) {
@@ -232,11 +232,11 @@ class IssuesController extends BaseController
          *  - project status
          */
         if (!$this->enabledModulesService->check($issue->project->identifier, $this->issueService::MODULE_NAME)) {
-            return abort(403);
+            abort(403);
         }
 
         if (!$this->issueService->watch($id, \Auth::id())) {
-            return abort(422);
+            abort(422);
         }
 
         return response(null, 204);
@@ -245,7 +245,7 @@ class IssuesController extends BaseController
     public function unwatch($id)
     {
         if (!$issue = $this->issueService->one($id)) {
-            return abort(404);
+            abort(404);
         }
 
         // todo: get project from ProjectService
@@ -262,11 +262,11 @@ class IssuesController extends BaseController
          */
         // todo: return 404
         if (!$this->enabledModulesService->check($issue->project->identifier, $this->issueService::MODULE_NAME)) {
-            return abort(403);
+            abort(403);
         }
 
         if (!$this->issueService->unwatch($id, \Auth::id())) {
-            return abort(422);
+            abort(422);
         }
 
         return response(null, 204);

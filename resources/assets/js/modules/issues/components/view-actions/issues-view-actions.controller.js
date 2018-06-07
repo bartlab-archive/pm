@@ -65,8 +65,9 @@ export default class IssuesViewActionsController extends ControllerBase {
         this.$mdDialog.show(confirm).then(() => {
             this.issuesService.remove(this.issue.id).then(() => {
                 // this.$state.go('issues-inner.list',{});
-                this.$rootScope.$emit('updateIssues');
-                this.$rootScope.$emit('deldeteIssues');
+
+                // this.$rootScope.$emit('updateIssues');
+                this.$rootScope.$emit('deldeteIssue');
             });
 
             this.selectedGroup = [];
