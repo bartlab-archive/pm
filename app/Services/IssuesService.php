@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Issue;
+use App\Models\Journal;
 use \Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,37 +15,6 @@ use Illuminate\Support\Facades\DB;
 class IssuesService
 {
     const MODULE_NAME = 'issue_tracking';
-
-    public function one($id)
-    {
-        return Issue::query()
-            ->where('id', $id)
-            ->with([
-                'tracker',
-                'assigned',
-                'author',
-                'project',
-                'watchers',
-                'project.trackers',
-                'project.members.user',
-                'child',
-                'journals.user',
-                'journals.details',
-            ])
-            ->first();
-    }
-
-    public function create(array $data)
-    {
-        if ($issue = Issue::create($data)) {
-            // save watchers
-            $issue->watchers()->sync(array_get($data, 'watchers'));
-
-            return $issue;
-        }
-
-        return false;
-    }
 
     public function all(array $params = [])
     {
@@ -153,11 +123,80 @@ class IssuesService
         return $data;
     }
 
-    public function update($id, $data)
+    public function one($id)
+    {
+        return Issue::query()
+            ->where('id', $id)
+            ->with([
+                'tracker',
+                'assigned',
+                'author',
+                'project',
+                'watchers',
+                'project.trackers',
+                'project.members.user',
+                'child',
+                'journals.user',
+                'journals.details',
+            ])
+            ->first();
+    }
+
+    public function create(array $data)
+    {
+        /** @var Issue $issue */
+        $issue = Issue::make(array_only(
+            $data,
+            [
+                'tracker_id',
+                'project_id',
+                'subject',
+                'description',
+                'due_date',
+                'category_id',
+                'status_id',
+                'assigned_to_id',
+                'priority_id',
+                'start_date',
+                'done_ratio',
+                'estimated_hours',
+                'parent_id',
+                'is_private'
+            ]
+        ));
+
+        if ($issue->save()) {
+            $issue->watchers()->sync(array_get($data, 'watchers'));
+            return $issue;
+        }
+
+        return false;
+    }
+
+    public function update($id, array $data)
     {
         // todo: change to call "$this->one()" method
+        /** @var Issue $issue */
         if ($issue = Issue::query()->where(['id' => $id])->first()) {
-            $issue->fill($data);
+            $issue->fill(array_only(
+                $data,
+                [
+                    'tracker_id',
+                    'project_id',
+                    'subject',
+                    'description',
+                    'due_date',
+                    'category_id',
+                    'status_id',
+                    'assigned_to_id',
+                    'priority_id',
+                    'start_date',
+                    'done_ratio',
+                    'estimated_hours',
+                    'parent_id',
+                    'is_private'
+                ]
+            ));
             $journalDetails = [];
 
             // get changed attributes
@@ -173,20 +212,21 @@ class IssuesService
             // save watchers
             $issue->watchers()->sync(array_get($data, 'watchers'));
 
-            if ($issue->save()) {
+            if ($issue->update()) {
                 // save journal if notes exists or fileds change
                 $notes = array_get($data, 'notes');
 
                 if ($journalDetails || $notes) {
-                    $issue
-                        ->journals()
-                        ->create([
-                            'notes' => $notes,
-                            'private_notes' => array_get($data, 'private_notes', 0),
-                            'user_id' => array_get($data, 'user_id')
-                        ])
-                        ->details()
-                        ->createMany($journalDetails);
+                    /** @var Journal $journal */
+                    $journal = $issue->journals()->make([
+                        'notes' => $notes,
+                        'private_notes' => array_get($data, 'private_notes', 0),
+                        'user_id' => array_get($data, 'user_id')
+                    ]);
+
+                    if ($journal->save()) {
+                        $journal->details()->createMany($journalDetails);
+                    }
                 }
 
                 return $issue;
@@ -201,6 +241,7 @@ class IssuesService
         if ($issue = Issue::query()->where(['id' => $id])->first()) {
             $issue->watchers()->detach();
 
+            /** @var Journal $journal */
             foreach ($issue->journals as $journal) {
                 $journal->details()->delete();
                 $journal->delete();

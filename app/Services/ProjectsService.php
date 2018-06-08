@@ -23,7 +23,7 @@ class ProjectsService
 
         // todo: make status active and closed
         if ($status = array_get($params, 'status', Project::STATUS_ACTIVE)) {
-            $query->where('status', $status);
+            $query->where(['status' => $status]);
         }
 
         // todo: get only pablic and my project
@@ -44,16 +44,15 @@ class ProjectsService
         }
 
         if ($perPage = array_get($params, 'per_page')) {
-            return $query
-                ->paginate($perPage);
+            return $query->paginate($perPage);
         }
 
         return $query->get();
     }
 
-    public function one($identifier, $with = [])
+    public function oneByIdentifier($identifier, array $with = [])
     {
-        if (!$identifier){
+        if (!$identifier) {
             return false;
         }
 
@@ -67,10 +66,25 @@ class ProjectsService
             ->first();
     }
 
-
-    public function create($data)
+    public function oneById($id, array $with = [])
     {
+        if (!$id) {
+            return false;
+        }
 
+        return Project::query()
+            ->where(['id' => $id])
+            ->with($with)
+//            ->with([
+//                'enabledModules',
+//                'users'
+//            ])
+            ->first();
+    }
+
+
+    public function create(array $data)
+    {
         if ($project = Project::create($data)) {
             if ($project->inherit_members) {
                 // todo: check parent and parent members for null
@@ -86,9 +100,9 @@ class ProjectsService
         return false;
     }
 
-    public function update($identifier, $data)
+    public function update($id, array $data)
     {
-        if ($project = $this->one($identifier)) {
+        if ($project = $this->oneById($id)) {
             $prevParentId = $project->parent_id;
 
             if ($project->update($data)) {

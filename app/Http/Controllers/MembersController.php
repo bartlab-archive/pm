@@ -40,19 +40,25 @@ class MembersController extends BaseController
 
     public function store(Request $request)
     {
-        if (!$project = $this->projectsService->one($request->get('identifier'))) {
+        if (!$project = $this->projectsService->oneByIdentifier($request->get('identifier'))) {
             abort(404);
         }
 
         $roles = $request->get('roles');
+
         foreach ($roles as $roleId) {
             if (!$this->rolesService->one($roleId)) {
                 abort(404);
             }
         }
 
-        $member = $this->membersService->create($project->id, $request->get('user'));
+        if (!$member = $this->membersService->create($project->id, $request->get('user'))) {
+            abort(422);
+        }
+
         $this->memberRolesService->create($member->id, $roles);
+
+        response(null, 204);
     }
 
     public function update($id, Request $request)
@@ -62,6 +68,7 @@ class MembersController extends BaseController
         }
 
         $roles = $request->get('roles');
+
         foreach ($roles as $roleId) {
             if (!$this->rolesService->one($roleId)) {
                 abort(404);
@@ -69,6 +76,8 @@ class MembersController extends BaseController
         }
 
         $this->memberRolesService->update($member->id, $roles);
+
+        response(null, 204);
     }
 
     public function destroy($id)
@@ -79,5 +88,7 @@ class MembersController extends BaseController
 
         $this->memberRolesService->destroy($member->id);
         $this->membersService->destroy($id);
+
+        response(null, 204);
     }
 }

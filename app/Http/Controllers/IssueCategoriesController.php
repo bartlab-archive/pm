@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\IssueCategories\IssueCategoriesRequest;
 use App\Http\Resources\IssuesCategoryResource;
+use App\Services\EnabledModulesService;
 use App\Services\IssueCategoriesService;
+use App\Services\IssuesService;
 use App\Services\ProjectsService;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -16,21 +18,31 @@ use Illuminate\Routing\Controller as BaseController;
 class IssueCategoriesController extends BaseController
 {
     protected $issueCategoriesService;
+    protected $issuesService;
     protected $projectsService;
+    protected $enabledModulesService;
 
     public function __construct(
         IssueCategoriesService $issueCategoriesService,
-        ProjectsService $projectsService
+        IssuesService $issuesService,
+        ProjectsService $projectsService,
+        EnabledModulesService $enabledModulesService
     )
     {
         $this->issueCategoriesService = $issueCategoriesService;
+        $this->issuesService = $issuesService;
         $this->projectsService = $projectsService;
+        $this->enabledModulesService = $enabledModulesService;
     }
 
     public function index($identifier)
     {
-        if (!$project = $this->projectsService->one($identifier)) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
             abort(404);
+        }
+
+        if (!$this->enabledModulesService->check($project->id, $this->issuesService::MODULE_NAME)) {
+            abort(403);
         }
 
         return IssuesCategoryResource::collection(
@@ -40,27 +52,32 @@ class IssueCategoriesController extends BaseController
 
     public function show($id)
     {
-
-        if (!$issueCategory = $this->issueCategoriesService->one($id, ['issues', 'project', 'assigned'])) {
+        if (!$category = $this->issueCategoriesService->one($id, ['issues', 'project', 'assigned'])) {
             return abort(404);
         }
 
-        return IssuesCategoryResource::make($issueCategory);
+        if (!$this->enabledModulesService->check($category->project_id, $this->issuesService::MODULE_NAME)) {
+            abort(403);
+        }
+
+        return IssuesCategoryResource::make($category);
     }
 
     public function store($identifier, IssueCategoriesRequest $request)
     {
-        if (!$project = $this->projectsService->one($identifier)) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
             abort(404);
+        }
+
+        if (!$this->enabledModulesService->check($project->id, $this->issuesService::MODULE_NAME)) {
+            abort(403);
         }
 
         return IssuesCategoryResource::make(
             $this->issueCategoriesService->create(
                 array_merge(
                     $request->validated(),
-                    [
-                        'project_id' => $project->id
-                    ]
+                    ['project_id' => $project->id]
                 )
             )
         );
@@ -74,24 +91,31 @@ class IssueCategoriesController extends BaseController
 //            return abort(403);
 //        }
 
-        if (!$this->issueCategoriesService->one($id)) {
+        if (!$category = $this->issueCategoriesService->one($id)) {
             return abort(404);
         }
 
+        if (!$this->enabledModulesService->check($category->project_id, $this->issuesService::MODULE_NAME)) {
+            abort(403);
+        }
 
-        if (!$updateResult = $this->issueCategoriesService->update($id, $request->validated())) {
+        if (!$result = $this->issueCategoriesService->update($id, $request->validated())) {
             // todo: add error message
             return abort(422);
         }
 
-        return IssuesCategoryResource::make($updateResult);
+        return IssuesCategoryResource::make($result);
 
     }
 
     public function destroy($id)
     {
-        if (!$this->issueCategoriesService->one($id)) {
+        if (!$category = $this->issueCategoriesService->one($id)) {
             return abort(404);
+        }
+
+        if (!$this->enabledModulesService->check($category->project_id, $this->issuesService::MODULE_NAME)) {
+            abort(403);
         }
 
         $this->issueCategoriesService->delete($id);

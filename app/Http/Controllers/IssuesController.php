@@ -15,19 +15,16 @@ use App\Services\EnabledModulesService;
 use App\Services\EnumerationsService;
 use App\Services\IssueCategoriesService;
 use App\Services\IssuesService;
-use App\Services\JournalsService;
 use App\Services\ProjectsService;
 use App\Services\StatusesService;
 use App\Services\TrackersService;
-use App\Services\WatchersService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Class IssuesController
  *
- * @property IssuesService $issueService
+ * @property IssuesService $issuesService
  * @property StatusesService $statusesService
  * @property TrackersService $trackersService
  * @property ProjectsService $projectsService
@@ -39,7 +36,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class IssuesController extends BaseController
 {
-    protected $issueService;
+    protected $issuesService;
     protected $statusesService;
     protected $trackersService;
     protected $projectsService;
@@ -48,7 +45,7 @@ class IssuesController extends BaseController
     protected $enabledModulesService;
 
     public function __construct(
-        IssuesService $issueService,
+        IssuesService $issuesService,
         StatusesService $statusesService,
         TrackersService $trackersService,
         ProjectsService $projectsService,
@@ -57,7 +54,7 @@ class IssuesController extends BaseController
         EnabledModulesService $enabledModulesService
     )
     {
-        $this->issueService = $issueService;
+        $this->issuesService = $issuesService;
         $this->statusesService = $statusesService;
         $this->trackersService = $trackersService;
         $this->projectsService = $projectsService;
@@ -68,8 +65,8 @@ class IssuesController extends BaseController
 
     public function index(GetIssuesRequest $request)
     {
-        if ($projectIdentifier = $request->get('project_identifier')) {
-            if (!$project = $this->projectsService->one($projectIdentifier)) {
+        if ($identifier = $request->get('project_identifier')) {
+            if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
                 abort(404);
             }
 
@@ -80,20 +77,20 @@ class IssuesController extends BaseController
              *  - is user allow to view issue
              *  - project status
              */
-            if (!$this->enabledModulesService->check($project->identifier, $this->issueService::MODULE_NAME)) {
+            if (!$this->enabledModulesService->check($project->id, $this->issuesService::MODULE_NAME)) {
                 abort(403);
             }
         }
 
         // todo: get only needed fields from request
         return IssueCollection::make(
-            $this->issueService->all($request->all())
+            $this->issuesService->all($request->all())
         );
     }
 
-    public function show($id, Request $request)
+    public function show($id)
     {
-        if (!$issue = $this->issueService->one($id)) {
+        if (!$issue = $this->issuesService->one($id)) {
             abort(404);
         }
         /*
@@ -103,10 +100,7 @@ class IssuesController extends BaseController
          *  - is user allow to view issue
          *  - project status
          */
-        if (!$issue->project || !$this->enabledModulesService->check(
-                $issue->project->identifier,
-                $this->issueService::MODULE_NAME
-            )) {
+        if (!$issue->project_id || !$this->enabledModulesService->check($issue->project_id, $this->issuesService::MODULE_NAME)) {
             abort(403);
         }
 
@@ -129,7 +123,7 @@ class IssuesController extends BaseController
 
     public function store(CreateIssueRequest $request)
     {
-        if (!$project = $this->projectsService->one($request->get('project_identifier'))) {
+        if (!$project = $this->projectsService->oneByIdentifier($request->get('project_identifier'))) {
             abort(404);
         }
 
@@ -140,17 +134,17 @@ class IssuesController extends BaseController
          *  - is user allow to view issue
          *  - project status
          */
-        if (!$this->enabledModulesService->check($project->identifier, $this->issueService::MODULE_NAME)) {
+        if (!$this->enabledModulesService->check($project->id, $this->issuesService::MODULE_NAME)) {
             abort(403);
         }
 
         // create new issue
-        $issue = $this->issueService->create(
+        $issue = $this->issuesService->create(
             array_merge(
                 $request->validated(),
                 [
                     'project_id' => $project->id,
-                    'author_id' => Auth::id()
+                    'author_id' => \Auth::id()
                 ]
             )
         );
@@ -165,7 +159,7 @@ class IssuesController extends BaseController
 
     public function update($id, UpdateIssueRequest $request)
     {
-        if (!$project = $this->projectsService->one($request->get('project_identifier'))) {
+        if (!$issue = $this->issuesService->one($id)) {
             abort(404);
         }
 
@@ -176,27 +170,26 @@ class IssuesController extends BaseController
          *  - is user allow to view issue
          *  - project status
          */
-        if (!$this->enabledModulesService->check($project->identifier, $this->issueService::MODULE_NAME)) {
+        if (!$this->enabledModulesService->check($issue->project_id, $this->issuesService::MODULE_NAME)) {
             abort(403);
         }
 
-        if (!$this->issueService->one($id)) {
-            abort(404);
-        }
-
-        // todo: show for change watchers and add items to journal
-        $issue = $this->issueService->update(
-            $id,
-            array_merge(
-                $request->validated(),
-                [
-                    'project_id' => $project->id,
-                    'user_id' => \Auth::id()
-                ]
-            )
+        $data = array_merge(
+            $request->validated(),
+            ['user_id' => \Auth::id()]
         );
 
-        if (!$issue) {
+        // check new project for issue
+        if ($identifier = $request->get('project_identifier')) {
+            $project = $this->projectsService->oneByIdentifier($identifier);
+
+            // todo: check project status
+            if ($project->id !== $issue->project_id && $this->enabledModulesService->check($project->id, $this->issuesService::MODULE_NAME)) {
+                $data['project_id'] = $project->id;
+            }
+        }
+
+        if (!$issue = $this->issuesService->update($id, $data)) {
             // todo: add error message
             abort(422);
         }
@@ -207,7 +200,7 @@ class IssuesController extends BaseController
     public function destroy($id)
     {
         // todo: full check issue and project
-        if (!$this->issueService->delete($id)){
+        if (!$this->issuesService->delete($id)) {
             abort(422);
         }
 
@@ -216,11 +209,7 @@ class IssuesController extends BaseController
 
     public function watch($id)
     {
-        if (!$issue = $this->issueService->one($id)) {
-            abort(404);
-        }
-
-        if (!$issue->project) {
+        if (!$issue = $this->issuesService->one($id)) {
             abort(404);
         }
 
@@ -231,11 +220,11 @@ class IssuesController extends BaseController
          *  - is user allow to view issue
          *  - project status
          */
-        if (!$this->enabledModulesService->check($issue->project->identifier, $this->issueService::MODULE_NAME)) {
+        if (!$issue->project_id || !$this->enabledModulesService->check($issue->project_id, $this->issuesService::MODULE_NAME)) {
             abort(403);
         }
 
-        if (!$this->issueService->watch($id, \Auth::id())) {
+        if (!$this->issuesService->watch($id, \Auth::id())) {
             abort(422);
         }
 
@@ -244,12 +233,7 @@ class IssuesController extends BaseController
 
     public function unwatch($id)
     {
-        if (!$issue = $this->issueService->one($id)) {
-            abort(404);
-        }
-
-        // todo: get project from ProjectService
-        if (!$issue->project) {
+        if (!$issue = $this->issuesService->one($id)) {
             abort(404);
         }
 
@@ -260,12 +244,11 @@ class IssuesController extends BaseController
          *  - is user allow to view issue
          *  - project status
          */
-        // todo: return 404
-        if (!$this->enabledModulesService->check($issue->project->identifier, $this->issueService::MODULE_NAME)) {
+        if (!$issue->project_id || !$this->enabledModulesService->check($issue->project_id, $this->issuesService::MODULE_NAME)) {
             abort(403);
         }
 
-        if (!$this->issueService->unwatch($id, \Auth::id())) {
+        if (!$this->issuesService->unwatch($id, \Auth::id())) {
             abort(422);
         }
 

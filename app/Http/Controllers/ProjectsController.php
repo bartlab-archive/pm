@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Projects\IndexProjectRequest;
 use App\Http\Requests\Projects\StoreProjectRequest;
 use App\Http\Requests\Projects\UpdateProjectRequest;
-use App\Http\Resources\MemberResource;
-use App\Http\Resources\ModuleResource;
 use App\Http\Resources\ProjectResource;
 use App\Services\EnabledModulesService;
 use App\Services\MembersService;
@@ -56,44 +54,25 @@ class ProjectsController extends BaseController
 
     public function show($identifier)
     {
-        if (!$project = $this->projectsService->one($identifier, ['parent', 'members.user', 'members.roles', 'enabledModules'])) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier, ['parent', 'members.user', 'members.roles', 'enabledModules'])) {
             abort(404);
         }
 
         // todo: check project status
-
         return ProjectResource::make($project);
-//            ->additional([
-//                'modules' => ModuleResource::collection(
-//                    $this->enabledModulesService->getEnabledByProject($identifier)
-//                ),
-//                'members' => MemberResource::collection(
-//                    $this->membersService->getByProject($identifier, ['user', 'roles'])
-//                )
-//            ]);
     }
 
     public function store(StoreProjectRequest $request)
     {
-        // todo: dont throw 404, if parent not found?
-        if (
-            ($parentIdentifier = $request->input('parent_identifier')) &&
-            (!$parent = $this->projectsService->one($parentIdentifier))
-        ) {
-            // todo: is it valid response code?
-            abort(404);
-        }
+        $parent = $this->projectsService->oneByIdentifier($request->input('parent_identifier'));
 
         /*
          * todo: check parent project status and user roles
          */
-
         $project = $this->projectsService->create(
             array_merge(
                 $request->validated(),
-                [
-                    'parent_id' => $parentIdentifier ? $parent->id : null
-                ]
+                ['parent_id' => $parent ? $parent->id : null]
             )
         );
 
@@ -107,36 +86,30 @@ class ProjectsController extends BaseController
 
     public function update($identifier, UpdateProjectRequest $request)
     {
-        if (!$this->projectsService->one($identifier)) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
             abort(404);
         }
 
-        // todo: dont throw 404, if parent not found?
-        if (($parentIdentifier = $request->input('parent_identifier')) && (!$parent = $this->projectsService->one($parentIdentifier))) {
-            // todo: is it valid response code?
-            abort(404);
-        }
+        $parent = $this->projectsService->oneByIdentifier($request->input('parent_identifier'));
 
         /*
          * todo: check parent project status and user roles
          * todo: check updated project for status and user roles
          */
 
-        $project = $this->projectsService->update(
-            $identifier,
+        $result = $this->projectsService->update(
+            $project->id,
             array_merge(
                 $request->validated(),
-                [
-                    'parent_id' => $parentIdentifier ? $parent->id : null
-                ]
+                ['parent_id' => $parent ? $parent->id : null]
             )
         );
 
-        if (!$project) {
+        if (!$result) {
             // todo: add error message
             return abort(422);
         }
 
-        return ProjectResource::make($project);
+        return ProjectResource::make($result);
     }
 }

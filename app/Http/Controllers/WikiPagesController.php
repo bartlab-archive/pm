@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\WikiPage\CreateWikiPageRequest;
 use App\Http\Requests\WikiPage\UpdateWikiPageRequest;
 use App\Http\Resources\WikiPageResource;
+use App\Services\EnabledModulesService;
 use App\Services\WikisService;
 use App\Services\ProjectsService;
 use Illuminate\Routing\Controller as BaseController;
@@ -13,20 +14,27 @@ class WikiPagesController extends BaseController
 {
     protected $wikisService;
     protected $projectsService;
+    protected $enabledModulesService;
 
     public function __construct(
         WikisService $wikisService,
-        ProjectsService $projectsService
+        ProjectsService $projectsService,
+        EnabledModulesService $enabledModulesService
     )
     {
         $this->wikisService = $wikisService;
         $this->projectsService = $projectsService;
+        $this->enabledModulesService = $enabledModulesService;
     }
 
     public function index($identifier)
     {
-        if (!$project = $this->projectsService->one($identifier)) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
             abort(404);
+        }
+
+        if (!$this->enabledModulesService->check($project->id, $this->wikisService::MODULE_NAME)) {
+            abort(403);
         }
 
         if (!$wiki = $this->wikisService->oneWikiByProjectId($project->id)) {
@@ -43,8 +51,12 @@ class WikiPagesController extends BaseController
 
     public function show($identifier, $name)
     {
-        if (!$project = $this->projectsService->one($identifier)) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
             abort(404);
+        }
+
+        if (!$this->enabledModulesService->check($project->id, $this->wikisService::MODULE_NAME)) {
+            abort(403);
         }
 
         if (!$wiki = $this->wikisService->oneWikiByProjectId($project->id)) {
@@ -64,8 +76,12 @@ class WikiPagesController extends BaseController
         /*
          * todo: check permissions
          */
-        if (!$project = $this->projectsService->one($identifier)) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
             abort(404);
+        }
+
+        if (!$this->enabledModulesService->check($project->id, $this->wikisService::MODULE_NAME)) {
+            abort(403);
         }
 
         if (!$wiki = $this->wikisService->oneWikiByProjectId($project->id)) {
@@ -92,8 +108,12 @@ class WikiPagesController extends BaseController
         /*
          * todo: check permissions
          */
-        if (!$project = $this->projectsService->one($identifier)) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
             abort(404);
+        }
+
+        if (!$this->enabledModulesService->check($project->id, $this->wikisService::MODULE_NAME)) {
+            abort(403);
         }
 
         if (!$this->wikisService->oneWikiByProjectId($project->id)) {
@@ -117,8 +137,12 @@ class WikiPagesController extends BaseController
 
     public function destroy($identifier, $id)
     {
-        if (!$project = $this->projectsService->one($identifier)) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
             abort(404);
+        }
+
+        if (!$this->enabledModulesService->check($project->id, $this->wikisService::MODULE_NAME)) {
+            abort(403);
         }
 
         if (!$this->wikisService->deletePage($id)) {
@@ -130,8 +154,12 @@ class WikiPagesController extends BaseController
 
     public function watch($identifier, $id)
     {
-        if (!$project = $this->projectsService->one($identifier)) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
             abort(404);
+        }
+
+        if (!$this->enabledModulesService->check($project->id, $this->wikisService::MODULE_NAME)) {
+            abort(403);
         }
 
         if (!$this->wikisService->oneWikiByProjectId($project->id)) {
@@ -158,8 +186,12 @@ class WikiPagesController extends BaseController
 
     public function unwatch($identifier, $id)
     {
-        if (!$project = $this->projectsService->one($identifier)) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
             abort(404);
+        }
+
+        if (!$this->enabledModulesService->check($project->id, $this->wikisService::MODULE_NAME)) {
+            abort(403);
         }
 
         if (!$this->wikisService->oneWikiByProjectId($project->id)) {
@@ -186,8 +218,12 @@ class WikiPagesController extends BaseController
 
     public function lock($identifier, $id)
     {
-        if (!$project = $this->projectsService->one($identifier)) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
             abort(404);
+        }
+
+        if (!$this->enabledModulesService->check($project->id, $this->wikisService::MODULE_NAME)) {
+            abort(403);
         }
 
         if (!$this->wikisService->oneWikiByProjectId($project->id)) {
@@ -214,8 +250,12 @@ class WikiPagesController extends BaseController
 
     public function unlock($identifier, $id)
     {
-        if (!$project = $this->projectsService->one($identifier)) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
             abort(404);
+        }
+
+        if (!$this->enabledModulesService->check($project->id, $this->wikisService::MODULE_NAME)) {
+            abort(403);
         }
 
         if (!$this->wikisService->oneWikiByProjectId($project->id)) {

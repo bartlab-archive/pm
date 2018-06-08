@@ -14,22 +14,7 @@ use App\Models\IssueCategory;
 class IssueCategoriesService
 {
 
-//    protected $projectsService;
-//
-//    public function __construct(ProjectsService $projectsService)
-//    {
-//        $this->projectsService = $projectsService;
-//    }
-
-    public function one($id, $with = [])
-    {
-        return IssueCategory::query()
-            ->where('id', $id)
-            ->with($with)
-            ->first();
-    }
-
-    public function all($identifier, $with = [])
+    public function all($identifier, array $with = [])
     {
         return IssueCategory::query()
             ->with($with)
@@ -39,22 +24,16 @@ class IssueCategoriesService
             ->get();
     }
 
-//    public function getCategoriesList($project_id) {
-//        return IssueCategory::where('project_id', $project_id)->select('id', 'name')->get();
-//    }
 
-    /**
-     * Delete IssueCategory by id
-     *
-     * @param int $id
-     * @return bool
-     */
-    public function delete($id)
+    public function one($id, array $with = [])
     {
-        return IssueCategory::find($id)->delete();
+        return IssueCategory::query()
+            ->where('id', $id)
+            ->with($with)
+            ->first();
     }
 
-    public function create($data)
+    public function create(array $data)
     {
         return IssueCategory::create($data);
     }
@@ -62,16 +41,21 @@ class IssueCategoriesService
     /**
      * Edit IssueCategory
      *
-     * @param $model
+     * @param $id
      * @param $data
      * @return mixed
      */
-    public function update($id, $data)
+    public function update($id, array $data)
     {
         if (($category = $this->one($id)) && $category->update($data)) {
             return $category;
         }
 
         return false;
+    }
+
+    public function delete($id)
+    {
+        return IssueCategory::find($id)->delete();
     }
 }

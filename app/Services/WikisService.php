@@ -10,6 +10,8 @@ use App\Models\WikiPage;
 class WikisService
 {
 
+    const MODULE_NAME = 'wiki';
+
     public function allPages($wikiId)
     {
         return WikiPage::query()
@@ -128,7 +130,7 @@ class WikisService
         return false;
     }
 
-    public function updatePage($id, $data)
+    public function updatePage($id, array $data)
     {
         /** @var $page WikiPage */
         if (!$page = $this->onePageById($id)) {
