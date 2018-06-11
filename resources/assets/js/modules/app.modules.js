@@ -17,7 +17,7 @@ import 'modules/settings/settings.module';
 import 'modules/auth/auth.module';
 import 'modules/wikis/wikis.module';
 import 'modules/versions/versions.module';
-import 'modules/agile/agile.module';
+// import 'modules/agile/agile.module';
 import 'modules/calendar/calendar.module';
 import 'modules/gantt/gantt.module';
 import 'modules/boards/boards.module';
@@ -51,7 +51,7 @@ angular.module('app.modules', [
     'app.modules.workflows',
     'app.modules.auth',
     'app.modules.wikis',
-    'app.modules.agile',
+    // 'app.modules.agile',
     'app.modules.calendar',
     'app.modules.gantt',
     'app.modules.boards',

@@ -8,7 +8,7 @@ export default class GanttIndexController extends ControllerBase {
     }
 
     $onInit() {
-        this.loadIsues().then(() => this.load());
+        // this.loadIsues().then(() => this.load());
     }
 
     load() {
