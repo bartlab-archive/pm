@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\WikiPage\CreateWikiPageRequest;
-use App\Http\Requests\WikiPage\UpdateWikiPageRequest;
+use App\Http\Requests\Wiki\CreateWikiPageRequest;
+use App\Http\Requests\Wiki\UpdateWikiPageRequest;
 use App\Http\Resources\WikiPageResource;
 use App\Services\EnabledModulesService;
 use App\Services\WikisService;

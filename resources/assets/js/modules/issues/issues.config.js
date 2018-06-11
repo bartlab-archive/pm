@@ -5,6 +5,7 @@ import IssuesFormComponent from './components/form/issues-form.component';
 import IssuesProjectSettingsComponent from './components/project-settings/issues-project-settings.component';
 import IssuesImportsComponent from './components/imports/issues-imports.component';
 import IssuesReportComponent from './components/report/issues-report.component';
+import IssueStatusComponent from './components/status/issues-status.component';
 
 /**
  * @property {object} $stateProvider
@@ -36,7 +37,7 @@ export default class IssuesConfig extends InjectableBase {
         this.mainServiceProvider
             .registerAdminMenu({
                 name: 'Issue statuses',
-                url: 'statuses.index',
+                url: 'issues-statuses.index',
                 icon: 'done'
             })
             .registerAppMenu({
@@ -141,6 +142,23 @@ export default class IssuesConfig extends InjectableBase {
                     }
                 },
                 component: IssuesInfoComponent.getName(),
+            })
+            .state('issues-statuses', {
+                abstract: true,
+                data: {
+                    access: '@'
+                },
+                url: '/issue_statuses',
+                parent: 'default',
+                views: {
+                    content: {
+                        template: '<ui-view/>'
+                    }
+                }
+            })
+            .state('issues-statuses.index', {
+                url: '',
+                component: IssueStatusComponent.getName(),
             });
     }
 

@@ -2,18 +2,20 @@ import ControllerBase from 'base/controller.base';
 
 /**
  * @property {$mdDialog} $mdDialog
- * @property {ProjectsService} ProjectsService
+ * @property {ProjectsService} projectsService
  * @property {$rootScope} $rootScope
+ * @property {IssuesService} issuesService
  */
 export default class IssuesCategoryController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdDialog', '$mdToast', '$rootScope', 'issuesCategoriesService'];
+        return ['$mdDialog', '$mdToast', '$rootScope', 'issuesService', 'projectsService'];
     }
 
     $onInit() {
         this.errors = {};
         this.form = null;
+        this.title = this.category ? this.category.name : 'New issue category';
         // if project identifier not set - close dialog
         if (!this.project.identifier) {
             this.cancel();
@@ -32,18 +34,17 @@ export default class IssuesCategoryController extends ControllerBase {
     }
 
     submit() {
-        let requestObject = {
-            id: this.issueCategory.id,
-            assigned_to_id: this.issueCategory.assigned ? this.issueCategory.assigned.id : null,
-            name: this.issueCategory.name
+        let model = {
+            assigned_to_id: this.category.assigned ? this.category.assigned.id : null,
+            name: this.category.name
         };
 
-        (this.issueCategory.id ?
-            this.issuesCategoriesService.update(requestObject.id, requestObject) :
-            this.issuesCategoriesService.create(this.project.identifier, requestObject))
+        (this.category.id ?
+            this.issuesService.updateCategory(this.category.id, model) :
+            this.issuesService.createCategory(this.project.identifier, model))
             .then(() => this.cancel(true))
             .catch((response) => {
-              this.errors = _.get(response, 'data.errors', {});
+                this.errors = _.get(response, 'data.errors', {});
             });
     }
 

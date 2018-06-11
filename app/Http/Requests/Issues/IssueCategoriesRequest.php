@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Requests\IssueCategories;
+namespace App\Http\Requests\Issues;
 
-use App\Models\IssueCategory;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -30,7 +29,7 @@ class IssueCategoriesRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-//                Rule::unique(IssueCategory::getTableName(), 'name')->where('project_id', $this->)
+//                Rule::unique(IssueCategory::getTableName(), 'name')->where('project_id', $project->id)
             ],
             'assigned_to_id' => 'nullable|exists:' . User::getTableName() . ',id'
             // todo: add check is assigned_to_id is member of related project

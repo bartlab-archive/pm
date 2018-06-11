@@ -4,6 +4,10 @@ namespace App\Http\Requests\Issues;
 
 use App\Models\Enumeration;
 use App\Models\Issue;
+use App\Models\IssueStatus;
+use App\Models\Project;
+use App\Models\Tracker;
+use Illuminate\Validation\Rule;
 
 class UpdateIssueRequest extends CreateIssueRequest
 {

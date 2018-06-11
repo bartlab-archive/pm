@@ -37,28 +37,22 @@ use Illuminate\Routing\Controller as BaseController;
 class IssuesController extends BaseController
 {
     protected $issuesService;
-    protected $statusesService;
     protected $trackersService;
     protected $projectsService;
-    protected $categoriesService;
     protected $enumerationsService;
     protected $enabledModulesService;
 
     public function __construct(
         IssuesService $issuesService,
-        StatusesService $statusesService,
         TrackersService $trackersService,
         ProjectsService $projectsService,
         EnumerationsService $enumerationsService,
-        IssueCategoriesService $categoriesService,
         EnabledModulesService $enabledModulesService
     )
     {
         $this->issuesService = $issuesService;
-        $this->statusesService = $statusesService;
         $this->trackersService = $trackersService;
         $this->projectsService = $projectsService;
-        $this->categoriesService = $categoriesService;
         $this->enumerationsService = $enumerationsService;
         $this->enabledModulesService = $enabledModulesService;
     }
@@ -110,7 +104,7 @@ class IssuesController extends BaseController
     public function filters(Request $request)
     {
         return response([
-            'statuses' => StatusResource::collection($this->statusesService->all()),
+            'statuses' => StatusResource::collection($this->issuesService->statuses()),
             'trackers' => TrackerResource::collection($this->trackersService->all()),
             'priorities' => PriorityResource::collection(
                 $this->enumerationsService->all([

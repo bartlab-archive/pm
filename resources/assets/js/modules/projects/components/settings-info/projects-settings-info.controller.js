@@ -16,7 +16,6 @@ export default class ProjectsSettingsInfoController extends ControllerBase {
     }
 
     submit() {
-        // this.projectsService.update(this.params)
         this.projectsService
             .update(
                 this.projectsService.getCurrentId(),

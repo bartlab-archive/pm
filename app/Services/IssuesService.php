@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Issue;
+use App\Models\IssueCategory;
+use App\Models\IssueStatus;
 use App\Models\Journal;
 use \Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -148,6 +150,7 @@ class IssuesService
         $issue = Issue::make(array_only(
             $data,
             [
+                'author_id',
                 'tracker_id',
                 'project_id',
                 'subject',
@@ -271,6 +274,67 @@ class IssuesService
     {
         if ($issue = Issue::query()->where(['id' => $id])->first()) {
             $issue->watchers()->detach($userId);
+            return true;
+        }
+
+        return false;
+    }
+
+    public function statuses()
+    {
+        return IssueStatus::query()->get();
+    }
+
+    public function categories($projectId, array $with = [])
+    {
+        return IssueCategory::query()
+            ->with($with)
+            ->where(['project_id' => $projectId])
+            ->get();
+    }
+
+
+    public function category($id, array $with = [])
+    {
+        return IssueCategory::query()
+            ->where('id', $id)
+            ->with($with)
+            ->first();
+    }
+
+    public function createCategory(array $data)
+    {
+        $category = IssueCategory::make(array_only($data, ['name', 'assigned_to_id', 'project_id']));
+
+        if ($category->save()) {
+            return $category;
+        }
+
+        return false;
+    }
+
+    /**
+     * Edit IssueCategory
+     *
+     * @param $id
+     * @param $data
+     * @return mixed
+     */
+    public function updateCategory($id, array $data)
+    {
+        if (($category = $this->category($id)) && $category->update(array_only($data, ['name', 'assigned_to_id']))) {
+            return $category;
+        }
+
+        return false;
+    }
+
+    public function deleteCategory($id)
+    {
+        if ($category = $this->category($id)) {
+            $category->issues()->update(['category_id' => null]);
+            $category->delete();
+
             return true;
         }
 

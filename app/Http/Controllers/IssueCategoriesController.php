@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\IssueCategories\IssueCategoriesRequest;
+use App\Http\Requests\Issues\IssueCategoriesRequest;
 use App\Http\Resources\IssuesCategoryResource;
 use App\Services\EnabledModulesService;
-use App\Services\IssueCategoriesService;
 use App\Services\IssuesService;
 use App\Services\ProjectsService;
 use Illuminate\Routing\Controller as BaseController;
@@ -17,19 +16,16 @@ use Illuminate\Routing\Controller as BaseController;
  */
 class IssueCategoriesController extends BaseController
 {
-    protected $issueCategoriesService;
     protected $issuesService;
     protected $projectsService;
     protected $enabledModulesService;
 
     public function __construct(
-        IssueCategoriesService $issueCategoriesService,
         IssuesService $issuesService,
         ProjectsService $projectsService,
         EnabledModulesService $enabledModulesService
     )
     {
-        $this->issueCategoriesService = $issueCategoriesService;
         $this->issuesService = $issuesService;
         $this->projectsService = $projectsService;
         $this->enabledModulesService = $enabledModulesService;
@@ -46,13 +42,13 @@ class IssueCategoriesController extends BaseController
         }
 
         return IssuesCategoryResource::collection(
-            $this->issueCategoriesService->all($identifier, ['assigned'])
+            $this->issuesService->categories($project->id, ['assigned'])
         );
     }
 
     public function show($id)
     {
-        if (!$category = $this->issueCategoriesService->one($id, ['issues', 'project', 'assigned'])) {
+        if (!$category = $this->issuesService->category($id)) {
             return abort(404);
         }
 
@@ -73,8 +69,10 @@ class IssueCategoriesController extends BaseController
             abort(403);
         }
 
+        // todo: validate for unique name
+
         return IssuesCategoryResource::make(
-            $this->issueCategoriesService->create(
+            $this->issuesService->createCategory(
                 array_merge(
                     $request->validated(),
                     ['project_id' => $project->id]
@@ -91,7 +89,7 @@ class IssueCategoriesController extends BaseController
 //            return abort(403);
 //        }
 
-        if (!$category = $this->issueCategoriesService->one($id)) {
+        if (!$category = $this->issuesService->category($id)) {
             return abort(404);
         }
 
@@ -99,7 +97,9 @@ class IssueCategoriesController extends BaseController
             abort(403);
         }
 
-        if (!$result = $this->issueCategoriesService->update($id, $request->validated())) {
+        // todo: validate for unique name
+
+        if (!$result = $this->issuesService->updateCategory($id, $request->validated())) {
             // todo: add error message
             return abort(422);
         }
@@ -110,7 +110,7 @@ class IssueCategoriesController extends BaseController
 
     public function destroy($id)
     {
-        if (!$category = $this->issueCategoriesService->one($id)) {
+        if (!$category = $this->issuesService->category($id)) {
             return abort(404);
         }
 
@@ -118,9 +118,9 @@ class IssueCategoriesController extends BaseController
             abort(403);
         }
 
-        $this->issueCategoriesService->delete($id);
-
-        //todo: add 422 code response if deleting was not done
+        if (!$this->issuesService->deleteCategory($id)){
+            return abort(422);
+        }
 
         return response(null, 204);
     }

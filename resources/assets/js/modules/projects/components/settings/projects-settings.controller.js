@@ -37,6 +37,7 @@ export default class ProjectsSettingsController extends ControllerBase {
     }
 
     load() {
+        this.loadProccess = true;
         this.projectsService
             .one(this.$stateParams.project_id)
             .then((response) => {
@@ -45,6 +46,8 @@ export default class ProjectsSettingsController extends ControllerBase {
                 this.settingsTabs.forEach((item) => {
                     item.enable = !item.module || this.model.modules.some(($m) => $m.name === item.module);
                 });
+
+                this.loadProccess = false;
             });
     }
 

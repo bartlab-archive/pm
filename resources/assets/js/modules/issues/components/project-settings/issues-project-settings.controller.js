@@ -7,7 +7,7 @@ import issuesCategoryTemplate from "../category/issues-category.html";
 export default class IssuesProjectSettingsController extends ControllerBase {
 
     static get $inject() {
-        return ['$rootScope', '$mdDialog', 'issuesCategoriesService'];
+        return ['$rootScope', '$mdDialog', 'issuesService', 'projectsService'];
     }
 
     $onInit() {
@@ -21,9 +21,11 @@ export default class IssuesProjectSettingsController extends ControllerBase {
     }
 
     load() {
-        this.issuesCategoriesService.list(this.params.identifier).then((response) => {
-            this.categories = response.data.data;
-        });
+        this.issuesService
+            .categories(this.projectsService.getCurrentId())
+            .then((response) => {
+                this.categories = response.data.data;
+            });
     }
 
     static setMdDialogConfig(target, data = {}) {
@@ -40,12 +42,6 @@ export default class IssuesProjectSettingsController extends ControllerBase {
     }
 
     create($event) {
-        // if ($event.ctrlKey || $event.metaKey) {
-        //   return;
-        // }
-        //
-        // $event.preventDefault();
-
         this.$mdDialog.show(
             this.constructor.setMdDialogConfig($event.target, {
                 project: this.params
@@ -57,7 +53,7 @@ export default class IssuesProjectSettingsController extends ControllerBase {
         this.$mdDialog.show(
             this.constructor.setMdDialogConfig($event.target, {
                 project: this.params,
-                issueCategory: item
+                category: item
             })
         );
     }
@@ -70,7 +66,7 @@ export default class IssuesProjectSettingsController extends ControllerBase {
 
         this.$mdDialog
             .show(confirm)
-            .then(() => this.issuesCategoriesService.remove(item.id))
+            .then(() => this.issuesService.removeCatrgory(item.id))
             .then(() => {
                 this.$rootScope.$emit('updateIssuesCategories');
                 this.$mdToast.show(

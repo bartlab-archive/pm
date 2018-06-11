@@ -10,7 +10,6 @@ import 'modules/news/news.module';
 import 'modules/groups/groups.module';
 import 'modules/roles/roles.module';
 import 'modules/trackers/trackers.module';
-import 'modules/statuses/statuses.module';
 import 'modules/workflows/workflows.module';
 import 'modules/fields/fields.module';
 import 'modules/enumerations/enumerations.module';
@@ -46,7 +45,7 @@ angular.module('app.modules', [
 
     // additional modules
     'app.modules.issues',
-    'app.modules.statuses',
+    // 'app.modules.statuses',
     'app.modules.news',
     'app.modules.trackers',
     'app.modules.workflows',

@@ -101,17 +101,6 @@ Route::group(
             }
         );
 
-//        Route::group(
-//            [
-//                'middleware' => 'auth',
-//                'prefix' => 'watchers'
-//            ],
-//            function () {
-//                Route::post('/{type}/{id}', 'WatchersController@create');
-//                Route::delete('/{type}/{id}', 'WatchersController@delete');
-//            }
-//        );
-
         Route::group(
             [
                 //'middleware' => 'auth',
@@ -142,21 +131,6 @@ Route::group(
             }
         );
 
-        // todo: move to issues group (?)
-        Route::group(
-            [
-                'middleware' => 'auth',
-                'prefix' => 'issues_categories'
-            ],
-            function () {
-                Route::get('/{identifier}', 'IssueCategoriesController@index');
-                Route::post('/{identifier}', 'IssueCategoriesController@store');
-                Route::put('/{id}', 'IssueCategoriesController@update');
-                Route::delete('/{id}', 'IssueCategoriesController@destroy');
-                Route::get('/{id}', 'IssueCategoriesController@show');
-            }
-        );
-
         Route::group(
             [
                 'middleware' => 'auth',
@@ -173,67 +147,24 @@ Route::group(
                 'prefix' => 'wikis'
             ],
             function () {
-                Route::get('/{identifier}/pages', 'WikiPagesController@index');
-                Route::post('/{identifier}/pages', 'WikiPagesController@store');
-                Route::get('/{identifier}/pages/{name}', 'WikiPagesController@show');
-
-                Route::put('/{identifier}/pages/{id}', 'WikiPagesController@update');
-                Route::delete('/{identifier}/pages/{id}', 'WikiPagesController@destroy');
-
-                Route::post('/{identifier}/pages/{id}/watch', 'WikiPagesController@watch');
-                Route::delete('/{identifier}/pages/{id}/watch', 'WikiPagesController@unwatch');
-
-                Route::post('/{identifier}/pages/{id}/lock', 'WikiPagesController@lock');
-                Route::delete('/{identifier}/pages/{id}/unlock', 'WikiPagesController@unlock');
-
+                // wikis
                 Route::get('/{identifier}', 'WikisController@show');
                 Route::post('/{identifier}', 'WikisController@store');
                 Route::put('/{identifier}', 'WikisController@update');
                 Route::delete('/{identifier}', 'WikisController@destroy');
+
+                // pages
+                Route::get('/{identifier}/pages', 'WikiPagesController@index');
+                Route::post('/{identifier}/pages', 'WikiPagesController@store');
+                Route::get('/{identifier}/pages/{name}', 'WikiPagesController@show');
+                Route::put('/{identifier}/pages/{id}', 'WikiPagesController@update');
+                Route::delete('/{identifier}/pages/{id}', 'WikiPagesController@destroy');
+                Route::post('/{identifier}/pages/{id}/watch', 'WikiPagesController@watch');
+                Route::delete('/{identifier}/pages/{id}/watch', 'WikiPagesController@unwatch');
+                Route::post('/{identifier}/pages/{id}/lock', 'WikiPagesController@lock');
+                Route::delete('/{identifier}/pages/{id}/unlock', 'WikiPagesController@unlock');
             }
         );
-
-//        Route::group(
-//            [
-//                'middleware' => 'auth',
-//                'prefix' => 'wiki_pages'
-//            ],
-//            function () {
-//                Route::get('/{$identifier}', 'WikiPagesController@index');
-//                Route::post('/{$identifier}', 'WikiPagesController@store');
-//                Route::get('/{$identifier}/{name}', 'WikiPagesController@show');
-//                Route::put('/{id}', 'WikiPagesController@update');
-//                Route::delete('/{id}', 'WikiPagesController@destroy');
-//
-//                Route::post('/{id}/watch', 'WikiPagesController@watch');
-//                Route::delete('/{id}/watch', 'WikiPagesController@unwatch');
-//
-//                Route::post('/{id}/lock', 'WikiPagesController@lock');
-//                Route::delete('/{id}/unlock', 'WikiPagesController@unlock');
-//            }
-//        );
-
-//        Route::group(
-//            [
-//                'middleware' => 'auth',
-//                'prefix' => 'filters'
-//            ],
-//            function () {
-//                Route::get('/', 'IssuesController@getIssuesFilters');
-//            }
-//        );
-
-//        Route::group(
-//            [
-//                'middleware' => 'auth',
-//                'prefix' => 'news'
-//            ],
-//            function () {
-//                Route::get('/', 'NewsController@index');
-//                Route::get('/{id}', 'NewsController@show');
-//                Route::put('{id}', 'NewsController@update');
-//            }
-//        );
 
         Route::group(
             [
@@ -241,15 +172,31 @@ Route::group(
                 'prefix' => 'issues'
             ],
             function () {
+                // issues
                 Route::get('/', 'IssuesController@index');
                 Route::post('/', 'IssuesController@store');
                 Route::get('/filters', 'IssuesController@filters');
                 Route::get('/{id}', 'IssuesController@show');
                 Route::put('/{id}', 'IssuesController@update');
                 Route::delete('/{id}', 'IssuesController@destroy');
-//                Route::get('/{id}/history', 'IssuesController@history');
                 Route::post('/{id}/watch', 'IssuesController@watch');
                 Route::delete('/{id}/watch', 'IssuesController@unwatch');
+
+                // statuses
+                Route::get('/statuses', 'IssueStatusesController@index');
+                // todo: make other actions
+//                Route::get('/statuses/{id}', 'IssueStatuseController@one');
+//                Route::put('/statuses/{id}', 'IssueStatuseController@update');
+//                Route::post('/statuses', 'IssueStatuseController@create');
+//                Route::delete('/statuses/{id}', 'IssueStatuseController@destroy');
+
+                // Categories
+                Route::get('/categories/{identifier}', 'IssueCategoriesController@index');
+                // todo: remove "IssueCategoriesController@show" if not use
+                Route::get('/categories/{id}', 'IssueCategoriesController@show');
+                Route::post('/categories/{identifier}', 'IssueCategoriesController@store');
+                Route::put('/categories/{id}', 'IssueCategoriesController@update');
+                Route::delete('/categories/{id}', 'IssueCategoriesController@destroy');
             }
         );
 
@@ -279,22 +226,6 @@ Route::group(
                 Route::delete('/{id}', 'GroupsController@destroy');
                 Route::get('/{id}', 'GroupsController@one');
                 Route::put('/{id}', 'GroupsController@update');
-            }
-        );
-
-        // todo: move to issues group (?)
-        Route::group(
-            [
-                'middleware' => 'auth',
-                'prefix' => 'issue_statuses'
-            ],
-            function () {
-                Route::get('/', 'IssueStatuseController@getList');
-                Route::get('/{id}', 'IssueStatuseController@one');
-                Route::put('/{id}', 'IssueStatuseController@update');
-                Route::post('/', 'IssueStatuseController@create');
-                Route::delete('/{id}', 'IssueStatuseController@destroy');
-
             }
         );
 

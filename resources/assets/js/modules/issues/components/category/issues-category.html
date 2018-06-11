@@ -1,8 +1,8 @@
 <md-dialog flex-xs="100" flex-sm="100" flex-md="50" flex-gt-md="25"
-           aria-label="{{ $ctrl.issueCategory.id ? $ctrl.issueCategory.name : 'New issue category' }}">
+           aria-label="{{ ::$ctrl.title }}">
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>{{ $ctrl.issueCategory.id ? $ctrl.issueCategory.name : 'New issue category' }}</h2>
+            <h2>{{ ::$ctrl.title }}</h2>
 
             <span flex></span>
 
@@ -18,13 +18,7 @@
                 <md-input-container class="md-block">
                     <label>Name</label>
 
-                    <input ng-model="$ctrl.issueCategory.name" name="name" required server-field>
-
-                    <!--<div ng-messages="form.name.$error">-->
-                        <!--<div ng-message="required">-->
-                            <!--Name can't be blank!-->
-                        <!--</div>-->
-                    <!--</div>-->
+                    <input ng-model="$ctrl.category.name" name="name" required server-field>
 
                     <div ng-messages="$ctrl.form.name.$error">
                         <div ng-message="required">Name can't be blank!</div>
@@ -35,12 +29,10 @@
                 <md-input-container class="md-block">
                     <label>Assignee</label>
 
-                    <md-select ng-model="$ctrl.issueCategory.assigned.id" server-field>
+                    <md-select ng-model="$ctrl.category.assigned.id" server-field>
                         <md-option></md-option>
-                        <md-option
-                                ng-repeat="(key, member) in $ctrl.project.members"
-                                ng-value="member.user.id">
-                            {{ member.user.full_name }}
+                        <md-option ng-repeat="member in ::$ctrl.project.members" ng-value="member.user.id">
+                            {{ ::member.user.full_name }}
                         </md-option>
                     </md-select>
 

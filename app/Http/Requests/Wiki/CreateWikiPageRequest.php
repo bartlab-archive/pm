@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\WikiPage;
+namespace App\Http\Requests\Wiki;
 
 use App\Models\WikiPage;
 use Illuminate\Foundation\Http\FormRequest;
