@@ -15,6 +15,5 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 .env
-Будет удалено public/mix-manifest.json
 .phpstorm.meta.php
 _ide_helper.php
