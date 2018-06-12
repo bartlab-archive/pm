@@ -175,15 +175,22 @@
                         <span class="description">{{ ::row.descriptionHtml }}</span>
                     </h3>
                     <h4 layout="row">
-                            <span>
-                                {{ ::[($ctrl.currentProjectId ? null : row.project.name), row.tracker.name, row.priority.name, row.status.name] | join:' | ' }}
-                            </span>
-
+                        <span ng-if="!$ctrl.currentProjectId" class="label label-default">
+                            {{ ::row.project.name }}
+                        </span>
+                        <span class="label label-default">
+                            {{ ::row.tracker.name }}
+                        </span>
+                        <span class="label label-default">
+                            {{ ::row.priority.name }}
+                        </span>
+                        <span class="label label-default">
+                            {{ ::row.status.name }}
+                        </span>
                         <span flex></span>
 
                         <span>{{ ::row.updated_on }}</span>
                     </h4>
-
                 </div>
 
                 <md-menu-bar>

@@ -64,6 +64,22 @@ a {
 //  }
 //}
 
+.label {
+  padding: 2px 5px;
+  margin: 0 2px;
+  font-size: 10px;
+
+  &.label-default{
+    color:rgb(66,66,66);
+    background: #e0e0e0;
+  }
+
+  &.label-primary{
+    color:#fff;
+    background: #ff5722;
+  }
+}
+
 md-input-container {
 
   .custom-error-message {
