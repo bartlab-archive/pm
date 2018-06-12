@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SettingResource;
 use App\Services\SettingsService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -14,21 +15,26 @@ use Illuminate\Routing\Controller as BaseController;
  */
 class SettingsController extends BaseController
 {
-    /**
-     * Statuses constructor.
-     * @param StatusesService $statusesService
-     */
+
+    private $settingService;
+
     public function __construct(SettingsService $settingService)
     {
         $this->settingService = $settingService;
     }
 
-    /**
-     * @param Request $request
-     * @return mixed
-     */
-    public function getList(Request $request)
+    public function index()
     {
-        return $this->settingService->getList($request->all());
+//        return SettingResource::collection(
+//            $this->settingService->all()
+//        );
+    }
+
+    public function show($name)
+    {
+        // todo: filter available setting
+        return SettingResource::make(
+            $this->settingService->one($name)
+        );
     }
 }

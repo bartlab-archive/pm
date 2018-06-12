@@ -13,12 +13,13 @@ import 'angular';
  * @property {$stateParams} $stateParams
  * @property {$rootScope} $rootScope
  * @property {$filter} $filter
+ * @property {SettingsService} settingsService
  */
 export default class LayoutDefaultController extends ControllerBase {
 
     static get $inject() {
         return ['$timeout', '$mdSidenav', '$state', 'projectsService', 'mainService', 'usersService',
-            '$transitions', '$stateParams', '$rootScope', '$filter'];
+            '$transitions', '$stateParams', '$rootScope', '$filter', 'settingsService'];
     }
 
     $onInit() {
@@ -59,8 +60,16 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     setTitle(title) {
-        // todo: get title from config
-        this.title = title || 'MaybeWorks PM';
+        if (!title && !this.appTitle){
+            this.settingsService
+                .one('app_title')
+                .then((response) => {
+                    this.appTitle = response.data.data.value;
+                    this.title = this.appTitle;
+                });
+        }else {
+            this.title = title || this.appTitle;
+        }
     }
 
     hlCurrentNavItem() {

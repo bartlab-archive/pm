@@ -1,7 +1,4 @@
 <?php
-
-use Illuminate\Http\Request;
-
 /*
  * todo: change Route definitions for use the callable array syntax - Route::get('smth', [SomeController::class, 'methodName']);
  */
@@ -240,7 +237,6 @@ Route::group(
                 Route::put('/{id}', 'CustomFieldsController@update');
                 Route::post('/', 'CustomFieldsController@create');
                 Route::delete('/{id}', 'CustomFieldsController@destroy');
-
             }
         );
 
@@ -250,8 +246,8 @@ Route::group(
                 'prefix' => 'settings'
             ],
             function () {
-                Route::get('/', 'SettingsController@getList');
-
+                Route::get('/', 'SettingsController@index');
+                Route::get('/{name}', 'SettingsController@show');
             }
         );
     }

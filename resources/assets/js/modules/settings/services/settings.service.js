@@ -1,13 +1,12 @@
 import ServiceBase from 'base/service.base';
 
 /**
- * @property {Restangular} Restangular
- * @property {$cacheFactory} $cacheFactory
+ * @property {$http} $http
  */
 export default class SettingsService extends ServiceBase {
 
     static get $inject() {
-        return ['Restangular', '$cacheFactory'];
+        return ['$http'];
     }
 
     $onInit($injector) {
@@ -15,6 +14,10 @@ export default class SettingsService extends ServiceBase {
 
 
     all() {
-        return this.Restangular.all('settings');
+        return this.$http.get(`/api/v1/settings`);
+    }
+
+    one(name) {
+        return this.$http.get(`/api/v1/settings/${name}`);
     }
 }

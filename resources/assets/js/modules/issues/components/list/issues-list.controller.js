@@ -73,6 +73,7 @@ export default class IssuesListController extends ControllerBase {
         this.selectAllState = false;
 
         // pagination
+        // todo: get from settings
         this.perPageList = [20, 50, 100];
         // this.count = 0;
         // this.offset = 0;
