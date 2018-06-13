@@ -2,23 +2,17 @@ import ControllerBase from 'base/controller.base';
 import _ from 'lodash';
 
 /**
- * @property {$auth} $auth
  * @property {$state} $state
  * @property {$mdToast} $mdToast
- * @property {UsersService} UsersService
+ * @property {UsersService} usersService
  */
 export default class MainRegistrationController extends ControllerBase {
 
     static get $inject() {
-        return ['$auth', '$state', '$mdToast', 'usersService'];
+        return ['$state', '$mdToast', 'usersService'];
     }
 
     $onInit() {
-        this.$mdToast.show(
-            this.$mdToast.simple()
-                .textContent('Logout')
-        );
-
         this.languages = this.usersService.getLanguage();
 
         this.signup = {
@@ -33,46 +27,11 @@ export default class MainRegistrationController extends ControllerBase {
         };
 
         this.errors = {};
-        this.registrationForm = {};
+        this.form = {};
     }
 
     submit() {
-        if (this.registrationForm.$valid) {
-            this.$auth.signup(this.signup)
-                .then((response) => this.onRegister(response))
-                .catch((response) => this.onError(response));
-        }
-    }
 
-    onRegister(response) {
-        if (_.get(response, 'status') === 201) {
-            this.$mdToast.show(
-                this.$mdToast.simple()
-                    .textContent('Registration success')
-            );
-            this.$state.go('login');
-        }
-    }
-
-    onError(response) {
-        if (_.get(response, 'status') === 500) {
-            this.$mdToast.show(
-                this.$mdToast.simple()
-                    .textContent('Server error')
-            );
-        } else {
-            this.errors = _.get(response, 'data', {});
-            for (let field in this.errors) {
-                if (this.registrationForm.hasOwnProperty(field)) {
-                    this.registrationForm[field].$setValidity('server', false);
-                }
-            }
-        }
-    }
-
-    change(field) {
-        this.registrationForm[field].$setValidity('server', true);
-        this.errors[field] = undefined;
     }
 
 }
