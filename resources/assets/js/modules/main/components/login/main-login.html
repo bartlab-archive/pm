@@ -1,48 +1,42 @@
 <div layout="row" layout-align="center start">
     <md-card flex-xs="100" flex-sm="50" flex-md="40" flex-gt-md="25">
-
+        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
         <!--<md-card>-->
-        <form name="$ctrl.loginForm" ng-submit="$ctrl.submit()">
-            <md-toolbar>
-                <div layout="column" layout-padding layout-align="center center">
-                    <div class="md-headline md-padding">Sign in</div>
-                </div>
-            </md-toolbar>
+        <form name="$ctrl.form" ng-submit="$ctrl.submit()" server-form="$ctrl.errors">
+            <md-card-header>
+                <h1>Sign in</h1>
+            </md-card-header>
+
             <md-card-content>
                 <md-input-container class="md-icon-float md-block">
                     <label>E-mail or name</label>
-                    <input ng-model="$ctrl.model.login" name="login" type="text" required
-                           ng-change="$ctrl.change('login')">
+                    <input ng-model="$ctrl.model.login" name="login" type="text" required server-field>
 
-                    <div ng-messages="$ctrl.loginForm.login.$error">
-                        <div ng-message="server" ng-bind-html="$ctrl.errors.login | join"></div>
+                    <div ng-messages="$ctrl.form.login.$error">
+                        <div ng-message="required">Login cannot be blank</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.login.$server"></div>
                     </div>
                 </md-input-container>
 
                 <md-input-container class="md-icon-float md-block">
                     <label>Password</label>
-                    <input ng-model="$ctrl.model.password" name="password" type="password" required
-                           ng-change="$ctrl.change('password')">
+                    <input ng-model="$ctrl.model.password" name="password" type="password" required server-field>
 
-                    <div ng-messages="$ctrl.loginForm.password.$error">
-                        <div ng-message="server" ng-bind-html="$ctrl.errors.password | join"></div>
+                    <div ng-messages="$ctrl.form.password.$error">
+                        <div ng-message="required">Password cannot be blank</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.password.$server"></div>
                     </div>
                 </md-input-container>
             </md-card-content>
 
-
             <md-card-actions layout="row" layout-align="center center">
-                <md-button class="md-raised md-primary" type="submit" ng-disabled="$ctrl.loginForm.$invalid">
+                <md-button class="md-raised md-primary" type="submit" ng-disabled="$ctrl.form.$invalid">
                     Login
                 </md-button>
 
-                <md-button class="md-raised md-default" ng-click="$ctrl.$state.go('signup')">
+                <md-button class="md-raised md-default" ng-if="$ctrl.registration" ng-click="$ctrl.$state.go('account.register')">
                     Sign up
                 </md-button>
-
-                <!--<p layout="row" layout-align="center center">-->
-                    <!--<a ui-sref="signup" href class="md-body-1">Not registered yet? Sign up!</a>-->
-                <!--</p>-->
             </md-card-actions>
         </form>
     </md-card>

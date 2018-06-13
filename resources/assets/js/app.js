@@ -3,7 +3,6 @@ import 'angular';
 import 'angular-sanitize';
 import '@uirouter/angularjs';
 import 'restangular';
-import 'satellizer';
 import 'angular-moment';
 import 'angular-material';
 import 'angular-messages';
@@ -33,7 +32,6 @@ angular
 
             'ui.router',
             'restangular',
-            'satellizer',
             'ng-showdown',
 
             'app.modules'

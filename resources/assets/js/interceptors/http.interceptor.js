@@ -3,18 +3,24 @@ import InjectableBase from "base/injectable.base";
 export default class HttpInterceptor extends InjectableBase {
 
     static get $inject() {
-        return ['$rootScope', '$q'];
+        return ['$rootScope', '$q', 'storageService'];
     }
 
     $return() {
         return {
+            request: (...args) => this.request(...args),
             responseError: (...args) => this.responseError(...args)
         };
     }
 
-    // request(req) {
-    // ...
-    // }
+    request(config) {
+        const token = this.storageService.getToken();
+        if (token) {
+            config.headers['Authorization'] = 'Bearer ' + token;
+        }
+
+        return config;
+    }
 
     // requestError(err) {
     // ...

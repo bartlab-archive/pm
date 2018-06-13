@@ -67,34 +67,54 @@ export default class MainConfig extends InjectableBase {
                     }
                 }
             })
-            .state('signup', {
+
+            .state('account', {
+                abstract: true,
                 data: {
-                    access: '?',
+                    access: '?'
                 },
-                url: '/signup',
+                url: '/account',
                 parent: 'blank',
                 views: {
                     content: {
-                        component: MainRegistrationComponent.getName()
+                        template: '<ui-view/>'
                     }
                 }
             })
+
+            .state('account.register', {
+                url: '/register',
+                component: MainRegistrationComponent.getName()
+            })
+            .state('account.lost_password', {
+                url: '/lost_password',
+                component: MainResetPasswordComponent.getName()
+            })
+            .state('account.activate', {
+                url: '/activate',
+                // component: MainRegistrationComponent.getName()
+            })
+            .state('account.activation_email', {
+                url: '/activation_email',
+                // component: MainRegistrationComponent.getName()
+            })
+
             .state('logout', {
                 url: '/logout',
                 component: MainLogoutComponent.getName()
             })
-            .state('reset-password', {
-                data: {
-                    access: '?',
-                },
-                url: '/reset-password',
-                parent: 'blank',
-                views: {
-                    content: {
-                        component: MainResetPasswordComponent.getName()
-                    }
-                }
-            });
+            // .state('reset-password', {
+            //     data: {
+            //         access: '?',
+            //     },
+            //     url: '/reset-password',
+            //     parent: 'blank',
+            //     views: {
+            //         content: {
+            //             component: MainResetPasswordComponent.getName()
+            //         }
+            //     }
+            // });
     }
 
 }

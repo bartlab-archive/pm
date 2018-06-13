@@ -3,15 +3,11 @@ import InjectableBase from 'base/injectable.base';
 
 /**
  * Class AppRun
- *
- * @property $rootScope
- * @property $auth
- * @property $transitions
  */
 export default class AppRun extends InjectableBase {
 
     static get $inject() {
-        return ['$rootScope', '$auth', '$transitions', 'Restangular', '$mdToast', '$state', '$http'];
+        return ['$rootScope', '$transitions', 'Restangular', '$mdToast', '$state', '$http', 'authService'];
     }
 
     $onInit() {
@@ -33,12 +29,12 @@ export default class AppRun extends InjectableBase {
 
         if (access) {
             /*Cancel going to the authenticated state and go back to landing*/
-            if (access === '@' && !this.$auth.isAuthenticated()) {
+            if (access === '@' && !this.authService.isAuthenticated()) {
                 return trans.router.stateService.target('login');
             }
 
             // if controller not require authorizing and has deny signed users flag then redirect
-            if (access === '?' && this.$auth.isAuthenticated()) {
+            if (access === '?' && this.authService.isAuthenticated()) {
                 return trans.router.stateService.target('home');
             }
         }
@@ -49,6 +45,7 @@ export default class AppRun extends InjectableBase {
             this.$mdToast.simple().textContent('Unauthorized')
         );
 
+        this.authService.logout();
         this.$state.go('login');
     }
 
@@ -68,19 +65,19 @@ export default class AppRun extends InjectableBase {
         this.$state.go('404');
     }
 
-    notAllowed(){
+    notAllowed() {
         this.$mdToast.show(
             this.$mdToast.simple().textContent('Method Not Allowed')
         );
     }
 
-    tooManyRequests(){
+    tooManyRequests() {
         this.$mdToast.show(
             this.$mdToast.simple().textContent('Too Many Requests!')
         );
     }
 
-    serverError(){
+    serverError() {
         this.$mdToast.show(
             this.$mdToast.simple().textContent('Server error!')
         );

@@ -3,65 +3,55 @@ import _ from 'lodash';
 
 /**
  * @property {$mdToast} $mdToast
- * @property {$auth} $auth
+ * @property {AuthService} authService
+ * @property {SettingsService} settingsService
  * @property {$state} $state
  */
 export default class MainLoginController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdToast', '$auth', '$state'];
+        return ['$mdToast', 'authService', '$state', 'settingsService'];
     }
 
     $onInit() {
         this.errors = {};
-        this.loginForm = {};
+        this.form = {};
+        this.model = {
+            login: '',
+            password: '',
+        };
+        this.loadProccess = false;
+
+        this.registration = false;
+        this.settingsService
+            .one('self_registration')
+            .then((response) => {
+                this.registration = !!_.get(response, 'data.data.value');
+            });
     }
 
     submit() {
+        this.loadProccess = true;
+        this.authService
+            .login({login: this.model.login, password: this.model.password})
+            .then((response) => {
+                this.$mdToast.show(
+                    this.$mdToast.simple().textContent('Welcome!')
+                );
 
-        this.$auth.login(this.model)
-            .then((response) => this.onLogin(response))
-            .catch((response) => this.onError(response));
-    }
-
-    onLogin(response) {
-        if (_.get(response, 'data.token')) {
-            this.$mdToast.show(
-                this.$mdToast.simple()
-                    .textContent('Welcome!')
-            );
-
-            // update user data
-            // userService.loadUser(true).then(function () {
-            this.$state.go('home');
-            // });
-        }
-
-        this.errors = _.get(response, 'data.errors', {});
-    }
-
-    onError(response) {
-        if (_.get(response, 'status') === 500) {
-            this.$mdToast.show(
-                this.$mdToast.simple().textContent('Server error')
-            );
-        } else {
-            this.errors = _.get(response, 'data', {});
-            for (let field in this.errors) {
-                if (this.loginForm.hasOwnProperty(field)) {
-                    this.loginForm[field].$setValidity('server', false);
+                this.$state.go('home');
+            })
+            .catch((response) => {
+                if (response.status === 422) {
+                    this.$mdToast.show(
+                        this.$mdToast.simple().textContent(response.data.message).position('bottom left')
+                    );
                 }
-            }
-            this.$mdToast.show(
-                this.$mdToast.simple()
-                    .textContent('Whoops, your password or email are incorrect')
-            );
-        }
-    }
 
-    change(field) {
-        this.loginForm[field].$setValidity('server', true);
-        this.errors[field] = undefined;
+                this.errors = response.data.errors;
+            })
+            .finally(() => {
+                this.loadProccess = false;
+            });
     }
-
 }

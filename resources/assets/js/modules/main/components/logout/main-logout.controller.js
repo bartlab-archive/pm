@@ -2,17 +2,17 @@ import ControllerBase from 'base/controller.base';
 
 /**
  * @property {$mdToast} $mdToast
- * @property {$auth} $auth
+ * @property {AuthService} authService
  * @property {$state} $state
  */
 export default class MainLogoutController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdToast', '$auth', '$state'];
+        return ['$mdToast', 'authService', '$state'];
     }
 
     $onInit() {
-        this.$auth.logout();
+        this.authService.logout();
 
         this.$mdToast.show(
             this.$mdToast.simple()

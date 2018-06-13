@@ -23,7 +23,6 @@ export default class AppConfig extends InjectableBase {
             '$mdThemingProvider',
             '$urlRouterProvider',
             '$locationProvider',
-            '$authProvider',
             'RestangularProvider',
             '$mdDateLocaleProvider',
             '$stateProvider',
@@ -36,7 +35,6 @@ export default class AppConfig extends InjectableBase {
     $onInit() {
         this.urlConfig();
         this.localConfig();
-        this.authConfig();
         this.restConfig();
         this.themeConfig();
         this.showdownConfig();
@@ -73,21 +71,6 @@ export default class AppConfig extends InjectableBase {
     localConfig() {
         // use HTML5 mode for url
         this.$locationProvider.html5Mode(true);
-    }
-
-    authConfig() {
-        this.$authProvider.loginUrl = '/api/v1/auth';
-        this.$authProvider.signupUrl = '/api/v1/register';
-        this.$authProvider.getUserInfo = '/api/v1/user-info';
-        this.$authProvider.tokenRoot = 'data';//compensates success response macro
-        this.$authProvider.withCredentials = false;
-        this.$authProvider.baseUrl = '/';
-        this.$authProvider.unlinkUrl = '/api/v1/auth/unlink/';
-        this.$authProvider.tokenName = 'token';
-        this.$authProvider.tokenPrefix = '';
-        this.$authProvider.tokenHeader = 'Authorization';
-        this.$authProvider.tokenType = 'Bearer';
-        this.$authProvider.storageType = 'localStorage';
     }
 
     restConfig() {

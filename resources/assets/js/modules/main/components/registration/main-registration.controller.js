@@ -14,6 +14,11 @@ export default class MainRegistrationController extends ControllerBase {
     }
 
     $onInit() {
+        this.$mdToast.show(
+            this.$mdToast.simple()
+                .textContent('Logout')
+        );
+
         this.languages = this.usersService.getLanguage();
 
         this.signup = {

@@ -13,9 +13,12 @@ Route::group(
         'prefix' => 'v1'
     ],
     function () {
-        Route::group([],
+        Route::group(
+            [
+                'prefix' => 'auth'
+            ],
             function () {
-                Route::post('auth', 'AuthController@login');
+                Route::post('login', 'AuthController@login');
                 Route::post('register', 'AuthController@register');
                 Route::post('password-reset', 'AuthController@sendResetPasswordToken');
                 Route::put('password-reset', 'AuthController@resetPassword');
@@ -242,7 +245,7 @@ Route::group(
 
         Route::group(
             [
-                'middleware' => 'auth',
+//                'middleware' => 'auth',
                 'prefix' => 'settings'
             ],
             function () {

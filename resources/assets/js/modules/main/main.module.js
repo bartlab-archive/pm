@@ -19,6 +19,8 @@ import MainResetPasswordComponent from './components/reset-password/main-reset-p
 import Main404Component from './components/404/main-404.component';
 import Main500Component from './components/500/main-500.component';
 import MainProvider from "./providers/main.provider";
+import AuthService from "./services/auth.service";
+import StorageService from "./services/storage.service";
 
 angular.module('app.modules.main', [])
     .config(MainConfig.inst())
@@ -33,6 +35,8 @@ angular.module('app.modules.main', [])
     .directive(SimplemdeDirective.getName(), SimplemdeDirective.inst())
     .directive(ServerFormDirective.getName(), ServerFormDirective.inst())
     .directive(ServerFieldDirective.getName(), ServerFieldDirective.inst())
+    .service(AuthService.getName(), AuthService)
+    .service(StorageService.getName(), StorageService)
     .provider(MainProvider.getName(), MainProvider)
     .component(MainIndexComponent.getName(), MainIndexComponent)
     .component(MainLoginComponent.getName(), MainLoginComponent)

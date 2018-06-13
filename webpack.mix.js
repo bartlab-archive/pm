@@ -21,7 +21,6 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'angular-sanitize',
         'babel-polyfill',
         'ng-showdown',
-        'satellizer',
         'simplemde',
         'lodash',
         'moment'

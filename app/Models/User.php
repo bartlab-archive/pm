@@ -103,7 +103,7 @@ class User extends Authenticatable
     public function getAvatarAttribute()
     {
         // todo: need check system config for avatar src
-        return $this->email ? '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email->address))) . '?rating=PG' : '';
+        return $this->email ? '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email->address))) . '?rating=PG&default=mp' : '';
     }
 
     public function getFullNameAttribute()

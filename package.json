@@ -31,7 +31,6 @@
     "ng-showdown": "*",
     "restangular": "*",
     "roboto-fontface": "^0.9.0",
-    "satellizer": "*",
     "simplemde": "*"
   },
   "dependencies": {
