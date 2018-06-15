@@ -7,7 +7,7 @@ import ServiceBase from 'base/service.base';
 export default class CalendarService extends ServiceBase {
 
     static get $inject() {
-        return ['Restangular', '$cacheFactory'];
+        return [];
     }
 
 }

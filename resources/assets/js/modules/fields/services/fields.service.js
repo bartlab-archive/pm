@@ -7,7 +7,7 @@ import ServiceBase from 'base/service.base';
 export default class FieldsService extends ServiceBase {
 
     static get $inject() {
-        return ['Restangular', '$cacheFactory'];
+        return [];
     }
 
     $onInit($injector) {
@@ -15,6 +15,6 @@ export default class FieldsService extends ServiceBase {
 
 
     all() {
-        return this.Restangular.all('custom_fields');
+        // return this.Restangular.all('custom_fields');
     }
 }

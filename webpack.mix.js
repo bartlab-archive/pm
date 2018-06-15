@@ -17,7 +17,6 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'angular-file-saver',
         'angular-material',
         'angular-messages',
-        'angular-moment',
         'angular-sanitize',
         'babel-polyfill',
         'ng-showdown',

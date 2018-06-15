@@ -1,9 +1,5 @@
 import ServiceBase from 'base/service.base';
 
-/**
- * @property {Restangular} Restangular
- * @property {$cacheFactory} $cacheFactory
- */
 export default class UsersService extends ServiceBase {
 
     get languages() {
@@ -213,7 +209,7 @@ export default class UsersService extends ServiceBase {
         ];
     }
 
-    get getEmailNotifications() {
+    get emailNotifications() {
         return [
             {value: 'all', name: 'For any event on all my projects'},
             {value: 'selected', name: 'For any event on the selected projects only...'},
@@ -225,111 +221,76 @@ export default class UsersService extends ServiceBase {
     }
 
     static get $inject() {
-        return ['Restangular', '$cacheFactory', '$http'];
+        return ['$http'];
     }
 
     $onInit($injector) {
-        this.cache = this.$cacheFactory('usersService');
     }
 
-    one(identifier) {
-        return this.Restangular.all('users').one(identifier).get();
+    one(id) {
+        return this.$http.get(`/api/v1/users/${id}`);
     }
 
     all() {
-        return this.$http.get('/api/v1/users');
-        // return this.Restangular.all('roles');
-    }
-
-    getList(params = {}) {
-        return this.Restangular.all('users').getList(params);
-    }
-
-    getMembersList(user){
-        let members = {};
-        _.forEach(user.members, (member, key) => {
-            members[member.project_id] = {
-                role: member.member_roles.roles.name,
-                role_id: member.member_roles.roles.id,
-                created_on:member.created_on,
-                member_id: member.id,
-                inherited_member: false,
-            };
-        });
-         return members;
-    }
-
-    getCountIssues(user){
-        let countIssues = {};
-        countIssues.assigned = 0;
-        countIssues.created = 0;
-        _.forEach(user.issues, (issue) => {
-             if (user.id != issue.author_id) {
-                 ++ countIssues.assigned;
-             } else {
-                 ++ countIssues.created;
-             }
-        });
-
-        return countIssues;
+        return this.$http.get(`api/v1/users`);
     }
 
     updateUserStatus(id, params) {
-        return this.Restangular.one('users', id).customPUT(params, 'updatestatus');
+        // return this.Restangular.one('users', id).customPUT(params, 'updatestatus');
     }
 
     deleteUser(id){
-        return this.Restangular.one('users', id).remove();
+        // return this.Restangular.one('users', id).remove();
     }
 
     getUserInfo() {
-        return this.Restangular.one('my').one('account').withHttpConfig({cache: this.cache}).get().then((response) => {
-            response.data.hide_mail = !!response.data.hide_mail;
-            response.data.no_self_notified = !!response.data.no_self_notified;
-            response.data.warn_on_leaving_unsaved = !!response.data.warn_on_leaving_unsaved;
-
-            return response;
-        });
+        // return this.Restangular.one('my').one('account').withHttpConfig({cache: this.cache}).get().then((response) => {
+        //     response.data.hide_mail = !!response.data.hide_mail;
+        //     response.data.no_self_notified = !!response.data.no_self_notified;
+        //     response.data.warn_on_leaving_unsaved = !!response.data.warn_on_leaving_unsaved;
+        //
+        //     return response;
+        // });
     }
 
     getApiAccessKey() {
-        return this.Restangular.one('my').one('api-key').get();
+        // return this.Restangular.one('my').one('api-key').get();
     }
 
     update(user) {
-        return this.Restangular.all('users').customPUT(user, user.id);
+        // return this.Restangular.all('users').customPUT(user, user.id);
     }
 
     resetApiAccessKey() {
-        return this.Restangular.one('my').one('api-key').put();
+        // return this.Restangular.one('my').one('api-key').put();
     }
 
     resetAtomAccessKey() {
-        return this.Restangular.one('my').one('rss-key').put();
+        // return this.Restangular.one('my').one('rss-key').put();
     }
 
     getAdditionalEmails() {
-        return this.Restangular.all('my').one('email-addresses').getList();
+        // return this.Restangular.all('my').one('email-addresses').getList();
     }
 
     updateAdditionalEmail(emailAddressId, data) {
-        return this.Restangular.one('my', 'email-addresses').customPUT(data, emailAddressId);
+        // return this.Restangular.one('my', 'email-addresses').customPUT(data, emailAddressId);
     }
 
     deleteAdditionalEmail(emailAddressId) {
-        return this.Restangular.one('my').one('email-addresses', emailAddressId).remove();
+        // return this.Restangular.one('my').one('email-addresses', emailAddressId).remove();
     }
 
     addAdditionalEmail(email) {
-        return this.Restangular.one('my').all('email-addresses').post({
-            email: email,
-            is_default: false,
-            notify: true
-        });
+        // return this.Restangular.one('my').all('email-addresses').post({
+        //     email: email,
+        //     is_default: false,
+        //     notify: true
+        // });
     }
 
     changePassword(data) {
-        return this.Restangular.one('my').customPUT(data, 'password');
+        // return this.Restangular.one('my').customPUT(data, 'password');
     }
 
 }

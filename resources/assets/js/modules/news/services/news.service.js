@@ -6,15 +6,15 @@ import ServiceBase from 'base/service.base';
 export default class NewsService extends ServiceBase {
 
     static get $inject() {
-        return ['Restangular'];
+        return [];
     }
 
     one(identifier) {
-        return this.Restangular.one('news', identifier).get();
+        // return this.Restangular.one('news', identifier).get();
     }
 
     getNews(params = {}) {
-        return this.Restangular.all('news').getList(params);
+        // return this.Restangular.all('news').getList(params);
     }
 
 }

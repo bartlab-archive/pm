@@ -23,7 +23,7 @@ export default class AppConfig extends InjectableBase {
             '$mdThemingProvider',
             '$urlRouterProvider',
             '$locationProvider',
-            'RestangularProvider',
+            // 'RestangularProvider',
             '$mdDateLocaleProvider',
             '$stateProvider',
             '$qProvider',
@@ -35,7 +35,7 @@ export default class AppConfig extends InjectableBase {
     $onInit() {
         this.urlConfig();
         this.localConfig();
-        this.restConfig();
+        // this.restConfig();
         this.themeConfig();
         this.showdownConfig();
         this.datePickerFormat();
@@ -73,37 +73,37 @@ export default class AppConfig extends InjectableBase {
         this.$locationProvider.html5Mode(true);
     }
 
-    restConfig() {
-        this.RestangularProvider.setBaseUrl('/api/v1');
-        this.RestangularProvider.setDefaultHeaders({
-            'Content-Type': 'application/json'
-        });
-        this.RestangularProvider.setFullResponse(true);
-        this.RestangularProvider.addResponseInterceptor((data, operation, what, url, response, deferred) => {
-            let extractedData = data;
-
-            // if (operation === "getList" && data.hasOwnProperty('meta')) {
-            //     extractedData = data.data;
-            //     extractedData.meta = data.meta;
-            //     extractedData.links = data.links;
-            // }
-
-            if (data && data.data) {
-                extractedData = data.data;
-                Object
-                    .keys(data)
-                    .filter((value) => {
-                        return value !== 'data';
-                    })
-                    .reduce((obj, key) => {
-                        extractedData[key] = data[key];
-                        return obj;
-                    }, {});
-            }
-
-            return extractedData;
-        });
-    }
+    // restConfig() {
+    //     this.RestangularProvider.setBaseUrl('/api/v1');
+    //     this.RestangularProvider.setDefaultHeaders({
+    //         'Content-Type': 'application/json'
+    //     });
+    //     this.RestangularProvider.setFullResponse(true);
+    //     this.RestangularProvider.addResponseInterceptor((data, operation, what, url, response, deferred) => {
+    //         let extractedData = data;
+    //
+    //         // if (operation === "getList" && data.hasOwnProperty('meta')) {
+    //         //     extractedData = data.data;
+    //         //     extractedData.meta = data.meta;
+    //         //     extractedData.links = data.links;
+    //         // }
+    //
+    //         if (data && data.data) {
+    //             extractedData = data.data;
+    //             Object
+    //                 .keys(data)
+    //                 .filter((value) => {
+    //                     return value !== 'data';
+    //                 })
+    //                 .reduce((obj, key) => {
+    //                     extractedData[key] = data[key];
+    //                     return obj;
+    //                 }, {});
+    //         }
+    //
+    //         return extractedData;
+    //     });
+    // }
 
     showdownConfig() {
         this.$showdownProvider

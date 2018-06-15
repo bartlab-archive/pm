@@ -7,7 +7,7 @@ import ServiceBase from 'base/service.base';
 export default class EnumerationsService extends ServiceBase {
 
     static get $inject() {
-        return ['Restangular', '$cacheFactory', '$http'];
+        return ['$http'];
     }
 
     $onInit($injector) {

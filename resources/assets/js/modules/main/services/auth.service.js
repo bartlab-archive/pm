@@ -28,13 +28,19 @@ export default class AuthService extends ServiceBase {
             });
     }
 
-    // setToken(token) {
-    //     localStorage.setItem('token', token);
-    // }
-    //
-    // getToken() {
-    //     return localStorage.getItem('token');
-    // }
+    register(data) {
+        return this.$http
+            .post(`/api/v1/auth/register`, data)
+            .then((response) => {
+                const token = _.get(response, 'data.token');
+
+                if (token) {
+                    this.storageService.setToken(token);
+                }
+
+                return response;
+            });
+    }
 
     logout() {
         this.storageService.removeToken();

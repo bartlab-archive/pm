@@ -2,8 +2,8 @@ import './bootstrap';
 import 'angular';
 import 'angular-sanitize';
 import '@uirouter/angularjs';
-import 'restangular';
-import 'angular-moment';
+// import 'restangular';
+// import 'angular-moment';
 import 'angular-material';
 import 'angular-messages';
 import 'angular-animate';
@@ -26,12 +26,11 @@ angular
             'ngAria',
             'ngMessages',
             'ngMaterial',
-            'angularMoment',
+            // 'angularMoment',
             'ngFileSaver',
             'dndLists',
-
             'ui.router',
-            'restangular',
+            // 'restangular',
             'ng-showdown',
 
             'app.modules'

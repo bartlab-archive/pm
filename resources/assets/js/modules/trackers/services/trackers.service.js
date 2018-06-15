@@ -7,18 +7,18 @@ import ServiceBase from 'base/service.base';
 export default class TrackersService extends ServiceBase {
 
     static get $inject() {
-        return ['Restangular', '$cacheFactory'];
+        return [];
     }
 
     $onInit($injector) {
     }
 
     getAll() {
-        return this.Restangular.all('trackers').getList();
+        // return this.Restangular.all('trackers').getList();
     }
 
     all() {
-        return this.Restangular.all('trackers');
+        // return this.Restangular.all('trackers');
     }
 
 }

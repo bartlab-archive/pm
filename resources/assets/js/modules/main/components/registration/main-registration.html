@@ -1,5 +1,7 @@
 <div layout="row" layout-align="center start">
     <md-card flex-xs="100" flex-sm="50" flex-md="40" flex-gt-md="25">
+        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
+
         <md-card-header>
             <h1>Sign up</h1>
         </md-card-header>
@@ -92,9 +94,11 @@
                 <md-input-container class="md-icon-float md-block">
                     <label>Language</label>
                     <md-select ng-model="$ctrl.signup.lang" name="lang" server-field>
-                        <md-option ng-value="language.id" ng-repeat="language in $ctrl.languages">{{ language.name }}
+                        <md-option ng-value="language.id" ng-repeat="language in $ctrl.languages">
+                            {{ language.name }}
                         </md-option>
                     </md-select>
+
                     <div ng-messages="$ctrl.form.lang.$error">
                         <div ng-message="server" ng-bind-html="$ctrl.form.lang.$server"></div>
                     </div>

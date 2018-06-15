@@ -7,7 +7,7 @@ import InjectableBase from 'base/injectable.base';
 export default class AppRun extends InjectableBase {
 
     static get $inject() {
-        return ['$rootScope', '$transitions', 'Restangular', '$mdToast', '$state', '$http', 'authService'];
+        return ['$rootScope', '$transitions', '$mdToast', '$state', '$http', 'authService'];
     }
 
     $onInit() {
@@ -20,7 +20,7 @@ export default class AppRun extends InjectableBase {
         this.$rootScope.$on('notAllowed', (...args) => this.notAllowed(...args));
         this.$rootScope.$on('serverError', (...args) => this.serverError(...args));
         this.$rootScope.$on('tooManyRequests', (...args) => this.tooManyRequests(...args));
-        this.Restangular.setErrorInterceptor((...args) => this.errorInterceptor(...args));
+        // this.Restangular.setErrorInterceptor((...args) => this.errorInterceptor(...args));
     }
 
     checkAccess(trans) {
