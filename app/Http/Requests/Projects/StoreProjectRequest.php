@@ -28,6 +28,7 @@ class StoreProjectRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
+            // todo: validate by regexp
             'identifier' => 'required|string|between:1,100|unique:' . Project::getTableName(),
             'description' => 'nullable|string',
             'homepage' => 'nullable|url',

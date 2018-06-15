@@ -4,92 +4,80 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\AuthLoginRequest;
 use App\Http\Requests\Auth\AuthRegisterRequest;
-use App\Http\Requests\Auth\ResetPasswordRequest;
-use App\Http\Requests\Auth\ResetPasswordSendTokenRequest;
+
+//use App\Http\Requests\Auth\ResetPasswordRequest;
+//use App\Http\Requests\Auth\ResetPasswordSendTokenRequest;
+//use App\Services\AuthService;
+use App\Http\Resources\TokenResource;
 use App\Services\AuthService;
+use App\Services\SettingsService;
+use App\Services\TokenService;
 use App\Services\UsersService;
 use Illuminate\Routing\Controller as BaseController;
 
 class AuthController extends BaseController
 {
-    /**
-     * @var AuthService
-     */
+    protected $settingsService;
     protected $authService;
-
-    /**
-     * @var UsersService
-     */
     protected $usersService;
 
     public function __construct(
+        SettingsService $settingsService,
         AuthService $authService,
         UsersService $usersService
     )
     {
+        $this->settingsService = $settingsService;
         $this->authService = $authService;
         $this->usersService = $usersService;
     }
 
-    /**
-     * Authorization user in system
-     *
-     * @url protocol://ip:port/api/v1/auth
-     *
-     * @example {
-     *     "login": "user email" or "login",
-     *     "password": "user password"
-     * }
-     *
-     * @param AuthLoginRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
-     */
     public function login(AuthLoginRequest $request)
     {
-        $token = $this->authService->session($request->input('login'));
+        if (!$token = $this->authService->session($request->input('login'))) {
+            abort(422);
+        }
 
-        return response()->json(['token' => $token->value]);
+        return TokenResource::make($token);
     }
 
-    /**
-     * Register user
-     *
-     * This method create user and user relationships
-     *
-     * @url protocol://ip:port/api/v1/register
-     *
-     * @example Request $request {
-     *     "firstName": "test",
-     *     "lastName": "test",
-     *     "login": "dev",
-     *     "email": "test@mail.ua",
-     *     "password": "qwerty",
-     *     "repeatPassword": "qwerty",
-     *     "lang": "ru",
-     *     "hideEmail": "0"
-     *}
-     *
-     * @param AuthRegisterRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function register(AuthRegisterRequest $request)
     {
-        $this->usersService->register($request->all());
+        $selfRegistration = (int)$this->settingsService->get('self_registration');
+        if (!$selfRegistration) {
+            abort(401);
+        }
 
-        return response(null, 201);
+        if (!$user = $this->usersService->create($request->validated())) {
+            abort(422);
+        }
+
+        switch ($selfRegistration){
+            // todo: manual activation logic
+            // todo: auto activation account
+            case 3:
+                if (!$token = $this->authService->session($user->login)) {
+                    abort(422);
+                }
+
+                return TokenResource::make($token);
+                break;
+        }
+
+//        return response(null, 201);
     }
 
-    public function sendResetPasswordToken(ResetPasswordSendTokenRequest $request)
-    {
-        $token = $this->authService->sendResetPasswordToken($request->input('email'));
-
-        return response()->json(['reset_password_token' => $token->value]);
-    }
-
-    public function resetPassword(ResetPasswordRequest $request)
-    {
-        $this->authService->resetPassword($request->all());
-
-        return response(null, 200);
-    }
+//    public function sendResetPasswordToken(ResetPasswordSendTokenRequest $request)
+//    {
+//        $token = $this->authService->sendResetPasswordToken($request->input('email'));
+//
+//        return response()->json(['reset_password_token' => $token->value]);
+//    }
+//
+//    public function resetPassword(ResetPasswordRequest $request)
+//    {
+//        $this->authService->resetPassword($request->all());
+//
+//        return response(null, 200);
+//    }
 }

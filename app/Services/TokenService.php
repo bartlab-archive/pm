@@ -9,70 +9,87 @@ use Illuminate\Database\Eloquent\Collection;
 
 class TokenService
 {
-    public function one(User $user, string $action): Token
+
+    public function oneByValue($value, $action, array $with = [])
     {
-        return $user->tokens()
-                ->where('action', $action)
-                ->first() ?? $this->create($user, $action);
+        return Token::query()
+            ->with($with)
+            ->where(['value' => $value, 'action' => $action])
+            ->first();
     }
 
-    public function create(User $user, string $action, string $value = null): Token
+    public function oneByUserId($userId, $action, array $with = [], $orNew = false)
     {
-        return $user->tokens()
-            ->create([
-                'action' => $action,
-                'value' => $value ?? sha1(str_random(33))
-            ]);
-    }
+        $token = Token::query()
+            ->where(['user_id' => $userId, 'action' => $action])
+            ->first();
 
-    public function all(User $user): Collection
-    {
-        return $user->tokens;
-    }
-
-    public function destroy(User $user, string $action): bool
-    {
-        return $user->tokens()
-            ->where('action', $action)
-            ->delete();
-    }
-
-    public function getApiKey($user)
-    {
-        $user_api_key = Token::apiKey($user);
-
-        if (is_null($user_api_key)) {
-            $user_api_key = Token::createApiKey($user);
+        if (!$token && $orNew) {
+            $token = $this->create($userId, $action);
         }
 
-        return $user_api_key;
+        return $token ? $token->load($with) : null;
     }
 
-    public function resetApiKey($user)
+    public function create($userId, string $action, string $value = null)
     {
-        $user_api_key = Token::apiKey($user);
+        $token = Token::make([
+            'user_id' => $userId,
+            'action' => $action,
+            'value' => $value ?? sha1(str_random(33))
+        ]);
 
-        if (is_null($user_api_key)) {
-            $user_api_key = Token::createApiKey($user);
-        } else {
-            $user_api_key->value = sha1(str_random(33));
-            $user_api_key->save();
-        }
-
-        return $user_api_key;
+        return $token->save() ? $token : null;
     }
 
-    public function resetAtomKey($user)
-    {
-        $user_atom_key = Token::atomKey($user);
+//    public function all(User $user): Collection
+//    {
+//        return $user->tokens;
+//    }
 
-        if (is_null($user_atom_key)) {
-            $user_atom_key = Token::createAtomKey($user);
-        } else {
-            $user_atom_key->value = sha1(str_random(33));
-            $user_atom_key->save();
-        }
-
-        return $user_atom_key;
-    }
+//    public function destroy(User $user, string $action): bool
+//    {
+//        return $user->tokens()
+//            ->where('action', $action)
+//            ->delete();
+//    }
+//
+//    public function getApiKey($user)
+//    {
+//        $user_api_key = Token::apiKey($user);
+//
+//        if ($user_api_key === null) {
+//            $user_api_key = Token::createApiKey($user);
+//        }
+//
+//        return $user_api_key;
+//    }
+//
+//    public function resetApiKey($user)
+//    {
+//        $user_api_key = Token::apiKey($user);
+//
+//        if ($user_api_key === null) {
+//            $user_api_key = Token::createApiKey($user);
+//        } else {
+//            $user_api_key->value = sha1(str_random(33));
+//            $user_api_key->save();
+//        }
+//
+//        return $user_api_key;
+//    }
+//
+//    public function resetAtomKey($user)
+//    {
+//        $user_atom_key = Token::atomKey($user);
+//
+//        if ($user_atom_key === null) {
+//            $user_atom_key = Token::createAtomKey($user);
+//        } else {
+//            $user_atom_key->value = sha1(str_random(33));
+//            $user_atom_key->save();
+//        }
+//
+//        return $user_atom_key;
+//    }
 }

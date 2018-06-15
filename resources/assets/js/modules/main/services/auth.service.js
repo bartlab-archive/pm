@@ -18,7 +18,7 @@ export default class AuthService extends ServiceBase {
         return this.$http
             .post(`/api/v1/auth/login`, data)
             .then((response) => {
-                const token = _.get(response, 'data.token');
+                const token = _.get(response, 'data.data.value');
 
                 if (token) {
                     this.storageService.setToken(token);
@@ -32,7 +32,7 @@ export default class AuthService extends ServiceBase {
         return this.$http
             .post(`/api/v1/auth/register`, data)
             .then((response) => {
-                const token = _.get(response, 'data.token');
+                const token = _.get(response, 'data.data.value');
 
                 if (token) {
                     this.storageService.setToken(token);

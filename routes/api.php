@@ -20,8 +20,8 @@ Route::group(
             function () {
                 Route::post('login', 'AuthController@login');
                 Route::post('register', 'AuthController@register');
-                Route::post('password-reset', 'AuthController@sendResetPasswordToken');
-                Route::put('password-reset', 'AuthController@resetPassword');
+//                Route::post('password-reset', 'AuthController@sendResetPasswordToken');
+//                Route::put('password-reset', 'AuthController@resetPassword');
             }
         );
 

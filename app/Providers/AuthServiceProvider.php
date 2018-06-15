@@ -2,10 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Token;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Auth;
 
@@ -27,16 +24,18 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app['auth']->viaRequest('userAuth', function (Request $request) {
-            if ($request->bearerToken())
-            {
-                return app('App\Services\UsersService')
-                    ->userByToken($request->bearerToken(), Token::SESSION_TOKEN_ACTION);
+        Auth::viaRequest('db-token', function (Request $request) {
+            if ($token = $request->bearerToken()) {
+                $service = app(\App\Services\AuthService::class);
+
+                // todo: check expire token
+                if ($result = $service->find($token)) {
+                    return $result->user;
+                }
             }
 
+            return false;
         });
-
-        Auth::setDefaultDriver('user_auth');
 
         $this->registerPolicies();
     }

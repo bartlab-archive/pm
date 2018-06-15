@@ -2,11 +2,10 @@
 
 namespace App\Services;
 
-
-use App\Models\Token;
-
 class AuthService
 {
+    const SESSION_TOKEN_ACTION = 'session';
+
     /**
      * @var TokenService
      */
@@ -26,36 +25,41 @@ class AuthService
         $this->usersService = $usersService;
     }
 
-    public function session(string $login): Token
+    public function session(string $login)
     {
+        if ($user = $this->usersService->byLoginOrEmail($login)) {
+            return $this->tokenService->oneByUserId($user->id, self::SESSION_TOKEN_ACTION, ['user'], true);
+        }
 
-        return $this->tokenService->one(
-            $this->usersService->userByLoginOrEmail($login),
-            Token::SESSION_TOKEN_ACTION
-        );
+        return false;
     }
 
-    public function sendResetPasswordToken(string $email): Token
+    public function find($token)
     {
-        /**
-         * @TODO send message in email address
-         */
-
-        return $this->tokenService->one(
-            $this->usersService->userByLoginOrEmail($email),
-            Token::PASSWORD_RESET_TOKEN_ACTION
-        );
+        return $this->tokenService->oneByValue($token, self::SESSION_TOKEN_ACTION, ['user']);
     }
 
-    public function resetPassword(array $data): bool
-    {
-        $user = $this->usersService->userByToken(
-            array_get($data, 'reset_password_token'),
-            Token::PASSWORD_RESET_TOKEN_ACTION
-        );
-
-        $this->usersService->resetPassword($user, array_get($data, 'password'));
-
-        return $this->tokenService->destroy($user, Token::PASSWORD_RESET_TOKEN_ACTION);
-    }
+//    public function sendResetPasswordToken(string $email): Token
+//    {
+//        /**
+//         * @TODO send message in email address
+//         */
+//
+//        return $this->tokenService->one(
+//            $this->usersService->userByLoginOrEmail($email),
+//            Token::PASSWORD_RESET_TOKEN_ACTION
+//        );
+//    }
+//
+//    public function resetPassword(array $data): bool
+//    {
+//        $user = $this->usersService->userByToken(
+//            array_get($data, 'reset_password_token'),
+//            Token::PASSWORD_RESET_TOKEN_ACTION
+//        );
+//
+//        $this->usersService->resetPassword($user, array_get($data, 'password'));
+//
+//        return $this->tokenService->destroy($user, Token::PASSWORD_RESET_TOKEN_ACTION);
+//    }
 }

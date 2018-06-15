@@ -5,6 +5,7 @@ namespace App\Http\Requests\Auth;
 use App\Models\EmailAddress;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class AuthRegisterRequest extends FormRequest
 {
@@ -26,13 +27,23 @@ class AuthRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
-            'login' => 'required|string|max:255|unique:' . User::getTableName(),
-            'email' => 'required|string|email|max:255|unique:' . EmailAddress::getTableName() . ',address',
+            'login' => [
+                'required',
+                'string',
+                'max:60',
+                'unique:' . User::getTableName(),
+                'regex:/^[a-z0-9_\-@\.]*$/i'
+            ],
             'password' => 'required|string|min:6',
-            'repeatPassword' => 'required|string|min:6|same:password',
-            'lang' => 'required|string|max:2',
+            'repeatPassword' => 'required|string|same:password',
+            'firstName' => 'required|string|max:30',
+            'lastName' => 'required|string|max:30',
+            'email' => 'required|string|email|max:60|unique:' . EmailAddress::getTableName() . ',address',
+            'lang' => [
+                'required',
+                'string',
+                Rule::in(array_column(config('langs'), 'id')),
+            ],
             'hideEmail' => 'boolean'
         ];
     }
