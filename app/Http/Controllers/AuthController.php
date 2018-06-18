@@ -47,19 +47,29 @@ class AuthController extends BaseController
             abort(422);
         }
 
-        switch ($selfRegistration){
+        switch ($selfRegistration) {
             // todo: manual activation logic
             // todo: auto activation account
 //            case 0:
-                // disabled
+            // disabled
 //                break;
             case 1:
                 // account activation by email
-                return response(null, 201);
+                return response(
+                    [
+                        'message' => 'Account was successfully created. An email containing the instructions to activate your account was sent to <email>.'
+                    ],
+                    200
+                );
                 break;
             case 2:
                 // manual account activation
-                return response(null, 201);
+                return response(
+                    [
+                        'message' => 'Your account was created and is now pending administrator approval.'
+                    ],
+                    200
+                );
                 break;
             case 3:
                 // automatic account activation

@@ -1,5 +1,6 @@
 import ControllerBase from 'base/controller.base';
 import _ from "lodash";
+import AuthService from "../../services/auth.service";
 
 /*
 todo: "Minimum password length" get from settings
@@ -14,7 +15,7 @@ todo: value for "Hide my email address" get from settings
 export default class MainRegistrationController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$mdToast', 'usersService', 'settingsService'];
+        return ['$state', '$mdToast', 'usersService', 'settingsService','authService'];
     }
 
     $onInit() {
@@ -28,7 +29,7 @@ export default class MainRegistrationController extends ControllerBase {
             firstName: '',
             lastName: '',
             email: '',
-            lang: 'en',
+            language: 'en',
             hideEmail: false
         };
 
@@ -55,7 +56,7 @@ export default class MainRegistrationController extends ControllerBase {
 
                 // todo: look for response and message
                 if (!this.authService.isAuthenticated()) {
-                    message = 'Your account was created and is now pending administrator approval.';
+                    message = response.data.message;//'Your account was created and is now pending administrator approval.';
                     state = 'login';
                 }
 

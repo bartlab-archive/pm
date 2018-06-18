@@ -36,7 +36,7 @@ class UsersService
         /** @var User $user */
         $user = User::make(
             array_merge(
-                array_only($data, ['login', 'firstName', 'lastName', 'lang']),
+                array_only($data, ['login', 'firstName', 'lastName', 'language']),
 //                array_only($data, ['login', 'firstName', 'lastName', 'lang', 'only_my_events']),
                 [
                     'type' => 'User',

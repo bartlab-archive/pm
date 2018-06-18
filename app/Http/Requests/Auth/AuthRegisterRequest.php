@@ -40,7 +40,7 @@ class AuthRegisterRequest extends FormRequest
             'firstName' => 'required|string|max:30',
             'lastName' => 'required|string|max:30',
             'email' => 'required|string|email|max:60|unique:' . EmailAddress::getTableName() . ',address',
-            'lang' => [
+            'language' => [
                 'required',
                 'string',
                 Rule::in(array_column(config('langs'), 'id')),

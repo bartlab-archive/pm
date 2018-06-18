@@ -93,14 +93,14 @@
 
                 <md-input-container class="md-icon-float md-block">
                     <label>Language</label>
-                    <md-select ng-model="$ctrl.signup.lang" name="lang" server-field>
+                    <md-select ng-model="$ctrl.signup.language" name="language" server-field>
                         <md-option ng-value="language.id" ng-repeat="language in $ctrl.languages">
                             {{ language.name }}
                         </md-option>
                     </md-select>
 
-                    <div ng-messages="$ctrl.form.lang.$error">
-                        <div ng-message="server" ng-bind-html="$ctrl.form.lang.$server"></div>
+                    <div ng-messages="$ctrl.form.language.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.language.$server"></div>
                     </div>
                 </md-input-container>
 

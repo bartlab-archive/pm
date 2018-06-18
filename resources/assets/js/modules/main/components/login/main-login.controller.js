@@ -26,7 +26,7 @@ export default class MainLoginController extends ControllerBase {
         this.settingsService
             .one('self_registration')
             .then((response) => {
-                this.registration = !!_.get(response, 'data.data.value');
+                this.registration = _.get(response, 'data.data.value', '0') !== '0';
             });
     }
 
@@ -36,13 +36,13 @@ export default class MainLoginController extends ControllerBase {
             .login({login: this.model.login, password: this.model.password})
             .then((response) => {
                 if (this.authService.isAuthenticated()) {
-                    const name = _.get(response,'data.data.user.full_name');
+                    const name = _.get(response, 'data.data.user.full_name');
                     this.$mdToast.show(
                         this.$mdToast.simple().textContent(`Welcome, ${name}!`).position('bottom left')
                     );
 
                     this.$state.go('home');
-                }else{
+                } else {
                     this.$mdToast.show(
                         this.$mdToast.simple().textContent('Whoops, looks like something went wrong').position('bottom left')
                     );
