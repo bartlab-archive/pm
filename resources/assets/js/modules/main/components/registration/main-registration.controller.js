@@ -1,6 +1,11 @@
 import ControllerBase from 'base/controller.base';
 import _ from "lodash";
 
+/*
+todo: "Minimum password length" get from settings
+todo: value for "Hide my email address" get from settings
+ */
+
 /**
  * @property {$state} $state
  * @property {$mdToast} $mdToast
@@ -9,7 +14,7 @@ import _ from "lodash";
 export default class MainRegistrationController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$mdToast', 'usersService'];
+        return ['$state', '$mdToast', 'usersService', 'settingsService'];
     }
 
     $onInit() {
@@ -30,11 +35,12 @@ export default class MainRegistrationController extends ControllerBase {
         this.errors = {};
         this.form = {};
 
+        // check, if registration enabled
         this.settingsService
             .one('self_registration')
             .then((response) => {
-                if (_.get(response, 'data.data.value', 0)) {
-
+                if (_.get(response, 'data.data.value', '0') === '0') {
+                    this.$state.go('login');
                 }
             });
     }

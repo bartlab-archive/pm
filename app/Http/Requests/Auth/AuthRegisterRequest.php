@@ -34,6 +34,7 @@ class AuthRegisterRequest extends FormRequest
                 'unique:' . User::getTableName(),
                 'regex:/^[a-z0-9_\-@\.]*$/i'
             ],
+            // todo: Minimum password length from settings
             'password' => 'required|string|min:6',
             'repeatPassword' => 'required|string|same:password',
             'firstName' => 'required|string|max:30',

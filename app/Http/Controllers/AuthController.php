@@ -4,14 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\AuthLoginRequest;
 use App\Http\Requests\Auth\AuthRegisterRequest;
-
-//use App\Http\Requests\Auth\ResetPasswordRequest;
-//use App\Http\Requests\Auth\ResetPasswordSendTokenRequest;
-//use App\Services\AuthService;
 use App\Http\Resources\TokenResource;
 use App\Services\AuthService;
 use App\Services\SettingsService;
-use App\Services\TokenService;
 use App\Services\UsersService;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -55,7 +50,19 @@ class AuthController extends BaseController
         switch ($selfRegistration){
             // todo: manual activation logic
             // todo: auto activation account
+//            case 0:
+                // disabled
+//                break;
+            case 1:
+                // account activation by email
+                return response(null, 201);
+                break;
+            case 2:
+                // manual account activation
+                return response(null, 201);
+                break;
             case 3:
+                // automatic account activation
                 if (!$token = $this->authService->session($user->login)) {
                     abort(422);
                 }

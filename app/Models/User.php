@@ -34,6 +34,10 @@ class User extends Authenticatable
 {
     use ModelTrait;
 
+    const STATUS_ACTIVE = 1;
+    const STATUS_DISABLE = 2;
+    const STATUS_LOCK = 3;
+
     const CREATED_AT = 'created_on';
     const UPDATED_AT = 'updated_on';
 

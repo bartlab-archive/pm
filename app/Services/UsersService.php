@@ -36,8 +36,18 @@ class UsersService
         /** @var User $user */
         $user = User::make(
             array_merge(
-                array_only($data, ['login', 'firstName', 'lastName', 'lang', 'only_my_events']),
+                array_only($data, ['login', 'firstName', 'lastName', 'lang']),
+//                array_only($data, ['login', 'firstName', 'lastName', 'lang', 'only_my_events']),
                 [
+                    'type' => 'User',
+                    // todo: get from $data
+                    'mail_notification'=>'only_my_events',
+                    // todo: get from $data
+                    'admin' => 0,
+                    // todo: get from settings or $data
+                    'status' => User::STATUS_DISABLE,
+                    // todo: get from settings or $data
+                    'must_change_passwd' => 0,
                     'salt' => $salt,
                     'hashed_password' => $this->preparePassword($salt, array_get($data, 'password'))
                 ]
@@ -52,7 +62,9 @@ class UsersService
             ]);
 
             $user->preference()->create([
+                // todo: get from settings if not set
                 'hide_mail' => array_get($data, 'hideEmail'),
+                // todo: get from $data or app settings
                 'time_zone' => \Config::get('app.timezone'),
                 'others' => Yaml::dump(UserPreference::DEFAULT_OTHERS_DATA)
             ]);
