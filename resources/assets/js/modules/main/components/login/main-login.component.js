@@ -1,7 +1,6 @@
+import ComponentBase from "base/component.base";
 import MainLoginController from './main-login.controller';
 import mainLoginTemplate from './main-login.html';
-import './main-login.scss';
-import ComponentBase from "base/component.base";
 
 export default class MainLoginComponent extends ComponentBase {
 

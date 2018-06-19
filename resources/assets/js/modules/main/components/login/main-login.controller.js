@@ -33,7 +33,7 @@ export default class MainLoginController extends ControllerBase {
     submit() {
         this.loadProccess = true;
         this.authService
-            .login({login: this.model.login, password: this.model.password})
+            .login(this.model)
             .then((response) => {
                 if (this.authService.isAuthenticated()) {
                     const name = _.get(response, 'data.data.user.full_name');
