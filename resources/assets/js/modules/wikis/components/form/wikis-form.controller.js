@@ -70,7 +70,7 @@ export default class WikisFormController extends ControllerBase {
         return (this.isNew ? this.wikisService.createPage(projectId, model) : this.wikisService.updatePage(projectId, this.page.id, model))
             .then((response) => {
                 this.$mdToast.show(
-                    this.$mdToast.simple().textContent('Success saved!').position('bottom left')
+                    this.$mdToast.simple().textContent('Success saved!')//.position('bottom left')
                 );
 
                 this.$state.go('wiki.page.view', {name: response.data.data.title});
@@ -78,7 +78,7 @@ export default class WikisFormController extends ControllerBase {
             .catch((response) => {
                 if (response.status === 422) {
                     this.$mdToast.show(
-                        this.$mdToast.simple().textContent(response.data.message).position('bottom left')
+                        this.$mdToast.simple().textContent(response.data.message)//.position('bottom left')
                     );
                 }
 

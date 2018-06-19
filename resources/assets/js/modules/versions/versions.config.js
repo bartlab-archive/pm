@@ -23,7 +23,7 @@ export default class VersionsConfig extends InjectableBase {
             .state('versions', {
                 abstract: true,
                 data: {
-                    access: '@'
+                    access: '!'
                 },
                 url: '/versions',
                 parent: 'default',

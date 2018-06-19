@@ -70,7 +70,7 @@ export default class IssuesProjectSettingsController extends ControllerBase {
             .then(() => {
                 this.$rootScope.$emit('updateIssuesCategories');
                 this.$mdToast.show(
-                    this.$mdToast.simple().textContent('Success delete!').position('bottom left')
+                    this.$mdToast.simple().textContent('Success delete!')//.position('bottom left')
                 );
             });
     }

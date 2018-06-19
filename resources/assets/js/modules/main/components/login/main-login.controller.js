@@ -38,20 +38,20 @@ export default class MainLoginController extends ControllerBase {
                 if (this.authService.isAuthenticated()) {
                     const name = _.get(response, 'data.data.user.full_name');
                     this.$mdToast.show(
-                        this.$mdToast.simple().textContent(`Welcome, ${name}!`).position('bottom left')
+                        this.$mdToast.simple().textContent(`Welcome, ${name}!`)//.position('bottom left')
                     );
 
                     this.$state.go('home');
                 } else {
                     this.$mdToast.show(
-                        this.$mdToast.simple().textContent('Whoops, looks like something went wrong').position('bottom left')
+                        this.$mdToast.simple().textContent('Whoops, looks like something went wrong')//.position('bottom left')
                     );
                 }
             })
             .catch((response) => {
                 if (response.status === 422) {
                     this.$mdToast.show(
-                        this.$mdToast.simple().textContent(response.data.message).position('bottom left')
+                        this.$mdToast.simple().textContent(response.data.message)//.position('bottom left')
                     );
                 }
 

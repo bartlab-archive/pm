@@ -25,7 +25,7 @@ export default class GroupsConfig extends InjectableBase {
             .state('groups', {
                 abstract: true,
                 data: {
-                    access: '@'
+                    access: '!'
                 },
                 url: '/groups',
                 parent: 'default',

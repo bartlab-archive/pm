@@ -66,9 +66,9 @@ export default class IssuesConfig extends InjectableBase {
         this.$stateProvider
             .state('issues', {
                 abstract: true,
-                data: {
-                    access: '@'
-                },
+                // data: {
+                //     access: '@'
+                // },
                 url: '/issues',
                 parent: 'default',
                 views: {
@@ -146,7 +146,7 @@ export default class IssuesConfig extends InjectableBase {
             .state('issues-statuses', {
                 abstract: true,
                 data: {
-                    access: '@'
+                    access: '!'
                 },
                 url: '/issue_statuses',
                 parent: 'default',

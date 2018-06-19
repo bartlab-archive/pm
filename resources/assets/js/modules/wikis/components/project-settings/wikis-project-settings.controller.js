@@ -28,13 +28,13 @@ export default class WikisProjectSettingsController extends ControllerBase {
                 Object.assign(this.wiki, response.data.data);
 
                 this.$mdToast.show(
-                    this.$mdToast.simple().textContent('Success saved!').position('bottom left')
+                    this.$mdToast.simple().textContent('Success saved!')//.position('bottom left')
                 );
             })
             .catch((response) => {
                 if (response.status === 422) {
                     this.$mdToast.show(
-                        this.$mdToast.simple().textContent(response.data.message).position('bottom left')
+                        this.$mdToast.simple().textContent(response.data.message)//.position('bottom left')
                     );
                 }
 

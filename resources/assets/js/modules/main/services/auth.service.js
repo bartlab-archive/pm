@@ -19,9 +19,14 @@ export default class AuthService extends ServiceBase {
             .post(`/api/v1/auth/login`, data)
             .then((response) => {
                 const token = _.get(response, 'data.data.value');
+                const user = _.get(response, 'data.data.user');
 
                 if (token) {
                     this.storageService.setToken(token);
+                }
+
+                if (user) {
+                    this.storageService.setUser(user);
                 }
 
                 return response;
@@ -33,9 +38,14 @@ export default class AuthService extends ServiceBase {
             .post(`/api/v1/auth/register`, data)
             .then((response) => {
                 const token = _.get(response, 'data.data.value');
+                const user = _.get(response, 'data.data.user');
 
                 if (token) {
                     this.storageService.setToken(token);
+                }
+
+                if (user) {
+                    this.storageService.setUser(user);
                 }
 
                 return response;
@@ -44,10 +54,15 @@ export default class AuthService extends ServiceBase {
 
     logout() {
         this.storageService.removeToken();
+        this.storageService.removeUser();
     }
 
     isAuthenticated() {
         return !!this.storageService.getToken();
+    }
+
+    isAdmin(){
+        return !!this.storageService.getUserData('admin');
     }
 
 }

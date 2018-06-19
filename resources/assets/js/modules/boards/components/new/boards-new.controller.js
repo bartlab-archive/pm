@@ -29,7 +29,7 @@ export default class BoardsNewController extends ControllerBase {
 
         if (update) {
             this.$mdToast.show(
-                this.$mdToast.simple().textContent('Success saved!').position('bottom left')
+                this.$mdToast.simple().textContent('Success saved!')//.position('bottom left')
             );
             this.$rootScope.$emit('updateProjectInfo');
         }

@@ -44,7 +44,7 @@ export default class ProjectsSettingsMembersController extends ControllerBase {
             .then(() => this.projectsService.deleteMember(member.id))
             .then(() => {
                 this.$mdToast.show(
-                    this.$mdToast.simple().textContent('Success delete!').position('bottom left')
+                    this.$mdToast.simple().textContent('Success delete!')//.position('bottom left')
                 );
                 this.$rootScope.$emit('updateProjectInfo');
             });

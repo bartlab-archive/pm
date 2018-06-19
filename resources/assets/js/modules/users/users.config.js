@@ -25,7 +25,7 @@ export default class UsersConfig extends InjectableBase {
             .state('users', {
                 abstract: true,
                 data: {
-                    access: '@'
+                    access: '!'
                 },
                 url: '/users',
                 parent: 'default',

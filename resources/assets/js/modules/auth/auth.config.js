@@ -23,7 +23,7 @@ export default class FieldsConfig extends InjectableBase {
             .state('auth', {
                 abstract: true,
                 data: {
-                    access: '@'
+                    access: '!'
                 },
                 url: '/auth_sources',
                 parent: 'default',

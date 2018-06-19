@@ -19,6 +19,9 @@ export default class LayoutConfig extends InjectableBase {
             })
             .state('default', {
                 abstract: true,
+                data: {
+                    access: '@'
+                },
                 component: LayoutDefaultComponent.getName()
             });
     }

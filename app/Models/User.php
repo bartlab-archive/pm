@@ -45,6 +45,10 @@ class User extends Authenticatable
 
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'admin' => 'boolean',
+    ];
+
 //    protected $hidden = [
 //        '*'
 ////        'id',

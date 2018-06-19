@@ -23,7 +23,7 @@ export default class RolesConfig extends InjectableBase {
             .state('roles', {
                 abstract: true,
                 data: {
-                    access: '@'
+                    access: '!'
                 },
                 url: '/roles',
                 parent: 'default',

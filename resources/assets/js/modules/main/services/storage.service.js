@@ -17,12 +17,24 @@ export default class StorageService extends ServiceBase {
         localStorage.setItem('token', token);
     }
 
+    setUser(user) {
+        localStorage.setItem('user', JSON.stringify(user));
+    }
+
     getToken() {
         return localStorage.getItem('token');
     }
 
-    removeToken(){
+    getUserData(name) {
+        return _.get(JSON.parse(localStorage.getItem('user')), name);
+    }
+
+    removeToken() {
         localStorage.removeItem('token');
+    }
+
+    removeUser() {
+        localStorage.removeItem('user');
     }
 
     // logout(){

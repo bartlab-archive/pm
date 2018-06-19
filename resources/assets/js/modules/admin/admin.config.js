@@ -35,7 +35,7 @@ export default class AdminConfig extends InjectableBase {
             .state('admin', {
                 abstract: true,
                 data: {
-                    access: '@'
+                    access: '!'
                 },
                 url: '/admin',
                 parent: 'default',

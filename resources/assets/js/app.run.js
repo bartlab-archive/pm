@@ -11,7 +11,7 @@ export default class AppRun extends InjectableBase {
     }
 
     $onInit() {
-        this.isReady = false;
+        // this.isReady = false;
 
         this.$transitions.onStart({}, (...args) => this.checkAccess(...args));
         this.$rootScope.$on('authUnauthorized', (...args) => this.authUnauthorized(...args));
@@ -28,13 +28,19 @@ export default class AppRun extends InjectableBase {
         const access = _.get(trans.$to(), 'data.access', false);
 
         if (access) {
-            /*Cancel going to the authenticated state and go back to landing*/
+            // console.log('access: ',access);
+            // Cancel going to the authenticated state and go back to landing
             if (access === '@' && !this.authService.isAuthenticated()) {
                 return trans.router.stateService.target('login');
             }
 
             // if controller not require authorizing and has deny signed users flag then redirect
             if (access === '?' && this.authService.isAuthenticated()) {
+                return trans.router.stateService.target('home');
+            }
+
+            // check admin access
+            if (access === '!' && (!this.authService.isAuthenticated() || !this.authService.isAdmin())) {
                 return trans.router.stateService.target('home');
             }
         }
@@ -86,25 +92,25 @@ export default class AppRun extends InjectableBase {
         // this.$state.go('500');
     }
 
-    errorInterceptor(response, deferred, responseHandler) {
-        switch (true) {
-            case (response.status === 401):
-                this.$rootScope.$broadcast('authUnauthorized');
-                break;
-
-            case (response.status === 403):
-                this.$rootScope.$broadcast('authForbidden');
-                break;
-
-            case (response.status === 404):
-                this.$rootScope.$broadcast('notFound');
-                break;
-
-            case (response.status >= 500):
-                this.$mdToast.show(
-                    this.$mdToast.simple().textContent('Server error!')
-                );
-        }
-    }
+    // errorInterceptor(response, deferred, responseHandler) {
+    //     switch (true) {
+    //         case (response.status === 401):
+    //             this.$rootScope.$broadcast('authUnauthorized');
+    //             break;
+    //
+    //         case (response.status === 403):
+    //             this.$rootScope.$broadcast('authForbidden');
+    //             break;
+    //
+    //         case (response.status === 404):
+    //             this.$rootScope.$broadcast('notFound');
+    //             break;
+    //
+    //         case (response.status >= 500):
+    //             this.$mdToast.show(
+    //                 this.$mdToast.simple().textContent('Server error!')
+    //             );
+    //     }
+    // }
 
 }

@@ -64,9 +64,9 @@ export default class ProjectsConfig extends InjectableBase {
         this.$stateProvider
             .state('projects', {
                 abstract: true,
-                data: {
-                    access: '@'
-                },
+                // data: {
+                //     access: '@'
+                // },
                 url: '/projects',
                 parent: 'default',
                 views: {
@@ -77,9 +77,9 @@ export default class ProjectsConfig extends InjectableBase {
             })
             .state('projects.inner', {
                 abstract: true,
-                data: {
-                    access: '@'
-                },
+                // data: {
+                //     access: '@'
+                // },
                 url: '/{project_id:[a-z][a-z0-9\-\_]{0,99}}',
                 template: '<ui-view/>'
             })
@@ -113,7 +113,7 @@ export default class ProjectsConfig extends InjectableBase {
             .state('projects-admin', {
                 url: '/projects',
                 data: {
-                    isAdmin: true
+                    access: '!'
                 },
                 parent: 'admin',
                 component: ProjectsListComponent.getName(),

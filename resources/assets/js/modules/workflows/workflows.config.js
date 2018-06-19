@@ -24,7 +24,7 @@ export default class StatusesConfig extends InjectableBase {
             .state('workflows', {
                 abstract: true,
                 data: {
-                    access: '@'
+                    access: '!'
                 },
                 url: '/workflows',
                 parent: 'default',

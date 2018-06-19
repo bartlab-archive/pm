@@ -79,7 +79,7 @@ export default class UsersEditController extends ControllerBase {
               this.model.tokens.api.updated_on = response.data.updated_on;
               this.model.tokens.api.value = response.data.value;
               this.$mdToast.show(
-                  this.$mdToast.simple().textContent('API key was reset successfully').position('bottom left')
+                  this.$mdToast.simple().textContent('API key was reset successfully')//.position('bottom left')
               );
           }
       });
@@ -91,7 +91,7 @@ export default class UsersEditController extends ControllerBase {
           if (response && response.status === 200) {
               this.model.tokens.atom.updated_on = response.data.updated_on;
               this.$mdToast.show(
-                  this.$mdToast.simple().textContent('RSS key was reset successfully').position('bottom left')
+                  this.$mdToast.simple().textContent('RSS key was reset successfully')//.position('bottom left')
               );
           }
       });

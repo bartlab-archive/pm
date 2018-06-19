@@ -44,9 +44,9 @@ export default class MainConfig extends InjectableBase {
                 }
             })
             .state('home', {
-                data: {
-                    access: '@'
-                },
+                // data: {
+                //     access: '@'
+                // },
                 parent: 'default',
                 url: '/',
                 views: {

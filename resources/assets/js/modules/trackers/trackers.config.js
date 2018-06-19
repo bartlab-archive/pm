@@ -23,7 +23,7 @@ export default class TrackersConfig extends InjectableBase {
             .state('trackers', {
                 abstract: true,
                 data: {
-                    access: '@'
+                    access: '!'
                 },
                 url: '/trackers',
                 parent: 'default',

@@ -175,7 +175,7 @@ export default class IssuesFormController extends ControllerBase {
                 const message = this.isNew ? 'Issue #' + id + ' created.' : 'Successful update.';
 
                 this.$mdToast.show(
-                    this.$mdToast.simple().textContent(message).position('bottom left')
+                    this.$mdToast.simple().textContent(message)//.position('bottom left')
                 );
 
                 this.$state.go(
@@ -189,7 +189,7 @@ export default class IssuesFormController extends ControllerBase {
             .catch((response) => {
                 if (response.status === 422) {
                     this.$mdToast.show(
-                        this.$mdToast.simple().textContent(response.data.message).position('bottom left')
+                        this.$mdToast.simple().textContent(response.data.message)//.position('bottom left')
                     );
                 }
 

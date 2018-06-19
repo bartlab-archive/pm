@@ -69,7 +69,7 @@ export default class MainRegistrationController extends ControllerBase {
             .catch((response) => {
                 if (response.status === 422) {
                     this.$mdToast.show(
-                        this.$mdToast.simple().textContent(response.data.message).position('bottom left')
+                        this.$mdToast.simple().textContent(response.data.message)//.position('bottom left')
                     );
                 }
 

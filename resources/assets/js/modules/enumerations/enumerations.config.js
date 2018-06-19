@@ -23,7 +23,7 @@ export default class FieldsConfig extends InjectableBase {
             .state('enumerations', {
                 abstract: true,
                 data: {
-                    access: '@'
+                    access: '!'
                 },
                 url: '/enumerations',
                 parent: 'default',
