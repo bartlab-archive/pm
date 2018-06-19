@@ -261,36 +261,36 @@ export default class UsersService extends ServiceBase {
         // return this.Restangular.all('users').customPUT(user, user.id);
     }
 
-    resetApiAccessKey() {
+    // resetApiAccessKey() {
         // return this.Restangular.one('my').one('api-key').put();
-    }
+    // }
 
-    resetAtomAccessKey() {
+    // resetAtomAccessKey() {
         // return this.Restangular.one('my').one('rss-key').put();
-    }
+    // }
 
-    getAdditionalEmails() {
+    // getAdditionalEmails() {
         // return this.Restangular.all('my').one('email-addresses').getList();
-    }
+    // }
 
-    updateAdditionalEmail(emailAddressId, data) {
+    // updateAdditionalEmail(emailAddressId, data) {
         // return this.Restangular.one('my', 'email-addresses').customPUT(data, emailAddressId);
-    }
+    // }
 
-    deleteAdditionalEmail(emailAddressId) {
+    // deleteAdditionalEmail(emailAddressId) {
         // return this.Restangular.one('my').one('email-addresses', emailAddressId).remove();
-    }
+    // }
 
-    addAdditionalEmail(email) {
+    // addAdditionalEmail(email) {
         // return this.Restangular.one('my').all('email-addresses').post({
         //     email: email,
         //     is_default: false,
         //     notify: true
         // });
-    }
+    // }
 
-    changePassword(data) {
+    // changePassword(data) {
         // return this.Restangular.one('my').customPUT(data, 'password');
-    }
+    // }
 
 }

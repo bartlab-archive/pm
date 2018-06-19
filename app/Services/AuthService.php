@@ -27,7 +27,7 @@ class AuthService
 
     public function session(string $login)
     {
-        if ($user = $this->usersService->byLoginOrEmail($login)) {
+        if ($user = $this->usersService->byLogin($login)) {
             return $this->tokenService->oneByUserId($user->id, self::SESSION_TOKEN_ACTION, ['user'], true);
         }
 

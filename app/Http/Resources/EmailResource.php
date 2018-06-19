@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class TokenResource extends Resource
+class EmailResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,9 @@ class TokenResource extends Resource
     {
         return [
             'user' => UserResource::make($this->whenLoaded('user')),
-            'action' => $this->action,
-            'value' => $this->value
+            'address' => $this->address,
+            'is_default' => $this->is_default,
+            'notify' => $this->notify,
         ];
     }
 

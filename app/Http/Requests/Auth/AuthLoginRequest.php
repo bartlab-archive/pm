@@ -28,9 +28,10 @@ class AuthLoginRequest extends FormRequest
             'login' => [
                 'required',
                 'string',
-                'max:255',
+                'max:60',
+                'regex:/^[a-z0-9_\-@\.]*$/i',
                 function ($attribute, $value, $fail) use ($usersService) {
-                    if (!$usersService->byLoginOrEmail($value)) {
+                    if (!$usersService->byLogin($value)) {
                         return $fail('The selected login is invalid.');
                     }
                 }
@@ -42,7 +43,7 @@ class AuthLoginRequest extends FormRequest
                 function ($attribute, $value, $fail) use ($usersService) {
                     if (
                         ($login = $this->get('login')) &&
-                        $usersService->byLoginOrEmail($login) &&
+                        $usersService->byLogin($login) &&
                         !$usersService->validatePassword($login, $value)
                     ) {
                         return $fail('Invalid credentials.');

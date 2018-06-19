@@ -176,8 +176,9 @@ class UserPreference extends Model
 
     protected $guarded = ['id'];
 
-//    public function getOthersAttribute($value)
-//    {
+
+    public function getOthersAttribute($value)
+    {
 //        $others = Yaml::parse($value);
 //        $result_others = [];
 //
@@ -186,7 +187,8 @@ class UserPreference extends Model
 //        }
 //
 //        return $result_others;
-//    }
+        return Yaml::parse($value);
+    }
 
     /**
      * Update others

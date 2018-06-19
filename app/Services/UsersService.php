@@ -41,7 +41,7 @@ class UsersService
                 [
                     'type' => 'User',
                     // todo: get from $data
-                    'mail_notification'=>'only_my_events',
+                    'mail_notification' => 'only_my_events',
                     // todo: get from $data
                     'admin' => 0,
                     // todo: get from settings or $data
@@ -75,14 +75,14 @@ class UsersService
         return false;
     }
 
-    public function byLoginOrEmail(string $login)
+    public function byLogin(string $login)
     {
         return User::query()
             ->where('login', $login)
-            ->orWhereHas('email', function ($query) use ($login) {
+//            ->orWhereHas('email', function ($query) use ($login) {
                 /** @var $query Builder */
-                $query->where('address', $login);
-            })
+//                $query->where('address', $login);
+//            })
             ->first();
     }
 
@@ -98,7 +98,7 @@ class UsersService
 
     public function validatePassword(string $login, string $password): bool
     {
-        if ($user = $this->byLoginOrEmail($login)) {
+        if ($user = $this->byLogin($login)) {
             return $this->preparePassword($user->salt, $password) === $user->hashed_password;
         }
 
@@ -156,6 +156,14 @@ class UsersService
 //            ])
 //            ->first();
 //    }
+
+    public function one($id, array $with = [])
+    {
+        return User::query()
+            ->with($with)
+            ->where(['id' => $id])
+            ->first();
+    }
 
 //    public function update($id, $data)
 //    {

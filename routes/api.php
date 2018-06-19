@@ -32,15 +32,15 @@ Route::group(
             ],
             function () {
                 Route::get('account', 'AccountController@show');
-                Route::put('account/{id}', 'AccountController@update');
-                Route::put('password', 'AccountController@changePassword');
+//                Route::put('account/{id}', 'AccountController@update');
+//                Route::put('password', 'AccountController@changePassword');
 //                Route::get('api-key', 'AccountController@showApiKey');
-                Route::put('api-key', 'AccountController@resetApiKey');
-                Route::put('rss-key', 'AccountController@resetAtomKey');
-                Route::put('change-password', 'AccountController@resetAtomKey');
-                Route::post('email-addresses', 'AccountController@addAdditionalEmails');
-                Route::put('email-addresses/{id}', 'AccountController@updateAdditionalEmail');
-                Route::delete('email-addresses/{id}', 'AccountController@deleteAdditionalEmail');
+//                Route::put('api-key', 'AccountController@resetApiKey');
+//                Route::put('rss-key', 'AccountController@resetAtomKey');
+//                Route::put('change-password', 'AccountController@resetAtomKey');
+//                Route::post('email-addresses', 'AccountController@addAdditionalEmails');
+//                Route::put('email-addresses/{id}', 'AccountController@updateAdditionalEmail');
+//                Route::delete('email-addresses/{id}', 'AccountController@deleteAdditionalEmail');
             }
         );
 

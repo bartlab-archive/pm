@@ -22,6 +22,8 @@ import MainProvider from "./providers/main.provider";
 import AuthService from "./services/auth.service";
 import StorageService from "./services/storage.service";
 
+// todo: ResetPassword component not work
+
 angular.module('app.modules.main', [])
     .config(MainConfig.inst())
     .filter(Nl2pFilter.getName(), Nl2pFilter.inst())

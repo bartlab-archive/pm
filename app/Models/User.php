@@ -49,6 +49,12 @@ class User extends Authenticatable
         'admin' => 'boolean',
     ];
 
+    protected $dates = [
+        'created_on',
+        'updated_on',
+        'last_login_on',
+    ];
+
 //    protected $hidden = [
 //        '*'
 ////        'id',
@@ -73,15 +79,20 @@ class User extends Authenticatable
 //        'full_name'
     ];
 
-    public function email()
+//    public function email()
+//    {
+//        return $this->hasOne(EmailAddress::class)->where('is_default', true);
+//    }
+
+    public function emails()
     {
-        return $this->hasOne(EmailAddress::class)->where('is_default', true);
+        return $this->hasMany(EmailAddress::class);
     }
 
-    public function additionalEmails()
-    {
-        return $this->hasMany(EmailAddress::class)->where('is_default', false);
-    }
+//    public function additionalEmails()
+//    {
+//        return $this->hasMany(EmailAddress::class)->where('is_default', false);
+//    }
 
 //    public function attachments()
 //    {
@@ -95,7 +106,7 @@ class User extends Authenticatable
 
     public function tokens()
     {
-        return $this->hasMany(Token::class);
+        return $this->hasMany(Token::class)->whereNotIn('action', ['session', 'autologin']);
     }
 
     public function comments()
