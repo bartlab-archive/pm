@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\DB;
 
 class AttachmentsService
 {
+    public function one($id)
+    {
+        return Attachment::query()
+            ->where('id', $id)
+            ->first();
+    }
+
     public function delete($id)
     {
 
@@ -25,7 +32,7 @@ class AttachmentsService
 
     public function getFullFilePath($id)
     {
-        return $path = storage_path('uploads/' . $this->getFilePath($id));
+        return storage_path() . '/app/public/uploads/' . $this->getFilePath($id);
     }
 
     public function getFilePath($id)
@@ -35,5 +42,19 @@ class AttachmentsService
             return $attachment->disk_directory . '/' . $attachment->disk_filename;
         }
         return null;
+    }
+
+    public function create(array $data) {
+        $attachment = Attachment::make($data);
+
+        if($attachment->save()) {
+            return $attachment;
+        }
+
+        return false;
+    }
+
+    public function update($id, array $data) {
+        return Attachment::where(['id' => $id])->update($data);
     }
 }

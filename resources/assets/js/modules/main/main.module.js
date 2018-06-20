@@ -11,6 +11,7 @@ import CompileDirective from './directives/compile/compile.directive';
 import SimplemdeDirective from './directives/simplemde/simplemde.directive';
 import ServerFormDirective from './directives/server-form/server-form.directive';
 import ServerFieldDirective from './directives/server-field/server-field.directive';
+import MultiFileDirective from './directives/multi-file/multi-file';
 import MainIndexComponent from './components/index/main-index.component';
 import MainLoginComponent from './components/login/main-login.component';
 import MainRegistrationComponent from './components/registration/main-registration.component';
@@ -37,6 +38,7 @@ angular.module('app.modules.main', [])
     .directive(SimplemdeDirective.getName(), SimplemdeDirective.inst())
     .directive(ServerFormDirective.getName(), ServerFormDirective.inst())
     .directive(ServerFieldDirective.getName(), ServerFieldDirective.inst())
+    .directive(MultiFileDirective.getName(), MultiFileDirective.inst())
     .service(AuthService.getName(), AuthService)
     .service(StorageService.getName(), StorageService)
     .provider(MainProvider.getName(), MainProvider)

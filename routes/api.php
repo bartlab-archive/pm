@@ -46,6 +46,22 @@ Route::group(
 
         Route::group(
             [
+                'middleware' => ['auth', 'throttle:1000,1'],
+                'prefix' => 'attachments'
+            ],
+            function () {
+//                Route::get('/', 'ProjectsController@index');
+//                Route::get('/{identifier}', 'ProjectsController@show');
+                Route::post('/', 'AttachmentsController@upload');
+                Route::put('/{id}', 'AttachmentsController@update');
+                Route::delete('/{id}', 'AttachmentsController@delete');
+//                Route::put('/{identifier}', 'ProjectsController@update');
+
+            }
+        );
+
+        Route::group(
+            [
                 'middleware' => 'auth',
                 'prefix' => 'projects'
             ],

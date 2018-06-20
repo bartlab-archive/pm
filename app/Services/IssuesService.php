@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Attachment;
 use App\Models\Issue;
 use App\Models\IssueCategory;
 use App\Models\IssueStatus;
@@ -135,6 +136,7 @@ class IssuesService
                 'author',
                 'project',
                 'watchers',
+                'attachments',
                 'project.trackers',
                 'project.members.user',
                 'child',
@@ -170,6 +172,10 @@ class IssuesService
 
         if ($issue->save()) {
             $issue->watchers()->sync(array_get($data, 'watchers'));
+
+            $attachments = Attachment::whereIn('id', array_get($data, 'attachments'))->get();
+            $issue->attachments()->saveMany($attachments->getDictionary());
+
             return $issue;
         }
 
@@ -214,6 +220,14 @@ class IssuesService
 
             // save watchers
             $issue->watchers()->sync(array_get($data, 'watchers'));
+
+            // save attachments
+            // todo: check author is the same who create issue.
+            if($attachmentsIds = array_get($data, 'new_attachments')) {
+                $attachments = Attachment::whereIn('id', $attachmentsIds)->get();
+                $issue->attachments()->saveMany($attachments->getDictionary());
+            }
+
 
             if ($issue->update()) {
                 // save journal if notes exists or fileds change

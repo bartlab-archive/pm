@@ -22,7 +22,7 @@ export default class IssuesFormController extends ControllerBase {
     static get $inject() {
         return [
             'issuesService', '$stateParams', 'projectsService', '$rootScope', '$q',
-            'enumerationsService', '$mdToast', '$filter', '$state'
+            'enumerationsService', '$mdToast', '$filter', '$state', '$http', '$scope'
         ];
     }
 
@@ -33,7 +33,8 @@ export default class IssuesFormController extends ControllerBase {
             project: {
                 identifier: this.projectsService.getCurrentId()
             },
-            watchers: []
+            watchers: [],
+            new_attachments: []
         };
 
         this.categories = [];
@@ -42,6 +43,7 @@ export default class IssuesFormController extends ControllerBase {
         this.isNew = (this.$state.current.name === 'issues-inner.copy' || !this.issue.id);
         this.title = !this.isNew ? '#' : 'New issue';
         this.showDescription = this.isNew;
+        this.files = [];
         // cache state for ng-if
         // this.buttonsStateCreate = !this.isNew();
         // this.loadProccess = true;
@@ -160,6 +162,7 @@ export default class IssuesFormController extends ControllerBase {
             is_private: this.issue.is_private,
             // closed_on: null
             project_identifier: this.issue.project.identifier,
+            new_attachments: this.issue.new_attachments,
             watchers: this.watchers.map((watcher) => watcher.user.id),
         };
 
@@ -175,7 +178,7 @@ export default class IssuesFormController extends ControllerBase {
                 const message = this.isNew ? 'Issue #' + id + ' created.' : 'Successful update.';
 
                 this.$mdToast.show(
-                    this.$mdToast.simple().textContent(message)//.position('bottom left')
+                    this.$mdToast.simple().textContent(message).position('bottom left')
                 );
 
                 this.$state.go(
@@ -189,11 +192,128 @@ export default class IssuesFormController extends ControllerBase {
             .catch((response) => {
                 if (response.status === 422) {
                     this.$mdToast.show(
-                        this.$mdToast.simple().textContent(response.data.message)//.position('bottom left')
+                        this.$mdToast.simple().textContent(response.data.message).position('bottom left')
                     );
                 }
 
                 this.errors = response.data.errors;
+            });
+    }
+
+    upload() {
+        console.log(this.files);
+
+        let sendFile = (fileData) => {
+
+            let fd = new FormData();
+            fd.append("file_content", fileData.file_content);
+            fd.append("file_name", fileData.file_name);
+            fd.append("file_type", fileData.file_type);
+            fd.append("file_chunk_id", fileData.file_chunk_id);
+            fd.append("chunk_amount", fileData.chunk_amount);
+            fd.append("file_total_size", fileData.file_total_size);
+            if(fileData.description) {
+                fd.append("description", fileData.description);
+            }
+
+            this.$http.post('http://localhost:3000/api/v1/attachments', fd, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined }, // angular detects content-type
+                transformRequest: angular.identity
+            })
+                .then((response) => {
+                    if(response.data && response.data.data.id ) {
+                        // todo: change logic between attachment and files --> create and update
+                        this.issue.new_attachments.push(response.data.data.id);
+                        let loadedFile = this.files.findIndex((el) => {
+                            return el.name == fileData.file_name;
+                        });
+                        this.files[loadedFile].hasLoaded = true;
+                        this.files[loadedFile].id = response.data.data.id;
+
+                        this.$mdToast.show(
+                            this.$mdToast.simple().textContent(`File ${fileData.file_name} successfully loaded.`).position('bottom left')
+                        );
+                    }
+                    // this.file response.data.errors
+                }, (response) => {
+                    console.log('error file upload')
+                });
+        }
+
+
+        let fileChunkSize = 1000000;
+
+        this.files.forEach((file, index) => {
+
+            // exclude already loaded files
+            if(file.hasLoaded) {
+                return;
+            }
+
+            let filePartsNumber = Math.floor(file._file.size / fileChunkSize) + 1;
+
+            for(let i = 0; i < filePartsNumber; i++) {
+                let filePart = file._file.slice(i * fileChunkSize, (i + 1) * fileChunkSize);
+                let payload = {
+                    file_name: file._file.name,
+                    file_type: file._file.type,
+                    file_size: filePart.size,
+                    file_total_size: file.size,
+                    file_content: filePart,
+                    file_chunk_id: i,
+                    chunk_amount: filePartsNumber,
+                    description: file.description
+                };
+                sendFile(payload);
+            }
+
+        });
+
+    }
+
+    triggerFileLoadButton() {
+        document.getElementById("files-upload").click();
+        // angular.element(document.getElementById("files-upload")).trigger("click")
+    }
+
+    deleteAttachment(attachmentId, fileName,  assigned) {
+
+        let localId;
+
+        if(assigned) {
+            localId = this.issue.attachments.findIndex((attachment) => attachment.id == attachmentId);
+        } else {
+            localId = this.files.findIndex((file) => file.id == attachmentId);
+
+            if(!this.files[localId].hasLoaded) {
+                this.files.splice(localId, 1);
+                return;
+            }
+        }
+
+        this.$http.delete(`http://localhost:3000/api/v1/attachments/${attachmentId}`)
+            .then((response) => {
+                console.log(response);
+                assigned ? this.issue.attachments.splice(localId, 1) : this.files.splice(localId, 1);
+                this.$mdToast.show(
+                    this.$mdToast.simple().textContent(`File ${fileName} successfully deleted.`).position('bottom left')
+                );
+
+            });
+
+    }
+
+    updateAttachment(attachment, assigned) {
+        let fileName = assigned ? attachment.filename : attachment.name;
+        this.$http.put(`http://localhost:3000/api/v1/attachments/${attachment.id}`,
+            {filename: fileName, description: attachment.description})
+            .then((response) => {
+                console.log(response);
+                this.$mdToast.show(
+                    this.$mdToast.simple().textContent(`File ${fileName} successfully updated.`).position('bottom left')
+                );
+
             });
     }
 

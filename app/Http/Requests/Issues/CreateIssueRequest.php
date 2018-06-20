@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Issues;
 
+use App\Models\Attachment;
 use App\Models\Enumeration;
 use App\Models\IssueStatus;
 use App\Models\IssueCategory;
@@ -41,6 +42,10 @@ class CreateIssueRequest extends FormRequest
             'watchers' => 'array',
             // todo: add distinct rules?
             'watchers.*' => 'int|exists:' . User::getTableName() . ',id',
+
+            'new_attachments' => 'array',
+            // todo: add distinct rules?
+            'new_attachments.*' => 'int|exists:' . Attachment::getTableName() . ',id',
 
             'assigned_to_id' => 'nullable|int|exists:' . User::getTableName() . ',id',
             'category_id' => 'nullable|int|exists:' . IssueCategory::getTableName() . ',id',

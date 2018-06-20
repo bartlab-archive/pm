@@ -140,6 +140,11 @@ class Issue extends Model
         return $this->morphToMany(User::class, 'watchable', Watcher::getTableName(), 'watchable_id');
     }
 
+    public function attachments()
+    {
+        return $this->morphMany(Attachment::class, 'container');
+    }
+
     public function journals()
     {
         return $this->morphMany(Journal::class, 'journalized');

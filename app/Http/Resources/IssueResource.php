@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Attachment;
 use Illuminate\Http\Resources\Json\Resource;
 
 class IssueResource extends Resource
@@ -38,6 +39,7 @@ class IssueResource extends Resource
                 'is_private' => $this->is_private,
                 'closed_on' => $this->closed_on,
 //            'ordering' => $this->ordering ?? '',
+                'attachments' => AttachmentResource::collection($this->whenLoaded('attachments')),
                 'tracker' => TrackerResource::make($this->whenLoaded('tracker')),
                 'project' => ProjectResource::make($this->whenLoaded('project')),
                 'assigned' => UserResource::make($this->whenLoaded('assigned')),

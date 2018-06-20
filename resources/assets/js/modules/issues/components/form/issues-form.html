@@ -185,6 +185,56 @@
             </div>
 
             <md-input-container class="md-block">
+
+                <input style="display: none;" ng-model="$ctrl.model.text_formatting" type="file"
+                       multi-file="$ctrl.files" multiple values="listFiles" id="files-upload">
+                <md-button class="md-raised md-default animation-target md-button md-ink-ripple"
+                           ng-click="$ctrl.triggerFileLoadButton()" >Select files</md-button>
+
+                <md-button class="md-raised md-default animation-target md-button md-ink-ripple" ng-click="$ctrl.upload()">Upload</md-button>
+
+                <table>
+                    <!--List of currently loaded attachments (create)-->
+                    <tr ng-repeat="file in $ctrl.files">
+                        <td>
+                            <md-input-container class="md-block" flex-md="50" flex-gt-md="16" style="margin: 19px 0 0 18px; max-width: 100%;">
+                                <input style="display: inline-block;" ng-model="file.name" placeholder="Filename">
+                            </md-input-container>
+                        </td>
+                        <td>
+                            <md-input-container class="md-block" flex-md="50" flex-gt-md="16" style="margin: 19px 0 0 18px; max-width: 100%;">
+                                <input style="display: inline-block;" ng-model="file.description" placeholder="Description">
+                            </md-input-container>
+                        </td>
+                        <td ng-if="file.hasLoaded">
+                            <md-icon ng-click="$ctrl.updateAttachment(file, false)">update</md-icon>
+                            <md-icon ng-click="$ctrl.deleteAttachment(file.id, file.name, false)">delete</md-icon>
+                        </td>
+                    </tr>
+                    <tr style="height: 20px;"></tr>
+                    <!--List of already existing attachments (update)-->
+                    <tr ng-repeat="attachment in $ctrl.issue.attachments">
+                        <td>
+                            <md-input-container class="md-block" flex-md="50" flex-gt-md="16" style="margin: 19px 0 0 18px; max-width: 100%;">
+                                <input style="display: inline-block;"  ng-model="attachment.filename" placeholder="Filename">
+                            </md-input-container>
+                        </td>
+                        <td>
+                            <md-input-container class="md-block" flex-md="50" flex-gt-md="16" style="margin: 19px 0 0 18px; max-width: 100%;">
+                                <input style="display: inline-block;"  ng-model="attachment.description" placeholder="Description">
+                            </md-input-container>
+                        </td>
+                        <td>
+                            <md-icon ng-click="$ctrl.updateAttachment(attachment, true)">update</md-icon>
+                            <md-icon ng-click="$ctrl.deleteAttachment(attachment.id, attachment.filename, true)">delete</md-icon>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </md-input-container>
+
+            <md-input-container class="md-block">
                 <label>Watchers</label>
 
                 <md-chips
