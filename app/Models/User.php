@@ -122,12 +122,15 @@ class User extends Authenticatable
     public function getAvatarAttribute()
     {
         // todo: need check system config for avatar src
-        return $this->email ? '//www.gravatar.com/avatar/' . md5(strtolower(trim($this->email->address))) . '?rating=PG&default=mp' : '';
+        // todo: move to service or resource
+        $email = $this->emails->firstWhere('is_default', true);
+        return $email ? '//www.gravatar.com/avatar/' . md5(strtolower(trim($email->address))) . '?rating=PG&default=mp' : '';
     }
 
     public function getFullNameAttribute()
     {
         // todo: nedd check system config for user fullname format
+        // todo: move to service or resource
         return $this->firstname . ' ' . $this->lastname;
     }
 }

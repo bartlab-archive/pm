@@ -33,6 +33,8 @@ class AuthController extends BaseController
             abort(422);
         }
 
+        // todo: add remember token
+
         return TokenResource::make($token);
     }
 

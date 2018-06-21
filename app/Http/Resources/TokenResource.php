@@ -17,7 +17,8 @@ class TokenResource extends Resource
         return [
             'user' => UserResource::make($this->whenLoaded('user')),
             'action' => $this->action,
-            'value' => $this->value
+            'value' => $this->value,
+            'updated_on' => $this->updated_on->format('Y-m-d H:i:s'),
         ];
     }
 

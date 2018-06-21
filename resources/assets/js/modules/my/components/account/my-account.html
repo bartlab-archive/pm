@@ -3,56 +3,113 @@
     <div layout="row" layout-align="center start">
         <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
             <md-card-header>
+                <md-card-avatar>
+                    <img ng-src="{{ ::$ctrl.account.avatar }}">
+                </md-card-avatar>
                 <md-card-header-text>
-                    <span class="md-title">My Account</span>
+                    <span class="md-title">{{ ::$ctrl.account.login }}</span>
+                    <span class="md-subhead">My account</span>
                 </md-card-header-text>
+
+                <md-menu>
+                    <md-button class="md-icon-button" aria-label="User menu" ng-click="$mdMenu.open()">
+                        <md-icon>more_vert</md-icon>
+                    </md-button>
+
+                    <md-menu-content width="3">
+
+                        <md-menu-item>
+                            <md-button ng-click="$ctrl.addEmail($event)">
+                                <md-icon>email</md-icon>
+                                Emails
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item>
+                            <md-button ng-click="$ctrl.changePassword($event)">
+                                <md-icon>lock</md-icon>
+                                Change password
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </md-card-header>
 
             <md-card-content>
                 <p class="md-body-1" layout="column">
-                    <span><span class="md-body-2">Login:</span> {{ $ctrl.model.login }}</span>
-                    <span><span class="md-body-2">Created:</span> {{ $ctrl.model.created_on }}</span>
+                    <span><span class="md-body-2">Login:</span> {{ ::$ctrl.account.last_login_on }}</span>
+                    <span><span class="md-body-2">Created:</span> {{ ::$ctrl.account.created_on }}</span>
+                    <span>
+                        <span class="md-body-2">Atom access key:</span>
+                        <span>
+                            <md-tooltip md-direction="top">{{ ::$ctrl.feedToken.updated_on }}</md-tooltip>
+                            created {{ ::$ctrl.feedToken.updated_on_from_now }}
+                            <span>ago</span>
+                        </span>
+                    </span>
+                    <span>
+                        <span class="md-body-2">API access key:</span>
+                        <span>
+                            <md-tooltip md-direction="top">{{ ::$ctrl.apiToken.updated_on }}</md-tooltip>
+                            created {{ ::$ctrl.apiToken.updated_on_from_now }}
+                            <span>ago</span>
+                        </span>
+                    </span>
                 </p>
 
-                <md-list>
-                    <md-list-item class="md-2-line">
-                        <p class="md-list-item-text md-body-1" layout="column">
-                            <span>Atom access key</span>
-                            <span>created {{ $ctrl.model.tokens.atom.updated_on }}</span>
-                        </p>
+                <!--<md-list class="md-dense">-->
+                    <!--<md-list-item class="md-2-line">-->
+                        <!--<p class="md-list-item-text md-body-1" layout="column">-->
+                            <!--<span>Atom access key</span>-->
+                            <!--<span>-->
+                                <!--<md-tooltip md-direction="top">{{ ::$ctrl.feedToken.updated_on }}</md-tooltip>-->
+                                <!--created {{ ::$ctrl.feedToken.updated_on_from_now }}-->
+                                <!--<span>ago</span>-->
+                            <!--</span>-->
+                            <!--<span ng-if="$ctrl.feedVisibilityState">{{ $ctrl.feedToken.value }}</span>-->
+                        <!--</p>-->
 
-                        <md-button class="md-icon-button animation-target md-secondary"
-                                   ng-click="$ctrl.resetAtomKey()">
-                            <md-icon>cached</md-icon>
-                        </md-button>
-                    </md-list-item>
+                        <!--<md-button class="md-icon-button animation-target md-secondary"-->
+                                   <!--ng-click="$ctrl.showFeedKey()">-->
+                            <!--<md-icon>{{ $ctrl.feedVisibilityState? 'visibility_off':'visibility' }}</md-icon>-->
+                        <!--</md-button>-->
 
-                    <md-divider></md-divider>
+                        <!--<md-button class="md-icon-button animation-target md-secondary"-->
+                                   <!--ng-click="$ctrl.resetAtomKey()">-->
+                            <!--<md-icon>cached</md-icon>-->
+                        <!--</md-button>-->
+                    <!--</md-list-item>-->
 
-                    <md-list-item class="api-key-container md-3-line">
-                        <p class="md-list-item-text md-body-1" layout="column">
-                            <span>API access key</span>
-                            <span>created {{ $ctrl.model.tokens.api.updated_on }}</span>
-                            <span ng-if="$ctrl.apiVisibilityState">{{ $ctrl.model.tokens.api.value }}</span>
-                        </p>
+                    <!--<md-divider></md-divider>-->
 
-                        <md-button class="md-icon-button animation-target md-secondary"
-                                   ng-click="$ctrl.showApiKey()">
-                            <md-icon>{{ $ctrl.apiVisibilityState? 'visibility_off':'visibility' }}</md-icon>
-                        </md-button>
+                    <!--<md-list-item class="api-key-container md-3-line">-->
+                        <!--<p class="md-list-item-text md-body-1" layout="column">-->
+                            <!--<span>API access key</span>-->
+                            <!--<span>-->
+                                <!--<md-tooltip md-direction="top">{{ ::$ctrl.apiToken.updated_on }}</md-tooltip>-->
+                                <!--created {{ ::$ctrl.apiToken.updated_on_from_now }}-->
+                                <!--<span>ago</span>-->
+                            <!--</span>-->
+                            <!--<span ng-if="$ctrl.apiVisibilityState">{{ $ctrl.apiToken.value }}</span>-->
+                        <!--</p>-->
 
-                        <md-button class="md-icon-button animation-target md-secondary"
-                                   ng-click="$ctrl.resetApiKey()">
-                            <md-icon>cached</md-icon>
-                        </md-button>
-                    </md-list-item>
-                </md-list>
+                        <!--<md-button class="md-icon-button animation-target md-secondary"-->
+                                   <!--ng-click="$ctrl.showApiKey()">-->
+                            <!--<md-icon>{{ $ctrl.apiVisibilityState? 'visibility_off':'visibility' }}</md-icon>-->
+                        <!--</md-button>-->
+
+                        <!--<md-button class="md-icon-button animation-target md-secondary"-->
+                                   <!--ng-click="$ctrl.resetApiKey()">-->
+                            <!--<md-icon>cached</md-icon>-->
+                        <!--</md-button>-->
+                    <!--</md-list-item>-->
+                <!--</md-list>-->
             </md-card-content>
-        </md-card>
-    </div>
+            <!--</md-card>-->
+            <!--</div>-->
 
-    <div layout="row" layout-align="center start">
-        <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+            <!--<div layout="row" layout-align="center start">-->
+            <!--<md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">-->
             <md-card-header>
                 <md-card-header-text>
                     <span class="md-title">Information</span>
@@ -62,7 +119,7 @@
             <md-card-content>
                 <md-input-container class="md-icon-float md-block">
                     <label>First Name</label>
-                    <input ng-model="$ctrl.model.firstname" name="firstName" type="text" required>
+                    <input ng-model="$ctrl.account.firstname" name="firstName" type="text" required>
 
                     <div ng-messages="AccountForm.firstName.$error">
                         <div ng-message="required">
@@ -73,7 +130,7 @@
 
                 <md-input-container class="md-icon-float md-block">
                     <label>Last Name</label>
-                    <input ng-model="$ctrl.model.lastname" name="lastName" type="text" required>
+                    <input ng-model="$ctrl.account.lastname" name="lastName" type="text" required>
 
                     <div ng-messages="AccountForm.lastName.$error">
                         <div ng-message="required">
@@ -84,7 +141,7 @@
 
                 <md-input-container class="md-icon-float md-block">
                     <label>Email</label>
-                    <input ng-model="$ctrl.model.email" type="email" name="email" ng-pattern="/^.+@.+\..+$/" required>
+                    <input ng-model="$ctrl.email.address" type="email" name="email" ng-pattern="/^.+@.+\..+$/" required>
 
                     <div ng-messages="AccountForm.email.$error">
                         <div ng-message-exp="['required', 'pattern']">Email is invalid or already taken</div>
@@ -93,7 +150,7 @@
 
                 <md-input-container class="md-icon-float md-block">
                     <label>Language</label>
-                    <md-select ng-model="$ctrl.model.language" required>
+                    <md-select ng-model="$ctrl.account.language" required>
                         <md-option ng-value="language.id" ng-repeat="language in ::$ctrl.languages">
                             {{ ::language.name }}
                         </md-option>
@@ -104,7 +161,7 @@
                 <md-input-container class="md-icon-float md-block">
                     <label>Email notifications</label>
                     <md-select ng-model="$ctrl.model.mail_notification" required>
-                        <md-option ng-repeat="notification in ::$ctrl.emailNotifications"
+                        <md-option ng-repeat="notification in ::$ctrl.notifications"
                                    ng-value="notification.value"
                                    ng-selected="notification.selected">
                             {{ ::notification.name }}
@@ -116,8 +173,8 @@
 
                 <md-input-container class="md-icon-float md-block">
                     <label>Time zone</label>
-                    <md-select ng-model="$ctrl.model.time_zone" required>
-                        <md-option ng-value="zone.value" ng-repeat="zone in ::$ctrl.timeZone">
+                    <md-select ng-model="$ctrl.account.preference.time_zone">
+                        <md-option ng-value="zone.value" ng-repeat="zone in ::$ctrl.timeZones">
                             {{ ::zone.name }}
                         </md-option>
                     </md-select>
@@ -126,7 +183,7 @@
 
                 <md-input-container class="md-icon-float md-block">
                     <label>Display comments</label>
-                    <md-select ng-model="$ctrl.model.comments_sorting" required>
+                    <md-select ng-model="$ctrl.commentsSorting" required>
                         <md-option value="asc">In chronological order</md-option>
                         <md-option value="desc">In reverse chronological order</md-option>
                     </md-select>
@@ -137,16 +194,16 @@
             <md-list>
                 <md-list-item>
                     <p>I don't want to be notified of changes that I make myself</p>
-                    <md-switch class="md-primary" ng-model="$ctrl.model.no_self_notified"
+                    <md-switch class="md-primary" ng-model="$ctrl.noSelfNotified"
                                ng-true-value="'1'" ng-false-value="'0'"></md-switch>
                 </md-list-item>
                 <md-list-item>
                     <p>Hide my Email</p>
-                    <md-switch class="md-primary" ng-model="$ctrl.model.hide_mail"></md-switch>
+                    <md-switch class="md-primary" ng-model="$ctrl.account.preference.hide_mail"></md-switch>
                 </md-list-item>
                 <md-list-item>
                     <p>Warn me when leaving a page with unsaved text</p>
-                    <md-switch class="md-primary" ng-model="$ctrl.model.warn_on_leaving_unsaved"
+                    <md-switch class="md-primary" ng-model="$ctrl.warnOnLeavingUnsaved"
                                ng-true-value="'1'" ng-false-value="'0'"></md-switch>
                 </md-list-item>
             </md-list>
@@ -156,13 +213,13 @@
                            ng-disabled="AccountForm.$invalid">Save
                 </md-button>
 
-                <md-button class="md-raised animation-target" ng-click="$ctrl.addEmail($event)">
-                    Emails
-                </md-button>
+                <!--<md-button class="md-raised animation-target" ng-click="$ctrl.addEmail($event)">-->
+                <!--Emails-->
+                <!--</md-button>-->
 
-                <md-button class="md-raised animation-target" ng-click="$ctrl.changePassword($event)">
-                    Change password
-                </md-button>
+                <!--<md-button class="md-raised animation-target" ng-click="$ctrl.changePassword($event)">-->
+                <!--Change password-->
+                <!--</md-button>-->
             </md-card-actions>
         </md-card>
     </div>

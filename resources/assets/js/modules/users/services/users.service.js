@@ -209,7 +209,7 @@ export default class UsersService extends ServiceBase {
         ];
     }
 
-    get emailNotifications() {
+    get notifications() {
         return [
             {value: 'all', name: 'For any event on all my projects'},
             {value: 'selected', name: 'For any event on the selected projects only...'},

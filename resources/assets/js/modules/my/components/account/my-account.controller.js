@@ -1,6 +1,7 @@
 // import 'angular';
-// import _ from 'lodash';
+import _ from 'lodash';
 import ControllerBase from 'base/controller.base';
+import moment from "moment";
 // import myEmailsModalTemplate from './my-mails-modal.html';
 // import myPasswordModalTemplate from './my-password-modal.html';
 
@@ -14,7 +15,7 @@ import ControllerBase from 'base/controller.base';
 export default class MyAccountController extends ControllerBase {
 
     static get $inject() {
-        return ['myService'];
+        return ['myService', 'usersService'];
         // return ['$auth', '$state', '$mdToast', '$mdDialog', 'usersService'];
     }
 
@@ -37,9 +38,9 @@ export default class MyAccountController extends ControllerBase {
         //     }
         // });
         //
-        // this.languages = this.usersService.languages;
-        // this.timeZone = this.usersService.timeZone;
-        // this.emailNotifications = this.usersService.getEmailNotifications;
+        this.languages = this.usersService.languages;
+        this.timeZones = this.usersService.timeZone;
+        this.notifications = this.usersService.notifications;
         // this.apiVisibilityState = false;
         this.load();
     }
@@ -49,6 +50,20 @@ export default class MyAccountController extends ControllerBase {
             .account()
             .then((response) => {
                 this.account = response.data.data;
+                this.apiToken = this.account.tokens.find((token) => token.action === 'api');
+                this.feedToken = this.account.tokens.find((token) => token.action === 'feeds');
+                this.email = this.account.emails.find((email) => email.is_default === true);
+                this.commentsSorting = _.get(this.account, 'preference.others.:comments_sorting', 'asc');
+                this.noSelfNotified = _.get(this.account, 'preference.others.:no_self_notified', '1');
+                this.warnOnLeavingUnsaved = _.get(this.account, 'preference.others.:warn_on_leaving_unsaved', '1');
+
+                if (this.apiToken) {
+                    this.apiToken.updated_on_from_now = moment(this.apiToken.updated_on).fromNow(true);
+                }
+
+                if (this.feedToken) {
+                    this.feedToken.updated_on_from_now = moment(this.feedToken.updated_on).fromNow(true);
+                }
             });
     }
 
@@ -94,9 +109,13 @@ export default class MyAccountController extends ControllerBase {
     //     );
     // }
     //
-    // showApiKey() {
-    //     this.apiVisibilityState = !this.apiVisibilityState;
-    // }
+    showApiKey() {
+        this.apiVisibilityState = !this.apiVisibilityState;
+    }
+
+    showFeedKey() {
+        this.feedVisibilityState = !this.feedVisibilityState;
+    }
 
     // addEmail($event) {
     //     this.$mdDialog.show(
