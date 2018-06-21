@@ -3,8 +3,8 @@ import _ from 'lodash';
 
 // todo: server validation disabled for checkboxes
 /**
- * @property {ProjectsService} ProjectsService
- * @property {TrackersService} TrackersService
+ * @property {ProjectsService} projectsService
+ * @property {TrackersService} trackersService
  * @property {$mdToast} $mdToast
  * @property {$state} $state
  */

@@ -12,14 +12,14 @@ export default class ProjectsProvider extends ProviderBase {
         return ProjectsService.inst({
             modules: this.modules,
             settings: this.settings,
-            create: this.create
+            // create: this.create
         });
     }
 
     $onInit($injector) {
         this.modules = [];
         this.settings = [];
-        this.create = [];
+        // this.create = [];
     }
 
     registerModule(data) {
