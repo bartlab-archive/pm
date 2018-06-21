@@ -23,12 +23,12 @@ class AccountResource extends Resource
             'created_on' => $this->created_on->format('Y-m-d H:i:s'),
             'last_login_on' => $this->last_login_on->format('Y-m-d H:i:s'),
             'emails' => EmailResource::collection($this->whenLoaded('emails')),
-//            'additional_emails' => EmailResource::collection($this->whenLoaded('additional_emails')),
             'mail_notification' => $this->mail_notification,
-            'tokens' => TokenResource::collection($this->whenLoaded('tokens')),
+            'tokens' => TokenResource::collection(
+                $this->whenLoaded('tokens', $this->tokens()->whereIn('action', ['api', 'feeds'])->get())
+            ),
             'preference' => UserPreferenceResource::make($this->whenLoaded('preference')),
             'avatar' => $this->avatar,
-//            'updated_on' => $this->updated_on,
         ];
     }
 }

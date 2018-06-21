@@ -10,4 +10,8 @@ export default class MyService extends ServiceBase {
         // return this.Restangular.one('projects', id);
         return this.$http.get(`/api/v1/my/account`);
     }
+
+    update(data) {
+        return this.$http.put(`/api/v1/my/account`, data);
+    }
 }

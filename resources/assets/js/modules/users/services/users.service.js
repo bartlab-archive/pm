@@ -213,7 +213,7 @@ export default class UsersService extends ServiceBase {
         return [
             {value: 'all', name: 'For any event on all my projects'},
             {value: 'selected', name: 'For any event on the selected projects only...'},
-            {value: 'only_my_events', name: 'Only for things I watch or I\'m involved in', selected: true},
+            {value: 'only_my_events', name: 'Only for things I watch or I\'m involved in'},
             {value: 'only_assigned', name: 'Only for things I am assigned to'},
             {value: 'only_owner', name: 'Only for things I am the owner of'},
             {value: 'none', name: 'No events'}

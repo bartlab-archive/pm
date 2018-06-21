@@ -7,11 +7,11 @@
         </md-card-header>
 
         <md-card-content>
-            <form name="$ctrl.form" ng-submit="$ctrl.submit()" server-form="$ctrl.errors">
+            <form name="$ctrl.form" ng-submit="$ctrl.submit()" novalidate server-form="$ctrl.errors">
                 <md-input-container class="md-icon-float md-block">
                     <label>Login</label>
                     <input ng-model="$ctrl.signup.login" name="login" type="text"
-                           ng-pattern="/^[a-z0-9_\-@\.]*$/i" maxlength="60"
+                           ng-pattern="/^[a-z0-9_\-@\.]*$/i" ng-maxlength="60"
                            required server-field>
 
                     <div ng-messages="$ctrl.form.login.$error">
@@ -24,7 +24,7 @@
 
                 <md-input-container class="md-icon-float md-block">
                     <label>Password</label>
-                    <input ng-model="$ctrl.signup.password" minlength="8"
+                    <input ng-model="$ctrl.signup.password" ng-minlength="8"
                            name="password" type="password" required server-field>
 
                     <div ng-messages="$ctrl.form.password.$error">
@@ -50,7 +50,7 @@
                 <md-input-container class="md-icon-float md-block">
                     <label>First Name</label>
                     <input ng-model="$ctrl.signup.firstName" name="firstName" type="text"
-                           maxlength="30" required server-field>
+                           ng-maxlength="30" required server-field>
 
                     <div ng-messages="$ctrl.form.firstName.$error">
                         <div ng-message="required">First name cannot be blank</div>
@@ -62,7 +62,7 @@
                 <md-input-container class="md-icon-float md-block">
                     <label>Last Name</label>
                     <input ng-model="$ctrl.signup.lastName" name="lastName" type="text"
-                           maxlength="30" required server-field>
+                           ng-maxlength="30" required server-field>
 
                     <div ng-messages="$ctrl.form.lastName.$error">
                         <div ng-message="required">Last name cannot be blank</div>
@@ -74,7 +74,7 @@
                 <md-input-container class="md-icon-float md-block">
                     <label>Email</label>
                     <input ng-model="$ctrl.signup.email" name="email" type="email"
-                           maxlength="60" ng-pattern="/^.+@.+\..+$/" required server-field>
+                           ng-maxlength="60" ng-pattern="/^.+@.+\..+$/" required server-field>
 
                     <div ng-messages="$ctrl.form.email.$error">
                         <div ng-message="required">Email cannot be blank</div>

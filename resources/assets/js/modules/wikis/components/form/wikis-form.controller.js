@@ -48,7 +48,8 @@ export default class WikisFormController extends ControllerBase {
                 this.list = this.page.id ? list.data.data.filter((item) => {
                     return !item.parents_ids.some((id) => this.page.id === id);
                 }) : list.data.data;
-
+            })
+            .finally(() => {
                 this.loadProccess = false;
             });
     }

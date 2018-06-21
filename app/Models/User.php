@@ -41,6 +41,15 @@ class User extends Authenticatable
     const CREATED_AT = 'created_on';
     const UPDATED_AT = 'updated_on';
 
+    public static $NOTIFICATIONS = [
+        ['value' => 'all', 'name' => 'For any event on all my projects'],
+        ['value' => 'selected', 'name' => 'For any event on the selected projects only...'],
+        ['value' => 'only_my_events', 'name' => 'Only for things I watch or I\'m involved in'],
+        ['value' => 'only_assigned', 'name' => 'Only for things I am assigned to'],
+        ['value' => 'only_owner', 'name' => 'Only for things I am the owner of'],
+        ['value' => 'none', 'name' => 'No events']
+    ];
+
     public $timestamps = true;
 
     protected $guarded = ['id'];
@@ -106,7 +115,7 @@ class User extends Authenticatable
 
     public function tokens()
     {
-        return $this->hasMany(Token::class)->whereNotIn('action', ['session', 'autologin']);
+        return $this->hasMany(Token::class);//->whereNotIn('action', ['session', 'autologin']);
     }
 
     public function comments()

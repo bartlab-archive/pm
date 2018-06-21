@@ -46,6 +46,11 @@ class Issue extends Model
     const ENUMERATION_PRIORITY = 'IssuePriority';
 //    const WATCHABLE_TYPE = 'Issue';
 
+    protected $attributes = [
+        'lft' => 1,
+        'rgt' => 2,
+    ];
+
     protected $guarded = [
         'id'
     ];
