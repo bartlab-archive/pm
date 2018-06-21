@@ -28,7 +28,7 @@ class UploadAttachmentRequest extends FormRequest {
             'chunk_amount' => 'required|integer',
             'file_chunk_id' => 'required|integer',
             'file_total_size' => 'required|integer',
-            'description' => 'string|max:255'
+            'description' => 'nullable|string|max:255'
         ];
     }
 

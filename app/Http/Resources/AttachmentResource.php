@@ -16,10 +16,7 @@ class AttachmentResource extends Resource
     {
         return [
             'id' => $this->id,
-            'container_id' => $this->name,
-            'containter_type' => $this->container_type,
             'filename' => $this->filename,
-            'author_id' => $this->author_id,
             'description' => $this->description,
             'disk_directory' => $this->disk_directory
         ];

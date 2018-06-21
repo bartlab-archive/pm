@@ -50,7 +50,7 @@ Route::group(
                 'prefix' => 'attachments'
             ],
             function () {
-//                Route::get('/', 'ProjectsController@index');
+                Route::get('download/{id}', 'AttachmentsController@download');
 //                Route::get('/{identifier}', 'ProjectsController@show');
                 Route::post('/', 'AttachmentsController@upload');
                 Route::put('/{id}', 'AttachmentsController@update');

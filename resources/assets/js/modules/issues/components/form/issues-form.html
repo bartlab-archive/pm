@@ -186,7 +186,7 @@
 
             <md-input-container class="md-block">
 
-                <input style="display: none;" ng-model="$ctrl.model.text_formatting" type="file"
+                <input ng-hide="true" type="file"
                        multi-file="$ctrl.files" multiple values="listFiles" id="files-upload">
                 <md-button class="md-raised md-default animation-target md-button md-ink-ripple"
                            ng-click="$ctrl.triggerFileLoadButton()" >Select files</md-button>

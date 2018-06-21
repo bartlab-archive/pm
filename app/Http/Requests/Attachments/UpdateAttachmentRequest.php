@@ -24,7 +24,7 @@ class UpdateAttachmentRequest extends FormRequest {
     {
         return [
             'filename' => 'required|string|min:4|max:25',
-            'description' => 'string|max:255'
+            'description' => 'nullable|string|max:255'
         ];
     }
 

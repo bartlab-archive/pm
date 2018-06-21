@@ -173,8 +173,10 @@ class IssuesService
         if ($issue->save()) {
             $issue->watchers()->sync(array_get($data, 'watchers'));
 
-            $attachments = Attachment::whereIn('id', array_get($data, 'attachments'))->get();
-            $issue->attachments()->saveMany($attachments->getDictionary());
+            if($attachmentsIds = array_get($data, 'new_attachments')) {
+                $attachments = Attachment::whereIn('id', $attachmentsIds)->get();
+                $issue->attachments()->saveMany($attachments->getDictionary());
+            }
 
             return $issue;
         }

@@ -20,6 +20,7 @@ import MainResetPasswordComponent from './components/reset-password/main-reset-p
 import Main404Component from './components/404/main-404.component';
 import Main500Component from './components/500/main-500.component';
 import MainProvider from "./providers/main.provider";
+import AttachmentService from "./services/attachment.service";
 import AuthService from "./services/auth.service";
 import StorageService from "./services/storage.service";
 
@@ -41,6 +42,7 @@ angular.module('app.modules.main', [])
     .directive(MultiFileDirective.getName(), MultiFileDirective.inst())
     .service(AuthService.getName(), AuthService)
     .service(StorageService.getName(), StorageService)
+    .service(AttachmentService.getName(), AttachmentService)
     .provider(MainProvider.getName(), MainProvider)
     .component(MainIndexComponent.getName(), MainIndexComponent)
     .component(MainLoginComponent.getName(), MainLoginComponent)
