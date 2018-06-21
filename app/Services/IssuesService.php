@@ -173,7 +173,9 @@ class IssuesService
         if ($issue->save()) {
             $issue->watchers()->sync(array_get($data, 'watchers'));
 
-            $attachments = Attachment::whereIn('id', array_get($data, 'attachments'))->get();
+            $attachments = Attachment::query()
+                ->whereIn('id', array_get($data, 'attachments'))
+                ->get();
             $issue->attachments()->saveMany($attachments->getDictionary());
 
             return $issue;
@@ -223,7 +225,7 @@ class IssuesService
 
             // save attachments
             // todo: check author is the same who create issue.
-            if($attachmentsIds = array_get($data, 'new_attachments')) {
+            if ($attachmentsIds = array_get($data, 'new_attachments')) {
                 $attachments = Attachment::whereIn('id', $attachmentsIds)->get();
                 $issue->attachments()->saveMany($attachments->getDictionary());
             }

@@ -57,8 +57,8 @@ class UsersService
         if ($user->save()) {
             $user->email()->create([
                 'address' => array_get($data, 'email'),
-                'is_default' => array_get($data, 'is_default', 1),
-                'notify' => array_get($data, 'notify', 1),
+                'is_default' => true,//array_get($data, 'is_default', 1),
+                'notify' => true,//array_get($data, 'notify', 1),
             ]);
 
             $user->preference()->create([
@@ -66,7 +66,7 @@ class UsersService
                 'hide_mail' => array_get($data, 'hideEmail'),
                 // todo: get from $data or app settings
                 'time_zone' => \Config::get('app.timezone'),
-                'others' => Yaml::dump(UserPreference::DEFAULT_OTHERS_DATA)
+                'others' => UserPreference::DEFAULT_OTHERS_DATA//Yaml::dump(UserPreference::DEFAULT_OTHERS_DATA)
             ]);
 
             return $user;
@@ -75,12 +75,65 @@ class UsersService
         return false;
     }
 
+    public function update($id, array $data)
+    {
+        /** @var User $user */
+        if (!$user = $this->one($id)) {
+            return false;
+        }
+
+        if (!$user->update(array_only($data, ['firstname', 'lastname', 'language', 'mail_notification']))) {
+            return false;
+        }
+
+        // update default email
+        if ($emailAddress = array_get($data, 'email')) {
+            // todo: remove "restore" tokens, if email changed
+
+            if (!$email = $user->emails()->where(['is_default' => true])->first()) {
+                $email = $user->emails()->make(['is_default' => true, 'notify' => true]);
+            }
+
+            if (!$email->fill(['address' => $emailAddress])->save()) {
+                return false;
+            }
+        }
+
+        // update user preference
+        if (!$preference = $user->preference) {
+            $preference = $user->preference()->make([
+                'others' => UserPreference::DEFAULT_OTHERS_DATA,
+                'hide_mail' => true
+            ]);
+        }
+
+        $others = $preference->others;
+        if ($commentsSorting = array_get($data, 'comments_sorting')) {
+            $others[':comments_sorting'] = (int)$commentsSorting;
+        }
+        if ($noSelfNotified = array_get($data, 'no_self_notified')) {
+            $others[':no_self_notified'] = (int)$noSelfNotified;
+        }
+        if ($warnOnLeavingUnsaved = array_get($data, 'warn_on_leaving_unsaved')) {
+            $others[':warn_on_leaving_unsaved'] = (int)$warnOnLeavingUnsaved;
+        }
+
+        if (!$preference->fill(array_merge(
+            array_only($data, ['hide_mail', 'time_zone']),
+            ['others' => $others]
+        ))->save()) {
+            return false;
+        }
+
+        return $user;
+    }
+
     public function byLogin(string $login)
     {
         return User::query()
             ->where('login', $login)
 //            ->orWhereHas('email', function ($query) use ($login) {
-                /** @var $query Builder */
+            /** @var $query Builder */
 //                $query->where('address', $login);
 //            })
             ->first();

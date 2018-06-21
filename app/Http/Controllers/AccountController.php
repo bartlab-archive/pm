@@ -8,11 +8,11 @@ namespace App\Http\Controllers;
 //use App\Services\AccountService;
 //use App\Services\EmailAddressesService;
 //use App\Services\TokenService;
+use App\Http\Requests\UpdateAccountRequest;
 use App\Http\Resources\AccountResource;
 use App\Services\UsersService;
 //use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Auth;
 
 
 /**
@@ -49,6 +49,20 @@ class AccountController extends BaseController
                 ['emails', 'preference', 'tokens']
             )
         );
+    }
+
+    public function update(UpdateAccountRequest $request)
+    {
+        $user = $this->usersService->update(
+            \Auth::id(),
+            $request->validated()
+        );
+
+        if (!$user) {
+            abort(422);
+        }
+
+        return AccountResource::make($user);
     }
 
 //    public function update($id, UpdateRequest $request)
