@@ -29,12 +29,12 @@ class AuthServiceProvider extends ServiceProvider
                 $service = app(\App\Services\AuthService::class);
 
                 // todo: check expire token
-                if ($result = $service->find($token)) {
+                if (($result = $service->find($token)) && $result->user) {
                     return $result->user;
                 }
             }
 
-            return false;
+            return null;
         });
 
         $this->registerPolicies();

@@ -30,7 +30,10 @@ export default class MainProvider extends ProviderBase {
             name: '',
 
             // item icon
-            icon: ''
+            icon: '',
+
+            // access settings
+            access: '@'
         }, data));
 
         return this;

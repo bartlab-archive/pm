@@ -8,10 +8,11 @@ import _ from 'lodash';
 export default class AuthService extends ServiceBase {
 
     static get $inject() {
-        return ['$http', 'storageService'];
+        return ['$http', 'storageService', '$q'];
     }
 
     $onInit() {
+        // this.user = null;
     }
 
     login(data) {
@@ -52,6 +53,32 @@ export default class AuthService extends ServiceBase {
             });
     }
 
+    me() {
+        let deferred = this.$q.defer();
+
+        if (this.storageService.getUser() !== undefined) {
+            deferred.resolve(this.storageService.getUser());
+        } else {
+            this.$http
+                .get(`/api/v1/auth/me`)
+                .then((response) => {
+                    this.user = _.get(response, 'data.data') || {};
+
+                    if (this.user) {
+                        this.storageService.setUser(this.user);
+                    }
+                })
+                .catch(() => {
+                    this.logout();
+                })
+                .finally(() => {
+                    deferred.resolve(this.storageService.getUser());
+                });
+        }
+
+        return deferred.promise;
+    }
+
     logout() {
         this.storageService.removeToken();
         this.storageService.removeUser();
@@ -61,8 +88,8 @@ export default class AuthService extends ServiceBase {
         return !!this.storageService.getToken();
     }
 
-    isAdmin(){
-        return !!this.storageService.getUserData('admin');
+    isAdmin() {
+        return !!this.storageService.getUserData('request');
     }
 
 }

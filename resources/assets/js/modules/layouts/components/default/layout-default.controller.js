@@ -14,18 +14,26 @@ import 'angular';
  * @property {$rootScope} $rootScope
  * @property {$filter} $filter
  * @property {SettingsService} settingsService
+ * @property {AuthService} authService
  */
 export default class LayoutDefaultController extends ControllerBase {
 
     static get $inject() {
         return ['$timeout', '$mdSidenav', '$state', 'projectsService', 'mainService', 'usersService',
-            '$transitions', '$stateParams', '$rootScope', '$filter', 'settingsService'];
+            '$transitions', '$stateParams', '$rootScope', '$filter', 'settingsService', 'authService'];
     }
 
     $onInit() {
         // todo: show current user avatar in main menu
 
-        this.items = this.mainService.getAppMenu();
+        this.items = this.mainService.getAppMenu().filter((item) => {
+            return (
+                (!item.access) ||
+                (item.access === '?' && !this.authService.isAuthenticated()) ||
+                (item.access === '@' && this.authService.isAuthenticated()) ||
+                (item.access === '!' && this.authService.isAuthenticated() && this.authService.isAdmin())
+            );
+        });
         this.newItems = this.mainService.getNewItemMenu();
         this.projectItems = this.projectsService.getModules();
 
@@ -60,14 +68,14 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     setTitle(title) {
-        if (!title && !this.appTitle){
+        if (!title && !this.appTitle) {
             this.settingsService
                 .one('app_title')
                 .then((response) => {
                     this.appTitle = response.data.data.value;
                     this.title = this.appTitle;
                 });
-        }else {
+        } else {
             this.title = title || this.appTitle;
         }
     }

@@ -18,7 +18,7 @@ class UserResource extends Resource
             'id' => $this->id,
             'full_name' => $this->full_name,
             'avatar' => $this->avatar,
-            'admin' => $this->admin,
+            'request' => $this->admin,
         ];
     }
 }

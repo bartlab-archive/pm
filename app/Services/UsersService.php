@@ -108,14 +108,18 @@ class UsersService
         }
 
         $others = $preference->others;
-        if ($commentsSorting = array_get($data, 'comments_sorting')) {
-            $others[':comments_sorting'] = (int)$commentsSorting;
+        if (($commentsSorting = array_get($data, 'comments_sorting')) && \in_array($commentsSorting, ['asc', 'desc'], true)) {
+            $others[':comments_sorting'] = $commentsSorting;
         }
-        if ($noSelfNotified = array_get($data, 'no_self_notified')) {
-            $others[':no_self_notified'] = (int)$noSelfNotified;
+
+        $noSelfNotified = array_get($data, 'no_self_notified');
+        if ($noSelfNotified !== null) {
+            $others[':no_self_notified'] = $noSelfNotified ? '1' : '0';
         }
-        if ($warnOnLeavingUnsaved = array_get($data, 'warn_on_leaving_unsaved')) {
-            $others[':warn_on_leaving_unsaved'] = (int)$warnOnLeavingUnsaved;
+
+        $warnOnLeavingUnsaved = array_get($data, 'warn_on_leaving_unsaved');
+        if ($warnOnLeavingUnsaved !== null) {
+            $others[':warn_on_leaving_unsaved'] = $warnOnLeavingUnsaved ? '1' : '0';
         }
 
         if (!$preference->fill(array_merge(

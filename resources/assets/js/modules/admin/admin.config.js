@@ -18,7 +18,8 @@ export default class AdminConfig extends InjectableBase {
             .registerAppMenu({
                 url: 'admin.index',
                 name: 'Administration',
-                icon: 'settings_applications'
+                icon: 'settings_applications',
+                access: '!'
             })
             .registerAdminMenu({
                 name: 'Plugins',

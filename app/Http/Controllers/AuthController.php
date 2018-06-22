@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Auth\AuthLoginRequest;
 use App\Http\Requests\Auth\AuthRegisterRequest;
 use App\Http\Resources\TokenResource;
+use App\Http\Resources\UserResource;
 use App\Services\AuthService;
 use App\Services\SettingsService;
 use App\Services\UsersService;
@@ -83,7 +84,16 @@ class AuthController extends BaseController
                 break;
         }
 
-//        return response(null, 201);
+        return response(null, 201);
+    }
+
+    public function me()
+    {
+        if (\Auth::guest()) {
+            abort(422);
+        }
+
+        return UserResource::make(\Auth::user());
     }
 
 //    public function sendResetPasswordToken(ResetPasswordSendTokenRequest $request)

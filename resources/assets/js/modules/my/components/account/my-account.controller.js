@@ -60,8 +60,8 @@ export default class MyAccountController extends ControllerBase {
 
                 // get other preference
                 this.account.others.comments_sorting = _.get(this.account, 'preference.others.:comments_sorting', 'asc');
-                this.account.others.no_self_notified = !!_.get(this.account, 'preference.others.:no_self_notified', true);
-                this.account.others.warn_on_leaving_unsaved = !!_.get(this.account, 'preference.others.:warn_on_leaving_unsaved', true);
+                this.account.others.no_self_notified = _.get(this.account, 'preference.others.:no_self_notified', '1') === '1';
+                this.account.others.warn_on_leaving_unsaved = _.get(this.account, 'preference.others.:warn_on_leaving_unsaved', '1') === '1';
 
                 // format updated on date from now
                 if (this.apiToken) {

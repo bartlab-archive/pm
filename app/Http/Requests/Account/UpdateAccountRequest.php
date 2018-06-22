@@ -31,7 +31,7 @@ class UpdateAccountRequest extends FormRequest
             'lastname' => 'required|string|max:30',
             'email' => [
                 'required',
-                'string',
+//                'string',
                 'email',
                 'max:60',
                 //This rule validates the exists email address ignore user email
@@ -39,20 +39,20 @@ class UpdateAccountRequest extends FormRequest
             ],
             'language' => [
 //                'required',
-                'string',
+//                'string',
                 Rule::in(array_column(config('langs'), 'id')),
             ],
             'mail_notification' => [
-                'string',
+//                'string',
                 Rule::in(array_column(User::$NOTIFICATIONS, 'value'))
             ],
             'hide_mail' => 'boolean',
             'time_zone' => [
                 'nullable',
-                'string',
-                Rule::in(array_column(config('timezones'), 'id')),
+//                'string',
+                Rule::in(array_column(config('timezones'), 'value')),
             ],
-            'comments_sorting' => 'string|in:asc,desc',
+            'comments_sorting' => 'in:asc,desc',
             'no_self_notified' => 'boolean',
             'warn_on_leaving_unsaved' => 'boolean'
         ];

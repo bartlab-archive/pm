@@ -11,6 +11,7 @@ export default class StorageService extends ServiceBase {
     }
 
     $onInit() {
+        this.user = undefined;
     }
 
     setToken(token) {
@@ -18,15 +19,21 @@ export default class StorageService extends ServiceBase {
     }
 
     setUser(user) {
-        localStorage.setItem('user', JSON.stringify(user));
+        this.user = user;
+        // localStorage.setItem('user', JSON.stringify(user));
+    }
+
+    getUser() {
+        return this.user;
     }
 
     getToken() {
         return localStorage.getItem('token');
     }
 
-    getUserData(name) {
-        return _.get(JSON.parse(localStorage.getItem('user')), name);
+    getUserData(name, defaultValue) {
+        return _.get(this.getUser(), name, defaultValue);
+        // return _.get(JSON.parse(localStorage.getItem('user')), name);
     }
 
     removeToken() {

@@ -7,11 +7,12 @@ import InjectableBase from 'base/injectable.base';
 export default class AppRun extends InjectableBase {
 
     static get $inject() {
-        return ['$rootScope', '$transitions', '$mdToast', '$state', '$http', 'authService'];
+        return ['$rootScope', '$transitions', '$mdToast', '$state', '$http', 'authService','$q'];
     }
 
     $onInit() {
         // this.isReady = false;
+        window.Promise = this.$q;
 
         this.$transitions.onStart({}, (...args) => this.checkAccess(...args));
         this.$rootScope.$on('authUnauthorized', (...args) => this.authUnauthorized(...args));
@@ -23,12 +24,13 @@ export default class AppRun extends InjectableBase {
         // this.Restangular.setErrorInterceptor((...args) => this.errorInterceptor(...args));
     }
 
-    checkAccess(trans) {
+    async checkAccess(trans) {
         // console.log(trans.router.stateService.href(trans.to(), trans.params(),{absolute: true}));
         const access = _.get(trans.$to(), 'data.access', false);
 
         if (access) {
-            // console.log('access: ',access);
+            await this.authService.me();
+
             // Cancel going to the authenticated state and go back to landing
             if (access === '@' && !this.authService.isAuthenticated()) {
                 return trans.router.stateService.target('login');

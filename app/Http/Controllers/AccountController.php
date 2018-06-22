@@ -3,42 +3,28 @@
 namespace App\Http\Controllers;
 
 
-//use App\Http\Requests\ChangePasswordRequest;
-//use App\Http\Requests\UpdateRequest;
-//use App\Services\AccountService;
-//use App\Services\EmailAddressesService;
-//use App\Services\TokenService;
 use App\Http\Requests\UpdateAccountRequest;
 use App\Http\Resources\AccountResource;
 use App\Services\UsersService;
-//use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
 
 /**
  * Class AccountController
  *
- * @property TokenService $tokenService
  * @property UsersService $usersService
- * @property EmailAddressesService $emailAddressesService
  *
  */
 class AccountController extends BaseController
 {
 
     protected $usersService;
-//    protected $emailAddressesService;
-//    protected $tokenService;
 
     public function __construct(
         UsersService $usersService
-//        EmailAddressesService $emailAddressesService,
-//        TokenService $tokenService
     )
     {
         $this->usersService = $usersService;
-//        $this->emailAddressesService = $emailAddressesService;
-//        $this->tokenService = $tokenService;
     }
 
     public function show()
@@ -65,12 +51,6 @@ class AccountController extends BaseController
         return AccountResource::make($user);
     }
 
-//    public function update($id, UpdateRequest $request)
-//    {
-//        $result = $this->usersService->update($id, $request->except('tokens', 'avatar_hash','members','issues','projects'));
-//        return response((string)$result, 200);
-//    }
-//
 //    public function changePassword(ChangePasswordRequest $request)
 //    {
 //        $result = $this->usersService->changePassword($request->all());
