@@ -92,9 +92,9 @@ export default class MyAccountController extends ControllerBase {
                 time_zone: this.account.preference.time_zone,
                 hide_mail: this.account.preference.hide_mail,
                 // others
-                comments_sorting: this.account.others.comments_sorting,
-                no_self_notified: this.account.others.no_self_notified,
-                warn_on_leaving_unsaved: this.account.others.warn_on_leaving_unsaved,
+                ':comments_sorting': this.account.others.comments_sorting,
+                ':no_self_notified': this.account.others.no_self_notified,
+                ':warn_on_leaving_unsaved': this.account.others.warn_on_leaving_unsaved,
             })
             .then((response) => {
                 this.$mdToast.show(

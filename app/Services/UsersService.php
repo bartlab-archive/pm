@@ -99,37 +99,51 @@ class UsersService
             }
         }
 
-        // update user preference
-        if (!$preference = $user->preference) {
-            $preference = $user->preference()->make([
-                'others' => UserPreference::DEFAULT_OTHERS_DATA,
-                'hide_mail' => true
-            ]);
-        }
-
-        $others = $preference->others;
-        if (($commentsSorting = array_get($data, 'comments_sorting')) && \in_array($commentsSorting, ['asc', 'desc'], true)) {
-            $others[':comments_sorting'] = $commentsSorting;
-        }
-
-        $noSelfNotified = array_get($data, 'no_self_notified');
-        if ($noSelfNotified !== null) {
-            $others[':no_self_notified'] = $noSelfNotified ? '1' : '0';
-        }
-
-        $warnOnLeavingUnsaved = array_get($data, 'warn_on_leaving_unsaved');
-        if ($warnOnLeavingUnsaved !== null) {
-            $others[':warn_on_leaving_unsaved'] = $warnOnLeavingUnsaved ? '1' : '0';
-        }
-
-        if (!$preference->fill(array_merge(
-            array_only($data, ['hide_mail', 'time_zone']),
-            ['others' => $others]
-        ))->save()) {
+        if (!$this->updatePreference(
+            $id,
+            array_only($data, [':comments_sorting', ':no_self_notified', ':warn_on_leaving_unsaved']),
+            array_get($data, 'hide_mail', true),
+            array_get($data, 'time_zone', '')
+        )) {
             return false;
         }
 
         return $user;
+    }
+
+    public function updatePreference($userId, array $data = [], bool $hideMail = null, string $timeZone = null)
+    {
+        /** @var User $user */
+        if (!$user = $this->one($userId)) {
+            return false;
+        }
+
+        // create preference if not exists
+        if (!$preference = $user->preference) {
+            $preference = $user->preference()->make([
+                'others' => UserPreference::DEFAULT_OTHERS_DATA,
+                'hide_mail' => $hideMail ?? true,
+                'time_zone' => $timeZone ?? ''
+            ]);
+        }
+
+        $others = $preference->others;
+        foreach ($data as $key => $value) {
+            if ($value !== null) {
+                if (\is_bool($value)) {
+                    $value = $value ? '1' : '0';
+                }
+                $others[$key] = $value;
+            }
+        }
+
+        return $preference
+            ->fill(array_merge(
+                ['others' => $others],
+                ($hideMail !== null ? ['hide_mail' => $hideMail] : null),
+                ($timeZone !== null ? ['time_zone' => $timeZone] : null)
+            ))
+            ->save();
     }
 
     public function byLogin(string $login)
