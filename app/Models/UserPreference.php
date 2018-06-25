@@ -33,7 +33,7 @@ class UserPreference extends Model
     {
         $others = [];
 
-        foreach (Yaml::parse($value) as $key => $field) {
+        foreach ((array)Yaml::parse($value) as $key => $field) {
             if (isset($key[0]) && $key[0] === ':') {
                 $others[substr($key, 1)] = $field;
             } else {

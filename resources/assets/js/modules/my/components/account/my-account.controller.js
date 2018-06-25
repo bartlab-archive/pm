@@ -59,7 +59,7 @@ export default class MyAccountController extends ControllerBase {
                 this.account.email = email ? email.address : '';
 
                 // get other preference
-                this.account.others.comments_sorting = _.get(this.account, 'preference.others.comments_sorting', 'asc');
+                this.account.others.comments_sorting = _.get(this.account, 'preference.others.comments_sorting', 'asc') || 'asc';
                 this.account.others.no_self_notified = _.get(this.account, 'preference.others.no_self_notified', '1') === '1';
                 this.account.others.warn_on_leaving_unsaved = _.get(this.account, 'preference.others.warn_on_leaving_unsaved', '1') === '1';
 
