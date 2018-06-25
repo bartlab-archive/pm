@@ -16,9 +16,9 @@ class UserPreference extends Model
      * Default others data for serialize data
      */
     const DEFAULT_OTHERS_DATA = [
-        ':no_self_notified' => '1',
-        ':comments_sorting' => 'asc',
-        ':warn_on_leaving_unsaved' => '1'
+        'no_self_notified' => '1',
+        'comments_sorting' => 'asc',
+        'warn_on_leaving_unsaved' => '1'
     ];
 
     public $timestamps = false;
@@ -31,12 +31,32 @@ class UserPreference extends Model
 
     public function getOthersAttribute($value)
     {
-        return Yaml::parse($value);
+        $others = [];
+
+        foreach (Yaml::parse($value) as $key => $field) {
+            if (isset($key[0]) && $key[0] === ':') {
+                $others[substr($key, 1)] = $field;
+            } else {
+                $others[$key] = $field;
+            }
+        }
+
+        return $others;
     }
 
     public function setOthersAttribute($value)
     {
-        return $this->attributes['others'] = '---' . PHP_EOL . Yaml::dump($value);
+        $others = ['---'];
+
+        foreach (explode(PHP_EOL, Yaml::dump($value)) as $line) {
+            if (isset($line[0]) && !\in_array($line[0], [':', '\'', '"', ' '], true)) {
+                $others[] = ':' . $line;
+            } else {
+                $others[] = $line;
+            }
+        }
+
+        return $this->attributes['others'] = implode(PHP_EOL, $others);
     }
 
     public function user()

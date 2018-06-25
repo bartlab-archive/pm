@@ -59,9 +59,9 @@ export default class MyAccountController extends ControllerBase {
                 this.account.email = email ? email.address : '';
 
                 // get other preference
-                this.account.others.comments_sorting = _.get(this.account, 'preference.others.:comments_sorting', 'asc');
-                this.account.others.no_self_notified = _.get(this.account, 'preference.others.:no_self_notified', '1') === '1';
-                this.account.others.warn_on_leaving_unsaved = _.get(this.account, 'preference.others.:warn_on_leaving_unsaved', '1') === '1';
+                this.account.others.comments_sorting = _.get(this.account, 'preference.others.comments_sorting', 'asc');
+                this.account.others.no_self_notified = _.get(this.account, 'preference.others.no_self_notified', '1') === '1';
+                this.account.others.warn_on_leaving_unsaved = _.get(this.account, 'preference.others.warn_on_leaving_unsaved', '1') === '1';
 
                 // format updated on date from now
                 if (this.apiToken) {
@@ -92,9 +92,9 @@ export default class MyAccountController extends ControllerBase {
                 time_zone: this.account.preference.time_zone,
                 hide_mail: this.account.preference.hide_mail,
                 // others
-                ':comments_sorting': this.account.others.comments_sorting,
-                ':no_self_notified': this.account.others.no_self_notified,
-                ':warn_on_leaving_unsaved': this.account.others.warn_on_leaving_unsaved,
+                comments_sorting: this.account.others.comments_sorting,
+                no_self_notified: this.account.others.no_self_notified,
+                warn_on_leaving_unsaved: this.account.others.warn_on_leaving_unsaved,
             })
             .then((response) => {
                 this.$mdToast.show(

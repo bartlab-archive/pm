@@ -101,7 +101,7 @@ class UsersService
 
         if (!$this->updatePreference(
             $id,
-            array_only($data, [':comments_sorting', ':no_self_notified', ':warn_on_leaving_unsaved']),
+            array_only($data, ['comments_sorting', 'no_self_notified', 'warn_on_leaving_unsaved']),
             array_get($data, 'hide_mail', true),
             array_get($data, 'time_zone', '')
         )) {

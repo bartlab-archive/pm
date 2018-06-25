@@ -52,9 +52,9 @@ class UpdateAccountRequest extends FormRequest
 //                'string',
                 Rule::in(array_column(config('timezones'), 'value')),
             ],
-            ':comments_sorting' => 'in:asc,desc',
-            ':no_self_notified' => 'boolean',
-            ':warn_on_leaving_unsaved' => 'boolean'
+            'comments_sorting' => 'in:asc,desc',
+            'no_self_notified' => 'boolean',
+            'warn_on_leaving_unsaved' => 'boolean'
         ];
     }
 }
