@@ -140,8 +140,8 @@ class UsersService
         return $preference
             ->fill(array_merge(
                 ['others' => $others],
-                ($hideMail !== null ? ['hide_mail' => $hideMail] : null),
-                ($timeZone !== null ? ['time_zone' => $timeZone] : null)
+                ($hideMail !== null ? ['hide_mail' => $hideMail] : []),
+                ($timeZone !== null ? ['time_zone' => $timeZone] : [])
             ))
             ->save();
     }
