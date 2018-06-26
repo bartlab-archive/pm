@@ -186,7 +186,7 @@
 
             <md-input-container class="md-block">
 
-                <input ng-hide="true" type="file"
+                <input ng-hide="true" type="file" aria-label="Upload attachment"
                        multi-file="$ctrl.files" multiple values="listFiles" id="files-upload">
                 <md-button class="md-raised md-default animation-target md-button md-ink-ripple"
                            ng-click="$ctrl.triggerFileLoadButton()" >Select files</md-button>
@@ -297,13 +297,13 @@
 
     <md-card-actions layout="row" layout-align="center center">
         <md-button class="md-raised md-primary animation-target md-button md-ink-ripple"
-                   ng-disabled="$ctrl.loadProccess || $ctrl.form.$invalid"
+                   ng-disabled="$ctrl.loadProccess || $ctrl.form.$invalid || $ctrl.filesLoading"
                    ng-click="$ctrl.submit()">
             {{ ::$ctrl.isNew ? 'Create' : 'Submit' }}
         </md-button>
 
         <md-button class="md-raised md-default animation-target md-button md-ink-ripple"
-                   ng-disabled="$ctrl.loadProccess ||$ctrl.form.$invalid" ng-click="$ctrl.submit(true)"
+                   ng-disabled="$ctrl.loadProccess ||$ctrl.form.$invalid || $ctrl.filesLoading" ng-click="$ctrl.submit(true)"
                    ng-if="::$ctrl.isNew">
             Create and continue
         </md-button>

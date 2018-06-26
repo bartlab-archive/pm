@@ -38,7 +38,7 @@ class AttachmentsService
 
     public function getFullFilePath($id)
     {
-        return storage_path() . env('UPLOADS_PATH') . '/' . $this->getFilePath($id);
+        return storage_path() . config('attachments.uploads_path') . '/' . $this->getFilePath($id);
     }
 
     public function getFilePath($id)
@@ -69,18 +69,33 @@ class AttachmentsService
     }
 
     public function update($id, array $data) {
+
+        $filteredData = array_only($data, [
+            'file_name',
+            'description'
+        ]);
+        
         if($attachment = $this->one($id)) {
-            return $attachment->update($data);
+            return $attachment->update($filteredData);
         }
 
         return false;
     }
 
-    public function upload($fields, UploadedFile $file, $userId) {
+    public function upload($data, UploadedFile $file, $userId) {
+
+        $filteredData = array_only($data, [
+            'file_name',
+            'file_total_size',
+            'chunk_amount',
+            'file_chunk_id',
+            'file_total_size',
+            'description'
+        ]);
         
         $returnArray = [];
-        $storagePath = storage_path() . env('UPLOADS_PATH');
-        $currentFilePath = $storagePath . '/user-' . $userId . '/' . '_' . $fields['file_name'];
+        $storagePath = storage_path() . config('attachments.uploads_path');
+        $currentFilePath = $storagePath . '/user-' . $userId . '/' . '_' . $filteredData['file_name'];
 
         if(! is_dir($storagePath . '/user-' . $userId)) {
             @mkdir($storagePath . '/user-' . $userId, 0777, true);
@@ -90,13 +105,13 @@ class AttachmentsService
             @mkdir($currentFilePath, 0777, true);
         }
 
-        $file->move($currentFilePath, $fields['file_chunk_id']);
+        $file->move($currentFilePath, $filteredData['file_chunk_id']);
 
         $chunkFilesList = array_sort(array_slice(scandir($currentFilePath), 2));
         $returnArray['chunk_amount_local'] = count($chunkFilesList);
 
-        if($returnArray['chunk_amount_local'] == $fields['chunk_amount']) {
-            $endFilePath = $storagePath . '/user-' . $userId . '/' . $fields['file_name'];
+        if($returnArray['chunk_amount_local'] == $filteredData['chunk_amount']) {
+            $endFilePath = $storagePath . '/user-' . $userId . '/' . $filteredData['file_name'];
             $endFile = fopen($endFilePath, 'a+');
 
             foreach($chunkFilesList as $chunkFile) {
@@ -113,8 +128,8 @@ class AttachmentsService
 
             $returnArray['filesize_local'] = filesize($endFilePath);
             
-            if($returnArray['filesize_local'] == $fields['file_total_size']) {
-                $newFilename = time() . '_' . $fields['file_name'];
+            if($returnArray['filesize_local'] == $filteredData['file_total_size']) {
+                $newFilename = time() . '_' . $filteredData['file_name'];
                 $dateDirectory = date('Y/m');
 
                 if(! is_dir($storagePath . '/' . $dateDirectory)) {
@@ -124,12 +139,12 @@ class AttachmentsService
                 if(rename($endFilePath, $storagePath . '/' . $dateDirectory . '/' . $newFilename)) {
 
                     $attachment = $this->create([
-                        'filename' => $fields['file_name'],
+                        'filename' => $filteredData['file_name'],
                         'author_id' => $userId,
                         'disk_filename' => $newFilename,
                         'disk_directory' => $dateDirectory,
-                        'filesize' => $fields['file_total_size'],
-                        'description' => isset($fields['description']) ? $fields['description'] : ''
+                        'filesize' => $filteredData['file_total_size'],
+                        'description' => isset($filteredData['description']) ? $filteredData['description'] : ''
                     ]);
 
                     @rmdir($currentFilePath);

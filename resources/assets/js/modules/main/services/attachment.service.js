@@ -20,8 +20,12 @@ export default class AttachmentService extends ServiceBase {
     //     return this.$http.get(`/api/v1/attachments`, {params});
     // }
 
-    create(params, config) {
-        return this.$http.post('/api/v1/attachments', params, config);
+    create(params) {
+        return this.$http.post('/api/v1/attachments', params, {
+            withCredentials: true,
+            headers: {'Content-Type': undefined }, // angular detects content-type
+            transformRequest: angular.identity
+        });
     }
 
     update(id, params) {

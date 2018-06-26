@@ -18,7 +18,6 @@ class AttachmentResource extends Resource
             'id' => $this->id,
             'filename' => $this->filename,
             'description' => $this->description,
-            'disk_directory' => $this->disk_directory
         ];
     }
 }

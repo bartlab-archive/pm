@@ -18,16 +18,10 @@ class AttachmentsController extends Controller
         $this->attachmentsService = $attachmentsService;
     }
 
-    public function index(Request $request)
-    {
-        $this->validate($request, ['project_id' => 'numeric']);
-        return $this->projectsService->getAttachments($request->identifier);
-    }
-
     public function download($id)
     {
         if(! $attachment = $this->attachmentsService->one($id)) {
-            return response(null, 404);
+            return abort(404);
         }
 
         if($path = $this->attachmentsService->getFullFilePath($id)){
@@ -38,15 +32,15 @@ class AttachmentsController extends Controller
     public function delete($id)
     {
         if(! $attachment = $this->attachmentsService->one($id)) {
-            return response(null, 404);
+            return abort(404);
         }
 
-        if($attachment->author_id != \Auth::id()) {
+        if($attachment->author_id !== \Auth::id()) {
             return response(null, 403);
         }
 
         if(! $this->attachmentsService->delete($id)){
-            return response(null, 404);
+            return abort(404);
         }
 
         return response(null, 204);
@@ -54,14 +48,14 @@ class AttachmentsController extends Controller
 
     public function update($id, UpdateAttachmentRequest $request) {
         if(! $attachment = $this->attachmentsService->one($id)) {
-            return response(null, 404);
+            return abort(404);
         }
 
-        if($attachment->author_id != \Auth::id()) {
+        if($attachment->author_id !== \Auth::id()) {
             return response(null, 403);
         }
         if(! $this->attachmentsService->update($id, $request->validated())){
-            return response(null, 404);
+            return abort(404);
         }
 
         return response(null, 204);
@@ -69,18 +63,8 @@ class AttachmentsController extends Controller
 
     public function upload(UploadAttachmentRequest $request) {
 
-        if(! $data = $request->validated()) {
-            return response(null, 422);
-        }
-
-        $result = $this->attachmentsService->upload(array_only($data, [
-            'file_name',
-            'file_total_size',
-            'chunk_amount',
-            'file_chunk_id',
-            'file_total_size',
-            'description'
-        ]), $request->file('file_content'), \Auth::id());
+        $result = $this->attachmentsService->upload($request->validated(),
+            $request->file('file_content'), \Auth::id());
 
         switch($result['status']) {
             case $this->attachmentsService::UPLOAD_STATUS_SUCCESS:
@@ -98,7 +82,7 @@ class AttachmentsController extends Controller
                 . "{$result['chunk_amount_local']} currently.");
                 break;
             default:
-                return response('Unknown result', 520);
+                return response('Unknown result', 422);
         }
     }
 }
