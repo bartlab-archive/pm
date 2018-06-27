@@ -14,4 +14,8 @@ export default class MyService extends ServiceBase {
     update(data) {
         return this.$http.put(`/api/v1/my/account`, data);
     }
+
+    refreshToken(action) {
+        return this.$http.post(`/api/v1/my/token`, {action});
+    }
 }

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 
-use App\Http\Requests\UpdateAccountRequest;
+use App\Http\Requests\Account\TokenAccountRequest;
+use App\Http\Requests\Account\UpdateAccountRequest;
 use App\Http\Resources\AccountResource;
+use App\Http\Resources\TokenResource;
+use App\Services\TokenService;
 use App\Services\UsersService;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -13,18 +16,22 @@ use Illuminate\Routing\Controller as BaseController;
  * Class AccountController
  *
  * @property UsersService $usersService
+ * @property TokenService $tokenService
  *
  */
 class AccountController extends BaseController
 {
 
     protected $usersService;
+    protected $tokenService;
 
     public function __construct(
-        UsersService $usersService
+        UsersService $usersService,
+        TokenService $tokenService
     )
     {
         $this->usersService = $usersService;
+        $this->tokenService = $tokenService;
     }
 
     public function show()
@@ -51,34 +58,24 @@ class AccountController extends BaseController
         return AccountResource::make($user);
     }
 
+    public function token(TokenAccountRequest $request)
+    {
+        $token = $this->tokenService->refresh(
+            \Auth::id(),
+            $request->get('action')
+        );
+
+        if (!$token) {
+            abort(422);
+        }
+
+        return TokenResource::make($token);
+    }
+
 //    public function changePassword(ChangePasswordRequest $request)
 //    {
 //        $result = $this->usersService->changePassword($request->all());
 //        return response((string)$result, 200);
-//    }
-
-//    public function showApiKey()
-//    {
-//        return response([
-//            'token' => $this->tokenService->getApiKey(Auth::user())
-//        ], 200);
-//    }
-
-//    public function resetApiKey()
-//    {
-//        $token = $this->tokenService->resetApiKey(Auth::user())->toArray();
-//
-//        return response([
-//            'updated_on' => $token['updated_on'],
-//            'value' => $token['value']
-//        ], 200);
-//    }
-
-//    public function resetAtomKey()
-//    {
-//        return response([
-//            'updated_on' => $this->tokenService->resetAtomKey(Auth::user())->toArray()['updated_on']
-//        ], 200);
 //    }
 //
 //    public function updateAdditionalEmail($id, Request $request)

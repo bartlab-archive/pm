@@ -1,7 +1,9 @@
 import ControllerBase from 'base/controller.base';
 import _ from 'lodash';
 import moment from "moment";
-import angular from 'angular';
+import MyTokenController from "../token/my-token.controller";
+import myTokenTemplate from '../token/my-token.html';
+// import angular from 'angular';
 // import myEmailsModalTemplate from './my-mails-modal.html';
 // import myPasswordModalTemplate from './my-password-modal.html';
 
@@ -15,8 +17,21 @@ import angular from 'angular';
 export default class MyAccountController extends ControllerBase {
 
     static get $inject() {
-        return ['myService', 'usersService', '$mdToast'];
+        return ['myService', 'usersService', '$mdToast','$mdDialog'];
         // return ['$auth', '$state', '$mdToast', '$mdDialog', 'usersService'];
+    }
+
+    static setMdDialogConfig(controller, template, target, locals = {}) {
+        return {
+            controller: controller,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            locals: locals,
+            template: template,
+            clickOutsideToClose: true,
+            openFrom: target,
+            closeTo: target,
+        };
     }
 
     $onInit() {
@@ -113,6 +128,12 @@ export default class MyAccountController extends ControllerBase {
             .finally(() => {
                 this.loadProccess = false;
             });
+    }
+
+    showToken(token, title, $event) {
+        this.$mdDialog.show(
+            this.constructor.setMdDialogConfig(MyTokenController, myTokenTemplate, $event.target, {token, title})
+        );
     }
 
     // getTokens(tokens) {

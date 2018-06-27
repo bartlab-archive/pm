@@ -36,10 +36,24 @@ class TokenService
         $token = Token::make([
             'user_id' => $userId,
             'action' => $action,
-            'value' => $value ?? sha1(str_random(33))
+            'value' => $value ?? $this->value()
         ]);
 
         return $token->save() ? $token : null;
+    }
+
+    public function refresh($userId, string $action)
+    {
+        if (!$token = $this->oneByUserId($userId, $action)) {
+            return $this->create($userId, $action) ?? false;
+        }
+
+        return $token->fill(['value' => $this->value()])->save() ? $token : false;
+    }
+
+    public function value(int $length = 33)
+    {
+        return sha1(str_random($length));
     }
 
 //    public function all(User $user): Collection

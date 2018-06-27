@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests\Account;
 
-//use App\Rules\UserPassword;
+use App\Models\EmailAddress;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-//use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
-class ChangePasswordRequest extends FormRequest
+class TokenAccountRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +27,7 @@ class ChangePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-//            'password' => ['required', 'string', new UserPassword],
-            'new_password' => 'required|string|min:6|different:password',
-            'confirm_new_password' => 'required|string|min:6|same:new_password'
+            'action' => 'in:api,feeds'
         ];
     }
 }

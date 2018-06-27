@@ -19,7 +19,6 @@
                     </md-button>
 
                     <md-menu-content width="3">
-
                         <md-menu-item>
                             <md-button ng-click="$ctrl.addEmail($event)">
                                 <md-icon>email</md-icon>
@@ -35,14 +34,14 @@
                         </md-menu-item>
 
                         <md-menu-item>
-                            <md-button ng-click="null">
+                            <md-button ng-click="$ctrl.showToken($ctrl.apiToken,'Atom access key',$event)">
                                 <md-icon>rss_feed</md-icon>
                                 Show Atom access key
                             </md-button>
                         </md-menu-item>
 
                         <md-menu-item>
-                            <md-button ng-click="null">
+                            <md-button ng-click="$ctrl.showToken($ctrl.feedToken,'API access key',$event)">
                                 <md-icon>vpn_key</md-icon>
                                 Show API access key
                             </md-button>
