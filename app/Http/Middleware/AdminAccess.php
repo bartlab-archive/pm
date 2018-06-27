@@ -8,11 +8,6 @@ use Auth;
 
 class AdminAccess {
 
-    public function __construct(UsersService $userService)
-    {
-        $this->userService = $userService;
-    }
-
     /**
      * Handle an incoming request.
      *
@@ -26,7 +21,7 @@ class AdminAccess {
             return abort(401);
         }
 
-        if($this->userService->one(Auth::id())->admin !== 1) {
+        if (! Auth::user()->admin) {
             return abort(403);
         }
 
