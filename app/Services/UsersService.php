@@ -2,16 +2,13 @@
 
 namespace App\Services;
 
+use App\Models\EmailAddress;
 use App\Models\User;
 use App\Models\UserPreference;
 use Illuminate\Database\Eloquent\Builder;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class UsersService
- *
- * @property EmailAddressesService $emailAddressesService
- * @property UserPreferenceService $preferenceService
  *
  * @package App\Services
  */
@@ -19,12 +16,15 @@ class UsersService
 {
 //    protected $emailAddressesService;
 //    protected $preferenceService;
+    protected $tokenService;
 
     public function __construct(
+        TokenService $tokenService
 //        EmailAddressesService $emailAddressesService,
 //        UserPreferenceService $preferenceService
     )
     {
+        $this->tokenService = $tokenService;
 //        $this->emailAddressesService = $emailAddressesService;
 //        $this->preferenceService = $preferenceService;
     }
@@ -55,19 +55,25 @@ class UsersService
         );
 
         if ($user->save()) {
-            $user->email()->create([
+            // user default email
+            $user->emails()->create([
                 'address' => array_get($data, 'email'),
-                'is_default' => true,//array_get($data, 'is_default', 1),
-                'notify' => true,//array_get($data, 'notify', 1),
+                'is_default' => true,
+                'notify' => true,
             ]);
 
+            // user preference
             $user->preference()->create([
                 // todo: get from settings if not set
                 'hide_mail' => array_get($data, 'hideEmail'),
                 // todo: get from $data or app settings
                 'time_zone' => \Config::get('app.timezone'),
-                'others' => UserPreference::DEFAULT_OTHERS_DATA//Yaml::dump(UserPreference::DEFAULT_OTHERS_DATA)
+                'others' => UserPreference::DEFAULT_OTHERS_DATA
             ]);
+
+            // create ati and feeds token
+            $this->tokenService->create($user->id, 'api');
+            $this->tokenService->create($user->id, 'feeds');
 
             return $user;
         }
@@ -179,6 +185,79 @@ class UsersService
     public function preparePassword(string $salt, string $password): string
     {
         return sha1($salt . sha1($password));
+    }
+
+    public function changePassword($userId, $password)
+    {
+        /** @var User $user */
+        if (!$user = $this->one($userId)) {
+            return false;
+        }
+
+        if (!$user->fill(['hashed_password' => $this->preparePassword($user->salt, $password)])->save()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function createEmail(int $userId, string $address, bool $isDefault = false, bool $notify = true)
+    {
+        /** @var User $user */
+        if (!$user = $this->one($userId)) {
+            return false;
+        }
+
+        /** @var EmailAddress $email */
+        $email = $user->emails()->make([
+            'address' => $address,
+            'is_default' => $isDefault,
+            'notify' => $notify
+        ]);
+
+        if (!$email->save()) {
+            return false;
+        }
+
+        return $email;
+    }
+
+    public function updateEmailNotify(int $userId, string $address, bool $notify)
+    {
+        /** @var User $user */
+        if (!$user = $this->one($userId)) {
+            return false;
+        }
+
+        /** @var EmailAddress $email */
+        if (!$email = $user->emails()->where(['address' => $address])->first()) {
+            return false;
+        }
+
+        if (!$email->fill(['notify' => $notify])->save()) {
+            return false;
+        }
+
+        return $email;
+    }
+
+    public function removeEmail(int $userId, string $address)
+    {
+        /** @var User $user */
+        if (!$user = $this->one($userId)) {
+            return false;
+        }
+
+        /** @var EmailAddress $email */
+        if (!$email = $user->emails()->where(['address' => $address])->first()) {
+            return false;
+        }
+
+        try {
+            return $email->delete();
+        } catch (\Exception $exception) {
+            return false;
+        }
     }
 
 //    public function resetPassword(User $user, $new_password): bool

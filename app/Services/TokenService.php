@@ -2,10 +2,7 @@
 
 namespace App\Services;
 
-
 use App\Models\Token;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 
 class TokenService
 {
@@ -55,55 +52,4 @@ class TokenService
     {
         return sha1(str_random($length));
     }
-
-//    public function all(User $user): Collection
-//    {
-//        return $user->tokens;
-//    }
-
-//    public function destroy(User $user, string $action): bool
-//    {
-//        return $user->tokens()
-//            ->where('action', $action)
-//            ->delete();
-//    }
-//
-//    public function getApiKey($user)
-//    {
-//        $user_api_key = Token::apiKey($user);
-//
-//        if ($user_api_key === null) {
-//            $user_api_key = Token::createApiKey($user);
-//        }
-//
-//        return $user_api_key;
-//    }
-//
-//    public function resetApiKey($user)
-//    {
-//        $user_api_key = Token::apiKey($user);
-//
-//        if ($user_api_key === null) {
-//            $user_api_key = Token::createApiKey($user);
-//        } else {
-//            $user_api_key->value = sha1(str_random(33));
-//            $user_api_key->save();
-//        }
-//
-//        return $user_api_key;
-//    }
-//
-//    public function resetAtomKey($user)
-//    {
-//        $user_atom_key = Token::atomKey($user);
-//
-//        if ($user_atom_key === null) {
-//            $user_atom_key = Token::createAtomKey($user);
-//        } else {
-//            $user_atom_key->value = sha1(str_random(33));
-//            $user_atom_key->save();
-//        }
-//
-//        return $user_atom_key;
-//    }
 }

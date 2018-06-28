@@ -41,4 +41,5 @@ angular
 
 /*
 todo: code format by Google and Airbnb recomendations
+todo: make ng-enter directive for forms
  */

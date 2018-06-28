@@ -1,56 +1,47 @@
 import ControllerBase from 'base/controller.base';
-import _ from 'lodash';
 
 /**
  * @property {$mdDialog} $mdDialog
  * @property {$mdToast} $mdToast
- * @property {UsersService} UsersService
+ * @property {MyService} myService
  */
 export default class MyChangePasswordController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdDialog', '$mdToast', 'usersService'];
+        return ['$mdToast', 'myService', '$state'];
     }
 
     $onInit() {
-        this.changePasswordForm = {};
-        this.errors = {};
+        this.model = {
+            password: '',
+            new_password: '',
+            confirm_new_password: '',
+        };
+        this.loadProccess = false;
     }
 
-    onError(response) {
-        if (_.get(response, 'status') === 500) {
-            this.$mdToast.show(
-                this.$mdToast.simple().textContent('Server error')
-            );
-        } else {
-            this.errors = _.get(response, 'data.errors', {});
-
-            for (let field in this.errors) {
-                if (this.changePasswordForm.hasOwnProperty(field)) {
-                    this.changePasswordForm[field].$setValidity('server', false);
-                }
-            }
-        }
-    }
-
-    change(field) {
-        if (this.changePasswordForm.hasOwnProperty(field) && this.errors.hasOwnProperty(field)) {
-            this.changePasswordForm[field].$setValidity('server', true);
-            this.changePasswordForm[field] = undefined;
-        }
-    }
-
-    changePassword() {
-        this.usersService.changePassword(this.model)
+    submit() {
+        this.loadProccess = true;
+        this.myService
+            .changePassword(this.model)
             .then((response) => {
-                if (response && response.status === 200) {
-                    this.$mdDialog.cancel();
+                this.$mdToast.show(
+                    this.$mdToast.simple().textContent('Password was successfully updated.')
+                );
+                this.$state.go('my.account');
+            })
+            .catch((response) => {
+                if (response.status === 422) {
                     this.$mdToast.show(
-                        this.$mdToast.simple().textContent('Password Changed Successfully')
+                        this.$mdToast.simple().textContent(response.data.message)
                     );
                 }
+
+                this.errors = response.data.errors;
             })
-            .catch((response) => this.onError(response));
+            .finally(() => {
+                this.loadProccess = false;
+            });
     }
 
 }

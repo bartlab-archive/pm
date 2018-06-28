@@ -3,9 +3,8 @@ import _ from 'lodash';
 import moment from "moment";
 import MyTokenController from "../token/my-token.controller";
 import myTokenTemplate from '../token/my-token.html';
-// import angular from 'angular';
-// import myEmailsModalTemplate from './my-mails-modal.html';
-// import myPasswordModalTemplate from './my-password-modal.html';
+import MyMailsController from "../mails/my-mails.controller";
+import myMailsTemplate from "../mails/my-mails.html";
 
 /**
  * @property {$auth} $auth
@@ -17,8 +16,7 @@ import myTokenTemplate from '../token/my-token.html';
 export default class MyAccountController extends ControllerBase {
 
     static get $inject() {
-        return ['myService', 'usersService', '$mdToast','$mdDialog'];
-        // return ['$auth', '$state', '$mdToast', '$mdDialog', 'usersService'];
+        return ['myService', 'usersService', '$mdToast', '$mdDialog'];
     }
 
     static setMdDialogConfig(controller, template, target, locals = {}) {
@@ -132,100 +130,23 @@ export default class MyAccountController extends ControllerBase {
 
     showToken(token, title, $event) {
         this.$mdDialog.show(
-            this.constructor.setMdDialogConfig(MyTokenController, myTokenTemplate, $event.target, {token, title})
+            this.constructor.setMdDialogConfig(
+                MyTokenController,
+                myTokenTemplate,
+                $event.target,
+                {token, title}
+            )
         );
     }
 
-    // getTokens(tokens) {
-    //     const atom = tokens.filter((token) => {
-    //         return token.action === 'feeds';
-    //     });
-    //
-    //     const api = tokens.filter((token) => {
-    //         return token.action === 'api';
-    //     });
-    //
-    //     return {
-    //         atom: atom[0],
-    //         api: api[0]
-    //     }
-    // }
-
-    // cancel() {
-    //     this.$mdDialog.cancel();
-    // }
-    //
-    // setMdDialogConfig(template, target) {
-    //     return {
-    //         controller: () => this,
-    //         controllerAs: '$ctrl',
-    //         template: template,
-    //         parent: angular.element(document.body),
-    //         trapFocus: true,
-    //         clickOutsideToClose: true,
-    //         clickEscapeToClose: true,
-    //         escapeToClose: true,
-    //         hasBackdrop: true,
-    //         disableParentScroll: true,
-    //         openFrom: target,
-    //         closeTo: target,
-    //     }
-    // }
-
-    // changePassword($event) {
-    //     this.$mdDialog.show(
-    //         this.setMdDialogConfig(myPasswordModalTemplate, $event.target)
-    //     );
-    // }
-    //
-    // showApiKey() {
-    //     this.apiVisibilityState = !this.apiVisibilityState;
-    // }
-    //
-    // showFeedKey() {
-    //     this.feedVisibilityState = !this.feedVisibilityState;
-    // }
-
-    // addEmail($event) {
-    //     this.$mdDialog.show(
-    //         this.setMdDialogConfig(myEmailsModalTemplate, $event.target)
-    //     );
-    // }
-    //
-    // resetApiKey() {
-    //     this.usersService.resetApiAccessKey().then((response) => {
-    //         if (response && response.status === 200) {
-    //             this.model.tokens.api.updated_on = response.data.updated_on;
-    //             this.model.tokens.api.value = response.data.value;
-    //             this.$mdToast.show(
-    //                 this.$mdToast.simple().textContent('API key was reset successfully')//.position('bottom left')
-    //             );
-    //         }
-    //     });
-    //
-    // }
-
-    // resetAtomKey() {
-    //     this.usersService.resetAtomAccessKey().then((response) => {
-    //         if (response && response.status === 200) {
-    //             this.model.tokens.atom.updated_on = response.data.updated_on;
-    //             this.$mdToast.show(
-    //                 this.$mdToast.simple().textContent('RSS key was reset successfully')//.position('bottom left')
-    //             );
-    //         }
-    //     });
-    // }
-
-    // submit() {
-    //     this.model.save().then(
-    //         (response) => {
-    //             if (response && response.status === 200) {
-    //                 this.$mdToast.show(
-    //                     this.$mdToast.simple().textContent('Account Settings Saved')
-    //                 );
-    //             }
-    //         }
-    //     );
-    // }
-
+    showEmails($event) {
+        this.$mdDialog.show(
+            this.constructor.setMdDialogConfig(
+                MyMailsController,
+                myMailsTemplate,
+                $event.target,
+                {emails: this.account.emails}
+            )
+        );
+    }
 }

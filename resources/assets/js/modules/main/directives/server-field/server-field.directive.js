@@ -1,5 +1,9 @@
 import DirectiveBase from 'base/directive.base';
 
+/**
+ * @ngdoc directive
+ * @name serverField
+ */
 export default class ServerFieldDirective extends DirectiveBase {
 
     static get $inject() {

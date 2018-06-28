@@ -1,33 +1,63 @@
-<md-list>
-    <md-list-item ng-repeat="email in $ctrl.emails">
-        <p>{{ email.address }}</p>
-        <md-icon>volume_up</md-icon>
-        <md-switch class="md-primary" ng-model="$ctrl.emails[email.id].notify"
-                   ng-change="$ctrl.updateEmailAddress(email.id)"></md-switch>
-        <md-button class="md-secondary md-icon-button"
-                   ng-if="!item.inherited_member"
-                   ng-click="$ctrl.deleteEmailAddress(email.id)">
-            <md-icon>delete</md-icon>
-        </md-button>
-    </md-list-item>
-</md-list>
+<md-dialog flex-xs="100" flex-sm="100" flex-md="50" flex-gt-md="35" aria-label="{{ ::$ctrl.title }}">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>{{ ::$ctrl.title }}</h2>
 
-<form name="$ctrl.addEmailForm">
-    <md-card-content>
-        <md-input-container class="md-icon-float md-block">
-            <label>Add email adress</label>
-            <input ng-model="$ctrl.newEmail" type="email" required ng-change="$ctrl.change('email')"
-                   name="email">
-            <div ng-messages="$ctrl.addEmailForm.email.$error">
-                <div ng-message="server" ng-bind-html="$ctrl.errors.text | join"></div>
-            </div>
-        </md-input-container>
-    </md-card-content>
+            <span flex></span>
 
-    <md-card-actions layout="row" layout-align="center center">
-        <md-button class="md-raised md-primary" ng-click="$ctrl.addEmailAddress()"
-                   ng-disabled="$ctrl.addEmailForm.$invalid || !$ctrl.newEmail">
-            Add
-        </md-button>
-    </md-card-actions>
-</form>
+            <md-button class="md-icon-button" ng-click="$ctrl.$mdDialog.cancel();">
+                <md-icon aria-label="Close dialog">clear</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <!--<div class="md-dialog-content">-->
+        <div ng-if="$ctrl.emails.length === 0" layout-align="center center" layout="row" class="md-padding">
+            No data to display
+        </div>
+
+        <md-list ng-if="$ctrl.emails.length !== 0">
+            <md-list-item class="md-1-line" ng-repeat="item in $ctrl.emails" ng-if="::!item.is_default">
+                <md-switch class="md-primary" aria-label="{{ ::item.address }}"
+                           ng-model="item.notify" ng-change="$ctrl.notify(item)"></md-switch>
+
+                <div class="md-list-item-text">
+                    {{ ::item.address }}
+                </div>
+
+                <div flex></div>
+
+                <md-button class="md-icon-button" aria-label="Delete" ng-click="$ctrl.remove(item)">
+                    <md-icon>delete</md-icon>
+                </md-button>
+
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+        </md-list>
+        <!--</div>-->
+    </md-dialog-content>
+
+    <md-dialog-actions>
+        <form name="$ctrl.form" ng-submit="$ctrl.submit()" novalidate server-form="$ctrl.errors"
+              layout-align="start center" layout="row" flex>
+            <md-input-container class="md-icon-float md-block" flex>
+                <label>Add email address</label>
+                <input ng-model="$ctrl.email" type="email" name="email" ng-pattern="/^.+@.+\..+$/"
+                       ng-maxlength="60" server-field>
+
+                <div ng-messages="$ctrl.form.email.$error">
+                    <div ng-message="maxlength">Email is too long (maximum is 60 characters)</div>
+                    <div ng-message-exp="['pattern']">Email is invalid</div>
+                    <div ng-message="server" ng-bind-html="$ctrl.form.email.$server"></div>
+                </div>
+            </md-input-container>
+
+            <md-button class="md-icon-button" ng-click="$ctrl.submit()"
+                       ng-disabled="!$ctrl.email || $ctrl.form.$invalid || $ctrl.loadProccess">
+                <md-icon>add</md-icon>
+                <md-tooltip md-direction="top">Add</md-tooltip>
+            </md-button>
+        </form>
+    </md-dialog-actions>
+</md-dialog>

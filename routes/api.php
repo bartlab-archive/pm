@@ -34,16 +34,13 @@ Route::group(
             function () {
                 Route::get('account', 'AccountController@show');
                 Route::put('account', 'AccountController@update');
-                Route::post('token', 'AccountController@token');
 
-//                Route::put('password', 'AccountController@changePassword');
-//                Route::get('api-key', 'AccountController@showApiKey');
-//                Route::put('api-key', 'AccountController@resetApiKey');
-//                Route::put('rss-key', 'AccountController@resetAtomKey');
-//                Route::put('change-password', 'AccountController@resetAtomKey');
-//                Route::post('email-addresses', 'AccountController@addAdditionalEmails');
-//                Route::put('email-addresses/{id}', 'AccountController@updateAdditionalEmail');
-//                Route::delete('email-addresses/{id}', 'AccountController@deleteAdditionalEmail');
+                Route::post('token', 'AccountController@token');
+                Route::post('password', 'AccountController@password');
+
+                Route::post('email', 'AccountController@createEmail');
+                Route::put('email', 'AccountController@updateEmail');
+                Route::delete('email', 'AccountController@destroyEmail');
             }
         );
 

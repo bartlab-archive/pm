@@ -20,14 +20,14 @@
 
                     <md-menu-content width="3">
                         <md-menu-item>
-                            <md-button ng-click="$ctrl.addEmail($event)">
+                            <md-button ng-click="$ctrl.showEmails($event)">
                                 <md-icon>email</md-icon>
                                 Emails
                             </md-button>
                         </md-menu-item>
 
                         <md-menu-item>
-                            <md-button ng-click="$ctrl.changePassword($event)">
+                            <md-button ui-sref="my.password">
                                 <md-icon>lock</md-icon>
                                 Change password
                             </md-button>
@@ -111,7 +111,7 @@
 
                     <div ng-messages="$ctrl.form.email.$error">
                         <div ng-message="required">Email cannot be blank</div>
-                        <div ng-message="required">Email is too long (maximum is 60 characters)</div>
+                        <div ng-message="maxlength">Email is too long (maximum is 60 characters)</div>
                         <div ng-message-exp="['pattern']">Email is invalid</div>
                         <div ng-message="server" ng-bind-html="$ctrl.form.email.$server"></div>
                     </div>

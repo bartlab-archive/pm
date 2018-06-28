@@ -1,7 +1,6 @@
-import MyChangePasswordController from './my-change-password.controller';
-import myChangePasswordTemplate from './my-change-password.html';
-import './my-change-password.scss';
 import ComponentBase from "base/component.base";
+import MyChangePasswordController from './my-change-password.controller.js';
+import myChangePasswordTemplate from './my-change-password.html';
 
 export default class MyChangePasswordComponent extends ComponentBase {
 

@@ -1,6 +1,7 @@
 import InjectableBase from 'base/injectable.base';
 import MyAccountComponent from './components/account/my-account.component';
 import MyPageComponent from './components/page/my-page.component';
+import MyChangePasswordComponent from './components/change-password/my-change-password.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -36,6 +37,10 @@ export default class MyConfig extends InjectableBase {
             .state('my.account', {
                 url: '/account',
                 component: MyAccountComponent.getName(),
+            })
+            .state('my.password', {
+                url: '/password',
+                component: MyChangePasswordComponent.getName(),
             })
             .state('my.page', {
                 url: '/page',

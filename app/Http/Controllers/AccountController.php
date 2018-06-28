@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\Account\ChangePasswordRequest;
+use App\Http\Requests\Account\CreateEmailAccountRequest;
 use App\Http\Requests\Account\TokenAccountRequest;
 use App\Http\Requests\Account\UpdateAccountRequest;
 use App\Http\Resources\AccountResource;
+use App\Http\Resources\EmailResource;
 use App\Http\Resources\TokenResource;
 use App\Services\TokenService;
 use App\Services\UsersService;
@@ -72,36 +75,33 @@ class AccountController extends BaseController
         return TokenResource::make($token);
     }
 
-//    public function changePassword(ChangePasswordRequest $request)
-//    {
-//        $result = $this->usersService->changePassword($request->all());
-//        return response((string)$result, 200);
-//    }
-//
-//    public function updateAdditionalEmail($id, Request $request)
-//    {
-//        $result = $this->emailAddressesService->updateById($id, $request->all());
-//        return response()->json($result, 200);
-//    }
+    public function password(ChangePasswordRequest $request)
+    {
+        if (!$this->usersService->changePassword(\Auth::id(), $request->get('new_password'))) {
+            abort(422);
+        }
 
-//    public function deleteAdditionalEmail($id)
-//    {
-//        $result = $this->emailAddressesService->deleteById($id);
-//        return response()->json($result, 200);
-//    }
-//
-//    public function getAdditionalEmails()
-//    {
-//        $result = $this->emailAddressesService->getList([
-//            'user_id' => Auth::user()->id,
-//            'is_default' => false
-//        ]);
-//        return response()->json($result, 200);
-//    }
-//
-//    public function addAdditionalEmails(Request $request)
-//    {
-//        $result = $this->emailAddressesService->create(Auth::user(), $request->all());
-//        return response()->json($result, 200);
-//    }
+        return response(null, 201);
+    }
+
+    public function createEmail(CreateEmailAccountRequest $request)
+    {
+        if (!$this->usersService->createEmail(\Auth::id(), $request->get('email'))) {
+            abort(422);
+        }
+
+        return EmailResource::collection(
+            ($user = $this->usersService->one(\Auth::id(), ['emails'])) ? $user->emails : []
+        );
+    }
+
+    public function updateEmail()
+    {
+        return response(null, 201);
+    }
+
+    public function destroyEmail()
+    {
+        return response(null, 201);
+    }
 }

@@ -7,7 +7,6 @@ export default class MyService extends ServiceBase {
     }
 
     account() {
-        // return this.Restangular.one('projects', id);
         return this.$http.get(`/api/v1/my/account`);
     }
 
@@ -17,5 +16,21 @@ export default class MyService extends ServiceBase {
 
     refreshToken(action) {
         return this.$http.post(`/api/v1/my/token`, {action});
+    }
+
+    changePassword(data) {
+        return this.$http.post(`/api/v1/my/password`, data);
+    }
+
+    addEmail(email) {
+        return this.$http.post(`/api/v1/my/email`, {email});
+    }
+
+    notifyEmail(email) {
+        return this.$http.put(`/api/v1/my/email`, {email});
+    }
+
+    removeEmail(email) {
+        return this.$http.delete(`/api/v1/my/email`, {email});
     }
 }

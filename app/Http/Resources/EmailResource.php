@@ -15,7 +15,7 @@ class EmailResource extends Resource
     public function toArray($request)
     {
         return [
-            'user' => UserResource::make($this->whenLoaded('user')),
+//            'user' => UserResource::make($this->whenLoaded('user')),
             'address' => $this->address,
             'is_default' => $this->is_default,
             'notify' => $this->notify,

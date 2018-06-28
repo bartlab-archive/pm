@@ -115,11 +115,6 @@ class IssuesController extends BaseController
         ]);
     }
 
-    public function test($request) {
-        $model = $this->issuesService->one(4088);
-        var_dump($model->attachments);
-    }
-
     public function store(CreateIssueRequest $request)
     {
         if (!$project = $this->projectsService->oneByIdentifier($request->get('project_identifier'))) {

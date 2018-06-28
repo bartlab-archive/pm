@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests\Account;
 
-//use App\Rules\UserPassword;
+use App\Services\UsersService;
 use Illuminate\Foundation\Http\FormRequest;
-//use Illuminate\Support\Facades\Auth;
 
 class ChangePasswordRequest extends FormRequest
 {
@@ -23,12 +22,20 @@ class ChangePasswordRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(UsersService $usersService)
     {
         return [
-//            'password' => ['required', 'string', new UserPassword],
+            'password' => [
+                'required',
+                'string',
+                function ($attribute, $value, $fail) use ($usersService) {
+                    if (!$usersService->validatePassword(\Auth::user()->login, $value)) {
+                        return $fail('Wrong password');
+                    }
+                }
+            ],
             'new_password' => 'required|string|min:6|different:password',
-            'confirm_new_password' => 'required|string|min:6|same:new_password'
+            'confirm_new_password' => 'required|string|same:new_password'
         ];
     }
 }
