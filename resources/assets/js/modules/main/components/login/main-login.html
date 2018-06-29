@@ -2,7 +2,7 @@
     <md-card flex-xs="100" flex-sm="50" flex-md="40" flex-gt-md="25">
         <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
         <!--<md-card>-->
-        <form name="$ctrl.form" ng-submit="$ctrl.submit()" novalidate server-form="$ctrl.errors">
+        <form name="$ctrl.form" ng-submit="$ctrl.form.$valid && $ctrl.submit()" novalidate server-form="$ctrl.errors">
             <md-card-header>
                 <h1>Sign in</h1>
             </md-card-header>

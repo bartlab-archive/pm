@@ -14,7 +14,7 @@
 
     <md-dialog-content>
         <div class="md-dialog-content">
-            <form name="$ctrl.form" ng-submit="$ctrl.submit()" novalidate server-form="$ctrl.errors">
+            <form name="$ctrl.form" ng-submit="$ctrl.form.$valid && $ctrl.submit()" novalidate server-form="$ctrl.errors">
                 <md-input-container class="md-block">
                     <label>Name</label>
 
