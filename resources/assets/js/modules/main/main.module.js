@@ -23,6 +23,7 @@ import MainProvider from "./providers/main.provider";
 import AttachmentService from "./services/attachment.service";
 import AuthService from "./services/auth.service";
 import StorageService from "./services/storage.service";
+import ListService from "./services/list.service";
 
 // todo: ResetPassword component not work
 
@@ -43,6 +44,7 @@ angular.module('app.modules.main', [])
     .service(AuthService.getName(), AuthService)
     .service(StorageService.getName(), StorageService)
     .service(AttachmentService.getName(), AttachmentService)
+    .service(ListService.getName(), ListService)
     .provider(MainProvider.getName(), MainProvider)
     .component(MainIndexComponent.getName(), MainIndexComponent)
     .component(MainLoginComponent.getName(), MainLoginComponent)

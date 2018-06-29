@@ -3,8 +3,6 @@ import _ from 'lodash';
 import moment from "moment";
 import MyTokenController from "../token/my-token.controller";
 import myTokenTemplate from '../token/my-token.html';
-import MyMailsController from "../mails/my-mails.controller";
-import myMailsTemplate from "../mails/my-mails.html";
 
 /**
  * @property {$auth} $auth
@@ -12,11 +10,12 @@ import myMailsTemplate from "../mails/my-mails.html";
  * @property {$mdToast} $mdToast
  * @property {UsersService} UsersService
  * @property {$mdDialog} $mdDialog
+ * @property {ListService} listService
  */
 export default class MyAccountController extends ControllerBase {
 
     static get $inject() {
-        return ['myService', 'usersService', '$mdToast', '$mdDialog'];
+        return ['myService', 'usersService', '$mdToast', '$mdDialog', 'listService'];
     }
 
     static setMdDialogConfig(controller, template, target, locals = {}) {
@@ -33,8 +32,8 @@ export default class MyAccountController extends ControllerBase {
     }
 
     $onInit() {
-        this.languages = this.usersService.languages;
-        this.timeZones = this.usersService.timeZone;
+        this.languages = this.listService.languages;
+        this.timeZones = this.listService.timeZone;
         this.notifications = this.usersService.notifications;
 
         this.account = {
@@ -135,17 +134,6 @@ export default class MyAccountController extends ControllerBase {
                 myTokenTemplate,
                 $event.target,
                 {token, title}
-            )
-        );
-    }
-
-    showEmails($event) {
-        this.$mdDialog.show(
-            this.constructor.setMdDialogConfig(
-                MyMailsController,
-                myMailsTemplate,
-                $event.target,
-                {emails: this.account.emails}
             )
         );
     }

@@ -105,14 +105,14 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     // todo: replace to ui-sref directive
-    myAccount() {
-        this.$state.go('my.account');
-    }
+    // myAccount() {
+    //     this.$state.go('my.account');
+    // }
 
     // todo: replace to ui-sref directive
-    logout() {
-        this.$state.go('logout');
-    }
+    // logout() {
+    //     this.$state.go('logout');
+    // }
 
     // todo: replace to ui-sref directive
     menuClick(item) {

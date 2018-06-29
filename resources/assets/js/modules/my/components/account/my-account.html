@@ -9,7 +9,9 @@
                 </md-card-avatar>
 
                 <md-card-header-text>
-                    <span class="md-title">{{ ::$ctrl.account.login }}</span>
+                    <span class="md-title">
+                        <a ui-sref="users.info({id:$ctrl.account.id})">{{ ::$ctrl.account.login }}</a>
+                    </span>
                     <span class="md-subhead">My account</span>
                 </md-card-header-text>
 
@@ -20,7 +22,7 @@
 
                     <md-menu-content width="3">
                         <md-menu-item>
-                            <md-button ng-click="$ctrl.showEmails($event)">
+                            <md-button ui-sref="my.emails">
                                 <md-icon>email</md-icon>
                                 Emails
                             </md-button>
@@ -54,22 +56,22 @@
                 <p class="md-body-1" layout="column">
                     <span><span class="md-body-2">Login:</span> {{ ::$ctrl.account.last_login_on }}</span>
                     <span><span class="md-body-2">Created:</span> {{ ::$ctrl.account.created_on }}</span>
-                    <span>
-                        <span class="md-body-2">Atom access key:</span>
-                        <span>
-                            <md-tooltip md-direction="top">{{ ::$ctrl.feedToken.updated_on }}</md-tooltip>
-                            created {{ ::$ctrl.feedToken.updated_on_from_now }}
-                            <span>ago</span>
-                        </span>
-                    </span>
-                    <span>
-                        <span class="md-body-2">API access key:</span>
-                        <span>
-                            <md-tooltip md-direction="top">{{ ::$ctrl.apiToken.updated_on }}</md-tooltip>
-                            created {{ ::$ctrl.apiToken.updated_on_from_now }}
-                            <span>ago</span>
-                        </span>
-                    </span>
+                    <!--<span>-->
+                    <!--<span class="md-body-2">Atom access key:</span>-->
+                    <!--<span>-->
+                    <!--<md-tooltip md-direction="top">{{ ::$ctrl.feedToken.updated_on }}</md-tooltip>-->
+                    <!--created {{ ::$ctrl.feedToken.updated_on_from_now }}-->
+                    <!--<span>ago</span>-->
+                    <!--</span>-->
+                    <!--</span>-->
+                    <!--<span>-->
+                    <!--<span class="md-body-2">API access key:</span>-->
+                    <!--<span>-->
+                    <!--<md-tooltip md-direction="top">{{ ::$ctrl.apiToken.updated_on }}</md-tooltip>-->
+                    <!--created {{ ::$ctrl.apiToken.updated_on_from_now }}-->
+                    <!--<span>ago</span>-->
+                    <!--</span>-->
+                    <!--</span>-->
                 </p>
             </md-card-content>
 

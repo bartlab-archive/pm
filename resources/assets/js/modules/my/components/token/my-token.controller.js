@@ -1,4 +1,5 @@
 import ControllerBase from 'base/controller.base';
+import moment from 'moment';
 
 /**
  * @property {object} token
@@ -20,6 +21,7 @@ export default class MyTokenController extends ControllerBase {
             .refreshToken(this.token.action)
             .then((response) => {
                 this.token = response.data.data;
+                this.token.updated_on_from_now = moment(this.token.updated_on).fromNow(true);
             })
             .finally(() => {
                 this.loadProccess = false;

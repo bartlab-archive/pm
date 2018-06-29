@@ -35,14 +35,6 @@ export default class UsersConfig extends InjectableBase {
                     }
                 }
             })
-            // .state('users.inner', {
-            //     abstract: true,
-            //     data: {
-            //       access: '@'
-            //     },
-            //     url: '',
-            //     template: '<ui-view/>'
-            // })
             .state('users.list', {
                 url: '',
                 component: UsersListComponent.getName(),
@@ -53,10 +45,18 @@ export default class UsersConfig extends InjectableBase {
             })
             .state('users.info', {
                 url: '/:id',
+                data: {
+                    access: '@'
+                },
                 component: UsersInfoComponent.getName(),
             })
             .state('users.edit', {
                 url: '/:id/edit',
+                component: UsersEditComponent.getName(),
+            })
+            // todo: redirect to my/emails for non admin user
+            .state('users.emails', {
+                url: '/:id/email_addresses',
                 component: UsersEditComponent.getName(),
             });
     }

@@ -26,11 +26,11 @@ export default class MyService extends ServiceBase {
         return this.$http.post(`/api/v1/my/email`, {email});
     }
 
-    notifyEmail(email) {
-        return this.$http.put(`/api/v1/my/email`, {email});
+    notifyEmail(email, notify) {
+        return this.$http.put(`/api/v1/my/email`, {email, notify});
     }
 
     removeEmail(email) {
-        return this.$http.delete(`/api/v1/my/email`, {email});
+        return this.$http.delete(`/api/v1/my/email/${email}`);
     }
 }

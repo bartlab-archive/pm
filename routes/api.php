@@ -39,8 +39,8 @@ Route::group(
                 Route::post('password', 'AccountController@password');
 
                 Route::post('email', 'AccountController@createEmail');
-                Route::put('email', 'AccountController@updateEmail');
-                Route::delete('email', 'AccountController@destroyEmail');
+                Route::put('email', 'AccountController@updateEmailNotify');
+                Route::delete('email/{address}', 'AccountController@destroyEmail');
             }
         );
 

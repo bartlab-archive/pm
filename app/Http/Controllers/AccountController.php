@@ -7,6 +7,7 @@ use App\Http\Requests\Account\ChangePasswordRequest;
 use App\Http\Requests\Account\CreateEmailAccountRequest;
 use App\Http\Requests\Account\TokenAccountRequest;
 use App\Http\Requests\Account\UpdateAccountRequest;
+use App\Http\Requests\Account\UpdateEmailNotifyAccountRequest;
 use App\Http\Resources\AccountResource;
 use App\Http\Resources\EmailResource;
 use App\Http\Resources\TokenResource;
@@ -81,7 +82,7 @@ class AccountController extends BaseController
             abort(422);
         }
 
-        return response(null, 201);
+        return response(null, 204);
     }
 
     public function createEmail(CreateEmailAccountRequest $request)
@@ -95,13 +96,29 @@ class AccountController extends BaseController
         );
     }
 
-    public function updateEmail()
+    public function updateEmailNotify(UpdateEmailNotifyAccountRequest $request)
     {
-        return response(null, 201);
+        if (!$this->usersService->updateEmailNotify($request->get('email'), $request->get('notify'))) {
+            abort(422);
+        }
+
+        return response(null, 204);
     }
 
-    public function destroyEmail()
+    public function destroyEmail($address)
     {
-        return response(null, 201);
+        if (!$email = $this->usersService->oneEmailAddress($address)) {
+            abort(404);
+        }
+
+        if ($email->user_id !== \Auth::id()) {
+            abort(403);
+        }
+
+        if (!$this->usersService->removeEmail($address)) {
+            abort(422);
+        }
+
+        return response(null, 204);
     }
 }

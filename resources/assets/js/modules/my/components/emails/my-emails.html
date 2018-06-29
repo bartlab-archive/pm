@@ -1,0 +1,62 @@
+<div layout="row" layout-align="center start">
+    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
+
+        <md-card-header>
+            <md-card-header-text>
+                <span class="md-title">Emails</span>
+            </md-card-header-text>
+        </md-card-header>
+
+        <md-card-content layout="row" layout-align="center center">
+            <form name="$ctrl.form" ng-submit="$ctrl.form.$valid && $ctrl.submit()" novalidate server-form="$ctrl.errors"
+                  layout-align="start center" layout="row" flex>
+                <md-input-container class="md-icon-float md-block" flex>
+                    <label>Add email address</label>
+                    <input ng-model="$ctrl.email" type="email" name="email" ng-pattern="/^.+@.+\..+$/"
+                           ng-maxlength="60" server-field>
+
+                    <div ng-messages="$ctrl.form.email.$error">
+                        <div ng-message="maxlength">Email is too long (maximum is 60 characters)</div>
+                        <div ng-message-exp="['pattern']">Email is invalid</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.email.$server"></div>
+                    </div>
+                </md-input-container>
+
+                <md-button class="md-icon-button" ng-click="$ctrl.submit()"
+                           ng-disabled="!$ctrl.email || $ctrl.form.$invalid || $ctrl.loadProccess">
+                    <md-icon>add</md-icon>
+                    <md-tooltip md-direction="top">Add</md-tooltip>
+                </md-button>
+            </form>
+        </md-card-content>
+
+        <!--<md-card-content>-->
+            <div ng-if="$ctrl.emails.length === 0" layout-align="center center" layout="row" class="md-padding">
+                No data to display
+            </div>
+
+            <md-list ng-if="$ctrl.emails.length !== 0">
+                <md-list-item class="md-1-line" ng-repeat="item in $ctrl.emails">
+                    <md-switch class="md-primary" aria-label="{{ ::item.address }}"
+                               ng-disabled="$ctrl.loadProccess"
+                               ng-model="item.notify" ng-change="$ctrl.notify(item)"></md-switch>
+
+                    <div class="md-list-item-text">
+                        {{ ::item.address }}
+                    </div>
+
+                    <div flex></div>
+
+                    <md-button class="md-icon-button" aria-label="Delete" ng-click="$ctrl.remove(item)">
+                        <md-icon>delete</md-icon>
+                    </md-button>
+
+                    <md-divider ng-if="!$last"></md-divider>
+                </md-list-item>
+            </md-list>
+        <!--</md-card-content>-->
+
+
+    </md-card>
+</div>

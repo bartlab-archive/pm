@@ -222,15 +222,16 @@ class UsersService
         return $email;
     }
 
-    public function updateEmailNotify(int $userId, string $address, bool $notify)
+    public function oneEmailAddress(string $address)
     {
-        /** @var User $user */
-        if (!$user = $this->one($userId)) {
-            return false;
-        }
+        return EmailAddress::query()
+            ->where(['address' => $address])
+            ->first();
+    }
 
-        /** @var EmailAddress $email */
-        if (!$email = $user->emails()->where(['address' => $address])->first()) {
+    public function updateEmailNotify(string $address, bool $notify)
+    {
+        if (!$email = $this->oneEmailAddress($address)) {
             return false;
         }
 
@@ -241,15 +242,9 @@ class UsersService
         return $email;
     }
 
-    public function removeEmail(int $userId, string $address)
+    public function removeEmail(string $address)
     {
-        /** @var User $user */
-        if (!$user = $this->one($userId)) {
-            return false;
-        }
-
-        /** @var EmailAddress $email */
-        if (!$email = $user->emails()->where(['address' => $address])->first()) {
+        if (!$email = $this->oneEmailAddress($address)) {
             return false;
         }
 

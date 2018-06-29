@@ -46,20 +46,20 @@
                     </md-button>
                     <md-menu-content width="4">
                         <md-menu-item>
-                            <md-button ng-click="$ctrl.myAccount()">
+                            <md-button>
                                 <md-icon>account_circle</md-icon>
                                 Profile
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
-                            <md-button>
+                            <md-button ui-sref="my.account">
                                 <md-icon>settings</md-icon>
-                                Settings
+                                My account
                             </md-button>
                         </md-menu-item>
                         <md-menu-divider></md-menu-divider>
                         <md-menu-item>
-                            <md-button ng-click="$ctrl.logout()">
+                            <md-button ui-sref="logout">
                                 <md-icon>exit_to_app</md-icon>
                                 Logout
                             </md-button>

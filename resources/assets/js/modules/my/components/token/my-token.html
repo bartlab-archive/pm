@@ -12,8 +12,16 @@
     </md-toolbar>
 
     <md-dialog-content>
-        <div class="md-dialog-content" layout-align="center center" layout="row">
-            {{ $ctrl.token.value }}
+        <div class="md-dialog-content" layout-align="start center" layout="column">
+            <p>
+                <span>{{ ::$ctrl.title }}</span>
+                <span>
+                    <md-tooltip md-direction="top">{{ $ctrl.token.updated_on }}</md-tooltip>
+                    <span>created {{ $ctrl.token.updated_on_from_now }}</span>
+                    <span>ago</span>
+                </span>
+            </p>
+            <pre>{{ $ctrl.token.value }}</pre>
         </div>
     </md-dialog-content>
 

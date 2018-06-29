@@ -1,6 +1,5 @@
 import ControllerBase from 'base/controller.base';
 import _ from "lodash";
-import AuthService from "../../services/auth.service";
 
 /*
 todo: "Minimum password length" get from settings
@@ -11,15 +10,17 @@ todo: value for "Hide my email address" get from settings
  * @property {$state} $state
  * @property {$mdToast} $mdToast
  * @property {UsersService} usersService
+ * @property {ListService} listService
+ * @property {AuthService} authService
  */
 export default class MainRegistrationController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$mdToast', 'usersService', 'settingsService', 'authService'];
+        return ['$state', '$mdToast', 'usersService', 'settingsService', 'authService','listService'];
     }
 
     $onInit() {
-        this.languages = this.usersService.languages;
+        this.languages = this.listService.languages;
         this.loadProccess = false;
 
         this.signup = {
