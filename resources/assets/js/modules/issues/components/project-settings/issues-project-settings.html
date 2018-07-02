@@ -7,7 +7,7 @@
 </div>
 <md-list>
     <md-list-item class="md-2-line" ng-repeat="item in $ctrl.categories"
-                  ng-click="$ctrl.edit($event, item)">
+                  ui-sref="issues-categories.item.edit({id: item.id})">
         <div class="md-list-item-text">
             <h3>{{ ::item.name }}</h3>
             <p>{{ ::item.assigned.full_name }}</p>
@@ -18,15 +18,15 @@
                 <md-icon>more_vert</md-icon>
             </md-button>
             <md-menu-content width="3">
-                <md-menu-item ng-click="$ctrl.edit($event, item)">
-                    <md-button>
+                <md-menu-item>
+                    <md-button ui-sref="issues-categories.item.edit({id: item.id})">
                         <md-icon>edit</md-icon>
                         Edit
                     </md-button>
                 </md-menu-item>
 
-                <md-menu-item ng-click="$ctrl.remove(item)">
-                    <md-button>
+                <md-menu-item>
+                    <md-button  ng-click="$ctrl.remove(item)">
                         <md-icon>delete</md-icon>
                         Delete
                     </md-button>
@@ -40,7 +40,7 @@
 
 <div layout-align="center center" layout="row" class="md-padding">
     <md-button class="md-raised md-primary animation-target"
-               ng-click="$ctrl.create($event)">
+               ui-sref="issues-inner.categories.new">
         New category
     </md-button>
 </div>

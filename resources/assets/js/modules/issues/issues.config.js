@@ -9,6 +9,7 @@ import IssueStatusComponent from './components/status/issues-status.component';
 import IssuesMyAssignedComponent from './components/my-assigned/issues-my-assigned.component';
 import IssuesMyReportedComponent from './components/my-reported/issues-my-reported.component';
 import IssuesMyWatchedComponent from './components/my-watched/issues-my-watched.component';
+import IssuesCategoryComponent from './components/category/issues-category.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -59,13 +60,11 @@ export default class IssuesConfig extends InjectableBase {
             })
             .registerNewItemMenu({
                 name: 'Category',
-                // todo: make url to create category
-                url: '',
+                url: 'issues-inner.categories.new',
                 icon: 'folder',
                 module: 'issue_tracking',
                 single: false,
                 enable: false
-
             });
 
         this.myServiceProvider
@@ -149,6 +148,37 @@ export default class IssuesConfig extends InjectableBase {
                 url: '/new',
                 component: IssuesFormComponent.getName()
             })
+
+            // todo: redirect to /settings/categories in project
+            .state('issues-categories', {
+                abstract: true,
+                data: {
+                    layout: {
+                        insideProject: true
+                    }
+                },
+                parent: 'projects.inner',
+                url: '/issue_categories'
+            })
+            // todo: redirect to /settings/categories in project
+            .state('issues-categories.item', {
+                // redirect: '',
+                abstract: true,
+                url: '/{id}'
+            })
+            .state('issues-categories.item.edit', {
+                url: '/edit',
+                component: IssuesCategoryComponent.getName()
+            })
+            .state('issues-inner.categories', {
+                abstract: true,
+                url: '/issue_categories'
+            })
+            .state('issues-inner.categories.new', {
+                url: '/new',
+                component: IssuesCategoryComponent.getName()
+            })
+
             .state('issues.edit', {
                 data: {
                     layout: {

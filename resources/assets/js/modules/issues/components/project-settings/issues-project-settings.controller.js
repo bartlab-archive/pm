@@ -28,35 +28,35 @@ export default class IssuesProjectSettingsController extends ControllerBase {
             });
     }
 
-    static setMdDialogConfig(target, data = {}) {
-        return {
-            controller: IssuesCategoryController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-            locals: data,
-            template: issuesCategoryTemplate,
-            clickOutsideToClose: true,
-            openFrom: target,
-            closeTo: target,
-        };
-    }
+    // static setMdDialogConfig(target, data = {}) {
+    //     return {
+    //         controller: IssuesCategoryController,
+    //         controllerAs: '$ctrl',
+    //         bindToController: true,
+    //         locals: data,
+    //         template: issuesCategoryTemplate,
+    //         clickOutsideToClose: true,
+    //         openFrom: target,
+    //         closeTo: target,
+    //     };
+    // }
 
-    create($event) {
-        this.$mdDialog.show(
-            this.constructor.setMdDialogConfig($event.target, {
-                project: this.params
-            })
-        );
-    }
+    // create($event) {
+    //     this.$mdDialog.show(
+    //         this.constructor.setMdDialogConfig($event.target, {
+    //             project: this.params
+    //         })
+    //     );
+    // }
 
-    edit($event, item) {
-        this.$mdDialog.show(
-            this.constructor.setMdDialogConfig($event.target, {
-                project: this.params,
-                category: item
-            })
-        );
-    }
+    // edit($event, item) {
+    //     this.$mdDialog.show(
+    //         this.constructor.setMdDialogConfig($event.target, {
+    //             project: this.params,
+    //             category: item
+    //         })
+    //     );
+    // }
 
     remove(item) {
         let confirm = this.$mdDialog.confirm()

@@ -39,6 +39,7 @@ class UsersService
                 array_only($data, ['login', 'firstName', 'lastName', 'language']),
 //                array_only($data, ['login', 'firstName', 'lastName', 'lang', 'only_my_events']),
                 [
+                    // todo: move to const
                     'type' => 'User',
                     // todo: get from $data
                     'mail_notification' => 'only_my_events',

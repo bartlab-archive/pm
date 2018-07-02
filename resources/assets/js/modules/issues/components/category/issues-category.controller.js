@@ -17,21 +17,21 @@ export default class IssuesCategoryController extends ControllerBase {
         this.form = null;
         this.title = this.category ? this.category.name : 'New issue category';
         // if project identifier not set - close dialog
-        if (!this.project.identifier) {
-            this.cancel();
-        }
+        // if (!this.project.identifier) {
+        //     this.cancel();
+        // }
     }
 
-    cancel(update) {
-        this.$mdDialog.cancel();
-
-        if (update) {
-            this.$mdToast.show(
-                this.$mdToast.simple().textContent('Success saved!')//.position('bottom left')
-            );
-            this.$rootScope.$emit('updateIssuesCategories');
-        }
-    }
+    // cancel(update) {
+    //     this.$mdDialog.cancel();
+    //
+    //     if (update) {
+    //         this.$mdToast.show(
+    //             this.$mdToast.simple().textContent('Success saved!')//.position('bottom left')
+    //         );
+    //         this.$rootScope.$emit('updateIssuesCategories');
+    //     }
+    // }
 
     submit() {
         let model = {
