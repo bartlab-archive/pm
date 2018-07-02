@@ -1,5 +1,6 @@
 import InjectableBase from 'base/injectable.base';
 import DocumentsListComponent from './components/list/documents-list.component';
+import DocumentsMyDocumentsComponent from './components/my-documents/documents-my-documents.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -7,7 +8,7 @@ import DocumentsListComponent from './components/list/documents-list.component';
 export default class DocumentsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'projectsServiceProvider']
+        return ['$stateProvider', 'projectsServiceProvider','myServiceProvider']
     }
 
     $onInit() {
@@ -17,6 +18,11 @@ export default class DocumentsConfig extends InjectableBase {
             name: 'documents',
             enable: false
         });
+
+        this.myServiceProvider
+            .registerModule({
+                component: DocumentsMyDocumentsComponent.getName()
+            });
 
         this.$stateProvider
             .state('documents-inner', {

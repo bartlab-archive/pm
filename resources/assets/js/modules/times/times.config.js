@@ -1,6 +1,7 @@
 import InjectableBase from 'base/injectable.base';
 import TimesListComponent from './components/list/times-list.component';
 import TimesProjectSettingsComponent from './components/project-settings/times-project-settings.component';
+import TimeMySpentComponent from './components/my-spent/time-my-spent.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -10,7 +11,7 @@ import TimesProjectSettingsComponent from './components/project-settings/times-p
 export default class TimesConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'projectsServiceProvider', 'mainServiceProvider'];
+        return ['$stateProvider', 'projectsServiceProvider', 'mainServiceProvider','myServiceProvider'];
     }
 
     $onInit() {
@@ -27,6 +28,11 @@ export default class TimesConfig extends InjectableBase {
                 name: 'Activities (time tracking)',
                 component: TimesProjectSettingsComponent.getName(),
                 module: 'time_tracking'
+            });
+
+        this.myServiceProvider
+            .registerModule({
+                component: TimeMySpentComponent.getName()
             });
 
         this.$stateProvider

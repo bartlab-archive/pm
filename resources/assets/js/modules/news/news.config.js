@@ -2,6 +2,7 @@ import InjectableBase from 'base/injectable.base';
 import NewsListComponent from './components/list/news-list.component';
 import NewsEditComponent from './components/edit/news-edit.component';
 import NewsViewComponent from './components/view/news-view.component';
+import NewsMyLatestComponent from './components/my-latest/news-my-latest.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -9,7 +10,7 @@ import NewsViewComponent from './components/view/news-view.component';
 export default class NewsConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'projectsServiceProvider'];
+        return ['$stateProvider', 'projectsServiceProvider', 'myServiceProvider'];
     }
 
     $onInit() {
@@ -19,6 +20,15 @@ export default class NewsConfig extends InjectableBase {
             name: 'news',
             enable: false
         });
+
+        this.myServiceProvider
+            .registerModule({
+                // todo: make url with filter
+                // url: 'issues.list',
+                // title: 'Reported issues',
+                // name: 'issue_tracking',
+                component: NewsMyLatestComponent.getName()
+            });
 
         this.$stateProvider
             .state('news', {

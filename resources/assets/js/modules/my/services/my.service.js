@@ -1,9 +1,16 @@
-import ServiceBase from 'base/service.base';
+import InjectableBase from "base/injectable.base";
 
-export default class MyService extends ServiceBase {
+/**
+ * @property {object} modules
+ */
+export default class MyService extends InjectableBase {
 
     static get $inject() {
         return ['$http'];
+    }
+
+    getModules() {
+        return this.modules.map((item) => Object.assign({}, item));
     }
 
     account() {

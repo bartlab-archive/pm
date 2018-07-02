@@ -6,16 +6,20 @@ import IssuesProjectSettingsComponent from './components/project-settings/issues
 import IssuesImportsComponent from './components/imports/issues-imports.component';
 import IssuesReportComponent from './components/report/issues-report.component';
 import IssueStatusComponent from './components/status/issues-status.component';
+import IssuesMyAssignedComponent from './components/my-assigned/issues-my-assigned.component';
+import IssuesMyReportedComponent from './components/my-reported/issues-my-reported.component';
+import IssuesMyWatchedComponent from './components/my-watched/issues-my-watched.component';
 
 /**
- * @property {object} $stateProvider
- * @property {object} projectsServiceProvider
- * @property {object} mainServiceProvider
+ * @property {$stateProvider} $stateProvider
+ * @property {ProjectsServiceProvider} projectsServiceProvider
+ * @property {MainServiceProvider} mainServiceProvider
+ * @property {MyServiceProvider} myServiceProvider
  */
 export default class IssuesConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'projectsServiceProvider', 'mainServiceProvider'];
+        return ['$stateProvider', 'projectsServiceProvider', 'mainServiceProvider', 'myServiceProvider'];
     }
 
     $onInit() {
@@ -55,12 +59,36 @@ export default class IssuesConfig extends InjectableBase {
             })
             .registerNewItemMenu({
                 name: 'Category',
+                // todo: make url to create category
                 url: '',
                 icon: 'folder',
                 module: 'issue_tracking',
                 single: false,
                 enable: false
 
+            });
+
+        this.myServiceProvider
+            .registerModule({
+                // todo: make url with filter
+                // url: 'issues.list',
+                // title: 'Reported issues',
+                // name: 'issue_tracking',
+                component: IssuesMyReportedComponent.getName()
+            })
+            .registerModule({
+                // todo: make url with filter
+                // url: 'issues.list',
+                // title: 'Issues assigned to me',
+                // name: 'issue_tracking',
+                component: IssuesMyAssignedComponent.getName()
+            })
+            .registerModule({
+                // todo: make url with filter
+                // url: 'issues.list',
+                // title: 'Watched issues',
+                // name: 'issue_tracking',
+                component: IssuesMyWatchedComponent.getName()
             });
 
         this.$stateProvider

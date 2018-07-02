@@ -1,5 +1,6 @@
 import InjectableBase from 'base/injectable.base';
 import CalendarIndexComponent from './components/index/calendar-index.component';
+import CalendarMyCalendarComponent from './components/my-calendar/calendar-my-calendar.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -7,16 +8,22 @@ import CalendarIndexComponent from './components/index/calendar-index.component'
 export default class CalendarConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'projectsServiceProvider']
+        return ['$stateProvider', 'projectsServiceProvider', 'myServiceProvider']
     }
 
     $onInit() {
-        this.projectsServiceProvider.registerModule({
-            url: 'calendar.index',
-            title: 'Calendar',
-            name: 'calendar',
-            enable: false
-        });
+        this.projectsServiceProvider
+            .registerModule({
+                url: 'calendar.index',
+                title: 'Calendar',
+                name: 'calendar',
+                enable: false
+            });
+
+        this.myServiceProvider
+            .registerModule({
+                component: CalendarMyCalendarComponent.getName()
+            });
 
         this.$stateProvider
             .state('calendar', {

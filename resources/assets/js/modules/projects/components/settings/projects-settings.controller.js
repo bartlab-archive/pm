@@ -39,7 +39,7 @@ export default class ProjectsSettingsController extends ControllerBase {
     load() {
         this.loadProccess = true;
         this.projectsService
-            .one(this.$stateParams.project_id)
+            .one(this.projectsService.getCurrentId())
             .then((response) => {
                 Object.assign(this.model, response.data.data);
 
