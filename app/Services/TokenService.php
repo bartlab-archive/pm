@@ -41,11 +41,15 @@ class TokenService
 
     public function refresh($userId, string $action)
     {
-        if (!$token = $this->oneByUserId($userId, $action)) {
-            return $this->create($userId, $action) ?? false;
+        if ($token = $this->oneByUserId($userId, $action)) {
+            try {
+                $token->delete();
+            } catch (\Exception $e) {
+                return false;
+            }
         }
 
-        return $token->fill(['value' => $this->value()])->save() ? $token : false;
+        return $this->create($userId, $action);
     }
 
     public function value(int $length = 33)
