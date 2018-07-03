@@ -217,68 +217,30 @@ Route::group(
 
         Route::group(
             [
-//                'middleware' => 'auth',
+                'middleware' => 'auth',
                 'prefix' => 'users'
             ],
             function () {
 
-                Route::get('/', [
-                    'middleware' => 'admin',
-                    'uses' => 'UsersController@index'
-                ]);
-
-                Route::get('/{id}', [
-                    'middleware' => 'auth',
-                    'uses' => 'UsersController@getUser'
-                ]);
-
-                Route::put('/{id}/updatestatus', [
-                    'middleware' => 'auth',
-                    'uses' => 'UsersController@updateUserStatus'
-                ]);
-
-                Route::put('/{id}', [
-                    'middleware' => 'admin',
-                    'uses' => 'UsersController@update'
-                ]);
-
-                Route::delete('/{id}', [
-                    'middleware' => 'admin',
-                    'uses' => 'UsersController@destroy'
-                ]);
+                Route::get('/', 'UsersController@index');
+                Route::get('/{id}','UsersController@getUser');
+                Route::put('/{id}/updatestatus', 'UsersController@updateUserStatus');
+                Route::put('/{id}','UsersController@update');
+                Route::delete('/{id}',  'UsersController@destroy');
             }
         );
 
         Route::group(
             [
-//                'middleware' => 'auth',
+                'middleware' => 'auth',
                 'prefix' => 'groups'
             ],
             function () {
-                Route::get('/', [
-                    'middleware' => 'auth',
-                    'uses' => 'GroupsController@getList'
-                ]);
-
-                Route::post('/', [
-                    'middleware' => 'admin',
-                    'uses' => 'GroupsController@create'
-                ]);
-
-                Route::delete('/{id}', [
-                    'middleware' => 'admin',
-                    'uses' => 'GroupsController@destroy'
-                ]);
-
-                Route::get('/{id}', [
-                    'middleware' => 'auth',
-                    'uses' => 'GroupsController@one'
-                ]);
-
-                Route::put('/{id}', [
-                    'middleware' => 'admin',
-                    'uses' => 'GroupsController@update'
-                ]);
+                Route::get('/', 'GroupsController@getList');
+                Route::post('/', 'GroupsController@create');
+                Route::delete('/{id}',  'GroupsController@destroy');
+                Route::get('/{id}','GroupsController@one');
+                Route::put('/{id}', 'GroupsController@update');
             }
         );
 
