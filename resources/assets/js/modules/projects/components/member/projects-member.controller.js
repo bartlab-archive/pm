@@ -1,6 +1,9 @@
 import ControllerBase from 'base/controller.base';
 import ProjectsService from "../../services/projects.service";
 
+// todo: add server validation to form
+// todo: add loadProgress
+
 /**
  * @property project
  * @property member
@@ -42,14 +45,13 @@ export default class ProjectsMemberController extends ControllerBase {
 
         if (update) {
             this.$mdToast.show(
-                this.$mdToast.simple().textContent('Success saved!')//.position('bottom left')
+                this.$mdToast.simple().textContent('Success saved!')
             );
             this.$rootScope.$emit('updateProjectInfo');
         }
     }
 
     submit() {
-        // console.log(this.model.roles);
         if (!this.model.id) {
             this.projectsService
                 .addMember(this.projectsService.getCurrentId(), this.model.user, this.model.roles)

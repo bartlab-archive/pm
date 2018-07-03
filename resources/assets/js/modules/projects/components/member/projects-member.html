@@ -14,19 +14,20 @@
 
     <md-dialog-content>
         <div class="md-dialog-content">
-            <form name="memberForm" ng-submit="$ctrl.submit()">
+            <form name="$ctrl.form" ng-submit="$ctrl.form.$valid && $ctrl.submit()">
                 <md-input-container class="md-icon-float md-block" ng-if="!$ctrl.member.id">
                     <label>Users</label>
 
                     <md-select ng-model="$ctrl.model.user" name="userId" required>
-                        <md-option ng-repeat="user in $ctrl.users" ng-value="user.id">
-                            {{ user.full_name }}
+                        <md-option ng-repeat="user in ::$ctrl.users" ng-value="user.id">
+                            <md-icon>{{ ::user.is_group ? 'group' : 'person' }}</md-icon>
+                            {{ ::user.full_name }}
                         </md-option>
                     </md-select>
 
                     <div class="md-errors-spacer"></div>
 
-                    <div class="errors" ng-messages="memberForm.userId.$error">
+                    <div class="errors" ng-messages="$ctrl.form.userId.$error">
                         <div ng-message="required">Principal cannot be blank</div>
                     </div>
                 </md-input-container>
@@ -35,21 +36,21 @@
                     <label>Roles</label>
 
                     <md-select ng-model="$ctrl.model.roles" name="roleId" required multiple>
-                        <md-option ng-repeat="role in $ctrl.roles" ng-value="role.id">
-                            {{ role.name }}
+                        <md-option ng-repeat="role in ::$ctrl.roles" ng-value="role.id">
+                            {{ ::role.name }}
                         </md-option>
                     </md-select>
 
                     <div class="md-errors-spacer"></div>
 
-                    <div class="errors" ng-messages="memberForm.roleId.$error">
+                    <div class="errors" ng-messages="$ctrl.form.roleId.$error">
                         <div ng-message="required">Role cannot be empty</div>
                     </div>
                 </md-input-container>
 
                 <div layout-align="center center" layout="row">
                     <md-button class="md-raised md-primary animation-target" type="submit"
-                               ng-disabled="memberForm.$invalid">
+                               ng-disabled="$ctrl.form.$invalid">
                         Save
                     </md-button>
                 </div>

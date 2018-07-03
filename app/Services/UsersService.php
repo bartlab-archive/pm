@@ -263,27 +263,27 @@ class UsersService
 //        return $user->save();
 //    }
 
-    /**
-     * Get users list
-     *
-     * @param array $params
-     * @return mixed
-     */
-//    public function all($params = [])
-//    {
-//        $users = User::query()
-//            ->orderBy('firstname')
-//            ->where('firstname', '!=', '');
-//
-////        if (isset($params['ids'])) {
-////            $users = $users->whereIn('id', $params['ids']);
-////            unset($params['ids']);
-////        }
-////
-////        !empty($params) ? $users = $users->where($params) : null;
-//
-//        return $users->get();
-//    }
+    public function all(array $params = [], array $with = [])
+    {
+        $query = User::query()
+            ->with($with)
+            ->where('type', '<>', 'Anonymous');
+
+        // if status not set, add STATUS_ACTIVE to where
+        if ($status = array_get($params, 'status', User::STATUS_ACTIVE)) {
+            $query->where(['status' => $status]);
+        }
+
+        // by default return only 'User'. if type set to 'all', return full table
+        $type = array_get($params, 'type', 'User');
+        if ($type !== 'all') {
+            $query->where(['status' => $type]);
+        }
+
+        // todo: add order by
+
+        return $query->get();
+    }
 
     /**
      * @param $id

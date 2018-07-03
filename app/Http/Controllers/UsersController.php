@@ -40,7 +40,7 @@ class UsersController extends BaseController
     public function index()
     {
         return UserResource::collection(
-            $this->usersService->all()
+            $this->usersService->all(['type' => 'all'])
         );
     }
 
