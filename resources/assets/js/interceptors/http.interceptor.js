@@ -3,7 +3,11 @@ import InjectableBase from "base/injectable.base";
 export default class HttpInterceptor extends InjectableBase {
 
     static get $inject() {
-        return ['$rootScope', '$q', 'storageService'];
+        return ['$rootScope', '$q', 'storageService', '$cacheFactory'];
+    }
+
+    $onInit() {
+        this.httpTtlCache = [];
     }
 
     $return() {
@@ -17,6 +21,18 @@ export default class HttpInterceptor extends InjectableBase {
         const token = this.storageService.getToken();
         if (token) {
             config.headers['Authorization'] = 'Bearer ' + token;
+        }
+
+        // set cache for request if timeToLive (ms) exists
+        if (config.timeToLive) {
+            config.cache = true;
+            let ttl = config.timeToLive;
+            delete config.timeToLive;
+
+            if (new Date().getTime() - (this.httpTtlCache[config.url] || 0) > ttl) {
+                this.$cacheFactory.get('$http').remove(config.url);
+                this.httpTtlCache[config.url] = new Date().getTime();
+            }
         }
 
         return config;
