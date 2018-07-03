@@ -223,7 +223,7 @@ Route::group(
             function () {
 
                 Route::get('/', 'UsersController@index');
-                Route::get('/{id}','UsersController@getUser');
+                Route::get('/{id}','UsersController@show');
                 Route::put('/{id}/updatestatus', 'UsersController@updateUserStatus');
                 Route::put('/{id}','UsersController@update');
                 Route::delete('/{id}',  'UsersController@destroy');

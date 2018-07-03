@@ -70,7 +70,7 @@ export default class ProjectsSettingsMembersController extends ControllerBase {
     }
 
     openMember(member) {
-        this.$state.go('users.info', {id: member.user.id});
+        this.$state.go('users.page.info', {id: member.user.id});
     }
 
 }

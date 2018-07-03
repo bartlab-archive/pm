@@ -34,7 +34,6 @@ class UsersController extends BaseController
     }
 
     /**
-     * @param Request $request
      * @return mixed
      */
     public function index()
@@ -44,13 +43,18 @@ class UsersController extends BaseController
         );
     }
 
-    public function getUser($id)
+    public function show($id)
     {
-        if ($user = $this->usersService->getById($id)) {
-            $user['avatar_img'] = "//www.gravatar.com/avatar/" . $user->avatar_hash;
-            return $user;
+//        if ($user = $this->usersService->getById($id)) {
+//            $user['avatar_img'] = "//www.gravatar.com/avatar/" . $user->avatar_hash;
+//            return $user;
+//        }
+//        abort(404);
+        if (!$user = $this->usersService->one($id)) {
+            abort(404);
         }
-        abort(404);
+
+        return UserResource::make($user);
     }
 
     public function updateUserStatus($id, Request $request)

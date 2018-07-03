@@ -43,20 +43,25 @@ export default class UsersConfig extends InjectableBase {
                 url: '/new',
                 component: UsersEditComponent.getName(),
             })
-            .state('users.info', {
+            .state('users.page', {
                 url: '/:id',
+                abstract: true
+            })
+
+            .state('users.page.info', {
+                url: '',
                 data: {
                     access: '@'
                 },
                 component: UsersInfoComponent.getName(),
             })
-            .state('users.edit', {
-                url: '/:id/edit',
+            .state('users.page.edit', {
+                url: '/edit',
                 component: UsersEditComponent.getName(),
             })
             // todo: redirect to my/emails for non admin user
-            .state('users.emails', {
-                url: '/:id/email_addresses',
+            .state('users.page.emails', {
+                url: '/email_addresses',
                 component: UsersEditComponent.getName(),
             });
     }

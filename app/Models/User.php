@@ -50,7 +50,7 @@ class User extends Authenticatable
         ['value' => 'none', 'name' => 'No events']
     ];
 
-    public $timestamps = true;
+//    public $timestamps = true;
 
     protected $guarded = ['id'];
 

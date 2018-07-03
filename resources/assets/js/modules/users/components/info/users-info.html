@@ -1,69 +1,53 @@
 <div layout="row" layout-align="center start">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
+
         <md-card-header>
             <md-card-avatar>
-                <img src="{{ ::$ctrl.user.avatar_img }}" class="md-avatar">
+                <img ng-src="{{ ::$ctrl.user.avatar }}">
             </md-card-avatar>
+
             <md-card-header-text>
-                <span class="md-title">{{ ::$ctrl.user.firstname }} {{ ::$ctrl.user.lastname }}</span>
-                <span class="md-subhead">profile</span>
+                <span class="md-title">{{ ::$ctrl.user.full_name }}</span>
+                <span class="md-subhead">{{ ::$ctrl.user.login }}</span>
             </md-card-header-text>
-            <md-card-actions>
-                <md-button class="md-icon-button" ng-click="$ctrl.editUser($ctrl.user.id)">
-                    <md-icon>mode_edit</md-icon>
-                    <md-tooltip md-direction="top">Edit</md-tooltip>
+
+            <md-menu ng-if="::$ctrl.isAdmin">
+                <md-button class="md-icon-button" aria-label="User menu" ng-click="$mdMenu.open()">
+                    <md-icon>more_vert</md-icon>
                 </md-button>
-            </md-card-actions>
+
+                <md-menu-content width="3">
+                    <md-menu-item>
+                        <md-button ui-sref="users.page.edit({id:$ctrl.user.id})">
+                            <md-icon>edit</md-icon>
+                            Edit
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
         </md-card-header>
-        <md-list>
-            <md-list-item class="secondary-button-padding">
-                <p>Login: {{ ::$ctrl.user.login }}</p>
-            </md-list-item>
-            <md-list-item class="secondary-button-padding">
-                <p>Registered: <i>{{ ::$ctrl.user.created_on }}</i></p>
-            </md-list-item>
-            <md-list-item class="secondary-button-padding">
-                <p>Last connection: <i>{{ ::$ctrl.user.last_login_on }}</i></p>
-            </md-list-item>
-        </md-list>
+
+        <md-card-content>
+            <p class="md-body-1" layout="column">
+                <span><span class="md-body-2">Login:</span> {{ ::$ctrl.user.last_login_on }}</span>
+                <span><span class="md-body-2">Created:</span> {{ ::$ctrl.user.created_on }}</span>
+            </p>
+        </md-card-content>
+
     </md-card>
 </div>
 
 <div layout="row" layout-align="center start">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">Issues</span>
-            </md-card-title-text>
-        </md-card-title>
+        <md-card-header>
+            <md-card-header-text>
+                <span class="md-title">Projects</span>
+            </md-card-header-text>
+        </md-card-header>
 
-        <md-card-content class="md-body-1">
-            <p>Assigned tasks: <md-button ng-click="$ctrl.getIssues('assigned_to_ids', $ctrl.user)"> {{ ::$ctrl.issues.assigned}} </md-button></p>
-            <p>Tasks created:  <md-button ng-click="$ctrl.getIssues('author_ids', $ctrl.user)"> {{ ::$ctrl.issues.created}} </md-button></p>
+        <md-card-content>
+            coming soon
         </md-card-content>
     </md-card>
 </div>
-
-<div layout="row" layout-align="center start">
-    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">Projects</span>
-            </md-card-title-text>
-        </md-card-title>
-
-        <md-card-content class="md-body-1">
-            <md-list ng-repeat="row in ::$ctrl.user.projects">
-                <md-list-item class="secondary-button-padding" ng-click="$ctrl.goToProject(row.identifier)">
-                       {{ row.name }}
-                    <md-card-content class="md-body-1">
-                        <p ng-repeat="(role, members) in ::$ctrl.membersByRole">
-                            ({{ role }} | <i>{{ row.created_on}})</i>
-                        </p>
-                    </md-card-content>
-                </md-list-item>
-            </md-list>
-        </md-card-content>
-    </md-card>
-</div>
-

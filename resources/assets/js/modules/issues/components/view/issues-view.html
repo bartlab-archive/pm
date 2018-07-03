@@ -9,7 +9,7 @@
 <div layout-align="start start" layout="row" class="info-row" ng-if="$ctrl.authorInfo">
     <md-icon class="w-50">create</md-icon>
     <div flex>
-        <a ui-sref="users.info({id:$ctrl.selectedIssue.author.id})" ng-click="$ctrl.cancel()" class="md-avatar">
+        <a ui-sref="users.page.info({id:$ctrl.selectedIssue.author.id})" ng-click="$ctrl.cancel()" class="md-avatar">
             <img src="{{ $ctrl.selectedIssue.author.avatar }}">
             {{ $ctrl.selectedIssue.author.full_name }}
         </a>
@@ -19,7 +19,7 @@
 <div layout-align="start start" layout="row" class="info-row" ng-if="$ctrl.selectedIssue.assigned">
     <md-icon class="w-50">people</md-icon>
     <div flex>
-        <a ui-sref="users.info({id:$ctrl.selectedIssue.assigned.id})" ng-click="$ctrl.cancel()" class="md-avatar">
+        <a ui-sref="users.page.info({id:$ctrl.selectedIssue.assigned.id})" ng-click="$ctrl.cancel()" class="md-avatar">
             <img ng-src="{{ $ctrl.selectedIssue.assigned.avatar }}">
             {{ $ctrl.selectedIssue.assigned.full_name }}
         </a>

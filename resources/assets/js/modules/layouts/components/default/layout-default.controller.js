@@ -19,8 +19,11 @@ import 'angular';
 export default class LayoutDefaultController extends ControllerBase {
 
     static get $inject() {
-        return ['$timeout', '$mdSidenav', '$state', 'projectsService', 'mainService', 'usersService',
-            '$transitions', '$stateParams', '$rootScope', '$filter', 'settingsService', 'authService'];
+        return [
+            '$timeout', '$mdSidenav', '$state', 'projectsService', 'mainService', 'usersService',
+            '$transitions', '$stateParams', '$rootScope', '$filter', 'settingsService', 'authService',
+            'storageService'
+        ];
     }
 
     $onInit() {
@@ -34,6 +37,7 @@ export default class LayoutDefaultController extends ControllerBase {
                 (item.access === '!' && this.authService.isAuthenticated() && this.authService.isAdmin())
             );
         });
+        this.userId = this.storageService.getUserData('id');
         this.newItems = this.mainService.getNewItemMenu();
         this.projectItems = this.projectsService.getModules();
 

@@ -18,10 +18,12 @@ class UserResource extends Resource
             'id' => $this->id,
             'full_name' => $this->full_name,
             'avatar' => $this->avatar,
-            // todo: remove this field for respons to non admin user
-            $this->mergeWhen($this->admin, ['request' => $this->admin]),
-//            'request' => $this->admin,
-            'is_group' => $this->type !== 'User'
+            $this->mergeWhen(\Auth::user()->admin, ['request' => $this->admin]),
+            'is_group' => $this->type !== 'User',
+            'created_on' => $this->created_on->format('Y-m-d H:i:s'),
+            $this->mergeWhen(!empty($this->last_login_on), function () {
+                return ['last_login_on' => $this->last_login_on->format('Y-m-d H:i:s')];
+            })
         ];
     }
 }

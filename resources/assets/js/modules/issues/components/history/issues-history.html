@@ -7,7 +7,7 @@
         <span class="md-avatar">
             <img src="{{ ::journal.user.avatar }}">
         </span>
-        <a ui-sref="users.info({id:journal.user.id})">{{ ::journal.user.full_name }}</a>
+        <a ui-sref="users.page.info({id:journal.user.id})">{{ ::journal.user.full_name }}</a>
         <strong>
             <md-tooltip md-direction="top">{{ ::journal.created_on }}</md-tooltip>
             {{ ::journal.created_on_from_now }}

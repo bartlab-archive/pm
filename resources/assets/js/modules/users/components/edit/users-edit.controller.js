@@ -5,7 +5,7 @@ import ControllerBase from 'base/controller.base';
 export default class UsersEditController extends ControllerBase {
 
   static get $inject() {
-      return ['usersService', '$stateParams','$state', 'projectsService','$mdToast', '$mdDialog'];
+      return [];
   }
 
   $onInit() {

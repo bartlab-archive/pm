@@ -7,13 +7,13 @@ import ControllerBase from 'base/controller.base';
 export default class ProjectsListController extends ControllerBase {
 
     static get $inject() {
-        return ['usersService','$state', '$rootScope', '$mdDialog'];
+        return ['usersService', '$state', '$rootScope', '$mdDialog'];
     }
 
     $onInit() {
         // this.showClosed = 0;
         this.load();
-        this.statuses =  { 1:'Active',2:'Register', 3:'Lock'};
+        this.statuses = {1: 'Active', 2: 'Register', 3: 'Lock'};
         this.$rootScope.$on('updateUsers', () => this.load());
     }
 
@@ -26,13 +26,13 @@ export default class ProjectsListController extends ControllerBase {
     }
 
     goto(userId) {
-        this.$state.go('users.info', {id: userId});
+        this.$state.go('users.page.info', {id: userId});
     }
 
     lockUser(userId, status) {
         let confirm = this.$mdDialog.confirm()
-            .title(status == '3' ? 'Would you like to unlock this user?':'Would you like to lock this user?' )
-            .ok( status == '3' ?'unlock':'lock' )
+            .title(status == '3' ? 'Would you like to unlock this user?' : 'Would you like to lock this user?')
+            .ok(status == '3' ? 'unlock' : 'lock')
             .cancel('Cancel');
 
         this.$mdDialog.show(confirm).then(() => {
@@ -54,7 +54,7 @@ export default class ProjectsListController extends ControllerBase {
         });
     }
 
-    clearFilters(){
+    clearFilters() {
         this.filterForm.myOption = 0;
         this.filterForm.text = '';
         this.$rootScope.$emit('updateUsers');
