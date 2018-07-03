@@ -1,49 +1,51 @@
 <form name="$ctrl.form" ng-submit="$ctrl.form.$valid && $ctrl.submit()"
       novalidate server-form="$ctrl.errors">
-    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
+    <div layout="row" layout-align="center start">
+        <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+            <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
 
-        <md-card-header>
-            <md-card-header-text>
-                <span class="md-title">{{ ::$ctrl.title }}</span>
-            </md-card-header-text>
-        </md-card-header>
+            <md-card-header>
+                <md-card-header-text>
+                    <span class="md-title">{{ ::$ctrl.title }}</span>
+                </md-card-header-text>
+            </md-card-header>
 
-        <md-card-content>
-            <md-input-container class="md-block">
-                <label>Name</label>
+            <md-card-content>
+                <md-input-container class="md-block">
+                    <label>Name</label>
 
-                <input ng-model="$ctrl.category.name" name="name" required server-field>
+                    <input ng-model="$ctrl.category.name" name="name" required server-field>
 
-                <div ng-messages="$ctrl.form.name.$error">
-                    <div ng-message="required">Name can't be blank!</div>
-                    <div ng-message="server" ng-bind-html="$ctrl.form.name.$server"></div>
-                </div>
-            </md-input-container>
+                    <div ng-messages="$ctrl.form.name.$error">
+                        <div ng-message="required">Name can't be blank!</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.name.$server"></div>
+                    </div>
+                </md-input-container>
 
-            <md-input-container class="md-block">
-                <label>Assignee</label>
+                <md-input-container class="md-block">
+                    <label>Assignee</label>
 
-                <md-select ng-model="$ctrl.category.assigned.id" server-field>
-                    <md-option></md-option>
-                    <md-option ng-repeat="member in ::$ctrl.project.members" ng-value="member.user.id">
-                        {{ ::member.user.full_name }}
-                    </md-option>
-                </md-select>
+                    <md-select ng-model="$ctrl.category.assigned.id" server-field>
+                        <md-option></md-option>
+                        <md-option ng-repeat="member in ::$ctrl.project.members" ng-value="member.user.id">
+                            {{ ::member.user.full_name }}
+                        </md-option>
+                    </md-select>
 
-                <div class="md-errors-spacer"></div>
+                    <div class="md-errors-spacer"></div>
 
-                <div ng-messages="$ctrl.form.assigned_to_id.$error">
-                    <div ng-message="server" ng-bind-html="$ctrl.form.assigned_to_id.$server"></div>
-                </div>
-            </md-input-container>
-        </md-card-content>
+                    <div ng-messages="$ctrl.form.assigned_to_id.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.assigned_to_id.$server"></div>
+                    </div>
+                </md-input-container>
+            </md-card-content>
 
-        <md-card-actions layout="row" layout-align="center center">
-            <md-button class="md-raised md-primary animation-target" type="submit"
-                       ng-disabled="$ctrl.form.$invalid">
-                Save
-            </md-button>
-        </md-card-actions>
-    </md-card>
+            <md-card-actions layout="row" layout-align="center center">
+                <md-button class="md-raised md-primary animation-target" type="submit"
+                           ng-disabled="$ctrl.form.$invalid">
+                    Save
+                </md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
 </form>

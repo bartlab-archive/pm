@@ -208,9 +208,8 @@ Route::group(
 
                 // Categories
                 Route::get('/categories/{identifier}', 'IssueCategoriesController@index');
-                // todo: remove "IssueCategoriesController@show" if not use
-                Route::get('/categories/{id}', 'IssueCategoriesController@show');
                 Route::post('/categories/{identifier}', 'IssueCategoriesController@store');
+                Route::get('/categories/{id}', 'IssueCategoriesController@show');
                 Route::put('/categories/{id}', 'IssueCategoriesController@update');
                 Route::delete('/categories/{id}', 'IssueCategoriesController@destroy');
             }

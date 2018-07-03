@@ -157,7 +157,12 @@ export default class IssuesConfig extends InjectableBase {
                         insideProject: true
                     }
                 },
-                parent: 'projects.inner',
+                parent: 'default',
+                views: {
+                    content: {
+                        template: '<ui-view/>'
+                    }
+                },
                 url: '/issue_categories'
             })
             // todo: redirect to /settings/categories in project
@@ -170,11 +175,17 @@ export default class IssuesConfig extends InjectableBase {
                 url: '/edit',
                 component: IssuesCategoryComponent.getName()
             })
-            .state('issues-inner.categories', {
+            .state('issues-categories-inner', {
                 abstract: true,
-                url: '/issue_categories'
+                url: '/issue_categories',
+                data: {
+                    layout: {
+                        insideProject: true
+                    }
+                },
+                parent: 'projects.inner',
             })
-            .state('issues-inner.categories.new', {
+            .state('issues-categories-inner.new', {
                 url: '/new',
                 component: IssuesCategoryComponent.getName()
             })

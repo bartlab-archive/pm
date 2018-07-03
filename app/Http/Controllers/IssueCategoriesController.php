@@ -48,7 +48,7 @@ class IssueCategoriesController extends BaseController
 
     public function show($id)
     {
-        if (!$category = $this->issuesService->category($id)) {
+        if (!$category = $this->issuesService->category($id, ['project', 'assigned'])) {
             return abort(404);
         }
 
@@ -118,7 +118,7 @@ class IssueCategoriesController extends BaseController
             abort(403);
         }
 
-        if (!$this->issuesService->deleteCategory($id)){
+        if (!$this->issuesService->deleteCategory($id)) {
             return abort(422);
         }
 

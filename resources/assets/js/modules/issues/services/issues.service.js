@@ -28,6 +28,10 @@ export default class IssuesService extends ServiceBase {
         return this.$http.get('/api/v1/issues/statuses');
     }
 
+    category(id) {
+        return this.$http.get(`/api/v1/issues/categories/${id}`);
+    }
+
     categories(identifier) {
         return this.$http.get(`/api/v1/issues/categories/${identifier}`);
     }

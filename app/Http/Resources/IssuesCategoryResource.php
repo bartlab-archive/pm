@@ -18,7 +18,8 @@ class IssuesCategoryResource extends Resource
             'id' => $this->id,
             'name' => $this->name,
             'assigned' => UserResource::make($this->whenLoaded('assigned')),
-            'issues' => IssueResource::collection($this->whenLoaded('issues'))
+            'issues' => IssueResource::collection($this->whenLoaded('issues')),
+            'project' => ProjectResource::make($this->whenLoaded('project')),
         ];
     }
 }
