@@ -7,7 +7,7 @@ import ControllerBase from 'base/controller.base';
 export default class MyEmailsController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdDialog', 'myService', '$mdToast'];
+        return ['$mdDialog', 'myService', '$mdToast','$state'];
     }
 
     $onInit() {
@@ -75,5 +75,9 @@ export default class MyEmailsController extends ControllerBase {
             .finally(() => {
                 this.loadProccess = false;
             });
+    }
+
+    cancel(){
+        this.$state.go('my.account');
     }
 }

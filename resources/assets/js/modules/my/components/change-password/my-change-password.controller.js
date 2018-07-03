@@ -28,7 +28,8 @@ export default class MyChangePasswordController extends ControllerBase {
                 this.$mdToast.show(
                     this.$mdToast.simple().textContent('Password was successfully updated.')
                 );
-                this.$state.go('my.account');
+
+                this.cancel();
             })
             .catch((response) => {
                 if (response.status === 422) {
@@ -44,4 +45,7 @@ export default class MyChangePasswordController extends ControllerBase {
             });
     }
 
+    cancel(){
+        this.$state.go('my.account');
+    }
 }

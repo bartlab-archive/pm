@@ -81,10 +81,7 @@ export default class IssuesCategoryController extends ControllerBase {
                     this.$mdToast.simple().textContent('Successful update.')
                 );
 
-                this.$state.go('projects.inner.settings', {
-                    page: 'categories',
-                    project_id: this.projectsService.getCurrentId()
-                });
+                this.cancel();
             })
             .catch((response) => {
                 this.errors = _.get(response, 'data.errors', {});
@@ -92,5 +89,12 @@ export default class IssuesCategoryController extends ControllerBase {
             .finally(() => {
                 this.loadProccess = false;
             });
+    }
+
+    cancel() {
+        this.$state.go('projects.inner.settings', {
+            page: 'categories',
+            project_id: this.projectsService.getCurrentId()
+        });
     }
 }
