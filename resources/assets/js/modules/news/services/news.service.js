@@ -1,7 +1,6 @@
 import ServiceBase from 'base/service.base';
 
 /**
- * @property {Restangular} Restangular
  */
 export default class NewsService extends ServiceBase {
 
@@ -13,8 +12,8 @@ export default class NewsService extends ServiceBase {
         // return this.Restangular.one('news', identifier).get();
     }
 
-    getNews(params = {}) {
+    // getNews(params = {}) {
         // return this.Restangular.all('news').getList(params);
-    }
+    // }
 
 }
