@@ -1,9 +1,6 @@
 <div>
     <section ng-class="{'with-project-menu': $ctrl.showProjectMenu}">
-        <md-sidenav class="md-sidenav-left fixed"
-                    md-component-id="left"
-                    md-whiteframe="4"
-                    md-disable-scroll-target="body">
+        <md-sidenav class="md-sidenav-left fixed" md-component-id="left" md-whiteframe="4">
             <md-toolbar>
                 <h1 class="md-toolbar-tools">
                     <md-button class="md-icon-button" aria-label="Menu" ng-click="$ctrl.toggle()">
@@ -120,9 +117,7 @@
             </md-fab-actions>
         </md-fab-speed-dial>
 
-        <md-sidenav class="md-sidenav-right md-whiteframe-4dp"
-                    md-component-id="right"
-                    md-disable-scroll-target="body">
+        <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
             <md-toolbar>
                 <h1 class="md-toolbar-tools">
                     <span flex>Projects</span>

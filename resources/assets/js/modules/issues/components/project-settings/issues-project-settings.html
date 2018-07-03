@@ -7,7 +7,7 @@
 </div>
 <md-list>
     <md-list-item class="md-2-line" ng-repeat="item in $ctrl.categories"
-                  ui-sref="issues-categories.item.edit({id: item.id})">
+                  ui-sref="issues-categories.item.edit({id: item.id})" ng-click="false">
         <div class="md-list-item-text">
             <h3>{{ ::item.name }}</h3>
             <p>{{ ::item.assigned.full_name }}</p>
@@ -40,7 +40,7 @@
 
 <div layout-align="center center" layout="row" class="md-padding">
     <md-button class="md-raised md-primary animation-target"
-               ui-sref="issues-inner.categories.new">
+               ui-sref="issues-categories-inner.new">
         New category
     </md-button>
 </div>

@@ -10,21 +10,23 @@ import _ from 'lodash';
 export default class ProjectsSettingsController extends ControllerBase {
 
     static get $inject() {
-        return ['projectsService', '$stateParams', '$rootScope', '$state', '$scope'];
+        return ['projectsService', '$stateParams', '$rootScope', '$state', '$scope','$timeout'];
     }
 
     $onInit() {
+        this.pageIndex = 0;
         // settings tabs
-        this.settingsTabs = this.projectsService.getSettings().map((e) => {
-            e.componentTag = '<' + _.kebabCase(e.component) + ' params="$ctrl.model" />';
+        this.settingsTabs = this.projectsService.getSettings().map((tab) => {
+            tab.componentTag = '<' + _.kebabCase(tab.component) + ' params="$ctrl.model" />';
             // disable module, that need enabled state
-            e.enable = !e.module;
+            tab.enable = !tab.module;
 
-            return e;
+            return tab;
         });
 
         // active tab name
-        this.page = this.$stateParams.page;
+        // this.page = this.$stateParams.page;
+
         this.model = {
             modules: []
         };
@@ -43,9 +45,18 @@ export default class ProjectsSettingsController extends ControllerBase {
             .then((response) => {
                 Object.assign(this.model, response.data.data);
 
-                this.settingsTabs.forEach((item) => {
+                let newPageIndex = 0;
+                this.settingsTabs.forEach((item, index) => {
                     item.enable = !item.module || this.model.modules.some(($m) => $m.name === item.module);
+                    if (item.url === this.$stateParams.page){
+                        newPageIndex = index;
+                    }
                 });
+
+                // set active tab index after tab finish render
+                this.$timeout(()=>{
+                    this.pageIndex = newPageIndex;
+                }, 500);
 
                 this.loadProccess = false;
             });
