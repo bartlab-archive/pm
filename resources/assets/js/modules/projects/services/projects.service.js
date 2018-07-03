@@ -1,9 +1,7 @@
 // import ServiceBase from 'base/service.base';
 import InjectableBase from "base/injectable.base";
-// import _ from 'lodash';
 
 /**
- * @property {Restangular} Restangular
  * @property {$cacheFactory} $cacheFactory
  * @property {object} $stateParams
  * @property {object} provider
@@ -38,13 +36,11 @@ export default class ProjectsService extends InjectableBase {
     }
 
     one(id) {
-        // return this.Restangular.one('projects', id);
-        return this.$http.get(`/api/v1/projects/${id}`);
+        return this.$http.get(`/api/v1/projects/${id}`, {timeToLive: 5 * 1000});
     }
 
     all(params) {
         return this.$http.get('/api/v1/projects', {params});
-        // return this.rest;
     }
 
     create(params) {
@@ -83,14 +79,4 @@ export default class ProjectsService extends InjectableBase {
     setCurrentId(id) {
         this.$stateParams.project_id = id;
     }
-
-    // async getCurrent() {
-    //     const ID = this.getCurrentId();
-    //
-    //     if (!ID) {
-    //         return false;
-    //     }
-    //
-    //     return await this.one(ID);
-    // }
 }
