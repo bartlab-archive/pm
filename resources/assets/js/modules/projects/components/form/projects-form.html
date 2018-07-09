@@ -14,13 +14,16 @@
         </div>
     </md-input-container>
 
-    <md-input-container class="md-block">
-        <label>Description</label>
+    <!--<md-card-title class="p-0">-->
+        <!--<md-card-title-text>-->
+            <!--<span class="md-subhead">Description</span>-->
+        <!--</md-card-title-text>-->
+    <!--</md-card-title>-->
 
-        <textarea name="description"
-                  ng-model="$ctrl.project.description"
-                  server-field>
-        </textarea>
+    <md-input-container class="md-block p-h-0">
+        <label class="md-no-float">Description</label>
+
+        <textarea name="description" ng-model="$ctrl.project.description" mde server-field></textarea>
 
         <div ng-messages="$ctrl.form.description.$error">
             <div ng-message="server" ng-bind-html="$ctrl.form.description.$server"></div>
@@ -97,7 +100,7 @@
                      aria-label="Inherit members"
                      ng-disabled="!$ctrl.project.parent_identifier"
                      name="inherit_members"
-                     >
+        >
             Inherit members
         </md-checkbox>
     </md-input-container>

@@ -1,16 +1,15 @@
-<!--<div layout-gt-sm="row" layout-align="center start">-->
-<!--<md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">-->
-<md-card>
-    <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
+<form name="$ctrl.form" novalidate server-form="$ctrl.errors">
+    <md-card>
+        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
 
-    <md-card-header>
-        <md-card-header-text>
-            <span class="md-headline">{{ $ctrl.title }}</span>
-        </md-card-header-text>
-    </md-card-header>
+        <md-card-header>
+            <md-card-header-text>
+                <span class="md-headline">{{ $ctrl.title }}</span>
+            </md-card-header-text>
+        </md-card-header>
 
-    <md-card-content>
-        <form name="$ctrl.form" novalidate server-form="$ctrl.errors">
+        <md-card-content>
+
             <md-input-container class="md-icon-float md-block" ng-if="::!$ctrl.page.title">
                 <label>Title</label>
 
@@ -22,10 +21,10 @@
                 </div>
             </md-input-container>
 
-            <md-input-container class="md-block">
-                <label>Content</label>
+            <md-input-container class="md-block p-h-0">
+                <label class="md-no-float">Content</label>
 
-                <textarea name="text" ng-model="$ctrl.page.content.text" server-field
+                <textarea name="text" ng-model="$ctrl.page.content.text" mde server-field
                           md-select-on-focus rows="5"></textarea>
 
                 <div ng-messages="$ctrl.form.text.$error">
@@ -79,7 +78,7 @@
                     Cancel
                 </md-button>
             </div>
-        </form>
-    </md-card-content>
-</md-card>
-<!--</div>-->
+
+        </md-card-content>
+    </md-card>
+</form>

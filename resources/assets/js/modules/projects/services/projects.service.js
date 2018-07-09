@@ -36,7 +36,7 @@ export default class ProjectsService extends InjectableBase {
     }
 
     one(id) {
-        return this.$http.get(`/api/v1/projects/${id}`, {timeToLive: 5 * 1000});
+        return this.$http.get(`/api/v1/projects/${id}`, {timeToLive: 2 * 1000});
     }
 
     all(params) {

@@ -18,13 +18,15 @@ issues-view-component {
     }
   }
 
-  p {
-    &:first-child {
-      margin-top: 0;
-    }
+  .markdown {
+    p {
+      &:first-child {
+        margin-top: 0;
+      }
 
-    &:last-child {
-      margin-bottom: 0;
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 

@@ -1,7 +1,9 @@
 import DirectiveBase from 'base/directive.base';
-import SimpleMDE from 'simplemde';
+import MDE from './mde';
+// import SimpleMDE from 'simplemde';
+import './mde.scss';
 
-export default class SimplemdeDirective extends DirectiveBase {
+export default class MdeDirective extends DirectiveBase {
 
     static get $inject() {
         return ['$parse'];
@@ -10,7 +12,7 @@ export default class SimplemdeDirective extends DirectiveBase {
     $onInit() {
         this.restrict = 'A';
         this.require = 'ngModel';
-        this.controller = ['$scope', function ($scope) {
+        this.controller = ['$scope', ($scope) => {
             return {
                 get: () => $scope.simplemde.instance,
                 rerenderPreview: (val) => $scope.simplemde.rerenderPreview(val)
@@ -24,7 +26,7 @@ export default class SimplemdeDirective extends DirectiveBase {
         options = this.$parse(attrs.simplemde)(scope) || {};
         options.element = element[0];
 
-        let mde = new SimpleMDE(options);
+        let mde = new MDE(options);
 
         mde.codemirror.on('change', () => {
             scope.$applyAsync(() => {

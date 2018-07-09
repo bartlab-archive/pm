@@ -29,8 +29,8 @@
 <div layout-align="start start" layout="row" class="info-row">
     <md-icon class="w-50">date_range</md-icon>
     <div flex>
-        <p>{{ $ctrl.selectedIssue.start_date }}</p>
-        <p ng-if="$ctrl.selectedIssue.due_date">{{ $ctrl.selectedIssue.due_date }}</p>
+        <div>{{ $ctrl.selectedIssue.start_date }}</div>
+        <div ng-if="$ctrl.selectedIssue.due_date">{{ $ctrl.selectedIssue.due_date }}</div>
     </div>
 </div>
 
@@ -45,6 +45,7 @@
      ng-if="$ctrl.selectedIssue.journals && $ctrl.selectedIssue.journals.length != 0">
     <md-icon class="w-50">history</md-icon>
     <div flex>
+        <!--<md-divider></md-divider>-->
         <issues-history-component issue="$ctrl.selectedIssue"></issues-history-component>
     </div>
 </div>

@@ -14,11 +14,11 @@ body {
   //  display: flex;
   //  flex-direction: column;
   //
-    > [ui-view] {
-      //height: 100%;
-  //    flex: 1;
-  //    display: flex;
-  //  }
+  > [ui-view] {
+    //height: 100%;
+    //    flex: 1;
+    //    display: flex;
+    //  }
   }
 
   footer {
@@ -45,7 +45,7 @@ body {
 }
 
 a {
-  color: rgb(96,125,139);
+  color: rgb(96, 125, 139);
 }
 
 //.modal-dialog {
@@ -72,13 +72,13 @@ a {
   margin: 0 2px;
   font-size: 10px;
 
-  &.label-default{
-    color:rgb(66,66,66);
+  &.label-default {
+    color: rgb(66, 66, 66);
     background: #e0e0e0;
   }
 
-  &.label-primary{
-    color:#fff;
+  &.label-primary {
+    color: #fff;
     background: #ff5722;
   }
 }
@@ -263,4 +263,32 @@ md-content {
 
 md-input-container input {
   color: #000000 !important;
+}
+
+.p-0 {
+  padding: 0;
+}
+
+.p-v-0 {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.p-h-0 {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.m-0 {
+  margin: 0;
+}
+
+.m-v-0 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.m-h-0 {
+  margin-left: 0;
+  margin-right: 0;
 }

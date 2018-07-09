@@ -30,6 +30,7 @@ export default class IssuesConfig extends InjectableBase {
                 title: 'Issues',
                 name: 'issue_tracking',
                 enable: false,
+                // todo: fix active menu item if create/edit category
                 alt: [/^issues\.*/]
             })
             .registerSettings({

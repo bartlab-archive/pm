@@ -8,7 +8,7 @@ import BytesToSizeUnitsFilter from './filters/bytesToSizeUnits.filter';
 import RangeFilter from './filters/range.filter';
 import DemoDirective from './directives/demo/demo.directive';
 import CompileDirective from './directives/compile/compile.directive';
-import SimplemdeDirective from './directives/simplemde/simplemde.directive';
+import MdeDirective from './directives/mde/mde.directive';
 import ServerFormDirective from './directives/server-form/server-form.directive';
 import ServerFieldDirective from './directives/server-field/server-field.directive';
 import MultiFileDirective from './directives/multi-file/multi-file';
@@ -37,7 +37,7 @@ angular.module('app.modules.main', [])
     .filter(RangeFilter.getName(), RangeFilter.inst())
     .directive(DemoDirective.getName(), DemoDirective.inst())
     .directive(CompileDirective.getName(), CompileDirective.inst())
-    .directive(SimplemdeDirective.getName(), SimplemdeDirective.inst())
+    .directive(MdeDirective.getName(), MdeDirective.inst())
     .directive(ServerFormDirective.getName(), ServerFormDirective.inst())
     .directive(ServerFieldDirective.getName(), ServerFieldDirective.inst())
     .directive(MultiFileDirective.getName(), MultiFileDirective.inst())

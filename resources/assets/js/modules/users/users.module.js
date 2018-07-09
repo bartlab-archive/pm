@@ -11,3 +11,5 @@ angular.module('app.modules.users', [])
     .component(UsersListComponent.getName(), UsersListComponent)
     .component(UsersEditComponent.getName(), UsersEditComponent)
     .component(UsersInfoComponent.getName(), UsersInfoComponent);
+
+// todo: register modules for user profile as "my" and "project"
