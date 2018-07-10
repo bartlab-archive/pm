@@ -1,5 +1,3 @@
-<!--<div layout-gt-sm="row" layout-align="center start">-->
-<!--<md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">-->
 <form name="$ctrl.form" ng-submit="$ctrl.form.$valid && $ctrl.submit()" novalidate server-form="$ctrl.errors">
     <md-card>
         <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
@@ -13,530 +11,235 @@
             </div>
         </md-card-header>
 
-        <!--<md-card-content>-->
-            <div layout-gt-sm="row">
-                <md-card-content flex-md="70" flex-gt-md="70">
-                    <md-input-container class="md-block">
-                        <label for="subject">Subject</label>
+        <div layout-gt-sm="row">
+            <md-card-content flex-md="70" flex-gt-md="70">
+                <md-input-container class="md-block">
+                    <label for="subject">Subject</label>
 
-                        <input id="subject" name="subject" ng-model="$ctrl.issue.subject"
-                               required server-field>
+                    <input id="subject" name="subject" ng-model="$ctrl.issue.subject"
+                           required server-field>
 
-                        <div ng-messages="$ctrl.form.subject.$error">
-                            <div ng-message="required">Subject cannot be blank</div>
-                            <div ng-message="server" ng-bind-html="$ctrl.form.subject.$server"></div>
-                        </div>
-                    </md-input-container>
-
-                    <md-input-container class="md-block p-h-0" ng-if="$ctrl.showDescription">
-                        <label class="md-no-float">Description</label>
-
-                        <textarea name="description" mde server-field ng-model="$ctrl.issue.description" rows="5"></textarea>
-
-                        <div ng-messages="$ctrl.form.description.$error">
-                            <div ng-message="server" ng-bind-html="$ctrl.form.description.$server"></div>
-                        </div>
-                    </md-input-container>
-
-                    <div layout="row" layout-align="center center" ng-if="!$ctrl.isNew">
-                        <md-button class="md-icon-button" ng-click="$ctrl.showDescription = !$ctrl.showDescription">
-                            <md-icon>{{ $ctrl.showDescription ? 'expand_less' : 'expand_more' }}</md-icon>
-                            <md-tooltip md-direction="top">Description</md-tooltip>
-                        </md-button>
+                    <div ng-messages="$ctrl.form.subject.$error">
+                        <div ng-message="required">Subject cannot be blank</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.subject.$server"></div>
                     </div>
+                </md-input-container>
 
-                    <md-input-container class="md-block p-h-0" ng-if="!$ctrl.isNew">
-                        <label class="md-no-float">Notes</label>
+                <md-input-container class="md-block p-h-0" ng-if="$ctrl.showDescription">
+                    <label class="md-no-float">Description</label>
 
-                        <textarea ng-model="$ctrl.notes" rows="5" mde server-field></textarea>
+                    <textarea name="description" mde server-field ng-model="$ctrl.issue.description"
+                              rows="5"></textarea>
 
-                        <div ng-messages="$ctrl.form.notes.$error">
-                            <div ng-message="server" ng-bind-html="$ctrl.form.notes.$server"></div>
-                        </div>
-                    </md-input-container>
+                    <div ng-messages="$ctrl.form.description.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.description.$server"></div>
+                    </div>
+                </md-input-container>
 
-                    <md-switch ng-model="$ctrl.notes_private" aria-label="Private notes" ng-if="!$ctrl.isNew">
-                        Private notes
-                    </md-switch>
-                </md-card-content>
+                <div layout="row" layout-align="center center" ng-if="!$ctrl.isNew">
+                    <md-button class="md-icon-button" ng-click="$ctrl.showDescription = !$ctrl.showDescription">
+                        <md-icon>{{ $ctrl.showDescription ? 'expand_less' : 'expand_more' }}</md-icon>
+                        <md-tooltip md-direction="top">Description</md-tooltip>
+                    </md-button>
+                </div>
 
-                <md-card-content flex-md="30" flex-gt-md="30">
-                    <md-input-container class="md-block">
-                        <label>Project</label>
+                <md-input-container class="md-block p-h-0" ng-if="!$ctrl.isNew">
+                    <label class="md-no-float">Notes</label>
 
-                        <md-select name="project_identifier" ng-model="$ctrl.issue.project.identifier"
-                                   ng-model-options="{ allowInvalid: true }"
-                                   required server-field
-                                   ng-change="$ctrl.changeProject(true)">
-                            <md-option ng-repeat="item in $ctrl.projects" ng-value="::item.identifier">
-                                {{ ::item.name }}
-                            </md-option>
-                        </md-select>
+                    <textarea ng-model="$ctrl.notes" rows="5" mde server-field></textarea>
 
-                        <div ng-messages="$ctrl.form.project_identifier.$error">
-                            <div ng-message="required">This field can't be blank.</div>
-                            <div ng-message="server" ng-bind-html="$ctrl.form.project_identifier.$server"></div>
-                        </div>
-                    </md-input-container>
+                    <div ng-messages="$ctrl.form.notes.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.notes.$server"></div>
+                    </div>
+                </md-input-container>
 
-                    <md-input-container class="md-block">
-                        <label>Tracker</label>
+                <md-switch ng-model="$ctrl.notes_private" aria-label="Private notes" ng-if="!$ctrl.isNew">
+                    Private notes
+                </md-switch>
+            </md-card-content>
 
-                        <md-select name="tracker_id" ng-model="$ctrl.issue.tracker_id" required server-field>
-                            <md-option ng-repeat="item in $ctrl.selectedProject.trackers" ng-value="::item.id">
-                                {{ ::item.name }}
-                            </md-option>
-                        </md-select>
+            <md-card-content flex-md="30" flex-gt-md="30">
+                <md-input-container class="md-block">
+                    <label>Project</label>
 
-                        <div ng-messages="$ctrl.form.tracker_id.$error">
-                            <div ng-message="required">This field can't be blank.</div>
-                            <div ng-message="server" ng-bind-html="$ctrl.form.tracker_id.$server"></div>
-                        </div>
-                    </md-input-container>
+                    <md-select name="project_identifier" ng-model="$ctrl.issue.project.identifier"
+                               ng-model-options="{ allowInvalid: true }"
+                               required server-field
+                               ng-change="$ctrl.changeProject(true)">
+                        <md-option ng-repeat="item in $ctrl.projects" ng-value="::item.identifier">
+                            {{ ::item.name }}
+                        </md-option>
+                    </md-select>
 
-                    <md-input-container class="md-block">
-                        <label>Status</label>
+                    <div ng-messages="$ctrl.form.project_identifier.$error">
+                        <div ng-message="required">This field can't be blank.</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.project_identifier.$server"></div>
+                    </div>
+                </md-input-container>
 
-                        <md-select name="status_id" ng-model="$ctrl.issue.status_id" required server-field>
-                            <md-option ng-repeat="item in ::$ctrl.statuses" ng-value="::item.id">
-                                {{ ::item.name }}
-                            </md-option>
-                        </md-select>
+                <md-input-container class="md-block">
+                    <label>Tracker</label>
 
-                        <div ng-messages="$ctrl.form.status_id.$error">
-                            <div ng-message="required">This field can't be blank.</div>
-                            <div ng-message="server" ng-bind-html="$ctrl.form.status_id.$server"></div>
-                        </div>
-                    </md-input-container>
+                    <md-select name="tracker_id" ng-model="$ctrl.issue.tracker_id" required server-field>
+                        <md-option ng-repeat="item in $ctrl.selectedProject.trackers" ng-value="::item.id">
+                            {{ ::item.name }}
+                        </md-option>
+                    </md-select>
 
-                    <md-input-container class="md-block">
-                        <label>Priority</label>
+                    <div ng-messages="$ctrl.form.tracker_id.$error">
+                        <div ng-message="required">This field can't be blank.</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.tracker_id.$server"></div>
+                    </div>
+                </md-input-container>
 
-                        <md-select name="priority_id" ng-model="$ctrl.issue.priority_id" required server-field>
-                            <md-option ng-repeat="item in ::$ctrl.priorities" ng-value="::item.id">
-                                {{ ::item.name }}
-                            </md-option>
-                        </md-select>
+                <md-input-container class="md-block">
+                    <label>Status</label>
 
-                        <div ng-messages="$ctrl.form.priority_id.$error">
-                            <div ng-message="required">This field can't be blank.</div>
-                            <div ng-message="server" ng-bind-html="$ctrl.form.priority_id.$server"></div>
-                        </div>
-                    </md-input-container>
+                    <md-select name="status_id" ng-model="$ctrl.issue.status_id" required server-field>
+                        <md-option ng-repeat="item in ::$ctrl.statuses" ng-value="::item.id">
+                            {{ ::item.name }}
+                        </md-option>
+                    </md-select>
 
-                    <md-input-container class="md-block">
-                        <label>Assignee</label>
+                    <div ng-messages="$ctrl.form.status_id.$error">
+                        <div ng-message="required">This field can't be blank.</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.status_id.$server"></div>
+                    </div>
+                </md-input-container>
 
-                        <md-select name="assigned_to_id" ng-model="$ctrl.issue.assigned_to_id" server-field>
-                            <md-option ng-repeat="member in $ctrl.selectedProject.members" ng-value="::member.user.id">
-                                {{ ::member.user.full_name }}
-                            </md-option>
-                        </md-select>
+                <md-input-container class="md-block">
+                    <label>Priority</label>
 
-                        <div ng-messages="$ctrl.form.assigned_to_id.$error">
-                            <div ng-message="required">This field can't be blank.</div>
-                            <div ng-message="server" ng-bind-html="$ctrl.form.assigned_to_id.$server"></div>
-                        </div>
-                    </md-input-container>
+                    <md-select name="priority_id" ng-model="$ctrl.issue.priority_id" required server-field>
+                        <md-option ng-repeat="item in ::$ctrl.priorities" ng-value="::item.id">
+                            {{ ::item.name }}
+                        </md-option>
+                    </md-select>
 
-                    <md-input-container class="md-block" ng-if="$ctrl.categories.length > 0">
-                        <label>Category</label>
+                    <div ng-messages="$ctrl.form.priority_id.$error">
+                        <div ng-message="required">This field can't be blank.</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.priority_id.$server"></div>
+                    </div>
+                </md-input-container>
 
-                        <md-select name="category_id" ng-model="$ctrl.issue.category_id" server-field>
-                            <md-option ng-value=""></md-option>
-                            <md-option ng-repeat="item in ::$ctrl.categories" ng-value="::item.id">
-                                {{ ::item.name }}
-                            </md-option>
-                        </md-select>
+                <md-input-container class="md-block">
+                    <label>Assignee</label>
 
-                        <div ng-messages="$ctrl.form.category_id.$error">
-                            <div ng-message="required">This field can't be blank.</div>
-                            <div ng-message="server" ng-bind-html="$ctrl.form.category_id.$server"></div>
-                        </div>
-                    </md-input-container>
+                    <md-select name="assigned_to_id" ng-model="$ctrl.issue.assigned_to_id" server-field>
+                        <md-option ng-repeat="member in $ctrl.selectedProject.members" ng-value="::member.user.id">
+                            {{ ::member.user.full_name }}
+                        </md-option>
+                    </md-select>
 
-                    <md-input-container class="md-block">
-                        <label>Start date</label>
+                    <div ng-messages="$ctrl.form.assigned_to_id.$error">
+                        <div ng-message="required">This field can't be blank.</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.assigned_to_id.$server"></div>
+                    </div>
+                </md-input-container>
 
-                        <md-datepicker name="start_date" ng-model="$ctrl.issue.start_date" server-field></md-datepicker>
+                <md-input-container class="md-block" ng-if="$ctrl.categories.length > 0">
+                    <label>Category</label>
 
-                        <div ng-messages="$ctrl.form.start_date.$error">
-                            <div ng-message="server" ng-bind-html="$ctrl.form.start_date.$server"></div>
-                        </div>
-                    </md-input-container>
+                    <md-select name="category_id" ng-model="$ctrl.issue.category_id" server-field>
+                        <md-option ng-value=""></md-option>
+                        <md-option ng-repeat="item in ::$ctrl.categories" ng-value="::item.id">
+                            {{ ::item.name }}
+                        </md-option>
+                    </md-select>
 
-                    <md-input-container class="md-block">
-                        <label>Due date</label>
+                    <div ng-messages="$ctrl.form.category_id.$error">
+                        <div ng-message="required">This field can't be blank.</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.category_id.$server"></div>
+                    </div>
+                </md-input-container>
 
-                        <md-datepicker name="due_date" ng-model="$ctrl.issue.due_date" server-field></md-datepicker>
+                <md-input-container class="md-block">
+                    <label>Start date</label>
 
-                        <div ng-messages="$ctrl.form.due_date.$error">
-                            <div ng-message="server" ng-bind-html="$ctrl.form.due_date.$server"></div>
-                        </div>
-                    </md-input-container>
+                    <md-datepicker name="start_date" ng-model="$ctrl.issue.start_date" server-field></md-datepicker>
 
-                    <md-input-container class="md-block">
-                        <label>Parent task</label>
+                    <div ng-messages="$ctrl.form.start_date.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.start_date.$server"></div>
+                    </div>
+                </md-input-container>
 
-                        <input name="parent_id" ng-model="$ctrl.issue.parent_id" server-field
-                               placeholder="id">
+                <md-input-container class="md-block">
+                    <label>Due date</label>
 
-                        <div ng-messages="$ctrl.form.parent_id.$error">
-                            <div ng-message="server" ng-bind-html="$ctrl.form.parent_id.$server"></div>
-                        </div>
-                    </md-input-container>
+                    <md-datepicker name="due_date" ng-model="$ctrl.issue.due_date" server-field></md-datepicker>
 
-                    <md-input-container class="md-block">
-                        <label>Estimated time</label>
+                    <div ng-messages="$ctrl.form.due_date.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.due_date.$server"></div>
+                    </div>
+                </md-input-container>
 
-                        <input type="number" name="estimated_hours" ng-model="$ctrl.issue.estimated_hours"
-                               placeholder="hours" server-field>
+                <md-input-container class="md-block">
+                    <label>Parent task</label>
 
-                        <div ng-messages="$ctrl.form.estimated_hours.$error">
-                            <div ng-message="server" ng-bind-html="$ctrl.form.estimated_hours.$server"></div>
-                        </div>
-                    </md-input-container>
+                    <input name="parent_id" ng-model="$ctrl.issue.parent_id" server-field
+                           placeholder="id">
 
-                    <md-input-container class="md-block">
-                        <label>% Done</label>
+                    <div ng-messages="$ctrl.form.parent_id.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.parent_id.$server"></div>
+                    </div>
+                </md-input-container>
 
-                        <md-select name="done_ratio" ng-model="$ctrl.issue.done_ratio" server-field>
-                            <md-option ng-repeat="n in [] | range:11" ng-value="n * 10">
-                                {{ ::(n * 10) }}%
-                            </md-option>
-                        </md-select>
+                <md-input-container class="md-block">
+                    <label>Estimated time</label>
 
-                        <div ng-messages="$ctrl.form.done_ratio.$error">
-                            <div ng-message="server" ng-bind-html="$ctrl.form.done_ratio.$server"></div>
-                        </div>
-                    </md-input-container>
+                    <input type="number" name="estimated_hours" ng-model="$ctrl.issue.estimated_hours"
+                           placeholder="hours" server-field>
 
-                    <md-input-container class="md-block">
-                        <label>Watchers</label>
+                    <div ng-messages="$ctrl.form.estimated_hours.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.estimated_hours.$server"></div>
+                    </div>
+                </md-input-container>
 
-                        <md-chips
-                                ng-model="$ctrl.watchers"
-                                readonly="false"
-                                md-removable="true"
-                                md-require-match="true"
-                                delete-button-label="Remove watcher"
-                                delete-hint="Press delete to remove watcher">
+                <md-input-container class="md-block">
+                    <label>% Done</label>
 
-                            <md-chip-template>
-                                <strong>{{ ::$chip.user.full_name }}</strong>
-                            </md-chip-template>
+                    <md-select name="done_ratio" ng-model="$ctrl.issue.done_ratio" server-field>
+                        <md-option ng-repeat="n in [] | range:11" ng-value="n * 10">
+                            {{ ::(n * 10) }}%
+                        </md-option>
+                    </md-select>
 
-                            <md-autocomplete
-                                    md-no-cache="true"
-                                    md-search-text="$ctrl.searchText"
-                                    md-item-text="item.user.full_name"
-                                    md-items="item in $ctrl.querySearch()"
-                                    md-min-length="0"
-                                    placeholder="Add">
+                    <div ng-messages="$ctrl.form.done_ratio.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.done_ratio.$server"></div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Watchers</label>
+
+                    <md-chips
+                            ng-model="$ctrl.watchers"
+                            readonly="false"
+                            md-removable="true"
+                            md-require-match="true"
+                            delete-button-label="Remove watcher"
+                            delete-hint="Press delete to remove watcher">
+
+                        <md-chip-template>
+                            <strong>{{ ::$chip.user.full_name }}</strong>
+                        </md-chip-template>
+
+                        <md-autocomplete
+                                md-no-cache="true"
+                                md-search-text="$ctrl.searchText"
+                                md-item-text="item.user.full_name"
+                                md-items="item in $ctrl.querySearch()"
+                                md-min-length="0"
+                                placeholder="Add">
                         <span md-highlight-text="$ctrl.searchText"
                               md-highlight-flags="i">{{ ::item.user.full_name }}</span>
-                            </md-autocomplete>
-                        </md-chips>
+                        </md-autocomplete>
+                    </md-chips>
 
-                        <div class="md-errors-spacer"></div>
-                    </md-input-container>
-                </md-card-content>
-            </div>
-
-
-
-
-            <!--<md-input-container class="md-block">-->
-                <!--<label for="subject">Subject</label>-->
-
-                <!--<input id="subject" name="subject" ng-model="$ctrl.issue.subject"-->
-                       <!--required server-field>-->
-
-                <!--<div ng-messages="$ctrl.form.subject.$error">-->
-                    <!--<div ng-message="required">Subject cannot be blank</div>-->
-                    <!--<div ng-message="server" ng-bind-html="$ctrl.form.subject.$server"></div>-->
-                <!--</div>-->
-            <!--</md-input-container>-->
-
-            <div layout-gt-sm="row">
-                <!--<md-input-container class="md-block" flex-md="50" flex-gt-md="50">-->
-                    <!--<label>Project</label>-->
-
-                    <!--<md-select name="project_identifier" ng-model="$ctrl.issue.project.identifier"-->
-                               <!--ng-model-options="{ allowInvalid: true }"-->
-                               <!--required server-field-->
-                               <!--ng-change="$ctrl.changeProject(true)">-->
-                        <!--<md-option ng-repeat="item in $ctrl.projects" ng-value="::item.identifier">-->
-                            <!--{{ ::item.name }}-->
-                        <!--</md-option>-->
-                    <!--</md-select>-->
-
-                    <!--<div ng-messages="$ctrl.form.project_identifier.$error">-->
-                        <!--<div ng-message="required">This field can't be blank.</div>-->
-                        <!--<div ng-message="server" ng-bind-html="$ctrl.form.project_identifier.$server"></div>-->
-                    <!--</div>-->
-                <!--</md-input-container>-->
-
-                <!--<md-input-container class="md-block" flex-md="50" flex-gt-md="50">-->
-                    <!--<label>Tracker</label>-->
-
-                    <!--<md-select name="tracker_id" ng-model="$ctrl.issue.tracker_id" required server-field>-->
-                        <!--<md-option ng-repeat="item in $ctrl.selectedProject.trackers" ng-value="::item.id">-->
-                            <!--{{ ::item.name }}-->
-                        <!--</md-option>-->
-                    <!--</md-select>-->
-
-                    <!--<div ng-messages="$ctrl.form.tracker_id.$error">-->
-                        <!--<div ng-message="required">This field can't be blank.</div>-->
-                        <!--<div ng-message="server" ng-bind-html="$ctrl.form.tracker_id.$server"></div>-->
-                    <!--</div>-->
-                <!--</md-input-container>-->
-            </div>
-
-            <div layout-gt-sm="row">
-                <!--<md-input-container class="md-block" flex-md="50" flex-gt-md="50">-->
-                    <!--<label>Status</label>-->
-
-                    <!--<md-select name="status_id" ng-model="$ctrl.issue.status_id" required server-field>-->
-                        <!--<md-option ng-repeat="item in ::$ctrl.statuses" ng-value="::item.id">-->
-                            <!--{{ ::item.name }}-->
-                        <!--</md-option>-->
-                    <!--</md-select>-->
-
-                    <!--<div ng-messages="$ctrl.form.status_id.$error">-->
-                        <!--<div ng-message="required">This field can't be blank.</div>-->
-                        <!--<div ng-message="server" ng-bind-html="$ctrl.form.status_id.$server"></div>-->
-                    <!--</div>-->
-                <!--</md-input-container>-->
-
-                <!--<md-input-container class="md-block" flex-md="50" flex-gt-md="50">-->
-                    <!--<label>Priority</label>-->
-
-                    <!--<md-select name="priority_id" ng-model="$ctrl.issue.priority_id" required server-field>-->
-                        <!--<md-option ng-repeat="item in ::$ctrl.priorities" ng-value="::item.id">-->
-                            <!--{{ ::item.name }}-->
-                        <!--</md-option>-->
-                    <!--</md-select>-->
-
-                    <!--<div ng-messages="$ctrl.form.priority_id.$error">-->
-                        <!--<div ng-message="required">This field can't be blank.</div>-->
-                        <!--<div ng-message="server" ng-bind-html="$ctrl.form.priority_id.$server"></div>-->
-                    <!--</div>-->
-                <!--</md-input-container>-->
-            </div>
-
-            <div layout-gt-sm="row">
-                <!--<md-input-container class="md-block" flex-md="50" flex-gt-md="50">-->
-                    <!--<label>Assignee</label>-->
-
-                    <!--<md-select name="assigned_to_id" ng-model="$ctrl.issue.assigned_to_id" server-field>-->
-                        <!--<md-option ng-repeat="member in $ctrl.selectedProject.members" ng-value="::member.user.id">-->
-                            <!--{{ ::member.user.full_name }}-->
-                        <!--</md-option>-->
-                    <!--</md-select>-->
-
-                    <!--<div ng-messages="$ctrl.form.assigned_to_id.$error">-->
-                        <!--<div ng-message="required">This field can't be blank.</div>-->
-                        <!--<div ng-message="server" ng-bind-html="$ctrl.form.assigned_to_id.$server"></div>-->
-                    <!--</div>-->
-                <!--</md-input-container>-->
-
-                <!--<md-input-container class="md-block" flex-md="50" flex-gt-md="50" ng-if="$ctrl.categories.length > 0">-->
-                    <!--<label>Category</label>-->
-
-                    <!--<md-select name="category_id" ng-model="$ctrl.issue.category_id" server-field>-->
-                        <!--<md-option ng-value=""></md-option>-->
-                        <!--<md-option ng-repeat="item in ::$ctrl.categories" ng-value="::item.id">-->
-                            <!--{{ ::item.name }}-->
-                        <!--</md-option>-->
-                    <!--</md-select>-->
-
-                    <!--<div ng-messages="$ctrl.form.category_id.$error">-->
-                        <!--<div ng-message="required">This field can't be blank.</div>-->
-                        <!--<div ng-message="server" ng-bind-html="$ctrl.form.category_id.$server"></div>-->
-                    <!--</div>-->
-                <!--</md-input-container>-->
-            </div>
-
-            <div layout-gt-sm="row">
-                <!--<md-input-container class="md-block" flex-md="50" flex-gt-md="25">-->
-                    <!--<label>Start date</label>-->
-
-                    <!--<md-datepicker name="start_date" ng-model="$ctrl.issue.start_date" server-field></md-datepicker>-->
-
-                    <!--<div ng-messages="$ctrl.form.start_date.$error">-->
-                        <!--<div ng-message="server" ng-bind-html="$ctrl.form.start_date.$server"></div>-->
-                    <!--</div>-->
-                <!--</md-input-container>-->
-
-                <!--<md-input-container class="md-block" flex-md="50" flex-gt-md="25">-->
-                    <!--<label>Due date</label>-->
-
-                    <!--<md-datepicker name="due_date" ng-model="$ctrl.issue.due_date" server-field></md-datepicker>-->
-
-                    <!--<div ng-messages="$ctrl.form.due_date.$error">-->
-                        <!--<div ng-message="server" ng-bind-html="$ctrl.form.due_date.$server"></div>-->
-                    <!--</div>-->
-                <!--</md-input-container>-->
-
-                <!--<md-input-container class="md-block" flex-md="50" flex-gt-md="16">-->
-                    <!--<label>Parent task</label>-->
-
-                    <!--<input name="parent_id" ng-model="$ctrl.issue.parent_id" server-field-->
-                           <!--placeholder="id">-->
-
-                    <!--<div ng-messages="$ctrl.form.parent_id.$error">-->
-                        <!--<div ng-message="server" ng-bind-html="$ctrl.form.parent_id.$server"></div>-->
-                    <!--</div>-->
-                <!--</md-input-container>-->
-
-                <!--<md-input-container class="md-block" flex-md="50" flex-gt-md="16">-->
-                    <!--<label>Estimated time</label>-->
-
-                    <!--<input type="number" name="estimated_hours" ng-model="$ctrl.issue.estimated_hours"-->
-                           <!--placeholder="hours" server-field>-->
-
-                    <!--<div ng-messages="$ctrl.form.estimated_hours.$error">-->
-                        <!--<div ng-message="server" ng-bind-html="$ctrl.form.estimated_hours.$server"></div>-->
-                    <!--</div>-->
-                <!--</md-input-container>-->
-
-                <!--<md-input-container class="md-block" flex-md="50" flex-gt-md="16">-->
-                    <!--<label>% Done</label>-->
-
-                    <!--<md-select name="done_ratio" ng-model="$ctrl.issue.done_ratio" server-field>-->
-                        <!--<md-option ng-repeat="n in [] | range:11" ng-value="n * 10">-->
-                            <!--{{ ::(n * 10) }}%-->
-                        <!--</md-option>-->
-                    <!--</md-select>-->
-
-                    <!--<div ng-messages="$ctrl.form.done_ratio.$error">-->
-                        <!--<div ng-message="server" ng-bind-html="$ctrl.form.done_ratio.$server"></div>-->
-                    <!--</div>-->
-                <!--</md-input-container>-->
-            </div>
-
-            <!--<md-input-container class="md-block">-->
-
-                <!--<input ng-hide="true" type="file" aria-label="Upload attachment"-->
-                       <!--multi-file="$ctrl.files" multiple values="listFiles" id="files-upload">-->
-                <!--<md-button class="md-raised md-default animation-target md-button md-ink-ripple"-->
-                           <!--ng-click="$ctrl.triggerFileLoadButton()">Select files-->
-                <!--</md-button>-->
-
-                <!--<md-button class="md-raised md-default animation-target md-button md-ink-ripple"-->
-                           <!--ng-click="$ctrl.upload()">Upload-->
-                <!--</md-button>-->
-
-                <!--<table>-->
-                    <!--&lt;!&ndash;List of currently loaded attachments (create)&ndash;&gt;-->
-                    <!--<tr ng-repeat="file in $ctrl.files">-->
-                        <!--<td>-->
-                            <!--<md-input-container class="md-block" flex-md="50" flex-gt-md="16"-->
-                                                <!--style="margin: 19px 0 0 18px; max-width: 100%;">-->
-                                <!--<input style="display: inline-block;" ng-model="file.name" placeholder="Filename">-->
-                            <!--</md-input-container>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                            <!--<md-input-container class="md-block" flex-md="50" flex-gt-md="16"-->
-                                                <!--style="margin: 19px 0 0 18px; max-width: 100%;">-->
-                                <!--<input style="display: inline-block;" ng-model="file.description"-->
-                                       <!--placeholder="Description">-->
-                            <!--</md-input-container>-->
-                        <!--</td>-->
-                        <!--<td ng-if="file.hasLoaded">-->
-                            <!--<md-icon ng-click="$ctrl.updateAttachment(file, false)">update</md-icon>-->
-                            <!--<md-icon ng-click="$ctrl.deleteAttachment(file.id, file.name, false)">delete</md-icon>-->
-                        <!--</td>-->
-                    <!--</tr>-->
-                    <!--<tr style="height: 20px;"></tr>-->
-                    <!--&lt;!&ndash;List of already existing attachments (update)&ndash;&gt;-->
-                    <!--<tr ng-repeat="attachment in $ctrl.issue.attachments">-->
-                        <!--<td>-->
-                            <!--<md-input-container class="md-block" flex-md="50" flex-gt-md="16"-->
-                                                <!--style="margin: 19px 0 0 18px; max-width: 100%;">-->
-                                <!--<input style="display: inline-block;" ng-model="attachment.filename"-->
-                                       <!--placeholder="Filename">-->
-                            <!--</md-input-container>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                            <!--<md-input-container class="md-block" flex-md="50" flex-gt-md="16"-->
-                                                <!--style="margin: 19px 0 0 18px; max-width: 100%;">-->
-                                <!--<input style="display: inline-block;" ng-model="attachment.description"-->
-                                       <!--placeholder="Description">-->
-                            <!--</md-input-container>-->
-                        <!--</td>-->
-                        <!--<td>-->
-                            <!--<md-icon ng-click="$ctrl.updateAttachment(attachment, true)">update</md-icon>-->
-                            <!--<md-icon ng-click="$ctrl.deleteAttachment(attachment.id, attachment.filename, true)">-->
-                                <!--delete-->
-                            <!--</md-icon>-->
-                        <!--</td>-->
-                    <!--</tr>-->
-                <!--</table>-->
-            <!--</md-input-container>-->
-
-            <!--<md-input-container class="md-block">-->
-                <!--<label>Watchers</label>-->
-
-                <!--<md-chips-->
-                        <!--ng-model="$ctrl.watchers"-->
-                        <!--readonly="false"-->
-                        <!--md-removable="true"-->
-                        <!--md-require-match="true"-->
-                        <!--delete-button-label="Remove watcher"-->
-                        <!--delete-hint="Press delete to remove watcher">-->
-
-                    <!--<md-chip-template>-->
-                        <!--<strong>{{ ::$chip.user.full_name }}</strong>-->
-                    <!--</md-chip-template>-->
-
-                    <!--<md-autocomplete-->
-                            <!--md-no-cache="true"-->
-                            <!--md-search-text="$ctrl.searchText"-->
-                            <!--md-item-text="item.user.full_name"-->
-                            <!--md-items="item in $ctrl.querySearch()"-->
-                            <!--md-min-length="0"-->
-                            <!--placeholder="Add">-->
-                        <!--<span md-highlight-text="$ctrl.searchText"-->
-                              <!--md-highlight-flags="i">{{ ::item.user.full_name }}</span>-->
-                    <!--</md-autocomplete>-->
-                <!--</md-chips>-->
-
-                <!--<div class="md-errors-spacer"></div>-->
-            <!--</md-input-container>-->
-
-            <!--<md-input-container class="md-block p-h-0" ng-if="$ctrl.showDescription">-->
-                <!--<label class="md-no-float">Description</label>-->
-
-                <!--<textarea name="description" mde server-field ng-model="$ctrl.issue.description" rows="5"></textarea>-->
-
-                <!--<div ng-messages="$ctrl.form.description.$error">-->
-                    <!--<div ng-message="server" ng-bind-html="$ctrl.form.description.$server"></div>-->
-                <!--</div>-->
-            <!--</md-input-container>-->
-
-            <!--<div layout="row" layout-align="center center" ng-if="!$ctrl.isNew">-->
-                <!--<md-button class="md-icon-button" ng-click="$ctrl.showDescription = !$ctrl.showDescription">-->
-                    <!--<md-icon>{{ $ctrl.showDescription ? 'expand_less' : 'expand_more' }}</md-icon>-->
-                    <!--<md-tooltip md-direction="top">Description</md-tooltip>-->
-                <!--</md-button>-->
-            <!--</div>-->
-
-            <!--<md-input-container class="md-block p-h-0" ng-if="!$ctrl.isNew">-->
-                <!--<label class="md-no-float">Notes</label>-->
-
-                <!--<textarea ng-model="$ctrl.notes" rows="5" mde server-field></textarea>-->
-
-                <!--<div ng-messages="$ctrl.form.notes.$error">-->
-                    <!--<div ng-message="server" ng-bind-html="$ctrl.form.notes.$server"></div>-->
-                <!--</div>-->
-            <!--</md-input-container>-->
-
-            <!--<md-switch ng-model="$ctrl.notes_private" aria-label="Private notes" ng-if="!$ctrl.isNew">-->
-                <!--Private notes-->
-            <!--</md-switch>-->
-        </md-card-content>
+                    <div class="md-errors-spacer"></div>
+                </md-input-container>
+            </md-card-content>
+        </div>
 
         <md-card-actions layout="row" layout-align="center center">
             <md-button class="md-raised md-primary animation-target md-button md-ink-ripple"
@@ -562,5 +265,4 @@
             </md-button>
         </md-card-actions>
     </md-card>
-    <!--</div>-->
 </form>

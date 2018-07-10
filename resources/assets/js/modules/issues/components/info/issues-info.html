@@ -93,8 +93,45 @@
                 <!--Import-->
                 <!--</md-button>-->
                 <!--</md-menu-item>-->
+                <!--<md-card-icon-actions>-->
+                <md-menu-item>
+                    <md-button ui-sref="issues.edit({id: $ctrl.issue.id})">
+                        <md-icon>mode_edit</md-icon>
+                        Edit
+                    </md-button>
+                </md-menu-item>
 
-                <!--<md-divider></md-divider>-->
+                <md-menu-item>
+                    <md-button ui-sref="issues-inner.copy({id: $ctrl.issue.id,project_id: $ctrl.issue.project.identifier})">
+                        <md-icon>content_copy</md-icon>
+                        Copy
+                    </md-button>
+                </md-menu-item>
+
+
+
+                <md-menu-item ng-if="$ctrl.issue.is_watcheble">
+                    <md-button ng-click="$ctrl.unwatch()">
+                        <md-icon>star</md-icon>
+                        Unwatch
+                    </md-button>
+                </md-menu-item>
+
+                <md-menu-item ng-if="!$ctrl.issue.is_watcheble">
+                    <md-button ng-click="$ctrl.watch()">
+                        <md-icon>star_border</md-icon>
+                        Watch
+                    </md-button>
+                </md-menu-item>
+
+                <md-menu-item>
+                    <md-button ng-click="$ctrl.remove()">
+                        <md-icon>delete</md-icon>
+                        Delete
+                    </md-button>
+                </md-menu-item>
+
+                <md-divider></md-divider>
 
                 <md-menu-item>
                     <md-button>
@@ -117,8 +154,8 @@
         <issues-view-component selected-issue="$ctrl.issue" author-info="false"></issues-view-component>
     </md-card-content>
 
-    <md-card-actions layout="row" layout-align="center center">
-        <issues-view-actions-component issue="$ctrl.issue" open-button="false"></issues-view-actions-component>
-    </md-card-actions>
+    <!--<md-card-actions layout="row" layout-align="center center">-->
+        <!--<issues-view-actions-component issue="$ctrl.issue" open-button="false"></issues-view-actions-component>-->
+    <!--</md-card-actions>-->
 </md-card>
 <!--</div>-->

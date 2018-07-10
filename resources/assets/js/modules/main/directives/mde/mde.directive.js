@@ -25,6 +25,7 @@ export default class MdeDirective extends DirectiveBase {
 
         options = this.$parse(attrs.simplemde)(scope) || {};
         options.element = element[0];
+        options.lineWrapping = true;
 
         let mde = new MDE(options);
 
