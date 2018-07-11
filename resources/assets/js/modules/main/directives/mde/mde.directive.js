@@ -12,20 +12,20 @@ export default class MdeDirective extends DirectiveBase {
     $onInit() {
         this.restrict = 'A';
         this.require = 'ngModel';
-        this.controller = ['$scope', ($scope) => {
-            return {
-                get: () => $scope.simplemde.instance,
-                rerenderPreview: (val) => $scope.simplemde.rerenderPreview(val)
-            };
-        }]
+        // this.controller = ['$scope', ($scope) => {
+        //     return {
+        //         get: () => $scope.simplemde.instance,
+        //         rerenderPreview: (val) => $scope.simplemde.rerenderPreview(val)
+        //     };
+        // }]
     }
 
     link(scope, element, attrs, ngModel) {
-        let options, rerenderPreview;
+        let options;//, rerenderPreview;
 
-        options = this.$parse(attrs.simplemde)(scope) || {};
+        options = this.$parse(attrs.mde)(scope) || {};
         options.element = element[0];
-        options.lineWrapping = true;
+        // options.lineWrapping = true;
 
         let mde = new MDE(options);
 
@@ -39,17 +39,17 @@ export default class MdeDirective extends DirectiveBase {
             let val = ngModel.$modelValue || options["default"];
 
             mde.value(val);
-            if (mde.isPreviewActive()) {
-                rerenderPreview(val);
-            }
+            // if (mde.isPreviewActive()) {
+            //     rerenderPreview(val);
+            // }
         };
 
-        rerenderPreview = (val) => {
-        };
+        // rerenderPreview = (val) => {
+        // };
 
-        scope.simplemde = {
-            instance: mde,
-            rerenderPreview: rerenderPreview
-        };
+        // scope.simplemde = {
+        //     instance: mde,
+        //     rerenderPreview: rerenderPreview
+        // };
     }
 }

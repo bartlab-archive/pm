@@ -10,17 +10,46 @@ import 'codemirror/mode/gfm/gfm.js';
 import 'codemirror/mode/xml/xml.js';
 // import CodeMirrorSpellChecker from 'codemirror-spell-checker';
 import marked from 'marked';
+import MDEActions from './mde.actions';
 
 /**
  * SimpleMDE
  */
 export default class MDE {
 
+    // Mapping of actions that can be bound to keyboard shortcuts or toolbar buttons
+    static get bindings() {
+        return {
+            "toggleBold": MDEActions.toggleBold,
+            "toggleItalic": MDEActions.toggleItalic,
+            "drawLink": MDEActions.drawLink,
+            "toggleHeadingSmaller": MDEActions.toggleHeadingSmaller,
+            "toggleHeadingBigger": MDEActions.toggleHeadingBigger,
+            "drawImage": MDEActions.drawImage,
+            "toggleBlockquote": MDEActions.toggleBlockquote,
+            "toggleOrderedList": MDEActions.toggleOrderedList,
+            "toggleUnorderedList": MDEActions.toggleUnorderedList,
+            "toggleCodeBlock": MDEActions.toggleCodeBlock,
+            "togglePreview": MDEActions.togglePreview,
+            "toggleStrikethrough": MDEActions.toggleStrikethrough,
+            "toggleHeading1": MDEActions.toggleHeading1,
+            "toggleHeading2": MDEActions.toggleHeading2,
+            "toggleHeading3": MDEActions.toggleHeading3,
+            "cleanBlock": MDEActions.cleanBlock,
+            "drawTable": MDEActions.drawTable,
+            "drawHorizontalRule": MDEActions.drawHorizontalRule,
+            "undo": MDEActions.undo,
+            "redo": MDEActions.redo,
+            "toggleSideBySide": MDEActions.toggleSideBySide,
+            "toggleFullScreen": MDEActions.toggleFullScreen
+        }
+    }
+
     static get toolbarBuiltInButtons() {
         return {
             "bold": {
                 name: "bold",
-                action: toggleBold,
+                action: MDEActions.toggleBold,
                 className: "material-icons",
                 icon: 'format_bold',
                 title: "Bold",
@@ -28,7 +57,7 @@ export default class MDE {
             },
             "italic": {
                 name: "italic",
-                action: toggleItalic,
+                action: MDEActions.toggleItalic,
                 className: "material-icons",
                 icon: 'format_italic',
                 title: "Italic",
@@ -36,14 +65,14 @@ export default class MDE {
             },
             "strikethrough": {
                 name: "strikethrough",
-                action: toggleStrikethrough,
+                action: MDEActions.toggleStrikethrough,
                 className: "material-icons",
                 icon: 'strikethrough_s',
                 title: "Strikethrough"
             },
             "heading": {
                 name: "heading",
-                action: toggleHeadingSmaller,
+                action: MDEActions.toggleHeadingSmaller,
                 className: "material-icons",
                 icon: 'title',
                 title: "Heading",
@@ -51,14 +80,14 @@ export default class MDE {
             },
             "heading-smaller": {
                 name: "heading-smaller",
-                action: toggleHeadingSmaller,
+                action: MDEActions.toggleHeadingSmaller,
                 className: "material-icons",
                 icon: 'text_fields',
                 title: "Smaller Heading"
             },
             "heading-bigger": {
                 name: "heading-bigger",
-                action: toggleHeadingBigger,
+                action: MDEActions.toggleHeadingBigger,
                 className: "material-icons",
                 icon: 'format_size',
                 title: "Bigger Heading"
@@ -86,7 +115,7 @@ export default class MDE {
             },
             "code": {
                 name: "code",
-                action: toggleCodeBlock,
+                action: MDEActions.toggleCodeBlock,
                 className: "material-icons",
                 icon: 'code',
                 title: "Code",
@@ -94,7 +123,7 @@ export default class MDE {
             },
             "quote": {
                 name: "quote",
-                action: toggleBlockquote,
+                action: MDEActions.toggleBlockquote,
                 className: "material-icons",
                 icon: 'format_quote',
                 title: "Quote",
@@ -102,7 +131,7 @@ export default class MDE {
             },
             "unordered-list": {
                 name: "unordered-list",
-                action: toggleUnorderedList,
+                action: MDEActions.toggleUnorderedList,
                 className: "material-icons",
                 icon: 'format_list_bulleted',
                 title: "Generic List",
@@ -110,7 +139,7 @@ export default class MDE {
             },
             "ordered-list": {
                 name: "ordered-list",
-                action: toggleOrderedList,
+                action: MDEActions.toggleOrderedList,
                 className: "material-icons",
                 icon: 'format_list_numbered',
                 title: "Numbered List",
@@ -118,7 +147,7 @@ export default class MDE {
             },
             "clean-block": {
                 name: "clean-block",
-                action: cleanBlock,
+                action: MDEActions.cleanBlock,
                 className: "material-icons",
                 icon: 'format_clear',
                 title: "Clean block"
@@ -128,7 +157,7 @@ export default class MDE {
             },
             "link": {
                 name: "link",
-                action: drawLink,
+                action: MDEActions.drawLink,
                 className: "material-icons",
                 icon: 'insert_link',
                 title: "Create Link",
@@ -136,7 +165,7 @@ export default class MDE {
             },
             "image": {
                 name: "image",
-                action: drawImage,
+                action: MDEActions.drawImage,
                 className: "material-icons",
                 icon: 'insert_photo',
                 title: "Insert Image",
@@ -144,14 +173,14 @@ export default class MDE {
             },
             "table": {
                 name: "table",
-                action: drawTable,
+                action: MDEActions.drawTable,
                 className: "material-icons",
                 icon: 'table_chart',
                 title: "Insert Table"
             },
             "horizontal-rule": {
                 name: "horizontal-rule",
-                action: drawHorizontalRule,
+                action: MDEActions.drawHorizontalRule,
                 className: "material-icons",
                 icon: 'remove',
                 title: "Insert Horizontal Line"
@@ -161,7 +190,7 @@ export default class MDE {
             },
             "preview": {
                 name: "preview",
-                action: togglePreview,
+                action: MDEActions.togglePreview,
                 className: "material-icons",
                 icon: 'visibility',
                 title: "Toggle Preview",
@@ -169,7 +198,7 @@ export default class MDE {
             },
             "side-by-side": {
                 name: "side-by-side",
-                action: toggleSideBySide,
+                action: MDEActions.toggleSideBySide,
                 className: "material-icons",
                 icon: 'pageview',
                 title: "Toggle Side by Side",
@@ -177,7 +206,7 @@ export default class MDE {
             },
             "fullscreen": {
                 name: "fullscreen",
-                action: toggleFullScreen,
+                action: MDEActions.toggleFullScreen,
                 className: "material-icons",
                 icon: 'fullscreen',
                 title: "Toggle Fullscreen",
@@ -198,7 +227,7 @@ export default class MDE {
             // },
             "undo": {
                 name: "undo",
-                action: undo,
+                action: MDEActions.undo,
                 className: "material-icons",
                 icon: 'undo',
                 title: "Undo",
@@ -206,7 +235,7 @@ export default class MDE {
             },
             "redo": {
                 name: "redo",
-                action: redo,
+                action: MDEActions.redo,
                 className: "material-icons",
                 icon: 'redo',
                 title: "Redo",
@@ -239,7 +268,7 @@ export default class MDE {
         }
     }
 
-    static get insertTexts(){
+    static get insertTexts() {
         return {
             link: ["[", "](#url#)"],
             image: ["![](", "#url#)"],
@@ -248,7 +277,7 @@ export default class MDE {
         }
     }
 
-    static get promptTexts(){
+    static get promptTexts() {
         return {
             link: "URL for the link:",
             image: "URL of the image:"
@@ -348,8 +377,10 @@ export default class MDE {
     };
 
     static getBindingName(f) {
-        for (let key in bindings) {
-            if (bindings[key] === f) {
+        let self = this;
+
+        for (let key in self.bindings) {
+            if (self.bindings.hasOwnProperty(key) && self.bindings[key] === f) {
                 return key;
             }
         }
@@ -390,7 +421,26 @@ export default class MDE {
     constructor(options) {
         let self = this.constructor;
         // Handle options parameter
-        options = options || {};
+        // options = options || {};
+        options = Object.assign({
+            initialValue: undefined,
+            renderingConfig: {
+                singleLineBreaks: true,
+                codeSyntaxHighlighting: false
+            },
+            showIcons: undefined,
+            autosave: {
+                unique_id: undefined
+            },
+            spellChecker: false,
+            lineWrapping: true,
+            forceSync: false,
+            autofocus: false,
+            indentWithTabs: true,
+            toolbarGuideIcon: false,
+            hideIcons: undefined,
+            toolbarTips: true
+        }, options);
 
         // Used later to refer to it"s parent
         options.parent = this;
@@ -443,7 +493,7 @@ export default class MDE {
                         options.toolbar.push("|");
                     }
 
-                    if (self.toolbarBuiltInButtons[key].default === true || (options.showIcons && options.showIcons.constructor === Array && options.showIcons.indexOf(key) != -1)) {
+                    if (self.toolbarBuiltInButtons[key].default === true || (options.showIcons && options.showIcons.constructor === Array && options.showIcons.indexOf(key) !== -1)) {
                         options.toolbar.push(key);
                     }
                 }
@@ -507,15 +557,11 @@ export default class MDE {
             let markedOptions = {};
 
             // Update options
-            if (this.options && this.options.renderingConfig && this.options.renderingConfig.singleLineBreaks === false) {
-                markedOptions.breaks = false;
-            } else {
-                markedOptions.breaks = true;
-            }
+            markedOptions.breaks = !(this.options && this.options.renderingConfig && this.options.renderingConfig.singleLineBreaks === false);
 
             if (this.options && this.options.renderingConfig && this.options.renderingConfig.codeSyntaxHighlighting === true && window.hljs) {
                 markedOptions.highlight = function (code) {
-                    return window.hljs.highlightAuto(code).value;
+                    return window.hljs ? window.hljs.highlightAuto(code).value : null;
                 };
             }
 
@@ -550,11 +596,14 @@ export default class MDE {
 
         for (let key in options.shortcuts) {
             // null stands for "do not bind this command"
-            if (options.shortcuts[key] !== null && bindings[key] !== null) {
+            if (
+                options.shortcuts.hasOwnProperty(key) && options.shortcuts[key] !== null &&
+                self.bindings.hasOwnProperty(key) && self.bindings[key] !== null
+            ) {
                 // ((key) => {
-                keyMaps[self.fixShortcut(options.shortcuts[key])] = () => {
-                    bindings[key](this);
-                };
+                keyMaps[self.fixShortcut(options.shortcuts[key])] = (() => {
+                    self.bindings[key](this);
+                });
                 // })(key);
             }
         }
@@ -562,23 +611,22 @@ export default class MDE {
         keyMaps["Enter"] = "newlineAndIndentContinueMarkdownList";
         keyMaps["Tab"] = "tabAndIndentMarkdownList";
         keyMaps["Shift-Tab"] = "shiftTabAndUnindentMarkdownList";
-        keyMaps["Esc"] = (cm) => {
+        keyMaps["Esc"] = ((cm) => {
             if (cm.getOption("fullScreen")) {
-                toggleFullScreen(this);
+                this.toggleFullScreen();
             }
-        };
+        });
 
         document.addEventListener("keydown", (e) => {
             e = e || window.event;
-
-            if (e.keyCode === 27) {
+            if (e.key === 'Escape') {
                 if (this.codemirror.getOption("fullScreen")) {
-                    toggleFullScreen(this);
+                    this.toggleFullScreen();
                 }
             }
         }, false);
 
-        let mode, backdrop;
+        let mode, backdrop = undefined;
 
         if (options.spellChecker !== false) {
             // mode = "spell-checker";
@@ -601,11 +649,11 @@ export default class MDE {
             theme: "paper",
             tabSize: (options.tabSize !== undefined) ? options.tabSize : 2,
             indentUnit: (options.tabSize !== undefined) ? options.tabSize : 2,
-            indentWithTabs: !!options.indentWithTabs,
+            indentWithTabs: options.indentWithTabs,
             lineNumbers: false,
-            autofocus: !!options.autofocus,
+            autofocus: options.autofocus,
             extraKeys: keyMaps,
-            lineWrapping: !!options.lineWrapping,
+            lineWrapping: options.lineWrapping,
             allowDropFileTypes: ["text/plain"],
             placeholder: options.placeholder || el.getAttribute("placeholder") || "",
             styleSelectedText: (options.styleSelectedText !== undefined) ? options.styleSelectedText : true
@@ -732,7 +780,7 @@ export default class MDE {
         });
 
         // Syncs scroll  preview -> editor
-        preview.onscroll = () => {
+        preview.onscroll = (() => {
             if (pScroll) {
                 pScroll = false;
                 return;
@@ -742,7 +790,7 @@ export default class MDE {
             let ratio = parseFloat(preview.scrollTop) / height;
             let move = (cm.getScrollInfo().height - cm.getScrollInfo().clientHeight) * ratio;
             cm.scrollTo(0, move);
-        };
+        });
         return preview;
     }
 
@@ -829,15 +877,17 @@ export default class MDE {
 
         let cm = this.codemirror;
         cm.on("cursorActivity", () => {
-            let stat = getState(cm);
+            let stat = this.getState(); //MDEActions.getState(cm);
 
             for (let key in toolbarData) {
                 // ((key) => {
-                let el = toolbarData[key];
-                if (stat[key]) {
-                    el.className += " active";
-                } else if (key !== "fullscreen" && key !== "side-by-side") {
-                    el.className = el.className.replace(/\s*active\s*/g, "");
+                if (toolbarData.hasOwnProperty(key)) {
+                    let el = toolbarData[key];
+                    if (stat[key]) {
+                        el.className += " active";
+                    } else if (key !== "fullscreen" && key !== "side-by-side") {
+                        el.className = el.className.replace(/\s*active\s*/g, "");
+                    }
                 }
                 // })(key);
             }
@@ -879,7 +929,7 @@ export default class MDE {
             } else {
                 let name = status[i];
 
-                switch (name){
+                switch (name) {
                     case 'words':
                         defaultValue = (el) => {
                             el.innerHTML = self.wordCount(cm.getValue());
@@ -946,11 +996,9 @@ export default class MDE {
             // Ensure the onUpdate is a function
             if (typeof item.onUpdate === "function") {
                 // Create a closure around the span of the current action, then execute the onUpdate handler
-                this.codemirror.on("update", (function (el, item) {
-                    return () => {
-                        item.onUpdate(el);
-                    };
-                }(el, item)));
+                this.codemirror.on('update', () => {
+                    item.onUpdate(el);
+                });
             }
 
             // Append the item to the status bar
@@ -975,92 +1023,92 @@ export default class MDE {
 
     // ----
 
-    toggleBold() {
-        toggleBold(this);
-    }
+    // toggleBold() {
+    //     MDEActions.toggleBold(this);
+    // }
 
-    toggleItalic() {
-        toggleItalic(this);
-    }
+    // toggleItalic() {
+    //     MDEActions.toggleItalic(this);
+    // }
+    //
+    // toggleStrikethrough() {
+    //     MDEActions.toggleStrikethrough(this);
+    // }
+    //
+    // toggleBlockquote() {
+    //     MDEActions.toggleBlockquote(this);
+    // }
+    //
+    // toggleHeadingSmaller() {
+    //     MDEActions.toggleHeadingSmaller(this);
+    // }
+    //
+    // toggleHeadingBigger() {
+    //     MDEActions.toggleHeadingBigger(this);
+    // }
+    //
+    // toggleHeading1() {
+    //     MDEActions.toggleHeading1(this);
+    // }
+    //
+    // toggleHeading2() {
+    //     MDEActions.toggleHeading2(this);
+    // }
+    //
+    // toggleHeading3() {
+    //     MDEActions.toggleHeading3(this);
+    // }
+    //
+    // toggleCodeBlock() {
+    //     MDEActions.toggleCodeBlock(this);
+    // }
+    //
+    // toggleUnorderedList() {
+    //     MDEActions.toggleUnorderedList(this);
+    // }
+    //
+    // toggleOrderedList() {
+    //     MDEActions.toggleOrderedList(this);
+    // }
+    //
+    // cleanBlock() {
+    //     MDEActions.cleanBlock(this);
+    // }
+    //
+    // drawLink() {
+    //     MDEActions.drawLink(this);
+    // }
+    //
+    // drawImage() {
+    //     MDEActions.drawImage(this);
+    // }
+    //
+    // drawTable() {
+    //     MDEActions.drawTable(this);
+    // }
+    //
+    // drawHorizontalRule() {
+    //     MDEActions.drawHorizontalRule(this);
+    // }
 
-    toggleStrikethrough() {
-        toggleStrikethrough(this);
-    }
+    // undo() {
+    //     MDEActions.undo(this);
+    // }
+    //
+    // redo() {
+    //     MDEActions.redo(this);
+    // }
 
-    toggleBlockquote() {
-        toggleBlockquote(this);
-    }
-
-    toggleHeadingSmaller() {
-        toggleHeadingSmaller(this);
-    }
-
-    toggleHeadingBigger() {
-        toggleHeadingBigger(this);
-    }
-
-    toggleHeading1() {
-        toggleHeading1(this);
-    }
-
-    toggleHeading2() {
-        toggleHeading2(this);
-    }
-
-    toggleHeading3() {
-        toggleHeading3(this);
-    }
-
-    toggleCodeBlock() {
-        toggleCodeBlock(this);
-    }
-
-    toggleUnorderedList() {
-        toggleUnorderedList(this);
-    }
-
-    toggleOrderedList() {
-        toggleOrderedList(this);
-    }
-
-    cleanBlock() {
-        cleanBlock(this);
-    }
-
-    drawLink() {
-        drawLink(this);
-    }
-
-    drawImage() {
-        drawImage(this);
-    }
-
-    drawTable() {
-        drawTable(this);
-    }
-
-    drawHorizontalRule() {
-        drawHorizontalRule(this);
-    }
-
-    undo() {
-        undo(this);
-    }
-
-    redo() {
-        redo(this);
-    }
-
-    togglePreview() {
-        togglePreview(this);
-    }
-
-    toggleSideBySide() {
-        toggleSideBySide(this);
-    }
+    // togglePreview() {
+    //     MDEActions.togglePreview(this);
+    // }
+    //
+    // toggleSideBySide() {
+    //     MDEActions.toggleSideBySide(this);
+    // }
 
     toggleFullScreen() {
-        toggleFullScreen(this);
+        MDEActions.toggleFullScreen(this);
     }
 
     // ---
@@ -1090,7 +1138,7 @@ export default class MDE {
     getState() {
         let cm = this.codemirror;
 
-        return getState(cm);
+        return MDEActions.getState(cm);
     }
 
     toTextArea() {
@@ -1117,965 +1165,4 @@ export default class MDE {
             this.clearAutosavedValue();
         }
     };
-}
-
-/**
- * Bind static methods for exports.
- */
-MDE.toggleBold = toggleBold;
-MDE.toggleItalic = toggleItalic;
-MDE.toggleStrikethrough = toggleStrikethrough;
-MDE.toggleBlockquote = toggleBlockquote;
-MDE.toggleHeadingSmaller = toggleHeadingSmaller;
-MDE.toggleHeadingBigger = toggleHeadingBigger;
-MDE.toggleHeading1 = toggleHeading1;
-MDE.toggleHeading2 = toggleHeading2;
-MDE.toggleHeading3 = toggleHeading3;
-MDE.toggleCodeBlock = toggleCodeBlock;
-MDE.toggleUnorderedList = toggleUnorderedList;
-MDE.toggleOrderedList = toggleOrderedList;
-MDE.cleanBlock = cleanBlock;
-MDE.drawLink = drawLink;
-MDE.drawImage = drawImage;
-MDE.drawTable = drawTable;
-MDE.drawHorizontalRule = drawHorizontalRule;
-MDE.undo = undo;
-MDE.redo = redo;
-MDE.togglePreview = togglePreview;
-MDE.toggleSideBySide = toggleSideBySide;
-MDE.toggleFullScreen = toggleFullScreen;
-
-// Mapping of actions that can be bound to keyboard shortcuts or toolbar buttons
-var bindings = {
-    "toggleBold": toggleBold,
-    "toggleItalic": toggleItalic,
-    "drawLink": drawLink,
-    "toggleHeadingSmaller": toggleHeadingSmaller,
-    "toggleHeadingBigger": toggleHeadingBigger,
-    "drawImage": drawImage,
-    "toggleBlockquote": toggleBlockquote,
-    "toggleOrderedList": toggleOrderedList,
-    "toggleUnorderedList": toggleUnorderedList,
-    "toggleCodeBlock": toggleCodeBlock,
-    "togglePreview": togglePreview,
-    "toggleStrikethrough": toggleStrikethrough,
-    "toggleHeading1": toggleHeading1,
-    "toggleHeading2": toggleHeading2,
-    "toggleHeading3": toggleHeading3,
-    "cleanBlock": cleanBlock,
-    "drawTable": drawTable,
-    "drawHorizontalRule": drawHorizontalRule,
-    "undo": undo,
-    "redo": redo,
-    "toggleSideBySide": toggleSideBySide,
-    "toggleFullScreen": toggleFullScreen
-};
-
-/**
- * The state of CodeMirror at the given position.
- */
-function getState(cm, pos) {
-    pos = pos || cm.getCursor("start");
-    let stat = cm.getTokenAt(pos);
-    if (!stat.type) {
-        return {};
-    }
-
-    let types = stat.type.split(" ");
-
-    let ret = {}, data, text;
-    for (let i = 0; i < types.length; i++) {
-        data = types[i];
-        if (data === "strong") {
-            ret.bold = true;
-        } else if (data === "variable-2") {
-            text = cm.getLine(pos.line);
-            if (/^\s*\d+\.\s/.test(text)) {
-                ret["ordered-list"] = true;
-            } else {
-                ret["unordered-list"] = true;
-            }
-        } else if (data === "atom") {
-            ret.quote = true;
-        } else if (data === "em") {
-            ret.italic = true;
-        } else if (data === "quote") {
-            ret.quote = true;
-        } else if (data === "strikethrough") {
-            ret.strikethrough = true;
-        } else if (data === "comment") {
-            ret.code = true;
-        } else if (data === "link") {
-            ret.link = true;
-        } else if (data === "tag") {
-            ret.image = true;
-        } else if (data.match(/^header(-[1-6])?$/)) {
-            ret[data.replace("header", "heading")] = true;
-        }
-    }
-    return ret;
-}
-
-
-// Saved overflow setting
-var saved_overflow = "";
-
-/**
- * Toggle full screen of the editor.
- */
-function toggleFullScreen(editor) {
-    // Set fullscreen
-    let cm = editor.codemirror;
-    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-
-    // Prevent scrolling on body during fullscreen active
-    if (cm.getOption("fullScreen")) {
-        saved_overflow = document.body.style.overflow;
-        document.body.style.overflow = "hidden";
-    } else {
-        document.body.style.overflow = saved_overflow;
-    }
-
-    // Update toolbar class
-    let wrap = cm.getWrapperElement();
-
-    if (!/fullscreen/.test(wrap.previousSibling.className)) {
-        wrap.previousSibling.className += " fullscreen";
-    } else {
-        wrap.previousSibling.className = wrap.previousSibling.className.replace(/\s*fullscreen\b/, "");
-    }
-
-    // Update toolbar button
-    let toolbarButton = editor.toolbarElements.fullscreen;
-
-    if (!/active/.test(toolbarButton.className)) {
-        toolbarButton.className += " active";
-    } else {
-        toolbarButton.className = toolbarButton.className.replace(/\s*active\s*/g, "");
-    }
-
-    // Hide side by side if needed
-    let sidebyside = cm.getWrapperElement().nextSibling;
-    if (/editor-preview-active-side/.test(sidebyside.className)) {
-        toggleSideBySide(editor);
-    }
-}
-
-/**
- * Action for toggling bold.
- */
-function toggleBold(editor) {
-    _toggleBlock(editor, "bold", editor.options.blockStyles.bold);
-}
-
-/**
- * Action for toggling italic.
- */
-function toggleItalic(editor) {
-    _toggleBlock(editor, "italic", editor.options.blockStyles.italic);
-}
-
-/**
- * Action for toggling strikethrough.
- */
-function toggleStrikethrough(editor) {
-    _toggleBlock(editor, "strikethrough", "~~");
-}
-
-/**
- * Action for toggling code block.
- */
-function toggleCodeBlock(editor) {
-    let fenceCharsToInsert = editor.options.blockStyles.code;
-
-    function fencing_line(line) {
-        /* return true, if this is a ``` or ~~~ line */
-        if (typeof line !== "object") {
-            throw "fencing_line() takes a 'line' object (not a line number, or line text).  Got: " + typeof line + ": " + line;
-        }
-        return line.styles && line.styles[2] && line.styles[2].indexOf("formatting-code-block") !== -1;
-    }
-
-    function token_state(token) {
-        // base goes an extra level deep when mode backdrops are used, e.g. spellchecker on
-        return token.state.base.base || token.state.base;
-    }
-
-    function code_type(cm, line_num, line, firstTok, lastTok) {
-        /*
-         * Return "single", "indented", "fenced" or false
-         *
-         * cm and line_num are required.  Others are optional for efficiency
-         *   To check in the middle of a line, pass in firstTok yourself.
-         */
-        line = line || cm.getLineHandle(line_num);
-        firstTok = firstTok || cm.getTokenAt({
-            line: line_num,
-            ch: 1
-        });
-        lastTok = lastTok || (!!line.text && cm.getTokenAt({
-            line: line_num,
-            ch: line.text.length - 1
-        }));
-        let types = firstTok.type ? firstTok.type.split(" ") : [];
-        if (lastTok && token_state(lastTok).indentedCode) {
-            // have to check last char, since first chars of first line aren"t marked as indented
-            return "indented";
-        } else if (types.indexOf("comment") === -1) {
-            // has to be after "indented" check, since first chars of first indented line aren"t marked as such
-            return false;
-        } else if (token_state(firstTok).fencedChars || token_state(lastTok).fencedChars || fencing_line(line)) {
-            return "fenced";
-        } else {
-            return "single";
-        }
-    }
-
-    function insertFencingAtSelection(cm, cur_start, cur_end, fenceCharsToInsert) {
-        let start_line_sel = cur_start.line + 1,
-            end_line_sel = cur_end.line + 1,
-            sel_multi = cur_start.line !== cur_end.line,
-            repl_start = fenceCharsToInsert + "\n",
-            repl_end = "\n" + fenceCharsToInsert;
-
-        if (sel_multi) {
-            end_line_sel++;
-        }
-        // handle last char including \n or not
-        if (sel_multi && cur_end.ch === 0) {
-            repl_end = fenceCharsToInsert + "\n";
-            end_line_sel--;
-        }
-        _replaceSelection(cm, false, [repl_start, repl_end]);
-        cm.setSelection({
-            line: start_line_sel,
-            ch: 0
-        }, {
-            line: end_line_sel,
-            ch: 0
-        });
-    }
-
-    let cm = editor.codemirror,
-        cur_start = cm.getCursor("start"),
-        cur_end = cm.getCursor("end"),
-        tok = cm.getTokenAt({
-            line: cur_start.line,
-            ch: cur_start.ch || 1
-        }), // avoid ch 0 which is a cursor pos but not token
-        line = cm.getLineHandle(cur_start.line),
-        is_code = code_type(cm, cur_start.line, line, tok);
-    let block_start, block_end, lineCount;
-
-    if (is_code === "single") {
-        // similar to some SimpleMDE _toggleBlock logic
-        let start = line.text.slice(0, cur_start.ch).replace("`", ""),
-            end = line.text.slice(cur_start.ch).replace("`", "");
-
-        cm.replaceRange(start + end, {
-            line: cur_start.line,
-            ch: 0
-        }, {
-            line: cur_start.line,
-            ch: 99999999999999
-        });
-
-        cur_start.ch--;
-        if (cur_start !== cur_end) {
-            cur_end.ch--;
-        }
-
-        cm.setSelection(cur_start, cur_end);
-        cm.focus();
-    } else if (is_code === "fenced") {
-        if (cur_start.line !== cur_end.line || cur_start.ch !== cur_end.ch) {
-            // use selection
-
-            // find the fenced line so we know what type it is (tilde, backticks, number of them)
-            for (block_start = cur_start.line; block_start >= 0; block_start--) {
-                line = cm.getLineHandle(block_start);
-                if (fencing_line(line)) {
-                    break;
-                }
-            }
-            let fencedTok = cm.getTokenAt({
-                line: block_start,
-                ch: 1
-            });
-            let fence_chars = token_state(fencedTok).fencedChars;
-            let start_text, start_line;
-            let end_text, end_line;
-            // check for selection going up against fenced lines, in which case we don't want to add more fencing
-            if (fencing_line(cm.getLineHandle(cur_start.line))) {
-                start_text = "";
-                start_line = cur_start.line;
-            } else if (fencing_line(cm.getLineHandle(cur_start.line - 1))) {
-                start_text = "";
-                start_line = cur_start.line - 1;
-            } else {
-                start_text = fence_chars + "\n";
-                start_line = cur_start.line;
-            }
-            if (fencing_line(cm.getLineHandle(cur_end.line))) {
-                end_text = "";
-                end_line = cur_end.line;
-                if (cur_end.ch === 0) {
-                    end_line += 1;
-                }
-            } else if (cur_end.ch !== 0 && fencing_line(cm.getLineHandle(cur_end.line + 1))) {
-                end_text = "";
-                end_line = cur_end.line + 1;
-            } else {
-                end_text = fence_chars + "\n";
-                end_line = cur_end.line + 1;
-            }
-            if (cur_end.ch === 0) {
-                // full last line selected, putting cursor at beginning of next
-                end_line -= 1;
-            }
-            cm.operation(() => {
-                // end line first, so that line numbers don't change
-                cm.replaceRange(end_text, {
-                    line: end_line,
-                    ch: 0
-                }, {
-                    line: end_line + (end_text ? 0 : 1),
-                    ch: 0
-                });
-                cm.replaceRange(start_text, {
-                    line: start_line,
-                    ch: 0
-                }, {
-                    line: start_line + (start_text ? 0 : 1),
-                    ch: 0
-                });
-            });
-            cm.setSelection({
-                line: start_line + (start_text ? 1 : 0),
-                ch: 0
-            }, {
-                line: end_line + (start_text ? 1 : -1),
-                ch: 0
-            });
-            cm.focus();
-        } else {
-            // no selection, search for ends of this fenced block
-            let search_from = cur_start.line;
-            if (fencing_line(cm.getLineHandle(cur_start.line))) { // gets a little tricky if cursor is right on a fenced line
-                if (code_type(cm, cur_start.line + 1) === "fenced") {
-                    block_start = cur_start.line;
-                    search_from = cur_start.line + 1; // for searching for "end"
-                } else {
-                    block_end = cur_start.line;
-                    search_from = cur_start.line - 1; // for searching for "start"
-                }
-            }
-            if (block_start === undefined) {
-                for (block_start = search_from; block_start >= 0; block_start--) {
-                    line = cm.getLineHandle(block_start);
-                    if (fencing_line(line)) {
-                        break;
-                    }
-                }
-            }
-            if (block_end === undefined) {
-                lineCount = cm.lineCount();
-                for (block_end = search_from; block_end < lineCount; block_end++) {
-                    line = cm.getLineHandle(block_end);
-                    if (fencing_line(line)) {
-                        break;
-                    }
-                }
-            }
-            cm.operation(() => {
-                cm.replaceRange("", {
-                    line: block_start,
-                    ch: 0
-                }, {
-                    line: block_start + 1,
-                    ch: 0
-                });
-                cm.replaceRange("", {
-                    line: block_end - 1,
-                    ch: 0
-                }, {
-                    line: block_end,
-                    ch: 0
-                });
-            });
-            cm.focus();
-        }
-    } else if (is_code === "indented") {
-        if (cur_start.line !== cur_end.line || cur_start.ch !== cur_end.ch) {
-            // use selection
-            block_start = cur_start.line;
-            block_end = cur_end.line;
-            if (cur_end.ch === 0) {
-                block_end--;
-            }
-        } else {
-            // no selection, search for ends of this indented block
-            for (block_start = cur_start.line; block_start >= 0; block_start--) {
-                line = cm.getLineHandle(block_start);
-                if (line.text.match(/^\s*$/)) {
-                    // empty or all whitespace - keep going
-                    // continue;
-                } else {
-                    if (code_type(cm, block_start, line) !== "indented") {
-                        block_start += 1;
-                        break;
-                    }
-                }
-            }
-            lineCount = cm.lineCount();
-            for (block_end = cur_start.line; block_end < lineCount; block_end++) {
-                line = cm.getLineHandle(block_end);
-                if (line.text.match(/^\s*$/)) {
-                    // empty or all whitespace - keep going
-                    // continue;
-                } else {
-                    if (code_type(cm, block_end, line) !== "indented") {
-                        block_end -= 1;
-                        break;
-                    }
-                }
-            }
-        }
-        // if we are going to un-indent based on a selected set of lines, and the next line is indented too, we need to
-        // insert a blank line so that the next line(s) continue to be indented code
-        let next_line = cm.getLineHandle(block_end + 1),
-            next_line_last_tok = next_line && cm.getTokenAt({
-                line: block_end + 1,
-                ch: next_line.text.length - 1
-            }),
-            next_line_indented = next_line_last_tok && token_state(next_line_last_tok).indentedCode;
-
-        if (next_line_indented) {
-            cm.replaceRange("\n", {
-                line: block_end + 1,
-                ch: 0
-            });
-        }
-
-        for (let i = block_start; i <= block_end; i++) {
-            cm.indentLine(i, "subtract"); // TODO: this doesn't get tracked in the history, so can't be undone :(
-        }
-
-        cm.focus();
-    } else {
-        // insert code formatting
-        let no_sel_and_starting_of_line = (cur_start.line === cur_end.line && cur_start.ch === cur_end.ch && cur_start.ch === 0);
-        let sel_multi = cur_start.line !== cur_end.line;
-
-        if (no_sel_and_starting_of_line || sel_multi) {
-            insertFencingAtSelection(cm, cur_start, cur_end, fenceCharsToInsert);
-        } else {
-            _replaceSelection(cm, false, ["`", "`"]);
-        }
-    }
-}
-
-/**
- * Action for toggling blockquote.
- */
-function toggleBlockquote(editor) {
-    let cm = editor.codemirror;
-    _toggleLine(cm, "quote");
-}
-
-/**
- * Action for toggling heading size: normal -> h1 -> h2 -> h3 -> h4 -> h5 -> h6 -> normal
- */
-function toggleHeadingSmaller(editor) {
-    let cm = editor.codemirror;
-    _toggleHeading(cm, "smaller");
-}
-
-/**
- * Action for toggling heading size: normal -> h6 -> h5 -> h4 -> h3 -> h2 -> h1 -> normal
- */
-function toggleHeadingBigger(editor) {
-    let cm = editor.codemirror;
-    _toggleHeading(cm, "bigger");
-}
-
-/**
- * Action for toggling heading size 1
- */
-function toggleHeading1(editor) {
-    let cm = editor.codemirror;
-    _toggleHeading(cm, undefined, 1);
-}
-
-/**
- * Action for toggling heading size 2
- */
-function toggleHeading2(editor) {
-    let cm = editor.codemirror;
-    _toggleHeading(cm, undefined, 2);
-}
-
-/**
- * Action for toggling heading size 3
- */
-function toggleHeading3(editor) {
-    let cm = editor.codemirror;
-    _toggleHeading(cm, undefined, 3);
-}
-
-/**
- * Action for toggling ul.
- */
-function toggleUnorderedList(editor) {
-    let cm = editor.codemirror;
-    _toggleLine(cm, "unordered-list");
-}
-
-/**
- * Action for toggling ol.
- */
-function toggleOrderedList(editor) {
-    let cm = editor.codemirror;
-    _toggleLine(cm, "ordered-list");
-}
-
-/**
- * Action for clean block (remove headline, list, blockquote code, markers)
- */
-function cleanBlock(editor) {
-    let cm = editor.codemirror;
-    _cleanBlock(cm);
-}
-
-/**
- * Action for drawing a link.
- */
-function drawLink(editor) {
-    let cm = editor.codemirror;
-    let stat = getState(cm);
-    let options = editor.options;
-    let url = "http://";
-
-    if (options.promptURLs) {
-        url = prompt(options.promptTexts.link);
-        if (!url) {
-            return false;
-        }
-    }
-    _replaceSelection(cm, stat.link, options.insertTexts.link, url);
-}
-
-/**
- * Action for drawing an img.
- */
-function drawImage(editor) {
-    let cm = editor.codemirror;
-    let stat = getState(cm);
-    let options = editor.options;
-    let url = "http://";
-
-    if (options.promptURLs) {
-        url = prompt(options.promptTexts.image);
-        if (!url) {
-            return false;
-        }
-    }
-
-    _replaceSelection(cm, stat.image, options.insertTexts.image, url);
-}
-
-/**
- * Action for drawing a table.
- */
-function drawTable(editor) {
-    let cm = editor.codemirror;
-    let stat = getState(cm);
-    let options = editor.options;
-
-    _replaceSelection(cm, stat.table, options.insertTexts.table);
-}
-
-/**
- * Action for drawing a horizontal rule.
- */
-function drawHorizontalRule(editor) {
-    let cm = editor.codemirror;
-    let stat = getState(cm);
-    let options = editor.options;
-
-    _replaceSelection(cm, stat.image, options.insertTexts.horizontalRule);
-}
-
-/**
- * Undo action.
- */
-function undo(editor) {
-    let cm = editor.codemirror;
-    cm.undo();
-    cm.focus();
-}
-
-/**
- * Redo action.
- */
-function redo(editor) {
-    let cm = editor.codemirror;
-    cm.redo();
-    cm.focus();
-}
-
-/**
- * Toggle side by side preview
- */
-function toggleSideBySide(editor) {
-    let cm = editor.codemirror;
-    let wrapper = cm.getWrapperElement();
-    let preview = wrapper.nextSibling;
-    let toolbarButton = editor.toolbarElements["side-by-side"];
-    let useSideBySideListener = false;
-
-    if (/editor-preview-active-side/.test(preview.className)) {
-        preview.className = preview.className.replace(
-            /\s*editor-preview-active-side\s*/g, ""
-        );
-        toolbarButton.className = toolbarButton.className.replace(/\s*active\s*/g, "");
-        wrapper.className = wrapper.className.replace(/\s*CodeMirror-sided\s*/g, " ");
-    } else {
-        // When the preview button is clicked for the first time,
-        // give some time for the transition from editor.css to fire and the view to slide from right to left,
-        // instead of just appearing.
-        setTimeout(() => {
-            if (!cm.getOption("fullScreen")) {
-                toggleFullScreen(editor);
-            }
-            preview.className += " editor-preview-active-side";
-        }, 1);
-        toolbarButton.className += " active";
-        wrapper.className += " CodeMirror-sided";
-        useSideBySideListener = true;
-    }
-
-    // Hide normal preview if active
-    let previewNormal = wrapper.lastChild;
-    if (/editor-preview-active/.test(previewNormal.className)) {
-        previewNormal.className = previewNormal.className.replace(
-            /\s*editor-preview-active\s*/g, ""
-        );
-        let toolbar = editor.toolbarElements.preview;
-        let toolbar_div = wrapper.previousSibling;
-        toolbar.className = toolbar.className.replace(/\s*active\s*/g, "");
-        toolbar_div.className = toolbar_div.className.replace(/\s*disabled-for-preview*/g, "");
-    }
-
-    let sideBySideRenderingFunction = () => {
-        preview.innerHTML = editor.options.previewRender(editor.value(), preview);
-    };
-
-    if (!cm.sideBySideRenderingFunction) {
-        cm.sideBySideRenderingFunction = sideBySideRenderingFunction;
-    }
-
-    if (useSideBySideListener) {
-        preview.innerHTML = editor.options.previewRender(editor.value(), preview);
-        cm.on("update", cm.sideBySideRenderingFunction);
-    } else {
-        cm.off("update", cm.sideBySideRenderingFunction);
-    }
-
-    // Refresh to fix selection being off (#309)
-    cm.refresh();
-}
-
-/**
- * Preview action.
- */
-function togglePreview(editor) {
-    let cm = editor.codemirror;
-    let wrapper = cm.getWrapperElement();
-    let toolbar_div = wrapper.previousSibling;
-    let toolbar = editor.options.toolbar ? editor.toolbarElements.preview : false;
-    let preview = wrapper.lastChild;
-
-    if (!preview || !/editor-preview/.test(preview.className)) {
-        preview = document.createElement("div");
-        preview.className = "editor-preview";
-        wrapper.appendChild(preview);
-    }
-
-    if (/editor-preview-active/.test(preview.className)) {
-        preview.className = preview.className.replace(
-            /\s*editor-preview-active\s*/g, ""
-        );
-
-        if (toolbar) {
-            toolbar.className = toolbar.className.replace(/\s*active\s*/g, "");
-            toolbar_div.className = toolbar_div.className.replace(/\s*disabled-for-preview*/g, "");
-        }
-    } else {
-        // When the preview button is clicked for the first time,
-        // give some time for the transition from editor.css to fire and the view to slide from right to left,
-        // instead of just appearing.
-        setTimeout(() => {
-            preview.className += " editor-preview-active";
-        }, 1);
-
-        if (toolbar) {
-            toolbar.className += " active";
-            toolbar_div.className += " disabled-for-preview";
-        }
-    }
-
-    preview.innerHTML = editor.options.previewRender(editor.value(), preview);
-
-    // Turn off side by side if needed
-    let sidebyside = cm.getWrapperElement().nextSibling;
-    if (/editor-preview-active-side/.test(sidebyside.className)) {
-        toggleSideBySide(editor);
-    }
-}
-
-function _replaceSelection(cm, active, startEnd, url) {
-    if (/editor-preview-active/.test(cm.getWrapperElement().lastChild.className)) {
-        return;
-    }
-
-    let text;
-    let start = startEnd[0];
-    let end = startEnd[1];
-    let startPoint = cm.getCursor("start");
-    let endPoint = cm.getCursor("end");
-
-    if (url) {
-        end = end.replace("#url#", url);
-    }
-
-    if (active) {
-        text = cm.getLine(startPoint.line);
-        start = text.slice(0, startPoint.ch);
-        end = text.slice(startPoint.ch);
-        cm.replaceRange(start + end, {
-            line: startPoint.line,
-            ch: 0
-        });
-    } else {
-        text = cm.getSelection();
-        cm.replaceSelection(start + text + end);
-
-        startPoint.ch += start.length;
-        if (startPoint !== endPoint) {
-            endPoint.ch += start.length;
-        }
-    }
-
-    cm.setSelection(startPoint, endPoint);
-    cm.focus();
-}
-
-
-function _toggleHeading(cm, direction, size) {
-    if (/editor-preview-active/.test(cm.getWrapperElement().lastChild.className)) {
-        return;
-    }
-
-    let startPoint = cm.getCursor("start");
-    let endPoint = cm.getCursor("end");
-
-    for (let i = startPoint.line; i <= endPoint.line; i++) {
-        (function (i) {
-            let text = cm.getLine(i);
-            let currHeadingLevel = text.search(/[^#]/);
-
-            if (direction !== undefined) {
-                if (currHeadingLevel <= 0) {
-                    if (direction === "bigger") {
-                        text = "###### " + text;
-                    } else {
-                        text = "# " + text;
-                    }
-                } else if (currHeadingLevel === 6 && direction === "smaller") {
-                    text = text.substr(7);
-                } else if (currHeadingLevel === 1 && direction === "bigger") {
-                    text = text.substr(2);
-                } else {
-                    if (direction === "bigger") {
-                        text = text.substr(1);
-                    } else {
-                        text = "#" + text;
-                    }
-                }
-            } else {
-                if (size === 1) {
-                    if (currHeadingLevel <= 0) {
-                        text = "# " + text;
-                    } else if (currHeadingLevel === size) {
-                        text = text.substr(currHeadingLevel + 1);
-                    } else {
-                        text = "# " + text.substr(currHeadingLevel + 1);
-                    }
-                } else if (size === 2) {
-                    if (currHeadingLevel <= 0) {
-                        text = "## " + text;
-                    } else if (currHeadingLevel === size) {
-                        text = text.substr(currHeadingLevel + 1);
-                    } else {
-                        text = "## " + text.substr(currHeadingLevel + 1);
-                    }
-                } else {
-                    if (currHeadingLevel <= 0) {
-                        text = "### " + text;
-                    } else if (currHeadingLevel === size) {
-                        text = text.substr(currHeadingLevel + 1);
-                    } else {
-                        text = "### " + text.substr(currHeadingLevel + 1);
-                    }
-                }
-            }
-
-            cm.replaceRange(text, {
-                line: i,
-                ch: 0
-            }, {
-                line: i,
-                ch: 99999999999999
-            });
-        })(i);
-    }
-
-    cm.focus();
-}
-
-function _toggleLine(cm, name) {
-    if (/editor-preview-active/.test(cm.getWrapperElement().lastChild.className)) {
-        return;
-    }
-
-    let stat = getState(cm);
-    let startPoint = cm.getCursor("start");
-    let endPoint = cm.getCursor("end");
-    let repl = {
-        "quote": /^(\s*)>\s+/,
-        "unordered-list": /^(\s*)([*\-+])\s+/,
-        "ordered-list": /^(\s*)\d+\.\s+/
-    };
-    let map = {
-        "quote": "> ",
-        "unordered-list": "* ",
-        "ordered-list": "1. "
-    };
-
-    for (let i = startPoint.line; i <= endPoint.line; i++) {
-        (function (i) {
-            let text = cm.getLine(i);
-
-            if (stat[name]) {
-                text = text.replace(repl[name], "$1");
-            } else {
-                text = map[name] + text;
-            }
-
-            cm.replaceRange(text, {
-                line: i,
-                ch: 0
-            }, {
-                line: i,
-                ch: 99999999999999
-            });
-        })(i);
-    }
-    cm.focus();
-}
-
-function _toggleBlock(editor, type, start_chars, end_chars) {
-    if (/editor-preview-active/.test(editor.codemirror.getWrapperElement().lastChild.className)) {
-        return;
-    }
-
-    end_chars = (typeof end_chars === "undefined") ? start_chars : end_chars;
-    let cm = editor.codemirror;
-    let stat = getState(cm);
-
-    let text;
-    let start = start_chars;
-    let end = end_chars;
-
-    let startPoint = cm.getCursor("start");
-    let endPoint = cm.getCursor("end");
-
-    if (stat[type]) {
-        text = cm.getLine(startPoint.line);
-        start = text.slice(0, startPoint.ch);
-        end = text.slice(startPoint.ch);
-        if (type === "bold") {
-            start = start.replace(/(\*\*|__)(?![\s\S]*(\*\*|__))/, "");
-            end = end.replace(/(\*\*|__)/, "");
-        } else if (type === "italic") {
-            start = start.replace(/([*_])(?![\s\S]*([*_]))/, "");
-            end = end.replace(/([*_])/, "");
-        } else if (type === "strikethrough") {
-            start = start.replace(/(\*\*|~~)(?![\s\S]*(\*\*|~~))/, "");
-            end = end.replace(/(\*\*|~~)/, "");
-        }
-
-        cm.replaceRange(start + end, {
-            line: startPoint.line,
-            ch: 0
-        }, {
-            line: startPoint.line,
-            ch: 99999999999999
-        });
-
-        if (type === "bold" || type === "strikethrough") {
-            startPoint.ch -= 2;
-            if (startPoint !== endPoint) {
-                endPoint.ch -= 2;
-            }
-        } else if (type === "italic") {
-            startPoint.ch -= 1;
-            if (startPoint !== endPoint) {
-                endPoint.ch -= 1;
-            }
-        }
-    } else {
-        text = cm.getSelection();
-        if (type === "bold") {
-            text = text.split("**").join("");
-            text = text.split("__").join("");
-        } else if (type === "italic") {
-            text = text.split("*").join("");
-            text = text.split("_").join("");
-        } else if (type === "strikethrough") {
-            text = text.split("~~").join("");
-        }
-
-        cm.replaceSelection(start + text + end);
-
-        startPoint.ch += start_chars.length;
-        endPoint.ch = startPoint.ch + text.length;
-    }
-
-    cm.setSelection(startPoint, endPoint);
-    cm.focus();
-}
-
-function _cleanBlock(cm) {
-    if (/editor-preview-active/.test(cm.getWrapperElement().lastChild.className)) {
-        return;
-    }
-
-    let startPoint = cm.getCursor("start");
-    let endPoint = cm.getCursor("end");
-    let text;
-
-    for (let line = startPoint.line; line <= endPoint.line; line++) {
-        text = cm.getLine(line);
-        text = text.replace(/^[ ]*([# ]+|\*|-|[> ]+|[0-9]+(.|\)))[ ]*/, "");
-
-        cm.replaceRange(text, {
-            line: line,
-            ch: 0
-        }, {
-            line: line,
-            ch: 99999999999999
-        });
-    }
 }
