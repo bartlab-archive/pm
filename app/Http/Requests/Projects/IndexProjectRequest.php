@@ -25,6 +25,14 @@ class IndexProjectRequest extends FormRequest
     {
         // todo: write rules for request
         return [
+            'public'=> 'array',
+            'public.*'=> 'numeric|in:1,0',
+            'status_ids'=> 'array',
+            'status_ids.*'=> 'numeric|in:1,5',
+            'order' => 'string',
+            'per_page' => 'numeric',
+            'page' => 'numeric',
+//            'my' => 'boolean'
 //            'with' =>'in:users,versions,enabledModules',
 //            'closed' => 'string'
         ];

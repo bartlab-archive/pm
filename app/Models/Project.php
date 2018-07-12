@@ -25,6 +25,7 @@ class Project extends Model
 //    ];
 
     protected $casts = [
+        'admin' => 'boolean',
         'is_public' => 'boolean',
         'inherit_members' => 'boolean'
     ];
@@ -45,7 +46,7 @@ class Project extends Model
     ];
 
     protected $fillable = [
-        'id',
+//        'id',
         'name',
         'description',
         'homepage',

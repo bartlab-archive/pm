@@ -23,7 +23,7 @@ export default class IssuesFormController extends ControllerBase {
     static get $inject() {
         return [
             'issuesService', 'attachmentService', '$stateParams', 'projectsService', '$rootScope', '$q',
-            'enumerationsService', '$mdToast', '$filter', '$state', '$http', '$scope'
+            'enumerationsService', '$mdToast', '$filter', '$state', '$http', '$scope', 'authService'
         ];
     }
 
@@ -69,7 +69,7 @@ export default class IssuesFormController extends ControllerBase {
         this.loadProccess = true;
         return this.$q
             .all([
-                this.projectsService.all(),
+                this.projectsService.all((this.authService.isAdmin() ? undefined : {my: true})),
                 (this.$stateParams.id ? this.issuesService.one(this.issue.id) : undefined),
                 this.issuesService.statuses(),
                 this.enumerationsService.all({type: 'IssuePriority'}),
@@ -211,14 +211,14 @@ export default class IssuesFormController extends ControllerBase {
         fd.append("file_chunk_id", fileData.file_chunk_id);
         fd.append("chunk_amount", fileData.chunk_amount);
         fd.append("file_total_size", fileData.file_total_size);
-        if(fileData.description) {
+        if (fileData.description) {
             fd.append("description", fileData.description);
         }
 
         this.attachmentService.create(fd)
             .then((response) => {
                 let attachmentId = _.get(response, 'data.data.id');
-                if(attachmentId) {
+                if (attachmentId) {
                     this.issue.new_attachments.push(attachmentId);
                     let loadedFile = this.files.findIndex((el) => {
                         return el.name == fileData.file_name;
@@ -232,10 +232,10 @@ export default class IssuesFormController extends ControllerBase {
                     );
                 }
             }).catch((error) => {
-                this.$mdToast.show(
-                    this.$mdToast.simple().textContent(`Error was occurred while uploading file ${fileData.file_name}.`)
-                );
-            });
+            this.$mdToast.show(
+                this.$mdToast.simple().textContent(`Error was occurred while uploading file ${fileData.file_name}.`)
+            );
+        });
     }
 
     upload() {
@@ -246,13 +246,13 @@ export default class IssuesFormController extends ControllerBase {
         this.files.forEach((file, index) => {
 
             // exclude already loaded files
-            if(file.hasLoaded) {
+            if (file.hasLoaded) {
                 return;
             }
 
             let filePartsNumber = Math.floor(file._file.size / fileChunkSize) + 1;
 
-            for(let i = 0; i < filePartsNumber; i++) {
+            for (let i = 0; i < filePartsNumber; i++) {
                 let filePart = file._file.slice(i * fileChunkSize, (i + 1) * fileChunkSize);
                 let payload = {
                     file_name: file._file.name,
@@ -276,16 +276,16 @@ export default class IssuesFormController extends ControllerBase {
         // angular.element(document.getElementById("files-upload")).trigger("click")
     }
 
-    deleteAttachment(attachmentId, fileName,  assigned) {
+    deleteAttachment(attachmentId, fileName, assigned) {
 
         let localId;
 
-        if(assigned) {
+        if (assigned) {
             localId = this.issue.attachments.findIndex((attachment) => attachment.id == attachmentId);
         } else {
             localId = this.files.findIndex((file) => file.id == attachmentId);
 
-            if(!this.files[localId].hasLoaded) {
+            if (!this.files[localId].hasLoaded) {
                 this.files.splice(localId, 1);
                 return;
             }
@@ -296,7 +296,7 @@ export default class IssuesFormController extends ControllerBase {
                 // remove from visible lists
                 assigned ? this.issue.attachments.splice(localId, 1) : this.files.splice(localId, 1);
                 // remove from prepared to save list of ids
-                this.issue.new_attachments = this.issue.new_attachments.filter(function(preparedAttachmentId) {
+                this.issue.new_attachments = this.issue.new_attachments.filter(function (preparedAttachmentId) {
                     return preparedAttachmentId !== attachmentId
                 });
 

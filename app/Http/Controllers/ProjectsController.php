@@ -40,12 +40,21 @@ class ProjectsController extends BaseController
 
     public function index(IndexProjectRequest $request)
     {
+        if ($request->input('my')) {
+            return ProjectResource::collection(
+                $this->projectsService->allByUserId(\Auth::id())
+            );
+        }
+
         return ProjectResource::collection(
             $this->projectsService->all(
                 array_merge(
-                    $request->only(['status', 'order', 'per_page', 'page']),
+                    $request->validated(),
                     [
                         'with' => ['trackers', 'members.user']
+                    ],
+                    \Auth::user()->admin ? [] : [
+                        'userId' => \Auth::id()
                     ]
                 )
             )

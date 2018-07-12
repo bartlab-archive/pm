@@ -4,4 +4,12 @@ projects-list-component {
   //  padding: 0;
   //}
 
+  .md-list-item-text {
+    //  margin-right: 5px;
+    .description {
+      //opacity: 0.5;
+      color: rgba(0, 0, 0, 0.4)
+    }
+  }
+
 }

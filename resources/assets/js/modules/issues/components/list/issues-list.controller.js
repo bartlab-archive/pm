@@ -15,7 +15,8 @@ import IssuesViewModalController from '../view-modal/issues-view-modal.controlle
 export default class IssuesListController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$showdown', 'issuesService', 'projectsService', '$stateParams', '$rootScope', '$mdDialog', '$filter'];
+        return ['$state', '$showdown', 'issuesService', 'projectsService', '$stateParams', '$rootScope',
+            '$mdDialog', '$filter', '$mdToast'];
     }
 
     static setMdDialogConfig(target, data = {}) {
@@ -161,6 +162,16 @@ export default class IssuesListController extends ControllerBase {
                 this.links = response.data.links;
                 this.groupsInfo = response.data.groups;
                 // this.pager = this.getPager();
+                // this.loadProccess = false;
+            })
+            .catch((response) => {
+                if (response.status === 422) {
+                    this.$mdToast.show(
+                        this.$mdToast.simple().textContent(response.data.message)
+                    );
+                }
+            })
+            .finally(() => {
                 this.loadProccess = false;
             });
     }

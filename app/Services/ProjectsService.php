@@ -21,12 +21,36 @@ class ProjectsService
 //            'enabledModules'
 //        ]);
 
-        // todo: make status active and closed
-        if ($status = array_get($params, 'status', Project::STATUS_ACTIVE)) {
-            $query->where(['status' => $status]);
+        // filter by status ids
+        if ($status = array_get($params, 'status_ids')) {
+            $query->whereIn('status', $status);
         }
 
+//        if ($my = array_get($params, 'my', false)) {
+//            $query->whereHas('members', function ($query) use ($userId) {
+//                $query->where(['user_id' => $userId]);
+//            });
+//        }
+
         // todo: get only pablic and my project
+//        if ($userId = array_get($params, 'userId')) {
+//            $query->whereHas('members', function ($query) use ($userId) {
+//                $query->where(['user_id' => $userId]);
+//            });
+//        }
+
+        // get only pablic and my project
+        if ($userId = array_get($params, 'userId')) {
+            $query->where(function ($query) use ($userId) {
+                $query->where(['is_public' => Project::IS_PUBLIC])->orWhereHas('members', function ($query) use ($userId) {
+                    $query->where(['user_id' => $userId]);
+                });
+            });
+        }
+
+        if ($public = array_get($params, 'public')) {
+            $query->whereIn('is_public', $public);
+        }
 
 //        if ($closed = array_get($params, 'closed')) {
 //            $query->orWhere('status', Project::STATUS_ACTIVE);
@@ -48,6 +72,17 @@ class ProjectsService
         }
 
         return $query->get();
+    }
+
+    public function allByUserId($userId)
+    {
+        return Project::query()
+            ->where(['status' => Project::STATUS_ACTIVE])
+            ->whereHas('members', function ($query) use ($userId) {
+                $query->where(['user_id' => $userId]);
+            })
+            ->orderBy('name')
+            ->get();
     }
 
     public function oneByIdentifier($identifier, array $with = [])

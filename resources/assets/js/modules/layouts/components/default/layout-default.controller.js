@@ -61,7 +61,7 @@ export default class LayoutDefaultController extends ControllerBase {
         // todo: add is_my param to request
         // todo: load only needed info from projects list
         this.projectsService
-            .all()
+            .all({my: true})
             .then((response) => {
                 this.projects = response.data.data.map((project) => {
                     project.name = this.$filter('words')(project.name, 3);
