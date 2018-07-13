@@ -15,29 +15,11 @@ class ProjectsService
     public function all(array $params = [])
     {
         $query = Project::with(array_get($params, 'with', []));
-//        $query = Project::with([
-//            'users',
-//            'versions',
-//            'enabledModules'
-//        ]);
 
         // filter by status ids
         if ($status = array_get($params, 'status_ids')) {
             $query->whereIn('status', $status);
         }
-
-//        if ($my = array_get($params, 'my', false)) {
-//            $query->whereHas('members', function ($query) use ($userId) {
-//                $query->where(['user_id' => $userId]);
-//            });
-//        }
-
-        // todo: get only pablic and my project
-//        if ($userId = array_get($params, 'userId')) {
-//            $query->whereHas('members', function ($query) use ($userId) {
-//                $query->where(['user_id' => $userId]);
-//            });
-//        }
 
         // get only pablic and my project
         if ($userId = array_get($params, 'user_id')) {
@@ -52,18 +34,18 @@ class ProjectsService
             $query->whereIn('is_public', $public);
         }
 
-//        if ($closed = array_get($params, 'closed')) {
-//            $query->orWhere('status', Project::STATUS_ACTIVE);
-//        }
-
         if ($order = array_get($params, 'order', ['name' => 'asc'])) {
             if (\is_string($order) && \count($split = \explode(':', $order)) === 2) {
                 $order = [$split[0] => $split[1]];
             }
 
-            // todo: add check, if column available
+            $columns = \Schema::getColumnListing(Project::getTableName());
+
             foreach ($order as $key => $val) {
-                $query->orderBy($key, $val);
+                // check, if column available
+                if (\in_array($key, $columns, true)) {
+                    $query->orderBy($key, $val);
+                }
             }
         }
 
@@ -95,10 +77,6 @@ class ProjectsService
         return Project::query()
             ->where('identifier', $identifier)
             ->with($with)
-//            ->with([
-//                'enabledModules',
-//                'users'
-//            ])
             ->first();
     }
 

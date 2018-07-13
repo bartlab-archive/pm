@@ -153,61 +153,65 @@
                     </div>
                 </md-input-container>
 
-                <md-input-container class="md-block">
-                    <label>Start date</label>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>Start date</label>
 
-                    <md-datepicker name="start_date" ng-model="$ctrl.issue.start_date" server-field></md-datepicker>
+                        <md-datepicker name="start_date" ng-model="$ctrl.issue.start_date" server-field></md-datepicker>
 
-                    <div ng-messages="$ctrl.form.start_date.$error">
-                        <div ng-message="server" ng-bind-html="$ctrl.form.start_date.$server"></div>
-                    </div>
-                </md-input-container>
+                        <div ng-messages="$ctrl.form.start_date.$error">
+                            <div ng-message="server" ng-bind-html="$ctrl.form.start_date.$server"></div>
+                        </div>
+                    </md-input-container>
 
-                <md-input-container class="md-block">
-                    <label>Due date</label>
+                    <md-input-container class="md-block">
+                        <label>Due date</label>
 
-                    <md-datepicker name="due_date" ng-model="$ctrl.issue.due_date" server-field></md-datepicker>
+                        <md-datepicker name="due_date" ng-model="$ctrl.issue.due_date" server-field></md-datepicker>
 
-                    <div ng-messages="$ctrl.form.due_date.$error">
-                        <div ng-message="server" ng-bind-html="$ctrl.form.due_date.$server"></div>
-                    </div>
-                </md-input-container>
+                        <div ng-messages="$ctrl.form.due_date.$error">
+                            <div ng-message="server" ng-bind-html="$ctrl.form.due_date.$server"></div>
+                        </div>
+                    </md-input-container>
+                </div>
 
-                <md-input-container class="md-block">
-                    <label>Parent task</label>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>Parent task</label>
 
-                    <input name="parent_id" ng-model="$ctrl.issue.parent_id" server-field
-                           placeholder="id">
+                        <input name="parent_id" ng-model="$ctrl.issue.parent_id" server-field
+                               placeholder="id">
 
-                    <div ng-messages="$ctrl.form.parent_id.$error">
-                        <div ng-message="server" ng-bind-html="$ctrl.form.parent_id.$server"></div>
-                    </div>
-                </md-input-container>
+                        <div ng-messages="$ctrl.form.parent_id.$error">
+                            <div ng-message="server" ng-bind-html="$ctrl.form.parent_id.$server"></div>
+                        </div>
+                    </md-input-container>
 
-                <md-input-container class="md-block">
-                    <label>Estimated time</label>
+                    <md-input-container class="md-block">
+                        <label>Estimated time</label>
 
-                    <input type="number" name="estimated_hours" ng-model="$ctrl.issue.estimated_hours"
-                           placeholder="hours" server-field>
+                        <input type="number" name="estimated_hours" ng-model="$ctrl.issue.estimated_hours"
+                               placeholder="hours" server-field>
 
-                    <div ng-messages="$ctrl.form.estimated_hours.$error">
-                        <div ng-message="server" ng-bind-html="$ctrl.form.estimated_hours.$server"></div>
-                    </div>
-                </md-input-container>
+                        <div ng-messages="$ctrl.form.estimated_hours.$error">
+                            <div ng-message="server" ng-bind-html="$ctrl.form.estimated_hours.$server"></div>
+                        </div>
+                    </md-input-container>
 
-                <md-input-container class="md-block">
-                    <label>% Done</label>
+                    <md-input-container class="md-block">
+                        <label>% Done</label>
 
-                    <md-select name="done_ratio" ng-model="$ctrl.issue.done_ratio" server-field>
-                        <md-option ng-repeat="n in [] | range:11" ng-value="n * 10">
-                            {{ ::(n * 10) }}%
-                        </md-option>
-                    </md-select>
+                        <md-select name="done_ratio" ng-model="$ctrl.issue.done_ratio" server-field>
+                            <md-option ng-repeat="n in [] | range:11" ng-value="n * 10">
+                                {{ ::(n * 10) }}%
+                            </md-option>
+                        </md-select>
 
-                    <div ng-messages="$ctrl.form.done_ratio.$error">
-                        <div ng-message="server" ng-bind-html="$ctrl.form.done_ratio.$server"></div>
-                    </div>
-                </md-input-container>
+                        <div ng-messages="$ctrl.form.done_ratio.$error">
+                            <div ng-message="server" ng-bind-html="$ctrl.form.done_ratio.$server"></div>
+                        </div>
+                    </md-input-container>
+                </div>
 
                 <md-input-container class="md-block">
                     <label>Watchers</label>

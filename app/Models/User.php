@@ -64,49 +64,10 @@ class User extends Authenticatable
         'last_login_on',
     ];
 
-//    protected $hidden = [
-//        '*'
-////        'id',
-//        'hashed_password',
-//        'auth_source_id',
-//        'type',
-//        'identity_url',
-//        'salt',
-//        'admin'
-//    ];
-
-//    protected $visible = [
-//        'id',
-//        'firstname',
-//        'lastname',
-//        'full_name',
-//        'avatar'
-//    ];
-
-    protected $appends = [
-//        'avatar',
-//        'full_name'
-    ];
-
-//    public function email()
-//    {
-//        return $this->hasOne(EmailAddress::class)->where('is_default', true);
-//    }
-
     public function emails()
     {
         return $this->hasMany(EmailAddress::class);
     }
-
-//    public function additionalEmails()
-//    {
-//        return $this->hasMany(EmailAddress::class)->where('is_default', false);
-//    }
-
-//    public function attachments()
-//    {
-//        return $this->hasMany(Attachment::class, 'author_id', 'id');
-//    }
 
     public function preference()
     {
@@ -115,7 +76,7 @@ class User extends Authenticatable
 
     public function tokens()
     {
-        return $this->hasMany(Token::class);//->whereNotIn('action', ['session', 'autologin']);
+        return $this->hasMany(Token::class);
     }
 
     public function comments()
@@ -126,20 +87,5 @@ class User extends Authenticatable
     public function projects()
     {
         return $this->belongsToMany(Project::class, Member::getTableName());
-    }
-
-    public function getAvatarAttribute()
-    {
-        // todo: need check system config for avatar src
-        // todo: move to service or resource
-        $email = $this->emails->firstWhere('is_default', true);
-        return $email ? '//www.gravatar.com/avatar/' . md5(strtolower(trim($email->address))) . '?rating=PG&default=mp' : '';
-    }
-
-    public function getFullNameAttribute()
-    {
-        // todo: nedd check system config for user fullname format
-        // todo: move to service or resource
-        return $this->firstname . ' ' . $this->lastname;
     }
 }

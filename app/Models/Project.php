@@ -5,33 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\ModelTrait;
 use App\Traits\NodeTrait;
-use Illuminate\Support\Facades\Auth;
 
 class Project extends Model
 {
     use ModelTrait;
 //    use NodeTrait;
 
-    const STATUS_ACTIVE = '1';
-    const STATUS_CLOSED = '5';
-    const STATUS_ARCHIVED = '9';
+    const STATUS_ACTIVE = 1;
+    const STATUS_CLOSED = 5;
+    const STATUS_ARCHIVED = 9;
     const IS_PUBLIC = '1';
-
-//    protected $hidden = [
-//        'id',
-//        'parent_id',
-//        'lft',
-//        'rgt'
-//    ];
 
     protected $casts = [
         'admin' => 'boolean',
         'is_public' => 'boolean',
         'inherit_members' => 'boolean'
-    ];
-
-    protected $appends = [
-        'is_my'
     ];
 
     public $timestamps = false;
@@ -91,8 +79,10 @@ class Project extends Model
 
     public function members()
     {
-//        return $this->belongsToMany(User::class, Member::getTableName());
-        return $this->hasMany(Member::class);
+        // return only active members
+        return $this->hasMany(Member::class)->whereHas('user', function ($query) {
+            $query->where(['status' => User::STATUS_ACTIVE]);
+        });
     }
 
     public function parent()
@@ -100,9 +90,8 @@ class Project extends Model
         return $this->hasOne(self::class, 'id', 'parent_id');
     }
 
-    // todo: remove from model
-    public function getIsMyAttribute()
+    public function isArchived()
     {
-        return (Auth::guest() ? false : $this->members()->where('user_id', Auth::user()->id)->exists());
+        return $this->status === self::STATUS_ARCHIVED;
     }
 }

@@ -28,9 +28,9 @@ class ProjectResource extends Resource
 //            'updated_on' => $this->updated_on->format('Y-m-d H:i:s'),
             'identifier' => $this->identifier,
             'status' => $this->status,
-            'is_my' => $this->is_my,
+            'is_my' => \Auth::guest() ? false : $this->members()->where('user_id', \Auth::user()->id)->exists(),
+//            'is_my' => $this->is_my,
             'members' => MemberResource::collection($this->whenLoaded('members')),
-//        'members'=>$this->members,
             'trackers' => TrackerResource::collection($this->whenLoaded('trackers')),
             'modules' => ModuleResource::collection($this->whenLoaded('enabledModules')),
         ];
