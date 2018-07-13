@@ -39,7 +39,17 @@ export default class LayoutDefaultController extends ControllerBase {
         });
         this.userId = this.storageService.getUserData('id');
         this.newItems = this.mainService.getNewItemMenu();
-        this.projectItems = this.projectsService.getModules();
+        this.projectItems = this.projectsService.getModules().map((item) => {
+            item._enable = item.enable;
+
+            if (typeof item._enable === 'function') {
+                item.enable = item._enable();
+            }else{
+                item.enable = item.enable || !item.name;
+            }
+
+            return item;
+        });
 
         // this.setTitle();
         this.menuOpen = false;
@@ -58,7 +68,6 @@ export default class LayoutDefaultController extends ControllerBase {
     }
 
     loadMyProjects() {
-        // todo: add is_my param to request
         // todo: load only needed info from projects list
         this.projectsService
             .all({my: true})
@@ -152,8 +161,12 @@ export default class LayoutDefaultController extends ControllerBase {
 
                 // change visible items in project menu and generate sref string
                 this.projectItems.forEach((item) => {
-                    if (item.name) {
-                        item.enable = modules.some((value) => value.name === item.name);
+                    if (item._enable && typeof item._enable === 'function') {
+                        item.enable = item._enable(response.data.data);
+                    } else {
+                        if (item.name) {
+                            item.enable = modules.some((value) => value.name === item.name);
+                        }
                     }
                 });
 

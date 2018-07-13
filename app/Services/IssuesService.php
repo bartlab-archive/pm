@@ -53,6 +53,14 @@ class IssuesService
              */
         }
 
+        // filter by member
+        if ($userId = array_get($params,'user_id')){
+            $query->whereHas('project.members', function ($query) use ($userId) {
+                /** @var $query Builder */
+                $query->where('user_id', $userId);
+            });
+        }
+
         if ($statuses = array_get($params, 'status_ids', [])) {
             $query->whereIn('status_id', (array)$statuses);
         }

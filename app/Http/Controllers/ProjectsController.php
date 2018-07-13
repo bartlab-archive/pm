@@ -53,8 +53,8 @@ class ProjectsController extends BaseController
                     [
                         'with' => ['trackers', 'members.user']
                     ],
-                    \Auth::user()->admin ? [] : [
-                        'userId' => \Auth::id()
+                    \Auth::admin() ? [] : [
+                        'user_id' => \Auth::id()
                     ]
                 )
             )
@@ -63,8 +63,17 @@ class ProjectsController extends BaseController
 
     public function show($identifier)
     {
-        if (!$project = $this->projectsService->oneByIdentifier($identifier, ['parent', 'members.user', 'members.roles', 'enabledModules'])) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier, [
+            'parent',
+            'members.user',
+            'members.roles'
+        ])) {
             abort(404);
+        }
+
+        // show modules only for admin and members
+        if (\Auth::admin() || $project->members->firstWhere('user_id', \Auth::id())) {
+            $project->load('enabledModules');
         }
 
         // todo: check project status

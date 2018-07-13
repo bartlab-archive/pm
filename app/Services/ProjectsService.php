@@ -40,7 +40,7 @@ class ProjectsService
 //        }
 
         // get only pablic and my project
-        if ($userId = array_get($params, 'userId')) {
+        if ($userId = array_get($params, 'user_id')) {
             $query->where(function ($query) use ($userId) {
                 $query->where(['is_public' => Project::IS_PUBLIC])->orWhereHas('members', function ($query) use ($userId) {
                     $query->where(['user_id' => $userId]);

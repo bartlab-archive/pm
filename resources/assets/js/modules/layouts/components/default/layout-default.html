@@ -73,7 +73,7 @@
                 <md-nav-item ng-repeat="item in ::$ctrl.projectItems"
                              md-nav-click="$ctrl.openProjectPage(item)"
                              aria-label="{{ ::item.title }}"
-                             name="{{ ::item.url }}" ng-if="!item.name || item.enable">
+                             name="{{ ::item.url }}" ng-if="item.enable">
                     {{ ::item.title }}
                 </md-nav-item>
             </md-nav-bar>

@@ -36,7 +36,7 @@ export default class ProjectsProvider extends ProviderBase {
             name: '',
 
             // enabled by default
-            // todo: (true|false|module|callback)
+            // todo: (true|false|'module'|callback)
             enable: false,
 
             // url regexp for detect active menu item

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\Auth;
 use App\Http\Requests\Issues\GetIssuesRequest;
 use App\Http\Requests\Issues\CreateIssueRequest;
 use App\Http\Requests\Issues\UpdateIssueRequest;
@@ -13,10 +14,8 @@ use App\Http\Resources\TrackerResource;
 use App\Models\Issue;
 use App\Services\EnabledModulesService;
 use App\Services\EnumerationsService;
-use App\Services\IssueCategoriesService;
 use App\Services\IssuesService;
 use App\Services\ProjectsService;
-use App\Services\StatusesService;
 use App\Services\TrackersService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -25,11 +24,9 @@ use Illuminate\Routing\Controller as BaseController;
  * Class IssuesController
  *
  * @property IssuesService $issuesService
- * @property StatusesService $statusesService
  * @property TrackersService $trackersService
  * @property ProjectsService $projectsService
  * @property EnumerationsService $enumerationsService
- * @property IssueCategoriesService $categoriesService
  * @property EnabledModulesService $enabledModulesService
  *
  * @package App\Http\Controllers
@@ -78,7 +75,12 @@ class IssuesController extends BaseController
 
         // todo: get only needed fields from request
         return IssueCollection::make(
-            $this->issuesService->all($request->all())
+            $this->issuesService->all(
+                array_merge(
+                    $request->all(),
+                    Auth::admin() ? [] : ['user_id' => Auth::id()]
+                )
+            )
         );
     }
 

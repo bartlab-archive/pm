@@ -27,7 +27,10 @@ export default class ProjectsService extends InjectableBase {
             this.modules.map((module) => Object.assign({}, module)),
             [{
                 url: 'projects.inner.settings',
-                title: 'Settings'
+                title: 'Settings',
+                enable: ((project) => {
+                    return project !== undefined && project.is_my;
+                })
             }]);
     }
 
