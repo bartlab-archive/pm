@@ -74,9 +74,10 @@ class ProjectsService
         return $query->get();
     }
 
-    public function allByUserId($userId)
+    public function allByUserId($userId, array $with = [])
     {
         return Project::query()
+            ->with($with)
             ->where(['status' => Project::STATUS_ACTIVE])
             ->whereHas('members', function ($query) use ($userId) {
                 $query->where(['user_id' => $userId]);

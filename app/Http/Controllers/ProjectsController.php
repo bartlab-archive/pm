@@ -42,7 +42,7 @@ class ProjectsController extends BaseController
     {
         if ($request->input('my')) {
             return ProjectResource::collection(
-                $this->projectsService->allByUserId(\Auth::id())
+                $this->projectsService->allByUserId(\Auth::id(), ['trackers', 'members.user'])
             );
         }
 
