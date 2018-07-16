@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Facades\Auth;
 use App\Http\Requests\Issues\GetIssuesRequest;
 use App\Http\Requests\Issues\CreateIssueRequest;
 use App\Http\Requests\Issues\UpdateIssueRequest;
@@ -54,23 +53,35 @@ class IssuesController extends BaseController
         $this->enabledModulesService = $enabledModulesService;
     }
 
+    protected function checkProject($identifier, $abort = true)
+    {
+        // check that the project exists
+        if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
+            return $abort ? abort(404) : false;
+        }
+
+        // check project status
+        if ($project->isArchived()) {
+            return $abort ? abort(403) : false;
+        }
+
+        // check module status for project
+        if (!$this->enabledModulesService->check($project->id, $this->issuesService::MODULE_NAME)) {
+            return $abort ? abort(403) : false;
+        }
+
+        // check user for the right to view issues in this project
+        if (!\Auth::admin() && !$this->projectsService->isMember($project->id, \Auth::user()->id)) {
+            return $abort ? abort(403) : false;
+        }
+
+        return $project;
+    }
+
     public function index(GetIssuesRequest $request)
     {
         if ($identifier = $request->get('project_identifier')) {
-            if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
-                abort(404);
-            }
-
-            /*
-             * todo:
-             * Need check:
-             *  - is module enambled for project
-             *  - is user allow to view issue
-             *  - project status
-             */
-            if (!$this->enabledModulesService->check($project->id, $this->issuesService::MODULE_NAME)) {
-                abort(403);
-            }
+            $this->checkProject($identifier);
         }
 
         // todo: get only needed fields from request
@@ -78,7 +89,7 @@ class IssuesController extends BaseController
             $this->issuesService->all(
                 array_merge(
                     $request->all(),
-                    Auth::admin() ? [] : ['user_id' => Auth::id()]
+                    \Auth::admin() ? [] : ['user_id' => \Auth::id()]
                 )
             )
         );
@@ -89,16 +100,12 @@ class IssuesController extends BaseController
         if (!$issue = $this->issuesService->one($id)) {
             abort(404);
         }
-        /*
-         * todo:
-         * Need check:
-         *  - is module enambled for project
-         *  - is user allow to view issue
-         *  - project status
-         */
-        if (!$issue->project_id || !$this->enabledModulesService->check($issue->project_id, $this->issuesService::MODULE_NAME)) {
+
+        if (!$issue->project_id || !$issue->project) {
             abort(403);
         }
+
+        $this->checkProject($issue->project->identifier);
 
         return IssueResource::make($issue);
     }
@@ -119,20 +126,7 @@ class IssuesController extends BaseController
 
     public function store(CreateIssueRequest $request)
     {
-        if (!$project = $this->projectsService->oneByIdentifier($request->get('project_identifier'))) {
-            abort(404);
-        }
-
-        /*
-         * todo:
-         * Need check:
-         *  - is module enambled for project
-         *  - is user allow to view issue
-         *  - project status
-         */
-        if (!$this->enabledModulesService->check($project->id, $this->issuesService::MODULE_NAME)) {
-            abort(403);
-        }
+        $project = $this->checkProject($request->get('project_identifier'));
 
         // create new issue
         $issue = $this->issuesService->create(
@@ -159,30 +153,24 @@ class IssuesController extends BaseController
             abort(404);
         }
 
-        /*
-         * todo:
-         * Need check:
-         *  - is module enambled for project
-         *  - is user allow to view issue
-         *  - project status
-         */
-        if (!$this->enabledModulesService->check($issue->project_id, $this->issuesService::MODULE_NAME)) {
+        if (!$issue->project_id || !$issue->project) {
             abort(403);
         }
+
+        $this->checkProject($issue->project->identifier);
 
         $data = array_merge(
             $request->validated(),
             ['user_id' => \Auth::id()]
         );
 
-        // check new project for issue
-        if ($identifier = $request->get('project_identifier')) {
-            $project = $this->projectsService->oneByIdentifier($identifier);
-
-            // todo: check project status
-            if ($project->id !== $issue->project_id && $this->enabledModulesService->check($project->id, $this->issuesService::MODULE_NAME)) {
-                $data['project_id'] = $project->id;
-            }
+        // check project if this change for issue
+        if (
+            ($identifier = $request->get('project_identifier')) &&
+            ($issue->project->identifier !== $identifier) &&
+            ($project = $this->checkProject($identifier, false))
+        ) {
+            $data['project_id'] = $project->id;
         }
 
         if (!$issue = $this->issuesService->update($id, $data)) {
@@ -195,6 +183,16 @@ class IssuesController extends BaseController
 
     public function destroy($id)
     {
+        if (!$issue = $this->issuesService->one($id)) {
+            abort(404);
+        }
+
+        if (!$issue->project_id || !$issue->project) {
+            abort(403);
+        }
+
+        $this->checkProject($issue->project->identifier);
+
         // todo: full check issue and project
         if (!$this->issuesService->delete($id)) {
             abort(422);
@@ -209,16 +207,11 @@ class IssuesController extends BaseController
             abort(404);
         }
 
-        /*
-         * todo:
-         * Need check:
-         *  - is module enambled for project
-         *  - is user allow to view issue
-         *  - project status
-         */
-        if (!$issue->project_id || !$this->enabledModulesService->check($issue->project_id, $this->issuesService::MODULE_NAME)) {
+        if (!$issue->project_id || !$issue->project) {
             abort(403);
         }
+
+        $this->checkProject($issue->project->identifier);
 
         if (!$this->issuesService->watch($id, \Auth::id())) {
             abort(422);
@@ -233,16 +226,11 @@ class IssuesController extends BaseController
             abort(404);
         }
 
-        /*
-         * todo:
-         * Need check:
-         *  - is module enambled for project
-         *  - is user allow to view issue
-         *  - project status
-         */
-        if (!$issue->project_id || !$this->enabledModulesService->check($issue->project_id, $this->issuesService::MODULE_NAME)) {
+        if (!$issue->project_id || !$issue->project) {
             abort(403);
         }
+
+        $this->checkProject($issue->project->identifier);
 
         if (!$this->issuesService->unwatch($id, \Auth::id())) {
             abort(422);

@@ -11,7 +11,7 @@ import InjectableBase from "base/injectable.base";
 export default class ProjectsService extends InjectableBase {
 
     static get $inject() {
-        return ['$stateParams', '$http'];
+        return ['$stateParams', '$http', 'authService'];
     }
 
     $onInit() {
@@ -29,7 +29,7 @@ export default class ProjectsService extends InjectableBase {
                 url: 'projects.inner.settings',
                 title: 'Settings',
                 enable: ((project) => {
-                    return project !== undefined && project.is_my;
+                    return project !== undefined && (project.is_my === true || this.authService.isAdmin());
                 })
             }]);
     }

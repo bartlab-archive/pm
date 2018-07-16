@@ -38,6 +38,8 @@ class IssuesService
             'watchers'
         ]);
 
+        // todo: check for private issue status by roles
+
         if ($project = array_get($params, 'project_identifier')) {
             $query->whereHas('project', function ($query) use ($project) {
                 /** @var $query Builder */

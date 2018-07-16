@@ -75,7 +75,7 @@ class ProjectsService
         }
 
         return Project::query()
-            ->where('identifier', $identifier)
+            ->where(['identifier' => $identifier])
             ->with($with)
             ->first();
     }
@@ -134,6 +134,15 @@ class ProjectsService
 
                 return $project;
             }
+        }
+
+        return false;
+    }
+
+    public function isMember($id, $userId)
+    {
+        if ($project = $this->oneById($id)) {
+            return $project->members()->where('user_id', $userId)->exists();
         }
 
         return false;
