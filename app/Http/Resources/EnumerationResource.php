@@ -19,7 +19,7 @@ class EnumerationResource extends Resource
             'name' => $this->name,
 //            'position' => $this->name,
             'is_default' => $this->is_default,
-            'type' => $this->type,
+//            'type' => $this->type,
 //            'active' => $this->active,
 //            'parent_id' => $this->parent_id,
 //            'position_name' => $this->position_name,

@@ -11,12 +11,18 @@ import IssuesViewModalController from '../view-modal/issues-view-modal.controlle
  * @property {$rootScope} $rootScope
  * @property {UsersService} $mdDialog
  * @property {$filter} $filter
+ * @property {$mdToast} $mdToast
+ * @property {$q} $q
+ * @property {TrackersService} trackersService
+ * @property {EnumerationsService} enumerationsService
  */
 export default class IssuesListController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$showdown', 'issuesService', 'projectsService', '$stateParams', '$rootScope',
-            '$mdDialog', '$filter', '$mdToast'];
+        return [
+            '$state', '$showdown', 'issuesService', 'projectsService', '$stateParams', '$rootScope',
+            '$mdDialog', '$filter', '$mdToast', '$q', 'trackersService', 'enumerationsService'
+        ];
     }
 
     static setMdDialogConfig(target, data = {}) {
@@ -135,7 +141,7 @@ export default class IssuesListController extends ControllerBase {
 
         return this.issuesService//.all()
             .all({
-                project_identifier: this.projectsService.getCurrentId(),
+                project_identifier: this.currentProjectId,
                 // limit: this.limitPerPage,
                 // offset: this.offset,
                 per_page: this.limitPerPage,
@@ -180,50 +186,55 @@ export default class IssuesListController extends ControllerBase {
         return text ? this.$filter('words')(this.$showdown.stripHtml(this.$showdown.makeHtml(text)), 20) : '';
     }
 
-    // currentProjectId() {
-    //     return this.$stateParams.hasOwnProperty('project_id') ? this.$stateParams.project_id : null;
-    // }
-
     onChangeFilterValue() {
         this.meta.current_page = 1;
         this.load();
     }
 
     loadFiltersValues() {
-        // todo: separate for responses, remove filter api point
-        return this.issuesService
-            .filters({
-                project_identifier: this.projectsService.getCurrentId()
-            })
-            // .get({
-            //     project_identifier: this.projectsService.getCurrentId()
-            // })
-            .then((response) => {
-                this.statusList = response.data.statuses.map((e) => {
-                    e.type = 'status';
+        this.loadProccess = true;
 
-                    // default filter value
-                    if (!e.is_closed) {
-                        this.tags.push(e);
-                    }
-
-                    return e;
-                });
-
-                this.priorityList = response.data.priorities.map((e) => {
-                    e.type = 'priority';
-                    return e;
-                });
-
+        return this.$q
+            .all([
+                this.issuesService.statuses(),
+                this.trackersService.all(),
+                this.enumerationsService.all({
+                    type: 'IssuePriority',
+                    project_identifier: this.currentProjectId
+                })
+            ])
+            .then(([statuses, trackers, priority]) => {
                 // filter available parameters
                 this.items.push(
-                    ...this.statusList,
-                    ...this.priorityList,
-                    ...response.data.trackers.map((e) => {
+                    ...statuses.data.data.map((e) => {
+                        e.type = 'status';
+
+                        // default filter value
+                        if (!e.is_closed) {
+                            this.tags.push(e);
+                        }
+
+                        return e;
+                    }),
+                    ...priority.data.data.map((e) => {
+                        e.type = 'priority';
+                        return e;
+                    }),
+                    ...trackers.data.data.map((e) => {
                         e.type = 'tracker';
                         return e;
                     })
                 );
+            })
+            .catch((response) => {
+                if (response.status === 422) {
+                    this.$mdToast.show(
+                        this.$mdToast.simple().textContent(response.data.message)
+                    );
+                }
+            })
+            .finally(() => {
+                this.loadProccess = false;
             });
     }
 
@@ -287,29 +298,6 @@ export default class IssuesListController extends ControllerBase {
         );
     }
 
-    // deleteGroup() {
-    //     let title_issue = this.selectedGroup.length > 1 ? 'issues' : 'issue';
-    //     let confirm = this.$mdDialog.confirm()
-    //         .title(`Would you like to delete this ${title_issue}?`)
-    //         .ok('Delete!')
-    //         .cancel('Cancel');
-    //
-    //     this.$mdDialog.show(confirm).then(() => {
-    //         this.selectedGroup.forEach((issue) => {
-    //             this.deleteConfirmedIssue(issue.id);
-    //         });
-    //         this.selectedGroup = [];
-    //     });
-    // }
-
-    // deleteConfirmedIssue(id) {
-    //     this.IssuesService.deleteIssue(id).then(() => {
-    //         this.$rootScope.$emit('updateIssues');
-    //     });
-    //
-    //     this.selectedGroup = [];
-    // }
-
     setSort(item) {
         this.sort = item;
         this.meta.current_page = 1;
@@ -328,20 +316,6 @@ export default class IssuesListController extends ControllerBase {
         this.load();
     }
 
-    // next() {
-    //     if (this.offset + this.limitPerPage < this.count) {
-    //         this.offset += this.limitPerPage;
-    //         this.load();
-    //     }
-    // }
-    //
-    // previous() {
-    //     if (this.offset > 0) {
-    //         this.offset = this.offset - this.limitPerPage;
-    //         this.load();
-    //     }
-    // }
-
     next() {
         if (this.links.next) {
             this.meta.current_page++;
@@ -355,23 +329,6 @@ export default class IssuesListController extends ControllerBase {
             this.load();
         }
     }
-
-    // getPager() {
-    //     const currentPage = (this.offset === 0 ? this.offset + 1 : this.offset);
-    //     const fromPage = (this.count < this.limitPerPage || this.count < this.offset + this.limitPerPage) ?
-    //         this.count : this.limitPerPage + this.offset;
-    //     const all = (this.count > this.limitPerPage ? ' /' + this.count : '');
-    //
-    //     return currentPage + '-' + fromPage + all;
-    // }
-
-    // openIssue(id) {
-    //     this.$state.go('issues.info', {id: id});
-    // }
-
-    // editIssue(id) {
-    //     this.$state.go('issues.edit', {id: id});
-    // }
 
     copyIssue(item) {
         this.$state.go('issues-inner.copy', {id: item.id, project_id: item.project.identifier});

@@ -28,6 +28,7 @@ class IndexProjectRequest extends FormRequest
             'public'=> 'array',
             'public.*'=> 'numeric|in:1,0',
             'status_ids'=> 'array',
+            // todo: status_ids depends on user admin status
             'status_ids.*'=> 'numeric|in:1,5',
             'order' => 'string',
             'per_page' => 'numeric',

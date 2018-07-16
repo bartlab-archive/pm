@@ -11,6 +11,7 @@ class JournalCollection extends ResourceCollection
         // remove journal item if is private and empty details
         return JournalResource::collection(
             $this->collection->reject(function ($journal) {
+                // todo: private notes show by user roles settings or for admin
                 return $journal->private_notes && $journal->user_id !== \Auth::id() && empty($journal->details);
             })
         );

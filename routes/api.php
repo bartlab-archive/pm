@@ -113,7 +113,7 @@ Route::group(
                 'prefix' => 'trackers'
             ],
             function () {
-                Route::get('/', 'TrackersController@getAll');
+                Route::get('/', 'TrackersController@index');
             }
         );
 
@@ -144,16 +144,6 @@ Route::group(
             ],
             function () {
                 Route::get('/', 'RolesController@index');
-            }
-        );
-
-        Route::group(
-            [
-                'middleware' => 'auth',
-                'prefix' => 'statuses'
-            ],
-            function () {
-                Route::get('/', 'StatusesController@index');
             }
         );
 
@@ -191,7 +181,7 @@ Route::group(
                 // issues
                 Route::get('/', 'IssuesController@index');
                 Route::post('/', 'IssuesController@store');
-                Route::get('/filters', 'IssuesController@filters');
+//                Route::get('/filters', 'IssuesController@filters');
                 Route::get('/{id}', 'IssuesController@show');
                 Route::put('/{id}', 'IssuesController@update');
                 Route::delete('/{id}', 'IssuesController@destroy');

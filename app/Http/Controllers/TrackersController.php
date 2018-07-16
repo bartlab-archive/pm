@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TrackerResource;
 use App\Services\TrackersService;
 use App\Services\RolesService;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
 /**
@@ -34,13 +34,10 @@ class TrackersController extends BaseController
     /**
      * @return mixed
      */
-    public function getAll()
+    public function index()
     {
-        return $this->trackersService->all();
+        return TrackerResource::collection(
+            $this->trackersService->all()
+        );
     }
-
-	public function getList(Request $request)
-	{
-		return $this->trackersService->getList($request->all());
-	}
 }

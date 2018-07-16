@@ -10,7 +10,7 @@ class TrackersService
 
     public function all()
     {
-        return Tracker::all();
+        return Tracker::query()->get();
     }
 
 }

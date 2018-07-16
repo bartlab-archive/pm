@@ -1,24 +1,13 @@
 import ServiceBase from 'base/service.base';
 
-/**
- * @property {Restangular} Restangular
- * @property {$cacheFactory} $cacheFactory
- */
 export default class TrackersService extends ServiceBase {
 
     static get $inject() {
-        return [];
-    }
-
-    $onInit($injector) {
-    }
-
-    getAll() {
-        // return this.Restangular.all('trackers').getList();
+        return ['$http'];
     }
 
     all() {
-        // return this.Restangular.all('trackers');
+        return this.$http.get('/api/v1/trackers');
     }
 
 }

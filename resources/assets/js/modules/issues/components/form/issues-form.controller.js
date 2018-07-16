@@ -72,6 +72,7 @@ export default class IssuesFormController extends ControllerBase {
                 this.projectsService.all((this.authService.isAdmin() ? undefined : {my: true})),
                 (this.$stateParams.id ? this.issuesService.one(this.issue.id) : undefined),
                 this.issuesService.statuses(),
+                // todo: add project identifier for enumerations request
                 this.enumerationsService.all({type: 'IssuePriority'}),
             ])
             .then((response) => {

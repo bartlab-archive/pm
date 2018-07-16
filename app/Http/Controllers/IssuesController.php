@@ -84,11 +84,10 @@ class IssuesController extends BaseController
             $this->checkProject($identifier);
         }
 
-        // todo: get only needed fields from request
         return IssueCollection::make(
             $this->issuesService->all(
                 array_merge(
-                    $request->all(),
+                    $request->validated(),
                     \Auth::admin() ? [] : ['user_id' => \Auth::id()]
                 )
             )
@@ -110,19 +109,19 @@ class IssuesController extends BaseController
         return IssueResource::make($issue);
     }
 
-    public function filters(Request $request)
-    {
-        return response([
-            'statuses' => StatusResource::collection($this->issuesService->statuses()),
-            'trackers' => TrackerResource::collection($this->trackersService->all()),
-            'priorities' => PriorityResource::collection(
-                $this->enumerationsService->all([
-                    'type' => Issue::ENUMERATION_PRIORITY,
-                    'project_identifier' => $request->get('project_identifier')
-                ])
-            )
-        ]);
-    }
+//    public function filters(Request $request)
+//    {
+//        return response([
+//            'statuses' => StatusResource::collection($this->issuesService->statuses()),
+//            'trackers' => TrackerResource::collection($this->trackersService->all()),
+//            'priorities' => PriorityResource::collection(
+//                $this->enumerationsService->all([
+//                    'type' => Issue::ENUMERATION_PRIORITY,
+//                    'project_identifier' => $request->get('project_identifier')
+//                ])
+//            )
+//        ]);
+//    }
 
     public function store(CreateIssueRequest $request)
     {
