@@ -40,6 +40,7 @@ export default class IssuesListController extends ControllerBase {
 
     $onInit() {
         this.currentProjectId = this.projectsService.getCurrentId();
+        this.doneRatio = (new Array(11)).fill(undefined).map((v, i) => i);
 
         // selected tags for filter
         this.tags = [];

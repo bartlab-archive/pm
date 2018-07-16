@@ -148,7 +148,7 @@
     </md-card-content>
 
     <md-list class="md-dense">
-        <div ng-if="$ctrl.count === 0" layout-align="center center" layout="row" class="md-padding">
+        <div ng-if="$ctrl.meta.total === 0" layout-align="center center" layout="row" class="md-padding">
             No data to display
         </div>
 
@@ -313,7 +313,7 @@
                                     </md-button>
 
                                     <md-menu-content width="2">
-                                        <md-menu-item class="md-indent" ng-repeat="item in [] | range:11">
+                                        <md-menu-item class="md-indent" ng-repeat="item in ::$ctrl.doneRatio">
                                             <md-icon ng-if="::(row.done_ratio === (item * 10))">check</md-icon>
                                             <md-button ng-click="null"
                                                        ng-disabled="::(row.done_ratio === (item * 10))">
