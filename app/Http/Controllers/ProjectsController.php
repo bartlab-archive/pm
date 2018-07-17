@@ -66,7 +66,8 @@ class ProjectsController extends BaseController
         if (!$project = $this->projectsService->oneByIdentifier($identifier, [
             'parent',
             'members.user',
-            'members.roles'
+            'members.roles',
+            'enabledModules'
         ])) {
             abort(404);
         }
@@ -77,9 +78,9 @@ class ProjectsController extends BaseController
         }
 
         // show modules only for admin and members
-        if (\Auth::admin() || $project->members->firstWhere('user_id', \Auth::id())) {
-            $project->load('enabledModules');
-        }
+//        if (\Auth::admin() || $project->members->firstWhere('user_id', \Auth::id())) {
+//            $project->load('enabledModules');
+//        }
 
         return ProjectResource::make($project);
     }

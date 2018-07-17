@@ -14,6 +14,8 @@ export default class AppRun extends InjectableBase {
         // this.isReady = false;
         window.Promise = this.$q;
 
+        // todo: reset document scroll position after change state
+
         this.$transitions.onStart({}, (...args) => this.checkAccess(...args));
         this.$rootScope.$on('authUnauthorized', (...args) => this.authUnauthorized(...args));
         this.$rootScope.$on('authForbidden', (...args) => this.authForbidden(...args));

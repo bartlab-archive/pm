@@ -20,9 +20,13 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'angular-sanitize',
         'babel-polyfill',
         'ng-showdown',
+        '@uirouter/angularjs',
         // 'simplemde',
         'lodash',
-        'moment'
+        'moment',
+        'codemirror',
+        'codemirror-spell-checker',
+        'marked'
     ])
     .sass('resources/assets/sass/app.scss', 'public/css')
     .sourceMaps()

@@ -22,7 +22,7 @@ class Project extends Model
         'inherit_members' => 'boolean'
     ];
 
-    public $timestamps = false;
+//    public $timestamps = false;
 
     protected $guarded = [
         'id'

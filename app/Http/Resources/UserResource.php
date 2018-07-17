@@ -29,7 +29,7 @@ class UserResource extends Resource
                     'avatar' => '//www.gravatar.com/avatar/' . md5(strtolower(trim($email->address))) . '?rating=PG&default=mp'
                 ];
             }),
-            $this->mergeWhen(\Auth::user() && \Auth::user()->admin, [
+            $this->mergeWhen(\Auth::admin(), [
                 'request' => $this->admin
             ]),
             $this->mergeWhen($this->type !== 'User', [

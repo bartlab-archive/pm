@@ -12,14 +12,23 @@ export default class ProjectsListController extends ControllerBase {
     }
 
     $onInit() {
+        // check state name for show extended project list
+        this.isExtended = (this.$state.current.name === 'projects-admin');
+
         // available parameters for the filter
         this.items = [
             {type: 'status', name: 'Open', id: 1},
             {type: 'status', name: 'Close', id: 5},
             // {type: 'status', name: 'ARCHIVED', id: 9},
-            {type: 'public', name: 'Public', id: 1},
-            {type: 'public', name: 'Private', id: 0},
+            // {type: 'public', name: 'Public', id: 1},
+            // {type: 'public', name: 'Private', id: 0},
         ];
+
+        if (this.isExtended) {
+            this.items.push({type: 'status', name: 'Archived', id: 9});
+            this.items.push({type: 'public', name: 'Public', id: 1});
+            this.items.push({type: 'public', name: 'Private', id: 0});
+        }
 
         // selected tags for filter
         this.tags = [this.items[0]];
@@ -28,7 +37,6 @@ export default class ProjectsListController extends ControllerBase {
         this.searchText = '';
 
         this.list = [];
-        // this.showClosed = 1;
 
         // available parameters for the sorting
         this.sortList = [
@@ -43,15 +51,12 @@ export default class ProjectsListController extends ControllerBase {
 
         // pagination
         this.perPageList = [20, 50, 100];
-        // this.count = 0;
-        // this.offset = 0;
         this.meta = {
             current_page: 1,
             total: 0
         };
         this.limitPerPage = this.perPageList[0];
         this.links = {};
-        // this.pager = '';
 
         this.loadProccess = false;
 
@@ -60,15 +65,11 @@ export default class ProjectsListController extends ControllerBase {
 
     load() {
         this.loadProccess = true;
-        this.list = [];
 
         return this.projectsService
-        // .all()
             .all({
-                // closed: this.showClosed,
                 per_page: this.limitPerPage,
                 page: this.meta.current_page,
-                // offset: this.offset,
                 order: this.sort.param,
                 'status_ids[]': this.tags.filter((e) => e.type === 'status').map((e) => e.id),
                 'public[]': this.tags.filter((e) => e.type === 'public').map((e) => e.id)
@@ -76,16 +77,14 @@ export default class ProjectsListController extends ControllerBase {
             .then((response) => {
                 this.list = response.data.data.map((e) => {
                     e.description = this.makeHtml(e.description);
+                    if (e.status !== 9) {
+                        e._sref = this.$state.href(this.isExtended ? 'projects.inner.settings' : 'projects.inner.info', {project_id: e.identifier});
+                    }
                     return e;
                 });
 
-                // this.offset = parseInt(response.headers('X-Offset')) || 0;
-                // this.limitPerPage = parseInt(response.headers('X-Limit')) || 0;
-                // this.count = parseInt(response.headers('X-Total')) || 0;
                 this.meta = response.data.meta;
                 this.links = response.data.links;
-                // this.pager = this.getPager();
-                // this.loadProccess = false;
             })
             .catch((response) => {
                 if (response.status === 422) {
@@ -98,16 +97,6 @@ export default class ProjectsListController extends ControllerBase {
                 this.loadProccess = false;
             });
     }
-
-    // getPager() {
-    // const currentPage = (this.offset === 0 ? this.offset + 1 : this.offset);
-    // const fromPage = (this.count < this.limitPerPage || this.count < this.offset + this.limitPerPage) ?
-    //     this.count : this.limitPerPage + this.offset;
-    // const all = (this.count > this.limitPerPage ? ' /' + this.count : '');
-    //
-    // return currentPage + '-' + fromPage + all;
-    // return this.meta.from + ' - ' + this.meta.to + ' / ' + this.meta.total;
-    // }
 
     querySearch() {
         let items = this.items.filter((e) => {
@@ -128,10 +117,6 @@ export default class ProjectsListController extends ControllerBase {
     onChangeFilterValue() {
         this.meta.current_page = 1;
         this.load();
-    }
-
-    goto(identifier) {
-        this.$state.go('projects.inner.info', {project_id: identifier});
     }
 
     setSort(item) {
@@ -159,11 +144,6 @@ export default class ProjectsListController extends ControllerBase {
             this.load();
         }
     }
-
-    //
-    // newProject() {
-    //     this.$state.go('projects.new');
-    // }
 
     makeHtml(text) {
         return text ? this.$showdown.stripHtml(this.$showdown.makeHtml(text)) : '';

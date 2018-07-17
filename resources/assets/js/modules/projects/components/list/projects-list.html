@@ -1,21 +1,12 @@
-<!--<div layout-gt-sm="row" layout-align="center start">-->
-<!--<md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">-->
 <md-card>
     <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
 
     <md-card-header>
-
         <div flex></div>
 
         <md-button class="md-icon-button" ng-click="$ctrl.load()">
             <md-icon>refresh</md-icon>
         </md-button>
-
-        <!--<md-switch class="md-body-1" ng-model="$ctrl.showClosed" md-invert aria-label="Show closed"-->
-        <!--ng-change="$ctrl.load()"-->
-        <!--ng-true-value="5" ng-false-value="1">-->
-        <!--Show closed-->
-        <!--</md-switch>-->
 
         <div ng-if="$ctrl.meta.total > 0">
             <md-menu>
@@ -126,7 +117,9 @@
         </div>
 
         <div ng-repeat="project in $ctrl.list" class="animate-repeat">
-            <md-list-item class="md-2-line" ng-click="$ctrl.goto(project.identifier)">
+            <md-list-item class="md-2-line"
+                          ng-href="{{ ::project._sref }}"
+                          ng-click="null" aria-label="{{ ::project.name }}">
 
                 <span class="md-avatar">{{ ::project.name | limitTo:1 }}</span>
 
@@ -136,37 +129,31 @@
                         <span class="description">{{ ::project.description | words: 50 }}</span>
                     </h3>
 
-                    <!--<h4 layout="row">-->
-                    <!--<span>-->
-                    <!--{{::[-->
-                    <!--(project.is_public ? 'Public' : 'Private'),-->
-                    <!--(project.status === 5 ? 'Closed' : 'Open'),-->
-                    <!--(project.is_my? 'Member' : null)-->
-                    <!--] | join:' | '-->
-                    <!--}}-->
-                    <!--</span>-->
-
-                    <!--<span flex></span>-->
-
-                    <!--<span>{{ ::project.updated_on }}</span>-->
-                    <!--</h4>-->
-
                     <h4 layout="row">
-                        <span class="label label-default">
+                        <span class="label label-default" ng-if="::$ctrl.isExtended">
                             {{ ::(project.is_public ? 'Public' : 'Private') }}
                         </span>
-                        <span class="label label-default">
-                            {{ ::(project.status === 5 ? 'Closed' : 'Open') }}
+
+                        <span class="label label-default" ng-if="::(project.status === 1)">
+                            Open
                         </span>
-                        <span class="label label-primary" ng-if="project.is_my">
+
+                        <span class="label label-default" ng-if="::(project.status === 5)">
+                            Closed
+                        </span>
+
+                        <span class="label label-default" ng-if="::(project.status === 9)">
+                            Archived
+                        </span>
+
+                        <span class="label label-primary" ng-if="::project.is_my">
                            Member
                         </span>
+
                         <span flex></span>
 
-                        <span>{{ ::row.updated_on }}</span>
+                        <span ng-if="::$ctrl.isExtended">{{ ::project.created_on }}</span>
                     </h4>
-
-                    <!--<p class="md-truncate">{{ ::project.description | words: 50 }}</p>-->
                 </div>
 
                 <md-menu-bar>
@@ -176,9 +163,63 @@
                         </md-button>
 
                         <md-menu-content width="3">
-                            <md-menu-item class="md-indent" ng-click="null">
-                                <!--<md-icon>open_in_browser</md-icon>-->
+                            <md-menu-item class="md-indent" ng-if="::(project.status !== 9)">
+                                <md-icon>open_in_browser</md-icon>
+                                <md-button ng-href="{{ ::project._sref }}">
+                                    Open
+                                </md-button>
+                            </md-menu-item>
 
+                            <md-menu-item class="md-indent" ng-if="::$ctrl.isExtended">
+                                <md-menu>
+                                    <md-button ng-click="$mdMenu.open()">
+                                        Status
+                                    </md-button>
+
+                                    <md-menu-content width="3">
+                                        <md-menu-item class="md-indent">
+                                            <md-icon ng-if="::(project.status === 1)">check</md-icon>
+                                            <md-button ng-click="null" ng-disabled="::(project.status === 1)">
+                                                Open
+                                            </md-button>
+                                        </md-menu-item>
+
+                                        <md-menu-item class="md-indent">
+                                            <md-icon ng-if="::(project.status === 5)">check</md-icon>
+                                            <md-button ng-click="null" ng-disabled="::(project.status === 5)">
+                                                Close
+                                            </md-button>
+                                        </md-menu-item>
+
+                                        <md-menu-item class="md-indent">
+                                            <md-icon ng-if="::(project.status === 9)">check</md-icon>
+                                            <md-button ng-click="null" ng-disabled="::(project.status === 9)">
+                                                Archive
+                                            </md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                </md-menu>
+                            </md-menu-item>
+
+                            <md-menu-item class="md-indent" ng-click="null" ng-if="::$ctrl.isExtended">
+                                <md-icon>content_copy</md-icon>
+                                <md-button>
+                                    Copy
+                                </md-button>
+                            </md-menu-item>
+
+                            <md-menu-divider></md-menu-divider>
+
+                            <md-menu-item class="md-indent" ng-click="null" ng-if="::$ctrl.isExtended">
+                                <md-icon>delete</md-icon>
+                                <md-button>
+                                    Delete
+                                </md-button>
+                            </md-menu-item>
+
+                            <md-menu-divider ng-if="::$ctrl.isExtended"></md-menu-divider>
+
+                            <md-menu-item class="md-indent" ng-click="null">
                                 <md-button disabled="disabled">
                                     coming soon
                                 </md-button>
@@ -186,15 +227,9 @@
                         </md-menu-content>
                     </md-menu>
                 </md-menu-bar>
-
-
-                <!--<md-icon class="md-warn" ng-if="project.is_my === 1">star_rate</md-icon>-->
-                <!--<md-icon>{{ project.is_public ? 'lock_open' : 'lock' }}</md-icon>-->
-                <!--<md-icon ng-if="project.status === 5">close</md-icon>-->
             </md-list-item>
 
             <md-divider ng-if="!$last"></md-divider>
         </div>
     </md-list>
 </md-card>
-<!--</div>-->
