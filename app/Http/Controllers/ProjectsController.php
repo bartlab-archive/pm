@@ -54,6 +54,7 @@ class ProjectsController extends BaseController
                         'with' => ['trackers', 'members.user','enabledModules']
                     ],
                     \Auth::admin() ? [] : [
+                        // todo: allow Non member and Anonymous users by project members
                         'user_id' => \Auth::id()
                     ]
                 )

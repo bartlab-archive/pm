@@ -205,22 +205,26 @@ export default class IssuesListController extends ControllerBase {
                 })
             ])
             .then(([statuses, trackers, priority]) => {
+                this.statuses = statuses.data.data.map((e) => {
+                    e.type = 'status';
+
+                    // default filter value
+                    if (!e.is_closed) {
+                        this.tags.push(e);
+                    }
+
+                    return e;
+                });
+
+                this.priorities = priority.data.data.map((e) => {
+                    e.type = 'priority';
+                    return e;
+                });
+
                 // filter available parameters
                 this.items.push(
-                    ...statuses.data.data.map((e) => {
-                        e.type = 'status';
-
-                        // default filter value
-                        if (!e.is_closed) {
-                            this.tags.push(e);
-                        }
-
-                        return e;
-                    }),
-                    ...priority.data.data.map((e) => {
-                        e.type = 'priority';
-                        return e;
-                    }),
+                    ...this.statuses,
+                    ...this.priorities,
                     ...trackers.data.data.map((e) => {
                         e.type = 'tracker';
                         return e;

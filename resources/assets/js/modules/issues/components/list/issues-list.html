@@ -224,7 +224,7 @@
                                     </md-button>
 
                                     <md-menu-content width="3">
-                                        <md-menu-item class="md-indent" ng-repeat="status in ::$ctrl.statusList">
+                                        <md-menu-item class="md-indent" ng-repeat="status in ::$ctrl.statuses">
                                             <md-icon ng-if="::(row.status_id === status.id)">check</md-icon>
                                             <md-button ng-click="null"
                                                        ng-disabled="::(row.status_id === status.id)">
@@ -262,7 +262,7 @@
 
                                     <md-menu-content width="3">
                                         <md-menu-item class="md-indent"
-                                                      ng-repeat="priority in ::$ctrl.priorityList">
+                                                      ng-repeat="priority in ::$ctrl.priorities">
                                             <md-icon ng-if="::(row.priority_id === priority.id)">check</md-icon>
                                             <md-button ng-click=""
                                                        ng-disabled="::(row.priority_id === priority.id)">

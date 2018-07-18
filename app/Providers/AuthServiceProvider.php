@@ -25,6 +25,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         Auth::viaRequest('db-token', function (Request $request) {
+            // todo: check app settings for allow Anonymous user
             if ($token = $request->bearerToken()) {
                 $service = app(\App\Services\AuthService::class);
 

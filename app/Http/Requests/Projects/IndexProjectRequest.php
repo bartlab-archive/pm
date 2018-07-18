@@ -23,19 +23,15 @@ class IndexProjectRequest extends FormRequest
      */
     public function rules()
     {
-        // todo: write rules for request
         return [
-            'public'=> 'array',
-            'public.*'=> 'numeric|in:1,0',
-            'status_ids'=> 'array',
+            'public' => 'array',
+            'public.*' => 'numeric|in:1,0',
+            'status_ids' => 'array',
             // todo: status_ids depends on user admin status
-            'status_ids.*'=> 'numeric|in:1,5,9',
+            'status_ids.*' => 'numeric|in:1,5,9',
             'order' => 'string',
             'per_page' => 'numeric',
             'page' => 'numeric',
-//            'my' => 'boolean'
-//            'with' =>'in:users,versions,enabledModules',
-//            'closed' => 'string'
         ];
     }
 }
