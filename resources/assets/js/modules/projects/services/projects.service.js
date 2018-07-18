@@ -22,7 +22,8 @@ export default class ProjectsService extends InjectableBase {
         return [].concat(
             [{
                 url: 'projects.inner.info',
-                title: 'Overview'
+                title: 'Overview',
+                enable: true
             }],
             this.modules.map((module) => Object.assign({}, module)),
             [{

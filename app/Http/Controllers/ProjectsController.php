@@ -51,7 +51,7 @@ class ProjectsController extends BaseController
                 array_merge(
                     $request->validated(),
                     [
-                        'with' => ['trackers', 'members.user']
+                        'with' => ['trackers', 'members.user','enabledModules']
                     ],
                     \Auth::admin() ? [] : [
                         'user_id' => \Auth::id()

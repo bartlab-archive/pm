@@ -121,12 +121,12 @@
                           ng-href="{{ ::project._sref }}"
                           ng-click="null" aria-label="{{ ::project.name }}">
 
-                <span class="md-avatar">{{ ::project.name | limitTo:1 }}</span>
+                <span class="md-avatar">{{ ::project._name }}</span>
 
                 <div class="md-list-item-text" layout="column">
                     <h3>
                         {{ ::project.name }}
-                        <span class="description">{{ ::project.description | words: 50 }}</span>
+                        <span class="description">{{ ::project.description }}</span>
                     </h3>
 
                     <h4 layout="row">
@@ -134,15 +134,15 @@
                             {{ ::(project.is_public ? 'Public' : 'Private') }}
                         </span>
 
-                        <span class="label label-default" ng-if="::(project.status === 1)">
+                        <span class="label label-default" ng-if="::(project.status === $ctrl.PROJECT_STATUS_OPEN)">
                             Open
                         </span>
 
-                        <span class="label label-default" ng-if="::(project.status === 5)">
+                        <span class="label label-default" ng-if="::(project.status === $ctrl.PROJECT_STATUS_CLOSE)">
                             Closed
                         </span>
 
-                        <span class="label label-default" ng-if="::(project.status === 9)">
+                        <span class="label label-default" ng-if="::(project.status === $ctrl.PROJECT_STATUS_ARCHIVE)">
                             Archived
                         </span>
 
@@ -163,7 +163,7 @@
                         </md-button>
 
                         <md-menu-content width="3">
-                            <md-menu-item class="md-indent" ng-if="::(project.status !== 9)">
+                            <md-menu-item class="md-indent" ng-if="::(project.status !== $ctrl.PROJECT_STATUS_ARCHIVE)">
                                 <md-icon>open_in_browser</md-icon>
                                 <md-button ng-href="{{ ::project._sref }}">
                                     Open
@@ -178,22 +178,22 @@
 
                                     <md-menu-content width="3">
                                         <md-menu-item class="md-indent">
-                                            <md-icon ng-if="::(project.status === 1)">check</md-icon>
-                                            <md-button ng-click="null" ng-disabled="::(project.status === 1)">
+                                            <md-icon ng-if="::(project.status === $ctrl.PROJECT_STATUS_OPEN)">check</md-icon>
+                                            <md-button ng-click="null" ng-disabled="::(project.status === $ctrl.PROJECT_STATUS_OPEN)">
                                                 Open
                                             </md-button>
                                         </md-menu-item>
 
                                         <md-menu-item class="md-indent">
-                                            <md-icon ng-if="::(project.status === 5)">check</md-icon>
-                                            <md-button ng-click="null" ng-disabled="::(project.status === 5)">
+                                            <md-icon ng-if="::(project.status === $ctrl.PROJECT_STATUS_CLOSE)">check</md-icon>
+                                            <md-button ng-click="null" ng-disabled="::(project.status === $ctrl.PROJECT_STATUS_CLOSE)">
                                                 Close
                                             </md-button>
                                         </md-menu-item>
 
                                         <md-menu-item class="md-indent">
-                                            <md-icon ng-if="::(project.status === 9)">check</md-icon>
-                                            <md-button ng-click="null" ng-disabled="::(project.status === 9)">
+                                            <md-icon ng-if="::(project.status === $ctrl.PROJECT_STATUS_ARCHIV)">check</md-icon>
+                                            <md-button ng-click="null" ng-disabled="::(project.status === $ctrl.PROJECT_STATUS_ARCHIVE)">
                                                 Archive
                                             </md-button>
                                         </md-menu-item>
@@ -219,9 +219,9 @@
 
                             <md-menu-divider ng-if="::$ctrl.isExtended"></md-menu-divider>
 
-                            <md-menu-item class="md-indent" ng-click="null">
-                                <md-button disabled="disabled">
-                                    coming soon
+                            <md-menu-item class="md-indent" ng-repeat="module in ::project._modules">
+                                <md-button ui-sref="{{ ::module.url }}({project_id: project.identifier})">
+                                    {{ ::module.title }}
                                 </md-button>
                             </md-menu-item>
                         </md-menu-content>

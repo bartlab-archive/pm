@@ -159,7 +159,7 @@ export default class LayoutDefaultController extends ControllerBase {
             this.projectsService.one(projectIdentifier).then((response) => {
                 let modules = _.get(response, 'data.data.modules', []);
 
-                // change visible items in project menu and generate sref string
+                // change visible items in project menu
                 this.projectItems.forEach((item) => {
                     if (item._enable && typeof item._enable === 'function') {
                         item.enable = item._enable(response.data.data);

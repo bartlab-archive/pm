@@ -24,4 +24,7 @@ angular.module('app.modules.projects', [])
     .component(ProjectsSettingsInfoComponent.getName(), ProjectsSettingsInfoComponent)
     .component(ProjectsSettingsMembersComponent.getName(), ProjectsSettingsMembersComponent)
     .component(ProjectsSettingsModulesComponent.getName(), ProjectsSettingsModulesComponent)
-    .component(ProjectsMemberComponent.getName(), ProjectsMemberComponent);
+    .component(ProjectsMemberComponent.getName(), ProjectsMemberComponent)
+    .constant('PROJECT_STATUS_OPEN', 1)
+    .constant('PROJECT_STATUS_CLOSE', 5)
+    .constant('PROJECT_STATUS_ARCHIVE', 9);

@@ -8,7 +8,10 @@ import ControllerBase from 'base/controller.base';
 export default class ProjectsListController extends ControllerBase {
 
     static get $inject() {
-        return ['projectsService', '$state', '$showdown', '$window', '$mdToast'];
+        return [
+            'projectsService', '$state', '$showdown', '$window', '$mdToast', '$filter',
+            'PROJECT_STATUS_OPEN', 'PROJECT_STATUS_CLOSE', 'PROJECT_STATUS_ARCHIVE'
+        ];
     }
 
     $onInit() {
@@ -17,15 +20,15 @@ export default class ProjectsListController extends ControllerBase {
 
         // available parameters for the filter
         this.items = [
-            {type: 'status', name: 'Open', id: 1},
-            {type: 'status', name: 'Close', id: 5},
+            {type: 'status', name: 'Open', id: this.PROJECT_STATUS_OPEN},
+            {type: 'status', name: 'Close', id: this.PROJECT_STATUS_CLOSE},
             // {type: 'status', name: 'ARCHIVED', id: 9},
             // {type: 'public', name: 'Public', id: 1},
             // {type: 'public', name: 'Private', id: 0},
         ];
 
         if (this.isExtended) {
-            this.items.push({type: 'status', name: 'Archived', id: 9});
+            this.items.push({type: 'status', name: 'Archived', id: this.PROJECT_STATUS_ARCHIVE});
             this.items.push({type: 'public', name: 'Public', id: 1});
             this.items.push({type: 'public', name: 'Private', id: 0});
         }
@@ -75,12 +78,30 @@ export default class ProjectsListController extends ControllerBase {
                 'public[]': this.tags.filter((e) => e.type === 'public').map((e) => e.id)
             })
             .then((response) => {
-                this.list = response.data.data.map((e) => {
-                    e.description = this.makeHtml(e.description);
-                    if (e.status !== 9) {
-                        e._sref = this.$state.href(this.isExtended ? 'projects.inner.settings' : 'projects.inner.info', {project_id: e.identifier});
+                this.list = response.data.data.map((project) => {
+                    project.description = this.makeHtml(project.description);
+                    project._name = this.$filter('limitTo')(project.name, 1);
+
+                    if (project.status !== this.PROJECT_STATUS_ARCHIVE) {
+                        project._sref = this.$state.href(this.isExtended ? 'projects.inner.settings' : 'projects.inner.info', {project_id: project.identifier});
                     }
-                    return e;
+
+                    // get active project modules
+                    project._modules = this.projectsService
+                        .getModules()
+                        .filter((module) => {
+                            if (typeof module.enable === 'function') {
+                                return module.enable(project);
+                            }
+
+                            if (module.name) {
+                                return project.modules && project.modules.some((value) => value.name === module.name);
+                            }
+
+                            return module.enable;
+                        });
+
+                    return project;
                 });
 
                 this.meta = response.data.meta;
@@ -146,7 +167,7 @@ export default class ProjectsListController extends ControllerBase {
     }
 
     makeHtml(text) {
-        return text ? this.$showdown.stripHtml(this.$showdown.makeHtml(text)) : '';
+        return text ? this.$filter('words')(this.$showdown.stripHtml(this.$showdown.makeHtml(text)), 50) : '';
     }
 
 }
