@@ -18,6 +18,10 @@ class AttachmentResource extends Resource
             'id' => $this->id,
             'filename' => $this->filename,
             'description' => $this->description,
+            'filesize' => $this->filesize,
+            'content_type' => $this->content_type,
+            'author' => UserResource::make($this->whenLoaded('author')),
+            'created_on' => $this->created_on->format('Y-m-d H:i:s'),
         ];
     }
 }

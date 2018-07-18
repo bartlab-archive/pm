@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Attachments\UpdateAttachmentRequest;
 use App\Services\AttachmentsService;
 use App\Services\ProjectsService;
-use Illuminate\Http\Request;
 use App\Http\Requests\Attachments\UploadAttachmentRequest;
 use App\Http\Resources\AttachmentResource;
 
 class AttachmentsController extends Controller
 {
-    public function __construct(ProjectsService $projectsService,
-                                AttachmentsService $attachmentsService)
+    protected $attachmentsService;
+    protected $projectsService;
+
+    public function __construct(
+        ProjectsService $projectsService,
+        AttachmentsService $attachmentsService
+    )
     {
         $this->projectsService = $projectsService;
         $this->attachmentsService = $attachmentsService;
@@ -20,53 +24,60 @@ class AttachmentsController extends Controller
 
     public function download($id)
     {
-        if(! $attachment = $this->attachmentsService->one($id)) {
-            return abort(404);
+//        if (!$attachment = $this->attachmentsService->one($id)) {
+//            abort(404);
+//        }
+
+        if (!($path = $this->attachmentsService->path($id)) || !is_file($path) || !is_readable($path)) {
+            abort(404);
         }
 
-        if($path = $this->attachmentsService->getFullFilePath($id)){
-            return response()->file($path);
-        }
+        // todo: move to resource
+        return response()->json([
+            'content' => base64_encode(file_get_contents($path))
+        ]);
     }
 
     public function delete($id)
     {
-        if(! $attachment = $this->attachmentsService->one($id)) {
+        if (!$attachment = $this->attachmentsService->one($id)) {
             return abort(404);
         }
 
-        if($attachment->author_id !== \Auth::id()) {
+        if ($attachment->author_id !== \Auth::id()) {
             return response(null, 403);
         }
 
-        if(! $this->attachmentsService->delete($id)){
+        if (!$this->attachmentsService->delete($id)) {
             return abort(404);
         }
 
         return response(null, 204);
     }
 
-    public function update($id, UpdateAttachmentRequest $request) {
-        if(! $attachment = $this->attachmentsService->one($id)) {
+    public function update($id, UpdateAttachmentRequest $request)
+    {
+        if (!$attachment = $this->attachmentsService->one($id)) {
             return abort(404);
         }
 
-        if($attachment->author_id !== \Auth::id()) {
+        if ($attachment->author_id !== \Auth::id()) {
             return response(null, 403);
         }
-        if(! $this->attachmentsService->update($id, $request->validated())){
+        if (!$this->attachmentsService->update($id, $request->validated())) {
             return abort(404);
         }
 
         return response(null, 204);
     }
 
-    public function upload(UploadAttachmentRequest $request) {
+    public function upload(UploadAttachmentRequest $request)
+    {
 
         $result = $this->attachmentsService->upload($request->validated(),
             $request->file('file_content'), \Auth::id());
 
-        switch($result['status']) {
+        switch ($result['status']) {
             case $this->attachmentsService::UPLOAD_STATUS_SUCCESS:
                 return AttachmentResource::make($result['attachment']);
                 break;
@@ -79,7 +90,7 @@ class AttachmentsController extends Controller
                 break;
             case $this->attachmentsService::CHUNK_AMOUNT_NOT_REACHED:
                 return response("Chunk amount {$request->get('chunk_amount')} was not reached, "
-                . "{$result['chunk_amount_local']} currently.");
+                    . "{$result['chunk_amount_local']} currently.");
                 break;
             default:
                 return response('Unknown result', 422);

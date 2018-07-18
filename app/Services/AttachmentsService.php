@@ -13,17 +13,16 @@ class AttachmentsService
     const FILE_NOT_MOVED = 'FILE_NOT_MOVED';
     const FILE_SIZE_NOT_MATCH = 'FILE_SIZE_NOT_MATCH';
     const CHUNK_AMOUNT_NOT_REACHED = 'CHUNK_AMOUNT_NOT_REACHED';
-    
+
     public function one($id)
     {
         return Attachment::query()
-            ->where('id', $id)
+            ->where(['id' => $id])
             ->first();
     }
 
     public function delete($id)
     {
-
         DB::beginTransaction();
         $filePath = $this->getFullFilePath($id);
         if (($result = Attachment::destroy($id)) && is_file($filePath)) {
@@ -36,22 +35,19 @@ class AttachmentsService
 
     }
 
-    public function getFullFilePath($id)
+    public function path($id)
     {
-        return storage_path() . config('attachments.uploads_path') . '/' . $this->getFilePath($id);
-    }
-
-    public function getFilePath($id)
-    {
-        $attachment = Attachment::find($id);
-        if($attachment){
-            return $attachment->disk_directory . '/' . $attachment->disk_filename;
+        if (!$attachment = $this->one($id)) {
+            return false;
         }
 
-        return null;
+        $path = config('attachments.path') . DIRECTORY_SEPARATOR . $attachment->disk_directory . DIRECTORY_SEPARATOR . $attachment->disk_filename;
+
+        return config('attachments.storage') ? storage_path($path) : $path;
     }
 
-    public function create(array $data) {
+    public function create(array $data)
+    {
         $attachment = Attachment::make(array_only($data, [
             'filename',
             'author_id',
@@ -61,28 +57,30 @@ class AttachmentsService
             'description'
         ]));
 
-        if($attachment->save()) {
+        if ($attachment->save()) {
             return $attachment;
         }
 
         return false;
     }
 
-    public function update($id, array $data) {
+    public function update($id, array $data)
+    {
 
         $filteredData = array_only($data, [
             'file_name',
             'description'
         ]);
-        
-        if($attachment = $this->one($id)) {
+
+        if ($attachment = $this->one($id)) {
             return $attachment->update($filteredData);
         }
 
         return false;
     }
 
-    public function upload($data, UploadedFile $file, $userId) {
+    public function upload($data, UploadedFile $file, $userId)
+    {
 
         $filteredData = array_only($data, [
             'file_name',
@@ -92,16 +90,16 @@ class AttachmentsService
             'file_total_size',
             'description'
         ]);
-        
+
         $returnArray = [];
         $storagePath = storage_path() . config('attachments.uploads_path');
         $currentFilePath = $storagePath . '/user-' . $userId . '/' . '_' . $filteredData['file_name'];
 
-        if(! is_dir($storagePath . '/user-' . $userId)) {
+        if (!is_dir($storagePath . '/user-' . $userId)) {
             @mkdir($storagePath . '/user-' . $userId, 0777, true);
         }
 
-        if(! is_dir($currentFilePath)) {
+        if (!is_dir($currentFilePath)) {
             @mkdir($currentFilePath, 0777, true);
         }
 
@@ -110,16 +108,16 @@ class AttachmentsService
         $chunkFilesList = array_sort(array_slice(scandir($currentFilePath), 2));
         $returnArray['chunk_amount_local'] = count($chunkFilesList);
 
-        if($returnArray['chunk_amount_local'] == $filteredData['chunk_amount']) {
+        if ($returnArray['chunk_amount_local'] == $filteredData['chunk_amount']) {
             $endFilePath = $storagePath . '/user-' . $userId . '/' . $filteredData['file_name'];
             $endFile = fopen($endFilePath, 'a+');
 
-            foreach($chunkFilesList as $chunkFile) {
+            foreach ($chunkFilesList as $chunkFile) {
                 $chunkFp = fopen($currentFilePath . '/' . $chunkFile, 'r');
                 $chunkBinaryString = fread($chunkFp, filesize($currentFilePath . '/' . $chunkFile));
                 fwrite($endFile, $chunkBinaryString);
                 fclose($chunkFp);
-                if(file_exists($currentFilePath . '/' . $chunkFile)) {
+                if (file_exists($currentFilePath . '/' . $chunkFile)) {
                     @unlink($currentFilePath . '/' . $chunkFile);
                 }
             }
@@ -127,16 +125,16 @@ class AttachmentsService
             fclose($endFile);
 
             $returnArray['filesize_local'] = filesize($endFilePath);
-            
-            if($returnArray['filesize_local'] == $filteredData['file_total_size']) {
+
+            if ($returnArray['filesize_local'] == $filteredData['file_total_size']) {
                 $newFilename = time() . '_' . $filteredData['file_name'];
                 $dateDirectory = date('Y/m');
 
-                if(! is_dir($storagePath . '/' . $dateDirectory)) {
+                if (!is_dir($storagePath . '/' . $dateDirectory)) {
                     @mkdir($storagePath . '/' . $dateDirectory, 0777, true);
                 }
 
-                if(rename($endFilePath, $storagePath . '/' . $dateDirectory . '/' . $newFilename)) {
+                if (rename($endFilePath, $storagePath . '/' . $dateDirectory . '/' . $newFilename)) {
 
                     $attachment = $this->create([
                         'filename' => $filteredData['file_name'],
@@ -156,11 +154,11 @@ class AttachmentsService
                     return array_merge($returnArray, ['status' => self::UPLOAD_STATUS_SUCCESS, 'attachment' => $attachment]);
 
                 } else {
-                    return  array_merge($returnArray, ['status' => self::FILE_NOT_MOVED]); 
+                    return array_merge($returnArray, ['status' => self::FILE_NOT_MOVED]);
                 }
 
             } else {
-                return  array_merge($returnArray, ['status' => self::FILE_SIZE_NOT_MATCH]);
+                return array_merge($returnArray, ['status' => self::FILE_SIZE_NOT_MATCH]);
             }
 
         } else {

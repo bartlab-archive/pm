@@ -35,7 +35,7 @@ export default class IssuesFormController extends ControllerBase {
                 identifier: this.projectsService.getCurrentId()
             },
             watchers: [],
-            new_attachments: []
+            // new_attachments: []
         };
 
         this.categories = [];
@@ -44,8 +44,8 @@ export default class IssuesFormController extends ControllerBase {
         this.isNew = (this.$state.current.name === 'issues-inner.copy' || !this.issue.id);
         this.title = !this.isNew ? '#' : 'New issue';
         this.showDescription = this.isNew;
-        this.files = [];
-        this.filesLoading = false;
+        // this.files = [];
+        // this.filesLoading = false;
         // cache state for ng-if
         // this.buttonsStateCreate = !this.isNew();
         // this.loadProccess = true;
@@ -165,7 +165,7 @@ export default class IssuesFormController extends ControllerBase {
             is_private: this.issue.is_private,
             // closed_on: null
             project_identifier: this.issue.project.identifier,
-            new_attachments: this.issue.new_attachments,
+            // new_attachments: this.issue.new_attachments,
             watchers: this.watchers.map((watcher) => watcher.user.id),
         };
 
@@ -203,133 +203,133 @@ export default class IssuesFormController extends ControllerBase {
             });
     }
 
-    sendFile(fileData) {
+    // sendFile(fileData) {
+    //
+    //     let fd = new FormData();
+    //     fd.append("file_content", fileData.file_content);
+    //     fd.append("file_name", fileData.file_name);
+    //     fd.append("file_type", fileData.file_type);
+    //     fd.append("file_chunk_id", fileData.file_chunk_id);
+    //     fd.append("chunk_amount", fileData.chunk_amount);
+    //     fd.append("file_total_size", fileData.file_total_size);
+    //     if (fileData.description) {
+    //         fd.append("description", fileData.description);
+    //     }
+    //
+    //     this.attachmentService.create(fd)
+    //         .then((response) => {
+    //             let attachmentId = _.get(response, 'data.data.id');
+    //             if (attachmentId) {
+    //                 this.issue.new_attachments.push(attachmentId);
+    //                 let loadedFile = this.files.findIndex((el) => {
+    //                     return el.name == fileData.file_name;
+    //                 });
+    //                 this.files[loadedFile].hasLoaded = true;
+    //                 this.files[loadedFile].id = attachmentId;
+    //                 this.filesLoading = !this.files.every((file) => file.hasLoaded);
+    //
+    //                 this.$mdToast.show(
+    //                     this.$mdToast.simple().textContent(`File ${fileData.file_name} successfully loaded.`)
+    //                 );
+    //             }
+    //         }).catch((error) => {
+    //         this.$mdToast.show(
+    //             this.$mdToast.simple().textContent(`Error was occurred while uploading file ${fileData.file_name}.`)
+    //         );
+    //     });
+    // }
+    //
+    // upload() {
+    //
+    //     let fileChunkSize = 1000000;
+    //     this.filesLoading = true;
+    //
+    //     this.files.forEach((file, index) => {
+    //
+    //         // exclude already loaded files
+    //         if (file.hasLoaded) {
+    //             return;
+    //         }
+    //
+    //         let filePartsNumber = Math.floor(file._file.size / fileChunkSize) + 1;
+    //
+    //         for (let i = 0; i < filePartsNumber; i++) {
+    //             let filePart = file._file.slice(i * fileChunkSize, (i + 1) * fileChunkSize);
+    //             let payload = {
+    //                 file_name: file._file.name,
+    //                 file_type: file._file.type,
+    //                 file_size: filePart.size,
+    //                 file_total_size: file.size,
+    //                 file_content: filePart,
+    //                 file_chunk_id: i,
+    //                 chunk_amount: filePartsNumber,
+    //                 description: file.description
+    //             };
+    //             this.sendFile(payload);
+    //         }
+    //
+    //     });
+    //
+    // }
 
-        let fd = new FormData();
-        fd.append("file_content", fileData.file_content);
-        fd.append("file_name", fileData.file_name);
-        fd.append("file_type", fileData.file_type);
-        fd.append("file_chunk_id", fileData.file_chunk_id);
-        fd.append("chunk_amount", fileData.chunk_amount);
-        fd.append("file_total_size", fileData.file_total_size);
-        if (fileData.description) {
-            fd.append("description", fileData.description);
-        }
-
-        this.attachmentService.create(fd)
-            .then((response) => {
-                let attachmentId = _.get(response, 'data.data.id');
-                if (attachmentId) {
-                    this.issue.new_attachments.push(attachmentId);
-                    let loadedFile = this.files.findIndex((el) => {
-                        return el.name == fileData.file_name;
-                    });
-                    this.files[loadedFile].hasLoaded = true;
-                    this.files[loadedFile].id = attachmentId;
-                    this.filesLoading = !this.files.every((file) => file.hasLoaded);
-
-                    this.$mdToast.show(
-                        this.$mdToast.simple().textContent(`File ${fileData.file_name} successfully loaded.`)
-                    );
-                }
-            }).catch((error) => {
-            this.$mdToast.show(
-                this.$mdToast.simple().textContent(`Error was occurred while uploading file ${fileData.file_name}.`)
-            );
-        });
-    }
-
-    upload() {
-
-        let fileChunkSize = 1000000;
-        this.filesLoading = true;
-
-        this.files.forEach((file, index) => {
-
-            // exclude already loaded files
-            if (file.hasLoaded) {
-                return;
-            }
-
-            let filePartsNumber = Math.floor(file._file.size / fileChunkSize) + 1;
-
-            for (let i = 0; i < filePartsNumber; i++) {
-                let filePart = file._file.slice(i * fileChunkSize, (i + 1) * fileChunkSize);
-                let payload = {
-                    file_name: file._file.name,
-                    file_type: file._file.type,
-                    file_size: filePart.size,
-                    file_total_size: file.size,
-                    file_content: filePart,
-                    file_chunk_id: i,
-                    chunk_amount: filePartsNumber,
-                    description: file.description
-                };
-                this.sendFile(payload);
-            }
-
-        });
-
-    }
-
-    triggerFileLoadButton() {
-        document.getElementById("files-upload").click();
+    // triggerFileLoadButton() {
+    //     document.getElementById("files-upload").click();
         // angular.element(document.getElementById("files-upload")).trigger("click")
-    }
+    // }
 
-    deleteAttachment(attachmentId, fileName, assigned) {
+    // deleteAttachment(attachmentId, fileName, assigned) {
+    //
+    //     let localId;
+    //
+    //     if (assigned) {
+    //         localId = this.issue.attachments.findIndex((attachment) => attachment.id == attachmentId);
+    //     } else {
+    //         localId = this.files.findIndex((file) => file.id == attachmentId);
+    //
+    //         if (!this.files[localId].hasLoaded) {
+    //             this.files.splice(localId, 1);
+    //             return;
+    //         }
+    //     }
+    //
+    //     this.attachmentService.remove(attachmentId)
+    //         .then((response) => {
+    //             // remove from visible lists
+    //             assigned ? this.issue.attachments.splice(localId, 1) : this.files.splice(localId, 1);
+    //             // remove from prepared to save list of ids
+    //             this.issue.new_attachments = this.issue.new_attachments.filter(function (preparedAttachmentId) {
+    //                 return preparedAttachmentId !== attachmentId
+    //             });
+    //
+    //             this.$mdToast.show(
+    //                 this.$mdToast.simple().textContent(`File ${fileName} successfully deleted.`)
+    //             );
+    //
+    //         })
+    //         .catch((error) => {
+    //             this.$mdToast.show(
+    //                 this.$mdToast.simple().textContent(`Error was occurred while deleting file ${fileName}.`)
+    //             );
+    //         });
+    //
+    // }
 
-        let localId;
-
-        if (assigned) {
-            localId = this.issue.attachments.findIndex((attachment) => attachment.id == attachmentId);
-        } else {
-            localId = this.files.findIndex((file) => file.id == attachmentId);
-
-            if (!this.files[localId].hasLoaded) {
-                this.files.splice(localId, 1);
-                return;
-            }
-        }
-
-        this.attachmentService.remove(attachmentId)
-            .then((response) => {
-                // remove from visible lists
-                assigned ? this.issue.attachments.splice(localId, 1) : this.files.splice(localId, 1);
-                // remove from prepared to save list of ids
-                this.issue.new_attachments = this.issue.new_attachments.filter(function (preparedAttachmentId) {
-                    return preparedAttachmentId !== attachmentId
-                });
-
-                this.$mdToast.show(
-                    this.$mdToast.simple().textContent(`File ${fileName} successfully deleted.`)
-                );
-
-            })
-            .catch((error) => {
-                this.$mdToast.show(
-                    this.$mdToast.simple().textContent(`Error was occurred while deleting file ${fileName}.`)
-                );
-            });
-
-    }
-
-    updateAttachment(attachment, assigned) {
-        let fileName = assigned ? attachment.filename : attachment.name;
-
-        this.attachmentService.update(attachment.id, {filename: fileName, description: attachment.description})
-            .then((response) => {
-                this.$mdToast.show(
-                    this.$mdToast.simple().textContent(`File ${fileName} successfully updated.`)
-                );
-
-            })
-            .catch((error) => {
-                this.$mdToast.show(
-                    this.$mdToast.simple().textContent(`Error was occurred while updating attachment.`)
-                );
-            });
-    }
+    // updateAttachment(attachment, assigned) {
+    //     let fileName = assigned ? attachment.filename : attachment.name;
+    //
+    //     this.attachmentService.update(attachment.id, {filename: fileName, description: attachment.description})
+    //         .then((response) => {
+    //             this.$mdToast.show(
+    //                 this.$mdToast.simple().textContent(`File ${fileName} successfully updated.`)
+    //             );
+    //
+    //         })
+    //         .catch((error) => {
+    //             this.$mdToast.show(
+    //                 this.$mdToast.simple().textContent(`Error was occurred while updating attachment.`)
+    //             );
+    //         });
+    // }
 
     cancel() {
         if (this.$stateParams.id) {

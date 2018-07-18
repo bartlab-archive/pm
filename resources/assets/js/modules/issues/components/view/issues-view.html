@@ -41,6 +41,24 @@
     </div>
 </div>
 
+<div layout-align="start start" layout="row" class="info-row">
+    <md-icon class="w-50">attachment</md-icon>
+    <div flex>
+        <p layout="column" ng-repeat="attachment in $ctrl.selectedIssue.attachments">
+            <span>
+                <span>
+                    <a href ng-click="$ctrl.download(attachment)">
+                        {{ attachment.filename }}
+                    </a>
+                </span>
+                <span>({{ attachment.filesize| bytesToSizeUnits }})</span>
+                <span class="md-caption">{{ attachment.author.full_name }}, {{ attachment.created_on }}</span>
+            </span>
+            <span>{{ attachment.description }}</span>
+        </p>
+    </div>
+</div>
+
 <div layout-align="start start" layout="row" class="info-row"
      ng-if="$ctrl.selectedIssue.journals && $ctrl.selectedIssue.journals.length != 0">
     <md-icon class="w-50">history</md-icon>

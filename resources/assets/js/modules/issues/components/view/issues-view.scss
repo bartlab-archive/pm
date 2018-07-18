@@ -18,7 +18,21 @@ issues-view-component {
     }
   }
 
-  .markdown {
+  //.markdown {
+  //  p {
+  //    &:first-child {
+  //      margin-top: 0;
+  //    }
+  //
+  //    &:last-child {
+  //      margin-bottom: 0;
+  //    }
+  //  }
+  //}
+
+  .info-row {
+    padding: 4px 0;
+
     p {
       &:first-child {
         margin-top: 0;
@@ -28,9 +42,5 @@ issues-view-component {
         margin-bottom: 0;
       }
     }
-  }
-
-  .info-row {
-    padding: 4px 0;
   }
 }

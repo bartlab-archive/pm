@@ -247,13 +247,13 @@
 
         <md-card-actions layout="row" layout-align="center center">
             <md-button class="md-raised md-primary animation-target md-button md-ink-ripple"
-                       ng-disabled="$ctrl.loadProccess || $ctrl.form.$invalid || $ctrl.filesLoading"
+                       ng-disabled="$ctrl.loadProccess || $ctrl.form.$invalid"
                        ng-click="$ctrl.submit()">
                 {{ ::$ctrl.isNew ? 'Create' : 'Submit' }}
             </md-button>
 
             <md-button class="md-raised md-default animation-target md-button md-ink-ripple"
-                       ng-disabled="$ctrl.loadProccess ||$ctrl.form.$invalid || $ctrl.filesLoading"
+                       ng-disabled="$ctrl.loadProccess ||$ctrl.form.$invalid"
                        ng-click="$ctrl.submit(true)"
                        ng-if="::$ctrl.isNew">
                 Create and continue

@@ -2,10 +2,11 @@
 
 return [
 
+    'storage' => env('UPLOADS_STORAGE', true),
+
     /*
      * Path to uploaded attachments
      */
-
-    'uploads_path' => env('UPLOADS_PATH', '/app/public/uploads'),
+    'path' => env('UPLOADS_PATH', '/uploads'),
 
 ];

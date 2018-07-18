@@ -142,7 +142,7 @@ class IssuesService
         return Issue::query()
             ->where('id', $id)
             ->with([
-                'attachments',
+                'attachments.author',
                 'tracker',
                 'assigned',
                 'author',

@@ -9,7 +9,7 @@ export default class AttachmentService extends ServiceBase {
         return ['$http'];
     }
 
-    $onInit($injector) {
+    $onInit() {
     }
 
     one(id) {
@@ -32,7 +32,7 @@ export default class AttachmentService extends ServiceBase {
         return this.$http.put(`/api/v1/attachments/${id}`, params);
     }
 
-    remove(id, params) {
+    remove(id) {
         return this.$http.delete(`/api/v1/attachments/${id}`);
     }
 }

@@ -55,9 +55,9 @@ class Issue extends Model
         'id'
     ];
 
-    protected $hidden = [
-        'project_id'
-    ];
+//    protected $hidden = [
+//        'project_id'
+//    ];
 
     protected $dates = [
         'created_on',
