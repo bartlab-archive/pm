@@ -53,6 +53,7 @@
                 </span>
                 <span>({{ attachment.filesize| bytesToSizeUnits }})</span>
                 <span class="md-caption">{{ attachment.author.full_name }}, {{ attachment.created_on }}</span>
+                <md-progress-linear ng-if="attachment._progress" md-mode="indeterminate"></md-progress-linear>
             </span>
             <span>{{ attachment.description }}</span>
         </p>

@@ -20,7 +20,13 @@ export default class IssuesViewController extends ControllerBase {
         return this.$mdDialog.cancel();
     }
 
-    download(attachment, $event) {
+    download(attachment) {
+        if (attachment._progress){
+            return false;
+        }
+
+        attachment._progress = true;
+
         this.attachmentService
             .one(attachment.id)
             .then((response) => {
@@ -29,6 +35,9 @@ export default class IssuesViewController extends ControllerBase {
                     .attr('download', attachment.filename)
                     .attr('href', 'data:' + attachment.content_type + ';base64,' + response.data.content)[0]
                     .click();
-            });
+            })
+            .finally(()=>{
+                attachment._progress = false;
+            })
     }
 }
