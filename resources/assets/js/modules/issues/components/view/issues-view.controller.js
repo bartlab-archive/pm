@@ -13,9 +13,6 @@ export default class IssuesViewController extends ControllerBase {
     }
 
     $onInit() {
-        setTimeout(()=>{
-        console.log(this.selectedIssue);
-        },1000);
         // todo: add tooltip for icons in left side
     }
 
