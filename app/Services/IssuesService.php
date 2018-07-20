@@ -22,7 +22,7 @@ class IssuesService
     public function all(array $params = [])
     {
         $query = Issue::with([
-            'attachments',
+            'attachments.author',
             'tracker',
             'project',
 //            'project.members',
@@ -147,6 +147,7 @@ class IssuesService
                 'assigned',
                 'author',
                 'project',
+                'priority',
                 'watchers',
                 'attachments',
                 'project.trackers',

@@ -16,7 +16,7 @@ export default class IssuesViewComponent extends ComponentBase {
     static get bindings() {
         return {
             selectedIssue: '<',
-            authorInfo: '<'
+            // authorInfo: '<'
         };
     }
 }

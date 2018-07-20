@@ -12,7 +12,8 @@ export default class IssuesViewController extends ControllerBase {
     }
 
     $onInit() {
-        this.title = this.selectedIssue.tracker.name + ' #' + this.selectedIssue.id + ': ' + this.selectedIssue.subject;
+        this.title = this.selectedIssue.subject;
+        // this.title = this.selectedIssue.tracker.name + ' #' + this.selectedIssue.id + ': ' + this.selectedIssue.subject;
     }
 
     cancel(update) {

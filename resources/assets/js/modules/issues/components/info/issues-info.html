@@ -4,20 +4,20 @@
     <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
 
     <md-card-header>
-        <md-card-avatar>
-            <img ng-src="{{ ::$ctrl.issue.author.avatar }}" class="md-user-avatar">
-        </md-card-avatar>
+        <!--<md-card-avatar hide-xs hide-sm>-->
+            <!--<img ng-src="{{ ::$ctrl.issue.author.avatar }}" class="md-user-avatar">-->
+        <!--</md-card-avatar>-->
 
-        <md-card-header-text>
-                <span class="md-title">
-                    <md-icon ng-if="$ctrl.issue.is_private">lock</md-icon>
-                     {{ ::$ctrl.issue.tracker.name }} #{{ ::$ctrl.issue.id }}: {{ ::$ctrl.issue.subject }}
-                </span>
+        <md-card-header-text hide-xs hide-sm>
+            <span class="md-title">
+                <md-icon ng-if="$ctrl.issue.is_private">lock</md-icon>
+                 {{ ::$ctrl.issue.subject }}
+            </span>
 
-            <span class="md-subhead">
-                    <span>Added by: </span>
-                    <a ui-sref="users.page.info({id:$ctrl.issue.author.id})">{{ ::$ctrl.issue.author.full_name }}</a>
-                </span>
+            <!--<span class="md-subhead">-->
+                <!--<span>Added by: </span>-->
+                <!--<a ui-sref="users.page.info({id:$ctrl.issue.author.id})">{{ ::$ctrl.issue.author.full_name }}</a>-->
+            <!--</span>-->
         </md-card-header-text>
 
         <div flex></div>
@@ -102,32 +102,61 @@
                 </md-menu-item>
 
                 <md-menu-item>
-                    <md-button ui-sref="issues-inner.copy({id: $ctrl.issue.id,project_id: $ctrl.issue.project.identifier})">
+                    <md-button
+                            ui-sref="issues-inner.copy({id: $ctrl.issue.id,project_id: $ctrl.issue.project.identifier})">
                         <md-icon>content_copy</md-icon>
                         Copy
                     </md-button>
                 </md-menu-item>
 
+                <!--<md-menu-item ng-if="$ctrl.issue.is_watcheble">-->
+                <!--<md-button ng-click="$ctrl.unwatch()">-->
+                <!--<md-icon>star</md-icon>-->
+                <!--Unwatch-->
+                <!--</md-button>-->
+                <!--</md-menu-item>-->
 
-
-                <md-menu-item ng-if="$ctrl.issue.is_watcheble">
-                    <md-button ng-click="$ctrl.unwatch()">
-                        <md-icon>star</md-icon>
-                        Unwatch
-                    </md-button>
-                </md-menu-item>
-
-                <md-menu-item ng-if="!$ctrl.issue.is_watcheble">
+                <md-menu-item>
                     <md-button ng-click="$ctrl.watch()">
-                        <md-icon>star_border</md-icon>
-                        Watch
+                        <md-icon>{{ $ctrl.issue.is_watcheble ? 'star' : 'star_border' }}</md-icon>
+                        {{ $ctrl.issue.is_watcheble ? 'Unwatch' : 'Watch' }}
                     </md-button>
                 </md-menu-item>
+
+                <!--<md-menu-item ng-if="!$ctrl.issue.is_watcheble">-->
+                <!--<md-button ng-click="$ctrl.watch()">-->
+                <!--<md-icon>star_border</md-icon>-->
+                <!--Watch-->
+                <!--</md-button>-->
+                <!--</md-menu-item>-->
 
                 <md-menu-item>
                     <md-button ng-click="$ctrl.remove()">
                         <md-icon>delete</md-icon>
                         Delete
+                    </md-button>
+                </md-menu-item>
+
+                <md-divider></md-divider>
+
+                <md-menu-item>
+                    <md-button ng-click="$ctrl.attachment()">
+                        <md-icon>attachment</md-icon>
+                        Edit attached files
+                    </md-button>
+                </md-menu-item>
+
+                <md-menu-item>
+                    <md-button ng-click="null">
+                        <md-icon>subdirectory_arrow_right</md-icon>
+                        Add subtask
+                    </md-button>
+                </md-menu-item>
+
+                <md-menu-item>
+                    <md-button ng-click="null">
+                        <md-icon>arrow_forward</md-icon>
+                        Add related issue
                     </md-button>
                 </md-menu-item>
 
@@ -155,7 +184,7 @@
     </md-card-content>
 
     <!--<md-card-actions layout="row" layout-align="center center">-->
-        <!--<issues-view-actions-component issue="$ctrl.issue" open-button="false"></issues-view-actions-component>-->
+    <!--<issues-view-actions-component issue="$ctrl.issue" open-button="false"></issues-view-actions-component>-->
     <!--</md-card-actions>-->
 </md-card>
 <!--</div>-->

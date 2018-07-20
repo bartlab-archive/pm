@@ -46,18 +46,29 @@ export default class IssuesInfoController extends ControllerBase {
     // }
 
     watch() {
-        this.issuesService.watch(this.issue.id)
-            .then(() => {
-                this.issue.is_watcheble = true
-            });
+        if (this.issue.is_watcheble) {
+            this.issuesService.unwatch(this.issue.id)
+                .then(() => {
+                    this.issue.is_watcheble = false
+                });
+        } else {
+            this.issuesService.watch(this.issue.id)
+                .then(() => {
+                    this.issue.is_watcheble = true
+                });
+        }
+        // this.issuesService.watch(this.issue.id)
+        //     .then(() => {
+        //         this.issue.is_watcheble = true
+        //     });
     }
 
-    unwatch() {
-        this.issuesService.unwatch(this.issue.id)
-            .then(() => {
-                this.issue.is_watcheble = false
-            });
-    }
+    // unwatch() {
+    //     this.issuesService.unwatch(this.issue.id)
+    //         .then(() => {
+    //             this.issue.is_watcheble = false
+    //         });
+    // }
 
     // copyIssue() {
     //     this.$state.go('issues-inner.copy', {

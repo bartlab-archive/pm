@@ -179,15 +179,23 @@
                         <span ng-if="!$ctrl.currentProjectId" class="label label-default">
                             {{ ::row.project.name }}
                         </span>
+
                         <span class="label label-default">
                             {{ ::row.tracker.name }}
                         </span>
+
                         <span class="label label-default">
                             {{ ::row.priority.name }}
                         </span>
+
                         <span class="label label-default">
                             {{ ::row.status.name }}
                         </span>
+
+                        <span class="label label-default" ng-if="::(row.attachments && row.attachments.length !== 0)">
+                            Attachments: {{ ::row.attachments.length }}
+                        </span>
+
                         <span flex></span>
 
                         <span>{{ ::row.updated_on }}</span>

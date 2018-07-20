@@ -1,12 +1,33 @@
-<div layout-align="start start" layout="row" class="info-row"
-     ng-if="$ctrl.prioritiesList[$ctrl.selectedIssue.priority_id]">
-    <md-icon class="w-50">low_priority</md-icon>
+<div layout-align="start start" layout="row" class="info-row" hide-gt-sm>
+    <md-icon class="w-50">subject</md-icon>
     <div flex>
-        {{ $ctrl.prioritiesList[$ctrl.selectedIssue.priority_id] }}
+        <strong>{{ $ctrl.selectedIssue.subject }}</strong>
     </div>
 </div>
 
-<div layout-align="start start" layout="row" class="info-row" ng-if="$ctrl.authorInfo">
+<div layout-align="start start" layout="row" class="info-row">
+    <md-icon class="w-50">info</md-icon>
+    <div flex>
+        <span>{{ $ctrl.selectedIssue.tracker.name }} #{{ $ctrl.selectedIssue.id }}</span>
+    </div>
+</div>
+
+<div layout-align="start start" layout="row" class="info-row">
+    <md-icon class="w-50">sort</md-icon>
+    <div flex>
+        <span>{{ $ctrl.selectedIssue.priority.name }}</span>
+    </div>
+</div>
+
+<!--<div layout-align="start start" layout="row" class="info-row"-->
+     <!--ng-if="$ctrl.prioritiesList[$ctrl.selectedIssue.priority_id]">-->
+    <!--<md-icon class="w-50">low_priority</md-icon>-->
+    <!--<div flex>-->
+        <!--{{ $ctrl.prioritiesList[$ctrl.selectedIssue.priority_id] }}-->
+    <!--</div>-->
+<!--</div>-->
+
+<div layout-align="start start" layout="row" class="info-row">
     <md-icon class="w-50">create</md-icon>
     <div flex>
         <a ui-sref="users.page.info({id:$ctrl.selectedIssue.author.id})" ng-click="$ctrl.cancel()" class="md-avatar">
@@ -34,14 +55,15 @@
     </div>
 </div>
 
-<div layout-align="start start" layout="row" class="info-row">
+<div layout-align="start start" layout="row" class="info-row" ng-if="$ctrl.selectedIssue.description">
     <md-icon class="w-50">short_text</md-icon>
     <div flex>
         <div class="markdown" markdown-to-html="$ctrl.selectedIssue.description || ''"></div>
     </div>
 </div>
 
-<div layout-align="start start" layout="row" class="info-row">
+<div layout-align="start start" layout="row" class="info-row"
+     ng-if="$ctrl.selectedIssue.attachments && $ctrl.selectedIssue.attachments.length !== 0">
     <md-icon class="w-50">attachment</md-icon>
     <div flex>
         <p layout="column" ng-repeat="attachment in $ctrl.selectedIssue.attachments">
@@ -61,7 +83,7 @@
 </div>
 
 <div layout-align="start start" layout="row" class="info-row"
-     ng-if="$ctrl.selectedIssue.journals && $ctrl.selectedIssue.journals.length != 0">
+     ng-if="$ctrl.selectedIssue.journals && $ctrl.selectedIssue.journals.length !== 0">
     <md-icon class="w-50">history</md-icon>
     <div flex>
         <!--<md-divider></md-divider>-->
