@@ -20,10 +20,30 @@ import IssuesCategoryComponent from './components/category/issues-category.compo
 export default class IssuesConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'projectsServiceProvider', 'mainServiceProvider', 'myServiceProvider'];
+        return ['$stateProvider', 'projectsServiceProvider', 'mainServiceProvider', 'myServiceProvider', '$showdownProvider'];
     }
 
     $onInit() {
+        // detect link to issue in md text
+        this.$showdownProvider.loadExtension({
+            type: 'lang',
+            regex: /([ ,(-\[]|^)#(\d+)([.,\\/-\[\]{}():?!*&#'"%@_ ]|$)/g,
+            replace: (...match) => {
+                console.log(match);
+
+                let href = this.$stateProvider.$get().href(
+                    'issues.info',
+                    {
+                        id: match[2]
+                    }
+                );
+
+                // todo: check issue exists and issue status
+
+                return match[1] + '<a href="' + href + '">#' + match[2] + '</a>' + match[3];
+            }
+        });
+
         this.projectsServiceProvider
             .registerModule({
                 url: 'issues-inner.list',
