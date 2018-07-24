@@ -29,8 +29,6 @@ export default class IssuesConfig extends InjectableBase {
             type: 'lang',
             regex: /([ ,(-\[]|^)#(\d+)([.,\\/-\[\]{}():?!*&#'"%@_ ]|$)/g,
             replace: (...match) => {
-                console.log(match);
-
                 let href = this.$stateProvider.$get().href(
                     'issues.info',
                     {
