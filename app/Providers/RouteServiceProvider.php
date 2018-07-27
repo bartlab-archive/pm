@@ -16,6 +16,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected $namespace = 'App\Http\Controllers';
 
+    protected $botNamespace = 'App\Http\Controllers\Bot';
+
     /**
      * Define your route model bindings, pattern filters, etc.
      *
@@ -39,10 +41,9 @@ class RouteServiceProvider extends ServiceProvider
     public function map()
     {
         $this->mapApiRoutes();
-
-        $this->mapWebRoutes();
-
-        //
+        if (!$this->mapBotRoutes()) {
+            $this->mapWebRoutes();
+        }
     }
 
     /**
@@ -55,8 +56,8 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/web.php'));
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web.php'));
     }
 
     /**
@@ -69,8 +70,20 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::prefix('api')
-             ->middleware('api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/api.php'));
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/api.php'));
+    }
+
+    protected function mapBotRoutes()
+    {
+        if (preg_match('/TelegramBot/i', \Request::header('User-Agent'))) {
+            Route::namespace($this->botNamespace)
+                ->group(base_path('routes/bot.php'));
+
+            return true;
+        }
+
+        return false;
     }
 }

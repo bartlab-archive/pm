@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     <base href="/">
-    <title>PM</title>
+    <title>{{ config('app.name') }}</title>
 </head>
 <body>
 {{--<section>--}}
