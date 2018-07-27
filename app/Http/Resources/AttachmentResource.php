@@ -21,7 +21,12 @@ class AttachmentResource extends Resource
             'filesize' => $this->filesize,
             'content_type' => $this->content_type,
             'author' => UserResource::make($this->whenLoaded('author')),
-            'created_on' => $this->created_on->format('Y-m-d H:i:s'),
+//            'created_on' => $this->created_on->format('Y-m-d H:i:s'),
+            $this->mergeWhen(!empty($this->created_on), function () {
+                return [
+                    'created_on' => $this->created_on->format('Y-m-d H:i:s')
+                ];
+            })
         ];
     }
 }
