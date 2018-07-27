@@ -56,7 +56,7 @@ class IssuesService
         }
 
         // filter by member
-        if ($userId = array_get($params,'user_id')){
+        if ($userId = array_get($params, 'user_id')) {
             $query->whereHas('project.members', function ($query) use ($userId) {
                 /** @var $query Builder */
                 $query->where('user_id', $userId);
@@ -186,7 +186,7 @@ class IssuesService
         if ($issue->save()) {
             $issue->watchers()->sync(array_get($data, 'watchers'));
 
-            if($attachmentsIds = array_get($data, 'new_attachments')) {
+            if ($attachmentsIds = array_get($data, 'new_attachments')) {
                 $attachments = Attachment::query()
                     ->whereIn('id', $attachmentsIds)
                     ->get();
@@ -241,7 +241,7 @@ class IssuesService
             // save attachments
             // todo: check author is the same who create issue.
             if ($attachmentsIds = array_get($data, 'new_attachments')) {
-                $attachments = Attachment::whereIn('id', $attachmentsIds)->get();
+                $attachments = Attachment::query()->whereIn('id', $attachmentsIds)->get();
                 $issue->attachments()->saveMany($attachments->getDictionary());
             }
 
@@ -278,12 +278,22 @@ class IssuesService
             /** @var Journal $journal */
             foreach ($issue->journals as $journal) {
                 $journal->details()->delete();
-                $journal->delete();
+                try {
+                    $journal->delete();
+                } catch (\Exception $e) {
+                    // todo: process error on delete journal row
+                }
             }
 
             // todo: fix parent id on releted and child issues
+            // todo: remove attachments
+            // todo: remove time_entries
 
-            $issue->delete();
+            try {
+                $issue->delete();
+            } catch (\Exception $e) {
+                return false;
+            }
 
             return true;
         }

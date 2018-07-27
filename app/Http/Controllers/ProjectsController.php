@@ -9,6 +9,7 @@ use App\Http\Resources\ProjectResource;
 use App\Services\EnabledModulesService;
 use App\Services\MembersService;
 use App\Services\ProjectsService;
+use App\Services\UsersService;
 use Illuminate\Routing\Controller as BaseController;
 
 /**
@@ -26,24 +27,28 @@ class ProjectsController extends BaseController
     protected $projectsService;
     protected $enabledModulesService;
     protected $membersService;
+    protected $usersService;
 
     public function __construct(
         ProjectsService $projectsService,
         EnabledModulesService $enabledModulesService,
-        MembersService $membersService
+        MembersService $membersService,
+        UsersService $usersService
     )
     {
         $this->projectsService = $projectsService;
         $this->enabledModulesService = $enabledModulesService;
         $this->membersService = $membersService;
+        $this->usersService = $usersService;
     }
 
     public function index(IndexProjectRequest $request)
     {
+        $userIds = $this->usersService->memberIds(\Auth::id());
+
         if ($request->input('my')) {
             return ProjectResource::collection(
-                $this->projectsService->allByUserId(\Auth::id(), ['trackers', 'members.user'])
-            );
+                $this->projectsService->allByUserId($userIds, ['trackers', 'members.user']));
         }
 
         return ProjectResource::collection(
@@ -51,11 +56,10 @@ class ProjectsController extends BaseController
                 array_merge(
                     $request->validated(),
                     [
-                        'with' => ['trackers', 'members.user','enabledModules']
+                        'with' => ['trackers', 'members.user', 'enabledModules']
                     ],
                     \Auth::admin() ? [] : [
-                        // todo: allow Non member and Anonymous users by project members
-                        'user_id' => \Auth::id()
+                        'user_ids' => $userIds
                     ]
                 )
             )

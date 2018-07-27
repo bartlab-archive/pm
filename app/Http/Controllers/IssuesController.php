@@ -7,16 +7,12 @@ use App\Http\Requests\Issues\CreateIssueRequest;
 use App\Http\Requests\Issues\UpdateIssueRequest;
 use App\Http\Resources\IssueCollection;
 use App\Http\Resources\IssueResource;
-use App\Http\Resources\PriorityResource;
-use App\Http\Resources\StatusResource;
-use App\Http\Resources\TrackerResource;
-use App\Models\Issue;
 use App\Services\EnabledModulesService;
 use App\Services\EnumerationsService;
 use App\Services\IssuesService;
 use App\Services\ProjectsService;
 use App\Services\TrackersService;
-use Illuminate\Http\Request;
+use App\Services\UsersService;
 use Illuminate\Routing\Controller as BaseController;
 
 /**
@@ -37,13 +33,15 @@ class IssuesController extends BaseController
     protected $projectsService;
     protected $enumerationsService;
     protected $enabledModulesService;
+    protected $usersService;
 
     public function __construct(
         IssuesService $issuesService,
         TrackersService $trackersService,
         ProjectsService $projectsService,
         EnumerationsService $enumerationsService,
-        EnabledModulesService $enabledModulesService
+        EnabledModulesService $enabledModulesService,
+        UsersService $usersService
     )
     {
         $this->issuesService = $issuesService;
@@ -51,6 +49,7 @@ class IssuesController extends BaseController
         $this->projectsService = $projectsService;
         $this->enumerationsService = $enumerationsService;
         $this->enabledModulesService = $enabledModulesService;
+        $this->usersService = $usersService;
     }
 
     protected function checkProject($identifier, $abort = true)
@@ -70,9 +69,13 @@ class IssuesController extends BaseController
             return $abort ? abort(403) : false;
         }
 
-        // check user for the right to view issues in this project
-        if (!\Auth::admin() && !$this->projectsService->isMember($project->id, \Auth::user()->id)) {
-            return $abort ? abort(403) : false;
+        if (!\Auth::admin()) {
+            $userIds = $this->usersService->memberIds(\Auth::id());
+
+            // check user for the right to view issues in this project
+            if (!$this->projectsService->isMember($project->id, $userIds)) {
+                return $abort ? abort(403) : false;
+            }
         }
 
         return $project;

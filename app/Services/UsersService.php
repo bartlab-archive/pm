@@ -267,7 +267,11 @@ class UsersService
     {
         $query = User::query()
             ->with($with)
-            ->where('type', '<>', 'Anonymous');
+            ->where('type', '<>', User::TYPE_ANONYMOUS_USER)
+            ->orderBy('type')
+            // todo: order by app settings for display user name
+            ->orderBy('firstname')
+            ->orderBy('lastname');
 
         // if status not set, add STATUS_ACTIVE to where
         if ($status = array_get($params, 'status', User::STATUS_ACTIVE)) {
@@ -275,8 +279,7 @@ class UsersService
         }
 
         // by default return only 'User'. if type set to 'all', return full table
-        $type = array_get($params, 'type', 'User');
-        if ($type !== 'all') {
+        if (($type = array_get($params, 'type', User::TYPE_USER)) && $type !== 'all') {
             $query->where(['status' => $type]);
         }
 
@@ -284,24 +287,6 @@ class UsersService
 
         return $query->get();
     }
-
-    /**
-     * @param $id
-     * @param array $with
-     * @return mixed
-     */
-//    public function getById($id, $with = [])
-//    {
-//        return User::where('id', $id)->with($with)
-//            ->with([
-////                'members' => function ($query) {
-////                    $query->with(['user', 'member_roles.roles']);
-////                },
-////                'issues',
-//                'projects', 'preference'
-//            ])
-//            ->first();
-//    }
 
     public function one($id, array $with = [])
     {
@@ -311,52 +296,49 @@ class UsersService
             ->first();
     }
 
-//    public function update($id, $data)
-//    {
-//        if (isset($data['email'])) {
-//            $mainEmail = $this->emailAddressesService->getList(['user_id' => $id, 'is_default' => true])->first();
-//            $this->emailAddressesService->update($mainEmail, ['address' => $data['email']]);
-//            unset($data['email']);
-//        }
-//
-//        $userPreferencesData = [];
-//        $userPreferencesFields = [
-//            'comments_sorting',
-//            'no_self_notified',
-//            'warn_on_leaving_unsaved',
-//            'time_zone',
-//            'hide_mail'
-//        ];
-//
-//        foreach ($userPreferencesFields as $field) {
-//            if (isset($data[$field])) {
-//                $userPreferencesData[$field] = $data[$field];
-//                unset($data[$field]);
-//            }
-//        }
-//        unset($userPreferencesFields);
-//
-//        if (!empty($userPreferencesData)) {
-//            $this->preferenceService->updateByUserId($id, $userPreferencesData);
-//        }
-//
-//        unset($data['id']);
-//
-//        return User::where(['id' => $id])->first()->update($data);
-//    }
-//
-//    public function changePassword(array $data)
-//    {
-//        $user = Auth::user();
-//        $this->resetPassword($user, $data['new_password']);
-//
-//        return $user->update(['passwd_changed_on' => date('Y-m-d H:i:s')]);
-//    }
-//
-//    public function delete($id)
-//    {
-//        $user = User::where('id', $id)->firstOrFail();
-//
-//        return $user->delete();
-//    }
+    public function groupAnonymous()
+    {
+        return User::query()
+            ->where(['type' => User::TYPE_GROUP_ANONYMOUS])
+            ->first();
+    }
+
+    public function groupNonMember()
+    {
+        return User::query()
+            ->where(['type' => User::TYPE_GROUP_NON_MEMBER])
+            ->first();
+    }
+
+    public function groupBots()
+    {
+        return User::query()
+            ->where(['type' => User::TYPE_GROUP_BOTS])
+            ->first();
+    }
+
+    public function memberIds($id = null, bool $noMember = true)
+    {
+        $userIds = [];
+
+        if ($id === null) {
+            // check for Anonymous user
+            if ($groupAnonymous = $this->groupAnonymous()) {
+                $userIds[] = $groupAnonymous->id;
+            }
+        } else {
+            if ($user = $this->one($id)) {
+                $nonMemberGroup = $noMember ? $this->groupNonMember() : null;
+
+                $userIds = array_merge(
+                    $userIds,
+                    [$id],
+                    array_column($user->groups->toArray(), 'id'),
+                    $nonMemberGroup ? [$nonMemberGroup->id] : []
+                );
+            }
+        }
+
+        return $userIds;
+    }
 }

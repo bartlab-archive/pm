@@ -3,8 +3,8 @@
 namespace App\Http\Resources;
 
 use App\Services\ProjectsService;
+use App\Services\UsersService;
 use Illuminate\Http\Resources\Json\Resource;
-use App\Models\Project;
 
 class ProjectResource extends Resource
 {
@@ -17,15 +17,10 @@ class ProjectResource extends Resource
     public function toArray($request)
     {
         return [
-            'name' => $this->name,//.time(),
+            'name' => $this->name,
             'description' => $this->description,
             'homepage' => $this->homepage,
             'parent' => self::make($this->whenLoaded('parent')),
-//            'is_public' => $this->is_public,
-//            'inherit_members' => $this->inherit_members,
-//            'default_version_id' => $this->default_version_id,
-//            'created_on' => $this->created_on->format('Y-m-d H:i:s'),
-//            'updated_on' => $this->updated_on->format('Y-m-d H:i:s'),
             $this->mergeWhen(\Auth::admin() && !empty($this->created_on), function () {
                 return [
                     'created_on' => $this->created_on->format('Y-m-d H:i:s')
@@ -36,7 +31,7 @@ class ProjectResource extends Resource
                     'updated_on' => $this->updated_on->format('Y-m-d H:i:s')
                 ];
             }),
-            $this->mergeWhen(\Auth::admin() || $this->isMember(), [
+            $this->mergeWhen($this->isMember(), [
                 'is_public' => $this->is_public,
                 'inherit_members' => $this->inherit_members,
                 'default_version_id' => $this->default_version_id,
@@ -45,15 +40,33 @@ class ProjectResource extends Resource
             ]),
             'identifier' => $this->identifier,
             'status' => $this->status,
-            'is_my' => \Auth::guest() ? false : $this->isMember(),
-//            'is_my' => $this->is_my,
+            'is_my' => $this->isMy(),
             'members' => MemberResource::collection($this->whenLoaded('members')),
-//            'trackers' => TrackerResource::collection($this->whenLoaded('trackers')),
-//            'modules' => ModuleResource::collection($this->whenLoaded('enabledModules')),
         ];
     }
 
-    protected function isMember() {
-        return $this->members()->where('user_id', \Auth::user()->id)->exists();
+    protected function isMember()
+    {
+        if (\Auth::admin()) {
+            return true;
+        }
+
+        // check user for the right to view issues in this project
+        return app(ProjectsService::class)->isMember(
+            $this->id,
+            app(UsersService::class)->memberIds(\Auth::id())
+        );
+    }
+
+    protected function isMy()
+    {
+        if (\Auth::guest()) {
+            return false;
+        }
+
+        return app(ProjectsService::class)->isMember(
+            $this->id,
+            app(UsersService::class)->memberIds(\Auth::id(), false)
+        );
     }
 }

@@ -22,10 +22,10 @@ class ProjectsService
         }
 
         // get only pablic and my project
-        if ($userId = array_get($params, 'user_id')) {
-            $query->where(function ($query) use ($userId) {
-                $query->where(['is_public' => Project::IS_PUBLIC])->orWhereHas('members', function ($query) use ($userId) {
-                    $query->where(['user_id' => $userId]);
+        if ($userIds = array_get($params, 'user_ids')) {
+            $query->where(function ($query) use ($userIds) {
+                $query->where(['is_public' => Project::IS_PUBLIC])->orWhereHas('members', function ($query) use ($userIds) {
+                    $query->whereIn('user_id', $userIds);
                 });
             });
         }
@@ -56,13 +56,13 @@ class ProjectsService
         return $query->get();
     }
 
-    public function allByUserId($userId, array $with = [])
+    public function allByUserId(array $userIds, array $with = [])
     {
         return Project::query()
             ->with($with)
             ->where(['status' => Project::STATUS_ACTIVE])
-            ->whereHas('members', function ($query) use ($userId) {
-                $query->where(['user_id' => $userId]);
+            ->whereHas('members', function ($query) use ($userIds) {
+                $query->whereIn('user_id', $userIds);
             })
             ->orderBy('name')
             ->get();
@@ -139,10 +139,10 @@ class ProjectsService
         return false;
     }
 
-    public function isMember($id, $userId)
+    public function isMember($id, array $userIds)
     {
         if ($project = $this->oneById($id)) {
-            return $project->members()->where('user_id', $userId)->exists();
+            return $project->members()->whereIn('user_id', $userIds)->exists();
         }
 
         return false;

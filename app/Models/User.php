@@ -41,6 +41,13 @@ class User extends Authenticatable
     const CREATED_AT = 'created_on';
     const UPDATED_AT = 'updated_on';
 
+    const TYPE_USER = 'User';
+    const TYPE_GROUP = 'GROUP';
+    const TYPE_ANONYMOUS_USER = 'AnonymousUser';
+    const TYPE_GROUP_ANONYMOUS = 'GroupAnonymous';
+    const TYPE_GROUP_NON_MEMBER = 'GroupNonMember';
+    const TYPE_GROUP_BOTS = 'GroupBots';
+
     public static $NOTIFICATIONS = [
         ['value' => 'all', 'name' => 'For any event on all my projects'],
         ['value' => 'selected', 'name' => 'For any event on the selected projects only...'],
@@ -87,5 +94,10 @@ class User extends Authenticatable
     public function projects()
     {
         return $this->belongsToMany(Project::class, Member::getTableName());
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(User::class, GroupsUser::getTableName(), 'user_id', 'group_id');
     }
 }
