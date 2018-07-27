@@ -313,7 +313,10 @@ class UsersService
     public function groupBots()
     {
         return User::query()
-            ->where(['type' => User::TYPE_GROUP_BOTS])
+            // lagacy redmine support
+            ->where(['lastname' => User::TYPE_GROUP_BOTS])
+            ->where(['type' => User::TYPE_GROUP])
+//            ->where(['type' => User::TYPE_GROUP_BOTS])
             ->first();
     }
 
