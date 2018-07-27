@@ -27,7 +27,7 @@ export default class IssuesConfig extends InjectableBase {
         // detect link to issue in md text
         this.$showdownProvider.loadExtension({
             type: 'lang',
-            regex: /([ ,(-\[]|^)#(\d+)([.,\\/-\[\]{}():?!*&#'"%@_ ]|$)/g,
+            regex: /([ ,(-\[]|^)#(\d+)([.,\\/\-\[\]{}():?!*&#'"%@_ ]|$)/g,
             replace: (...match) => {
                 let href = this.$stateProvider.$get().href(
                     'issues.info',
