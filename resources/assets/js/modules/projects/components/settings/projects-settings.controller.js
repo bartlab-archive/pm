@@ -10,7 +10,7 @@ import _ from 'lodash';
 export default class ProjectsSettingsController extends ControllerBase {
 
     static get $inject() {
-        return ['projectsService', '$stateParams', '$rootScope', '$state', '$scope','$timeout'];
+        return ['projectsService', '$stateParams', '$rootScope', '$state', '$scope', '$timeout'];
     }
 
     $onInit() {
@@ -40,24 +40,32 @@ export default class ProjectsSettingsController extends ControllerBase {
 
     load() {
         this.loadProccess = true;
+
         this.projectsService
             .one(this.projectsService.getCurrentId())
             .then((response) => {
+                // todo: check by role
+                // detect access to project
+                if (response.data.data.modules === undefined) {
+                    this.$state.go('projects.inner.info');
+                }
+
                 Object.assign(this.model, response.data.data);
 
                 let newPageIndex = 0;
                 this.settingsTabs.forEach((item, index) => {
                     item.enable = !item.module || this.model.modules.some(($m) => $m.name === item.module);
-                    if (item.url === this.$stateParams.page){
+                    if (item.url === this.$stateParams.page) {
                         newPageIndex = index;
                     }
                 });
 
                 // set active tab index after tab finish render
-                this.$timeout(()=>{
+                this.$timeout(() => {
                     this.pageIndex = newPageIndex;
                 }, 500);
-
+            })
+            .finally(() => {
                 this.loadProccess = false;
             });
     }

@@ -82,11 +82,6 @@ class ProjectsController extends BaseController
             abort(403, 'The project you\'re trying to access has been archived.');
         }
 
-        // show modules only for admin and members
-//        if (\Auth::admin() || $project->members->firstWhere('user_id', \Auth::id())) {
-//            $project->load('enabledModules');
-//        }
-
         return ProjectResource::make($project);
     }
 

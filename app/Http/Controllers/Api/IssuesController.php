@@ -91,7 +91,7 @@ class IssuesController extends BaseController
             $this->issuesService->all(
                 array_merge(
                     $request->validated(),
-                    \Auth::admin() ? [] : ['user_id' => \Auth::id()]
+                    \Auth::admin() ? [] : ['user_ids' => $this->usersService->memberIds(\Auth::id())]
                 )
             )
         );

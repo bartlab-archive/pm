@@ -56,30 +56,30 @@ class IssuesService
         }
 
         // filter by member
-        if ($userId = array_get($params, 'user_id')) {
-            $query->whereHas('project.members', function ($query) use ($userId) {
+        if ($userIds = array_get($params, 'user_ids')) {
+            $query->whereHas('project.members', function ($query) use ($userIds) {
                 /** @var $query Builder */
-                $query->where('user_id', $userId);
+                $query->whereIn('user_id', $userIds);
             });
         }
 
-        if ($statuses = array_get($params, 'status_ids', [])) {
+        if ($statuses = array_get($params, 'status_ids')) {
             $query->whereIn('status_id', (array)$statuses);
         }
 
-        if ($trackers = array_get($params, 'tracker_ids', [])) {
+        if ($trackers = array_get($params, 'tracker_ids')) {
             $query->whereIn('tracker_id', (array)$trackers);
         }
 
-        if ($assigned_to_id = array_get($params, 'assigned_to_ids', [])) {
+        if ($assigned_to_id = array_get($params, 'assigned_to_ids')) {
             $query = $query->whereIn('assigned_to_id', $assigned_to_id);
         }
 
-        if ($author_id = array_get($params, 'author_ids', [])) {
+        if ($author_id = array_get($params, 'author_ids')) {
             $query = $query->whereIn('author_id', $author_id);
         }
 
-        if ($priorities = array_get($params, 'priority_ids', [])) {
+        if ($priorities = array_get($params, 'priority_ids')) {
             $query->whereIn('priority_id', (array)$priorities);
         }
 

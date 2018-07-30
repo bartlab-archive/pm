@@ -16,6 +16,9 @@ class Project extends Model
     const STATUS_ARCHIVED = 9;
     const IS_PUBLIC = '1';
 
+    const CREATED_AT = 'created_on';
+    const UPDATED_AT = 'updated_on';
+
     protected $casts = [
         'admin' => 'boolean',
         'is_public' => 'boolean',
