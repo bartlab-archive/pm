@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 
 use App\Http\Requests\Account\ChangePasswordRequest;
@@ -111,7 +111,7 @@ class AccountController extends BaseController
             abort(404);
         }
 
-        if ($email->user_id !== \Auth::id()) {
+        if (!\Auth::admin() && $email->user_id !== \Auth::id()) {
             abort(403);
         }
 
