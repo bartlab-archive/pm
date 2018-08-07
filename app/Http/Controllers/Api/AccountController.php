@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-
 use App\Http\Requests\Account\ChangePasswordRequest;
 use App\Http\Requests\Account\CreateEmailAccountRequest;
 use App\Http\Requests\Account\TokenAccountRequest;
@@ -14,7 +13,6 @@ use App\Http\Resources\TokenResource;
 use App\Services\TokenService;
 use App\Services\UsersService;
 use Illuminate\Routing\Controller as BaseController;
-
 
 /**
  * Class AccountController

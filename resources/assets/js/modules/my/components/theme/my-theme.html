@@ -1,0 +1,66 @@
+<md-dialog flex-xs="100" flex-sm="100" flex-md="50" flex-gt-md="25" aria-label="Customize theme">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Customize theme</h2>
+
+            <span flex></span>
+
+            <md-button class="md-icon-button" ng-click="$ctrl.$mdDialog.cancel();">
+                <md-icon aria-label="Close dialog">clear</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <form name="$ctrl.form" ng-submit="$ctrl.form.$valid && $ctrl.submit()">
+                <md-input-container class="md-icon-float md-block">
+                    <label>Primary</label>
+                    <md-select ng-model="$ctrl.theme.primary">
+                        <md-option ng-value="color" ng-repeat="color in ::$ctrl.list">
+                            {{ ::color }}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="md-icon-float md-block">
+                    <label>Accent</label>
+                    <md-select ng-model="$ctrl.theme.accent">
+                        <md-option ng-value="color" ng-repeat="color in ::$ctrl.list">
+                            {{ ::color }}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="md-icon-float md-block">
+                    <label>Warn</label>
+                    <md-select ng-model="$ctrl.theme.warn">
+                        <md-option ng-value="color" ng-repeat="color in ::$ctrl.list">
+                            {{ ::color }}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="md-icon-float md-block">
+                    <label>Background</label>
+                    <md-select ng-model="$ctrl.theme.background">
+                        <md-option ng-value="color" ng-repeat="color in ::$ctrl.list">
+                            {{ ::color }}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <div layout-align="center center" layout="row">
+                    <md-button class="md-raised md-primary animation-target" type="submit"
+                               ng-disabled="$ctrl.form.$invalid">
+                        Save
+                    </md-button>
+
+                    <md-button class="md-raised md-default animation-target" ng-click="$ctrl.reset()">
+                        Reset
+                    </md-button>
+                </div>
+            </form>
+        </div>
+    </md-dialog-content>
+</md-dialog>

@@ -1,8 +1,12 @@
 import ControllerBase from 'base/controller.base';
 import _ from 'lodash';
 import moment from "moment";
+// token
 import MyTokenController from "../token/my-token.controller";
 import myTokenTemplate from '../token/my-token.html';
+// theme
+import MyThemeController from "../theme/my-theme.controller";
+import myThemeTemplate from '../theme/my-theme.html';
 
 /**
  * @property {$auth} $auth
@@ -134,6 +138,16 @@ export default class MyAccountController extends ControllerBase {
                 myTokenTemplate,
                 $event.target,
                 {token, title}
+            )
+        );
+    }
+
+    showTheme($event) {
+        this.$mdDialog.show(
+            this.constructor.setMdDialogConfig(
+                MyThemeController,
+                myThemeTemplate,
+                $event.target,
             )
         );
     }

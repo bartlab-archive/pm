@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Members;
+namespace App\Http\Requests\Projects;
 
+use App\Models\Project;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateMembersRequest extends FormRequest
+class StoreMemberRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +27,11 @@ class CreateMembersRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required|int|exists:' . User::getTableName() . ',id',
-            'role_id' => 'required|int|exists:' . Role::getTableName() . ',id',
+            // todo: validate by regexp
+            'identifier' => 'required|exists:' . Project::getTableName() . ',identifier',
+            'user' => 'required|integer|exists:' . User::getTableName() . ',id',
+            'roles' => 'required|array',
+            'roles.*' => 'required|integer|exists:' . Role::getTableName() . ',id',
         ];
     }
 }

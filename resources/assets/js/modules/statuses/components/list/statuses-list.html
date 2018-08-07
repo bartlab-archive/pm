@@ -1,11 +1,10 @@
 <div layout-gt-sm="row" layout-align="center start">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-
-
         <md-card-header>
             <md-card-header-text>
                 <span class="md-title">Issue statuses</span>
             </md-card-header-text>
+
             <md-card-actions>
                 <md-button class="md-icon-button" ng-click="$ctrl.addGroup()">
                     <md-icon>add</md-icon>
@@ -20,10 +19,12 @@
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ ::row.name }} </h3>
                     </div>
+
                     <md-menu md-position-mode="target-right target">
                         <md-button aria-label="More actions" class="md-icon-button" ng-click="$mdMenu.open()">
                             <md-icon>more_vert</md-icon>
                         </md-button>
+
                         <md-menu-content width="3">
                             <md-menu-item ng-click="$ctrl.editSatuses(row.id)">
                                 <md-button>
@@ -40,10 +41,10 @@
                             </md-menu-item>
                         </md-menu-content>
                     </md-menu>
+
                     <md-divider ng-if="!$last"></md-divider>
                 </md-list-item>
             </div>
         </md-list>
-
     </md-card>
 </div>

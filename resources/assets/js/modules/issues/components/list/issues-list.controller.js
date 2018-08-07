@@ -5,7 +5,7 @@ import IssuesViewModalController from '../view-modal/issues-view-modal.controlle
 /**
  * @property {$state} $state
  * @property {$showdown} $showdown
- * @property {IssuesService} issuesService
+ * @property {CategoriesService} issuesService
  * @property {ProjectsService} projectsService
  * @property {$stateParams} $stateParams
  * @property {$rootScope} $rootScope
@@ -21,7 +21,7 @@ export default class IssuesListController extends ControllerBase {
     static get $inject() {
         return [
             '$state', '$showdown', 'issuesService', 'projectsService', '$stateParams', '$rootScope',
-            '$mdDialog', '$filter', '$mdToast', '$q', 'trackersService', 'enumerationsService'
+            '$mdDialog', '$filter', '$mdToast', '$q', 'trackersService', 'enumerationsService', 'statusesService'
         ];
     }
 
@@ -124,10 +124,6 @@ export default class IssuesListController extends ControllerBase {
         }
         this.loadProccess = false;
 
-        // available params for all issue
-        this.statusList = [];
-        this.priorityList = [];
-
         this.loadFiltersValues().then(() => this.load());
         // todo: remove event on destroy
         this.$rootScope.$on('updateIssues', () => this.load());
@@ -197,12 +193,9 @@ export default class IssuesListController extends ControllerBase {
 
         return this.$q
             .all([
-                this.issuesService.statuses(),
-                this.trackersService.all(),
-                this.enumerationsService.all({
-                    type: 'IssuePriority',
-                    project_identifier: this.currentProjectId
-                })
+                this.statusesService.all(),
+                this.trackersService.all(this.currentProjectId),
+                this.enumerationsService.all('IssuePriority', this.currentProjectId)
             ])
             .then(([statuses, trackers, priority]) => {
                 this.statuses = statuses.data.data.map((e) => {

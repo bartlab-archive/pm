@@ -11,7 +11,10 @@ class ProjectsTracker extends Model
 
     public $timestamps = false;
 
-    protected $guarded = ['id'];
+//    protected $guarded = ['id'];
+
+    protected $primaryKey = null;
+    public $incrementing = false;
 
     public function projects(){
         return $this->hasMany(Project::class);

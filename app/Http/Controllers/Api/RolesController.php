@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-//use App\Http\Requests\Projects\ProjectExistsRequest;
 use App\Http\Resources\RoleResource;
 use App\Services\RolesService;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
 /**

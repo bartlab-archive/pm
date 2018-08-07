@@ -16,10 +16,14 @@ export default class StorageService extends ServiceBase {
 
     setToken(token) {
         localStorage.setItem('token', token);
+
+        return this;
     }
 
     setUser(user) {
         this.user = user;
+
+        return this;
         // localStorage.setItem('user', JSON.stringify(user));
     }
 
@@ -38,18 +42,41 @@ export default class StorageService extends ServiceBase {
 
     removeToken() {
         localStorage.removeItem('token');
+
+        return this;
     }
 
     removeUser() {
         localStorage.removeItem('user');
+
+        return this;
     }
 
-    // logout(){
-    //     localStorage.removeItem('token');
-    // }
-    //
-    // isAuthenticated(){
-    //     return !!this.getToken();
-    // }
+    getTheme() {
+        return {
+            primary: localStorage.getItem('theme-primary'),
+            accent: localStorage.getItem('theme-accent'),
+            warn: localStorage.getItem('theme-warn'),
+            background: localStorage.getItem('theme-background'),
+        };
+    }
+
+    setTheme(primary, accent, warn, background) {
+        localStorage.setItem('theme-primary', primary);
+        localStorage.setItem('theme-accent', accent);
+        localStorage.setItem('theme-warn', warn);
+        localStorage.setItem('theme-background', background);
+
+        return this;
+    }
+
+    resetTheme() {
+        localStorage.removeItem('theme-primary');
+        localStorage.removeItem('theme-accent');
+        localStorage.removeItem('theme-warn');
+        localStorage.removeItem('theme-background');
+
+        return this;
+    }
 
 }

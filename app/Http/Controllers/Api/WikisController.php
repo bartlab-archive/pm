@@ -14,6 +14,7 @@ use Illuminate\Routing\Controller as BaseController;
  *
  * @property WikisService $wikisService
  * @property ProjectsService $projectsService
+ * @property EnabledModulesService $enabledModulesService
  *
  * @package App\Http\Controllers
  */

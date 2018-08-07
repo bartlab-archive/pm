@@ -1,17 +1,17 @@
 import ControllerBase from 'base/controller.base';
 
 /**
- * @property {issuesService} IssuesService
+ * @property {StatusesService} statusesService
  */
-export default class IssuesStatusController extends ControllerBase {
+export default class StatusesListController extends ControllerBase {
 
     static get $inject() {
-        return ['issuesService'];
+        return ['statusesService'];
     }
 
     $onInit() {
-        return this.issuesService
-            .statuses()
+        return this.statusesService
+            .all()
             .then((response) => {
                 this.statuses = response.data.data;
             });

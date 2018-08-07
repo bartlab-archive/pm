@@ -40,27 +40,45 @@ export default class ProjectsMemberController extends ControllerBase {
         });
     }
 
-    cancel(update) {
+    cancel() {
         this.$mdDialog.cancel();
 
-        if (update) {
-            this.$mdToast.show(
-                this.$mdToast.simple().textContent('Success saved!')
-            );
-            this.$rootScope.$emit('updateProjectInfo');
-        }
+        // if (update) {
+        //     this.$mdToast.show(
+        //         this.$mdToast.simple().textContent('Success saved!')
+        //     );
+        //     this.$rootScope.$emit('updateProjectInfo');
+        // }
     }
 
     submit() {
+        let promise;
+
         if (!this.model.id) {
-            this.projectsService
-                .addMember(this.projectsService.getCurrentId(), this.model.user, this.model.roles)
-                .then(() => this.cancel(true));
+            promise = this.projectsService
+                .addMember(this.projectsService.getCurrentId(), this.model.user, this.model.roles);
+                // .then(() => this.cancel(true));
         } else {
-            this.projectsService
-                .updateMember(this.member.id, this.model.roles)
-                .then(() => this.cancel(true));
+            promise = this.projectsService
+                .updateMember(this.member.id, this.model.roles);
+                // .then(() => this.cancel(true));
         }
+
+        promise
+            .then(()=>{
+                this.$mdToast.show(
+                    this.$mdToast.simple().textContent('Success saved!')
+                );
+                this.$rootScope.$emit('updateProjectInfo');
+                // this.$mdDialog.cancel();
+                this.cancel()
+            })
+            .catch(()=>{
+                // todo: show server error
+                this.$mdToast.show(
+                    this.$mdToast.simple().textContent('Error add member')
+                );
+            });
     }
 
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\Projects\ProjectExistsRequest;
 use App\Http\Resources\UserResource;
 use App\Services\UsersService;
 use Illuminate\Http\Request;

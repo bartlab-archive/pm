@@ -1,5 +1,6 @@
 import InjectableBase from 'base/injectable.base';
 import TrackersIndexComponent from './components/index/trackers-index.component';
+import TrackersProjectSettingsComponent from './components/project-settings/trackers-project-settings.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -8,17 +9,16 @@ import TrackersIndexComponent from './components/index/trackers-index.component'
 export default class TrackersConfig extends InjectableBase {
 
     static get $inject() {
-        return ['$stateProvider', 'mainServiceProvider']
+        return ['$stateProvider', 'mainServiceProvider', 'projectsServiceProvider']
     }
 
     $onInit() {
-        this.mainServiceProvider
-            .registerAdminMenu({
-                name: 'Trackers',
-                url: 'trackers.index',
-                icon: 'timelapse'
-            });
+        this.main();
+        this.projects();
+        this.states();
+    }
 
+    states() {
         this.$stateProvider
             .state('trackers', {
                 abstract: true,
@@ -36,6 +36,25 @@ export default class TrackersConfig extends InjectableBase {
             .state('trackers.index', {
                 url: '',
                 component: TrackersIndexComponent.getName(),
+            });
+    }
+
+    main() {
+        this.mainServiceProvider
+            .registerAdminMenu({
+                name: 'Trackers',
+                url: 'trackers.index',
+                icon: 'timelapse'
+            });
+    }
+
+    projects() {
+        this.projectsServiceProvider
+            .registerSettings({
+                url: 'trackers',
+                name: 'Trackers',
+                component: TrackersProjectSettingsComponent.getName(),
+                module: 'issue_tracking'
             });
     }
 

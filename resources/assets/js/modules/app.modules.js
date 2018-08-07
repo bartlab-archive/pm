@@ -10,6 +10,8 @@ import 'modules/news/news.module';
 import 'modules/groups/groups.module';
 import 'modules/roles/roles.module';
 import 'modules/trackers/trackers.module';
+import 'modules/categories/categories.module';
+import 'modules/statuses/statuses.module';
 import 'modules/workflows/workflows.module';
 import 'modules/fields/fields.module';
 import 'modules/enumerations/enumerations.module';
@@ -28,7 +30,9 @@ import 'modules/activity/activity.module';
 import 'modules/times/times.module';
 
 angular.module('app.modules', [
+
     // core modules
+
     'app.modules.layouts',
     'app.modules.main',
     'app.modules.my',
@@ -44,14 +48,19 @@ angular.module('app.modules', [
     'app.modules.activity',
 
     // additional modules
+
+    // issues
     'app.modules.issues',
     // 'app.modules.statuses',
-    'app.modules.news',
     'app.modules.trackers',
     'app.modules.workflows',
+    'app.modules.categories',
+    'app.modules.statuses',
+    // 'app.modules.agile',
+
+    'app.modules.news',
     'app.modules.auth',
     'app.modules.wikis',
-    // 'app.modules.agile',
     'app.modules.calendar',
     'app.modules.gantt',
     'app.modules.boards',

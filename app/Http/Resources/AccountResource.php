@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 
+// todo: extend from UserResource
+
 class AccountResource extends Resource
 {
     /**
@@ -14,6 +16,8 @@ class AccountResource extends Resource
      */
     public function toArray($request)
     {
+        $email = $this->emails->firstWhere('is_default', true);
+
         return [
             'id' => $this->id,
             'login' => $this->login,
@@ -28,7 +32,11 @@ class AccountResource extends Resource
                 $this->whenLoaded('tokens', $this->tokens()->whereIn('action', ['api', 'feeds'])->get())
             ),
             'preference' => UserPreferenceResource::make($this->whenLoaded('preference')),
-            'avatar' => $this->avatar,
+            $this->mergeWhen($email !== null, function () use ($email) {
+                return [
+                    'avatar' => '//www.gravatar.com/avatar/' . md5(strtolower(trim($email->address))) . '?rating=PG&default=mp'
+                ];
+            }),
         ];
     }
 }

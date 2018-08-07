@@ -65,7 +65,7 @@
                     <md-select name="project_identifier" ng-model="$ctrl.issue.project.identifier"
                                ng-model-options="{ allowInvalid: true }"
                                required server-field
-                               ng-change="$ctrl.changeProject(true)">
+                               ng-change="$ctrl.changeProject()">
                         <md-option ng-repeat="item in $ctrl.projects" ng-value="::item.identifier">
                             {{ ::item.name }}
                         </md-option>
@@ -80,8 +80,9 @@
                 <md-input-container class="md-block">
                     <label>Tracker</label>
 
-                    <md-select name="tracker_id" ng-model="$ctrl.issue.tracker_id" required server-field>
-                        <md-option ng-repeat="item in $ctrl.selectedProject.trackers" ng-value="::item.id">
+                    <md-select name="tracker_id" ng-model="$ctrl.issue.tracker"
+                               ng-model-options="{trackBy: '$value.id'}" required server-field>
+                        <md-option ng-repeat="item in $ctrl.trackers" ng-value="::item">
                             {{ ::item.name }}
                         </md-option>
                     </md-select>
@@ -95,8 +96,9 @@
                 <md-input-container class="md-block">
                     <label>Status</label>
 
-                    <md-select name="status_id" ng-model="$ctrl.issue.status_id" required server-field>
-                        <md-option ng-repeat="item in ::$ctrl.statuses" ng-value="::item.id">
+                    <md-select name="status_id" ng-model="$ctrl.issue.status" ng-model-options="{trackBy: '$value.id'}"
+                               required server-field>
+                        <md-option ng-repeat="item in $ctrl.statuses" ng-value="::item">
                             {{ ::item.name }}
                         </md-option>
                     </md-select>
@@ -110,8 +112,9 @@
                 <md-input-container class="md-block">
                     <label>Priority</label>
 
-                    <md-select name="priority_id" ng-model="$ctrl.issue.priority_id" required server-field>
-                        <md-option ng-repeat="item in ::$ctrl.priorities" ng-value="::item.id">
+                    <md-select name="priority_id" ng-model="$ctrl.issue.priority"
+                               ng-model-options="{trackBy: '$value.id'}" required server-field>
+                        <md-option ng-repeat="item in $ctrl.priorities" ng-value="::item">
                             {{ ::item.name }}
                         </md-option>
                     </md-select>
@@ -125,8 +128,9 @@
                 <md-input-container class="md-block">
                     <label>Assignee</label>
 
-                    <md-select name="assigned_to_id" ng-model="$ctrl.issue.assigned_to_id" server-field>
-                        <md-option ng-repeat="member in $ctrl.selectedProject.members" ng-value="::member.user.id">
+                    <md-select name="assigned_to_id" ng-model="$ctrl.issue.assigned"
+                               ng-model-options="{trackBy: '$value.id'}" server-field>
+                        <md-option ng-repeat="member in $ctrl.selectedProject.members" ng-value="::member.user">
                             {{ ::member.user.full_name }}
                         </md-option>
                     </md-select>
@@ -140,9 +144,10 @@
                 <md-input-container class="md-block" ng-if="$ctrl.categories.length > 0">
                     <label>Category</label>
 
-                    <md-select name="category_id" ng-model="$ctrl.issue.category_id" server-field>
-                        <md-option ng-value=""></md-option>
-                        <md-option ng-repeat="item in ::$ctrl.categories" ng-value="::item.id">
+                    <md-select name="category_id" ng-model="$ctrl.issue.category"
+                               ng-model-options="{trackBy: '$value.id'}" server-field>
+                        <md-option md-option-empty></md-option>
+                        <md-option ng-repeat="item in $ctrl.categories" ng-value="::item">
                             {{ ::item.name }}
                         </md-option>
                     </md-select>

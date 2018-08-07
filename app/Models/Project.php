@@ -60,10 +60,10 @@ class Project extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function trackers()
-    {
-        return $this->belongsToMany(Tracker::class, ProjectsTracker::getTableName());
-    }
+//    public function trackers()
+//    {
+//        return $this->belongsToMany(Tracker::class, ProjectsTracker::getTableName());
+//    }
 
     public function versions()
     {

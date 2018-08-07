@@ -34,7 +34,7 @@ export default class ProjectsSettingsMembersController extends ControllerBase {
 
     }
 
-    deleteMember(member) {
+    remove(member) {
         let confirm = this.$mdDialog.confirm()
             .title('Do you want to delete "' + member.user.full_name + '" from project members?')
             .ok('Delete')
@@ -50,7 +50,7 @@ export default class ProjectsSettingsMembersController extends ControllerBase {
             });
     }
 
-    editMember($event, member) {
+    edit($event, member) {
         this.$mdDialog.show(
             this.constructor.setMdDialogConfig($event.target, {
                 project: this.params,
@@ -60,7 +60,7 @@ export default class ProjectsSettingsMembersController extends ControllerBase {
         );
     }
 
-    addMember($event) {
+    add($event) {
         this.$mdDialog.show(
             this.constructor.setMdDialogConfig($event.target, {
                 project: this.params
@@ -69,7 +69,7 @@ export default class ProjectsSettingsMembersController extends ControllerBase {
         );
     }
 
-    openMember(member) {
+    open(member) {
         this.$state.go('users.page.info', {id: member.user.id});
     }
 

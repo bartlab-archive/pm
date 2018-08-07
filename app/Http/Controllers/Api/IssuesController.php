@@ -11,7 +11,6 @@ use App\Services\EnabledModulesService;
 use App\Services\EnumerationsService;
 use App\Services\IssuesService;
 use App\Services\ProjectsService;
-use App\Services\TrackersService;
 use App\Services\UsersService;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -19,17 +18,16 @@ use Illuminate\Routing\Controller as BaseController;
  * Class IssuesController
  *
  * @property IssuesService $issuesService
- * @property TrackersService $trackersService
  * @property ProjectsService $projectsService
  * @property EnumerationsService $enumerationsService
  * @property EnabledModulesService $enabledModulesService
+ * @property UsersService $usersService
  *
  * @package App\Http\Controllers
  */
 class IssuesController extends BaseController
 {
     protected $issuesService;
-    protected $trackersService;
     protected $projectsService;
     protected $enumerationsService;
     protected $enabledModulesService;
@@ -37,7 +35,6 @@ class IssuesController extends BaseController
 
     public function __construct(
         IssuesService $issuesService,
-        TrackersService $trackersService,
         ProjectsService $projectsService,
         EnumerationsService $enumerationsService,
         EnabledModulesService $enabledModulesService,
@@ -45,7 +42,6 @@ class IssuesController extends BaseController
     )
     {
         $this->issuesService = $issuesService;
-        $this->trackersService = $trackersService;
         $this->projectsService = $projectsService;
         $this->enumerationsService = $enumerationsService;
         $this->enabledModulesService = $enabledModulesService;

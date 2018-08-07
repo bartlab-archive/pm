@@ -55,6 +55,10 @@ class Issue extends Model
         'id'
     ];
 
+    protected $casts = [
+        'is_private' => 'boolean',
+    ];
+
 //    protected $hidden = [
 //        'project_id'
 //    ];
@@ -111,12 +115,10 @@ class Issue extends Model
         return $this->belongsTo(Tracker::class);
     }
 
-//    public function journals()
-//    {
-//        return $this
-//            ->hasMany(Journal::class, 'journalized_id', 'id')
-//            ->where('journalized_type', 'Issue');
-//    }
+    public function trackers()
+    {
+        return $this->hasManyThrough(Tracker::class, ProjectsTracker::class, 'project_id', 'id', 'project_id', 'tracker_id');
+    }
 
     public function status()
     {

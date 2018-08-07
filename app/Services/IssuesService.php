@@ -7,6 +7,7 @@ use App\Models\Issue;
 use App\Models\IssueCategory;
 use App\Models\IssueStatus;
 use App\Models\Journal;
+use App\Models\Tracker;
 use \Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
@@ -24,11 +25,12 @@ class IssuesService
         $query = Issue::with([
             'attachments.author',
             'tracker',
+            'trackers',
             'project',
 //            'project.members',
             'project.members.user',
             'project.members.roles',
-            'project.trackers',
+//            'project.trackers',
             'assigned',
             'author',
             'status',
@@ -143,14 +145,17 @@ class IssuesService
             ->where('id', $id)
             ->with([
                 'attachments.author',
+                'status',
+                'category',
                 'tracker',
+                'trackers',
                 'assigned',
                 'author',
                 'project',
                 'priority',
                 'watchers',
                 'attachments',
-                'project.trackers',
+//                'project.trackers',
                 'project.members.user',
                 'child',
                 'journals.user',
@@ -380,6 +385,57 @@ class IssuesService
         }
 
         return false;
+    }
+
+    public function trackers(int $projectId = null)
+    {
+        $query = Tracker::query();
+
+        if ($projectId) {
+            $query->whereHas('projects', function ($query) use ($projectId) {
+                $query->where(['id' => $projectId]);
+            });
+        }
+
+        return $query->get();
+    }
+
+    public function trackersState($projectId)
+    {
+        $ids = $this->trackers($projectId)->pluck('id')->all();
+
+        return $this->trackers()->map(function ($tracker) use ($ids) {
+            return (object)[
+                'tracker' => $tracker,
+                'enable' => \in_array($tracker->id, $ids, true)
+            ];
+        });
+    }
+
+    public function updateTrackersState($projectId, array $data = [])
+    {
+        $current = $this->trackersState($projectId);
+
+        foreach ($current as $state) {
+            /** @var Tracker $tracker */
+            $tracker = $state->tracker;
+
+            foreach ($data as $item) {
+                if ($item['id'] === $tracker->id) {
+                    if (!empty($item['enable']) && !$state->enable) {
+                        $tracker->projects()->attach($projectId);
+                    }
+
+                    if (empty($item['enable']) && $state->enable === true) {
+                        $tracker->projects()->detach($projectId);
+                    }
+
+                    continue;
+                }
+            }
+        }
+
+        return true;
     }
 
 }

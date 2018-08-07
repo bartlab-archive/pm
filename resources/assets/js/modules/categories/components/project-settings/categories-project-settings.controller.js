@@ -1,13 +1,9 @@
 import ControllerBase from 'base/controller.base';
-// import IssuesCategoryController from "../category/issues-category.controller";
-// import issuesCategoryTemplate from "../category/issues-category.html";
 
-/**
- */
-export default class IssuesProjectSettingsController extends ControllerBase {
+export default class CategoriesProjectSettingsController extends ControllerBase {
 
     static get $inject() {
-        return ['$rootScope', '$mdDialog', 'issuesService', 'projectsService'];
+        return ['$rootScope', '$mdDialog', 'categoriesService', 'projectsService'];
     }
 
     $onInit() {
@@ -21,8 +17,8 @@ export default class IssuesProjectSettingsController extends ControllerBase {
     }
 
     load() {
-        this.issuesService
-            .categories(this.projectsService.getCurrentId())
+        this.categoriesService
+            .all(this.projectsService.getCurrentId())
             .then((response) => {
                 this.categories = response.data.data;
             });
@@ -36,7 +32,7 @@ export default class IssuesProjectSettingsController extends ControllerBase {
 
         this.$mdDialog
             .show(confirm)
-            .then(() => this.issuesService.removeCatrgory(item.id))
+            .then(() => this.categoriesService.remove(item.id))
             .then(() => {
                 this.$rootScope.$emit('updateIssuesCategories');
                 this.$mdToast.show(

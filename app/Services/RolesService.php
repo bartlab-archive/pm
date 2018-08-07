@@ -4,22 +4,9 @@ namespace App\Services;
 
 use App\Models\Role;
 
-
-/**
- * Class RolesService
- *
- * @property ProjectsService $projectService
- *
- * @package App\Services
- */
 class RolesService
 {
 
-    /**
-     * Get roles list
-     *
-     * @return mixed
-     */
     public function all(array $params = [])
     {
         $query = Role::query()

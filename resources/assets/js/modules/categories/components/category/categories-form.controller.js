@@ -4,16 +4,16 @@ import ControllerBase from 'base/controller.base';
  * @property {$mdDialog} $mdDialog
  * @property {ProjectsService} projectsService
  * @property {$rootScope} $rootScope
- * @property {IssuesService} issuesService
+ * @property {CategoriesService} categoriesService
  * @property {ProjectsService} projectsService
  * @property {$stateParams} $stateParams
  * @property {$state} $state
  * @property {$q} $q
  */
-export default class IssuesCategoryController extends ControllerBase {
+export default class CategoriesFormController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdToast', '$rootScope', 'issuesService', 'projectsService', '$stateParams', '$state', '$q'];
+        return ['$mdToast', '$rootScope', 'categoriesService', 'projectsService', '$stateParams', '$state', '$q'];
     }
 
     $onInit() {
@@ -34,8 +34,8 @@ export default class IssuesCategoryController extends ControllerBase {
         let deferred = this.$q.defer();
 
         if (this.category.id) {
-            this.issuesService
-                .category(this.category.id)
+            this.categoriesService
+                .one(this.category.id)
                 .then((response) => {
                     Object.assign(this.category, response.data.data);
                     this.projectsService.setCurrentId(this.category.project.identifier);
@@ -72,8 +72,8 @@ export default class IssuesCategoryController extends ControllerBase {
         };
 
         (this.category.id ?
-            this.issuesService.updateCategory(this.category.id, model) :
-            this.issuesService.createCategory(this.project.identifier, model))
+            this.categoriesService.update(this.category.id, model) :
+            this.categoriesService.create(this.project.identifier, model))
             .then(() => {
                 // this.$rootScope.$emit('updateIssuesCategories');
 

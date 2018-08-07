@@ -20,22 +20,6 @@ export default class IssuesService extends ServiceBase {
         return this.$http.get(`/api/v1/issues`, {params});
     }
 
-    filters(params) {
-        return this.$http.get('/api/v1/issues/filters', {params});
-    }
-
-    statuses() {
-        return this.$http.get('/api/v1/issues/statuses');
-    }
-
-    category(id) {
-        return this.$http.get(`/api/v1/issues/categories/${id}`);
-    }
-
-    categories(identifier) {
-        return this.$http.get(`/api/v1/issues/categories/${identifier}`);
-    }
-
     create(params) {
         return this.$http.post('/api/v1/issues', params);
     }
@@ -54,17 +38,5 @@ export default class IssuesService extends ServiceBase {
 
     unwatch(id) {
         return this.$http.delete(`/api/v1/issues/${id}/watch`)
-    }
-
-    createCategory(identifier, params) {
-        return this.$http.post(`/api/v1/issues/categories/${identifier}`, params)
-    }
-
-    updateCategory(id, params) {
-        return this.$http.put(`/api/v1/issues/categories/${id}`, params)
-    }
-
-    removeCatrgory(id) {
-        return this.$http.delete(`/api/v1/issues/categories/${id}`);
     }
 }

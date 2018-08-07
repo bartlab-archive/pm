@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Auth;
  */
 class WatchersService
 {
-    public function one($id, $type, $userId){
+    public function one($id, $type, $userId)
+    {
         return Watcher::query()
             ->where([
                 'watchable_id' => $id,
@@ -31,27 +32,20 @@ class WatchersService
         ]);
     }
 
-    public function massCreate($id, $type, $users): array
+    public function massCreate($id, $type, array $users = []): array
     {
         $result = [];
 
-        foreach ($users as $user) {
-            $result[] = $this->create($id, $type, $user);
+        foreach ($users as $userId) {
+            $result[] = $this->create($id, $type, $userId);
         }
 
         return $result;
     }
 
-    public function delete($watcherId)
+    public function delete(int $watcherId)
     {
         return Watcher::destroy($watcherId);
     }
 
-//    public function isWatched($id)
-//    {
-//        $watcher = Watcher::where('watchable_id', '=', $id)
-//            ->where('user_id', '=', Auth::id())->get()->toArray();
-//
-//        return !empty($watcher);
-//    }
 }

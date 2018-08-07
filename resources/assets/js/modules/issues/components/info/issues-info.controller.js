@@ -2,7 +2,7 @@ import ControllerBase from 'base/controller.base';
 
 /**
  * @property {$state} $state
- * @property {IssuesService} issuesService
+ * @property {CategoriesService} issuesService
  * @property {$stateParams} $stateParams
  * @property {$rootScope} $rootScope
  * @property {ProjectsService} projectsService

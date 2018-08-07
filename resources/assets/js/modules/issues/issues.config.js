@@ -2,14 +2,11 @@ import InjectableBase from 'base/injectable.base';
 import IssuesListComponent from './components/list/issues-list.component';
 import IssuesInfoComponent from './components/info/issues-info.component';
 import IssuesFormComponent from './components/form/issues-form.component';
-import IssuesProjectSettingsComponent from './components/project-settings/issues-project-settings.component';
 import IssuesImportsComponent from './components/imports/issues-imports.component';
 import IssuesReportComponent from './components/report/issues-report.component';
-import IssueStatusComponent from './components/status/issues-status.component';
 import IssuesMyAssignedComponent from './components/my-assigned/issues-my-assigned.component';
 import IssuesMyReportedComponent from './components/my-reported/issues-my-reported.component';
 import IssuesMyWatchedComponent from './components/my-watched/issues-my-watched.component';
-import IssuesCategoryComponent from './components/category/issues-category.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -24,24 +21,35 @@ export default class IssuesConfig extends InjectableBase {
     }
 
     $onInit() {
+        this.showdown();
+        this.projects();
+        this.main();
+        this.my();
+        this.states();
+    }
+
+    showdown() {
         // detect link to issue in md text
-        this.$showdownProvider.loadExtension({
-            type: 'lang',
-            regex: /([ ,(-\[]|^)#(\d+)([.,\\/\-\[\]{}():?!*&#'"%@_ ]|$)/g,
-            replace: (...match) => {
-                let href = this.$stateProvider.$get().href(
-                    'issues.info',
-                    {
-                        id: match[2]
-                    }
-                );
+        this.$showdownProvider
+            .loadExtension({
+                type: 'lang',
+                regex: /([ ,(-\[]|^)#(\d+)([.,\\/\-\[\]{}():?!*&#'"%@_ ]|$)/g,
+                replace: (...match) => {
+                    let href = this.$stateProvider.$get().href(
+                        'issues.info',
+                        {
+                            id: match[2]
+                        }
+                    );
 
-                // todo: check issue exists and issue status
+                    // todo: check issue exists and issue status
 
-                return match[1] + '<a href="' + href + '">#' + match[2] + '</a>' + match[3];
-            }
-        });
+                    return match[1] + '<a href="' + href + '">#' + match[2] + '</a>' + match[3];
+                }
+            });
+    }
 
+    projects() {
         this.projectsServiceProvider
             .registerModule({
                 url: 'issues-inner.list',
@@ -50,25 +58,17 @@ export default class IssuesConfig extends InjectableBase {
                 enable: false,
                 // todo: fix active menu item if create/edit category
                 alt: [/^issues\.*/]
-            })
-            .registerSettings({
-                url: 'categories',
-                name: 'Issue categories',
-                component: IssuesProjectSettingsComponent.getName(),
-                module: 'issue_tracking'
             });
+    }
 
+    main() {
         this.mainServiceProvider
-            .registerAdminMenu({
-                name: 'Issue statuses',
-                url: 'issues-statuses.index',
-                icon: 'done'
-            })
             .registerAppMenu({
                 url: 'issues.list',
                 name: 'View all issues',
                 icon: 'list'
             })
+            // todo: disable item if no trackers set for project
             .registerNewItemMenu({
                 name: 'Issue',
                 url: 'issues-inner.new',
@@ -76,16 +76,10 @@ export default class IssuesConfig extends InjectableBase {
                 module: 'issue_tracking',
                 single: 'issues.new',
                 enable: false
-            })
-            .registerNewItemMenu({
-                name: 'Category',
-                url: 'issues-inner.categories.new',
-                icon: 'folder',
-                module: 'issue_tracking',
-                single: false,
-                enable: false
             });
+    }
 
+    my() {
         this.myServiceProvider
             .registerModule({
                 // todo: make url with filter
@@ -108,7 +102,9 @@ export default class IssuesConfig extends InjectableBase {
                 // name: 'issue_tracking',
                 component: IssuesMyWatchedComponent.getName()
             });
+    }
 
+    states() {
         this.$stateProvider
             .state('issues', {
                 abstract: true,
@@ -167,48 +163,6 @@ export default class IssuesConfig extends InjectableBase {
                 url: '/new',
                 component: IssuesFormComponent.getName()
             })
-
-            // todo: redirect to /settings/categories in project
-            .state('issues-categories', {
-                abstract: true,
-                data: {
-                    layout: {
-                        insideProject: true
-                    }
-                },
-                parent: 'default',
-                views: {
-                    content: {
-                        template: '<ui-view/>'
-                    }
-                },
-                url: '/issue_categories'
-            })
-            // todo: redirect to /settings/categories in project
-            .state('issues-categories.item', {
-                // redirect: '',
-                abstract: true,
-                url: '/{id}'
-            })
-            .state('issues-categories.item.edit', {
-                url: '/edit',
-                component: IssuesCategoryComponent.getName()
-            })
-            .state('issues-categories-inner', {
-                abstract: true,
-                url: '/issue_categories',
-                data: {
-                    layout: {
-                        insideProject: true
-                    }
-                },
-                parent: 'projects.inner',
-            })
-            .state('issues-categories-inner.new', {
-                url: '/new',
-                component: IssuesCategoryComponent.getName()
-            })
-
             .state('issues.edit', {
                 data: {
                     layout: {
@@ -230,25 +184,7 @@ export default class IssuesConfig extends InjectableBase {
                     }
                 },
                 component: IssuesInfoComponent.getName(),
-            })
-            .state('issues-statuses', {
-                abstract: true,
-                data: {
-                    access: '!'
-                },
-                url: '/issue_statuses',
-                parent: 'default',
-                views: {
-                    content: {
-                        template: '<ui-view/>'
-                    }
-                }
-            })
-            .state('issues-statuses.index', {
-                url: '',
-                component: IssueStatusComponent.getName(),
             });
     }
-
 }
 

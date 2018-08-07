@@ -65,10 +65,6 @@ class EnabledModulesService
     {
         $list = $this->getByProject($projectId)->pluck('name')->all();
 
-//        if (!$project = $this->projectService->oneById($projectId)) {
-//            return;
-//        }
-
         foreach ($data as $module) {
             if (!empty($module['enable']) && !\in_array($module['name'], $list, true)) {
                 EnabledModule::create(['project_id' => $projectId, 'name' => $module['name']]);

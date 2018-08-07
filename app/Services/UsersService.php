@@ -312,6 +312,7 @@ class UsersService
 
     public function groupBots()
     {
+        // todo: get data for this group from app config
         return User::query()
             // lagacy redmine support
             ->where(['lastname' => User::TYPE_GROUP_BOTS])
@@ -323,6 +324,8 @@ class UsersService
     public function memberIds($id = null, bool $noMember = true)
     {
         $userIds = [];
+
+        // todo: wrong access logic
 
         if ($id === null) {
             // check for Anonymous user

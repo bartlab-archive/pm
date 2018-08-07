@@ -1,0 +1,22 @@
+<div ng-if="!$ctrl.trackers.length" layout-align="center center" layout="row"
+     class="md-padding">
+    <div layout-align="center center" layout="row"
+         class="md-padding">
+        No data
+    </div>
+</div>
+
+<div class="md-padding">
+    <md-list>
+        <md-list-item ng-repeat="item in $ctrl.trackers">
+            <p> {{ ::item.tracker.name }} </p>
+            <md-switch class="md-secondary" ng-model="$ctrl.trackers[$index].enable"></md-switch>
+        </md-list-item>
+    </md-list>
+</div>
+
+<div layout-align="center center" layout="row" class="md-padding">
+    <md-button class="md-raised md-primary animation-target" ng-click="$ctrl.submit()">
+        Save
+    </md-button>
+</div>

@@ -49,6 +49,12 @@ export default class AppConfig extends InjectableBase {
     }
 
     themeConfig() {
+        /*
+        this.$mdThemingProvider.theme('default')
+            .primaryPalette(localStorage.getItem('theme-primary') || 'blue-grey')
+            .accentPalette(localStorage.getItem('theme-accent') || 'deep-orange')
+            .warnPalette(localStorage.getItem('theme-warn') || 'deep-orange');
+         */
         this.$mdThemingProvider.theme('default')
             .primaryPalette('blue-grey')
             .accentPalette('deep-orange');

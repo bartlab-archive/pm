@@ -6,10 +6,11 @@ import moment from 'moment';
 todo: check field due_date as required if start_date filled
 todo: check server validate for watchers
 todo: check server validate for Private and Private notes switch
+todo: check app settings for "Allow issue assignment to groups" and show/hide groups in assigned list
  */
 
 /**
- * @property {IssuesService} issuesService
+ * @property {CategoriesService} categorisService
  * @property {AttachmentService} attachmentService
  * @property {$stateParams} $stateParams
  * @property {ProjectsService} projectsService
@@ -17,13 +18,16 @@ todo: check server validate for Private and Private notes switch
  * @property {$rootScope} $rootScope
  * @property {$q} $q
  * @property {$state} $state
+ * @property {TrackersService} trackersService
+ * @property {StatusesService} statusesService
  */
 export default class IssuesFormController extends ControllerBase {
 
     static get $inject() {
         return [
             'issuesService', 'attachmentService', '$stateParams', 'projectsService', '$rootScope', '$q',
-            'enumerationsService', '$mdToast', '$filter', '$state', '$http', '$scope', 'authService'
+            'enumerationsService', '$mdToast', '$filter', '$state', '$http', '$scope', 'authService',
+            'trackersService', 'statusesService', 'categoriesService'
         ];
     }
 
@@ -35,15 +39,22 @@ export default class IssuesFormController extends ControllerBase {
                 identifier: this.projectsService.getCurrentId()
             },
             watchers: [],
+            tracker: {},
+            status: {},
+            priority: {},
             // new_attachments: []
         };
 
         this.categories = [];
         this.searchText = '';
         this.watchers = [];
+        this.trackers = [];
+        this.statuses = [];
+        this.priorities = [];
         this.isNew = (this.$state.current.name === 'issues-inner.copy' || !this.issue.id);
         this.title = !this.isNew ? '#' : 'New issue';
         this.showDescription = this.isNew;
+        this.selectedProject = undefined;
         // this.files = [];
         // this.filesLoading = false;
         // cache state for ng-if
@@ -67,20 +78,20 @@ export default class IssuesFormController extends ControllerBase {
 
     load() {
         this.loadProccess = true;
+
         return this.$q
             .all([
                 this.projectsService.all((this.authService.isAdmin() ? undefined : {my: true})),
-                (this.$stateParams.id ? this.issuesService.one(this.issue.id) : undefined),
-                this.issuesService.statuses(),
-                // todo: add project identifier for enumerations request
-                this.enumerationsService.all({type: 'IssuePriority'}),
+                this.statusesService.all(),
+                this.enumerationsService.all('IssuePriority'),
+                (this.issue.id ? this.issuesService.one(this.issue.id) : undefined),
+                // this.trackersService.all(),
             ])
-            .then((response) => {
-                // todo: destruct respomse array
-                this.projects = _.get(response, '0.data.data');
-                this.issue = Object.assign(this.issue, _.get(response, '1.data.data'));
-                this.statuses = _.get(response, '2.data.data');
-                this.priorities = _.get(response, '3.data.data');
+            .then(([projects, statuses, priorities, issue]) => {
+                this.projects = projects.data.data;
+                this.statuses = statuses.data.data;
+                this.priorities = priorities.data.data;
+                this.issue = Object.assign(this.issue, _.get(issue, 'data.data'));
                 this.watchers = this.issue.watchers.map((watcher) => {
                     return {
                         user: watcher
@@ -95,39 +106,78 @@ export default class IssuesFormController extends ControllerBase {
                     this.$rootScope.$emit('updateProjectInfo');
                 } else {
                     this.issue.id = undefined;
-                    this.issue.priority_id = _.get(
-                        _.find(this.priorities, 'is_default'),
-                        'id'
-                    );
+                    this.issue.priority = this.priorities.find((priority) => priority.is_default === true);
                 }
 
+
+                return this.changeProject();
+            })
+            .finally(() => {
                 this.loadProccess = false;
-                this.changeProject();
-            });
+            })
     }
 
-    changeProject(fromSelect = false) {
+    changeProject(reset = false) {
+        // get project from projects list by identifier
         if (this.issue.project.identifier) {
             this.selectedProject = this.projects.find((project) => project.identifier === this.issue.project.identifier);
-        } else {
-            this.selectedProject = _.first(this.projects);
+        }
+
+        this.selectedProject = this.selectedProject || _.first(this.projects);
+        if (!this.issue.project.identifier) {
             this.issue.project.identifier = _.get(this.selectedProject, 'identifier');
         }
 
-        if (!this.issue.id || fromSelect) {
-            // todo: save tracker/state if edit/copt issue and id's exists
-            this.issue.tracker_id = _.get(this.selectedProject, 'trackers.0.id');
-            this.issue.status_id = _.get(this.selectedProject, 'trackers.0.default_status_id');
-        }
+        if (this.selectedProject) {
+            this.trackersService.all(this.selectedProject.identifier).then((response) => {
+                this.trackers = response.data.data;
 
-        // todo: save/add assigned to issue user if edit
+                if (!this.issue.tracker.id || !this.trackers.some((tracker) => tracker.id === this.issue.tracker.id)) {
+                    this.issue.tracker = _.first(this.trackers);
+                }
 
-        if (this.selectedProject.identifier) {
-            this.issuesService.categories(this.selectedProject.identifier).then((response) => {
+                // todo: get statuses by workflow in tracker
+                // todo: set done_ratio by tracker
+
+                if (!this.issue.status.id || !this.statuses.some((status) => status.id === this.issue.status.id)) {
+                    this.issue.status = this.statuses.find((status) => status.id === this.issue.tracker.default_status_id);
+                }
+            });
+
+            this.categoriesService.all(this.selectedProject.identifier).then((response) => {
                 this.categories = response.data.data;
             });
         }
     }
+
+    // changeProject2(fromSelect = false) {
+    //     if (this.issue.project.identifier) {
+    //         this.selectedProject = this.projects.find((project) => project.identifier === this.issue.project.identifier);
+    //     } else {
+    //         this.selectedProject = _.first(this.projects);
+    //         this.issue.project.identifier = _.get(this.selectedProject, 'identifier');
+    //     }
+    //
+    //     // if (!this.issue.id || fromSelect) {
+    //     if (fromSelect) {
+    //         // todo: save tracker/state if edit/copt issue and id's exists
+    //         this.trackersService.all(this.selectedProject.identifier).then((response) => {
+    //             this.trackers = response.data.data;
+    //             this.issue.tracker = _.first(this.trackers);
+    //             this.issue.status = this.statuses.find((status) => status.id === this.issue.tracker.default_status_id);
+    //             // this.issue.status = _.get(response, 'data.data.0.default_status_id');
+    //         });
+    //     }
+    //     // }
+    //
+    //     // todo: save/add assigned to issue user if edit
+    //
+    //     if (this.selectedProject.identifier) {
+    //         this.issuesService.categories(this.selectedProject.identifier).then((response) => {
+    //             this.categories = response.data.data;
+    //         });
+    //     }
+    // }
 
     querySearch() {
         let items = _.get(this.selectedProject, 'members', [])
@@ -144,14 +194,14 @@ export default class IssuesFormController extends ControllerBase {
     submit(createAndContinue = false) {
         let model = {
             // id: 2402,
-            tracker_id: this.issue.tracker_id,
+            tracker_id: this.issue.tracker.id,
             subject: this.issue.subject,
             description: this.issue.description,
             due_date: this.issue.due_date ? moment(this.issue.due_date).format('YYYY-MM-DD') : null,
-            category_id: this.issue.category_id,
-            status_id: this.issue.status_id,
-            assigned_to_id: this.issue.assigned_to_id,
-            priority_id: this.issue.priority_id,
+            category_id: this.issue.category ? this.issue.category.id : null,
+            status_id: this.issue.status.id,
+            assigned_to_id: this.issue.assigned ? this.issue.assigned.id : null,
+            priority_id: this.issue.priority.id,
             // fixed_version_id: this.issue.fixed_version_id,
             // author_id: this.issue.tracker_id,
             // lock_version: this.issue.tracker_id,
@@ -274,7 +324,7 @@ export default class IssuesFormController extends ControllerBase {
 
     // triggerFileLoadButton() {
     //     document.getElementById("files-upload").click();
-        // angular.element(document.getElementById("files-upload")).trigger("click")
+    // angular.element(document.getElementById("files-upload")).trigger("click")
     // }
 
     // deleteAttachment(attachmentId, fileName, assigned) {

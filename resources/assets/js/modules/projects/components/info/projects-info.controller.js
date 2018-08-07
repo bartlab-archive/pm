@@ -20,7 +20,9 @@ export default class ProjectsInfoController extends ControllerBase {
     }
 
     goToUser(user) {
-        this.$state.go('users.page.info', {id: user.id});
+        if (user.is_group !== true) {
+            this.$state.go('users.page.info', {id: user.id});
+        }
     }
 
 }

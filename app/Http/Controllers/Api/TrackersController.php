@@ -2,42 +2,44 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Issues\IndexTrackersRequest;
 use App\Http\Resources\TrackerResource;
-use App\Services\TrackersService;
-use App\Services\RolesService;
+use App\Services\ProjectsService;
+use App\Services\IssuesService;
 use Illuminate\Routing\Controller as BaseController;
 
 /**
  * Class TrackersController
  *
- * @property TrackersService $trackersService
+ * @property IssuesService $issuesService
+ * @property ProjectsService $projectsService
  *
  * @package App\Http\Controllers\Projects
  */
 class TrackersController extends BaseController
 {
 
-    /**
-     * @var RolesService
-     */
-    protected $trackersService;
+    protected $issuesService;
+    protected $projectsService;
 
-    /**
-     * RolesController constructor.
-     * @param TrackersService $trackersService
-     */
-    public function __construct(TrackersService $trackersService)
+    public function __construct(
+        ProjectsService $projectsService,
+        IssuesService $issuesService
+    )
     {
-        $this->trackersService = $trackersService;
+        $this->issuesService = $issuesService;
+        $this->projectsService = $projectsService;
     }
 
-    /**
-     * @return mixed
-     */
-    public function index()
+    public function index(IndexTrackersRequest $request)
     {
+        // todo: check project
+        $identifier = $request->input('project_identifier');
+
+        $project = $identifier ? $this->projectsService->oneByIdentifier($identifier) : null;
+
         return TrackerResource::collection(
-            $this->trackersService->all()
+            $this->issuesService->trackers($project ? $project->id : null)
         );
     }
 }

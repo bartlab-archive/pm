@@ -7,7 +7,6 @@ use App\Http\Requests\Projects\StoreProjectRequest;
 use App\Http\Requests\Projects\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Services\EnabledModulesService;
-use App\Services\MembersService;
 use App\Services\ProjectsService;
 use App\Services\UsersService;
 use Illuminate\Routing\Controller as BaseController;
@@ -16,8 +15,8 @@ use Illuminate\Routing\Controller as BaseController;
  * Class ProjectController
  *
  * @property ProjectsService $projectsService
- * @property MembersService $membersService
  * @property EnabledModulesService $enabledModulesService
+ * @property UsersService $usersService
  *
  * @package App\Http\Controllers\Projects
  */
@@ -26,19 +25,16 @@ class ProjectsController extends BaseController
 
     protected $projectsService;
     protected $enabledModulesService;
-    protected $membersService;
     protected $usersService;
 
     public function __construct(
         ProjectsService $projectsService,
         EnabledModulesService $enabledModulesService,
-        MembersService $membersService,
         UsersService $usersService
     )
     {
         $this->projectsService = $projectsService;
         $this->enabledModulesService = $enabledModulesService;
-        $this->membersService = $membersService;
         $this->usersService = $usersService;
     }
 
@@ -48,7 +44,7 @@ class ProjectsController extends BaseController
 
         if ($request->input('my')) {
             return ProjectResource::collection(
-                $this->projectsService->allByUserId($userIds, ['trackers', 'members.user']));
+                $this->projectsService->allByUserId($userIds, ['members.user']));
         }
 
         return ProjectResource::collection(
@@ -56,7 +52,7 @@ class ProjectsController extends BaseController
                 array_merge(
                     $request->validated(),
                     [
-                        'with' => ['trackers', 'members.user', 'enabledModules']
+                        'with' => ['members.user', 'enabledModules']
                     ],
                     \Auth::admin() ? [] : [
                         'user_ids' => $userIds

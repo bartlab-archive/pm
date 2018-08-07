@@ -75,12 +75,6 @@ class EnumerationsService
         return $enumeration->save();
     }
 
-    /**
-     * Delete Enumeration by id
-     *
-     * @param int $enumerationId
-     * @return bool
-     */
     public function deleteById($enumerationId)
     {
         return Enumeration::where(['id' => $enumerationId])->whereNotNull('project_id')->delete();

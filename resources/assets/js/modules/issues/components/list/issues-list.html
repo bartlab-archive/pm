@@ -233,9 +233,9 @@
 
                                     <md-menu-content width="3">
                                         <md-menu-item class="md-indent" ng-repeat="status in ::$ctrl.statuses">
-                                            <md-icon ng-if="::(row.status_id === status.id)">check</md-icon>
+                                            <md-icon ng-if="::(row.status.id === status.id)">check</md-icon>
                                             <md-button ng-click="null"
-                                                       ng-disabled="::(row.status_id === status.id)">
+                                                       ng-disabled="::(row.status.id === status.id)">
                                                 {{ ::status.name }}
                                             </md-button>
                                         </md-menu-item>
@@ -251,10 +251,10 @@
 
                                     <md-menu-content width="3">
                                         <md-menu-item class="md-indent"
-                                                      ng-repeat="tracker in ::row.project.trackers">
-                                            <md-icon ng-if="::(row.tracker_id === tracker.id)">check</md-icon>
+                                                      ng-repeat="tracker in ::row.trackers">
+                                            <md-icon ng-if="::(row.tracker.id === tracker.id)">check</md-icon>
                                             <md-button ng-click="null"
-                                                       ng-disabled="::(row.tracker_id === tracker.id)">
+                                                       ng-disabled="::(row.tracker.id === tracker.id)">
                                                 {{ ::tracker.name }}
                                             </md-button>
                                         </md-menu-item>
@@ -271,9 +271,9 @@
                                     <md-menu-content width="3">
                                         <md-menu-item class="md-indent"
                                                       ng-repeat="priority in ::$ctrl.priorities">
-                                            <md-icon ng-if="::(row.priority_id === priority.id)">check</md-icon>
+                                            <md-icon ng-if="::(row.priority.id === priority.id)">check</md-icon>
                                             <md-button ng-click=""
-                                                       ng-disabled="::(row.priority_id === priority.id)">
+                                                       ng-disabled="::(row.priority.id === priority.id)">
                                                 {{ ::priority.name }}
                                             </md-button>
                                         </md-menu-item>
@@ -289,9 +289,9 @@
 
                                     <md-menu-content width="3">
                                         <md-menu-item class="md-indent" ng-repeat="member in ::row.project.members">
-                                            <md-icon ng-if="::(row.assigned_to_id === member.user.id)">check</md-icon>
+                                            <md-icon ng-if="::(row.assigned.id === member.user.id)">check</md-icon>
                                             <md-button ng-click="null"
-                                                       ng-disabled="::(row.assigned_to_id === member.user.id)">
+                                                       ng-disabled="::(row.assigned.id === member.user.id)">
                                                 {{ ::member.user.full_name }}
                                             </md-button>
                                         </md-menu-item>

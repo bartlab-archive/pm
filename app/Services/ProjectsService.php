@@ -89,10 +89,6 @@ class ProjectsService
         return Project::query()
             ->where(['id' => $id])
             ->with($with)
-//            ->with([
-//                'enabledModules',
-//                'users'
-//            ])
             ->first();
     }
 
@@ -143,6 +139,62 @@ class ProjectsService
     {
         if ($project = $this->oneById($id)) {
             return $project->members()->whereIn('user_id', $userIds)->exists();
+        }
+
+        return false;
+    }
+
+//    public function members(int $projectId, array $with = [])
+//    {
+//        return Member::with($with)
+//            ->where(['project_id' => $projectId])
+//            ->get();
+//    }
+
+    public function member($id)
+    {
+        return Member::query()
+            ->where(['id' => $id])
+            ->first();
+    }
+
+    public function createMember($projectId, $userId, array $roleIds)
+    {
+        $member = Member::make([
+            'project_id' => $projectId,
+            'user_id' => $userId,
+        ]);
+
+        if ($member->save()) {
+            $member->roles()->attach($roleIds);
+
+            return $member;
+        }
+
+        return false;
+    }
+
+    public function updateMember($memberId, array $roleIds)
+    {
+        /** @var Member $member */
+        if ($member = $this->member($memberId)) {
+            $member->roles()->sync($roleIds);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function removeMember($memberId)
+    {
+        /** @var Member $member */
+        if ($member = $this->member($memberId)) {
+            try {
+                return $member->roles()->detach() && $member->delete();
+            } catch (\Exception $e) {
+                return false;
+            }
         }
 
         return false;

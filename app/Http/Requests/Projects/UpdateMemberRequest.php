@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Requests\MemberRoles;
+namespace App\Http\Requests\Projects;
 
+use App\Models\Project;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
-class MemberRolesRequest extends FormRequest
+class UpdateMemberRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +27,8 @@ class MemberRolesRequest extends FormRequest
     public function rules()
     {
         return [
-            'role_id' => 'required|int|exists:' . Role::getTableName() . ',id',
+            'roles' => 'required|array',
+            'roles.*' => 'required|integer|exists:' . Role::getTableName() . ',id',
         ];
     }
 }
