@@ -16,7 +16,7 @@ export default class StatusesConfig extends InjectableBase {
         this.mainServiceProvider
             .registerAdminMenu({
                 name: 'Workflow',
-                url: 'workflows.edit',
+                url: 'workflows.index',
                 icon: 'assignment_return'
             });
 

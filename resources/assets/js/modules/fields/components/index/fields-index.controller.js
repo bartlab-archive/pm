@@ -10,14 +10,14 @@ export default class FieldsIndexController extends ControllerBase {
     }
 
     $onInit() {
-        return  this.fieldsService.all()
-            .getList()
-            .then((response) => {
-                this.custom_fields = response.data;
-            });
+        // return  this.fieldsService.all()
+        //     .getList()
+        //     .then((response) => {
+        //         this.custom_fields = response.data;
+        //     });
     }
 
-    editFields(id){}
-    deleteFields(id){}
+    // editFields(id){}
+    // deleteFields(id){}
 
 }

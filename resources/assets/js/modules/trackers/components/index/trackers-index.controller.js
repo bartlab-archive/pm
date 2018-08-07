@@ -10,16 +10,16 @@ export default class TrackersIndexController extends ControllerBase {
     }
 
     $onInit() {
-        return this.trackersService
-            .all()
-            .then((response) => {
-                this.trackers = response.data;
-            });
+        // return this.trackersService
+        //     .all()
+        //     .then((response) => {
+        //         this.trackers = response.data;
+        //     });
     }
 
-    editTracker(id) {
-    }
-
-    deleteTracker(id) {
-    }
+    // editTracker(id) {
+    // }
+    //
+    // deleteTracker(id) {
+    // }
 }

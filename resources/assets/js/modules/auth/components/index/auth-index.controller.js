@@ -10,12 +10,12 @@ export default class AuthIndexController extends ControllerBase {
     }
 
     $onInit() {
-        return  this.groupsService.all()
-            .getList()
-            .then((response) => {
-                // todo: is it correct to access via response.data ? (usually response.data.data)
-                // check is it array or object, if array - use _.merge
-                this.groups = response.data;
-            });
+        // return  this.groupsService.all()
+        //     .getList()
+        //     .then((response) => {
+        //         // todo: is it correct to access via response.data ? (usually response.data.data)
+        //         // check is it array or object, if array - use _.merge
+        //         this.groups = response.data;
+        //     });
     }
 }

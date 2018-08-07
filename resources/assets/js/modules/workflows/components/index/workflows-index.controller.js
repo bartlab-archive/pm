@@ -13,8 +13,8 @@ export default class WorkflowsIndexController extends ControllerBase {
 
     }
 
-    goto(page) {
-        console.log("Goto " + page);
-    }
+    // goto(page) {
+    //     console.log("Goto " + page);
+    // }
 
 }
