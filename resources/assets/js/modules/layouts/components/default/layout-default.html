@@ -130,7 +130,7 @@
             <md-list>
                 <div ng-repeat="project in $ctrl.projects">
                     <md-list-item class="md-1-line" ng-click="$ctrl.gotToProject(project.identifier)">
-                        <span class="md-avatar">{{ ::project.avatar  }}</span>
+                        <span class="md-avatar md-avatar-text">{{ ::project.avatar  }}</span>
                         {{ ::project.name }}
                     </md-list-item>
                 </div>

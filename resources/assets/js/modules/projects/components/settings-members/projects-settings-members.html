@@ -7,8 +7,8 @@
     <md-list-item class="md-2-line" ng-repeat="item in $ctrl.params.members" ng-click="$ctrl.edit($event, item)" aria-label="{{ ::item.user.full_name }}">
 
         <img ng-if="::item.user.avatar" ng-src="{{ ::item.user.avatar }}" class="md-avatar">
-        <span ng-if="::(!item.user.avatar && item.user.is_group !== true)" class="md-avatar">{{ ::item.user.full_name | limitTo:1 }}</span>
-        <span class="md-avatar" ng-if="::item.user.is_group === true"><md-icon>group</md-icon></span>
+        <span ng-if="::(!item.user.avatar && item.user.is_group !== true)" class="md-avatar md-avatar-text">{{ ::item.user.full_name | limitTo:1 }}</span>
+        <md-icon class="md-avatar-icon" ng-if="::item.user.is_group === true">group</md-icon>
 
         <div class="md-list-item-text">
             <h3>{{ ::item.user.full_name }}</h3>
