@@ -14,11 +14,12 @@ class JournalDetailResource extends Resource
      */
     public function toArray($request)
     {
+        // todo: convert value from id to text by type
         return [
             'property' => $this->property,
             'prop_key' => $this->prop_key,
-            'old_value' => $this->old_value,
-            'value' => $this->value,
+            'old_value' => $this->prop_key === 'project_id' ? '...' : $this->old_value,
+            'value' => $this->prop_key === 'project_id' ? '...' : $this->value,
         ];
     }
 }
