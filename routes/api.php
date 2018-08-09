@@ -98,11 +98,10 @@ Route::group(
 
                 // statuses
                 Route::get('/statuses', 'IssueStatusesController@index');
-                // todo: make other actions
-//                Route::get('/statuses/{id}', 'IssueStatuseController@one');
-//                Route::put('/statuses/{id}', 'IssueStatuseController@update');
-//                Route::post('/statuses', 'IssueStatuseController@create');
-//                Route::delete('/statuses/{id}', 'IssueStatuseController@destroy');
+                Route::get('/statuses/{id}', 'IssueStatusesController@show');
+                Route::put('/statuses/{id}', 'IssueStatusesController@update');
+                Route::post('/statuses', 'IssueStatusesController@store');
+                Route::delete('/statuses/{id}', 'IssueStatusesController@destroy');
 
                 // Categories
                 // todo: add 'project' to url - /categories/project/{identifier}

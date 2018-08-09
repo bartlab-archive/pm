@@ -331,6 +331,54 @@ class IssuesService
         return IssueStatus::query()->get();
     }
 
+    public function status($id)
+    {
+        return IssueStatus::query()
+            ->where(['id' => $id])
+            ->first();
+    }
+
+    public function createStatus(array $data)
+    {
+        $status = IssueStatus::make(array_only($data, ['name', 'is_closed']));
+
+        if (!$status->save()) {
+            return false;
+        }
+
+        return $status;
+    }
+
+    public function updateStatus($id, array $data)
+    {
+        if (!$status = $this->status($id)) {
+            return false;
+        }
+
+        if (!$status->fill(array_only($data, ['name', 'is_closed']))->save()) {
+            return false;
+        }
+
+        return $status;
+    }
+
+    public function removeStatus($id)
+    {
+        if (!$status = $this->status($id)) {
+            return false;
+        }
+
+        // todo: reset status id for issues
+
+        try {
+            $status->delete();
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function categories($projectId, array $with = [])
     {
         return IssueCategory::query()

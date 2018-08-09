@@ -28,6 +28,7 @@ class UpdateIssueRequest extends CreateIssueRequest
      */
     public function rules()
     {
+        // todo: remove dublicated rules
         return array_merge(
             parent::rules(),
             [

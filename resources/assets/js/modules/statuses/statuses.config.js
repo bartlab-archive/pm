@@ -1,5 +1,6 @@
 import InjectableBase from 'base/injectable.base';
 import StatusesListComponent from './components/list/statuses-list.component';
+import StatusesFormComponent from './components/form/statuses-form.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -44,6 +45,14 @@ export default class StatusesConfig extends InjectableBase {
             .state('issues-statuses.index', {
                 url: '',
                 component: StatusesListComponent.getName(),
+            })
+            .state('issues-statuses.new', {
+                url: 'new',
+                component: StatusesFormComponent.getName(),
+            })
+            .state('issues-statuses.edit', {
+                url: '/{id}/edit',
+                component: StatusesFormComponent.getName(),
             });
     }
 }

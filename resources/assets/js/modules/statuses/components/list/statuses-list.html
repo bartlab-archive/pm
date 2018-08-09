@@ -1,23 +1,42 @@
-<div layout-gt-sm="row" layout-align="center start">
+<div layout="row" layout-align="center start">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
+
         <md-card-header>
+            <md-card-avatar>
+                <md-icon class="md-avatar-icon">done</md-icon>
+            </md-card-avatar>
+
             <md-card-header-text>
                 <span class="md-title">Issue statuses</span>
+                <span class="md-subhead">Administration</span>
             </md-card-header-text>
 
-            <md-card-actions>
-                <md-button class="md-icon-button" ng-click="$ctrl.addGroup()">
-                    <md-icon>add</md-icon>
-                    <md-tooltip md-direction="top">Add</md-tooltip>
+            <div flex></div>
+            <!--<md-card-actions>-->
+                <md-button class="md-icon-button" ng-click="$ctrl.load()">
+                    <md-icon>refresh</md-icon>
+                    <md-tooltip md-direction="top">Refresh</md-tooltip>
                 </md-button>
-            </md-card-actions>
+
+                <md-button class="md-icon-button" ui-sref="issues-statuses.new">
+                    <md-icon>add</md-icon>
+                    <md-tooltip md-direction="top">New status</md-tooltip>
+                </md-button>
+            <!--</md-card-actions>-->
         </md-card-header>
 
-        <md-list>
+        <md-list class="md-dense">
             <div ng-repeat="row in $ctrl.statuses">
-                <md-list-item class="md-3-line" ng-click="$ctrl.goto(row.id)">
+                <md-list-item class="md-2-line" ng-click="null" ui-sref="issues-statuses.edit({id:row.id})">
                     <div class="md-list-item-text" layout="column">
                         <h3>{{ ::row.name }} </h3>
+
+                        <h4 layout="row">
+                            <span class="label label-default" ng-if="::(row.is_closed === true)">
+                                Issue closed
+                            </span>
+                        </h4>
                     </div>
 
                     <md-menu md-position-mode="target-right target">
@@ -26,15 +45,15 @@
                         </md-button>
 
                         <md-menu-content width="3">
-                            <md-menu-item ng-click="$ctrl.editSatuses(row.id)">
-                                <md-button>
+                            <md-menu-item>
+                                <md-button ui-sref="issues-statuses.edit({id:row.id})">
                                     <md-icon>mode_edit</md-icon>
                                     Edit
                                 </md-button>
                             </md-menu-item>
 
                             <md-menu-item>
-                                <md-button ng-click="$ctrl.deleteSatuses(row.id)">
+                                <md-button ng-click="$ctrl.remove(row)">
                                     <md-icon>delete</md-icon>
                                     Delete
                                 </md-button>

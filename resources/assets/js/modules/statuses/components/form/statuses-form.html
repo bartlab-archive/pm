@@ -1,0 +1,49 @@
+<form name="$ctrl.form" ng-submit="$ctrl.form.$valid && $ctrl.submit()" novalidate server-form="$ctrl.errors">
+    <div layout="row" layout-align="center start">
+        <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+            <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
+
+            <md-card-header>
+                <md-card-avatar>
+                    <md-icon class="md-avatar-icon">done</md-icon>
+                </md-card-avatar>
+
+                <md-card-header-text>
+                    <span class="md-title">{{ ::($ctrl.status.id ? $ctrl.status.name : 'New status') }}</span>
+                    <span class="md-subhead">Issue statuses</span>
+                </md-card-header-text>
+            </md-card-header>
+
+            <md-card-content>
+                <md-input-container class="md-icon-float md-block">
+                    <label>Name</label>
+                    <input ng-model="$ctrl.status.name" name="name" type="text" ng-maxlength="30"
+                           required server-field>
+
+                    <div ng-messages="$ctrl.form.name.$error">
+                        <div ng-message="required">First name cannot be blank</div>
+                        <div ng-message="maxlength">First name is too long (maximum is 30 characters)</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.name.$server"></div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <md-checkbox class="md-primary" aria-label="Issue closed" ng-model="$ctrl.status.is_closed">
+                        Issue closed
+                    </md-checkbox>
+                </md-input-container>
+            </md-card-content>
+
+            <md-card-actions layout="row" layout-align="center center">
+                <md-button class="md-raised md-primary animation-target" type="submit"
+                           ng-disabled="$ctrl.form.$invalid">
+                    Save
+                </md-button>
+
+                <md-button class="md-raised md-default animation-target" ng-click="$ctrl.cancel()">
+                    Cancel
+                </md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
+</form>
