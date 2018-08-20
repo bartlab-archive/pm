@@ -27,4 +27,9 @@ class IssueStatus extends Model
     public $timestamps = false;
 
     protected $guarded = ['id'];
+
+    public function issues()
+    {
+        return $this->hasMany(Issue::class, 'status_id', 'id');
+    }
 }

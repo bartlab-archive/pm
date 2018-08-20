@@ -41,6 +41,13 @@ export default class StatusesListController extends ControllerBase {
                 );
 
                 this.load();
+            })
+            .catch((response) => {
+                if (response.status === 422) {
+                    this.$mdToast.show(
+                        this.$mdToast.simple().textContent('Unable to delete issue status')
+                    );
+                }
             });
     }
 }

@@ -250,6 +250,8 @@ class IssuesService
                 $issue->attachments()->saveMany($attachments->getDictionary());
             }
 
+            // todo: remove id in relation issues if change project_id
+            // todo: move subtasks that were in the same project if change project_id
 
             if ($issue->update()) {
                 // save journal if notes exists or fileds change
@@ -368,7 +370,9 @@ class IssuesService
             return false;
         }
 
-        // todo: reset status id for issues
+        if ($status->issues()->count() > 0) {
+            return false;
+        }
 
         try {
             $status->delete();
