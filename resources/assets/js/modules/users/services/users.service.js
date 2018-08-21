@@ -24,15 +24,15 @@ export default class UsersService extends ServiceBase {
         return this.$http.get(`/api/v1/users/${id}`);
     }
 
-    all() {
-        return this.$http.get(`api/v1/users`);
+    all(params) {
+        return this.$http.get(`api/v1/users`, {params});
     }
 
     updateUserStatus(id, params) {
         // return this.Restangular.one('users', id).customPUT(params, 'updatestatus');
     }
 
-    deleteUser(id){
+    deleteUser(id) {
         // return this.Restangular.one('users', id).remove();
     }
 

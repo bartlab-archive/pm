@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\User\IndexUserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Services\UsersService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
@@ -32,13 +34,16 @@ class UsersController extends BaseController
         $this->usersService = $usersService;
     }
 
-    /**
-     * @return mixed
-     */
-    public function index()
+    public function index(IndexUserRequest $request)
     {
         return UserResource::collection(
-            $this->usersService->all(['type' => 'all'])
+            $this->usersService->all(array_merge(
+                $request->validated(),
+                [
+                    \Auth::admin() ? [] : ['status' => [User::STATUS_ACTIVE]]
+                ]
+            ))
+//            $this->usersService->all(['type' => 'all'])
         );
     }
 

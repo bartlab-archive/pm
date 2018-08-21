@@ -27,25 +27,30 @@ class GetIssuesRequest extends FormRequest
         return [
             'project_identifier' => 'string|exists:' . Project::getTableName() . ',identifier',
 
+            // todo: check for exists
             'status_ids' => 'array',
-            'status_ids.*' => 'numeric',
+            'status_ids.*' => 'integer',
 
+            // todo: check for exists
             'tracker_ids' => 'array',
-            'tracker_ids.*' => 'numeric',
+            'tracker_ids.*' => 'integer',
 
+            // todo: check for exists
             'assigned_to_ids' => 'array',
-            'assigned_to_ids.*' => 'numeric',
+            'assigned_to_ids.*' => 'integer',
 
+            // todo: check for exists
             'author_ids' => 'array',
-            'author_ids.*' => 'numeric',
+            'author_ids.*' => 'integer',
 
+            // todo: check for exists
             'priority_ids' => 'array',
-            'priority_ids.*' => 'numeric',
+            'priority_ids.*' => 'integer',
 
             'group' => 'nullable|in:author,assigned,done_ratio,project,tracker,status,priority,category,version',
             'order' => 'string',
-            'per_page' => 'numeric',
-            'page' => 'numeric',
+            'per_page' => 'integer',
+            'page' => 'integer',
         ];
     }
 }

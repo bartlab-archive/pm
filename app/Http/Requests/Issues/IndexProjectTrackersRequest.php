@@ -26,7 +26,7 @@ class IndexProjectTrackersRequest extends FormRequest
     {
         return [
             'trackers' => 'array',
-            'trackers.*.id' => 'numeric|exists:' . Tracker::getTableName() . ',id',
+            'trackers.*.id' => 'integer|exists:' . Tracker::getTableName() . ',id',
             'trackers.*.enable' => 'boolean',
         ];
     }

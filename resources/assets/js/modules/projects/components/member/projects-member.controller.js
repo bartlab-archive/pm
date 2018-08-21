@@ -31,7 +31,7 @@ export default class ProjectsMemberController extends ControllerBase {
             this.roles = response.data.data;
         });
 
-        this.usersService.all().then((response) => {
+        this.usersService.all({type: 'all'}).then((response) => {
             this.users = response.data.data.filter(
                 (user) => !this.project.members.some(
                     (member) => member.user.id === user.id
@@ -57,15 +57,15 @@ export default class ProjectsMemberController extends ControllerBase {
         if (!this.model.id) {
             promise = this.projectsService
                 .addMember(this.projectsService.getCurrentId(), this.model.user, this.model.roles);
-                // .then(() => this.cancel(true));
+            // .then(() => this.cancel(true));
         } else {
             promise = this.projectsService
                 .updateMember(this.member.id, this.model.roles);
-                // .then(() => this.cancel(true));
+            // .then(() => this.cancel(true));
         }
 
         promise
-            .then(()=>{
+            .then(() => {
                 this.$mdToast.show(
                     this.$mdToast.simple().textContent('Success saved!')
                 );
@@ -73,7 +73,7 @@ export default class ProjectsMemberController extends ControllerBase {
                 // this.$mdDialog.cancel();
                 this.cancel()
             })
-            .catch(()=>{
+            .catch(() => {
                 // todo: show server error
                 this.$mdToast.show(
                     this.$mdToast.simple().textContent('Error add member')

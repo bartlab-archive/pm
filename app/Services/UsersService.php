@@ -267,20 +267,42 @@ class UsersService
     {
         $query = User::query()
             ->with($with)
-            ->where('type', '<>', User::TYPE_ANONYMOUS_USER)
-            ->orderBy('type')
+            ->where('type', '<>', User::TYPE_ANONYMOUS_USER);
+//            ->orderBy('type')
             // todo: order by app settings for display user name
-            ->orderBy('firstname')
-            ->orderBy('lastname');
+//            ->orderBy('firstname')
+//            ->orderBy('lastname');
 
         // if status not set, add STATUS_ACTIVE to where
-        if ($status = array_get($params, 'status', User::STATUS_ACTIVE)) {
-            $query->where(['status' => $status]);
+        if ($status = array_get($params, 'status', [User::STATUS_ACTIVE])) {
+            $query->whereIn('status', $status);
         }
 
         // by default return only 'User'. if type set to 'all', return full table
         if (($type = array_get($params, 'type', User::TYPE_USER)) && $type !== 'all') {
-            $query->where(['status' => $type]);
+            $query->where(['type' => $type]);
+        }
+
+        if ($group_id = array_get($params, 'group_id')) {
+            $query->whereHas('groups', function ($query) use ($group_id) {
+                $query->where(['id' => $group_id]);
+            });
+        }
+
+        // todo: order by app settings for display user name
+        if ($order = array_get($params, 'order', ['type','firstname','lastname'])) {
+            if (\is_string($order) && \count($split = explode(':', $order)) === 2) {
+                $order = [$split[0] => $split[1]];
+            }
+
+            // todo: add check, if column available
+            foreach ($order as $key => $val) {
+                $query->orderBy($key, $val);
+            }
+        }
+
+        if ($perPage = array_get($params, 'per_page')){
+            return $query->paginate($perPage);
         }
 
         // todo: add order by

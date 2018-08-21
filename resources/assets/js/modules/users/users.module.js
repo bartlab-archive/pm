@@ -10,6 +10,9 @@ angular.module('app.modules.users', [])
     .service(UsersService.getName(), UsersService)
     .component(UsersListComponent.getName(), UsersListComponent)
     .component(UsersEditComponent.getName(), UsersEditComponent)
-    .component(UsersInfoComponent.getName(), UsersInfoComponent);
+    .component(UsersInfoComponent.getName(), UsersInfoComponent)
+    .constant('USER_STATUS_ACTIVE', 1)
+    .constant('USER_STATUS_DISABLE', 2)
+    .constant('USER_STATUS_LOCK', 3);
 
 // todo: register modules for user profile as "my" and "project"

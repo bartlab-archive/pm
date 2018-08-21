@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Projects;
+namespace App\Http\Requests\User;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
-class IndexProjectRequest extends FormRequest
+class IndexUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +25,14 @@ class IndexProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'public' => 'array',
-            'public.*' => 'integer|in:1,0',
-            'status_ids' => 'array',
-            // todo: status_ids depends on user admin status
+            'type' => 'in:all,' . User::TYPE_USER,
+            'status' => 'array',
+            'status.*' => 'in:' . implode(',', [User::STATUS_ACTIVE, USER::STATUS_DISABLE, User::STATUS_LOCK]),
+
+            'group_id' => 'array',
             // todo: check for exists
-            'status_ids.*' => 'integer|in:1,5,9',
+            'group_id.*' => 'integer',
+
             'order' => 'string',
             'per_page' => 'integer',
             'page' => 'integer',

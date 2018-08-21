@@ -1,88 +1,185 @@
-<div layout-gt-sm="row" layout-align="center start">
+<div layout="row" layout-align="center start">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
 
         <md-card-header>
+            <md-card-avatar>
+                <md-icon class="md-avatar-icon">person</md-icon>
+            </md-card-avatar>
+
             <md-card-header-text>
-                <span class="md-title">Admin user list</span>
+                <span class="md-title">Users</span>
+                <span class="md-subhead">Administration</span>
             </md-card-header-text>
-        </md-card-header>
-        <div class="md-padding">
-            <h2>Filters</h2>
-            <div layout="row">
-                <form name="$ctrl.filterForm">
-                    <div class="demo-md-panel-content">
-                        <md-input-container>
-                            <label>Status</label>
-                            <md-select ng-model="$ctrl.filterForm.myOption" ng-change="$ctrl.sortBy()">
-                                <md-option ng-value="key" ng-repeat="(key, item)  in ::$ctrl.statuses">{{item}}</md-option>
-                            </md-select>
-                        </md-input-container>
 
-                        <md-input-container class="md-icon-float md-block">
-                            <label>User</label>
-                            <input ng-model="$ctrl.filterForm.text" type="text">
-                        </md-input-container>
+            <div flex></div>
 
-                        <div layout-align="center center" >
-                            <md-button class="md-raised md-primary animation-target"
-                                       ng-click="$ctrl.search()">
-                                Search
+            <div ng-if="$ctrl.meta.total > 0">
+                <md-menu>
+                    <md-button class="card-button" ng-click="$mdMenu.open()">
+                        {{ $ctrl.meta.from + ' - ' + $ctrl.meta.to + ' / ' + $ctrl.meta.total }}
+                    </md-button>
+                    <md-menu-content>
+                        <md-menu-item ng-repeat="item in ::$ctrl.perPageList">
+                            <md-button ng-click="$ctrl.setLimitPerPage(item)" ng-disabled="$ctrl.limitPerPage === item">
+                                {{ ::item }}
                             </md-button>
-                        </div>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
 
-                        <div layout-align="center center">
-                            <md-button class="md-raised md-primary animation-target"
-                                       ng-click="$ctrl.clearFilters()">
-                                Clear
+                <md-button
+                        ng-click="$ctrl.previous()"
+                        ng-disabled="!$ctrl.links.prev || $ctrl.loadProccess"
+                        class="md-icon-button">
+                    <md-icon>keyboard_arrow_left</md-icon>
+                </md-button>
+
+                <md-button
+                        ng-click="$ctrl.next()"
+                        ng-disabled="!$ctrl.links.next || $ctrl.loadProccess"
+                        class="md-icon-button">
+                    <md-icon>keyboard_arrow_right</md-icon>
+                </md-button>
+
+                <md-menu>
+                    <md-button class="md-icon-button" ng-click="$mdMenu.open()">
+                        <md-icon>sort</md-icon>
+                    </md-button>
+                    <md-menu-content width="3">
+                        <md-menu-item ng-repeat="item in ::$ctrl.sortList">
+                            <md-button ng-click="$ctrl.setSort(item)" ng-disabled="$ctrl.sort.param === item.param">
+                                {{ ::item.name }}
                             </md-button>
-
-                        </div>
-                    </div>
-                </form>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </div>
-        </div>
-        <md-list>
-            <div ng-repeat="row in $ctrl.list">
-                <md-list-item class="md-3-line" ng-click="$ctrl.goto(row.id)">
+
+            <!--<md-card-actions>-->
+            <md-button class="md-icon-button" ng-click="$ctrl.load()">
+                <md-icon>refresh</md-icon>
+                <md-tooltip md-direction="top">Refresh</md-tooltip>
+            </md-button>
+
+            <md-button class="md-icon-button" ui-sref="users.new">
+                <md-icon>add</md-icon>
+                <md-tooltip md-direction="top">New user</md-tooltip>
+            </md-button>
+            <!--</md-card-actions>-->
+        </md-card-header>
+
+        <md-card-content>
+            <md-chips
+                    ng-model="$ctrl.tags"
+                    readonly="false"
+                    md-removable="true"
+                    placeholder="Filter"
+                    md-require-match="true"
+                    delete-button-label="Remove param"
+                    md-on-add="$ctrl.onChangeFilterValue()"
+                    md-on-remove="$ctrl.onChangeFilterValue()"
+                    delete-hint="Press delete to remove param">
+
+                <md-chip-template>
+                    <strong>{{ ::$chip.name }}</strong>
+                    <em>({{ ::$chip.type }})</em>
+                </md-chip-template>
+
+                <md-autocomplete
+                        md-no-cache="true"
+                        md-search-text="$ctrl.searchText"
+                        md-item-text="item.name"
+                        md-items="item in $ctrl.querySearch()"
+                        md-min-length="0"
+                        placeholder="Add filter">
+                <span md-highlight-text="$ctrl.searchText"
+                      md-highlight-flags="i">{{ ::item.name }} ({{ ::item.type }})</span>
+                </md-autocomplete>
+            </md-chips>
+        </md-card-content>
+
+        <md-list class="md-dense">
+            <div ng-repeat="row in $ctrl.users">
+                <md-list-item class="md-3-line" ng-click="null" ui-sref="users.page.edit({id:row.id})">
+
+                    <img ng-src="{{ ::row.avatar }}" class="md-avatar">
+
                     <div class="md-list-item-text" layout="column">
-                        <h3>{{ ::row.firstname }} | {{ ::row.lastname}}</h3>
-                        <p>{{ ::row.login }} | <i>created on: {{ ::row.created_on }}</i></p>
+                        <h3>
+                            {{ ::row.firstname }} {{ ::row.lastname }}
+                        </h3>
+
+                        <h4>
+                            {{ ::row.login }} ({{ ::row.email }})
+                            <!--<span class="description">{{ ::row.email }}</span>-->
+                        </h4>
+
+                        <p layout="row">
+                            <span class="label label-default" ng-if="::(row.status === $ctrl.USER_STATUS_LOCK)">
+                                Lock
+                            </span>
+
+                            <span class="label label-default" ng-if="::(row.status === $ctrl.USER_STATUS_DISABLE)">
+                                Disable
+                            </span>
+
+                            <span class="label label-primary" ng-if="::(row.request === true)">
+                                Admin
+                            </span>
+
+                            <span flex></span>
+
+                            <span>{{ ::row.created_on }}</span>
+                        </p>
                     </div>
-                    <md-icon>{{ row.status == '3' ?'lock':'lock_open' }}</md-icon>
 
                     <md-menu md-position-mode="target-right target">
                         <md-button aria-label="More actions" class="md-icon-button" ng-click="$mdMenu.open()">
                             <md-icon>more_vert</md-icon>
                         </md-button>
+
                         <md-menu-content width="3">
-                            <md-menu-item ng-click="$ctrl.editUser(row.id)">
-                                <md-button>
+                            <md-menu-item>
+                                <md-button ui-sref="users.page.edit({id:row.id})">
                                     <md-icon>mode_edit</md-icon>
                                     Edit
                                 </md-button>
                             </md-menu-item>
 
-                            <md-menu-item ng-click="$ctrl.lockUser(row.id, row.status)">
-                                <md-button>
-                                    <md-icon>{{ row.status == '3' ?'lock_open':'lock' }}</md-icon>
-                                    {{ row.status == '3' ? 'Unlock' : 'Lock' }}
+                            <md-menu-item>
+                                <md-button ng-click="null" ng-if="::(row.status === $ctrl.USER_STATUS_ACTIVE)">
+                                    <md-icon>lock</md-icon>
+                                    Lock
                                 </md-button>
                             </md-menu-item>
 
-                            <md-menu-divider></md-menu-divider>
+                            <md-menu-item>
+                                <md-button ng-click="null" ng-if="::(row.status === $ctrl.USER_STATUS_LOCK)">
+                                    <md-icon>lock_open</md-icon>
+                                    UnLock
+                                </md-button>
+                            </md-menu-item>
 
                             <md-menu-item>
-                                <md-button ng-click="$ctrl.deleteUser(row.id)">
+                                <md-button ng-click="null" ng-if="::(row.status === $ctrl.USER_STATUS_DISABLE)">
+                                    <md-icon>done</md-icon>
+                                    Activate
+                                </md-button>
+                            </md-menu-item>
+
+                            <md-menu-item>
+                                <md-button ng-click="$ctrl.remove(row)">
                                     <md-icon>delete</md-icon>
                                     Delete
                                 </md-button>
                             </md-menu-item>
                         </md-menu-content>
                     </md-menu>
+
                     <md-divider ng-if="!$last"></md-divider>
                 </md-list-item>
             </div>
         </md-list>
-
     </md-card>
 </div>
