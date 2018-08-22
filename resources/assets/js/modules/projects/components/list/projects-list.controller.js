@@ -74,8 +74,8 @@ export default class ProjectsListController extends ControllerBase {
                 per_page: this.limitPerPage,
                 page: this.meta.current_page,
                 order: this.sort.param,
-                'status_ids[]': this.tags.filter((e) => e.type === 'status').map((e) => e.id),
-                'public[]': this.tags.filter((e) => e.type === 'public').map((e) => e.id)
+                status_ids: this.tags.filter((e) => e.type === 'status').map((e) => e.id),
+                public: this.tags.filter((e) => e.type === 'public').map((e) => e.id)
             })
             .then((response) => {
                 this.list = response.data.data.map((project) => {

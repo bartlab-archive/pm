@@ -146,11 +146,11 @@ export default class IssuesListController extends ControllerBase {
 
                 order: this.sort.param,
                 group: this.groupBy.param,
-                'status_ids[]': this.tags.filter((e) => e.type === 'status').map((e) => e.id),
-                'tracker_ids[]': this.tags.filter((e) => e.type === 'tracker').map((e) => e.id),
-                'priority_ids[]': this.tags.filter((e) => e.type === 'priority').map((e) => e.id),
-                'assigned_to_ids[]': this.tags.filter((e) => e.type === 'assigned').map((e) => e.id),
-                'author_ids[]': this.tags.filter((e) => e.type === 'created').map((e) => e.id)
+                status_ids: this.tags.filter((e) => e.type === 'status').map((e) => e.id),
+                tracker_ids: this.tags.filter((e) => e.type === 'tracker').map((e) => e.id),
+                priority_ids: this.tags.filter((e) => e.type === 'priority').map((e) => e.id),
+                assigned_to_ids: this.tags.filter((e) => e.type === 'assigned').map((e) => e.id),
+                author_ids: this.tags.filter((e) => e.type === 'created').map((e) => e.id)
             })
             .then((response) => {
                 // todo: map data for prepare issues and not use filter  in html

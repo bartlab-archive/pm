@@ -33,8 +33,9 @@ export default class ProjectsMemberController extends ControllerBase {
 
         this.usersService
             .all({
+                // todo: make type as global const, like user status
                 type: 'all',
-                'status[]': this.USER_STATUS_ACTIVE
+                status: [this.USER_STATUS_ACTIVE]
             })
             .then((response) => {
                 this.users = response.data.data.filter(

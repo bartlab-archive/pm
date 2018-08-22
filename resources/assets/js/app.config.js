@@ -46,6 +46,8 @@ export default class AppConfig extends InjectableBase {
 
     $httpConfig() {
         this.$httpProvider.interceptors.push(HttpInterceptor.inst());
+        this.$httpProvider.useApplyAsync(true);
+        this.$httpProvider.defaults.paramSerializer = '$httpParamSerializerJQLike';
     }
 
     themeConfig() {
