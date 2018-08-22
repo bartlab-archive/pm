@@ -269,12 +269,13 @@ class UsersService
             ->with($with)
             ->where('type', '<>', User::TYPE_ANONYMOUS_USER);
 //            ->orderBy('type')
-            // todo: order by app settings for display user name
+        // todo: order by app settings for display user name
 //            ->orderBy('firstname')
 //            ->orderBy('lastname');
 
         // if status not set, add STATUS_ACTIVE to where
-        if ($status = array_get($params, 'status', [User::STATUS_ACTIVE])) {
+        if ($status = array_get($params, 'status')) {
+//        if ($status = array_get($params, 'status', [User::STATUS_ACTIVE])) {
             $query->whereIn('status', $status);
         }
 
@@ -290,7 +291,7 @@ class UsersService
         }
 
         // todo: order by app settings for display user name
-        if ($order = array_get($params, 'order', ['type','firstname','lastname'])) {
+        if ($order = array_get($params, 'order', ['type' => 'asc', 'firstname' => 'asc', 'lastname' => 'asc'])) {
             if (\is_string($order) && \count($split = explode(':', $order)) === 2) {
                 $order = [$split[0] => $split[1]];
             }
@@ -301,7 +302,7 @@ class UsersService
             }
         }
 
-        if ($perPage = array_get($params, 'per_page')){
+        if ($perPage = array_get($params, 'per_page')) {
             return $query->paginate($perPage);
         }
 

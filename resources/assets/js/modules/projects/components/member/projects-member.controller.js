@@ -17,7 +17,7 @@ import ProjectsService from "../../services/projects.service";
 export default class ProjectsMemberController extends ControllerBase {
 
     static get $inject() {
-        return ['$mdToast', '$q', '$mdDialog', '$rootScope', 'rolesService', 'usersService', 'projectsService'];
+        return ['$mdToast', '$q', '$mdDialog', '$rootScope', 'rolesService', 'usersService', 'projectsService', 'USER_STATUS_ACTIVE'];
     }
 
     $onInit() {
@@ -31,13 +31,18 @@ export default class ProjectsMemberController extends ControllerBase {
             this.roles = response.data.data;
         });
 
-        this.usersService.all({type: 'all'}).then((response) => {
-            this.users = response.data.data.filter(
-                (user) => !this.project.members.some(
-                    (member) => member.user.id === user.id
-                )
-            );
-        });
+        this.usersService
+            .all({
+                type: 'all',
+                'status[]': this.USER_STATUS_ACTIVE
+            })
+            .then((response) => {
+                this.users = response.data.data.filter(
+                    (user) => !this.project.members.some(
+                        (member) => member.user.id === user.id
+                    )
+                );
+            });
     }
 
     cancel() {

@@ -48,7 +48,7 @@ export default class ProjectsListController extends ControllerBase {
             {param: 'lastname:asc', name: 'Lastname - Ascending'},
             {param: 'lastname:desc', name: 'Lastname - Descending'},
         ];
-        this.sort = this.sortList[3];
+        this.sort = this.sortList[2];
 
         this.loadProccess = false;
         this.load();
@@ -56,13 +56,14 @@ export default class ProjectsListController extends ControllerBase {
 
     load() {
         this.loadProccess = true;
+
         this.usersService
             .all({
                 type: 'User',
                 per_page: this.limitPerPage,
                 page: this.meta.current_page,
                 order: this.sort.param,
-                'status[]': this.tags.filter((e) => e.type === 'status').map((e) => e.id),
+                'status[]': this.tags.filter((e) => e.type === 'status').map((e) => e.id)
             })
             .then((response) => {
                 this.users = response.data.data;

@@ -100,22 +100,30 @@
         </md-card-content>
 
         <md-list class="md-dense">
+            <div ng-if="$ctrl.meta.total === 0" layout-align="center center" layout="row" class="md-padding">
+                No data to display
+            </div>
+
             <div ng-repeat="row in $ctrl.users">
-                <md-list-item class="md-3-line" ng-click="null" ui-sref="users.page.edit({id:row.id})">
+                <md-list-item class="md-2-line" ng-click="null" ui-sref="users.page.edit({id:row.id})">
 
                     <img ng-src="{{ ::row.avatar }}" class="md-avatar">
 
                     <div class="md-list-item-text" layout="column">
                         <h3>
-                            {{ ::row.firstname }} {{ ::row.lastname }}
+                            {{ ::row.firstname }} {{ ::row.lastname }} ({{ ::row.login }})
                         </h3>
 
                         <h4>
-                            {{ ::row.login }} ({{ ::row.email }})
+                            {{ ::row.email }}
                             <!--<span class="description">{{ ::row.email }}</span>-->
                         </h4>
 
                         <p layout="row">
+                            <span class="label label-default" ng-if="::(row.status === $ctrl.USER_STATUS_ACTIVE)">
+                                Active
+                            </span>
+
                             <span class="label label-default" ng-if="::(row.status === $ctrl.USER_STATUS_LOCK)">
                                 Lock
                             </span>
@@ -148,25 +156,41 @@
                             </md-menu-item>
 
                             <md-menu-item>
-                                <md-button ng-click="null" ng-if="::(row.status === $ctrl.USER_STATUS_ACTIVE)">
+                                <md-button ng-click="null">
+                                    <md-icon>person</md-icon>
+                                    Profile
+                                </md-button>
+                            </md-menu-item>
+
+                            <md-menu-item>
+                                <md-button ng-click="null">
+                                    <md-icon>email</md-icon>
+                                    Emails
+                                </md-button>
+                            </md-menu-item>
+
+                            <md-menu-item ng-if="::(row.status === $ctrl.USER_STATUS_ACTIVE)">
+                                <md-button ng-click="null">
                                     <md-icon>lock</md-icon>
                                     Lock
                                 </md-button>
                             </md-menu-item>
 
-                            <md-menu-item>
-                                <md-button ng-click="null" ng-if="::(row.status === $ctrl.USER_STATUS_LOCK)">
+                            <md-menu-item ng-if="::(row.status === $ctrl.USER_STATUS_LOCK)">
+                                <md-button ng-click="null">
                                     <md-icon>lock_open</md-icon>
                                     UnLock
                                 </md-button>
                             </md-menu-item>
 
-                            <md-menu-item>
-                                <md-button ng-click="null" ng-if="::(row.status === $ctrl.USER_STATUS_DISABLE)">
+                            <md-menu-item ng-if="::(row.status === $ctrl.USER_STATUS_DISABLE)">
+                                <md-button ng-click="null">
                                     <md-icon>done</md-icon>
                                     Activate
                                 </md-button>
                             </md-menu-item>
+
+                            <md-menu-divider></md-menu-divider>
 
                             <md-menu-item>
                                 <md-button ng-click="$ctrl.remove(row)">
