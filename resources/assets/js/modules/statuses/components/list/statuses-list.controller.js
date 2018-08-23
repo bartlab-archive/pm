@@ -10,12 +10,12 @@ export default class StatusesListController extends ControllerBase {
     }
 
     $onInit() {
-        this.loadProccess = false;
+        this.loadProcess = false;
         this.load();
     }
 
     load() {
-        this.loadProccess = true;
+        this.loadProcess = true;
 
         return this.statusesService
             .all()
@@ -23,7 +23,7 @@ export default class StatusesListController extends ControllerBase {
                 this.statuses = response.data.data;
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 

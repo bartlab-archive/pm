@@ -3,6 +3,8 @@ import ControllerBase from 'base/controller.base';
 /**
  * @property {$mdDialog} $mdDialog
  * @property {MyService} myService
+ * @property {$mdToast} $mdToast
+ * @property {$state} $state
  */
 export default class MyEmailsController extends ControllerBase {
 
@@ -12,24 +14,24 @@ export default class MyEmailsController extends ControllerBase {
 
     $onInit() {
         this.email = '';
-        this.loadProccess = false;
+        this.loadProcess = false;
         this.load();
     }
 
     load() {
-        this.loadProccess = true;
+        this.loadProcess = true;
         this.myService
             .account()
             .then((response) => {
                 this.emails = response.data.data.emails.filter((email) => !email.is_default);
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 
     submit() {
-        this.loadProccess = true;
+        this.loadProcess = true;
         this.myService
             .addEmail(this.email)
             .then((response) => {
@@ -46,16 +48,16 @@ export default class MyEmailsController extends ControllerBase {
                 this.errors = response.data.errors;
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 
     notify(item) {
-        this.loadProccess = true;
+        this.loadProcess = true;
         this.myService
             .notifyEmail(item.address, item.notify)
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 
@@ -68,12 +70,12 @@ export default class MyEmailsController extends ControllerBase {
 
         return this.$mdDialog.show(confirm)
             .then(() => {
-                this.loadProccess = true;
+                this.loadProcess = true;
                 return this.myService.removeEmail(item.address);
             })
             .then(() => this.load())
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 

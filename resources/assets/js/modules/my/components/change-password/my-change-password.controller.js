@@ -17,11 +17,11 @@ export default class MyChangePasswordController extends ControllerBase {
             new_password: '',
             confirm_new_password: '',
         };
-        this.loadProccess = false;
+        this.loadProcess = false;
     }
 
     submit() {
-        this.loadProccess = true;
+        this.loadProcess = true;
         this.myService
             .changePassword(this.model)
             .then((response) => {
@@ -41,7 +41,7 @@ export default class MyChangePasswordController extends ControllerBase {
                 this.errors = response.data.errors;
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 

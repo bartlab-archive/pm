@@ -2,7 +2,7 @@
 <!--<md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">-->
 <form name="$ctrl.form" ng-submit="$ctrl.form.$valid && $ctrl.submit()" novalidate server-form="$ctrl.errors">
     <md-card>
-        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
+        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProcess"></md-progress-linear>
 
         <md-card-header>
             <h1 flex>{{ $ctrl.title }}</h1>
@@ -309,20 +309,20 @@
 
         <md-card-actions layout="row" layout-align="center center">
             <md-button class="md-raised md-primary animation-target md-button md-ink-ripple"
-                       ng-disabled="$ctrl.loadProccess || $ctrl.form.$invalid || $ctrl.filesLoading"
+                       ng-disabled="$ctrl.loadProcess || $ctrl.form.$invalid || $ctrl.filesLoading"
                        ng-click="$ctrl.submit()">
                 {{ ::$ctrl.isNew ? 'Create' : 'Submit' }}
             </md-button>
 
             <md-button class="md-raised md-default animation-target md-button md-ink-ripple"
-                       ng-disabled="$ctrl.loadProccess ||$ctrl.form.$invalid || $ctrl.filesLoading"
+                       ng-disabled="$ctrl.loadProcess ||$ctrl.form.$invalid || $ctrl.filesLoading"
                        ng-click="$ctrl.submit(true)"
                        ng-if="::$ctrl.isNew">
                 Create and continue
             </md-button>
 
             <md-button class="md-raised md-default animation-target md-button md-ink-ripple" ng-click="$ctrl.preview()"
-                       ng-disabled="$ctrl.loadProccess">
+                       ng-disabled="$ctrl.loadProcess">
                 Preview
             </md-button>
 

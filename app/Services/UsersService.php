@@ -315,7 +315,7 @@ class UsersService
     {
         return User::query()
             ->with($with)
-            ->where(['id' => $id])
+            ->where(['id' => $id, 'type' => User::TYPE_USER])
             ->first();
     }
 

@@ -1,14 +1,26 @@
 <div layout="row" layout-align="center start">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">Overview</span>
-                <span class="md-subhead" ng-if="$ctrl.project.data.homepage">
-                    <md-icon>open_in_new</md-icon>
-                    <a href="{{ $ctrl.project.data.homepage }}" target="_blank">{{ $ctrl.project.data.homepage }}</a>
-                </span>
-            </md-card-title-text>
-        </md-card-title>
+
+        <md-card-header>
+            <md-card-header-text>
+                <span class="md-title">Overview</span>
+                <span class="md-subhead"></span>
+            </md-card-header-text>
+        </md-card-header>
+
+        <!--<md-card-title>-->
+            <!--<md-card-title-text>-->
+                <!--<span class="md-headline">Overview</span>-->
+                <!--<span class="md-subhead" ng-if="$ctrl.project.data.homepage">-->
+                    <!--<md-icon>open_in_new</md-icon>-->
+                    <!--<a href="{{ $ctrl.project.data.homepage }}" target="_blank">{{ $ctrl.project.data.homepage }}</a>-->
+                <!--</span>-->
+            <!--</md-card-title-text>-->
+        <!--</md-card-title>-->
+        <md-card-content class="md-body-1" ng-if="$ctrl.project.homepage">
+            <md-icon>open_in_new</md-icon>
+            <a href="{{ $ctrl.project.homepage }}" target="_blank">{{ $ctrl.project.homepage }}</a>
+        </md-card-content>
 
         <md-card-content class="md-body-1" markdown-to-html="$ctrl.project.description || ''"></md-card-content>
     </md-card>
@@ -16,11 +28,17 @@
 
 <div layout="row" layout-align="center start" ng-if="$ctrl.project.members">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline">Members</span>
-            </md-card-title-text>
-        </md-card-title>
+        <md-card-header>
+            <md-card-header-text>
+                <span class="md-title">Members</span>
+                <span class="md-subhead"></span>
+            </md-card-header-text>
+        </md-card-header>
+        <!--<md-card-title>-->
+            <!--<md-card-title-text>-->
+                <!--<span class="md-headline">Members</span>-->
+            <!--</md-card-title-text>-->
+        <!--</md-card-title>-->
 
         <md-list class="md-dense">
             <!-- todo: group by role -->

@@ -10,7 +10,7 @@ export default class StatusesFormController extends ControllerBase {
     }
 
     $onInit() {
-        this.loadProccess = false;
+        this.loadProcess = false;
         this.status = {
             id: this.$stateParams.id,
             name: undefined,
@@ -23,7 +23,7 @@ export default class StatusesFormController extends ControllerBase {
     }
 
     load() {
-        this.loadProccess = true;
+        this.loadProcess = true;
 
         return this.statusesService
             .one(this.status.id)
@@ -31,12 +31,12 @@ export default class StatusesFormController extends ControllerBase {
                 Object.assign(this.status, response.data.data);
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 
     submit() {
-        this.loadProccess = true;
+        this.loadProcess = true;
 
         const model = {
             name: this.status.name,
@@ -63,7 +63,7 @@ export default class StatusesFormController extends ControllerBase {
                 this.errors = response.data.errors;
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 

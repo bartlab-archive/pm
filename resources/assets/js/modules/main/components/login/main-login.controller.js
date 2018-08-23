@@ -20,7 +20,7 @@ export default class MainLoginController extends ControllerBase {
             login: '',
             password: '',
         };
-        this.loadProccess = false;
+        this.loadProcess = false;
 
         this.registration = false;
         this.settingsService
@@ -31,7 +31,7 @@ export default class MainLoginController extends ControllerBase {
     }
 
     submit() {
-        this.loadProccess = true;
+        this.loadProcess = true;
         this.authService
             .login(this.model)
             .then((response) => {
@@ -58,7 +58,7 @@ export default class MainLoginController extends ControllerBase {
                 this.errors = response.data.errors;
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 }

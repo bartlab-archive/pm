@@ -1,6 +1,6 @@
 <form name="$ctrl.form" novalidate server-form="$ctrl.errors">
     <md-card>
-        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
+        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProcess"></md-progress-linear>
 
         <md-card-header>
             <md-card-header-text>
@@ -63,7 +63,7 @@
 
             <div layout-align="center center" layout="row">
                 <md-button class="md-raised md-primary animation-target"
-                           ng-disabled="$ctrl.loadProccess || $ctrl.form.$invalid"
+                           ng-disabled="$ctrl.loadProcess || $ctrl.form.$invalid"
                            ng-click="$ctrl.submit(false)">
                     Save
                 </md-button>

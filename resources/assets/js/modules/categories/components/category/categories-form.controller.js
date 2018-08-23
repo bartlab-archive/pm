@@ -24,12 +24,12 @@ export default class CategoriesFormController extends ControllerBase {
             id: this.$stateParams.id
         };
         this.title = this.category.id ? 'Issue category' : 'New category';
-        this.loadProccess = false;
+        this.loadProcess = false;
         this.load();
     }
 
     load() {
-        this.loadProccess = true;
+        this.loadProcess = true;
 
         let deferred = this.$q.defer();
 
@@ -58,14 +58,14 @@ export default class CategoriesFormController extends ControllerBase {
         });
 
         deferred.promise.finally(() => {
-            this.loadProccess = false;
+            this.loadProcess = false;
         });
 
         return deferred.promise;
     }
 
     submit() {
-        this.loadProccess = true;
+        this.loadProcess = true;
         let model = {
             assigned_to_id: this.category.assigned ? this.category.assigned.id : null,
             name: this.category.name
@@ -87,7 +87,7 @@ export default class CategoriesFormController extends ControllerBase {
                 this.errors = _.get(response, 'data.errors', {});
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 

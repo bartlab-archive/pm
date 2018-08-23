@@ -1,11 +1,11 @@
 <div layout="row" layout-align="center start">
     <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
-        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
+        <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProcess"></md-progress-linear>
 
         <md-card-header>
-            <md-card-avatar>
-                <md-icon class="md-avatar-icon">person</md-icon>
-            </md-card-avatar>
+            <!--<md-card-avatar>-->
+                <!--<md-icon class="md-avatar-icon">person</md-icon>-->
+            <!--</md-card-avatar>-->
 
             <md-card-header-text>
                 <span class="md-title">Users</span>
@@ -30,14 +30,14 @@
 
                 <md-button
                         ng-click="$ctrl.previous()"
-                        ng-disabled="!$ctrl.links.prev || $ctrl.loadProccess"
+                        ng-disabled="!$ctrl.links.prev || $ctrl.loadProcess"
                         class="md-icon-button">
                     <md-icon>keyboard_arrow_left</md-icon>
                 </md-button>
 
                 <md-button
                         ng-click="$ctrl.next()"
-                        ng-disabled="!$ctrl.links.next || $ctrl.loadProccess"
+                        ng-disabled="!$ctrl.links.next || $ctrl.loadProcess"
                         class="md-icon-button">
                     <md-icon>keyboard_arrow_right</md-icon>
                 </md-button>
@@ -105,7 +105,7 @@
             </div>
 
             <div ng-repeat="row in $ctrl.users">
-                <md-list-item class="md-2-line" ng-click="null" ui-sref="users.page.edit({id:row.id})">
+                <md-list-item class="md-2-line" ng-click="null" ui-sref="users.page.edit({id:row.id})" aria-label="{{ ::row.login }}">
 
                     <img ng-src="{{ ::row.avatar }}" class="md-avatar">
 
@@ -156,7 +156,7 @@
                             </md-menu-item>
 
                             <md-menu-item>
-                                <md-button ng-click="null">
+                                <md-button ui-sref="users.page.info({id:row.id})">
                                     <md-icon>person</md-icon>
                                     Profile
                                 </md-button>

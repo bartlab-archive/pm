@@ -12,11 +12,11 @@ export default class MyTokenController extends ControllerBase {
     }
 
     $onInit() {
-        this.loadProccess = false;
+        this.loadProcess = false;
     }
 
     refresh() {
-        this.loadProccess = true;
+        this.loadProcess = true;
         this.myService
             .refreshToken(this.token.action)
             .then((response) => {
@@ -24,7 +24,7 @@ export default class MyTokenController extends ControllerBase {
                 this.token.updated_on_from_now = moment(this.token.updated_on).fromNow(true);
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 }

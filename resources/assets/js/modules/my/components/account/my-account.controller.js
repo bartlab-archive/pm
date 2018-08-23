@@ -55,12 +55,12 @@ export default class MyAccountController extends ControllerBase {
             }
         };
 
-        this.loadProccess = false;
+        this.loadProcess = false;
         this.load();
     }
 
     load() {
-        this.loadProccess = true;
+        this.loadProcess = true;
         this.myService
             .account()
             .then((response) => {
@@ -89,13 +89,20 @@ export default class MyAccountController extends ControllerBase {
                     this.feedToken.updated_on_from_now = moment(this.feedToken.updated_on).fromNow(true);
                 }
             })
+            .catch((response) => {
+                if (response.status === 422) {
+                    this.$mdToast.show(
+                        this.$mdToast.simple().textContent(response.data.message)
+                    );
+                }
+            })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 
     submit() {
-        this.loadProccess = true;
+        this.loadProcess = true;
         this.myService
             .update({
                 // core
@@ -127,7 +134,7 @@ export default class MyAccountController extends ControllerBase {
                 this.errors = response.data.errors;
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 

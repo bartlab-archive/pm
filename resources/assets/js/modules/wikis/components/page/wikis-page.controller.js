@@ -27,7 +27,7 @@ export default class WikisPageController extends ControllerBase {
     }
 
     load() {
-        this.loadProccess = true;
+        this.loadProcess = true;
         const projectId = this.projectsService.getCurrentId();
         let deferred = this.$q.defer();
 
@@ -36,7 +36,7 @@ export default class WikisPageController extends ControllerBase {
             return this.wikisService
                 .onePage(projectId, name)
                 .then((response) => {
-                    this.loadProccess = false;
+                    this.loadProcess = false;
 
                     if (!response.data.data.id) {
                         this.$state.go('wiki.page.edit', {name: name});

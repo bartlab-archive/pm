@@ -33,6 +33,10 @@ class UserResource extends Resource
                 ];
             }),
             $this->mergeWhen(\Auth::admin(), [
+                'language' => $this->language,
+                'mail_notification' => $this->mail_notification,
+                'emails' => EmailResource::collection($this->whenLoaded('emails')),
+                'preference' => UserPreferenceResource::make($this->whenLoaded('preference')),
                 'firstname' => $this->firstname,
                 'lastname' => $this->lastname,
                 'status' => $this->status,

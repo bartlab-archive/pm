@@ -59,7 +59,7 @@ export default class IssuesFormController extends ControllerBase {
         // this.filesLoading = false;
         // cache state for ng-if
         // this.buttonsStateCreate = !this.isNew();
-        // this.loadProccess = true;
+        // this.loadProcess = true;
         this.load();
     }
 
@@ -77,7 +77,7 @@ export default class IssuesFormController extends ControllerBase {
     }
 
     load() {
-        this.loadProccess = true;
+        this.loadProcess = true;
 
         return this.$q
             .all([
@@ -113,7 +113,7 @@ export default class IssuesFormController extends ControllerBase {
                 return this.changeProject();
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             })
     }
 

@@ -1,8 +1,227 @@
-<div layout-gt-sm="row" layout-align="center start">
-    <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+<form name="$ctrl.form" ng-submit="$ctrl.form.$valid && $ctrl.submit()" novalidate server-form="$ctrl.errors">
+    <div layout="row" layout-align="center start">
+        <md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="50">
+            <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProcess"></md-progress-linear>
 
-        <md-card-content>
-            coming soon
-        </md-card-content>
-    </md-card>
-</div>
+            <md-card-header>
+                <md-card-avatar ng-if="!$ctrl.isNew">
+                    <img ng-src="{{ ::$ctrl.user.avatar }}">
+                </md-card-avatar>
+
+                <md-card-header-text>
+                    <span class="md-title">{{ $ctrl.isNew ? 'New user' : $ctrl.user.login }}</span>
+                    <span class="md-subhead">Users</span>
+                </md-card-header-text>
+
+                <md-menu ng-if="!$ctrl.isNew">
+                    <md-button class="md-icon-button" aria-label="User menu" ng-click="$mdMenu.open()">
+                        <md-icon>more_vert</md-icon>
+                    </md-button>
+
+                    <md-menu-content width="3">
+                        <md-menu-item>
+                            <md-button ui-sref="users.page.info({id:$ctrl.user.id})">
+                                <md-icon>person</md-icon>
+                                Profile
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item>
+                            <md-button ui-sref="users.page.emails({id:$ctrl.user.id})">
+                                <md-icon>email</md-icon>
+                                Emails
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item ng-if="$ctrl.user.status === $ctrl.USER_STATUS_ACTIVE">
+                            <md-button ng-click="null">
+                                <md-icon>lock</md-icon>
+                                Lock
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item ng-if="$ctrl.user.status === $ctrl.USER_STATUS_LOCK">
+                            <md-button ng-click="null">
+                                <md-icon>lock_open</md-icon>
+                                UnLock
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item ng-if="$ctrl.user.status === $ctrl.USER_STATUS_DISABLE">
+                            <md-button ng-click="null">
+                                <md-icon>done</md-icon>
+                                Activate
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-divider></md-menu-divider>
+
+                        <md-menu-item>
+                            <md-button ng-click="$ctrl.remove(row)">
+                                <md-icon>delete</md-icon>
+                                Delete
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </md-card-header>
+
+            <md-card-content>
+                <p class="md-body-1" layout="column">
+                    <span><span class="md-body-2">Login:</span> {{ ::$ctrl.user.last_login_on }}</span>
+                    <span><span class="md-body-2">Created:</span> {{ ::$ctrl.user.created_on }}</span>
+                    <!--<span>-->
+                    <!--<span class="md-body-2">Atom access key:</span>-->
+                    <!--<span>-->
+                    <!--<md-tooltip md-direction="top">{{ ::$ctrl.feedToken.updated_on }}</md-tooltip>-->
+                    <!--created {{ ::$ctrl.feedToken.updated_on_from_now }}-->
+                    <!--<span>ago</span>-->
+                    <!--</span>-->
+                    <!--</span>-->
+                    <!--<span>-->
+                    <!--<span class="md-body-2">API access key:</span>-->
+                    <!--<span>-->
+                    <!--<md-tooltip md-direction="top">{{ ::$ctrl.apiToken.updated_on }}</md-tooltip>-->
+                    <!--created {{ ::$ctrl.apiToken.updated_on_from_now }}-->
+                    <!--<span>ago</span>-->
+                    <!--</span>-->
+                    <!--</span>-->
+                </p>
+            </md-card-content>
+
+            <md-card-header>
+                <md-card-header-text>
+                    <span class="md-title">Information</span>
+                </md-card-header-text>
+            </md-card-header>
+
+            <md-card-content>
+                <md-input-container class="md-icon-float md-block">
+                    <label>First Name</label>
+                    <input ng-model="$ctrl.user.firstname" name="firstName" type="text" ng-maxlength="30"
+                           required server-field>
+
+                    <div ng-messages="$ctrl.form.firstName.$error">
+                        <div ng-message="required">First name cannot be blank</div>
+                        <div ng-message="maxlength">First name is too long (maximum is 30 characters)</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.firstName.$server"></div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-icon-float md-block">
+                    <label>Last Name</label>
+                    <input ng-model="$ctrl.user.lastname" name="lastName" type="text" ng-maxlength="30"
+                           required server-field>
+
+                    <div ng-messages="$ctrl.form.lastName.$error">
+                        <div ng-message="required">Last name cannot be blank</div>
+                        <div ng-message="maxlength">Last name is too long (maximum is 30 characters)</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.lastName.$server"></div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-icon-float md-block">
+                    <label>Email</label>
+                    <input ng-model="$ctrl.user.email" type="email" name="email" ng-pattern="/^.+@.+\..+$/"
+                           ng-maxlength="60" required server-field>
+
+                    <div ng-messages="$ctrl.form.email.$error">
+                        <div ng-message="required">Email cannot be blank</div>
+                        <div ng-message="maxlength">Email is too long (maximum is 60 characters)</div>
+                        <div ng-message-exp="['pattern']">Email is invalid</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.email.$server"></div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-icon-float md-block">
+                    <label>Language</label>
+                    <md-select ng-model="$ctrl.user.language" name="language" server-field>
+                        <md-option ng-value="language.id" ng-repeat="language in ::$ctrl.languages">
+                            {{ ::language.name }}
+                        </md-option>
+                    </md-select>
+
+                    <div class="md-errors-spacer"></div>
+
+                    <div ng-messages="$ctrl.form.language.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.language.$server"></div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-icon-float md-block">
+                    <label>Email notifications</label>
+                    <md-select ng-model="$ctrl.user.mail_notification" name="mail_notification" server-field>
+                        <md-option ng-repeat="notification in ::$ctrl.notifications"
+                                   ng-value="notification.value">
+                            {{ ::notification.name }}
+                        </md-option>
+                        </select>
+                    </md-select>
+
+                    <div class="md-errors-spacer"></div>
+
+                    <div ng-messages="$ctrl.form.mail_notification.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.mail_notification.$server"></div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-icon-float md-block">
+                    <label>Time zone</label>
+                    <md-select ng-model="$ctrl.user.preference.time_zone" name="time_zone" server-field>
+                        <md-option ng-value="zone.value" ng-repeat="zone in ::$ctrl.timeZones">
+                            {{ ::zone.name }}
+                        </md-option>
+                    </md-select>
+
+                    <div class="md-errors-spacer"></div>
+
+                    <div ng-messages="$ctrl.form.time_zone.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.time_zone.$server"></div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-icon-float md-block">
+                    <label>Display comments</label>
+                    <md-select ng-model="$ctrl.user.others.comments_sorting" name="comments_sorting" server-field>
+                        <md-option value="asc">In chronological order</md-option>
+                        <md-option value="desc">In reverse chronological order</md-option>
+                    </md-select>
+
+                    <div class="md-errors-spacer"></div>
+
+                    <div ng-messages="$ctrl.form.comments_sorting.$error">
+                        <div ng-message="server" ng-bind-html="$ctrl.form.comments_sorting.$server"></div>
+                    </div>
+                </md-input-container>
+            </md-card-content>
+
+            <md-list>
+                <md-list-item>
+                    <p>I don't want to be notified of changes that I make myself</p>
+                    <md-switch class="md-primary" ng-model="$ctrl.user.others.no_self_notified"></md-switch>
+                </md-list-item>
+
+                <md-list-item>
+                    <p>Hide my Email</p>
+                    <md-switch class="md-primary" ng-model="$ctrl.user.preference.hide_mail"></md-switch>
+                </md-list-item>
+
+                <md-list-item>
+                    <p>Warn me when leaving a page with unsaved text</p>
+                    <md-switch class="md-primary" ng-model="$ctrl.user.others.warn_on_leaving_unsaved"></md-switch>
+                </md-list-item>
+            </md-list>
+
+            <md-card-actions layout="row" layout-align="center center">
+                <md-button class="md-raised md-primary animation-target" type="submit"
+                           ng-disabled="$ctrl.form.$invalid">
+                    Save
+                </md-button>
+
+                <md-button class="md-raised md-default animation-target" ng-click="$ctrl.cancel()">
+                    Cancel
+                </md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
+</form>

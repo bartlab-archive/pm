@@ -1,6 +1,5 @@
 import UsersMailsController from './users-mails.controller';
 import usersMailsTemplate from './users-mails.html';
-import './users-mails.scss';
 import ComponentBase from "base/component.base";
 
 export default class UsersMailsComponent extends ComponentBase {

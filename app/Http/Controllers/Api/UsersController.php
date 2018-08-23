@@ -54,7 +54,7 @@ class UsersController extends BaseController
 //            return $user;
 //        }
 //        abort(404);
-        if (!$user = $this->usersService->one($id)) {
+        if (!$user = $this->usersService->one($id, ['emails', 'preference'])) {
             abort(404);
         }
 

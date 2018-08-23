@@ -1,6 +1,7 @@
 import ControllerBase from 'base/controller.base';
 
 // todo: filter by groups
+// todo: delete, lock, unlock, activete for users
 
 /**
  * @property {UsersService} usersService
@@ -52,12 +53,12 @@ export default class ProjectsListController extends ControllerBase {
         ];
         this.sort = this.sortList[2];
 
-        this.loadProccess = false;
+        this.loadProcess = false;
         this.load();
     }
 
     load() {
-        this.loadProccess = true;
+        this.loadProcess = true;
 
         this.usersService
             .all({
@@ -82,9 +83,8 @@ export default class ProjectsListController extends ControllerBase {
                 }
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
-
     }
 
     querySearch() {
@@ -133,52 +133,4 @@ export default class ProjectsListController extends ControllerBase {
             this.load();
         }
     }
-
-    // goto(userId) {
-    //     this.$state.go('users.page.info', {id: userId});
-    // }
-
-    // lockUser(userId, status) {
-    //     let confirm = this.$mdDialog.confirm()
-    //         .title(status == '3' ? 'Would you like to unlock this user?' : 'Would you like to lock this user?')
-    //         .ok(status == '3' ? 'unlock' : 'lock')
-    //         .cancel('Cancel');
-    //
-    //     this.$mdDialog.show(confirm).then(() => {
-    //         if (status == 3) {
-    //             status = 1;
-    //         } else {
-    //             status = 3;
-    //         }
-    //         this.usersService.updateUserStatus(userId, {'status': status}).then((response) => {
-    //             this.$rootScope.$emit('updateUsers');
-    //         });
-    //     });
-    //
-    // }
-
-    // sortBy() {
-    //     this.usersService.getList({status: this.filterForm.myOption}).then((response) => {
-    //         this.list = response.data;
-    //     });
-    // }
-    //
-    // clearFilters() {
-    //     this.filterForm.myOption = 0;
-    //     this.filterForm.text = '';
-    //     this.$rootScope.$emit('updateUsers');
-    // }
-
-    // deleteUser(userId) {
-    //     let confirm = this.$mdDialog.confirm()
-    //         .title(`Would you like to delete this user?`)
-    //         .ok('Delete!')
-    //         .cancel('Cancel');
-    //
-    //     this.$mdDialog.show(confirm).then(() => {
-    //         this.usersService.deleteUser(userId).then(() => {
-    //             this.$rootScope.$emit('updateUsers');
-    //         });
-    //     });
-    // }
 }

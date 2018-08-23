@@ -2,6 +2,7 @@ import InjectableBase from 'base/injectable.base';
 import UsersListComponent from './components/list/users-list.component';
 import UsersEditComponent from './components/edit/users-edit.component';
 import UsersInfoComponent from './components/info/users-info.component';
+import UsersMailsComponent from './components/mails/users-mails.component';
 
 /**
  * @property {$stateProvider} $stateProvider
@@ -62,7 +63,7 @@ export default class UsersConfig extends InjectableBase {
             // todo: redirect to my/emails for non admin user
             .state('users.page.emails', {
                 url: '/email_addresses',
-                component: UsersEditComponent.getName(),
+                component: UsersMailsComponent.getName(),
             });
     }
 

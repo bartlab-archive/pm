@@ -2,69 +2,85 @@ import ControllerBase from 'base/controller.base';
 import _ from 'lodash';
 
 /**
- * @property {UsersService} UsersService
+ * @property {UsersService} usersService
  * @property {$rootScope} $rootScope
  * @property {$mdToast} $mdToast
  */
 export default class UsersMailsController extends ControllerBase {
 
     static get $inject() {
-        return ['usersService', '$rootScope', '$mdToast'];
+        return ['$mdDialog', 'usersService', '$mdToast', '$state', '$stateParams'];
     }
 
     $onInit() {
-        this.emails = _.keyBy(this.additional_emails, 'id');
-        this.addEmailForm = {};
-        this.errors = {};
+        this.userId = this.$stateParams.id;
+        this.email = '';
+        this.loadProcess = false;
+        this.load();
     }
 
     load() {
-        this.usersService.getAdditionalEmails().then((responce) => {
-            this.emails = _.keyBy(responce.data, 'id');
-        });
-
-        this.newEmail = null;
+        this.loadProcess = true;
+        this.usersService
+            .one(this.userId)
+            .then((response) => {
+                this.emails = response.data.data.emails.filter((email) => !email.is_default);
+            })
+            .finally(() => {
+                this.loadProcess = false;
+            });
     }
 
-
-    updateEmailAddress(id) {
-        this.usersService.updateAdditionalEmail(id, {notify: this.emails[id].notify}).then(() => {
-            this.load();
-        });
-    }
-
-    deleteEmailAddress(id) {
-        this.usersService.deleteAdditionalEmail(id).then(() => {
-            this.load();
-        });
-    }
-
-    addEmailAddress() {
-        this.usersService.addAdditionalEmail(this.newEmail).then(() => {
-            this.load();
-        }).catch((response) => this.onError(response));
-    }
-
-    onError(response) {
-        if (_.get(response, 'status') === 500) {
-            this.$mdToast.show(
-                this.$mdToast.simple().textContent('Server error')
-            );
-        } else {
-            this.errors = _.get(response, 'data.errors', {});
-            for (let field in this.errors) {
-                if (this.addEmailForm.hasOwnProperty(field)) {
-                    this.addEmailForm[field].$setValidity('server', false);
+    submit() {
+        this.loadProcess = true;
+        this.usersService
+            .addEmail(this.email)
+            .then((response) => {
+                this.emails = response.data.data;
+                this.email = '';
+            })
+            .catch((response) => {
+                if (response.status === 422) {
+                    this.$mdToast.show(
+                        this.$mdToast.simple().textContent(response.data.message)
+                    );
                 }
-            }
-        }
+
+                this.errors = response.data.errors;
+            })
+            .finally(() => {
+                this.loadProcess = false;
+            });
     }
 
-    change(field) {
-        if (this.addEmailForm.hasOwnProperty(field) && this.errors.hasOwnProperty(field)) {
-            this.addEmailForm[field].$setValidity('server', true);
-            this.addEmailForm[field] = undefined;
-        }
+    notify(item) {
+        this.loadProcess = true;
+        this.usersService
+            .notifyEmail(item.address, item.notify)
+            .finally(() => {
+                this.loadProcess = false;
+            });
+    }
+
+    remove(item) {
+        let confirm = this.$mdDialog.confirm()
+            .title('Are you sure?')
+            .ok('Delete!')
+            .cancel('Cancel');
+
+        return this.$mdDialog.show(confirm)
+            .then(() => {
+                this.loadProcess = true;
+                return this.usersService.removeEmail(item.address);
+            })
+            .then(() => this.load())
+            .finally(() => {
+                this.loadProcess = false;
+            });
+    }
+
+    cancel() {
+        this.$state.go('users.page.edit', {id: this.userId});
     }
 
 }

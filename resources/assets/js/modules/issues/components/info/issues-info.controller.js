@@ -22,14 +22,14 @@ export default class IssuesInfoController extends ControllerBase {
     }
 
     load() {
-        this.loadProccess = true;
+        this.loadProcess = true;
         this.issuesService
             .one(this.$stateParams.id)
             .then((response) => {
                 this.issue = response.data.data;
                 this.projectsService.setCurrentId(this.issue.project.identifier);
                 this.$rootScope.$emit('updateProjectInfo');
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 

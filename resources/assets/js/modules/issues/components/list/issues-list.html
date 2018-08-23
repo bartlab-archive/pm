@@ -1,7 +1,7 @@
 <!--<div layout-gt-sm="row" layout-align="center start">-->
 <!--<md-card flex-xs="100" flex-sm="100" flex-md="70" flex-gt-md="60">-->
 <md-card>
-    <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProccess"></md-progress-linear>
+    <md-progress-linear md-mode="indeterminate" ng-if="$ctrl.loadProcess"></md-progress-linear>
 
     <md-card-header>
         <md-button class="md-icon-button" ng-click="$ctrl.selectAll()">
@@ -48,14 +48,14 @@
 
             <md-button
                     ng-click="$ctrl.previous()"
-                    ng-disabled="!$ctrl.links.prev || $ctrl.loadProccess"
+                    ng-disabled="!$ctrl.links.prev || $ctrl.loadProcess"
                     class="md-icon-button">
                 <md-icon>keyboard_arrow_left</md-icon>
             </md-button>
 
             <md-button
                     ng-click="$ctrl.next()"
-                    ng-disabled="!$ctrl.links.next || $ctrl.loadProccess"
+                    ng-disabled="!$ctrl.links.next || $ctrl.loadProcess"
                     class="md-icon-button">
                 <md-icon>keyboard_arrow_right</md-icon>
             </md-button>

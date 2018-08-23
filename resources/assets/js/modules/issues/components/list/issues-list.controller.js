@@ -122,7 +122,7 @@ export default class IssuesListController extends ControllerBase {
                 name: this.$stateParams.author_ids.firstname + ' ' + this.$stateParams.author_ids.lastname
             });
         }
-        this.loadProccess = false;
+        this.loadProcess = false;
 
         this.loadFiltersValues().then(() => this.load());
         // todo: remove event on destroy
@@ -133,7 +133,7 @@ export default class IssuesListController extends ControllerBase {
     load() {
         this.selectAllState = false;
         this.selectedGroup = [];
-        this.loadProccess = true;
+        this.loadProcess = true;
         this.list = [];
 
         return this.issuesService//.all()
@@ -165,7 +165,7 @@ export default class IssuesListController extends ControllerBase {
                 this.links = response.data.links;
                 this.groupsInfo = response.data.groups;
                 // this.pager = this.getPager();
-                // this.loadProccess = false;
+                // this.loadProcess = false;
             })
             .catch((response) => {
                 if (response.status === 422) {
@@ -175,7 +175,7 @@ export default class IssuesListController extends ControllerBase {
                 }
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 
@@ -189,7 +189,7 @@ export default class IssuesListController extends ControllerBase {
     }
 
     loadFiltersValues() {
-        this.loadProccess = true;
+        this.loadProcess = true;
 
         return this.$q
             .all([
@@ -232,7 +232,7 @@ export default class IssuesListController extends ControllerBase {
                 }
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 

@@ -13,7 +13,7 @@ export default class UsersInfoController extends ControllerBase {
 
     $onInit() {
         this.isAdmin = this.authService.isAdmin();
-        this.loadProccess = false;
+        this.loadProcess = false;
         this.user = {
             id: this.$stateParams.id
         };
@@ -21,14 +21,14 @@ export default class UsersInfoController extends ControllerBase {
     }
 
     load() {
-        this.loadProccess = true;
+        this.loadProcess = true;
         this.usersService
             .one(this.user.id)
             .then((response) => {
                 Object.assign(this.user, response.data.data);
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 

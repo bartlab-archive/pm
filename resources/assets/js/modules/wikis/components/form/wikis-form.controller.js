@@ -23,7 +23,7 @@ export default class WikisFormController extends ControllerBase {
     }
 
     load() {
-        this.loadProccess = true;
+        this.loadProcess = true;
         const projectId = this.projectsService.getCurrentId();
 
         return this.$q
@@ -50,7 +50,7 @@ export default class WikisFormController extends ControllerBase {
                 }) : list.data.data;
             })
             .finally(() => {
-                this.loadProccess = false;
+                this.loadProcess = false;
             });
     }
 
