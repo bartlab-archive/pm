@@ -28,6 +28,10 @@ export default class UsersService extends ServiceBase {
         return this.$http.get(`api/v1/users`, {params});
     }
 
+    create(params) {
+        return this.$http.post(`api/v1/users`, params);
+    }
+
     updateUserStatus(id, params) {
         // return this.Restangular.one('users', id).customPUT(params, 'updatestatus');
     }
@@ -46,8 +50,8 @@ export default class UsersService extends ServiceBase {
         // });
     }
 
-    update(user) {
-        // return this.Restangular.all('users').customPUT(user, user.id);
+    update(id, params) {
+        return this.$http.put(`api/v1/users/${id}`, params);
     }
 
 }

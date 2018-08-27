@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\User\IndexUserRequest;
+use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UsersService;
@@ -61,10 +62,19 @@ class UsersController extends BaseController
         return UserResource::make($user);
     }
 
-    public function updateUserStatus($id, Request $request)
+//    public function updateUserStatus($id, Request $request)
+//    {
+//        $this->usersService->update($id, $request->all());
+//        return response()->json(true, 200);
+//    }
+
+    public function store(StoreUserRequest $request)
     {
-        $this->usersService->update($id, $request->all());
-        return response()->json(true, 200);
+        if (!$user = $this->usersService->create(array_merge($request->validated(), ['status' => User::STATUS_ACTIVE]))) {
+            abort(422);
+        }
+
+        return UserResource::make($user);
     }
 
     public function destroy($id)

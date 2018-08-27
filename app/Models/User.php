@@ -48,6 +48,7 @@ class User extends Authenticatable
     const TYPE_GROUP_NON_MEMBER = 'GroupNonMember';
     const TYPE_GROUP_BOTS = 'GroupBots';
 
+    // todo: rewrite to constants
     public static $NOTIFICATIONS = [
         ['value' => 'all', 'name' => 'For any event on all my projects'],
         ['value' => 'selected', 'name' => 'For any event on the selected projects only...'],
@@ -55,6 +56,14 @@ class User extends Authenticatable
         ['value' => 'only_assigned', 'name' => 'Only for things I am assigned to'],
         ['value' => 'only_owner', 'name' => 'Only for things I am the owner of'],
         ['value' => 'none', 'name' => 'No events']
+    ];
+
+    protected $attributes = [
+        'type' => User::TYPE_USER,
+        'mail_notification' => 'only_my_events',
+        'admin' => 0,
+        'status' => User::STATUS_DISABLE,
+        'must_change_passwd' => 0,
     ];
 
 //    public $timestamps = true;

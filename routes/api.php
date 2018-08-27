@@ -234,8 +234,9 @@ Route::group(
             ],
             function () {
                 Route::get('/', 'UsersController@index');
+                Route::post('/', 'UsersController@store');
                 Route::get('/{id}', 'UsersController@show');
-                Route::put('/{id}/updatestatus', 'UsersController@updateUserStatus');
+//                Route::put('/{id}/updatestatus', 'UsersController@updateUserStatus');
                 Route::put('/{id}', 'UsersController@update');
                 Route::delete('/{id}', 'UsersController@destroy');
             }

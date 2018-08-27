@@ -36,17 +36,16 @@ class UsersService
         /** @var User $user */
         $user = User::make(
             array_merge(
-                array_only($data, ['login', 'firstName', 'lastName', 'language']),
+                array_only($data, ['login', 'firstname', 'lastname', 'language', 'mail_notification', 'admin', 'status']),
 //                array_only($data, ['login', 'firstName', 'lastName', 'lang', 'only_my_events']),
                 [
-                    // todo: move to const
-                    'type' => 'User',
+                    'type' => User::TYPE_USER,
                     // todo: get from $data
-                    'mail_notification' => 'only_my_events',
+//                    'mail_notification' => 'only_my_events',
                     // todo: get from $data
-                    'admin' => 0,
+//                    'admin' => 0,
                     // todo: get from settings or $data
-                    'status' => User::STATUS_DISABLE,
+//                    'status' => User::STATUS_DISABLE,
                     // todo: get from settings or $data
                     'must_change_passwd' => 0,
                     'salt' => $salt,
@@ -66,7 +65,7 @@ class UsersService
             // user preference
             $user->preference()->create([
                 // todo: get from settings if not set
-                'hide_mail' => array_get($data, 'hideEmail'),
+                'hide_mail' => array_get($data, 'hide_email'),
                 // todo: get from $data or app settings
                 'time_zone' => \Config::get('app.timezone'),
                 'others' => UserPreference::DEFAULT_OTHERS_DATA

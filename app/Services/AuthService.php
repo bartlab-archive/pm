@@ -25,13 +25,13 @@ class AuthService
         $this->usersService = $usersService;
     }
 
-    public function session(string $login)
+    public function session($userId)
     {
-        if ($user = $this->usersService->byLogin($login)) {
-            return $this->tokenService->oneByUserId($user->id, self::SESSION_TOKEN_ACTION, ['user'], true);
-        }
+//        if ($user = $this->usersService->byLogin($login)) {
+            return $this->tokenService->oneByUserId($userId, self::SESSION_TOKEN_ACTION, ['user'], true);
+//        }
 
-        return false;
+//        return false;
     }
 
     public function find($token)

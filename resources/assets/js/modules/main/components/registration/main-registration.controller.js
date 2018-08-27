@@ -16,7 +16,7 @@ todo: value for "Hide my email address" get from settings
 export default class MainRegistrationController extends ControllerBase {
 
     static get $inject() {
-        return ['$state', '$mdToast', 'usersService', 'settingsService', 'authService','listService'];
+        return ['$state', '$mdToast', 'usersService', 'settingsService', 'authService', 'listService'];
     }
 
     $onInit() {
@@ -26,12 +26,12 @@ export default class MainRegistrationController extends ControllerBase {
         this.signup = {
             login: '',
             password: '',
-            repeatRassword: '',
-            firstName: '',
-            lastName: '',
+            repeat_rassword: '',
+            firstname: '',
+            lastname: '',
             email: '',
             language: 'en',
-            hideEmail: false
+            hide_email: false
         };
 
         this.errors = {};
@@ -45,6 +45,10 @@ export default class MainRegistrationController extends ControllerBase {
                     this.$state.go('login');
                 }
             });
+    }
+
+    login(){
+        this.$state.go('login');
     }
 
     submit() {
@@ -70,7 +74,7 @@ export default class MainRegistrationController extends ControllerBase {
             .catch((response) => {
                 if (response.status === 422) {
                     this.$mdToast.show(
-                        this.$mdToast.simple().textContent(response.data.message)//.position('bottom left')
+                        this.$mdToast.simple().textContent(response.data.message)
                     );
                 }
 

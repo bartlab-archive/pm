@@ -67,35 +67,51 @@
             </md-card-header>
 
             <md-card-content>
-                <p class="md-body-1" layout="column">
+                <p class="md-body-1" layout="column" ng-if="!$ctrl.isNew">
                     <span><span class="md-body-2">Login:</span> {{ ::$ctrl.user.last_login_on }}</span>
                     <span><span class="md-body-2">Created:</span> {{ ::$ctrl.user.created_on }}</span>
-                    <!--<span>-->
-                    <!--<span class="md-body-2">Atom access key:</span>-->
-                    <!--<span>-->
-                    <!--<md-tooltip md-direction="top">{{ ::$ctrl.feedToken.updated_on }}</md-tooltip>-->
-                    <!--created {{ ::$ctrl.feedToken.updated_on_from_now }}-->
-                    <!--<span>ago</span>-->
-                    <!--</span>-->
-                    <!--</span>-->
-                    <!--<span>-->
-                    <!--<span class="md-body-2">API access key:</span>-->
-                    <!--<span>-->
-                    <!--<md-tooltip md-direction="top">{{ ::$ctrl.apiToken.updated_on }}</md-tooltip>-->
-                    <!--created {{ ::$ctrl.apiToken.updated_on_from_now }}-->
-                    <!--<span>ago</span>-->
-                    <!--</span>-->
-                    <!--</span>-->
+                    <span><span class="md-body-2">Status:</span> {{ $ctrl.statuses[$ctrl.user.status] }}</span>
                 </p>
-            </md-card-content>
 
-            <md-card-header>
-                <md-card-header-text>
-                    <span class="md-title">Information</span>
-                </md-card-header-text>
-            </md-card-header>
+                <md-input-container class="md-icon-float md-block">
+                    <label>Login</label>
+                    <input ng-model="$ctrl.user.login" name="login" type="text"
+                           ng-pattern="/^[a-z0-9_\-@\.]*$/i" ng-maxlength="60"
+                           required server-field>
 
-            <md-card-content>
+                    <div ng-messages="$ctrl.form.login.$error">
+                        <div ng-message="required">Login cannot be blank</div>
+                        <div ng-message="maxlength">Login is too long (maximum is 60 characters)</div>
+                        <div ng-message-exp="['pattern']">Login is invalid</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.login.$server"></div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-icon-float md-block">
+                    <label>Password</label>
+                    <input ng-model="$ctrl.user.password" ng-minlength="8"
+                           name="password" type="password" required server-field>
+
+                    <div ng-messages="$ctrl.form.password.$error">
+                        <div ng-message="minlength">Password is too short (minimum is 8 characters)</div>
+                        <div ng-message="required">Password cannot be blank!</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.password.$server"></div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-icon-float md-block">
+                    <label>Repeat Password</label>
+                    <input ng-model="$ctrl.user.repeat_rassword"
+                           ng-pattern="{{ $ctrl.user.password }}"
+                           name="repeat_rassword" type="password" required server-field>
+
+                    <div ng-messages="$ctrl.form.repeat_rassword.$error">
+                        <div ng-message="required">Repeat Password cannot blank!</div>
+                        <div ng-message-exp="['pattern']">Password doesn't match confirmation</div>
+                        <div ng-message="server" ng-bind-html="$ctrl.form.repeat_rassword.$server"></div>
+                    </div>
+                </md-input-container>
+
                 <md-input-container class="md-icon-float md-block">
                     <label>First Name</label>
                     <input ng-model="$ctrl.user.firstname" name="firstName" type="text" ng-maxlength="30"
@@ -151,8 +167,7 @@
                 <md-input-container class="md-icon-float md-block">
                     <label>Email notifications</label>
                     <md-select ng-model="$ctrl.user.mail_notification" name="mail_notification" server-field>
-                        <md-option ng-repeat="notification in ::$ctrl.notifications"
-                                   ng-value="notification.value">
+                        <md-option ng-repeat="notification in ::$ctrl.notifications" ng-value="notification.value">
                             {{ ::notification.name }}
                         </md-option>
                         </select>
@@ -197,6 +212,13 @@
 
             <md-list>
                 <md-list-item>
+                    <p>Aministrator</p>
+                    <md-switch
+                            ng-class="{'md-default':$ctrl.isSelfEdit,'md-primary':!$ctrl.isSelfEdit}"
+                            ng-model="$ctrl.user.request" ng-disabled="$ctrl.isSelfEdit"></md-switch>
+                </md-list-item>
+
+                <md-list-item>
                     <p>I don't want to be notified of changes that I make myself</p>
                     <md-switch class="md-primary" ng-model="$ctrl.user.others.no_self_notified"></md-switch>
                 </md-list-item>
@@ -210,12 +232,17 @@
                     <p>Warn me when leaving a page with unsaved text</p>
                     <md-switch class="md-primary" ng-model="$ctrl.user.others.warn_on_leaving_unsaved"></md-switch>
                 </md-list-item>
+
+                <md-list-item ng-if="!$ctrl.isSelfEdit">
+                    <p>Send account information to the user</p>
+                    <md-switch class="md-primary" ng-model="$ctrl.send_information"></md-switch>
+                </md-list-item>
             </md-list>
 
             <md-card-actions layout="row" layout-align="center center">
                 <md-button class="md-raised md-primary animation-target" type="submit"
                            ng-disabled="$ctrl.form.$invalid">
-                    Save
+                    {{ $ctrl.isNew? 'Create' : 'Save' }}
                 </md-button>
 
                 <md-button class="md-raised md-default animation-target" ng-click="$ctrl.cancel()">

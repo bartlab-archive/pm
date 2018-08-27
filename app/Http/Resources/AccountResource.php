@@ -25,7 +25,12 @@ class AccountResource extends Resource
             'lastname' => $this->lastname,
             'language' => $this->language,
             'created_on' => $this->created_on->format('Y-m-d H:i:s'),
-            'last_login_on' => $this->last_login_on->format('Y-m-d H:i:s'),
+//            'last_login_on' => $this->last_login_on->format('Y-m-d H:i:s'),
+            $this->mergeWhen(!empty($this->last_login_on), function () {
+                return [
+                    'last_login_on' => $this->last_login_on->format('Y-m-d H:i:s')
+                ];
+            }),
             'emails' => EmailResource::collection($this->whenLoaded('emails')),
             'mail_notification' => $this->mail_notification,
             'tokens' => TokenResource::collection(

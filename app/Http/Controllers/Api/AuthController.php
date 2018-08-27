@@ -6,6 +6,7 @@ use App\Http\Requests\Auth\AuthLoginRequest;
 use App\Http\Requests\Auth\AuthRegisterRequest;
 use App\Http\Resources\TokenResource;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Services\AuthService;
 use App\Services\SettingsService;
 use App\Services\UsersService;
@@ -30,7 +31,19 @@ class AuthController extends BaseController
 
     public function login(AuthLoginRequest $request)
     {
-        if (!$token = $this->authService->session($request->input('login'))) {
+        if (!$user = $this->usersService->byLogin($request->input('login'))){
+            abort(422);
+        }
+
+        if ($user->status === User::STATUS_DISABLE){
+            abort(422,'Your account was created and is now pending administrator approval.');
+        }
+
+        if (!$user->status || $user->status === User::STATUS_LOCK){
+            abort(422,'Your account is locked.');
+        }
+
+        if (!$token = $this->authService->session($user->id)) {
             abort(422);
         }
 
@@ -46,7 +59,7 @@ class AuthController extends BaseController
             abort(401);
         }
 
-        if (!$user = $this->usersService->create($request->validated())) {
+        if (!$user = $this->usersService->create(array_merge($request->validated(), ['status' => User::STATUS_DISABLE]))) {
             abort(422);
         }
 

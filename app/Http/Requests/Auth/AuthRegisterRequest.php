@@ -36,16 +36,16 @@ class AuthRegisterRequest extends FormRequest
             ],
             // todo: Minimum password length from settings
             'password' => 'required|string|min:6',
-            'repeatPassword' => 'required|string|same:password',
-            'firstName' => 'required|string|max:30',
-            'lastName' => 'required|string|max:30',
+            'repeat_password' => 'required|string|same:password',
+            'firstname' => 'required|string|max:30',
+            'lastname' => 'required|string|max:30',
             'email' => 'required|string|email|max:60|unique:' . EmailAddress::getTableName() . ',address',
             'language' => [
 //                'required',
                 'string',
                 Rule::in(array_column(config('langs'), 'id')),
             ],
-            'hideEmail' => 'boolean'
+            'hide_email' => 'boolean'
         ];
     }
 }
