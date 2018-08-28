@@ -88,7 +88,13 @@ class UsersService
             return false;
         }
 
-        if (!$user->update(array_only($data, ['firstname', 'lastname', 'language', 'mail_notification']))) {
+//        if (!$user->update(array_only($data, ['firstname', 'lastname', 'language', 'mail_notification']))) {
+        if (!$user->update(array_only($data, ['login', 'firstname', 'lastname', 'language', 'mail_notification', 'admin']))) {
+            return false;
+        }
+
+        // if get new password
+        if (($password = array_get($data, 'password')) && !$this->changePassword($id, $password)) {
             return false;
         }
 
@@ -105,6 +111,7 @@ class UsersService
             }
         }
 
+        // update preference
         if (!$this->updatePreference(
             $id,
             array_only($data, ['comments_sorting', 'no_self_notified', 'warn_on_leaving_unsaved']),
@@ -136,10 +143,8 @@ class UsersService
         $others = $preference->others;
         foreach ($data as $key => $value) {
             if ($value !== null) {
-                if (\is_bool($value)) {
-                    $value = $value ? '1' : '0';
-                }
-                $others[$key] = $value;
+                // convert boolean to int and string
+                $others[$key] = \is_bool($value) ? (string)+$value : $value;
             }
         }
 

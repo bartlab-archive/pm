@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\User\IndexUserRequest;
 use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UsersService;
@@ -83,9 +84,18 @@ class UsersController extends BaseController
         return response(null, 204);
     }
 
-    public function update($id, Request $request)
+    public function update($id, UpdateUserRequest $request)
     {
-        $result = $this->usersService->update($id, $request->except('tokens', 'avatar_hash', 'members', 'issues', 'projects', 'avatar_img'));
-        return response((string)$result, 200);
+        if (!$user = $this->usersService->one($id)) {
+            abort(404);
+        }
+
+        if (!$user = $this->usersService->update($id, $request->validated())) {
+            abort(422);
+        }
+
+        return UserResource::make($user);
+//        $result = $this->usersService->update($id, $request->except('tokens', 'avatar_hash', 'members', 'issues', 'projects', 'avatar_img'));
+//        return response((string)$result, 200);
     }
 }

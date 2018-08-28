@@ -27,6 +27,7 @@ export default class AppRun extends InjectableBase {
     }
 
     async checkAccess(trans) {
+        // todo: if set "must_change_passwd" for current user - redirect to change password page
         // console.log(trans.router.stateService.href(trans.to(), trans.params(),{absolute: true}));
         const access = _.get(trans.$to(), 'data.access', false);
 
