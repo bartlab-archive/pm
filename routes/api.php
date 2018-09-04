@@ -99,9 +99,9 @@ Route::group(
                 // statuses
                 Route::get('/statuses', 'IssueStatusesController@index');
                 Route::get('/statuses/{id}', 'IssueStatusesController@show');
-                Route::put('/statuses/{id}', 'IssueStatusesController@update');
-                Route::post('/statuses', 'IssueStatusesController@store');
-                Route::delete('/statuses/{id}', 'IssueStatusesController@destroy');
+                Route::put('/statuses/{id}', 'IssueStatusesController@update')->middleware('admin');
+                Route::post('/statuses', 'IssueStatusesController@store')->middleware('admin');
+                Route::delete('/statuses/{id}', 'IssueStatusesController@destroy')->middleware('admin');
 
                 // Categories
                 // todo: add 'project' to url - /categories/project/{identifier}
@@ -234,11 +234,11 @@ Route::group(
             ],
             function () {
                 Route::get('/', 'UsersController@index');
-                Route::post('/', 'UsersController@store');
+                Route::post('/', 'UsersController@store')->middleware('admin');
                 Route::get('/{id}', 'UsersController@show');
 //                Route::put('/{id}/updatestatus', 'UsersController@updateUserStatus');
-                Route::put('/{id}', 'UsersController@update');
-                Route::delete('/{id}', 'UsersController@destroy');
+                Route::put('/{id}', 'UsersController@update')->middleware('admin');
+                Route::delete('/{id}', 'UsersController@destroy')->middleware('admin');
             }
         );
 
