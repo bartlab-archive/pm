@@ -47,6 +47,8 @@ class AuthController extends BaseController
             abort(422);
         }
 
+        \Auth::setUser($user);
+
         // todo: add remember token
 
         return TokenResource::make($token);
