@@ -78,7 +78,10 @@ class WikisService
     public function createWiki($projectId, array $data)
     {
         if (!$wiki = $this->oneWikiByProjectId($projectId)) {
-            $wiki = Wiki::make(array_only($data, ['start_page']));
+            $wiki = Wiki::make(array_merge(
+                ['project_id' => $projectId],
+                array_only($data, ['start_page'])
+            ));
 
             if (!$wiki->save()) {
                 return false;
