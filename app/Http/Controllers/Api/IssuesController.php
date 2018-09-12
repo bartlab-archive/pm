@@ -77,9 +77,9 @@ class IssuesController extends BaseController
         return $project;
     }
 
-    public function index(GetIssuesRequest $request)
+    public function index(GetIssuesRequest $request, $identifier = null)
     {
-        if ($identifier = $request->get('project_identifier')) {
+        if ($identifier) {
             $this->checkProject($identifier);
         }
 
@@ -87,6 +87,7 @@ class IssuesController extends BaseController
             $this->issuesService->all(
                 array_merge(
                     $request->validated(),
+                    !$identifier ? [] : ['identifier' => $identifier],
                     \Auth::admin() ? [] : ['user_ids' => $this->usersService->memberIds(\Auth::id())]
                 )
             )

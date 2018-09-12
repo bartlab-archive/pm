@@ -39,7 +39,7 @@ class EnumerationsController extends BaseController
     public function index(Request $request)
     {
         return EnumerationResource::collection(
-            $this->enumerationsService->all($request->only(['type', 'project_identifier']))
+            $this->enumerationsService->all($request->only(['type', 'identifier']))
         );
     }
 }

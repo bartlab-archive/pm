@@ -16,8 +16,10 @@ export default class IssuesService extends ServiceBase {
         return this.$http.get(`/api/v1/issues/${id}`);
     }
 
-    all(params) {
-        return this.$http.get(`/api/v1/issues`, {params});
+    all(params, identifier) {
+        const prefix = identifier ? 'projects/' + identifier + '/' : '';
+
+        return this.$http.get(`/api/v1/${prefix}issues`, {params});
     }
 
     create(params) {

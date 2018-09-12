@@ -34,7 +34,7 @@ class MembersController extends BaseController
     public function store(StoreMemberRequest $request)
     {
         // todo: check project access
-        if (!$project = $this->projectsService->oneByIdentifier($request->get('identifier'))) {
+        if (!$project = $this->projectsService->oneByIdentifier($request->identifier)) {
             abort(404);
         }
 

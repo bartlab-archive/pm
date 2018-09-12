@@ -13,22 +13,22 @@ export default class StatusesService extends ServiceBase {
     }
 
     all() {
-        return this.$http.get('/api/v1/issues/statuses');
+        return this.$http.get('/api/v1/statuses');
     }
 
     one(id) {
-        return this.$http.get(`/api/v1/issues/statuses/${id}`);
+        return this.$http.get(`/api/v1/statuses/${id}`);
     }
 
     create(params) {
-        return this.$http.post('/api/v1/issues/statuses', params);
+        return this.$http.post('/api/v1/statuses', params);
     }
 
     update(id, params) {
-        return this.$http.put(`/api/v1/issues/statuses/${id}`, params);
+        return this.$http.put(`/api/v1/statuses/${id}`, params);
     }
 
     remove(id) {
-        return this.$http.delete(`/api/v1/issues/statuses/${id}`);
+        return this.$http.delete(`/api/v1/statuses/${id}`);
     }
 }

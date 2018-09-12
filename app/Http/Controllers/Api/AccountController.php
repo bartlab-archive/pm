@@ -60,6 +60,7 @@ class AccountController extends BaseController
         return AccountResource::make($user);
     }
 
+    // todo: move to separate controller
     public function token(TokenAccountRequest $request)
     {
         $token = $this->tokenService->refresh(
@@ -74,6 +75,7 @@ class AccountController extends BaseController
         return TokenResource::make($token);
     }
 
+    // todo: move to separate controller
     public function password(ChangePasswordRequest $request)
     {
         if (!$this->usersService->changePassword(\Auth::id(), $request->get('new_password'))) {
@@ -83,17 +85,20 @@ class AccountController extends BaseController
         return response(null, 204);
     }
 
+    // todo: move to separate controller
     public function createEmail(CreateEmailAccountRequest $request)
     {
         if (!$this->usersService->createEmail(\Auth::id(), $request->get('email'))) {
             abort(422);
         }
 
-        return EmailResource::collection(
-            ($user = $this->usersService->one(\Auth::id(), ['emails'])) ? $user->emails : []
-        );
+        return response(null, 204);
+//        return EmailResource::collection(
+//            ($user = $this->usersService->one(\Auth::id(), ['emails'])) ? $user->emails : []
+//        );
     }
 
+    // todo: move to separate controller
     public function updateEmailNotify(UpdateEmailNotifyAccountRequest $request)
     {
         if (!$this->usersService->updateEmailNotify($request->get('email'), $request->get('notify'))) {
@@ -103,6 +108,7 @@ class AccountController extends BaseController
         return response(null, 204);
     }
 
+    // todo: move to separate controller
     public function destroyEmail($address)
     {
         if (!$email = $this->usersService->oneEmailAddress($address)) {

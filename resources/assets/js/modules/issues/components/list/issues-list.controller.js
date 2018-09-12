@@ -138,7 +138,7 @@ export default class IssuesListController extends ControllerBase {
 
         return this.issuesService//.all()
             .all({
-                project_identifier: this.currentProjectId,
+                // project_identifier: this.currentProjectId,
                 // limit: this.limitPerPage,
                 // offset: this.offset,
                 per_page: this.limitPerPage,
@@ -151,7 +151,7 @@ export default class IssuesListController extends ControllerBase {
                 priority_ids: this.tags.filter((e) => e.type === 'priority').map((e) => e.id),
                 assigned_to_ids: this.tags.filter((e) => e.type === 'assigned').map((e) => e.id),
                 author_ids: this.tags.filter((e) => e.type === 'created').map((e) => e.id)
-            })
+            }, this.currentProjectId)
             .then((response) => {
                 // todo: map data for prepare issues and not use filter  in html
                 this.list = response.data.data.map((issue) => {
@@ -218,10 +218,13 @@ export default class IssuesListController extends ControllerBase {
                 this.items.push(
                     ...this.statuses,
                     ...this.priorities,
-                    ...trackers.data.data.map((e) => {
-                        e.type = 'tracker';
-                        return e;
-                    })
+                    ...trackers.data.data
+                        .filter((e) => !this.currentProjectId || e.enable === true)
+                        .map((e) => {
+                            let tracker = this.currentProjectId ? e.tracker : e;
+                            tracker.type = 'tracker';
+                            return tracker;
+                        })
                 );
             })
             .catch((response) => {

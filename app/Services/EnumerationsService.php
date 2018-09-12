@@ -50,7 +50,7 @@ class EnumerationsService
             $query->where('type', $type);
         }
 
-        if ($project = array_get($params, 'project_identifier')) {
+        if ($project = array_get($params, 'identifier')) {
             $query->whereNull('project_id')->orWhereHas('project', function ($query) use ($project) {
                 $query->where('identifier', $project);
             });

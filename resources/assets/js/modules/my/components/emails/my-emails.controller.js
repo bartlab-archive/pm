@@ -35,7 +35,8 @@ export default class MyEmailsController extends ControllerBase {
         this.myService
             .addEmail(this.email)
             .then((response) => {
-                this.emails = response.data.data;
+                this.load();
+                //this.emails = response.data.data.emails.filter((email) => !email.is_default);
                 this.email = '';
             })
             .catch((response) => {

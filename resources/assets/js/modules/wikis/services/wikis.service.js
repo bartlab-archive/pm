@@ -10,50 +10,50 @@ export default class WikisService extends ServiceBase {
     }
 
     oneWiki(indetifire) {
-        return this.$http.get(`/api/v1/wikis/${indetifire}`);
+        return this.$http.get(`/api/v1/projects/${indetifire}/wikis`);
     }
 
     createWiki(indetifire, data) {
-        return this.$http.post(`/api/v1/wikis/${indetifire}`, data);
+        return this.$http.post(`/api/v1/projects/${indetifire}/wikis`, data);
     }
 
     updateWiki(indetifire, data) {
-        return this.$http.put(`/api/v1/wikis/${indetifire}`, data);
+        return this.$http.put(`/api/v1/projects/${indetifire}/wikis`, data);
     }
 
     allPages(indetifire) {
-        return this.$http.get(`/api/v1/wikis/${indetifire}/pages`);
+        return this.$http.get(`/api/v1/projects/${indetifire}/wikis/pages`);
     }
 
     onePage(indetifire, name) {
-        return this.$http.get(`/api/v1/wikis/${indetifire}/pages/${name}`);
+        return this.$http.get(`/api/v1/projects/${indetifire}/wikis/pages/${name}`);
     }
 
     createPage(indetifire, data) {
-        return this.$http.post(`/api/v1/wikis/${indetifire}/pages`, data);
+        return this.$http.post(`/api/v1/projects/${indetifire}/wikis/pages`, data);
     }
 
     updatePage(indetifire, id, data) {
-        return this.$http.put(`/api/v1/wikis/${indetifire}/pages/${id}`, data);
+        return this.$http.put(`/api/v1/projects/${indetifire}/wikis/pages/${id}`, data);
     }
 
     removePage(indetifire, id) {
-        return this.$http.delete(`/api/v1/wikis/${indetifire}/pages/${id}`)
+        return this.$http.delete(`/api/v1/projects/${indetifire}/wikis/pages/${id}`)
     }
 
     watch(indetifire, id) {
-        return this.$http.post(`/api/v1/wikis/${indetifire}/pages/${id}/watch`);
+        return this.$http.post(`/api/v1/projects/${indetifire}/wikis/pages/${id}/watch`);
     }
 
     unwatch(indetifire, id) {
-        return this.$http.delete(`/api/v1/wikis/${indetifire}/pages/${id}/watch`)
+        return this.$http.delete(`/api/v1/projects/${indetifire}/wikis/pages/${id}/watch`)
     }
 
     lock(indetifire, id) {
-        return this.$http.post(`/api/v1/wikis/${indetifire}/pages/${id}/lock`);
+        return this.$http.post(`/api/v1/projects/${indetifire}/wikis/pages/${id}/lock`);
     }
 
     unlock(indetifire, id) {
-        return this.$http.delete(`/api/v1/wikis/${indetifire}/pages/${id}/unlock`)
+        return this.$http.delete(`/api/v1/projects/${indetifire}/wikis/pages/${id}/unlock`)
     }
 }

@@ -130,7 +130,7 @@ export default class IssuesFormController extends ControllerBase {
 
         if (this.selectedProject) {
             this.trackersService.all(this.selectedProject.identifier).then((response) => {
-                this.trackers = response.data.data;
+                this.trackers = response.data.data.filter((t) => t.enable).map((t) => t.tracker);
 
                 if (!this.issue.tracker.id || !this.trackers.some((tracker) => tracker.id === this.issue.tracker.id)) {
                     this.issue.tracker = _.first(this.trackers);

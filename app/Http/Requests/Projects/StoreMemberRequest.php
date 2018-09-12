@@ -28,7 +28,7 @@ class StoreMemberRequest extends FormRequest
     {
         return [
             // todo: validate by regexp
-            'identifier' => 'required|exists:' . Project::getTableName() . ',identifier',
+//            'identifier' => 'required|exists:' . Project::getTableName() . ',identifier',
             'user' => 'required|integer|exists:' . User::getTableName() . ',id',
             'roles' => 'required|array',
             'roles.*' => 'required|integer|exists:' . Role::getTableName() . ',id',

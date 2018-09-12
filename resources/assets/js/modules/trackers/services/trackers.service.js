@@ -7,21 +7,17 @@ export default class TrackersService extends ServiceBase {
     }
 
     all(identifier) {
-        let params = {};
+        const prefix = identifier ? 'projects/' + identifier + '/' : '';
 
-        if (identifier) {
-            params.project_identifier = identifier;
-        }
-
-        return this.$http.get('/api/v1/issues/trackers', {params});
+        return this.$http.get(`/api/v1/${prefix}trackers`);
     }
 
     state(identifier) {
-        return this.$http.get(`/api/v1/issues/trackers/project/${identifier}`);
+        return this.$http.get(`/api/v1/projects/${identifier}/trackers`);
     }
 
     updateState(identifier, data) {
-        return this.$http.put(`/api/v1/issues/trackers/project/${identifier}`, {trackers: data});
+        return this.$http.put(`/api/v1/projects/${identifier}/trackers`, {trackers: data});
     }
 
 }

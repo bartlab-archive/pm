@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\Issues\IndexTrackersRequest;
 use App\Http\Resources\TrackerResource;
 use App\Services\ProjectsService;
 use App\Services\IssuesService;
@@ -31,10 +30,10 @@ class TrackersController extends BaseController
         $this->projectsService = $projectsService;
     }
 
-    public function index(IndexTrackersRequest $request)
+    public function index($identifier = null)
     {
         // todo: check project
-        $identifier = $request->input('project_identifier');
+//        $identifier = $request->input('project_identifier');
 
         $project = $identifier ? $this->projectsService->oneByIdentifier($identifier) : null;
 

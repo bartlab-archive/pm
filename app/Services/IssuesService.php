@@ -42,7 +42,7 @@ class IssuesService
 
         // todo: check for private issue status by roles
 
-        if ($project = array_get($params, 'project_identifier')) {
+        if ($project = array_get($params, 'identifier')) {
             $query->whereHas('project', function ($query) use ($project) {
                 /** @var $query Builder */
                 $query->where('identifier', $project);
@@ -474,11 +474,11 @@ class IssuesService
 
             foreach ($data as $item) {
                 if ($item['id'] === $tracker->id) {
-                    if (!empty($item['enable']) && !$state->enable) {
+                    if (!$state->enable && !empty($item['enable'])) {
                         $tracker->projects()->attach($projectId);
                     }
 
-                    if (empty($item['enable']) && $state->enable === true) {
+                    if ($state->enable === true && empty($item['enable'])) {
                         $tracker->projects()->detach($projectId);
                     }
 

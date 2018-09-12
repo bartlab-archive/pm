@@ -8,10 +8,7 @@ export default class EnumerationsService extends ServiceBase {
 
     all(type, identifier) {
         return this.$http.get('/api/v1/enumerations', {
-            params: {
-                type: type,
-                project_identifier: identifier
-            }
+            params: {type, identifier}
         });
     }
 

@@ -60,7 +60,7 @@ export default class AuthService extends ServiceBase {
             deferred.resolve(this.storageService.getUser());
         } else {
             this.$http
-                .get(`/api/v1/auth/me`)
+                .get(`/api/v1/auth`)
                 .then((response) => {
                     this.user = _.get(response, 'data.data') || {};
 

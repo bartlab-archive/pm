@@ -25,7 +25,7 @@ class GetIssuesRequest extends FormRequest
     public function rules()
     {
         return [
-            'project_identifier' => 'nullable|string|exists:' . Project::getTableName() . ',identifier',
+            'identifier' => 'nullable|string|exists:' . Project::getTableName() . ',identifier',
 
             // todo: check for exists
             'status_ids' => 'array',

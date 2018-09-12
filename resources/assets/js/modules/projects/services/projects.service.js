@@ -60,12 +60,12 @@ export default class ProjectsService extends InjectableBase {
     // return this.rest.one(id).all('modules');
     // }
 
-    updateModules(id, modules) {
-        return this.$http.put(`/api/v1/modules/${id}`, modules);
+    updateModules(identifier, modules) {
+        return this.$http.put(`/api/v1/projects/${identifier}/modules`, modules);
     }
 
     addMember(identifier, user, roles) {
-        return this.$http.post('/api/v1/members', {identifier, user, roles});
+        return this.$http.post(`/api/v1/projects/${identifier}/members`, {user, roles});
     }
 
     updateMember(id, roles) {
