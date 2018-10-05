@@ -11,5 +11,5 @@
         <mat-error>{{getPasswordErrorMessage()}}</mat-error>
     </mat-form-field>
 
-    <button mat-flat-button color="primary" class="submit">Login</button>
+    <button mat-flat-button color="primary" class="submit" [disabled]="pending$ | async">Login</button>
 </form>

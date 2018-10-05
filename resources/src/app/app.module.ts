@@ -2,16 +2,15 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule} from '@angular/router';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-
+import {EffectsModule} from '@ngrx/effects';
+import {StoreModule} from '@ngrx/store';
+import {StoreRouterConnectingModule} from '@ngrx/router-store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {reducers, metaReducers} from '../store/reducers';
 import {AppComponent} from './app.component';
-
 import {MainModule} from '../modules/main/main.module';
 import {AuthModule} from '../modules/auth/auth.module';
 import {LayoutsModule} from '../modules/layouts/layouts.module';
-// import {authReducer} from '../modules/auth/store/reducers/auth.reducer';
 
 @NgModule({
     declarations: [
@@ -20,6 +19,7 @@ import {LayoutsModule} from '../modules/layouts/layouts.module';
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+
         // Router,
         RouterModule.forRoot(
             [
@@ -31,12 +31,16 @@ import {LayoutsModule} from '../modules/layouts/layouts.module';
                 // preloadingStrategy: SelectivePreloadingStrategy,
             }
         ),
+
         // store
-        StoreModule.forRoot({}),
+        StoreModule.forRoot(reducers, {metaReducers}),
+        StoreRouterConnectingModule.forRoot(),
         EffectsModule.forRoot([]),
         StoreDevtoolsModule.instrument({
+            name: 'NgRx App',
             maxAge: 25, // Retains last 25 states
         }),
+
         // modules
         MainModule,
         AuthModule,

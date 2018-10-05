@@ -1,20 +1,26 @@
-import {Component} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
-import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
-import {HttpErrorResponse} from '@angular/common/http';
-import {select, Store} from '@ngrx/store';
-import {Observable} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {Observable, Subscription} from 'rxjs';
+import * as AuthActions from '../../store/actions/auth.actions';
+import {LoginData} from '../../interfaces/auth';
+import {AuthSelectService} from '../../services/auth-select.service';
+import {FormResponseError} from "../../../main/interfaces/api";
+import {filter} from "rxjs/operators";
+import {AuthStorageService} from "../../services/auth-storage.service";
 
 @Component({
     selector: 'app-auth-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
-    count$: Observable<any>;
-
+export class LoginComponent implements OnInit, OnDestroy {
+    public pending$: Observable<boolean> = this.authSelectService.pending$;
+    public success$: Observable<boolean> = this.authSelectService.success$;
+    public error$: Observable<FormResponseError> = this.authSelectService.error$;
+    public subscriptions: Subscription[] = [];
     public form = this.fb.group({
         'login': [],
         'password': [],
@@ -25,11 +31,36 @@ export class LoginComponent {
         private router: Router,
         private fb: FormBuilder,
         private snackBar: MatSnackBar,
-        private authService: AuthService
+        private authSelectService: AuthSelectService,
+        private authStorageService: AuthStorageService,
     ) {
-        this.count$ = store.pipe(select('auth2'));
-        console.log(this.count$);
-        this.store.dispatch({type: 'test'});
+    }
+
+    public ngOnInit(): void {
+        this.subscriptions.push(
+            this.success$.subscribe(() => {
+                const user = this.authStorageService.getUser();
+                this.snackBar.open(`Welcome, ${user.full_name}!`);
+                return this.router.navigate(['/index']);
+            }),
+
+            this.error$
+                .pipe(filter(error => Boolean(error)))
+                .subscribe((error) => {
+                    for (const key of Object.keys(error.errors)) {
+                        const field = this.form.get(key);
+                        if (field) {
+                            field.setErrors({server: error.errors[key]});
+                        }
+                    }
+
+                    this.snackBar.open(error.message);
+                }),
+        );
+    }
+
+    public ngOnDestroy(): void {
+        this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
     public getLoginErrorMessage() {
@@ -60,28 +91,14 @@ export class LoginComponent {
         return '';
     }
 
-    public onSubmit() {
-        console.log(this.form);
-        this.authService
-            .login(this.form.get('login').value, this.form.get('password').value)
-            .subscribe(
-                (response: any) => {
-                    // console.log(response);
-                    this.snackBar.open(`Welcome, ${response.data.user.full_name}!`);
-                    return this.router.navigate(['/index']);
-                },
-                (response: HttpErrorResponse) => {
-                    if (response.status === 422) {
-                        for (const key of Object.keys(response.error.errors)) {
-                            const field = this.form.get(key);
-                            if (field) {
-                                field.setErrors({server: response.error.errors[key]});
-                            }
-                        }
+    public getFormData(): LoginData {
+        return {
+            login: this.form.get('login').value,
+            password: this.form.get('password').value,
+        };
+    }
 
-                        this.snackBar.open(response.error.message);
-                    }
-                }
-            );
+    public onSubmit() {
+        this.store.dispatch(new AuthActions.LoginRequestAction(this.getFormData()));
     }
 }

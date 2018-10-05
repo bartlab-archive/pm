@@ -1,10 +1,11 @@
 import {NgModule} from '@angular/core';
-import {LoginComponent} from './components/login/login.component';
-import {RegistrationComponent} from './components/registration/registration.component';
-import {AuthMainComponent} from './components/main/main.component';
-import {AuthService} from './services/auth.service';
+import {CommonModule} from '@angular/common';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {ReactiveFormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
 import {RouterModule, Routes} from '@angular/router';
-import {BlankComponent} from '../layouts/components/blank/blank.component';
 import {
     // ErrorStateMatcher,
     MatButtonModule,
@@ -15,11 +16,17 @@ import {
     MatTabsModule,
     // ShowOnDirtyErrorStateMatcher
 } from '@angular/material';
-import {FlexLayoutModule} from '@angular/flex-layout';
-import {ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
-import {StoreModule} from '@ngrx/store';
-import {authReducer} from './store/reducers/auth.reducer';
+
+import {LoginComponent} from './components/login/login.component';
+import {RegistrationComponent} from './components/registration/registration.component';
+import {AuthMainComponent} from './components/main/main.component';
+import {AuthService} from './services/auth.service';
+import {AuthSelectService} from './services/auth-select.service';
+import {AuthStorageService} from './services/auth-storage.service';
+import {BlankComponent} from '../layouts/components/blank/blank.component';
+import {reducers} from './store/reducers';
+import {AuthEffects} from './store/effects/auth.effects';
+import {httpInterceptorProviders} from './interceptors';
 
 const authRoutes: Routes = [
     {
@@ -51,10 +58,15 @@ const authRoutes: Routes = [
         ReactiveFormsModule,
         FlexLayoutModule,
         HttpClientModule,
-        StoreModule.forFeature('auth', authReducer)
+        CommonModule,
+        StoreModule.forFeature('auth', reducers),
+        EffectsModule.forFeature([AuthEffects]),
     ],
     providers: [
-        AuthService
+        AuthService,
+        AuthSelectService,
+        AuthStorageService,
+        httpInterceptorProviders,
         // {
         //     provide: ErrorStateMatcher,
         //     useClass: ShowOnDirtyErrorStateMatcher

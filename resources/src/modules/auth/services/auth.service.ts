@@ -1,29 +1,46 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {AuthData, LoginData, LoginResponse} from '../interfaces/auth';
+import {FormResponseError} from "../../main/interfaces/api";
+import {map} from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
-
-    public constructor(private http: HttpClient) {
+    public constructor(
+        private http: HttpClient,
+    ) {
     }
 
-    public login(login, password): Observable<any> {
-        return this.http
-            .post('/api/v1/auth/login', {login, password})
+    public login(data: LoginData): Observable<AuthData> {
+        return this.http.post<LoginResponse>('/api/v1/auth/login', data)
             .pipe(
-                tap((response) => {
-                    const token = response.data.value;
-                    const user = response.data.user;
+                map((response: LoginResponse) => {
+                    const {
+                        user,
+                        value: token,
+                    } = response.data;
 
-                    console.log(token, user);
-
-                    // return response;
-                })
+                    return {
+                        token,
+                        user,
+                    };
+                }),
             );
     }
 
+    public getFormResponseError(response: HttpErrorResponse): FormResponseError {
+        const {error} = response;
+        const {errors, message} = error;
+        if (response.status === 422) {
+            return {errors, message};
+        }
+
+        return {
+            message,
+            errors: null,
+        };
+    }
 }
