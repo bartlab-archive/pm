@@ -1,0 +1,15 @@
+<form [formGroup]="form" fxLayout="column" fxFlex="100" (ngSubmit)="form.valid && onSubmit()">
+    <mat-form-field>
+        <input matInput placeholder="Login" formControlName="login" required>
+        <!--<mat-error>Login cannot be blank</mat-error>-->
+        <mat-error>{{getLoginErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="password" placeholder="Password" formControlName="password" required>
+        <!--<mat-error>Password cannot be blank</mat-error>-->
+        <mat-error>{{getPasswordErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" class="submit">Login</button>
+</form>

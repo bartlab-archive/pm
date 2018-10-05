@@ -1,0 +1,28 @@
+{
+  "compileOnSave": false,
+  "include":[
+    "resources/src/**/*"
+  ],
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./storage/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "target": "es5",
+    "typeRoots": [
+      "resources/src/types",
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2015",
+      "dom",
+      "es6"
+    ]
+  }
+}
