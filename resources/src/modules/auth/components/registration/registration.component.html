@@ -1,2 +1,56 @@
+<form [formGroup]="form" fxLayout="column" fxFlex="100" (ngSubmit)="form.valid && submit()">
+    <mat-form-field>
+        <input matInput placeholder="Login" formControlName="login" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
 
-        registration
+    <mat-form-field formGroupName="passwords">
+        <input matInput type="password" placeholder="Password" formControlName="password" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field formGroupName="passwords">
+        <input matInput type="password" placeholder="Confirmation" formControlName="confirmation" required
+               [errorStateMatcher]="matcher">
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="First name" formControlName="first_name" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Last name" formControlName="last_name" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="email" placeholder="Email" formControlName="email" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <!--<mat-form-field>-->
+    <!--<input matInput style="display: none">-->
+    <div class="mat-form-field-wrapper">
+        <mat-checkbox formControlName="hide_email">
+            Hide my email address
+        </mat-checkbox>
+    </div>
+    <!--<mat-error>{{getErrorMessage()}}</mat-error>-->
+    <!--</mat-form-field>-->
+    <!--<mat-slide-toggle formControlName="hide_email">Hide my email address</mat-slide-toggle>-->
+
+    <mat-form-field>
+        <mat-select placeholder="Language" formControlName="language">
+            <mat-option *ngFor="let lang of languages" [value]="lang.id">
+                {{lang.name}}
+            </mat-option>
+        </mat-select>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <button mat-flat-button color="primary" class="submit">Submit</button>
+    </div>
+</form>

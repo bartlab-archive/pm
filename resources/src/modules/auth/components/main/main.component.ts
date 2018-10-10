@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
 
 @Component({
     selector: 'app-auth-main',
@@ -8,10 +7,12 @@ import {RouterOutlet} from '@angular/router';
 })
 export class AuthMainComponent {
 
-    constructor(private outlet: RouterOutlet) {
-    }
+    public navLinks = [
+        {path: '/login', label: 'Sign in'},
+        {path: '/account/register', label: 'Register'},
+        {path: '/account/lost_password', label: 'Reset'},
+    ];
 
-    getActivePage() {
-        return this.outlet.activatedRouteData.page;
+    public constructor() {
     }
 }

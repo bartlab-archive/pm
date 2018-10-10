@@ -1,13 +1,13 @@
-mat-tab-group {
+.mat-tab-nav-bar {
   width: calc(100% + 48px);
-  margin: 0 -24px 16px -24px;
+  margin: -24px -24px 16px -24px;
 
   //&:first-child {
-    margin-top: -24px !important;
+  //  margin-top: -24px !important;
   //}
 }
 
 .mat-card-image {
-  max-height: 150px;
+  max-height: 100px;
 //  background: url("./header.svg");
 }

@@ -1,3 +1,5 @@
+<!--<mat-progress-bar color="primary" mode="indeterminate"></mat-progress-bar>-->
+
 <form [formGroup]="form" fxLayout="column" fxFlex="100" (ngSubmit)="form.valid && onSubmit()">
     <mat-form-field>
         <input matInput placeholder="Login" formControlName="login" required>
@@ -11,5 +13,8 @@
         <mat-error>{{getPasswordErrorMessage()}}</mat-error>
     </mat-form-field>
 
-    <button mat-flat-button color="primary" class="submit" [disabled]="pending$ | async">Login</button>
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <button mat-flat-button color="primary" class="submit" [disabled]="form.invalid">Login</button>
+        <!--<button mat-flat-button color="primary" class="submit" [disabled]="form.invalid || (pending$ | async)">Login</button>-->
+    </div>
 </form>

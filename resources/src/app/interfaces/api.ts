@@ -1,5 +1,5 @@
 export interface ErrorMap {
-    [key: string]: string;
+    [key: string]: string[];
 }
 
 export interface FormResponseError {

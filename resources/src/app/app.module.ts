@@ -6,11 +6,16 @@ import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 import {StoreRouterConnectingModule} from '@ngrx/router-store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {reducers, metaReducers} from '../store/reducers';
-import {AppComponent} from './app.component';
+import {reducers, metaReducers} from './store/reducers';
+import {AppComponent} from './components/app.component';
 import {MainModule} from '../modules/main/main.module';
 import {AuthModule} from '../modules/auth/auth.module';
 import {LayoutsModule} from '../modules/layouts/layouts.module';
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from '@angular/material';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {AppInterceptor} from './interceptors/app.interceptor';
+import {AppService} from './services/app.service';
+import {FormService} from './services/form.service';
 
 @NgModule({
     declarations: [
@@ -23,8 +28,8 @@ import {LayoutsModule} from '../modules/layouts/layouts.module';
         // Router,
         RouterModule.forRoot(
             [
-                {path: '', redirectTo: '/index', pathMatch: 'full'},
-                {path: '**', redirectTo: '/404'}
+                // {path: '', redirectTo: '/index', pathMatch: 'full'},
+                // {path: '**', redirectTo: '/404'}
             ],
             {
                 // enableTracing: true, // <-- debugging purposes only
@@ -37,16 +42,22 @@ import {LayoutsModule} from '../modules/layouts/layouts.module';
         StoreRouterConnectingModule.forRoot(),
         EffectsModule.forRoot([]),
         StoreDevtoolsModule.instrument({
-            name: 'NgRx App',
             maxAge: 25, // Retains last 25 states
         }),
 
+        MatSnackBarModule,
+
         // modules
         MainModule,
-        AuthModule,
-        LayoutsModule
+        LayoutsModule,
+        AuthModule
     ],
-    providers: [],
+    providers: [
+        AppService,
+        FormService,
+        {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 5000}},
+        {provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true},
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {

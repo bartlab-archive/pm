@@ -5,30 +5,32 @@ import {catchError, exhaustMap, map} from 'rxjs/operators';
 import * as AuthActions from '../actions/auth.actions';
 import {AuthService} from '../../services/auth.service';
 import {AuthData, LoginData} from '../../interfaces/auth';
-import {HttpErrorResponse} from '@angular/common/http';
+import {FormService} from '../../../../app/services/form.service';
 
 @Injectable()
 export class AuthEffects {
     @Effect()
-    login$ = this.actions$.pipe(
+    protected login$ = this.actions$.pipe(
         ofType<AuthActions.LoginRequestAction>(AuthActions.ActionTypes.LOGIN_REQUEST),
-        map((action: { payload, type }) => action.payload),
+        map((action) => action.payload),
         exhaustMap((data: LoginData) => {
-            return this.authService
-                .login(data)
-                .pipe(
-                    map((auth: AuthData) => new AuthActions.LoginSuccessAction(auth)),
-                    catchError((response: HttpErrorResponse) => {
-                        const error = this.authService.getFormResponseError(response);
-                        return of(new AuthActions.LoginFailureAction(error));
-                    }),
-                );
-        })
+                return this.authService
+                    .login(data)
+                    .pipe(
+                        map((auth: AuthData) => new AuthActions.LoginSuccessAction(auth)),
+                        catchError((response) => of(new AuthActions.LoginErrorAction(
+                            this.formService.getFormResponseError(response)
+                            ))
+                        )
+                    );
+            }
+        )
     );
 
-    constructor(
+    public constructor(
         protected actions$: Actions,
         protected authService: AuthService,
+        protected formService: FormService,
     ) {
     }
 }

@@ -5,22 +5,40 @@ import {
     HttpHandler,
     HttpRequest,
 } from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {AuthStorageService} from '../services/auth-storage.service';
+import {empty, Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import {AuthService} from '../services/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-    constructor(
-        private authStorageService: AuthStorageService,
+    public constructor(
+        private authService: AuthService
     ) {
     }
 
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (this.authStorageService.isAuthorized()) {
-            const headers = req.headers.append('Authorization', `Bearer ${this.authStorageService.getToken()}`);
-            return next.handle(req.clone({headers}));
-        }
+    public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        return next
+            .handle(
+                this.authService.isAuthorized() ? req.clone({
+                    setHeaders: {
+                        Authorization: `Bearer ${this.authService.getToken()}`
+                    }
+                }) : req
+            )
+            .pipe(
+                catchError((error) => {
+                    if (error.status === 401) {
+                        this.authService.onUnauthorizedError(error);
+                        return empty();
+                    }
 
-        return next.handle(req);
+                    if (error.status === 403) {
+                        this.authService.onForbiddenError(error);
+                        return empty();
+                    }
+
+                    return throwError(error);
+                }),
+            );
     }
 }

@@ -1,5 +1,5 @@
 import {combineReducers} from '@ngrx/store';
-import {FormResponseError} from '../../../main/interfaces/api';
+import {FormResponseError} from '../../../../app/interfaces/api';
 import {AuthData} from '../../interfaces/auth';
 import * as AuthActions from '../actions/auth.actions';
 
@@ -7,6 +7,10 @@ export const data = (state: AuthData = null, action: AuthActions.ActionsUnion) =
     switch (action.type) {
         case AuthActions.ActionTypes.LOGIN_SUCCESS: {
             return action.payload;
+        }
+
+        case AuthActions.ActionTypes.LOGOUT: {
+            return null;
         }
 
         default: {
@@ -17,8 +21,13 @@ export const data = (state: AuthData = null, action: AuthActions.ActionsUnion) =
 
 export const error = (state: FormResponseError = null, action: AuthActions.ActionsUnion) => {
     switch (action.type) {
-        case AuthActions.ActionTypes.LOGIN_FAILURE: {
+        case AuthActions.ActionTypes.LOGIN_ERROR: {
             return action.payload;
+        }
+
+        case AuthActions.ActionTypes.LOGIN_SUCCESS:
+        case AuthActions.ActionTypes.LOGIN_REQUEST: {
+            return null;
         }
 
         default: {
@@ -27,15 +36,18 @@ export const error = (state: FormResponseError = null, action: AuthActions.Actio
     }
 };
 
-export const pending = (state: boolean = null, action: AuthActions.ActionsUnion) => {
+export const status = (state: string = null, action: AuthActions.ActionsUnion) => {
     switch (action.type) {
         case AuthActions.ActionTypes.LOGIN_REQUEST: {
-            return true;
+            return 'pending';
         }
 
-        case AuthActions.ActionTypes.LOGIN_SUCCESS:
-        case AuthActions.ActionTypes.LOGIN_FAILURE: {
-            return false;
+        case AuthActions.ActionTypes.LOGIN_SUCCESS: {
+            return 'success';
+        }
+
+        case AuthActions.ActionTypes.LOGIN_ERROR: {
+            return 'error';
         }
 
         default: {
@@ -47,15 +59,15 @@ export const pending = (state: boolean = null, action: AuthActions.ActionsUnion)
 export interface State {
     data: AuthData;
     error: FormResponseError;
-    pending: boolean;
+    status: string;
 }
 
 export const reducer = combineReducers({
     data,
     error,
-    pending,
+    status,
 });
 
 export const getData = (state: State) => state.data;
-export const getPending = (state: State) => state.pending;
 export const getError = (state: State) => state.error;
+export const getStatus = (state: State) => state.status;

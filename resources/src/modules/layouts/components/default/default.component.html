@@ -4,9 +4,10 @@
         <mat-nav-list>
             <a mat-list-item routerLink="/404">404</a>
             <a mat-list-item routerLink="/500">500</a>
-            <a mat-list-item routerLink="/index">index</a>
+            <a mat-list-item routerLink="/">index</a>
             <a mat-list-item routerLink="/login">login</a>
             <a mat-list-item routerLink="/account/register">registration</a>
+            <a mat-list-item routerLink="/account/lost_password">reset</a>
         </mat-nav-list>
     </mat-sidenav>
 
@@ -22,18 +23,18 @@
                     <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                    <button mat-menu-item>
-                        <mat-icon>dialpad</mat-icon>
-                        <span>Redial</span>
-                    </button>
-                    <button mat-menu-item disabled>
-                        <mat-icon>voicemail</mat-icon>
-                        <span>Check voicemail</span>
-                    </button>
-                    <button mat-menu-item>
-                        <mat-icon>notifications_off</mat-icon>
-                        <span>Disable alerts</span>
-                    </button>
+                    <a [routerLink]="item.path" mat-menu-item *ngFor="let item of topMenuItems">
+                        <mat-icon>{{ item.icon }}</mat-icon>
+                        <span>{{ item.title }}</span>
+                    </a>
+                    <!--<button mat-menu-item disabled>-->
+                        <!--<mat-icon>voicemail</mat-icon>-->
+                        <!--<span>Check voicemail</span>-->
+                    <!--</button>-->
+                    <!--<button mat-menu-item>-->
+                        <!--<mat-icon>notifications_off</mat-icon>-->
+                        <!--<span>Disable alerts</span>-->
+                    <!--</button>-->
                 </mat-menu>
             </mat-toolbar-row>
         </mat-toolbar>

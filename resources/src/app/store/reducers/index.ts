@@ -1,4 +1,10 @@
-import {MetaReducer, ActionReducerMap, ActionReducer} from '@ngrx/store';
+import {
+    MetaReducer,
+    ActionReducerMap,
+    // createFeatureSelector,
+    // createSelector,
+    // ActionReducer
+} from '@ngrx/store';
 import * as fromRouter from '@ngrx/router-store';
 
 /**
@@ -7,7 +13,8 @@ import * as fromRouter from '@ngrx/router-store';
  * ensure that none of the reducers accidentally mutates the state.
  */
 import {storeFreeze} from 'ngrx-store-freeze';
-import {localStorageSync} from 'ngrx-store-localstorage';
+// import {localStorageSync} from 'ngrx-store-localstorage';
+import {isDevMode} from '@angular/core';
 
 /**
  * he reducer function itself. In
@@ -22,15 +29,15 @@ import {localStorageSync} from 'ngrx-store-localstorage';
  * that will be composed to form the root meta-reducer.
  */
 
-const environment = {production: true};
+const environment = {production: !isDevMode()};
 
-export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-    return localStorageSync({keys: ['auth'], rehydrate: true})(reducer);
-}
+// export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
+//     return localStorageSync({keys: ['auth'], rehydrate: true})(reducer);
+// }
 
 export const metaReducers: Array<MetaReducer<any, any>> = !environment.production
-    ? [storeFreeze, localStorageSyncReducer]
-    : [localStorageSyncReducer];
+    ? [storeFreeze]
+    : [];
 
 export interface State {
     router: fromRouter.RouterReducerState;

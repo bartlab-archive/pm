@@ -7,13 +7,13 @@ import {
     MatIconModule,
     MatButtonModule,
     MatSidenavModule,
-    MatListModule, MatMenuModule
+    MatListModule,
+    MatMenuModule
 } from '@angular/material';
+import {LayoutsService} from './services/layouts.service';
+import {CommonModule} from '@angular/common';
 
-const layoutsRoutes: Routes = [
-    // { path: '',  component: DefaultComponent },
-    // { path: '', component: BlankComponent }
-];
+const layoutsRoutes: Routes = [];
 
 @NgModule({
     declarations: [
@@ -21,6 +21,7 @@ const layoutsRoutes: Routes = [
         BlankComponent
     ],
     imports: [
+        CommonModule,
         RouterModule.forChild(layoutsRoutes),
         MatToolbarModule,
         MatIconModule,
@@ -29,7 +30,9 @@ const layoutsRoutes: Routes = [
         MatListModule,
         MatMenuModule
     ],
-    providers: [],
+    providers: [
+        LayoutsService
+    ],
 })
 export class LayoutsModule {
 }

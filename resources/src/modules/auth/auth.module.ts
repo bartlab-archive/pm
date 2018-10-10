@@ -2,51 +2,78 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
-import {StoreModule} from '@ngrx/store';
-import {EffectsModule} from '@ngrx/effects';
-import {RouterModule, Routes} from '@angular/router';
 import {
-    // ErrorStateMatcher,
+    HTTP_INTERCEPTORS,
+    HttpClientModule
+} from '@angular/common/http';
+import {Store, StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {
+    ActivationStart,
+    Router,
+    RouterModule,
+    Routes
+} from '@angular/router';
+import {
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
     MatIconModule,
-    MatInputModule, MatSnackBarModule,
+    MatInputModule,
+    MatSnackBarModule,
     MatTabsModule,
-    // ShowOnDirtyErrorStateMatcher
+    MatSelectModule,
+    MatSlideToggleModule,
+    MatCheckboxModule,
+    MatProgressBarModule
 } from '@angular/material';
-
+import {ResetComponent} from './components/reset/reset.component';
 import {LoginComponent} from './components/login/login.component';
+import {LogoutComponent} from './components/logout/logout.component';
 import {RegistrationComponent} from './components/registration/registration.component';
 import {AuthMainComponent} from './components/main/main.component';
 import {AuthService} from './services/auth.service';
-import {AuthSelectService} from './services/auth-select.service';
-import {AuthStorageService} from './services/auth-storage.service';
 import {BlankComponent} from '../layouts/components/blank/blank.component';
-import {reducers} from './store/reducers';
+import {
+    reducers,
+    metaReducers
+} from './store/reducers';
 import {AuthEffects} from './store/effects/auth.effects';
-import {httpInterceptorProviders} from './interceptors';
+import {AuthInterceptor} from './interceptors/auth.interceptor';
+import {filter} from 'rxjs/operators';
+import {LayoutsService} from '../layouts/services/layouts.service';
+import * as AuthActions from './store/actions/auth.actions';
 
 const authRoutes: Routes = [
     {
         path: '',
         component: BlankComponent,
         children: [
-            {path: 'login', component: AuthMainComponent, data: {page: 0}},
-            {path: 'account/register', component: AuthMainComponent, data: {page: 1}},
-            {path: 'account/lost_password', component: AuthMainComponent, data: {page: 2}}
+            {
+                path: '',
+                component: AuthMainComponent,
+                data: {auth: 'guest'},
+                children: [
+                    {path: 'login', component: LoginComponent},
+                    {path: 'account/register', component: RegistrationComponent},
+                    {path: 'account/lost_password', component: ResetComponent}
+                ]
+            }
         ]
-    }
+    },
+    {path: 'logout', component: LogoutComponent, data: {auth: 'authorized'}},
 ];
 
 @NgModule({
     declarations: [
         AuthMainComponent,
         LoginComponent,
-        RegistrationComponent
+        RegistrationComponent,
+        ResetComponent,
+        LogoutComponent
     ],
     imports: [
+        CommonModule,
         RouterModule.forChild(authRoutes),
         MatInputModule,
         MatCardModule,
@@ -55,23 +82,58 @@ const authRoutes: Routes = [
         MatTabsModule,
         MatFormFieldModule,
         MatSnackBarModule,
+        MatSelectModule,
+        MatSlideToggleModule,
+        MatCheckboxModule,
+        MatProgressBarModule,
         ReactiveFormsModule,
         FlexLayoutModule,
         HttpClientModule,
-        CommonModule,
-        StoreModule.forFeature('auth', reducers),
+        StoreModule.forFeature('auth', reducers, {metaReducers}),
         EffectsModule.forFeature([AuthEffects]),
     ],
     providers: [
         AuthService,
-        AuthSelectService,
-        AuthStorageService,
-        httpInterceptorProviders,
-        // {
-        //     provide: ErrorStateMatcher,
-        //     useClass: ShowOnDirtyErrorStateMatcher
-        // }
+        {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     ],
 })
 export class AuthModule {
+
+    public constructor(
+        private authService: AuthService,
+        private router: Router,
+        private layoutsService: LayoutsService,
+        private store: Store<any>,
+    ) {
+        this.authService.unauthorized$.subscribe(() => {
+            this.store.dispatch(new AuthActions.LogoutAction());
+            return this.router.navigate(['/login']);
+        });
+
+        this.authService.forbidden$.subscribe(() => {
+            return this.router.navigate(['/']);
+        });
+
+        this.router.events
+            .pipe(
+                filter((event) => event instanceof ActivationStart)
+            )
+            .subscribe(({snapshot}: ActivationStart) => {
+                if (snapshot.data.hasOwnProperty('auth')) {
+                    if (snapshot.data.auth === 'guest' && this.authService.isAuthorized()) {
+                        return this.router.navigate(['/']);
+                    }
+
+                    if (snapshot.data.auth === 'authorized' && !this.authService.isAuthorized()) {
+                        return this.router.navigate(['/login']);
+                    }
+                }
+            });
+
+        this.layoutsService
+            .addTopMenuItem({icon: 'account_circle', path: '/users/1', title: 'Profile'})
+            .addTopMenuItem({icon: 'settings', path: '/my/account', title: 'My account'})
+            .addTopMenuItem({icon: 'exit_to_app', path: '/logout', title: 'Logout'});
+    }
 }
+

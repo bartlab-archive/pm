@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {LayoutsService} from '../../services/layouts.service';
 
 @Component({
     selector: 'app-layouts-default',
@@ -6,4 +7,11 @@ import {Component} from '@angular/core';
     styleUrls: ['./default.component.scss']
 })
 export class DefaultComponent {
+
+    public topMenuItems = this.layoutsService.getTopMenu();
+
+    public constructor(
+        private layoutsService: LayoutsService
+    ) {
+    }
 }

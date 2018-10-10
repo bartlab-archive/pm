@@ -31,6 +31,7 @@ class AuthController extends BaseController
 
     public function login(AuthLoginRequest $request)
     {
+//        abort(401);
         if (!$user = $this->usersService->byLogin($request->input('login'))){
             abort(422);
         }

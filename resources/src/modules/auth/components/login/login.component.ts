@@ -2,14 +2,13 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
 import {Router} from '@angular/router';
-import {Store} from '@ngrx/store';
-import {Observable, Subscription} from 'rxjs';
+import {select, Store} from '@ngrx/store';
+import {Subscription} from 'rxjs';
 import * as AuthActions from '../../store/actions/auth.actions';
-import {LoginData} from '../../interfaces/auth';
-import {AuthSelectService} from '../../services/auth-select.service';
-import {FormResponseError} from "../../../main/interfaces/api";
-import {filter} from "rxjs/operators";
-import {AuthStorageService} from "../../services/auth-storage.service";
+import {filter} from 'rxjs/operators';
+import * as fromAuth from '../../store/reducers';
+import {FormResponseError} from '../../../../app/interfaces/api';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
     selector: 'app-auth-login',
@@ -17,9 +16,6 @@ import {AuthStorageService} from "../../services/auth-storage.service";
     styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-    public pending$: Observable<boolean> = this.authSelectService.pending$;
-    public success$: Observable<boolean> = this.authSelectService.success$;
-    public error$: Observable<FormResponseError> = this.authSelectService.error$;
     public subscriptions: Subscription[] = [];
     public form = this.fb.group({
         'login': [],
@@ -31,22 +27,32 @@ export class LoginComponent implements OnInit, OnDestroy {
         private router: Router,
         private fb: FormBuilder,
         private snackBar: MatSnackBar,
-        private authSelectService: AuthSelectService,
-        private authStorageService: AuthStorageService,
+        private authService: AuthService,
     ) {
     }
 
     public ngOnInit(): void {
         this.subscriptions.push(
-            this.success$.subscribe(() => {
-                const user = this.authStorageService.getUser();
-                this.snackBar.open(`Welcome, ${user.full_name}!`);
-                return this.router.navigate(['/index']);
-            }),
+            this.store
+                .pipe(
+                    select(fromAuth.selectAuthStatus),
+                    filter((status) => status === 'success')
+                )
+                .subscribe(() => {
+                    const user = this.authService.getUser();
+                    this.snackBar.open(`Welcome, ${user.full_name}!`);
+                    return this.router.navigate(['/']);
+                }),
+            // this.store.pipe(select(fromAuth.selectAuthStatus)).subscribe(() => {
+            //
+            // }),
 
-            this.error$
-                .pipe(filter(error => Boolean(error)))
-                .subscribe((error) => {
+            this.store
+                .pipe(
+                    select(fromAuth.selectAuthError),
+                    filter((error) => Boolean(error))
+                )
+                .subscribe((error: FormResponseError) => {
                     for (const key of Object.keys(error.errors)) {
                         const field = this.form.get(key);
                         if (field) {
@@ -54,7 +60,10 @@ export class LoginComponent implements OnInit, OnDestroy {
                         }
                     }
 
-                    this.snackBar.open(error.message);
+                    if (error.message) {
+                        this.snackBar.open(error.message);
+                        this.store.dispatch(new AuthActions.LoginErrorAction(null));
+                    }
                 }),
         );
     }
@@ -91,14 +100,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         return '';
     }
 
-    public getFormData(): LoginData {
-        return {
+    public onSubmit() {
+        this.store.dispatch(new AuthActions.LoginRequestAction({
             login: this.form.get('login').value,
             password: this.form.get('password').value,
-        };
-    }
-
-    public onSubmit() {
-        this.store.dispatch(new AuthActions.LoginRequestAction(this.getFormData()));
+        }));
     }
 }
