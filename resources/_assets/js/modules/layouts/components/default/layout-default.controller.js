@@ -14,7 +14,7 @@ import 'angular';
  * @property {$rootScope} $rootScope
  * @property {$filter} $filter
  * @property {SettingsService} settingsService
- * @property {AuthService} authService
+ * @property {ProjectsService} authService
  */
 export default class LayoutDefaultController extends ControllerBase {
 

@@ -10,6 +10,7 @@ import {reducers, metaReducers} from './store/reducers';
 import {AppComponent} from './components/app.component';
 import {MainModule} from '../modules/main/main.module';
 import {AuthModule} from '../modules/auth/auth.module';
+import {ProjectsModule} from '../modules/projects/projects.module';
 import {LayoutsModule} from '../modules/layouts/layouts.module';
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from '@angular/material';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
@@ -50,7 +51,8 @@ import {FormService} from './services/form.service';
         // modules
         MainModule,
         LayoutsModule,
-        AuthModule
+        AuthModule,
+        ProjectsModule,
     ],
     providers: [
         AppService,

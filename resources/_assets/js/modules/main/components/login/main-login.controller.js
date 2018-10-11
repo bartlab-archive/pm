@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 /**
  * @property {$mdToast} $mdToast
- * @property {AuthService} authService
+ * @property {ProjectsService} authService
  * @property {SettingsService} settingsService
  * @property {$state} $state
  */

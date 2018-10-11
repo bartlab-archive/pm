@@ -11,7 +11,7 @@ todo: value for "Hide my email address" get from settings
  * @property {$mdToast} $mdToast
  * @property {UsersService} usersService
  * @property {ListService} listService
- * @property {AuthService} authService
+ * @property {ProjectsService} authService
  */
 export default class MainRegistrationController extends ControllerBase {
 
