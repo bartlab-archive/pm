@@ -1,0 +1,72 @@
+<div fxLayout="row" fxLayoutAlign="center start">
+    <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.gt-md]="50">
+        <mat-progress-bar mode="indeterminate" *ngIf="pending"></mat-progress-bar>
+
+        <div fxLayout="row" fxLayoutAlign="space-between">
+            <mat-card-header fxFlex="0 0 auto">
+                <!--<div mat-card-avatar class="example-header-image"></div>-->
+                <mat-card-title>Projects</mat-card-title>
+                <mat-card-subtitle>Administrator</mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-actions fxFlex="0 0 auto">
+                <button mat-icon-button>
+                    <mat-icon>refresh</mat-icon>
+                </button>
+
+                <mat-menu #appMenu="matMenu">
+                    <button mat-menu-item>
+                        <mat-icon>rss_feed</mat-icon>
+                        Atom
+                    </button>
+                    <button mat-menu-item>
+                        <mat-icon>file_download</mat-icon>
+                        CSV
+                    </button>
+                    <button mat-menu-item>
+                        <mat-icon>file_download</mat-icon>
+                        PDF
+                    </button>
+                </mat-menu>
+
+                <button mat-icon-button [matMenuTriggerFor]="appMenu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+            </mat-card-actions>
+        </div>
+
+        <mat-card-content>
+            <mat-form-field>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+            </mat-form-field>
+
+            <table mat-table [dataSource]="dataSource" matSort>
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID</th>
+                    <td mat-cell *matCellDef="let row"> {{row.identifier}}</td>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                    <td mat-cell *matCellDef="let row"> {{row.name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+                    <td mat-cell *matCellDef="let row"> {{row.description | slice:0:30}}</td>
+                </ng-container>
+                <ng-container matColumnDef="isPublic">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>IsPublic</th>
+                    <td mat-cell *matCellDef="let row" [style.color]="row.color">{{row.is_public}}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator [length]="length"
+                           [pageSize]="pageSize"
+                           [pageSizeOptions]="pageSizeOptions"
+                           (page)="onPageChange($event)">
+            </mat-paginator>
+        </mat-card-content>
+    </mat-card>
+</div>

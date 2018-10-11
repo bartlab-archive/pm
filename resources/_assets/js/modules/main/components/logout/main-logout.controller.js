@@ -2,7 +2,7 @@ import ControllerBase from 'base/controller.base';
 
 /**
  * @property {$mdToast} $mdToast
- * @property {AuthService} authService
+ * @property {ProjectsService} authService
  * @property {$state} $state
  */
 export default class MainLogoutController extends ControllerBase {
