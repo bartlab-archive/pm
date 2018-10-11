@@ -16,6 +16,7 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AppInterceptor} from './interceptors/app.interceptor';
 import {AppService} from './services/app.service';
 import {FormService} from './services/form.service';
+import {IssuesModule} from '../modules/issues/issues.module';
 
 @NgModule({
     declarations: [
@@ -50,7 +51,8 @@ import {FormService} from './services/form.service';
         // modules
         MainModule,
         LayoutsModule,
-        AuthModule
+        AuthModule,
+        IssuesModule
     ],
     providers: [
         AppService,
