@@ -19,10 +19,10 @@
                 </button>
                 <span>PM</span>
                 <span class="spacer"></span>
-                <button mat-icon-button [matMenuTriggerFor]="menu">
+                <button mat-icon-button [matMenuTriggerFor]="topMenu" *ngIf="topMenuItems.length">
                     <mat-icon>more_vert</mat-icon>
                 </button>
-                <mat-menu #menu="matMenu">
+                <mat-menu #topMenu="matMenu">
                     <a [routerLink]="item.path" mat-menu-item *ngFor="let item of topMenuItems">
                         <mat-icon>{{ item.icon }}</mat-icon>
                         <span>{{ item.title }}</span>

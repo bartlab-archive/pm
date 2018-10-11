@@ -29,7 +29,7 @@ import {FormService} from './services/form.service';
         RouterModule.forRoot(
             [
                 // {path: '', redirectTo: '/index', pathMatch: 'full'},
-                // {path: '**', redirectTo: '/404'}
+                {path: '**', redirectTo: '/404'}
             ],
             {
                 // enableTracing: true, // <-- debugging purposes only
