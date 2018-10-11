@@ -1,16 +1,79 @@
 :host {
-  display: flex;
+  display: block;
   flex-direction: column;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+
+  mat-sidenav-container {
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: hidden;
+
+    mat-sidenav-content {
+      height: 100vh;
+      //height: calc(100% + 0px);
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+
+      .content-view-container {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        overflow-x: hidden;
+        overflow-y: auto;
+        flex: 1;
+        //flex-basis: 0%;
+        flex-basis: 0.000000001px;
+
+        .content-view {
+          margin: 10px 96px;
+          flex: 1;
+
+          //min-height: calc(100% - 20px);
+        }
+      }
+    }
+  }
+
+  //> div {
+  //  position: absolute;
+  //  top: 0;
+  //  right: 0;
+  //  left: 0;
+  //  bottom: 0;
+  //  overflow: hidden;
+  //
+  //  > mat-sidenav-container {
+  //    height: calc(100% + 0px);
+  //    z-index: 1;
+  //    display: flex;
+  //    flex-direction: column;
+  //    position: relative;
+  //
+  //    > mat-sidenav-content {
+  //      overflow-x: hidden;
+  //      overflow-y: auto;
+  //      flex: 1;
+  //      //flex-basis: 0%;
+  //      flex-basis: 0.000000001px;
+  //    }
+  //  }
+  //}
 }
 
-mat-sidenav-container {
-  flex: 1;
-}
+//mat-sidenav-container {
+//  flex: 1;
+//}
 
 mat-sidenav {
   width: 280px;
@@ -23,3 +86,22 @@ mat-sidenav {
 mat-sidenav-container {
   //background-color: transparent;
 }
+
+footer {
+  //position: absolute;
+  //bottom: 0;
+  //left: 0;
+  //right: 0;
+  min-height: 40px;
+  width: 100%;
+  font-size: 12px;
+  color: #ccc;
+  text-align: center;
+  //border:1px solid red;
+  //font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+//.content-view-container {
+//  margin: 0 96px;
+//}
+
+// ----

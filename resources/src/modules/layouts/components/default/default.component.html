@@ -8,6 +8,7 @@
             <a mat-list-item routerLink="/login">login</a>
             <a mat-list-item routerLink="/account/register">registration</a>
             <a mat-list-item routerLink="/account/lost_password">reset</a>
+            <a mat-list-item routerLink="/issues">View all issues</a>
         </mat-nav-list>
     </mat-sidenav>
 
@@ -28,17 +29,41 @@
                         <span>{{ item.title }}</span>
                     </a>
                     <!--<button mat-menu-item disabled>-->
-                        <!--<mat-icon>voicemail</mat-icon>-->
-                        <!--<span>Check voicemail</span>-->
+                    <!--<mat-icon>voicemail</mat-icon>-->
+                    <!--<span>Check voicemail</span>-->
                     <!--</button>-->
                     <!--<button mat-menu-item>-->
-                        <!--<mat-icon>notifications_off</mat-icon>-->
-                        <!--<span>Disable alerts</span>-->
+                    <!--<mat-icon>notifications_off</mat-icon>-->
+                    <!--<span>Disable alerts</span>-->
                     <!--</button>-->
                 </mat-menu>
             </mat-toolbar-row>
         </mat-toolbar>
 
-        <router-outlet></router-outlet>
+        <!--<div class="q-nav-container" hide show-gt-sm>-->
+        <!--<div class="q-nav">-->
+        <!--<div class="q-nav-items">-->
+        <!--<div class="q-nav-item" ng-repeat="item in ::$ctrl.items">-->
+        <!--<a ui-sref="{{ ::item.url }}">-->
+        <!--<md-icon>{{ ::item.icon }}</md-icon>-->
+        <!--<span>{{ ::item.name }}</span>-->
+        <!--</a>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <div class="content-view-container">
+            <div class="content-view">
+                <router-outlet></router-outlet>
+            </div>
+
+            <footer>
+                Powered by MaybeWorks
+            </footer>
+        </div>
+
+
+
     </mat-sidenav-content>
 </mat-sidenav-container>
