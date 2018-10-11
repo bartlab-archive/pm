@@ -19,5 +19,5 @@ npm run build
 
 #### Develop Frontend
 ```bash
-npm run watch-poll
+npm run watch
 ```
