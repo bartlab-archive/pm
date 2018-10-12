@@ -117,6 +117,7 @@ export class ListComponent implements OnInit, OnDestroy {
         const index = this.tags.indexOf(tag);
         if (index >= 0) {
             this.tags.splice(index, 1);
+            this.paginator.pageIndex = 0;
             this.load();
         }
     }
@@ -127,6 +128,7 @@ export class ListComponent implements OnInit, OnDestroy {
             this.tags.push(tag);
             this.tagInput.nativeElement.value = '';
             this.tagCtrl.setValue(null);
+            this.paginator.pageIndex = 0;
             this.load();
         }
     }
@@ -162,9 +164,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         this.subscriptions.push(
-            this.sort.sortChange
-                .subscribe(() => this.paginator.pageIndex = 0),
-
+            this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0),
             merge(this.sort.sortChange, this.paginator.page)
                 .pipe(
                     startWith({}),
