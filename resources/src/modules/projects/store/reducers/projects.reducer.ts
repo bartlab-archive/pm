@@ -1,8 +1,21 @@
 import {combineReducers} from '@ngrx/store';
 import {RequestStatus, ResponseError} from '../../../../app/interfaces/api';
 import * as ProjectsActions from '../actions/projects.actions';
+import {Meta, Project} from "../../interfaces/projects";
 
-export const data = (state = [], action: ProjectsActions.ActionsUnion) => {
+export const meta = (state: Meta = null, action: ProjectsActions.ActionsUnion) => {
+    switch (action.type) {
+        case ProjectsActions.ActionTypes.LIST_SUCCESS: {
+            return action.payload.meta;
+        }
+
+        default: {
+            return state;
+        }
+    }
+};
+
+export const data = (state: Project[] = [], action: ProjectsActions.ActionsUnion) => {
     switch (action.type) {
         case ProjectsActions.ActionTypes.LIST_SUCCESS: {
             return action.payload.data;
@@ -52,17 +65,20 @@ export const status = (state: RequestStatus = null, action: ProjectsActions.Acti
 };
 
 export interface State {
-    data: any;
+    meta: Meta;
+    data: Project[];
     error: ResponseError;
     status: RequestStatus;
 }
 
 export const reducer = combineReducers({
+    meta,
     data,
     error,
     status,
 });
 
+export const getMeta = (state: State) => state.meta;
 export const getData = (state: State) => state.data;
 export const getError = (state: State) => state.error;
 export const getStatus = (state: State) => state.status;

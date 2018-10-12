@@ -1,6 +1,16 @@
-.mat-form-field {
-  font-size: 14px;
+mat-progress-bar {
+  margin: 0 0 15px;
+}
+
+.chip-list {
   width: 100%;
+}
+
+.table-container {
+  position: relative;
+  //max-height: 65vh;
+  //overflow-x: hidden;
+  //overflow-y: auto;
 }
 
 table {

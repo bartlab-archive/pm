@@ -7,18 +7,15 @@ export enum ProjectStatus  {
 export interface PaginationParams {
     page: number;
     per_page: number,
-    order: string[];
-    status_ids: ProjectStatus[];
-    public: boolean[];
+    order?: string[];
+    status_ids?: ProjectStatus[];
+    public?: boolean[];
 }
 
-
 export interface Member {
-
 }
 
 export interface Module {
-
 }
 
 export interface Meta {

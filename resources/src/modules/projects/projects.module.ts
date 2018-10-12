@@ -22,19 +22,21 @@ import {
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    MatChipsModule,
+    MatAutocompleteModule,
 } from '@angular/material';
 
 import {MainComponent} from './components/main/main.component';
 import {ListComponent} from './components/list/list.component';
 import {ProjectsService} from './services/projects.service';
-import {BlankComponent} from '../layouts/components/blank/blank.component';
+import {DefaultComponent} from '../layouts/components/default/default.component';
 import {reducers, metaReducers} from './store/reducers';
 import {ProjectsEffects} from './store/effects/projects.effects';
 
 const authRoutes: Routes = [
     {
         path: '',
-        component: BlankComponent,
+        component: DefaultComponent,
         children: [
             {
                 path: 'projects',
@@ -76,6 +78,8 @@ const authRoutes: Routes = [
         MatTableModule,
         MatSortModule,
         MatPaginatorModule,
+        MatChipsModule,
+        MatAutocompleteModule,
         ReactiveFormsModule,
         FlexLayoutModule,
         HttpClientModule,

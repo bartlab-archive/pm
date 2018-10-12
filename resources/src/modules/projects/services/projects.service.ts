@@ -19,7 +19,13 @@ export class ProjectsService {
         });
     }
 
-    public all(params = {}): Observable<any> {
-        return this.http.get<any>('/api/v1/projects', {params});
+    public all(params): Observable<any> {
+        const queryParams = {...params};
+        if (queryParams.status_ids && queryParams.status_ids.length > 0) {
+            queryParams['status_ids[]'] = [...queryParams.status_ids];
+            delete queryParams.status_ids;
+        }
+
+        return this.http.get<any>('/api/v1/projects', {params: queryParams});
     }
 }
