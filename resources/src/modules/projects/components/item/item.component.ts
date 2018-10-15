@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {FormControl} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
@@ -11,12 +11,13 @@ import * as fromProjects from '../../store/reducers';
 import * as projectActions from '../../store/actions/projects.actions';
 import {RequestStatus} from '../../../../app/interfaces/api';
 
+
 @Component({
-    selector: 'app-projects-list',
-    templateUrl: './list.component.html',
-    styleUrls: ['./list.component.scss']
+    selector: 'app-projects-item',
+    templateUrl: './item.component.html',
+    styleUrls: ['./item.component.scss']
 })
-export class ListComponent implements OnInit, OnDestroy {
+export class ItemComponent implements OnInit, OnDestroy {
     public visible = true;
     public selectable = true;
     public removable = true;
@@ -78,6 +79,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
     public constructor(
         private router: Router,
+        private activatedRoute: ActivatedRoute,
         private store: Store<any>,
     ) {
         this.filteredTags = this.tagCtrl.valueChanges.pipe(
@@ -123,17 +125,6 @@ export class ListComponent implements OnInit, OnDestroy {
         }
     }
 
-    public selectedLabel(name){
-        const tag = this.allTags.find(tagItem => tagItem.name === name);
-        if (tag && this.tags.indexOf(tag) === -1) {
-            this.tags.push(tag);
-            this.tagInput.nativeElement.value = '';
-            this.tagCtrl.setValue(null);
-            this.paginator.pageIndex = 0;
-            this.load();
-        }
-    }
-
     public getTagLabel(tag: ProjectTag): string {
         return `${tag.name}(${tag.type})`;
     }
@@ -143,7 +134,7 @@ export class ListComponent implements OnInit, OnDestroy {
         return this.allTags.filter(tag => this.getTagLabel(tag).toLowerCase().indexOf(filterLabel) === 0);
     }
 
-    public load() {
+    public load(): void {
         const params: PaginationParams = {
             page: this.paginator.pageIndex + 1,
             per_page: this.pageSize,
@@ -182,7 +173,7 @@ export class ListComponent implements OnInit, OnDestroy {
                         return projects;
                     }),
                 )
-                .subscribe((projects: Project[]) => this.projects = projects),
+                .subscribe((projects: Project[]) => this.projects = projects.filter(project => project.identifier === this.activatedRoute.snapshot.params.identifier)),
         );
     }
 
@@ -192,9 +183,5 @@ export class ListComponent implements OnInit, OnDestroy {
 
     public onPageChange($event: PageEvent): void {
         this.pageSize = $event.pageSize;
-    }
-
-    public onSelectProject(project: Project): void {
-       this.router.navigate(['/projects', project.identifier]);
     }
 }

@@ -1,7 +1,19 @@
-export enum ProjectStatus  {
+export enum ProjectStatus {
     OPEN = 1,
     CLOSE = 5,
     ARCHIVE = 9,
+}
+
+export const projectStatusName = {
+    [ProjectStatus.OPEN]: 'Open',
+    [ProjectStatus.CLOSE]: 'Close',
+    [ProjectStatus.ARCHIVE]: 'Archive',
+};
+
+export interface ProjectTag {
+    name: string;
+    type: string;
+    id: number;
 }
 
 export interface PaginationParams {

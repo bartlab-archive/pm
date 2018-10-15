@@ -24,10 +24,12 @@ import {
     MatPaginatorModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatDividerModule,
 } from '@angular/material';
 
 import {MainComponent} from './components/main/main.component';
 import {ListComponent} from './components/list/list.component';
+import {ItemComponent} from './components/item/item.component';
 import {ProjectsService} from './services/projects.service';
 import {DefaultComponent} from '../layouts/components/default/default.component';
 import {reducers, metaReducers} from './store/reducers';
@@ -49,6 +51,10 @@ const authRoutes: Routes = [
                         path: '',
                         component: ListComponent,
                     },
+                    {
+                        path: ':identifier',
+                        component: ItemComponent,
+                    },
                 ],
             },
         ]
@@ -59,6 +65,7 @@ const authRoutes: Routes = [
     declarations: [
         MainComponent,
         ListComponent,
+        ItemComponent,
     ],
     imports: [
         CommonModule,
@@ -80,6 +87,7 @@ const authRoutes: Routes = [
         MatPaginatorModule,
         MatChipsModule,
         MatAutocompleteModule,
+        MatDividerModule,
         ReactiveFormsModule,
         FlexLayoutModule,
         HttpClientModule,
