@@ -31,20 +31,21 @@ export class ListComponent implements OnInit, OnDestroy {
     public separatorKeysCodes: number[] = [ENTER, COMMA];
     public tagCtrl = new FormControl();
     public filteredTags: Observable<ProjectTag[]>;
-    public tags: ProjectTag[] = [];
     public statusName = projectStatusName;
     public allTags: ProjectTag[] = [
-        {
-            id: ProjectStatus.CLOSE,
-            type: 'status',
-            name: this.statusName[ProjectStatus.CLOSE],
-        },
         {
             id: ProjectStatus.OPEN,
             type: 'status',
             name: this.statusName[ProjectStatus.OPEN],
         },
+        {
+            id: ProjectStatus.CLOSE,
+            type: 'status',
+            name: this.statusName[ProjectStatus.CLOSE],
+        },
     ];
+
+    public tags: ProjectTag[] = [this.allTags[0]];
 
     @ViewChild('tagInput')
     public tagInput: ElementRef<HTMLInputElement>;
