@@ -1,14 +1,14 @@
-import {combineReducers} from '@ngrx/store';
-import {RequestStatus, ResponseError} from '../../../../app/interfaces/api';
+import { combineReducers } from '@ngrx/store';
+import { RequestStatus, ResponseError } from '../../../../app/interfaces/api';
 import * as ProjectsActions from '../actions/projects.actions';
-import {Meta, Project} from '../../interfaces/projects';
+import { Entities, Meta, Project } from '../../interfaces/projects';
 
-const mergeState = (state, data) => {
-    const all = [...state, ...data];
-    const identifiers = all.map(item => item.identifier);
-    return identifiers
-        .filter((identifier, index) => identifiers.indexOf(identifier) === index)
-        .map((identifier) => all.find(item => item.identifier === identifier));
+const normalize = (data, key = 'identifier') => {
+    if (Array.isArray(data)) {
+        return data.reduce((acc, item) => ({ ...acc, [item[key]]: item }), {});
+    }
+
+    return { [data[key]]: data };
 };
 
 export const meta = (state: Meta = null, action: ProjectsActions.ActionsUnion) => {
@@ -23,14 +23,20 @@ export const meta = (state: Meta = null, action: ProjectsActions.ActionsUnion) =
     }
 };
 
-export const data = (state: Project[] = [], action: ProjectsActions.ActionsUnion) => {
+export const entities = (state: Entities<Project> = {}, action: ProjectsActions.ActionsUnion) => {
     switch (action.type) {
         case ProjectsActions.ActionTypes.LIST_SUCCESS: {
-            return mergeState(state, action.payload.data);
+            return {
+                ...state,
+                ...normalize(action.payload.data),
+            };
         }
 
         case ProjectsActions.ActionTypes.ONE_SUCCESS: {
-            return mergeState(state, [action.payload.data]);
+            return {
+                ...state,
+                ...normalize(action.payload.data),
+            };
         }
 
         default: {
@@ -42,7 +48,7 @@ export const data = (state: Project[] = [], action: ProjectsActions.ActionsUnion
 export const ids = (state: string[] = [], action: ProjectsActions.ActionsUnion) => {
     switch (action.type) {
         case ProjectsActions.ActionTypes.LIST_SUCCESS: {
-            return action.payload.data.map(project => project.identifier);
+            return action.payload.data.map((project) => project.identifier);
         }
 
         default: {
@@ -102,7 +108,7 @@ export const status = (state: RequestStatus = null, action: ProjectsActions.Acti
 
 export interface State {
     meta: Meta;
-    data: Project[];
+    entities: Entities<Project>;
     ids: string[];
     activeId: string;
     error: ResponseError;
@@ -111,7 +117,7 @@ export interface State {
 
 export const reducer = combineReducers({
     meta,
-    data,
+    entities,
     ids,
     activeId,
     error,
@@ -119,7 +125,7 @@ export const reducer = combineReducers({
 });
 
 export const getMeta = (state: State) => state.meta;
-export const getData = (state: State) => state.data;
+export const getEntities = (state: State) => state.entities;
 export const getIds = (state: State) => state.ids;
 export const getActiveId = (state: State) => state.activeId;
 export const getError = (state: State) => state.error;

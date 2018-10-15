@@ -1,11 +1,11 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FlexLayoutModule} from '@angular/flex-layout';
-import {ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
-import {StoreModule} from '@ngrx/store';
-import {EffectsModule} from '@ngrx/effects';
-import {RouterModule, Routes} from '@angular/router';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { RouterModule, Routes } from '@angular/router';
 import {
     MatButtonModule,
     MatCardModule,
@@ -27,13 +27,13 @@ import {
     MatDividerModule,
 } from '@angular/material';
 
-import {MainComponent} from './components/main/main.component';
-import {ListComponent} from './components/list/list.component';
-import {ItemComponent} from './components/item/item.component';
-import {ProjectsService} from './services/projects.service';
-import {DefaultComponent} from '../layouts/components/default/default.component';
-import {reducers, metaReducers} from './store/reducers';
-import {ProjectsEffects} from './store/effects/projects.effects';
+import { MainComponent } from './components/main/main.component';
+import { ListComponent } from './components/list/list.component';
+import { ItemComponent } from './components/item/item.component';
+import { ProjectsService } from './services/projects.service';
+import { DefaultComponent } from '../layouts/components/default/default.component';
+import { reducers, metaReducers } from './store/reducers';
+import { ProjectsEffects } from './store/effects/projects.effects';
 
 const authRoutes: Routes = [
     {
@@ -57,16 +57,12 @@ const authRoutes: Routes = [
                     },
                 ],
             },
-        ]
+        ],
     },
 ];
 
 @NgModule({
-    declarations: [
-        MainComponent,
-        ListComponent,
-        ItemComponent,
-    ],
+    declarations: [MainComponent, ListComponent, ItemComponent],
     imports: [
         CommonModule,
         RouterModule.forChild(authRoutes),
@@ -91,12 +87,9 @@ const authRoutes: Routes = [
         ReactiveFormsModule,
         FlexLayoutModule,
         HttpClientModule,
-        StoreModule.forFeature('module.projects', reducers, {metaReducers}),
+        StoreModule.forFeature('module.projects', reducers, { metaReducers }),
         EffectsModule.forFeature([ProjectsEffects]),
     ],
-    providers: [
-        ProjectsService,
-    ],
+    providers: [ProjectsService],
 })
-export class ProjectsModule {
-}
+export class ProjectsModule {}

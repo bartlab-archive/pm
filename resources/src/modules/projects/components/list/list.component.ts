@@ -1,20 +1,27 @@
-import {Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
-import {Router} from '@angular/router';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {FormControl} from '@angular/forms';
-import {select, Store} from '@ngrx/store';
-import {Observable, merge, Subscription, combineLatest} from 'rxjs';
-import {filter, map, mapTo, startWith, switchMap} from 'rxjs/operators';
-import {MatPaginator, MatSort, PageEvent, MatAutocompleteSelectedEvent, MatChipInputEvent} from '@angular/material';
-import {Meta, PaginationParams, Project, ProjectStatus, ProjectTag, projectStatusName} from '../../interfaces/projects';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { FormControl } from '@angular/forms';
+import { select, Store } from '@ngrx/store';
+import { Observable, merge, Subscription, combineLatest } from 'rxjs';
+import { filter, map, mapTo, startWith, switchMap } from 'rxjs/operators';
+import { MatPaginator, MatSort, PageEvent, MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
+import {
+    Meta,
+    PaginationParams,
+    Project,
+    ProjectStatus,
+    ProjectTag,
+    projectStatusName,
+} from '../../interfaces/projects';
 import * as fromProjects from '../../store/reducers';
 import * as projectActions from '../../store/actions/projects.actions';
-import {RequestStatus} from '../../../../app/interfaces/api';
+import { RequestStatus } from '../../../../app/interfaces/api';
 
 @Component({
     selector: 'app-projects-list',
     templateUrl: './list.component.html',
-    styleUrls: ['./list.component.scss']
+    styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit, OnDestroy {
     public visible = true;
@@ -31,7 +38,6 @@ export class ListComponent implements OnInit, OnDestroy {
             id: ProjectStatus.CLOSE,
             type: 'status',
             name: this.statusName[ProjectStatus.CLOSE],
-
         },
         {
             id: ProjectStatus.OPEN,
@@ -44,24 +50,18 @@ export class ListComponent implements OnInit, OnDestroy {
     public tagInput: ElementRef<HTMLInputElement>;
 
     public subscriptions: Subscription[] = [];
-    public displayedColumns: string[] = [
-        'identifier',
-        'labels',
-        'name',
-        'description',
-        'manage',
-    ];
+    public displayedColumns: string[] = ['identifier', 'labels', 'name', 'description', 'manage'];
 
-    public projects$: Observable<Project[]> = this.store.pipe(select(fromProjects.selectProjectsData));
+    public projects$: Observable<Project[]> = this.store.pipe(select(fromProjects.selectProjects));
     public meta$: Observable<Meta> = this.store.pipe(select(fromProjects.selectProjectsMeta));
     public pending$: Observable<boolean> = this.store.pipe(
         select(fromProjects.selectProjectsStatus),
-        map(status => status === RequestStatus.pending),
+        map((status) => status === RequestStatus.pending),
     );
 
     public success$: Observable<boolean> = this.store.pipe(
         select(fromProjects.selectProjectsStatus),
-        filter(status => status === RequestStatus.success),
+        filter((status) => status === RequestStatus.success),
         mapTo(true),
     );
 
@@ -76,13 +76,10 @@ export class ListComponent implements OnInit, OnDestroy {
     @ViewChild(MatSort)
     public sort: MatSort;
 
-    public constructor(
-        private router: Router,
-        private store: Store<any>,
-    ) {
+    public constructor(private router: Router, private store: Store<any>) {
         this.filteredTags = this.tagCtrl.valueChanges.pipe(
             startWith(null),
-            map((label: string) => label ? this.filter(label) : this.allTags.slice())
+            map((label: string) => (label ? this.filter(label) : this.allTags.slice())),
         );
     }
 
@@ -113,7 +110,7 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     public selected(event: MatAutocompleteSelectedEvent): void {
-        const tag = this.allTags.find(tagItem => this.getTagLabel(tagItem) === event.option.viewValue);
+        const tag = this.allTags.find((tagItem) => this.getTagLabel(tagItem) === event.option.viewValue);
         if (tag && this.tags.indexOf(tag) === -1) {
             this.tags.push(tag);
             this.tagInput.nativeElement.value = '';
@@ -123,8 +120,8 @@ export class ListComponent implements OnInit, OnDestroy {
         }
     }
 
-    public selectedLabel(name){
-        const tag = this.allTags.find(tagItem => tagItem.name === name);
+    public selectedLabel(name) {
+        const tag = this.allTags.find((tagItem) => tagItem.name === name);
         if (tag && this.tags.indexOf(tag) === -1) {
             this.tags.push(tag);
             this.tagInput.nativeElement.value = '';
@@ -140,7 +137,12 @@ export class ListComponent implements OnInit, OnDestroy {
 
     private filter(label: string): ProjectTag[] {
         const filterLabel = label.toLowerCase();
-        return this.allTags.filter(tag => this.getTagLabel(tag).toLowerCase().indexOf(filterLabel) === 0);
+        return this.allTags.filter(
+            (tag) =>
+                this.getTagLabel(tag)
+                    .toLowerCase()
+                    .indexOf(filterLabel) === 0,
+        );
     }
 
     public load() {
@@ -155,7 +157,7 @@ export class ListComponent implements OnInit, OnDestroy {
         }
 
         if (this.tags.length > 0) {
-            params.status_ids = this.tags.map(tag => tag.id);
+            params.status_ids = this.tags.map((tag) => tag.id);
         }
 
         this.store.dispatch(new projectActions.ListRequestAction(params));
@@ -167,7 +169,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         this.subscriptions.push(
-            this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0),
+            this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0)),
             merge(this.sort.sortChange, this.paginator.page)
                 .pipe(
                     startWith({}),
@@ -182,12 +184,12 @@ export class ListComponent implements OnInit, OnDestroy {
                         return projects;
                     }),
                 )
-                .subscribe((projects: Project[]) => this.projects = projects),
+                .subscribe((projects: Project[]) => (this.projects = projects)),
         );
     }
 
     public ngOnDestroy(): void {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
+        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     }
 
     public onPageChange($event: PageEvent): void {
@@ -195,6 +197,6 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     public onSelectProject(project: Project): void {
-       this.router.navigate(['/projects', project.identifier]);
+        this.router.navigate(['/projects', project.identifier]);
     }
 }

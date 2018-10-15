@@ -18,17 +18,15 @@ export interface ProjectTag {
 
 export interface PaginationParams {
     page: number;
-    per_page: number,
+    per_page: number;
     order?: string[];
     status_ids?: ProjectStatus[];
     public?: boolean[];
 }
 
-export interface Member {
-}
+export interface Member {}
 
-export interface Module {
-}
+export interface Module {}
 
 export interface Meta {
     current_page: number;
@@ -61,4 +59,8 @@ export interface ProjectResponse {
 export interface ListResponse {
     data: Project[];
     meta: Meta;
+}
+
+export interface Entities<T> {
+    [key: string]: T;
 }
