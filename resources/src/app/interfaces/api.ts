@@ -12,7 +12,7 @@ export interface ResponseError {
 }
 
 export enum RequestStatus {
-    pending,
-    success,
-    error,
+    pending = 'pending',
+    success = 'success',
+    error = 'error',
 }

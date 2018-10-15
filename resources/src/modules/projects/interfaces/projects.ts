@@ -54,6 +54,10 @@ export interface Project {
     status: number;
 }
 
+export interface ProjectResponse {
+    data: Project;
+}
+
 export interface ListResponse {
     data: Project[];
     meta: Meta;

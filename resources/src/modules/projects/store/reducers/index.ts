@@ -31,6 +31,20 @@ export const selectModuleState = createFeatureSelector<State, ProjectsState>('mo
 export const selectProjectsState = createSelector(selectModuleState, (state: ProjectsState) => state.projects);
 export const selectProjectsData = createSelector(selectProjectsState, fromProjects.getData);
 export const selectProjectsMeta = createSelector(selectProjectsState, fromProjects.getMeta);
+export const selectProjectsIds = createSelector(selectProjectsState, fromProjects.getIds);
+export const selectProjectsActiveId = createSelector(selectProjectsState, fromProjects.getActiveId);
+export const selectProjects = createSelector(
+    selectProjectsData,
+    selectProjectsIds,
+    (data, ids) => data.filter(project => ids.indexOf(project.identifier) !== -1),
+);
+
+export const selectProjectsActive = createSelector(
+    selectProjectsData,
+    selectProjectsActiveId,
+    (data, activeId) => data.find(project => project.identifier === activeId),
+);
+
 export const selectProjectsStatus = createSelector(selectProjectsState, fromProjects.getStatus);
 export const selectProjectsError = createSelector(selectProjectsState, fromProjects.getError);
 

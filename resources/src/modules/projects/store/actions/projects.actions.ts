@@ -1,11 +1,14 @@
 import {Action} from '@ngrx/store';
-import {ListResponse, PaginationParams} from '../../interfaces/projects';
+import {ListResponse, PaginationParams, Project, ProjectResponse} from '../../interfaces/projects';
 import {ResponseError} from '../../../../app/interfaces/api';
 
 export enum ActionTypes {
     LIST_REQUEST = '[Projects] List Request',
     LIST_ERROR = '[Projects] List Error',
     LIST_SUCCESS = '[Projects] List Success',
+    ONE_REQUEST = '[Projects] One Request',
+    ONE_ERROR = '[Projects] One Error',
+    ONE_SUCCESS = '[Projects] One Success',
 }
 
 export class ListRequestAction implements Action {
@@ -29,6 +32,30 @@ export class ListSuccessAction implements Action {
     }
 }
 
+export class OneRequestAction implements Action {
+    readonly type = ActionTypes.ONE_REQUEST;
+
+    constructor(public payload: string) {
+    }
+}
+
+export class OneErrorAction implements Action {
+    readonly type = ActionTypes.ONE_ERROR;
+
+    constructor(public payload: ResponseError) {
+    }
+}
+
+export class OneSuccessAction implements Action {
+    readonly type = ActionTypes.ONE_SUCCESS;
+
+    constructor(public payload: ProjectResponse) {
+    }
+}
+
 export type ActionsUnion = ListRequestAction
     | ListErrorAction
-    | ListSuccessAction ;
+    | ListSuccessAction
+    | OneRequestAction
+    | OneErrorAction
+    | OneSuccessAction;

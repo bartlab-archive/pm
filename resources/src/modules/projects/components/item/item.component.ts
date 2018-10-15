@@ -1,16 +1,12 @@
-import {Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {FormControl} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
-import {Observable, merge, Subscription, combineLatest} from 'rxjs';
-import {filter, map, mapTo, startWith, switchMap} from 'rxjs/operators';
-import {MatPaginator, MatSort, PageEvent, MatAutocompleteSelectedEvent, MatChipInputEvent} from '@angular/material';
-import {Meta, PaginationParams, Project, ProjectStatus, ProjectTag, projectStatusName} from '../../interfaces/projects';
+import {Observable, Subscription} from 'rxjs';
+import { map} from 'rxjs/operators';
+import {Project} from '../../interfaces/projects';
 import * as fromProjects from '../../store/reducers';
 import * as projectActions from '../../store/actions/projects.actions';
 import {RequestStatus} from '../../../../app/interfaces/api';
-
 
 @Component({
     selector: 'app-projects-item',
@@ -18,170 +14,33 @@ import {RequestStatus} from '../../../../app/interfaces/api';
     styleUrls: ['./item.component.scss']
 })
 export class ItemComponent implements OnInit, OnDestroy {
-    public visible = true;
-    public selectable = true;
-    public removable = true;
-    public addOnBlur = false;
-    public separatorKeysCodes: number[] = [ENTER, COMMA];
-    public tagCtrl = new FormControl();
-    public filteredTags: Observable<ProjectTag[]>;
-    public tags: ProjectTag[] = [];
-    public statusName = projectStatusName;
-    public allTags: ProjectTag[] = [
-        {
-            id: ProjectStatus.CLOSE,
-            type: 'status',
-            name: this.statusName[ProjectStatus.CLOSE],
-
-        },
-        {
-            id: ProjectStatus.OPEN,
-            type: 'status',
-            name: this.statusName[ProjectStatus.OPEN],
-        },
-    ];
-
-    @ViewChild('tagInput')
-    public tagInput: ElementRef<HTMLInputElement>;
-
     public subscriptions: Subscription[] = [];
-    public displayedColumns: string[] = [
-        'identifier',
-        'labels',
-        'name',
-        'description',
-        'manage',
-    ];
-
-    public projects$: Observable<Project[]> = this.store.pipe(select(fromProjects.selectProjectsData));
-    public meta$: Observable<Meta> = this.store.pipe(select(fromProjects.selectProjectsMeta));
+    public project$: Observable<Project> = this.store.pipe(select(fromProjects.selectProjectsActive));
     public pending$: Observable<boolean> = this.store.pipe(
         select(fromProjects.selectProjectsStatus),
         map(status => status === RequestStatus.pending),
     );
-
-    public success$: Observable<boolean> = this.store.pipe(
-        select(fromProjects.selectProjectsStatus),
-        filter(status => status === RequestStatus.success),
-        mapTo(true),
-    );
-
-    public projects: Project[] = [];
-    public resultsLength = 0;
-    public pageSize = 25;
-    public pageSizeOptions: number[] = [5, 10, 25, 100];
-
-    @ViewChild(MatPaginator)
-    public paginator: MatPaginator;
-
-    @ViewChild(MatSort)
-    public sort: MatSort;
 
     public constructor(
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private store: Store<any>,
     ) {
-        this.filteredTags = this.tagCtrl.valueChanges.pipe(
-            startWith(null),
-            map((label: string) => label ? this.filter(label) : this.allTags.slice())
-        );
-    }
-
-    public add(event: MatChipInputEvent): void {
-        const input = event.input;
-        const value = event.value;
-
-        // Add filter
-        // if ((value || '').trim()) {
-        //     this.filters.push(value.trim());
-        // }
-
-        // Reset the input value
-        if (input) {
-            input.value = '';
-        }
-
-        this.tagCtrl.setValue(null);
-    }
-
-    public remove(tag: ProjectTag): void {
-        const index = this.tags.indexOf(tag);
-        if (index >= 0) {
-            this.tags.splice(index, 1);
-            this.paginator.pageIndex = 0;
-            this.load();
-        }
-    }
-
-    public selected(event: MatAutocompleteSelectedEvent): void {
-        const tag = this.allTags.find(tagItem => this.getTagLabel(tagItem) === event.option.viewValue);
-        if (tag && this.tags.indexOf(tag) === -1) {
-            this.tags.push(tag);
-            this.tagInput.nativeElement.value = '';
-            this.tagCtrl.setValue(null);
-            this.paginator.pageIndex = 0;
-            this.load();
-        }
-    }
-
-    public getTagLabel(tag: ProjectTag): string {
-        return `${tag.name}(${tag.type})`;
-    }
-
-    private filter(label: string): ProjectTag[] {
-        const filterLabel = label.toLowerCase();
-        return this.allTags.filter(tag => this.getTagLabel(tag).toLowerCase().indexOf(filterLabel) === 0);
     }
 
     public load(): void {
-        const params: PaginationParams = {
-            page: this.paginator.pageIndex + 1,
-            per_page: this.pageSize,
-            order: [],
-        };
-
-        if (this.sort.active && this.sort.direction) {
-            params.order.push(`${this.sort.active}:${this.sort.direction}`);
-        }
-
-        if (this.tags.length > 0) {
-            params.status_ids = this.tags.map(tag => tag.id);
-        }
-
-        this.store.dispatch(new projectActions.ListRequestAction(params));
-    }
-
-    public refresh(): void {
-        this.load();
+        const {identifier} = this.activatedRoute.snapshot.params;
+        this.store.dispatch(new projectActions.OneRequestAction(identifier));
     }
 
     public ngOnInit(): void {
-        this.subscriptions.push(
-            this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0),
-            merge(this.sort.sortChange, this.paginator.page)
-                .pipe(
-                    startWith({}),
-                    switchMap(() => {
-                        this.load();
-                        return this.success$;
-                    }),
+        this.load();
 
-                    switchMap(() => combineLatest(this.projects$, this.meta$)),
-                    map(([projects, meta]) => {
-                        this.resultsLength = meta.total;
-                        return projects;
-                    }),
-                )
-                .subscribe((projects: Project[]) => this.projects = projects.filter(project => project.identifier === this.activatedRoute.snapshot.params.identifier)),
+        this.subscriptions.push(
         );
     }
 
     public ngOnDestroy(): void {
         this.subscriptions.forEach(subscription => subscription.unsubscribe());
-    }
-
-    public onPageChange($event: PageEvent): void {
-        this.pageSize = $event.pageSize;
     }
 }
