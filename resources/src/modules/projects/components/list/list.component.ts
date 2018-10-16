@@ -80,7 +80,27 @@ export class ListComponent implements OnInit, OnDestroy {
     public constructor(private router: Router, private store: Store<any>) {
         this.filteredTags = this.tagCtrl.valueChanges.pipe(
             startWith(null),
-            map((label: string) => (label ? this.filter(label) : this.allTags.slice())),
+            map((label: string) => this.filter(label)),
+        );
+    }
+
+    public getTagLabel(tag: ProjectTag): string {
+        return `${tag.name}(${tag.type})`;
+    }
+
+    private filter(label: string): ProjectTag[] {
+        const ids = this.tags.map((tag) => tag.id);
+        const restTags = this.allTags.filter((tag) => ids.indexOf(tag.id) === -1);
+        if (!label) {
+            return restTags;
+        }
+
+        const filterLabel = label.toLowerCase();
+        return restTags.filter(
+            (tag) =>
+                this.getTagLabel(tag)
+                    .toLowerCase()
+                    .indexOf(filterLabel) === 0,
         );
     }
 
@@ -130,20 +150,6 @@ export class ListComponent implements OnInit, OnDestroy {
             this.paginator.pageIndex = 0;
             this.load();
         }
-    }
-
-    public getTagLabel(tag: ProjectTag): string {
-        return `${tag.name}(${tag.type})`;
-    }
-
-    private filter(label: string): ProjectTag[] {
-        const filterLabel = label.toLowerCase();
-        return this.allTags.filter(
-            (tag) =>
-                this.getTagLabel(tag)
-                    .toLowerCase()
-                    .indexOf(filterLabel) === 0,
-        );
     }
 
     public load() {
