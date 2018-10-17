@@ -78,7 +78,7 @@ class AuthController extends BaseController
                     [
                         'message' => 'Account was successfully created. An email containing the instructions to activate your account was sent to <email>.'
                     ],
-                    200
+                    201
                 );
                 break;
             case 2:
@@ -87,15 +87,15 @@ class AuthController extends BaseController
                     [
                         'message' => 'Your account was created and is now pending administrator approval.'
                     ],
-                    200
+                    201
                 );
                 break;
             case 3:
                 // automatic account activation
-                if (!$token = $this->authService->session($user->login)) {
+                if (!$token = $this->authService->session($user->id)) {
                     abort(422);
                 }
-
+                \Auth::setUser($user);
                 return TokenResource::make($token);
                 break;
         }

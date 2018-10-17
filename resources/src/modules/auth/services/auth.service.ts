@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
-import {AuthData, LoginData, LoginResponse, User} from '../interfaces/auth';
+import {AuthData, LoginData, LoginResponse, User, RegisterData, RegisterResponse, RegisterResult} from '../interfaces/auth';
 import {map} from 'rxjs/operators';
 import {select, Store} from '@ngrx/store';
 import * as fromAuth from '../store/reducers';
@@ -43,6 +43,30 @@ export class AuthService {
                     return {
                         token,
                         user,
+                    };
+                }),
+            );
+    }
+
+    public register(data: RegisterData): Observable<RegisterResult> {
+        return this.http.post<RegisterResponse>('/api/v1/auth/register', data)
+            .pipe(
+                map((response: RegisterResponse) => {
+
+                    console.log('response register', response);
+
+                    const {
+                        message,
+                        user,
+                        value: token,
+                    } = response.data;
+
+                    return {
+                        message,
+                        auth: {
+                            token,
+                            user,
+                        }
                     };
                 }),
             );

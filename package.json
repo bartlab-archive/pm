@@ -46,7 +46,7 @@
     "@angular-devkit/build-angular": "~0.8.0",
     "@angular/compiler-cli": "^6.1.0",
     "@angular/language-service": "^6.1.0",
-    "browser-sync": "^2.24.7",
+    "browser-sync": "^2.26.0",
     "codelyzer": "~4.3.0",
     "cross-env": "^5.2.0",
     "prettier": "^1.14.3",

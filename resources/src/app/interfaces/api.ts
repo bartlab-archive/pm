@@ -16,3 +16,8 @@ export enum RequestStatus {
     success = 'success',
     error = 'error',
 }
+
+export interface validatorMessage {
+    type: string,
+    message: string
+}
