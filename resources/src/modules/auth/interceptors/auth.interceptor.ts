@@ -5,7 +5,7 @@ import {
     HttpHandler,
     HttpRequest,
 } from '@angular/common/http';
-import {empty, Observable, throwError} from 'rxjs';
+import { EMPTY, Observable, throwError } from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {AuthService} from '../services/auth.service';
 
@@ -29,12 +29,12 @@ export class AuthInterceptor implements HttpInterceptor {
                 catchError((error) => {
                     if (error.status === 401) {
                         this.authService.onUnauthorizedError(error);
-                        return empty();
+                        return EMPTY;
                     }
 
                     if (error.status === 403) {
                         this.authService.onForbiddenError(error);
-                        return empty();
+                        return EMPTY;
                     }
 
                     return throwError(error);

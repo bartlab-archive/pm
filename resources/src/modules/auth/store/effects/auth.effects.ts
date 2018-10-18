@@ -3,10 +3,12 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {of} from 'rxjs';
 import {catchError, exhaustMap, map} from 'rxjs/operators';
 import * as AuthActions from '../actions/auth.actions';
+import * as RegisterActions from '../actions/register.actions';
+import {FormService} from '../../../../app/services/form.service';
 import {AuthService} from '../../services/auth.service';
 import {AuthData, LoginData, RegisterData, RegisterResult} from '../../interfaces/auth';
-import {FormService} from '../../../../app/services/form.service';
-import * as RegisterActions from "../actions/register.actions";
+
+
 
 @Injectable()
 export class AuthEffects {
@@ -26,19 +28,19 @@ export class AuthEffects {
                 );
         })
     );
+
     @Effect()
     protected register$ = this.actions$.pipe(
         ofType<RegisterActions.RegisterRequestAction>(RegisterActions.ActionTypes.REGISTER_REQUEST),
         map((action) => {
-            return action.payload
+            return action.payload;
         }),
         exhaustMap((data: RegisterData) => {
             return this.authService
                 .register(data)
                 .pipe(
                     map((register: RegisterResult) => {
-                        console.log('register$', register);
-                        return new RegisterActions.RegisterSuccessAction(register)
+                        return new RegisterActions.RegisterSuccessAction(register);
                     }),
                     catchError((response) => of(new RegisterActions.RegisterErrorAction(
                         this.formService.getFormResponseError(response)

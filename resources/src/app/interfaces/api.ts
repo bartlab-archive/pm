@@ -17,7 +17,7 @@ export enum RequestStatus {
     error = 'error',
 }
 
-export interface validatorMessage {
-    type: string,
-    message: string
+export interface ValidatorMessage {
+    type: string;
+    message: string;
 }

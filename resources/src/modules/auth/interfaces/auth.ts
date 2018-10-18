@@ -45,9 +45,6 @@ export interface RegisterResponseData {
 
 export interface RegisterResponse {
     data: RegisterResponseData;
-    status: number
-    code: number
-    statusCode: number
 }
 
 export interface RegisterResult {

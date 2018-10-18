@@ -1,7 +1,7 @@
 import {combineReducers} from '@ngrx/store';
+import * as RegisterActions from '../actions/register.actions';
 import {FormResponseError} from '../../../../app/interfaces/api';
 import {RegisterResult} from '../../interfaces/auth';
-import * as RegisterActions from '../actions/register.actions';
 
 export const data = (state: RegisterResult = null, action: RegisterActions.ActionsUnion) => {
     switch (action.type) {
