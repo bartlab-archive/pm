@@ -12,7 +12,7 @@ export interface State extends fromRoot.State {
 }
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-    return localStorageSync({ keys: [{ authorization: ['data'] }], rehydrate: true })(reducer);
+    return localStorageSync({ keys: [{ projects: ['entities'] }], rehydrate: true })(reducer);
 }
 
 export const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
