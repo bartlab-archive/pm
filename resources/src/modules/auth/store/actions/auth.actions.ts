@@ -7,6 +7,7 @@ export enum ActionTypes {
     LOGIN_ERROR = '[Auth] Login Set error',
     LOGIN_SUCCESS = '[Auth] Login Success',
     LOGOUT = '[Auth] Logout',
+    LOGIN_CLEAR = '[Auth] Login Clear',
 }
 
 export class LoginRequestAction implements Action {
@@ -37,7 +38,15 @@ export class LogoutAction implements Action {
     }
 }
 
+export class LoginClearAction implements Action {
+    readonly type = ActionTypes.LOGIN_CLEAR;
+
+    constructor() {
+    }
+}
+
 export type ActionsUnion = LoginRequestAction
     | LoginErrorAction
     | LoginSuccessAction
-    | LogoutAction;
+    | LogoutAction
+    | LoginClearAction;

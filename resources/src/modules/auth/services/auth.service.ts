@@ -8,11 +8,15 @@ import {
     User,
     RegisterData,
     RegisterResponse,
-    RegisterResult
+    ResultMessage,
+    ResetData,
+    ResetResponseData, LoginResponseData,
 } from '../interfaces/auth';
 import {map} from 'rxjs/operators';
 import {select, Store} from '@ngrx/store';
 import * as fromAuth from '../store/reducers';
+import * as fromRegister from '../store/reducers';
+import * as fromReset from '../store/reducers';
 
 @Injectable({
     providedIn: 'root',
@@ -21,13 +25,23 @@ export class AuthService {
     public unauthorized$: Subject<any> = new Subject<any>();
     public forbidden$: Subject<any> = new Subject<any>();
     private data: AuthData = null;
+    private messages: string[] = [];
 
     public constructor(
         private http: HttpClient,
         private store: Store<any>,
     ) {
-        this.store.pipe(select(fromAuth.selectAuthData)).subscribe((data) => {
+        this.store.pipe(select(fromRegister.selectRegisterData)).subscribe((data: AuthData) => {
             this.data = data;
+        });
+        this.store.pipe(select(fromAuth.selectAuthData)).subscribe((data: AuthData) => {
+            this.data = data;
+        });
+        this.store.pipe(select(fromRegister.selectRegisterMessage)).subscribe((data: string) => {
+            this.addMessage(data);
+        });
+        this.store.pipe(select(fromReset.selectResetMessage)).subscribe((data: string) => {
+            this.addMessage(data);
         });
     }
 
@@ -56,23 +70,30 @@ export class AuthService {
             );
     }
 
-    public register(data: RegisterData): Observable<RegisterResult> {
+    public register(data: RegisterData): Observable<ResultMessage | LoginResponse> {
         return this.http.post<RegisterResponse>('/api/v1/auth/register', data)
             .pipe(
                 map((response: RegisterResponse) => {
-                    const {
-                        message,
-                        user,
-                        value: token,
-                    } = response.data;
+                    const {message, data} = response;
+                    let auth = {};
+                    if (data) {
+                        const {user, value: token} = data;
+                        auth = {token, user};
+                    }
 
                     return {
                         message,
-                        auth: {
-                            token,
-                            user,
-                        }
+                        auth: auth
                     };
+                }),
+            );
+    }
+
+    public reset(data: ResetData): Observable<ResetResponseData> {
+        return this.http.post<ResetResponseData>('/api/v1/auth/reset', data)
+            .pipe(
+                map((response: ResetResponseData) => {
+                    return response;
                 }),
             );
     }
@@ -95,5 +116,13 @@ export class AuthService {
         }
 
         return null;
+    }
+
+    private addMessage(message: string): void {
+        this.messages.push(message);
+    }
+
+    public getLastMessage() {
+        return this.messages[this.messages.length - 1];
     }
 }

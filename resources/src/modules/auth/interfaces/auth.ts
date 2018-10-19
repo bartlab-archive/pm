@@ -37,17 +37,24 @@ export interface RegisterData {
     language: string;
 }
 
-export interface RegisterResponseData {
-    message?: string;
-    user?: User;
-    value?: string;
-}
-
 export interface RegisterResponse {
-    data: RegisterResponseData;
+    message?: string;
+    data?: LoginResponseData;
 }
 
 export interface RegisterResult {
-    message: string;
     auth: AuthData;
+    message: string;
+}
+
+export interface ResultMessage {
+    message: string;
+}
+
+export interface ResetData {
+    email: string;
+}
+
+export interface ResetResponseData {
+    message: string;
 }

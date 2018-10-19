@@ -4,9 +4,17 @@ import {of} from 'rxjs';
 import {catchError, exhaustMap, map} from 'rxjs/operators';
 import * as AuthActions from '../actions/auth.actions';
 import * as RegisterActions from '../actions/register.actions';
+import * as ResetActions from '../actions/reset.actions';
 import {FormService} from '../../../../app/services/form.service';
 import {AuthService} from '../../services/auth.service';
-import {AuthData, LoginData, RegisterData, RegisterResult} from '../../interfaces/auth';
+import {
+    AuthData,
+    LoginData,
+    RegisterData,
+    RegisterResult,
+    ResetData,
+    ResetResponseData,
+} from '../../interfaces/auth';
 
 
 
@@ -40,9 +48,33 @@ export class AuthEffects {
                 .register(data)
                 .pipe(
                     map((register: RegisterResult) => {
-                        return new RegisterActions.RegisterSuccessAction(register);
+                        if (register.message) {
+                            return new RegisterActions.RegisterSuccessMessageAction(register.message);
+                        }
+                        return new AuthActions.LoginSuccessAction(register.auth);
                     }),
                     catchError((response) => of(new RegisterActions.RegisterErrorAction(
+                        this.formService.getFormResponseError(response)
+                        ))
+                    )
+                );
+        })
+    );
+
+    @Effect()
+    protected reset$ = this.actions$.pipe(
+        ofType<ResetActions.ResetRequestAction>(ResetActions.ActionTypes.RESET_REQUEST),
+        map((action) => {
+            return action.payload;
+        }),
+        exhaustMap((data: ResetData) => {
+            return this.authService
+                .reset(data)
+                .pipe(
+                    map((reset: ResetResponseData) => {
+                        return new ResetActions.ResetSuccessAction(reset.message);
+                    }),
+                    catchError((response) => of(new ResetActions.ResetErrorAction(
                         this.formService.getFormResponseError(response)
                         ))
                     )

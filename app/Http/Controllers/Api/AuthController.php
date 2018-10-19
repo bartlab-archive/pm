@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Auth\AuthLoginRequest;
 use App\Http\Requests\Auth\AuthRegisterRequest;
+use App\Http\Requests\Auth\AuthResetRequest;
 use App\Http\Resources\TokenResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -101,6 +102,18 @@ class AuthController extends BaseController
         }
 
         return response(null, 201);
+    }
+
+    public function lostPassword(AuthResetRequest $request)
+    {
+        // todo Add the function of sending mail after checking the e-mail belonging to one of the users
+
+        return response(
+            [
+                'message' => 'Check your email and follow the instructions in it.'
+            ],
+            200
+        );
     }
 
     public function me()

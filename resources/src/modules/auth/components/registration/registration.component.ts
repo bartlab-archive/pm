@@ -17,8 +17,6 @@ import {AuthService} from '../../services/auth.service';
 import * as fromAuth from '../../store/reducers';
 import * as fromRegister from '../../store/reducers';
 import {FormResponseError, ValidatorMessage} from '../../../../app/interfaces/api';
-import {RegisterResult} from '../../interfaces/auth';
-
 
 @Component({
     selector: 'app-auth-registration',
@@ -36,6 +34,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         private snackBar: MatSnackBar,
         private authService: AuthService
     ) {
+        this.store.dispatch(new RegisterActions.RegisterClearAction());
     }
 
     public form = this.fb.group({
@@ -114,22 +113,12 @@ export class RegistrationComponent implements OnInit, OnDestroy {
             this.store
                 .pipe(
                     select(fromRegister.selectRegisterStatus),
-                    filter((status) => status === 'success')
+                    filter((status) => status === 'success-message')
                 )
                 .subscribe(() => {
-                    this.store
-                        .pipe(
-                            select(fromRegister.selectRegisterData)
-                        )
-                        .subscribe( (data: RegisterResult) => {
-                            if (data.message) {
-                                this.snackBar.open(data.message);
-
-                                return this.router.navigate(['/login']);
-                            }
-
-                            return this.store.dispatch(new AuthActions.LoginSuccessAction(data.auth));
-                        });
+                    const message = this.authService.getLastMessage();
+                    this.snackBar.open(message);
+                    return this.router.navigate(['/login']);
                 }),
 
             this.store

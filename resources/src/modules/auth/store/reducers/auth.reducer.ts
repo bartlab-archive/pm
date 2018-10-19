@@ -9,6 +9,7 @@ export const data = (state: AuthData = null, action: AuthActions.ActionsUnion) =
             return action.payload;
         }
 
+        case AuthActions.ActionTypes.LOGIN_CLEAR:
         case AuthActions.ActionTypes.LOGOUT: {
             return null;
         }
@@ -25,6 +26,7 @@ export const error = (state: FormResponseError = null, action: AuthActions.Actio
             return action.payload;
         }
 
+        case AuthActions.ActionTypes.LOGIN_CLEAR:
         case AuthActions.ActionTypes.LOGIN_SUCCESS:
         case AuthActions.ActionTypes.LOGIN_REQUEST: {
             return null;
@@ -48,6 +50,10 @@ export const status = (state: string = null, action: AuthActions.ActionsUnion) =
 
         case AuthActions.ActionTypes.LOGIN_ERROR: {
             return 'error';
+        }
+
+        case AuthActions.ActionTypes.LOGIN_CLEAR: {
+            return null;
         }
 
         default: {

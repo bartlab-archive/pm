@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         private snackBar: MatSnackBar,
         private authService: AuthService,
     ) {
+        this.store.dispatch(new AuthActions.LoginClearAction());
     }
 
     public ngOnInit(): void {
