@@ -2,7 +2,7 @@ import {combineReducers} from '@ngrx/store';
 import {TrackersActionsUnion, TrackersActionTypes} from '../actions/trackers.action';
 import {RequestStatus} from '../../../../app/interfaces/api';
 
-const entities = (state = null, action: TrackersActionsUnion) => {
+const entities = (state = [], action: TrackersActionsUnion) => {
     switch (action.type) {
         case TrackersActionTypes.TRACKERS_ALL_SUCCESS :
             return action.payload.data;

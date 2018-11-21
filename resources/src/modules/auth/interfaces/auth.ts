@@ -58,3 +58,7 @@ export interface ResetData {
 export interface ResetResponseData {
     message: string;
 }
+
+export interface MeResponse {
+    data: User;
+}

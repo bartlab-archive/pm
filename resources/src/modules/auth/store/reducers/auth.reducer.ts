@@ -1,6 +1,6 @@
-import {ActionReducer, combineReducers} from '@ngrx/store';
-import {FormResponseError} from '../../../../app/interfaces/api';
-import {AuthData} from '../../interfaces/auth';
+import { ActionReducer, combineReducers } from '@ngrx/store';
+import { FormResponseError } from '../../../../app/interfaces/api';
+import { AuthData } from '../../interfaces/auth';
 import * as AuthActions from '../actions/auth.actions';
 
 export const data = (state: AuthData = null, action: AuthActions.ActionsUnion) => {
@@ -9,6 +9,14 @@ export const data = (state: AuthData = null, action: AuthActions.ActionsUnion) =
             return action.payload;
         }
 
+        case AuthActions.ActionTypes.PRELOAD_SUCCESS: {
+            return {
+                ...state,
+                user: action.payload,
+            };
+        }
+
+        case AuthActions.ActionTypes.PRELOAD_ERROR:
         case AuthActions.ActionTypes.LOGIN_CLEAR:
         case AuthActions.ActionTypes.LOGOUT: {
             return null;
@@ -40,24 +48,23 @@ export const error = (state: FormResponseError = null, action: AuthActions.Actio
 
 export const status = (state: string = null, action: AuthActions.ActionsUnion) => {
     switch (action.type) {
+        case AuthActions.ActionTypes.PRELOAD_REQUEST:
         case AuthActions.ActionTypes.LOGIN_REQUEST: {
             return 'pending';
         }
 
+        case AuthActions.ActionTypes.PRELOAD_SUCCESS:
         case AuthActions.ActionTypes.LOGIN_SUCCESS: {
             return 'success';
         }
 
+        case AuthActions.ActionTypes.PRELOAD_ERROR:
         case AuthActions.ActionTypes.LOGIN_ERROR: {
             return 'error';
         }
 
         case AuthActions.ActionTypes.LOGIN_CLEAR: {
             return null;
-        }
-
-        case AuthActions.ActionTypes.LOGOUT: {
-            return 'logout';
         }
 
         default: {

@@ -117,7 +117,7 @@ export class IssuesListComponent implements OnInit, OnDestroy {
                 this.store.pipe(select(selectTrackersEntities)),
             )
                 .pipe(
-                    skip(1)
+                    filter(([statuses, trackers]) => statuses.length > 0 && trackers.length > 0)
                 )
                 .subscribe(([statuses, trackers]) => {
                     this.allTags.push(
@@ -145,8 +145,8 @@ export class IssuesListComponent implements OnInit, OnDestroy {
         );
 
         // console.log('init');
-        this.store.dispatch(new StatusesAllRequestAction());
-        this.store.dispatch(new TrackersAllRequestAction());
+        // this.store.dispatch(new StatusesAllRequestAction());
+        // this.store.dispatch(new TrackersAllRequestAction());
     }
 
     public ngOnDestroy(): void {
