@@ -16,8 +16,6 @@ import {
     ResetResponseData,
 } from '../../interfaces/auth';
 
-
-
 @Injectable()
 export class AuthEffects {
     @Effect()

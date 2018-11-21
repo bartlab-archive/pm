@@ -5,7 +5,7 @@ import {Subject} from 'rxjs';
 export class AppService {
     public httpError$: Subject<any> = new Subject<any>();
 
-    public onHttpError(event) {
+    public onHttpError(event): void {
         this.httpError$.next(event);
     }
 }

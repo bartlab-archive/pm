@@ -27,13 +27,15 @@ import {
     MatCheckboxModule,
     MatProgressBarModule
 } from '@angular/material';
-import {ResetComponent} from './components/reset/reset.component';
-import {LoginComponent} from './components/login/login.component';
-import {LogoutComponent} from './components/logout/logout.component';
-import {RegistrationComponent} from './components/registration/registration.component';
-import {AuthMainComponent} from './components/main/main.component';
+import {
+    ResetComponent,
+    LoginComponent,
+    LogoutComponent,
+    RegistrationComponent,
+    AuthMainComponent
+} from './components';
 import {AuthService} from './services/auth.service';
-import {BlankComponent} from '../layouts/components/blank/blank.component';
+import {BlankComponent} from '../layouts/components';
 import {
     reducers,
     metaReducers
@@ -61,7 +63,11 @@ const authRoutes: Routes = [
             }
         ]
     },
-    {path: 'logout', component: LogoutComponent, data: {auth: 'authorized'}},
+    {
+        path: 'logout',
+        component: LogoutComponent,
+        data: {auth: 'authorized'}
+    },
 ];
 
 @NgModule({

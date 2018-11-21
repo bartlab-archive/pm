@@ -3,10 +3,10 @@ import {FormResponseError} from '../../../../app/interfaces/api';
 import {ResetData} from '../../interfaces/auth';
 
 export enum ActionTypes {
-    RESET_REQUEST = '[Auth] Reset Request',
-    RESET_ERROR = '[Auth] Reset Set error',
-    RESET_SUCCESS = '[Auth] Reset Success',
-    RESET_CLEAR = '[Auth] Reset Clear'
+    RESET_REQUEST = '[auth] reset request',
+    RESET_ERROR = '[auth] reset set error',
+    RESET_SUCCESS = '[auth] reset success',
+    RESET_CLEAR = '[auth] reset clear'
 }
 
 export class ResetRequestAction implements Action {

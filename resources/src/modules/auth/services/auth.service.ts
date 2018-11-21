@@ -10,7 +10,7 @@ import {
     RegisterResponse,
     ResultMessage,
     ResetData,
-    ResetResponseData, LoginResponseData,
+    ResetResponseData,
 } from '../interfaces/auth';
 import {map} from 'rxjs/operators';
 import {select, Store} from '@ngrx/store';
@@ -70,8 +70,8 @@ export class AuthService {
             );
     }
 
-    public register(data: RegisterData): Observable<ResultMessage | LoginResponse> {
-        return this.http.post<RegisterResponse>('/api/v1/auth/register', data)
+    public register(rData: RegisterData): Observable<ResultMessage | LoginResponse> {
+        return this.http.post<RegisterResponse>('/api/v1/auth/register', rData)
             .pipe(
                 map((response: RegisterResponse) => {
                     const {message, data} = response;

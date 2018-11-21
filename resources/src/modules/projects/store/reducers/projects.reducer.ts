@@ -1,14 +1,14 @@
-import { combineReducers } from '@ngrx/store';
-import { RequestStatus, ResponseError } from '../../../../app/interfaces/api';
+import {combineReducers} from '@ngrx/store';
+import {RequestStatus, ResponseError} from '../../../../app/interfaces/api';
 import * as ProjectsActions from '../actions/projects.actions';
-import { Entities, Meta, Project } from '../../interfaces/projects';
+import {Entities, Meta, Project} from '../../interfaces/projects';
 
 const normalize = (data, key = 'identifier') => {
     if (Array.isArray(data)) {
-        return data.reduce((acc, item) => ({ ...acc, [item[key]]: item }), {});
+        return data.reduce((acc, item) => ({...acc, [item[key]]: item}), {});
     }
 
-    return { [data[key]]: data };
+    return {[data[key]]: data};
 };
 
 export const meta = (state: Meta = null, action: ProjectsActions.ActionsUnion) => {
@@ -45,7 +45,7 @@ export const entities = (state: Entities<Project> = {}, action: ProjectsActions.
     }
 };
 
-export const ids = (state: string[] = [], action: ProjectsActions.ActionsUnion) => {
+export const ids = (state: Array<string> = [], action: ProjectsActions.ActionsUnion) => {
     switch (action.type) {
         case ProjectsActions.ActionTypes.LIST_SUCCESS: {
             return action.payload.data.map((project) => project.identifier);
@@ -61,6 +61,11 @@ export const activeId = (state: string = null, action: ProjectsActions.ActionsUn
     switch (action.type) {
         case ProjectsActions.ActionTypes.ONE_SUCCESS: {
             return action.payload.data.identifier;
+        }
+
+        case ProjectsActions.ActionTypes.RESET_ACTIVE_ID:
+        case ProjectsActions.ActionTypes.LIST_REQUEST: {
+            return null;
         }
 
         default: {

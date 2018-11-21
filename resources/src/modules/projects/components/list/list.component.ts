@@ -23,7 +23,7 @@ import { RequestStatus } from '../../../../app/interfaces/api';
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.scss'],
 })
-export class ListComponent implements OnInit, OnDestroy {
+export class ProjectsListComponent implements OnInit, OnDestroy {
     public visible = true;
     public selectable = true;
     public removable = true;
@@ -84,6 +84,31 @@ export class ListComponent implements OnInit, OnDestroy {
         );
     }
 
+    public ngOnInit(): void {
+        this.subscriptions.push(
+            this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0)),
+            merge(this.sort.sortChange, this.paginator.page)
+                .pipe(
+                    startWith({}),
+                    switchMap(() => {
+                        this.load();
+                        return this.success$;
+                    }),
+
+                    switchMap(() => combineLatest(this.projects$, this.meta$)),
+                    map(([projects, meta]) => {
+                        this.resultsLength = meta.total;
+                        return projects;
+                    }),
+                )
+                .subscribe((projects: Project[]) => (this.projects = projects)),
+        );
+    }
+
+    public ngOnDestroy(): void {
+        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    }
+
     public getTagLabel(tag: ProjectTag): string {
         return `${tag.name}(${tag.type})`;
     }
@@ -106,7 +131,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
     public add(event: MatChipInputEvent): void {
         const input = event.input;
-        const value = event.value;
+        // const value = event.value;
 
         // Add filter
         // if ((value || '').trim()) {
@@ -174,33 +199,9 @@ export class ListComponent implements OnInit, OnDestroy {
         this.load();
     }
 
-    public ngOnInit(): void {
-        this.subscriptions.push(
-            this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0)),
-            merge(this.sort.sortChange, this.paginator.page)
-                .pipe(
-                    startWith({}),
-                    switchMap(() => {
-                        this.load();
-                        return this.success$;
-                    }),
-
-                    switchMap(() => combineLatest(this.projects$, this.meta$)),
-                    map(([projects, meta]) => {
-                        this.resultsLength = meta.total;
-                        return projects;
-                    }),
-                )
-                .subscribe((projects: Project[]) => (this.projects = projects)),
-        );
-    }
-
-    public ngOnDestroy(): void {
-        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-    }
-
     public onPageChange($event: PageEvent): void {
         this.pageSize = $event.pageSize;
+        // console.log($event);
     }
 
     public onSelectProject(project: Project): void {

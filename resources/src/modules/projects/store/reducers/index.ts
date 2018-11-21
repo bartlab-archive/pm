@@ -15,7 +15,9 @@ export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionRedu
     return localStorageSync({ keys: [{ projects: ['entities'] }], rehydrate: true })(reducer);
 }
 
-export const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
+export const metaReducers: Array<MetaReducer<any, any>> = [
+    // localStorageSyncReducer
+];
 export const reducers: ActionReducerMap<ProjectsState> = {
     projects: fromProjects.reducer,
 };

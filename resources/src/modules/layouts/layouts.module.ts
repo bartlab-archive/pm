@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
-import {DefaultComponent} from './components/default/default.component';
-import {BlankComponent} from './components/blank/blank.component';
+import {DefaultComponent, BlankComponent} from './components';
 import {RouterModule, Routes} from '@angular/router';
 import {
     MatToolbarModule,

@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {Inject, NgModule} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule} from '@angular/router';
 import {EffectsModule} from '@ngrx/effects';
@@ -18,6 +18,19 @@ import {AppInterceptor} from './interceptors/app.interceptor';
 import {AppService} from './services/app.service';
 import {FormService} from './services/form.service';
 import {IssuesModule} from '../modules/issues/issues.module';
+import {APP_EVENT_INTERCEPTORS} from './providers/app.injection';
+import {Observable, of} from 'rxjs';
+
+
+class AppEventInterceptor {
+
+    public static on(...args) {
+        console.log('AppEventInterceptor', args);
+        return of();
+    }
+
+}
+
 
 @NgModule({
     declarations: [
@@ -34,10 +47,14 @@ import {IssuesModule} from '../modules/issues/issues.module';
                 {path: '**', redirectTo: '/404'}
             ],
             {
+                // useHash: true
                 // enableTracing: true, // <-- debugging purposes only
                 // preloadingStrategy: SelectivePreloadingStrategy,
+                scrollPositionRestoration: 'top',
+                onSameUrlNavigation: 'reload'
             }
         ),
+        // RouterModule.forChild(routes),
 
         // store
         StoreModule.forRoot(reducers, {metaReducers}),
@@ -61,8 +78,22 @@ import {IssuesModule} from '../modules/issues/issues.module';
         FormService,
         {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 5000}},
         {provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true},
+        {provide: APP_EVENT_INTERCEPTORS, useClass: AppEventInterceptor, multi: true}
     ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
+
+    constructor(@Inject(APP_EVENT_INTERCEPTORS) private config: Array<any>) {
+        console.log(config);
+        const i = config.reduceRight((next, interceptor) => {
+            // console.log(next, interceptor);
+            return interceptor;
+        //     return interceptor.on(next);
+        }, new AppEventInterceptor());
+
+        // console.log('result', i);
+    }
+
+
 }

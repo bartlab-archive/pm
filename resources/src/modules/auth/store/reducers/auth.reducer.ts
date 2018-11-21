@@ -1,4 +1,4 @@
-import {combineReducers} from '@ngrx/store';
+import {ActionReducer, combineReducers} from '@ngrx/store';
 import {FormResponseError} from '../../../../app/interfaces/api';
 import {AuthData} from '../../interfaces/auth';
 import * as AuthActions from '../actions/auth.actions';
@@ -56,6 +56,10 @@ export const status = (state: string = null, action: AuthActions.ActionsUnion) =
             return null;
         }
 
+        case AuthActions.ActionTypes.LOGOUT: {
+            return 'logout';
+        }
+
         default: {
             return state;
         }
@@ -68,7 +72,7 @@ export interface State {
     status: string;
 }
 
-export const reducer = combineReducers({
+export const reducer: ActionReducer<State> = combineReducers({
     data,
     error,
     status,

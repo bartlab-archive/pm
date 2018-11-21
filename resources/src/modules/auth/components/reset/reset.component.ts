@@ -1,15 +1,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, Validators} from '@angular/forms';
-import { select, Store } from '@ngrx/store';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
-import { AuthService } from '../../services/auth.service';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import {select, Store} from '@ngrx/store';
+import {Router} from '@angular/router';
+import {MatSnackBar} from '@angular/material';
+import {AuthService} from '../../services/auth.service';
+import {Subscription} from 'rxjs';
+import {filter} from 'rxjs/operators';
 import * as fromReset from '../../store/reducers';
 import * as ResetActions from '../../store/actions/reset.actions';
-import { FormResponseError, ValidatorMessage } from '../../../../app/interfaces/api';
-import { ResetData } from '../../interfaces/auth';
+import {FormResponseError, ValidatorMessage} from '../../../../app/interfaces/api';
+import {ResetData} from '../../interfaces/auth';
 
 @Component({
     selector: 'app-auth-reset',
@@ -100,6 +100,8 @@ export class ResetComponent implements OnInit, OnDestroy {
         const data: ResetData = {
             ...this.form.value
         };
+        // todo: set fields as in login form
+
         this.store.dispatch(new ResetActions.ResetRequestAction(data));
     }
 }

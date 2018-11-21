@@ -1,19 +1,19 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { select, Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Project } from '../../interfaces/projects';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {select, Store} from '@ngrx/store';
+import {Observable, Subscription} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {Project} from '../../interfaces/projects';
 import * as fromProjects from '../../store/reducers';
 import * as projectActions from '../../store/actions/projects.actions';
-import { RequestStatus } from '../../../../app/interfaces/api';
+import {RequestStatus} from '../../../../app/interfaces/api';
 
 @Component({
     selector: 'app-projects-item',
     templateUrl: './item.component.html',
     styleUrls: ['./item.component.scss'],
 })
-export class ItemComponent implements OnInit, OnDestroy {
+export class ProjectsItemComponent implements OnInit, OnDestroy {
     public subscriptions: Subscription[] = [];
     public project$: Observable<Project> = this.store.pipe(select(fromProjects.selectProjectsActive));
     public pending$: Observable<boolean> = this.store.pipe(
@@ -21,10 +21,11 @@ export class ItemComponent implements OnInit, OnDestroy {
         map((status) => status === RequestStatus.pending),
     );
 
-    public constructor(private router: Router, private activatedRoute: ActivatedRoute, private store: Store<any>) {}
+    public constructor(private router: Router, private activatedRoute: ActivatedRoute, private store: Store<any>) {
+    }
 
     public load(): void {
-        const { identifier } = this.activatedRoute.snapshot.params;
+        const {identifier} = this.activatedRoute.snapshot.params;
         this.store.dispatch(new projectActions.OneRequestAction(identifier));
     }
 
@@ -36,5 +37,6 @@ export class ItemComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+        this.store.dispatch(new projectActions.ResetActiveIdAction());
     }
 }

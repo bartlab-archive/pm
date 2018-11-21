@@ -14,7 +14,7 @@ import * as fromRouter from '@ngrx/router-store';
  */
 import {storeFreeze} from 'ngrx-store-freeze';
 // import {localStorageSync} from 'ngrx-store-localstorage';
-import {isDevMode} from '@angular/core';
+// import {isDevMode} from '@angular/core';
 
 /**
  * he reducer function itself. In
@@ -29,7 +29,7 @@ import {isDevMode} from '@angular/core';
  * that will be composed to form the root meta-reducer.
  */
 
-const environment = {production: !isDevMode()};
+const environment = {production: process.env.NODE_ENV === 'production'};
 
 // export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
 //     return localStorageSync({keys: ['auth'], rehydrate: true})(reducer);

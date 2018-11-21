@@ -26,17 +26,6 @@ import {FormResponseError, ValidatorMessage} from '../../../../app/interfaces/ap
 export class RegistrationComponent implements OnInit, OnDestroy {
     public subscriptions: Subscription[] = [];
     public languages = ListService.languages;
-
-    public constructor(
-        private fb: FormBuilder,
-        private store: Store<any>,
-        private router: Router,
-        private snackBar: MatSnackBar,
-        private authService: AuthService
-    ) {
-        this.store.dispatch(new RegisterActions.RegisterClearAction());
-    }
-
     public form = this.fb.group({
         'login': ['', [
             Validators.required,
@@ -97,7 +86,17 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         ]
     };
 
-    public static checkPasswords(control: FormControl): {[key: string]: boolean} | null {
+    public constructor(
+        private fb: FormBuilder,
+        private store: Store<any>,
+        private router: Router,
+        private snackBar: MatSnackBar,
+        private authService: AuthService
+    ) {
+        this.store.dispatch(new RegisterActions.RegisterClearAction());
+    }
+
+    public static checkPasswords(control: FormControl): { [key: string]: boolean } | null {
         if (control.parent) {
             const password = control.parent.value['password'];
             const confirmation = control.value;
@@ -179,6 +178,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
         const data = {
             ...this.form.value
         };
+        // todo: set fields as in login form
+
         this.store.dispatch(new RegisterActions.RegisterRequestAction(data));
     }
 }

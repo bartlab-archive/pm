@@ -3,11 +3,11 @@ import {FormResponseError} from '../../../../app/interfaces/api';
 import {AuthData, LoginData} from '../../interfaces/auth';
 
 export enum ActionTypes {
-    LOGIN_REQUEST = '[Auth] Login Request',
-    LOGIN_ERROR = '[Auth] Login Set error',
-    LOGIN_SUCCESS = '[Auth] Login Success',
-    LOGOUT = '[Auth] Logout',
-    LOGIN_CLEAR = '[Auth] Login Clear',
+    LOGIN_REQUEST = '[auth] login request',
+    LOGIN_ERROR = '[auth] login set error',
+    LOGIN_SUCCESS = '[auth] login success',
+    LOGOUT = '[auth] logout',
+    LOGIN_CLEAR = '[auth] login clear',
 }
 
 export class LoginRequestAction implements Action {

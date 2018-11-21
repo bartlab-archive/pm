@@ -1,13 +1,13 @@
 import {Action} from '@ngrx/store';
 import {FormResponseError} from '../../../../app/interfaces/api';
-import {RegisterData, AuthData, ResultMessage} from '../../interfaces/auth';
+import {RegisterData, AuthData} from '../../interfaces/auth';
 
 export enum ActionTypes {
-    REGISTER_REQUEST = '[Auth] Register Request',
-    REGISTER_ERROR = '[Auth] Register Set error',
-    REGISTER_SUCCESS_MESSAGE = '[Auth] Register Success message',
-    REGISTER_SUCCESS_AUTH = '[Auth] Register Success login',
-    REGISTER_CLEAR = '[Auth] Register Clear'
+    REGISTER_REQUEST = '[auth] register request',
+    REGISTER_ERROR = '[auth] register set error',
+    REGISTER_SUCCESS_MESSAGE = '[auth] register success message',
+    REGISTER_SUCCESS_AUTH = '[auth] register success login',
+    REGISTER_CLEAR = '[auth] register clear'
 }
 
 export class RegisterRequestAction implements Action {
