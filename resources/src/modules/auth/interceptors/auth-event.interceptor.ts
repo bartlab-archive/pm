@@ -26,7 +26,7 @@ export class AuthEventInterceptor implements AppInterceptor {
 
     public onPreload(appEvent: AppPreloadEvent, next: AppInterceptorHandler): void {
         console.log('AuthEventInterceptor');
-        if(!this.authService.isAuthorized()){
+        if (!this.authService.isAuthorized()) {
             return;
         }
 
@@ -37,7 +37,7 @@ export class AuthEventInterceptor implements AppInterceptor {
                 first(),
             )
             .subscribe(() => {
-                if(this.authService.isAuthorized()){
+                if (this.authService.isAuthorized()) {
                     next.handle(appEvent);
                 }
             });

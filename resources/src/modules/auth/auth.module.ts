@@ -90,13 +90,11 @@ const authRoutes: Routes = [
             useClass: AuthInterceptor,
             multi: true,
         },
-
         {
             provide: APP_EVENT_INTERCEPTORS,
             useClass: AuthEventInterceptor,
             multi: true,
         },
-
         {
             provide: APP_EVENT_ACTIONS,
             useValue: [

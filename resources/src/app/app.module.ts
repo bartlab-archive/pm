@@ -69,13 +69,11 @@ import * as appActions from './store/actions/app.actions';
                 duration: 5000,
             },
         },
-
         {
             provide: APP_EVENT_INTERCEPTORS,
             useClass: AppEventInterceptor,
             multi: true,
         },
-
         {
             provide: APP_EVENT_ACTIONS,
             useValue: [

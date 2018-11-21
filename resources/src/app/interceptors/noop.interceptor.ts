@@ -5,6 +5,6 @@ import {AppEvent, AppInterceptor} from '../interfaces/app';
 export class NoopInterceptor implements AppInterceptor {
     on(appEvent: AppEvent, next: null): void {
         console.log('NoopInterceptor');
-        console.log(appEvent)
+        console.log(appEvent);
     }
 }
