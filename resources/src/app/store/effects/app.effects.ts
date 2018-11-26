@@ -2,7 +2,7 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Injectable, Injector} from '@angular/core';
 import {tap} from 'rxjs/operators';
 import {AppInterceptorHandler} from '../../interfaces/app';
-import {APP_EVENT_ACTIONS, APP_EVENT_INTERCEPTORS} from '../../providers/app.injection';
+import {APP_EVENT_PRELOAD, APP_EVENT_INTERCEPTORS} from '../../providers/app.injection';
 import {NoopInterceptor} from '../../interceptors/noop.interceptor';
 import {AppPreloadEvent} from '../../events';
 
@@ -33,8 +33,8 @@ export class AppEffects {
             return this.chainActions;
         }
 
-        // this.actions = this.injector.get(APP_EVENT_ACTIONS);
-        this.chainActions = this.injector.get(APP_EVENT_ACTIONS).reduce((acc, val) => acc.concat(val), []);
+        // this.actions = this.injector.get(APP_EVENT_PRELOAD);
+        this.chainActions = this.injector.get(APP_EVENT_PRELOAD).reduce((acc, val) => acc.concat(val), []);
         return this.chainActions;
     }
 

@@ -98,6 +98,7 @@
                 <ng-container matColumnDef="subject">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Subject</th>
                     <td mat-cell *matCellDef="let row">
+                        <img src="{{ row.assigned ? row.assigned.avatar : row.author.avatar }}">
                         <a routerLink="/issues/{{ row.id }}"></a>
                         {{ row.subject }}
                     </td>

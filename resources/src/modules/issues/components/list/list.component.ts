@@ -19,7 +19,7 @@ import {Observable, Subscription, zip, combineLatest} from 'rxjs';
 import {
     filter,
     map,
-    skip,
+    // skip,
     startWith,
 } from 'rxjs/operators';
 import {select, Store} from '@ngrx/store';
@@ -30,8 +30,8 @@ import {
 } from '../../store/reducers';
 import {IssuesAllRequestAction} from '../../store/actions/issues.action';
 import {RequestStatus} from '../../../../app/interfaces/api';
-import {StatusesAllRequestAction} from '../../store/actions/statuses.action';
-import {TrackersAllRequestAction} from '../../store/actions/trackers.action';
+// import {StatusesAllRequestAction} from '../../store/actions/statuses.action';
+// import {TrackersAllRequestAction} from '../../store/actions/trackers.action';
 
 @Component({
     selector: 'app-issues-list',
@@ -40,7 +40,7 @@ import {TrackersAllRequestAction} from '../../store/actions/trackers.action';
 })
 export class IssuesListComponent implements OnInit, OnDestroy {
 
-    public displayedColumns: Array<string> = ['select', 'id', 'subject', 'menu'];
+    public displayedColumns: Array<string> = ['select', 'subject', 'menu'];
     public dataSource: Array<object>;
     public selection = new SelectionModel<any>(true, []);
     public subscriptions: Array<Subscription> = [];

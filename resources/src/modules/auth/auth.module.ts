@@ -35,7 +35,7 @@ import { filter } from 'rxjs/operators';
 import { LayoutsService } from '../layouts/services/layouts.service';
 import * as AuthActions from './store/actions/auth.actions';
 import { AuthEventInterceptor } from './interceptors/auth-event.interceptor';
-import {APP_EVENT_ACTIONS, APP_EVENT_INTERCEPTORS} from '../../app/providers/app.injection';
+import {APP_EVENT_PRELOAD, APP_EVENT_INTERCEPTORS} from '../../app/providers/app.injection';
 
 const authRoutes: Routes = [
     {
@@ -96,7 +96,7 @@ const authRoutes: Routes = [
             multi: true,
         },
         {
-            provide: APP_EVENT_ACTIONS,
+            provide: APP_EVENT_PRELOAD,
             useValue: [
                 AuthActions.ActionTypes.LOGIN_SUCCESS,
                 AuthActions.ActionTypes.LOGOUT,

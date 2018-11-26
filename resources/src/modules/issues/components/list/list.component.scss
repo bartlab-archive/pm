@@ -12,10 +12,12 @@ tr.mat-row {
 
   td {
     line-height: 40px;
+    white-space: nowrap;
 
     img {
       height: 32px;
       width: 32px;
+      //padding: 4px 10px;
       padding: 4px 4px 4px 0;
       float: left;
     }
@@ -44,6 +46,9 @@ mat-progress-bar {
 
 .mat-column-id {
   width: 36px;
+
+  //padding-left: 10px;
+  //padding-right: 10px;
 }
 
 .mat-column-subject {
