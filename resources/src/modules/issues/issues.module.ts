@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {Router, RouterModule, Routes} from '@angular/router';
 import {
     MatAutocompleteModule,
     MatButtonModule,
@@ -15,20 +15,22 @@ import {
     MatTableModule,
 } from '@angular/material';
 
-import { CommonModule } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { IssuesService, StatusesService, TrackersService } from './services';
-import { IssuesItemComponent, IssuesListComponent, IssuesMainComponent } from './components';
-import { ReactiveFormsModule } from '@angular/forms';
-import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './store/reducers';
-import { EffectsModule } from '@ngrx/effects';
-import { IssuesEffect } from './store/effects/issues.effect';
-import { StatusesEffect } from './store/effects/statuses.effect';
-import { TrackersEffect } from './store/effects/trackers.effect';
-import { routes } from './issues.routes';
-import { APP_EVENT_INTERCEPTORS } from '../../app/providers/app.injection';
-import { IssuesEventInterceptor } from './interceptors/issues-event.interceptor';
+import {CommonModule} from '@angular/common';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {IssuesService, StatusesService, TrackersService} from './services';
+import {IssuesItemComponent, IssuesListComponent, IssuesMainComponent} from './components';
+import {ReactiveFormsModule} from '@angular/forms';
+import {StoreModule} from '@ngrx/store';
+import {reducers, metaReducers} from './store/reducers';
+import {EffectsModule} from '@ngrx/effects';
+import {IssuesEffect} from './store/effects/issues.effect';
+import {StatusesEffect} from './store/effects/statuses.effect';
+import {TrackersEffect} from './store/effects/trackers.effect';
+import {projectsIssuesRoutes, routes} from './issues.routes';
+import {APP_EVENT_INTERCEPTORS} from '../../app/providers/app.injection';
+import {IssuesEventInterceptor} from './interceptors/issues-event.interceptor';
+import {RouterConfigLoader} from '@angular/router/src/router_config_loader';
+import {PROJECTS_ROUTERS} from '../projects/providers/projects.injection';
 
 @NgModule({
     declarations: [IssuesMainComponent, IssuesListComponent, IssuesItemComponent],
@@ -52,7 +54,7 @@ import { IssuesEventInterceptor } from './interceptors/issues-event.interceptor'
         MatAutocompleteModule,
         // RouterModule,
         RouterModule.forChild(routes),
-        StoreModule.forFeature('issues', reducers, { metaReducers }),
+        StoreModule.forFeature('issues', reducers, {metaReducers}),
         EffectsModule.forFeature([IssuesEffect, StatusesEffect, TrackersEffect]),
     ],
 
@@ -65,6 +67,17 @@ import { IssuesEventInterceptor } from './interceptors/issues-event.interceptor'
             useClass: IssuesEventInterceptor,
             multi: true,
         },
+        {
+            provide: PROJECTS_ROUTERS,
+            useValue: projectsIssuesRoutes,
+            multi: true,
+        }
     ],
 })
-export class IssuesModule {}
+export class IssuesModule {
+
+    public constructor(private router: Router) {
+        console.log(router);
+    }
+
+}

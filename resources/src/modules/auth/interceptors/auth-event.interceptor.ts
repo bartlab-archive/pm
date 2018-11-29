@@ -5,7 +5,7 @@ import * as fromAuth from '../store/reducers';
 import * as authActions from '../store/actions/auth.actions';
 import {AuthService} from '../services/auth.service';
 import {AppEventsUnion, AppPreloadEvent, EVENT_TYPE_PRELOAD} from '../../../app/events';
-import {filter, first} from "rxjs/operators";
+import {filter, first} from 'rxjs/operators';
 
 @Injectable()
 export class AuthEventInterceptor implements AppInterceptor {
@@ -36,9 +36,13 @@ export class AuthEventInterceptor implements AppInterceptor {
                 filter(status => status === 'success' || status === 'error'),
                 first(),
             )
-            .subscribe(() => {
-                if (this.authService.isAuthorized()) {
+            .subscribe((status) => {
+                if (status === 'success' && this.authService.isAuthorized()) {
                     next.handle(appEvent);
+                }
+
+                if (status === 'error') {
+                    this.authService.onUnauthorizedError(null);
                 }
             });
 

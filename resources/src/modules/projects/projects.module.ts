@@ -1,11 +1,11 @@
-import {NgModule} from '@angular/core';
+import {Inject, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
-import {RouterModule, Routes} from '@angular/router';
+import {Router, RouterModule, Routes} from '@angular/router';
 import {
     MatButtonModule,
     MatCardModule,
@@ -34,36 +34,37 @@ import {ProjectsService} from './services/projects.service';
 import {DefaultComponent} from '../layouts/components';
 import {reducers, metaReducers} from './store/reducers';
 import {ProjectsEffects} from './store/effects/projects.effects';
-import {projectsIssuesRoutes} from '../issues/issues.routes';
+// import {projectsIssuesRoutes} from '../issues/issues.routes';
+import {PROJECTS_ROUTERS} from './providers/projects.injection';
 
-const authRoutes: Routes = [
-    {
-        path: '',
-        component: DefaultComponent,
-        children: [
-            {
-                path: 'projects',
-                component: ProjectsMainComponent,
-                data: {
-                    auth: 'authorized',
-                },
-                children: [
-                    {
-                        path: '',
-                        component: ProjectsListComponent,
-                    },
-                    {
-                        path: ':identifier',
-                        component: ProjectsItemComponent,
-                        children: [
-                            ...projectsIssuesRoutes,
-                        ]
-                    },
-                ],
-            },
-        ],
-    },
-];
+// const authRoutes: Routes = [
+//     {
+//         path: '',
+//         component: DefaultComponent,
+//         children: [
+//             {
+//                 path: 'projects',
+//                 component: ProjectsMainComponent,
+//                 data: {
+//                     auth: 'authorized',
+//                 },
+//                 children: [
+//                     {
+//                         path: '',
+//                         component: ProjectsListComponent,
+//                     },
+//                     {
+//                         path: ':identifier',
+//                         component: ProjectsItemComponent,
+//                         children: [
+//                             ...projectsIssuesRoutes,
+//                         ]
+//                     },
+//                 ],
+//             },
+//         ],
+//     },
+// ];
 
 @NgModule({
     declarations: [
@@ -71,9 +72,15 @@ const authRoutes: Routes = [
         ProjectsListComponent,
         ProjectsItemComponent
     ],
+    entryComponents: [
+        ProjectsMainComponent,
+        ProjectsListComponent,
+        ProjectsItemComponent
+    ],
     imports: [
         CommonModule,
-        RouterModule.forChild(authRoutes),
+        RouterModule,
+        // RouterModule.forChild(authRoutes),
         MatInputModule,
         MatCardModule,
         MatButtonModule,
@@ -101,4 +108,39 @@ const authRoutes: Routes = [
     providers: [ProjectsService],
 })
 export class ProjectsModule {
+
+    protected routes: Routes = [
+        {
+            path: '',
+            component: DefaultComponent,
+            children: [
+                {
+                    path: 'projects',
+                    component: ProjectsMainComponent,
+                    data: {
+                        auth: 'authorized',
+                    },
+                    children: [
+                        {
+                            path: '',
+                            component: ProjectsListComponent,
+                        },
+                        {
+                            path: ':identifier',
+                            component: ProjectsItemComponent,
+                            children: this.config.reduce((acc, val) => acc.concat(val), [])
+                        },
+                    ],
+                },
+            ],
+        },
+    ];
+
+    public constructor(protected router: Router, @Inject(PROJECTS_ROUTERS) private config: Array<any>) {
+        this.router.config.unshift(...this.routes);
+        // this.router.config.push(config);
+
+    }
+
+
 }
