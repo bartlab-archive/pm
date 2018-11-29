@@ -5,10 +5,13 @@
         <div fxLayout="row" fxLayoutAlign="space-between">
             <mat-card-header fxFlex="0 0 auto">
                 <mat-card-title>Projects</mat-card-title>
-                <mat-card-subtitle>Administrator</mat-card-subtitle>
+                <!--<mat-card-subtitle>All list</mat-card-subtitle>-->
+                <!--<mat-card-subtitle>Administrator</mat-card-subtitle>-->
             </mat-card-header>
 
-            <mat-card-actions fxFlex="0 0 auto">
+            <div fxFlex="100"></div>
+
+            <!--<mat-card-actions fxFlex="0 0 auto">-->
                 <button mat-icon-button (click)="refresh()">
                     <mat-icon>refresh</mat-icon>
                 </button>
@@ -30,7 +33,7 @@
                 <button mat-icon-button [matMenuTriggerFor]="appMenu">
                     <mat-icon>more_vert</mat-icon>
                 </button>
-            </mat-card-actions>
+            <!--</mat-card-actions>-->
         </div>
 
         <mat-card-content>
@@ -65,37 +68,45 @@
 
         <div class="card-scroll-container">
             <table mat-table [dataSource]="projects" matSort>
-                <ng-container matColumnDef="identifier">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Identifier</th>
-                    <td mat-cell *matCellDef="let row" (click)="onSelectProject(row)">
-                        <button mat-mini-fab color="primary" [title]="row.identifier">
-                            {{row.identifier | slice:0:1 | uppercase}}
-                        </button>
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="labels">
-                    <th mat-header-cell *matHeaderCellDef>Labels</th>
-                    <td mat-cell *matCellDef="let row">
-                        <button mat-stroked-button class="button-label"
-                                (click)="selectedLabel(statusName[row.status])">
-                            {{statusName[row.status]}}
-                        </button>
-                        <button mat-stroked-button class="button-label" color="warn" *ngIf="row.is_my">
-                            Member
-                        </button>
-                    </td>
-                </ng-container>
+                <!--<ng-container matColumnDef="identifier">-->
+                    <!--<th mat-header-cell *matHeaderCellDef mat-sort-header>Identifier</th>-->
+                    <!--<td mat-cell *matCellDef="let row" (click)="onSelectProject(row)">-->
+                        <!--<button mat-mini-fab color="primary" [title]="row.identifier">-->
+                            <!--{{row.identifier | slice:0:1 | uppercase}}-->
+                        <!--</button>-->
+                    <!--</td>-->
+                <!--</ng-container>-->
+                <!--<ng-container matColumnDef="labels">-->
+                    <!--<th mat-header-cell *matHeaderCellDef>Labels</th>-->
+                    <!--<td mat-cell *matCellDef="let row">-->
+                        <!--<button mat-stroked-button class="button-label"-->
+                                <!--(click)="selectedLabel(statusName[row.status])">-->
+                            <!--{{statusName[row.status]}}-->
+                        <!--</button>-->
+                        <!--<button mat-stroked-button class="button-label" color="warn" *ngIf="row.is_my">-->
+                            <!--Member-->
+                        <!--</button>-->
+                    <!--</td>-->
+                <!--</ng-container>-->
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-                    <td mat-cell *matCellDef="let row" (click)="onSelectProject(row)">{{row.name}}</td>
+                    <td mat-cell *matCellDef="let row">
+                        <a routerLink="/projects/{{ row.identifier }}"></a>
+                        <button mat-mini-fab color="primary" [title]="row.identifier">
+                        {{row.identifier | slice:0:1 | uppercase}}
+                        </button>
+                        {{row.name}}
+                    </td>
                 </ng-container>
                 <ng-container matColumnDef="description">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
-                    <td mat-cell *matCellDef="let row" (click)="onSelectProject(row)">
-                        {{row.description | slice:0:30}}
+                    <td mat-cell *matCellDef="let row">
+                        <a routerLink="/projects/{{ row.identifier }}"></a>
+                        <!--{{row.description}}-->
+                        {{row.description | slice:0:500}}
                     </td>
                 </ng-container>
-                <ng-container matColumnDef="manage">
+                <ng-container matColumnDef="menu">
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let row">
                         <mat-menu #appMenu="matMenu">

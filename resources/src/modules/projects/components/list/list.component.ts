@@ -51,7 +51,8 @@ export class ProjectsListComponent implements OnInit, OnDestroy {
     public tagInput: ElementRef<HTMLInputElement>;
 
     public subscriptions: Subscription[] = [];
-    public displayedColumns: string[] = ['identifier', 'labels', 'name', 'description', 'manage'];
+    public displayedColumns: string[] = ['name', 'description', 'menu'];
+    // public displayedColumns: string[] = ['identifier', 'labels', 'name', 'description', 'manage'];
 
     public projects$: Observable<Project[]> = this.store.pipe(select(fromProjects.selectProjects));
     public meta$: Observable<Meta> = this.store.pipe(select(fromProjects.selectProjectsMeta));
@@ -203,8 +204,8 @@ export class ProjectsListComponent implements OnInit, OnDestroy {
         this.pageSize = $event.pageSize;
         // console.log($event);
     }
-
-    public onSelectProject(project: Project): void {
-        this.router.navigate(['/projects', project.identifier]);
-    }
+    //
+    // public onSelectProject(project: Project): void {
+    //     this.router.navigate(['/projects', project.identifier]);
+    // }
 }

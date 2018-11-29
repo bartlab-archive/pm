@@ -29,7 +29,6 @@ import {TrackersEffect} from './store/effects/trackers.effect';
 import {projectsIssuesRoutes, routes} from './issues.routes';
 import {APP_EVENT_INTERCEPTORS} from '../../app/providers/app.injection';
 import {IssuesEventInterceptor} from './interceptors/issues-event.interceptor';
-import {RouterConfigLoader} from '@angular/router/src/router_config_loader';
 import {PROJECTS_ROUTERS} from '../projects/providers/projects.injection';
 
 @NgModule({
@@ -76,8 +75,8 @@ import {PROJECTS_ROUTERS} from '../projects/providers/projects.injection';
 })
 export class IssuesModule {
 
-    public constructor(private router: Router) {
-        console.log(router);
-    }
+    // public constructor(private router: Router) {
+    //     console.log(router);
+    // }
 
 }

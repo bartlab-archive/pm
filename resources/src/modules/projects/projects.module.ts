@@ -105,7 +105,14 @@ import {PROJECTS_ROUTERS} from './providers/projects.injection';
         StoreModule.forFeature('module.projects', reducers, {metaReducers}),
         EffectsModule.forFeature([ProjectsEffects]),
     ],
-    providers: [ProjectsService],
+    providers: [
+        ProjectsService,
+        {
+            provide: PROJECTS_ROUTERS,
+            useValue: [],
+            multi: true,
+        }
+    ],
 })
 export class ProjectsModule {
 
