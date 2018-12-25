@@ -114,7 +114,7 @@
                     <th mat-header-cell *matHeaderCellDef></th>
                     <td mat-cell *matCellDef="let row" [style.color]="row.color">
                         <mat-menu #appMenu="matMenu">
-                            <a mat-menu-item [routerLink]="['/projects', row.identifier]">
+                            <a mat-menu-item [routerLink]="['/issues', row.id]">
                                 <mat-icon>open_in_browser</mat-icon>
                                 Open
                             </a>

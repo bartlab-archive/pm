@@ -64,11 +64,21 @@ const status = (state = null, action: IssuesActionsUnion | SharedActionsUnion) =
     }
 };
 
+const activeId = (state = null, action: IssuesActionsUnion | SharedActionsUnion) => {
+    switch (action.type) {
+        case  IssuesActionTypes.ITEM_SUCCESS:
+            return action.payload.id;
+        default:
+            return state;
+    }
+}
+
 export const issuesReducers = combineReducers({
     entities,
     meta,
     status,
-    error
+    error,
+    activeId
 });
 
 // export const getStatus = (state) => state.status;

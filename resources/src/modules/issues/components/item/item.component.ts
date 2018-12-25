@@ -4,7 +4,11 @@ import {
     OnInit,
 } from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
+import {ActivatedRoute, Router,} from '@angular/router';
+import * as issuesActions from '../../store/actions/issues.action';
+import {Observable} from "rxjs/internal/Observable";
+import {selectItemState} from "../../store/reducers";
 
 @Component({
     selector: 'app-issues-item',
@@ -14,9 +18,12 @@ import {Store} from '@ngrx/store';
 export class IssuesItemComponent implements OnInit, OnDestroy {
 
     public subscriptions: Subscription[] = [];
+    public item$: Observable<any>;
 
     public constructor(
-        private store: Store<any>
+        private store: Store<any>,
+        private activatedRoute: ActivatedRoute,
+        public router: Router,
     ) {
     }
 
@@ -29,7 +36,13 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
     }
 
     public load(): void {
+        const {id} = this.activatedRoute.snapshot.params;
+        this.store.dispatch(new issuesActions.ItemRequestAction(id));
+        this.item$ = this.store.pipe(select(selectItemState));
 
+        this.subscriptions.push(
+            this.item$.subscribe()
+        )
     }
 
 }

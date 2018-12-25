@@ -13,6 +13,7 @@ import {
     MatPaginatorModule,
     MatProgressBarModule,
     MatTableModule,
+    MatListModule
 } from '@angular/material';
 
 import {CommonModule} from '@angular/common';
@@ -32,13 +33,17 @@ import {IssuesEventInterceptor} from './interceptors/issues-event.interceptor';
 import {PROJECTS_ROUTERS} from '../projects/providers/projects.injection';
 
 @NgModule({
-    declarations: [IssuesMainComponent, IssuesListComponent, IssuesItemComponent],
-
+    declarations: [
+        IssuesMainComponent,
+        IssuesListComponent,
+        IssuesItemComponent
+    ],
     imports: [
         CommonModule,
         ReactiveFormsModule,
         MatCardModule,
         MatTableModule,
+        MatListModule,
         MatPaginatorModule,
         MatInputModule,
         MatMenuModule,

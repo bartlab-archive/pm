@@ -9,6 +9,7 @@ import {
 import {issuesReducers} from './issues.reducer';
 import {statusesReducers} from './statuses.reducer';
 import {trackersReducers} from './trackers.reducer';
+import {issueReducers} from './issue.reducer';
 
 // export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
 //     return localStorageSync({keys: [{issues: ['entities', 'meta']}], rehydrate: true})(reducer);
@@ -20,7 +21,8 @@ export const metaReducers: Array<MetaReducer<any, any>> = [
 export const reducers: ActionReducerMap<any> = {
     list: issuesReducers,
     statuses: statusesReducers,
-    trackers: trackersReducers
+    trackers: trackersReducers,
+    item: issueReducers
 };
 
 // module
@@ -28,6 +30,7 @@ export const selectModuleSate = createFeatureSelector('issues');
 export const selectIssuesState = createSelector(selectModuleSate, (state: any) => state.list);
 export const selectStatusesState = createSelector(selectModuleSate, (state: any) => state.statuses);
 export const selectTrackersState = createSelector(selectModuleSate, (state: any) => state.trackers);
+export const selectItemState = createSelector(selectModuleSate, (state: any) => state.item.data);
 
 // issues
 export const selectIssuesEntities = createSelector(selectIssuesState, (state) => state.entities);

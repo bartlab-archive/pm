@@ -1,9 +1,52 @@
 <div fxLayout="row" fxLayoutAlign="center start">
     <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.gt-md]="100">
-        <mat-progress-bar mode="indeterminate" *ngIf="pending"></mat-progress-bar>
+        <div *ngIf="item$ | async as item">
+            <mat-card-header>
+                <!--<mat-icon class="w-50">subject</mat-icon>-->
+                <mat-card-title>{{item.subject}}</mat-card-title>
+            </mat-card-header>
 
-        <mat-card-content>
-            coming soon
-        </mat-card-content>
+            <mat-list role="list">
+                <mat-list-item role="listitem">
+                    <mat-icon class="w-50">info</mat-icon>
+                    <div>{{item.tracker.name}} #{{item.id}}</div>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <mat-icon class="w-50">sort</mat-icon>
+                    <div>{{item.priority.name}}</div>
+                </mat-list-item>
+
+                <mat-list-item role="listitem" *ngIf="item.author">
+                    <mat-icon class="w-50">create</mat-icon>
+                    <img class="gravatar"
+                         src="{{ item.author ? item.author.avatar : item.author.avatar }}">
+                    <div>{{item.author.full_name}}</div>
+                </mat-list-item>
+
+                <mat-list-item role="listitem" *ngIf="item.assigned">
+                    <mat-icon class="w-50">people</mat-icon>
+                    <img class="gravatar"
+                         src="{{ item.assigned ? item.assigned.avatar : item.author.avatar }}">
+                    <div>{{item.assigned.full_name}}</div>
+                </mat-list-item>
+
+                <mat-list-item role="listitem">
+                    <mat-icon class="w-50">date_range</mat-icon>
+                    <div>{{item.created_on | slice:0:10}}</div>
+                </mat-list-item>
+
+                <mat-list-item role="listitem">
+                    <div mat-line>
+                        <mat-icon class="w-50">short_text</mat-icon>
+                        <div class="content">{{item.description}}</div>
+                    </div>
+                </mat-list-item>
+
+                <mat-list-item role="listitem">
+                    <mat-icon class="w-50">history</mat-icon>
+                    <div>Updated by</div>
+                </mat-list-item>
+            </mat-list>
+        </div>
     </mat-card>
 </div>

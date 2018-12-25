@@ -13,4 +13,7 @@ export class IssuesService {
         return this.http.get('/api/v1/issues', {params});
     }
 
+    public one(id) {
+        return this.http.get(`/api/v1/issues/${id}`);
+    }
 }

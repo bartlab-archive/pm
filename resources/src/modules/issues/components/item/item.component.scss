@@ -1,0 +1,32 @@
+.material-icons {
+  font-size: 24px;
+  color: grey;
+  float: left;
+}
+
+.w-50 {
+  width: 50px;
+}
+
+::ng-deep .mat-list .mat-list-item .mat-line {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+::ng-deep .mat-list .mat-list-item {
+  height: initial !important;
+  font-size: 14px;
+}
+
+.gravatar {
+  width: 24px;
+  height: 24px;
+  margin-right: 20px;
+  border-radius: 50%;
+  box-sizing: content-box;
+  float: left;
+}
+
+.content {
+  margin-left: 50px;
+}
