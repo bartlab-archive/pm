@@ -1,52 +1,97 @@
 <div fxLayout="row" fxLayoutAlign="center start">
-    <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.gt-md]="100">
-        <div *ngIf="item$ | async as item">
-            <mat-card-header>
-                <!--<mat-icon class="w-50">subject</mat-icon>-->
-                <mat-card-title>{{item.subject}}</mat-card-title>
-            </mat-card-header>
+    <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.gt-md]="100" *ngIf="item">
 
-            <mat-list role="list">
-                <mat-list-item role="listitem">
-                    <mat-icon class="w-50">info</mat-icon>
-                    <div>{{item.tracker.name}} #{{item.id}}</div>
-                </mat-list-item>
-                <mat-list-item role="listitem">
-                    <mat-icon class="w-50">sort</mat-icon>
-                    <div>{{item.priority.name}}</div>
-                </mat-list-item>
+        <mat-card-header>
+            <mat-card-title>{{item.subject}}</mat-card-title>
+        </mat-card-header>
 
-                <mat-list-item role="listitem" *ngIf="item.author">
-                    <mat-icon class="w-50">create</mat-icon>
-                    <img class="gravatar"
-                         src="{{ item.author ? item.author.avatar : item.author.avatar }}">
-                    <div>{{item.author.full_name}}</div>
-                </mat-list-item>
-
-                <mat-list-item role="listitem" *ngIf="item.assigned">
-                    <mat-icon class="w-50">people</mat-icon>
-                    <img class="gravatar"
-                         src="{{ item.assigned ? item.assigned.avatar : item.author.avatar }}">
-                    <div>{{item.assigned.full_name}}</div>
-                </mat-list-item>
-
-                <mat-list-item role="listitem">
-                    <mat-icon class="w-50">date_range</mat-icon>
-                    <div>{{item.created_on | slice:0:10}}</div>
-                </mat-list-item>
-
-                <mat-list-item role="listitem">
-                    <div mat-line>
-                        <mat-icon class="w-50">short_text</mat-icon>
-                        <div class="content">{{item.description}}</div>
-                    </div>
-                </mat-list-item>
-
-                <mat-list-item role="listitem">
-                    <mat-icon class="w-50">history</mat-icon>
-                    <div>Updated by</div>
-                </mat-list-item>
-            </mat-list>
+        <div class="my-flex-container">
+            <div class="my-flex-block">
+                <mat-icon>info</mat-icon>
+            </div>
+            <div class="my-flex-block">{{item.tracker.name}} #{{item.id}}</div>
         </div>
+
+        <div class="my-flex-container">
+            <div class="my-flex-block">
+                <mat-icon>sort</mat-icon>
+            </div>
+            <div class="my-flex-block">{{item.priority.name}}</div>
+        </div>
+
+        <div class="my-flex-container" *ngIf="item.author">
+            <div class="my-flex-block">
+                <mat-icon>create</mat-icon>
+            </div>
+            <div class="my-flex-block">
+                <img
+                        src="{{ item.author ? item.author.avatar : item.author.avatar }}">
+                <a href="user/{{item.author.id}}">{{item.author.full_name}}</a>
+            </div>
+        </div>
+
+        <div class="my-flex-container" *ngIf="item.assigned">
+            <div class="my-flex-block">
+                <mat-icon>people</mat-icon>
+            </div>
+            <div class="my-flex-block">
+                <img
+                        src="{{ item.assigned ? item.assigned.avatar : item.assigned.avatar }}">
+                <a href="user/{{item.assigned.id}}">{{item.assigned.full_name}}</a>
+            </div>
+        </div>
+
+        <div class="my-flex-container">
+            <div class="my-flex-block">
+                <mat-icon class="w-50">date_range</mat-icon>
+            </div>
+            <div class="my-flex-block">
+                {{item.created_on}}
+            </div>
+        </div>
+
+        <div class="my-flex-container">
+            <div class="my-flex-block">
+                <mat-icon>short_text</mat-icon>
+            </div>
+            <div class="my-flex-block">
+                {{item.description}}
+            </div>
+        </div>
+
+        <div class="my-flex-container" *ngIf="item.attachments && item.attachments.length">
+            <div class="my-flex-block">
+                <mat-icon>attachment</mat-icon>
+            </div>
+            <div class="my-flex-block">
+                <ul>
+                    <li *ngFor="let item of item.attachments">
+                        {{item.filename}} ({{item.filesize}}) <a href="user/{{item.author.id}}">{{item.author.full_name}}</a>,
+                        {{item.author.created_on}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="my-flex-container" *ngIf="item.journals && item.journals.length">
+            <div class="my-flex-block">
+                <mat-icon>history</mat-icon>
+            </div>
+            <div class="my-flex-block">
+                <ul>
+                    <li *ngFor="let item of item.journals; let i = index">
+                        <img src="{{ item.user ? item.user.avatar : item.user.avatar }}">
+                        Updated by <a href="user/{{item.user.id}}"> {{item.user.full_name}}</a> on {{item.created_on}}
+                        <ul *ngIf="item.details && item.details.length">
+                            <li *ngFor="let detail of item.details">
+                                <strong>{{detail.prop_key}}</strong> changed from {{detail.value | slice:0:20}}...
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
     </mat-card>
 </div>

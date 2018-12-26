@@ -24,7 +24,7 @@ import {
 } from 'rxjs/operators';
 import {select, Store} from '@ngrx/store';
 import {
-    selectIssuesEntities,
+    selectIssues,
     selectIssuesMeta,
     selectIssuesStatus, selectStatusesEntities, selectStatusesStatus, selectTrackersEntities
 } from '../../store/reducers';
@@ -94,10 +94,10 @@ export class IssuesListComponent implements OnInit, OnDestroy {
 
             this.store
                 .pipe(
-                    select(selectIssuesEntities)
+                    select(selectIssues)
                 )
-                .subscribe((data) => {
-                    this.dataSource = data;
+                .subscribe((items) => {
+                    this.dataSource = items;
                 }),
 
             this.store

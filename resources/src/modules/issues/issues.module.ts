@@ -13,7 +13,6 @@ import {
     MatPaginatorModule,
     MatProgressBarModule,
     MatTableModule,
-    MatListModule
 } from '@angular/material';
 
 import {CommonModule} from '@angular/common';
@@ -43,7 +42,6 @@ import {PROJECTS_ROUTERS} from '../projects/providers/projects.injection';
         ReactiveFormsModule,
         MatCardModule,
         MatTableModule,
-        MatListModule,
         MatPaginatorModule,
         MatInputModule,
         MatMenuModule,
@@ -58,7 +56,7 @@ import {PROJECTS_ROUTERS} from '../projects/providers/projects.injection';
         MatAutocompleteModule,
         // RouterModule,
         RouterModule.forChild(routes),
-        StoreModule.forFeature('issues', reducers, {metaReducers}),
+        StoreModule.forFeature('module.issues', reducers, {metaReducers}),
         EffectsModule.forFeature([IssuesEffect, StatusesEffect, TrackersEffect]),
     ],
 

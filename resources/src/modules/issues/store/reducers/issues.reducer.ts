@@ -3,16 +3,46 @@ import {IssuesActionsUnion, IssuesActionTypes} from '../actions/issues.action';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {SharedActionsUnion, SharedActionTypes} from '../actions/shared.action';
 
-const entities = (state = null, action: IssuesActionsUnion | SharedActionsUnion) => {
+const normalize = (data, key = 'id') => {
+    if (Array.isArray(data)) {
+        return data.reduce((acc, item) => ({...acc, [item[key]]: item}), {});
+    }
+
+    return {[data[key]]: data};
+};
+
+const entities = (state = {}, action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
         case IssuesActionTypes.ALL_SUCCESS:
-            return action.payload.data;
+            return {
+                ...state,
+                ...normalize(action.payload.data),
+            };
+
+        case IssuesActionTypes.ITEM_SUCCESS: {
+            return {
+                ...state,
+                ...normalize(action.payload.data),
+            };
+        }
 
         case SharedActionTypes.AUTH_LOGOUT:
             return null;
 
         default:
             return state;
+    }
+};
+
+export const ids = (state: Array<number> = [], action: IssuesActionsUnion | SharedActionsUnion) => {
+    switch (action.type) {
+        case IssuesActionTypes.ALL_SUCCESS: {
+            return action.payload.data.map((issue) => issue.id);
+        }
+
+        default: {
+            return state;
+        }
     }
 };
 
@@ -67,18 +97,19 @@ const status = (state = null, action: IssuesActionsUnion | SharedActionsUnion) =
 const activeId = (state = null, action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
         case  IssuesActionTypes.ITEM_SUCCESS:
-            return action.payload.id;
+            return action.payload.data.id;
         default:
             return state;
     }
-}
+};
 
 export const issuesReducers = combineReducers({
     entities,
+    ids,
+    activeId,
     meta,
     status,
-    error,
-    activeId
+    error
 });
 
 // export const getStatus = (state) => state.status;

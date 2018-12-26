@@ -9,7 +9,6 @@ import {
 import {issuesReducers} from './issues.reducer';
 import {statusesReducers} from './statuses.reducer';
 import {trackersReducers} from './trackers.reducer';
-import {issueReducers} from './issue.reducer';
 
 // export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
 //     return localStorageSync({keys: [{issues: ['entities', 'meta']}], rehydrate: true})(reducer);
@@ -19,24 +18,25 @@ export const metaReducers: Array<MetaReducer<any, any>> = [
     // localStorageSyncReducer
 ];
 export const reducers: ActionReducerMap<any> = {
-    list: issuesReducers,
+    issues: issuesReducers,
     statuses: statusesReducers,
     trackers: trackersReducers,
-    item: issueReducers
 };
 
 // module
-export const selectModuleSate = createFeatureSelector('issues');
-export const selectIssuesState = createSelector(selectModuleSate, (state: any) => state.list);
+export const selectModuleSate = createFeatureSelector('module.issues');
+export const selectIssuesState = createSelector(selectModuleSate, (state: any) => state.issues);
 export const selectStatusesState = createSelector(selectModuleSate, (state: any) => state.statuses);
 export const selectTrackersState = createSelector(selectModuleSate, (state: any) => state.trackers);
 export const selectItemState = createSelector(selectModuleSate, (state: any) => state.item.data);
 
 // issues
 export const selectIssuesEntities = createSelector(selectIssuesState, (state) => state.entities);
+export const selectIssuesIds = createSelector(selectIssuesState, (state) => state.ids);
 export const selectIssuesStatus = createSelector(selectIssuesState, (state) => state.status);
 export const selectIssuesError = createSelector(selectIssuesState, (state) => state.error);
 export const selectIssuesMeta = createSelector(selectIssuesState, (state) => state.meta);
+export const selectIssuesActiveId = createSelector(selectIssuesState, (state) => state.activeId);
 
 // statuses
 export const selectStatusesEntities = createSelector(selectStatusesState, (state) => state.entities);
@@ -47,3 +47,14 @@ export const selectStatusesError = createSelector(selectStatusesState, (state) =
 export const selectTrackersEntities = createSelector(selectTrackersState, (state) => state.entities);
 export const selectTrackersStatus = createSelector(selectTrackersState, (state) => state.status);
 export const selectTrackersError = createSelector(selectTrackersState, (state) => state.error);
+
+export const selectIssues = createSelector(selectIssuesEntities, selectIssuesIds, (entities, ids) =>
+    ids.map((id) => entities[id]),
+);
+
+export const selectIssuesActive = createSelector(
+    [selectIssuesEntities,  selectIssuesActiveId],
+    (entities, activeId) => {
+        return entities[activeId];
+    },
+);
