@@ -1,13 +1,18 @@
 import {combineReducers} from '@ngrx/store';
 import {TrackersActionsUnion, TrackersActionTypes} from '../actions/trackers.action';
+import {IssuesActionsUnion, IssuesActionTypes} from '../actions/issues.action';
 import {RequestStatus} from '../../../../app/interfaces/api';
 
-const entities = (state = [], action: TrackersActionsUnion) => {
+const entities = (state = {}, action: TrackersActionsUnion | IssuesActionsUnion) => {
     switch (action.type) {
         case TrackersActionTypes.TRACKERS_ALL_SUCCESS :
-            return action.payload.data;
-        // case TrackersActionTypes.AUTH_LOGOUT:
-        //     return null;
+            return action.payload.entities.trackers;
+
+        case IssuesActionTypes.ITEM_SUCCESS :
+            return  {
+                ...state,
+                ...action.payload.entities.trackers,
+            };
 
         default:
             return state;
@@ -63,13 +68,14 @@ const status = (state = null, action: TrackersActionsUnion) => {
     }
 };
 
-export const trackersReducers = combineReducers({
+export const reducers = combineReducers({
     entities,
     // meta,
     status,
     error
 });
 
-// export const getStatus = (state) => state.status;
-// export const getError = (state) => state.error;
-// export const getEntities = (state) => state.entities;
+export const selectEntities = state => state.entities;
+export const selectStatus = state => state.status;
+export const selectError = state => state.error;
+

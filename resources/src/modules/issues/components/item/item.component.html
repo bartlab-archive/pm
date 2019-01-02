@@ -3,6 +3,35 @@
 
         <mat-card-header>
             <mat-card-title>{{item.subject}}</mat-card-title>
+            <div fxFlex="100"></div>
+
+            <button mat-icon-button (click)="refresh()">
+                <mat-icon>refresh</mat-icon>
+            </button>
+            <mat-menu #appMenu="matMenu">
+                <a mat-menu-item>
+                    <mat-icon>open_in_browser</mat-icon>
+                    Edit
+                </a>
+                <mat-divider></mat-divider>
+                <a mat-menu-item>
+                    <mat-icon>mode_edit</mat-icon>
+                    Copy
+                </a>
+                <mat-divider></mat-divider>
+                <a mat-menu-item>
+                    <mat-icon>star_border</mat-icon>
+                    Watch
+                </a>
+                <mat-divider></mat-divider>
+                <a mat-menu-item>
+                    <mat-icon>delete</mat-icon>
+                    Delete
+                </a>
+            </mat-menu>
+            <button mat-icon-button [matMenuTriggerFor]="appMenu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
         </mat-card-header>
 
         <div class="my-flex-container">

@@ -6,9 +6,10 @@ import {
     MetaReducer
 } from '@ngrx/store';
 // import {localStorageSync} from 'ngrx-store-localstorage';
-import {issuesReducers} from './issues.reducer';
-import {statusesReducers} from './statuses.reducer';
-import {trackersReducers} from './trackers.reducer';
+import * as fromIssues from './issues.reducer';
+import *  as fromUsers from './users.reducer';
+import * as fromTrackers from './trackers.reducer';
+import * as fromStatuses from './statuses.reducer';
 
 // export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
 //     return localStorageSync({keys: [{issues: ['entities', 'meta']}], rehydrate: true})(reducer);
@@ -18,43 +19,27 @@ export const metaReducers: Array<MetaReducer<any, any>> = [
     // localStorageSyncReducer
 ];
 export const reducers: ActionReducerMap<any> = {
-    issues: issuesReducers,
-    statuses: statusesReducers,
-    trackers: trackersReducers,
+    issues: fromIssues.issuesReducers,
+    statuses: fromStatuses.reducers,
+    trackers: fromTrackers.reducers,
+    users: fromUsers.reducers,
 };
 
 // module
 export const selectModuleSate = createFeatureSelector('module.issues');
+
 export const selectIssuesState = createSelector(selectModuleSate, (state: any) => state.issues);
-export const selectStatusesState = createSelector(selectModuleSate, (state: any) => state.statuses);
+export const selectIssuesEntities = createSelector(selectIssuesState, fromIssues.selectEntities);
+
+export const selectUsersState = createSelector(selectModuleSate, (state: any) => state.users);
+export const selectUsersEntities = createSelector(selectUsersState, fromUsers.selectEntities);
+
 export const selectTrackersState = createSelector(selectModuleSate, (state: any) => state.trackers);
-export const selectItemState = createSelector(selectModuleSate, (state: any) => state.item.data);
+export const selectTrackersEntities = createSelector(selectTrackersState, fromTrackers.selectEntities);
 
-// issues
-export const selectIssuesEntities = createSelector(selectIssuesState, (state) => state.entities);
-export const selectIssuesIds = createSelector(selectIssuesState, (state) => state.ids);
-export const selectIssuesStatus = createSelector(selectIssuesState, (state) => state.status);
-export const selectIssuesError = createSelector(selectIssuesState, (state) => state.error);
-export const selectIssuesMeta = createSelector(selectIssuesState, (state) => state.meta);
-export const selectIssuesActiveId = createSelector(selectIssuesState, (state) => state.activeId);
-
-// statuses
-export const selectStatusesEntities = createSelector(selectStatusesState, (state) => state.entities);
-export const selectStatusesStatus = createSelector(selectStatusesState, (state) => state.status);
-export const selectStatusesError = createSelector(selectStatusesState, (state) => state.error);
+export const selectStatusesState = createSelector(selectModuleSate, (state: any) => state.statuses);
+export const selectStatusesEntities = createSelector(selectStatusesState, fromStatuses.selectEntities);
 
 // trackers
-export const selectTrackersEntities = createSelector(selectTrackersState, (state) => state.entities);
 export const selectTrackersStatus = createSelector(selectTrackersState, (state) => state.status);
 export const selectTrackersError = createSelector(selectTrackersState, (state) => state.error);
-
-export const selectIssues = createSelector(selectIssuesEntities, selectIssuesIds, (entities, ids) =>
-    ids.map((id) => entities[id]),
-);
-
-export const selectIssuesActive = createSelector(
-    [selectIssuesEntities,  selectIssuesActiveId],
-    (entities, activeId) => {
-        return entities[activeId];
-    },
-);

@@ -3,26 +3,18 @@ import {IssuesActionsUnion, IssuesActionTypes} from '../actions/issues.action';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {SharedActionsUnion, SharedActionTypes} from '../actions/shared.action';
 
-const normalize = (data, key = 'id') => {
-    if (Array.isArray(data)) {
-        return data.reduce((acc, item) => ({...acc, [item[key]]: item}), {});
-    }
-
-    return {[data[key]]: data};
-};
-
 const entities = (state = {}, action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
         case IssuesActionTypes.ALL_SUCCESS:
             return {
                 ...state,
-                ...normalize(action.payload.data),
+                ...action.payload.entities.issues
             };
 
         case IssuesActionTypes.ITEM_SUCCESS: {
             return {
                 ...state,
-                ...normalize(action.payload.data),
+                ...action.payload.entities.issues
             };
         }
 
@@ -37,7 +29,7 @@ const entities = (state = {}, action: IssuesActionsUnion | SharedActionsUnion) =
 export const ids = (state: Array<number> = [], action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
         case IssuesActionTypes.ALL_SUCCESS: {
-            return action.payload.data.map((issue) => issue.id);
+            return action.payload.result;
         }
 
         default: {
@@ -64,7 +56,13 @@ const error = (state = null, action: IssuesActionsUnion | SharedActionsUnion) =>
         case IssuesActionTypes.ALL_REQUEST:
             return null;
 
+        case  IssuesActionTypes.ITEM_REQUEST:
+            return null;
+
         case IssuesActionTypes.ALL_ERROR:
+            return action.payload;
+
+        case  IssuesActionTypes.ITEM_ERROR:
             return action.payload;
 
         case SharedActionTypes.AUTH_LOGOUT:
@@ -80,10 +78,19 @@ const status = (state = null, action: IssuesActionsUnion | SharedActionsUnion) =
         case IssuesActionTypes.ALL_SUCCESS:
             return RequestStatus.success;
 
+        case IssuesActionTypes.ITEM_SUCCESS:
+            return RequestStatus.success;
+
         case IssuesActionTypes.ALL_ERROR:
             return RequestStatus.error;
 
+        case IssuesActionTypes.ITEM_ERROR:
+            return RequestStatus.error;
+
         case IssuesActionTypes.ALL_REQUEST:
+            return RequestStatus.pending;
+
+        case IssuesActionTypes.ITEM_REQUEST:
             return RequestStatus.pending;
 
         case SharedActionTypes.AUTH_LOGOUT:
@@ -97,7 +104,7 @@ const status = (state = null, action: IssuesActionsUnion | SharedActionsUnion) =
 const activeId = (state = null, action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
         case  IssuesActionTypes.ITEM_SUCCESS:
-            return action.payload.data.id;
+            return action.payload.result;
         default:
             return state;
     }
@@ -112,6 +119,9 @@ export const issuesReducers = combineReducers({
     error
 });
 
-// export const getStatus = (state) => state.status;
-// export const getError = (state) => state.error;
-// export const getEntities = (state) => state.entities;
+export const selectEntities = state => state.entities;
+export const selectIds = state => state.ids;
+export const selectStatus = state => state.status;
+export const selectError = state => state.error;
+export const selectActiveId = state => state.activeId;
+export const selectMeta = state => state.meta;

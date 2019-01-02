@@ -24,10 +24,17 @@ import {
 } from 'rxjs/operators';
 import {select, Store} from '@ngrx/store';
 import {
+    selectStatusesEntities,
+    selectTrackersEntities,
+} from '../../store/reducers';
+
+import {selectStatusesStatus} from '../../store/selectors/statuses';
+import {
     selectIssues,
     selectIssuesMeta,
-    selectIssuesStatus, selectStatusesEntities, selectStatusesStatus, selectTrackersEntities
-} from '../../store/reducers';
+    selectIssuesStatus,
+} from '../../store/selectors/issues';
+
 import {IssuesAllRequestAction} from '../../store/actions/issues.action';
 import {RequestStatus} from '../../../../app/interfaces/api';
 // import {StatusesAllRequestAction} from '../../store/actions/statuses.action';
@@ -144,7 +151,8 @@ export class IssuesListComponent implements OnInit, OnDestroy {
             // })
         );
 
-        // console.log('init');
+        this.load();
+        //console.log('init');
         // this.store.dispatch(new StatusesAllRequestAction());
         // this.store.dispatch(new TrackersAllRequestAction());
     }

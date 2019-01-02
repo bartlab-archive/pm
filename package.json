@@ -52,6 +52,7 @@
         "cross-env": "^5.2.0",
         "file-loader": "^2.0.0",
         "mini-css-extract-plugin": "^0.4.5",
+        "normalizr": "^3.3.0",
         "prettier": "^1.15.2",
         "sass-loader": "^7.1.0",
         "tslint": "^5.11.0",

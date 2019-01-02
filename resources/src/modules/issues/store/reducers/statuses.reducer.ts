@@ -1,37 +1,29 @@
 import {combineReducers} from '@ngrx/store';
 import {StatusesActionsUnion, StatusesActionTypes} from '../actions/statuses.action';
 import {RequestStatus} from '../../../../app/interfaces/api';
+import {IssuesActionsUnion, IssuesActionTypes} from "../actions/issues.action";
 
-const entities = (state = [], action: StatusesActionsUnion) => {
+const entities = (state = [], action: StatusesActionsUnion | IssuesActionsUnion) => {
     switch (action.type) {
         case StatusesActionTypes.STATUSES_ALL_SUCCESS :
-            return action.payload.data;
+            return action.payload.entities.statuses;
         // case StatusesActionTypes.AUTH_LOGOUT:
         //     return null;
+        case IssuesActionTypes.ITEM_SUCCESS :
+            return {
+                ...state,
+                ...action.payload.entities.statuses,
+            };
 
         default:
             return state;
     }
 };
 
-// const meta = (state = null, action: StatusesActionsUnion) => {
-//     switch (action.type) {
-//         case StatusesActionTypes.ALL_SUCCESS:
-//             return action.payload.meta;
-//
-//         // case StatusesActionTypes.AUTH_LOGOUT:
-//         //     return null;
-//
-//         default:
-//             return state;
-//     }
-// };
-
 const error = (state = null, action: StatusesActionsUnion) => {
     switch (action.type) {
         case StatusesActionTypes.STATUSES_ALL_REQUEST:
             return null;
-
 
         case StatusesActionTypes.STATUSES_ALL_ERROR:
             return action.payload;
@@ -63,13 +55,13 @@ const status = (state = null, action: StatusesActionsUnion) => {
     }
 };
 
-export const statusesReducers = combineReducers({
+export const reducers = combineReducers({
     entities,
     // meta,
     status,
     error
 });
 
-// export const getStatus = (state) => state.status;
-// export const getError = (state) => state.error;
-// export const getEntities = (state) => state.entities;
+export const selectEntities = state => state.entities;
+export const selectStatus = state => state.status;
+export const selectError = state => state.error;

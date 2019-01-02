@@ -7,7 +7,7 @@ import {Subscription} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {ActivatedRoute, Router,} from '@angular/router';
 import * as issuesActions from '../../store/actions/issues.action';
-import {selectIssuesActive} from "../../store/reducers";
+import {selectIssuesActive} from "../../store/selectors/issues";
 
 @Component({
     selector: 'app-issues-item',
@@ -27,8 +27,6 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit(): void {
-        const {id} = this.activatedRoute.snapshot.params;
-        this.store.dispatch(new issuesActions.ItemRequestAction(id));
 
         this.subscriptions.push(
             this.store.pipe(select(selectIssuesActive))
@@ -46,6 +44,11 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
     }
 
     public load(): void {
+        const {id} = this.activatedRoute.snapshot.params;
+        this.store.dispatch(new issuesActions.ItemRequestAction(id));
     }
 
+    public refresh(): void {
+        this.load();
+    }
 }
