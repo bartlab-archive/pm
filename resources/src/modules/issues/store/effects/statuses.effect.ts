@@ -21,8 +21,11 @@ export class StatusesEffect {
         // map((action) => action.payload),
         exhaustMap(() =>
             this.statusesService.all().pipe(
-                map((response) => {
-                    return new StatusesAllSuccessAction(normalize(response.data, [schemas.statuses]));
+                map((response: any) => {
+                    const payload = {
+                        ...normalize(response.data, [schemas.statuses]),
+                    };
+                    return new StatusesAllSuccessAction(payload);
                 }),
                 catchError((response) => of(new StatusesAllErrorAction(response))),
             ),

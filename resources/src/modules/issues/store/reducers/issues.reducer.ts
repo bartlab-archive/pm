@@ -2,20 +2,15 @@ import {combineReducers} from '@ngrx/store';
 import {IssuesActionsUnion, IssuesActionTypes} from '../actions/issues.action';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {SharedActionsUnion, SharedActionTypes} from '../actions/shared.action';
+import {updateStateEntities} from '../utils/ngrx-utils';
 
 const entities = (state = {}, action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
         case IssuesActionTypes.ALL_SUCCESS:
-            return {
-                ...state,
-                ...action.payload.entities.issues
-            };
+            return updateStateEntities(state, action.payload.entities.issues);
 
         case IssuesActionTypes.ITEM_SUCCESS: {
-            return {
-                ...state,
-                ...action.payload.entities.issues
-            };
+            return updateStateEntities(state, action.payload.entities.issues);
         }
 
         case SharedActionTypes.AUTH_LOGOUT:

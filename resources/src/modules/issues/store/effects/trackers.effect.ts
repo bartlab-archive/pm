@@ -21,8 +21,11 @@ export class TrackersEffect {
         map((action) => action.payload),
         exhaustMap((data) =>
             this.trackersService.all(data).pipe(
-                map((response) => {
-                    return new TrackersAllSuccessAction(normalize(response.data, [schemas.trackers]));
+                map((response: any) => {
+                    const payload = {
+                        ...normalize(response.data, [schemas.trackers])
+                    };
+                    return new TrackersAllSuccessAction(payload);
                 }),
                 catchError((response) => of(new TrackersAllErrorAction(response))),
             ),

@@ -2,17 +2,15 @@ import {combineReducers} from '@ngrx/store';
 import {TrackersActionsUnion, TrackersActionTypes} from '../actions/trackers.action';
 import {IssuesActionsUnion, IssuesActionTypes} from '../actions/issues.action';
 import {RequestStatus} from '../../../../app/interfaces/api';
+import {updateStateEntities} from "../utils/ngrx-utils";
 
 const entities = (state = {}, action: TrackersActionsUnion | IssuesActionsUnion) => {
     switch (action.type) {
         case TrackersActionTypes.TRACKERS_ALL_SUCCESS :
-            return action.payload.entities.trackers;
+            return updateStateEntities(state, action.payload.entities.trackers);
 
         case IssuesActionTypes.ITEM_SUCCESS :
-            return  {
-                ...state,
-                ...action.payload.entities.trackers,
-            };
+            return updateStateEntities(state, action.payload.entities.trackers);
 
         default:
             return state;

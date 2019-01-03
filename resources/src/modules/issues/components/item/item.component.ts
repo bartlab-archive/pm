@@ -18,6 +18,7 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
 
     public subscriptions: Subscription[] = [];
     public item = null;
+    private id: number;
 
     public constructor(
         private store: Store<any>,
@@ -27,6 +28,8 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit(): void {
+        const {id} = this.activatedRoute.snapshot.params;
+        this.id = id;
 
         this.subscriptions.push(
             this.store.pipe(select(selectIssuesActive))
@@ -44,8 +47,9 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
     }
 
     public load(): void {
-        const {id} = this.activatedRoute.snapshot.params;
-        this.store.dispatch(new issuesActions.ItemRequestAction(id));
+        if (this.id) {
+            this.store.dispatch(new issuesActions.ItemRequestAction(this.id));
+        }
     }
 
     public refresh(): void {

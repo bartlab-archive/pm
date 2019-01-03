@@ -3,11 +3,13 @@
 
         <mat-card-header>
             <mat-card-title>{{item.subject}}</mat-card-title>
+
             <div fxFlex="100"></div>
 
             <button mat-icon-button (click)="refresh()">
                 <mat-icon>refresh</mat-icon>
             </button>
+
             <mat-menu #appMenu="matMenu">
                 <a mat-menu-item>
                     <mat-icon>open_in_browser</mat-icon>
@@ -54,7 +56,7 @@
             </div>
             <div class="my-flex-block">
                 <img
-                        src="{{ item.author ? item.author.avatar : item.author.avatar }}">
+                        src="{{item.author ? item.author.avatar : item.author.avatar}}">
                 <a href="user/{{item.author.id}}">{{item.author.full_name}}</a>
             </div>
         </div>
@@ -65,7 +67,7 @@
             </div>
             <div class="my-flex-block">
                 <img
-                        src="{{ item.assigned ? item.assigned.avatar : item.assigned.avatar }}">
+                        src="{{item.assigned ? item.assigned.avatar : item.assigned.avatar}}">
                 <a href="user/{{item.assigned.id}}">{{item.assigned.full_name}}</a>
             </div>
         </div>
@@ -79,7 +81,7 @@
             </div>
         </div>
 
-        <div class="my-flex-container">
+        <div class="my-flex-container" *ngIf="item.description">
             <div class="my-flex-block">
                 <mat-icon>short_text</mat-icon>
             </div>
@@ -102,18 +104,19 @@
             </div>
         </div>
 
-
         <div class="my-flex-container" *ngIf="item.journals && item.journals.length">
             <div class="my-flex-block">
                 <mat-icon>history</mat-icon>
             </div>
             <div class="my-flex-block">
                 <ul>
-                    <li *ngFor="let item of item.journals; let i = index">
-                        <img src="{{ item.user ? item.user.avatar : item.user.avatar }}">
-                        Updated by <a href="user/{{item.user.id}}"> {{item.user.full_name}}</a> on {{item.created_on}}
-                        <ul *ngIf="item.details && item.details.length">
-                            <li *ngFor="let detail of item.details">
+                    <li *ngFor="let journal of item.journals">
+                        <img src="{{journal.user ? journal.user.avatar : journal.user.avatar}}">
+                        Updated by <a href="user/{{journal.user.id}}"> {{journal.user.full_name}}</a> on
+                        {{journal.created_on}}
+                        <p *ngIf="journal.notes">{{journal.notes}}</p>
+                        <ul *ngIf="journal.details && journal.details.length">
+                            <li *ngFor="let detail of journal.details">
                                 <strong>{{detail.prop_key}}</strong> changed from {{detail.value | slice:0:20}}...
                             </li>
                         </ul>
