@@ -1,9 +1,9 @@
-import issues from './issues';
-import statuses from './statuses';
-import trackers from './trackers';
+import issuesSchema from './issues';
+import statusesSchema from './statuses';
+import trackersSchema from './trackers';
 
 export {
-    issues,
-    statuses,
-    trackers,
+    issuesSchema,
+    statusesSchema,
+    trackersSchema
 }

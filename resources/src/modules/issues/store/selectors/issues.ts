@@ -1,25 +1,29 @@
 import {createSelector} from "@ngrx/store";
 import {denormalize} from "normalizr";
-import * as fromRoot from '../reducers';
-import * as fromIssues from "../reducers/issues.reducer";
-import * as schemas from "../schemas";
+import {
+    selectUsersEntities,
+    selectTrackersEntities,
+    selectStatusesEntities,
+    selectIssuesState
+} from '../reducers';
+import {issuesSchema} from "../schemas";
+
+export const selectIssuesEntities = createSelector(selectIssuesState, state => state.entities);
+export const selectIssuesIds = createSelector(selectIssuesState, state => state.ids);
+export const selectIssuesStatus = createSelector(selectIssuesState, state => state.status);
+export const selectIssuesError = createSelector(selectIssuesState, state => state.error);
+export const selectIssuesActiveId = createSelector(selectIssuesState, state => state.activeId);
+export const selectIssuesMeta = createSelector(selectIssuesState, state => state.meta);
 
 const entities = [
-    fromRoot.selectIssuesEntities,
-    fromRoot.selectUsersEntities,
-    fromRoot.selectTrackersEntities,
-    fromRoot.selectStatusesEntities,
+    selectIssuesEntities,
+    selectUsersEntities,
+    selectTrackersEntities,
+    selectStatusesEntities,
 ];
-
-export const selectIssuesStatus = createSelector(fromRoot.selectIssuesState, fromIssues.selectStatus);
-export const selectIssuesError = createSelector(fromRoot.selectIssuesState, fromIssues.selectError);
-export const selectIssuesMeta = createSelector(fromRoot.selectIssuesState, fromIssues.selectMeta);
-export const selectIssuesIds = createSelector(fromRoot.selectIssuesState, fromIssues.selectIds);
-export const selectIssuesActiveId = createSelector(fromRoot.selectIssuesState, fromIssues.selectActiveId);
-
 export const selectIssuesActive = createSelector(
     [...entities, selectIssuesActiveId] as any,
-    (issues, users, trackers, statuses, activeId) => denormalize(activeId, schemas.issues, {
+    (issues, users, trackers, statuses, activeId) => denormalize(activeId, issuesSchema, {
         issues,
         users,
         trackers,
@@ -29,13 +33,10 @@ export const selectIssuesActive = createSelector(
 
 export const selectIssues = createSelector(
     [...entities, selectIssuesIds] as any,
-    (issues, users, trackers, statuses, ids) => {
-
-        return denormalize(ids, [schemas.issues], {
-            issues,
-            users,
-            trackers,
-            statuses
-        });
-    }
+    (issues, users, trackers, statuses, ids) => denormalize(ids, [issuesSchema], {
+        issues,
+        users,
+        trackers,
+        statuses
+    })
 );

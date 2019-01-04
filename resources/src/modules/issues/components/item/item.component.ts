@@ -1,13 +1,14 @@
 import {
     Component,
     OnDestroy,
-    OnInit,
+    OnInit
 } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {ActivatedRoute, Router,} from '@angular/router';
-import * as issuesActions from '../../store/actions/issues.action';
-import {selectIssuesActive} from "../../store/selectors/issues";
+import {ItemRequestAction} from '../../store/actions/issues.action';
+import {selectIssuesActive, selectIssuesStatus} from '../../store/selectors/issues';
+import {RequestStatus} from '../../../../app/interfaces/api';
 
 @Component({
     selector: 'app-issues-item',
@@ -18,7 +19,8 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
 
     public subscriptions: Subscription[] = [];
     public item = null;
-    private id: number;
+    private id: number = this.activatedRoute.snapshot.params['id'];
+    public pending: boolean = false;
 
     public constructor(
         private store: Store<any>,
@@ -28,10 +30,17 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit(): void {
-        const {id} = this.activatedRoute.snapshot.params;
-        this.id = id;
 
         this.subscriptions.push(
+            this.store.pipe(select(selectIssuesStatus))
+                .subscribe((status) => {
+                    if (status === RequestStatus.pending) {
+                        this.pending = true;
+                    } else {
+                        this.pending = false;
+                    }
+                }),
+
             this.store.pipe(select(selectIssuesActive))
                 .subscribe((data) => {
                         this.item = data;
@@ -47,12 +56,6 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
     }
 
     public load(): void {
-        if (this.id) {
-            this.store.dispatch(new issuesActions.ItemRequestAction(this.id));
-        }
-    }
-
-    public refresh(): void {
-        this.load();
+        this.store.dispatch(new ItemRequestAction(this.id));
     }
 }

@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppInterceptor, AppInterceptorHandler } from '../../../app/interfaces/app';
-import * as issuesActions from '../store/actions/issues.action';
-import { AppEventsUnion, AppPreloadEvent, EVENT_TYPE_PRELOAD } from '../../../app/events';
+import {Injectable} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {AppInterceptor, AppInterceptorHandler} from '../../../app/interfaces/app';
+import {IssuesPreloadRequestAction} from '../store/actions/issues.action';
+import {AppEventsUnion, AppPreloadEvent, EVENT_TYPE_PRELOAD} from '../../../app/events';
 
 @Injectable()
 export class IssuesEventInterceptor implements AppInterceptor {
@@ -21,7 +21,7 @@ export class IssuesEventInterceptor implements AppInterceptor {
     }
 
     public onPreload(appEvent: AppPreloadEvent, next: AppInterceptorHandler): void {
-        this.store.dispatch(new issuesActions.IssuesPreloadRequestAction());
+        this.store.dispatch(new IssuesPreloadRequestAction());
         next.handle(appEvent);
     }
 }

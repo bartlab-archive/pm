@@ -9,9 +9,10 @@ import {
     TrackersActionTypes,
     TrackersAllErrorAction,
     TrackersAllRequestAction,
-    TrackersAllSuccessAction,
+    TrackersAllSuccessAction
 } from '../actions/trackers.action';
-import * as schemas from "../schemas";
+
+import {trackersSchema} from "../schemas";
 
 @Injectable()
 export class TrackersEffect {
@@ -23,7 +24,7 @@ export class TrackersEffect {
             this.trackersService.all(data).pipe(
                 map((response: any) => {
                     const payload = {
-                        ...normalize(response.data, [schemas.trackers])
+                        ...normalize(response.data, [trackersSchema])
                     };
                     return new TrackersAllSuccessAction(payload);
                 }),

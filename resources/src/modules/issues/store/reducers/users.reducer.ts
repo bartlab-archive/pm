@@ -19,8 +19,6 @@ const entities = (state = {}, action: IssuesActionsUnion | SharedActionsUnion) =
     }
 };
 
-export const reducers = combineReducers({
+export const userReducers = combineReducers({
     entities,
 });
-
-export const selectEntities = state => state.entities;

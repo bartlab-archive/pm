@@ -113,10 +113,3 @@ export const issuesReducers = combineReducers({
     status,
     error
 });
-
-export const selectEntities = state => state.entities;
-export const selectIds = state => state.ids;
-export const selectStatus = state => state.status;
-export const selectError = state => state.error;
-export const selectActiveId = state => state.activeId;
-export const selectMeta = state => state.meta;

@@ -1,18 +1,12 @@
-.my-flex-container {
-  display: flex;
-  padding: 5px;
-  font-size: 14px;
-}
-
-.my-flex-block {
-  word-wrap: break-word;
-  white-space: pre-line;
-  min-width: 50px;
-}
-
-:host ::ng-deep .mat-card-header-text {
-  margin: 0;
+::ng-deep .mat-card-header-text {
   width: 100%;
+}
+
+mat-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 img {
@@ -25,12 +19,15 @@ img {
 }
 
 ul {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
-  margin-top: 0px;
-  margin-left: -10px;
+  margin: 4px 0;
 }
 
-ul li {
-  margin: 10px;
+ul {
+  .journal {
+    list-style-type: disc;
+    margin: 5px;
+    padding: 5px;
+  }
 }

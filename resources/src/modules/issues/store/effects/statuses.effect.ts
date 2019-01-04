@@ -9,9 +9,10 @@ import {
     StatusesActionTypes,
     StatusesAllErrorAction,
     StatusesAllRequestAction,
-    StatusesAllSuccessAction,
+    StatusesAllSuccessAction
 } from '../actions/statuses.action';
-import * as schemas from "../schemas";
+
+import {statusesSchema} from "../schemas";
 
 @Injectable()
 export class StatusesEffect {
@@ -23,7 +24,7 @@ export class StatusesEffect {
             this.statusesService.all().pipe(
                 map((response: any) => {
                     const payload = {
-                        ...normalize(response.data, [schemas.statuses]),
+                        ...normalize(response.data, [statusesSchema]),
                     };
                     return new StatusesAllSuccessAction(payload);
                 }),

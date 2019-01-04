@@ -66,14 +66,9 @@ const status = (state = null, action: TrackersActionsUnion) => {
     }
 };
 
-export const reducers = combineReducers({
+export const trackersReducers = combineReducers({
     entities,
-    // meta,
     status,
     error
 });
-
-export const selectEntities = state => state.entities;
-export const selectStatus = state => state.status;
-export const selectError = state => state.error;
 
