@@ -13,6 +13,7 @@ import {
     MatPaginatorModule,
     MatProgressBarModule,
     MatTableModule,
+    MatTooltipModule
 } from '@angular/material';
 
 import {CommonModule} from '@angular/common';
@@ -23,6 +24,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {StoreModule} from '@ngrx/store';
 import {reducers, metaReducers} from './store/reducers';
 import {EffectsModule} from '@ngrx/effects';
+import {MarkdownModule} from 'ngx-markdown';
 import {IssuesEffect} from './store/effects/issues.effect';
 import {StatusesEffect} from './store/effects/statuses.effect';
 import {TrackersEffect} from './store/effects/trackers.effect';
@@ -54,10 +56,12 @@ import {PROJECTS_ROUTERS} from '../projects/providers/projects.injection';
         MatChipsModule,
         MatProgressBarModule,
         MatAutocompleteModule,
+        MatTooltipModule,
         // RouterModule,
         RouterModule.forChild(routes),
         StoreModule.forFeature('module.issues', reducers, {metaReducers}),
         EffectsModule.forFeature([IssuesEffect, StatusesEffect, TrackersEffect]),
+        MarkdownModule.forRoot(),
     ],
 
     providers: [
