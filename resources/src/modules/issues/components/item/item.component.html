@@ -93,7 +93,6 @@
                                 Updated by <a href="user/{{journal.user.id}}"> {{journal.user.full_name}}</a> on
                                 <span matTooltip="{{journal.created_on}}" matTooltipPosition="above"><strong>{{journal.format_created_on}}</strong></span>
                                 <p *ngIf="journal.notes">{{journal.notes}}</p>
-                                <p></p>
                                 <ul *ngIf="journal.details && journal.details.length" class="journal">
                                     <li *ngFor="let detail of journal.details">
                                         <strong>{{detail.prop_key}}</strong> changed from {{detail.value}}

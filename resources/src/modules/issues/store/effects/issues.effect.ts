@@ -11,7 +11,10 @@ import {
     IssuesAllSuccessAction,
     ItemSuccessAction,
     ItemErrorAction,
-    IssuesActionTypes
+    IssuesActionTypes,
+    ItemUpdateRequestAction,
+    ItemUpdateSuccessAction,
+    ItemUpdateErrortAction
 } from '../actions/issues.action';
 
 import {ResponseError} from '../../../../app/interfaces/api';
@@ -51,6 +54,25 @@ export class IssuesEffect {
                     return new ItemSuccessAction(payload);
                 }),
                 catchError((response: ResponseError) => of(new ItemErrorAction(response))),
+            ),
+        ),
+    );
+
+    @Effect()
+    protected watch$ = this.actions$.pipe(
+        ofType<ItemUpdateRequestAction>(IssuesActionTypes.ITEM_UPDATE_REQUEST),
+        map(action => action.payload),
+        exhaustMap((payload) =>
+            this.issuesService.watch(payload).pipe(
+                map(() => {
+
+                    console.log('payload', payload);
+                    return new ItemUpdateSuccessAction({
+                        id: payload.id,
+                        is_watcheble: !payload.is_watcheble,
+                    });
+                }),
+                catchError((response: ResponseError) => of(new ItemUpdateErrortAction(response))),
             ),
         ),
     );

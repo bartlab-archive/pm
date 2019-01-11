@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {Router, RouterModule, Routes} from '@angular/router';
+import {RouterModule} from '@angular/router';
 import {
     MatAutocompleteModule,
     MatButtonModule,
@@ -19,7 +19,11 @@ import {
 import {CommonModule} from '@angular/common';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {IssuesService, StatusesService, TrackersService} from './services';
-import {IssuesItemComponent, IssuesListComponent, IssuesMainComponent} from './components';
+import {
+    IssuesItemComponent,
+    IssuesListComponent,
+    IssuesMainComponent
+} from './components';
 import {ReactiveFormsModule} from '@angular/forms';
 import {StoreModule} from '@ngrx/store';
 import {reducers, metaReducers} from './store/reducers';
@@ -61,7 +65,7 @@ import {PROJECTS_ROUTERS} from '../projects/providers/projects.injection';
         RouterModule.forChild(routes),
         StoreModule.forFeature('module.issues', reducers, {metaReducers}),
         EffectsModule.forFeature([IssuesEffect, StatusesEffect, TrackersEffect]),
-        MarkdownModule.forRoot(),
+        MarkdownModule.forChild(),
     ],
 
     providers: [

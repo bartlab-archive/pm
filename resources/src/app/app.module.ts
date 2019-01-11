@@ -5,6 +5,7 @@ import {RouterModule} from '@angular/router';
 import {EffectsModule} from '@ngrx/effects';
 import {Store, StoreModule} from '@ngrx/store';
 import {StoreRouterConnectingModule} from '@ngrx/router-store';
+import {MarkdownModule} from 'ngx-markdown';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {reducers, metaReducers} from './store/reducers';
 import {AppComponent} from './components/app.component';
@@ -61,6 +62,7 @@ import {AppInterceptor} from './interceptors/app.interceptor';
         AuthModule,
         ProjectsModule,
         IssuesModule,
+        MarkdownModule.forRoot(),
     ],
     providers: [
         AppService,

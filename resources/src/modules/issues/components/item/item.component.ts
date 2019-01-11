@@ -7,8 +7,8 @@ import {Subscription} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import * as moment from 'moment';
 import {MarkdownService} from 'ngx-markdown';
-import {ActivatedRoute, Router,} from '@angular/router';
-import {ItemRequestAction} from '../../store/actions/issues.action';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ItemRequestAction, ItemUpdateRequestAction} from '../../store/actions/issues.action';
 import {selectIssuesActive, selectIssuesStatus} from '../../store/selectors/issues';
 import {RequestStatus} from '../../../../app/interfaces/api';
 
@@ -21,7 +21,7 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
 
     public subscriptions: Subscription[] = [];
     public item = null;
-    private id: number = this.activatedRoute.snapshot.params['id'];
+    private id: number = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
     public pending: boolean = false;
     public journals: any[];
 
@@ -37,11 +37,7 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.store.pipe(select(selectIssuesStatus))
                 .subscribe((status) => {
-                    if (status === RequestStatus.pending) {
-                        this.pending = true;
-                    } else {
-                        this.pending = false;
-                    }
+                    this.pending = status === RequestStatus.pending;
                 }),
 
             this.store.pipe(select(selectIssuesActive))
@@ -79,7 +75,6 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
     }
 
     public watch(): void {
-        // todo: dispatch new action
-        this.item.is_watcheble = !this.item.is_watcheble;
+        this.store.dispatch(new ItemUpdateRequestAction({id: this.id,  'is_watcheble': this.item.is_watcheble}));
     }
 }

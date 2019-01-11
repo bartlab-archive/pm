@@ -19,6 +19,10 @@ export const routes: Routes = [
                     {
                         path: ':id',
                         component: IssuesItemComponent,
+                    },
+                    {
+                        path: ':id/watch',
+                        component: IssuesItemComponent,
                     }
                 ]
             },

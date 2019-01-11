@@ -13,6 +13,12 @@ const entities = (state = {}, action: IssuesActionsUnion | SharedActionsUnion) =
             return updateStateEntities(state, action.payload.entities.issues);
         }
 
+        case IssuesActionTypes.ITEM_UPDATE_SUCCESS: {
+            return updateStateEntities(state, {
+                [action.payload.id]: action.payload,
+            });
+        }
+
         case SharedActionTypes.AUTH_LOGOUT:
             return null;
 
@@ -70,24 +76,34 @@ const error = (state = null, action: IssuesActionsUnion | SharedActionsUnion) =>
 
 const status = (state = null, action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
-        case IssuesActionTypes.ALL_SUCCESS:
-            return RequestStatus.success;
+// Request
+        case IssuesActionTypes.ALL_REQUEST:
+            return RequestStatus.pending;
 
-        case IssuesActionTypes.ITEM_SUCCESS:
+        case IssuesActionTypes.ALL_SUCCESS:
             return RequestStatus.success;
 
         case IssuesActionTypes.ALL_ERROR:
             return RequestStatus.error;
-
-        case IssuesActionTypes.ITEM_ERROR:
-            return RequestStatus.error;
-
-        case IssuesActionTypes.ALL_REQUEST:
-            return RequestStatus.pending;
-
+// Item
         case IssuesActionTypes.ITEM_REQUEST:
             return RequestStatus.pending;
 
+        case IssuesActionTypes.ITEM_SUCCESS:
+            return RequestStatus.success;
+
+        case IssuesActionTypes.ITEM_ERROR:
+            return RequestStatus.error;
+// Update
+        case IssuesActionTypes.ITEM_UPDATE_REQUEST:
+            return RequestStatus.pending;
+
+        case IssuesActionTypes.ITEM_UPDATE_SUCCESS:
+            return RequestStatus.success;
+
+        case IssuesActionTypes.ITEM_UPDATE_ERROR:
+            return RequestStatus.error;
+// Logout
         case SharedActionTypes.AUTH_LOGOUT:
             return null;
 
