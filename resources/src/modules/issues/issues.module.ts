@@ -22,7 +22,8 @@ import {IssuesService, StatusesService, TrackersService} from './services';
 import {
     IssuesItemComponent,
     IssuesListComponent,
-    IssuesMainComponent
+    IssuesMainComponent,
+    IssuesJournalsComponent
 } from './components';
 import {ReactiveFormsModule} from '@angular/forms';
 import {StoreModule} from '@ngrx/store';
@@ -41,7 +42,8 @@ import {PROJECTS_ROUTERS} from '../projects/providers/projects.injection';
     declarations: [
         IssuesMainComponent,
         IssuesListComponent,
-        IssuesItemComponent
+        IssuesItemComponent,
+        IssuesJournalsComponent
     ],
     imports: [
         CommonModule,

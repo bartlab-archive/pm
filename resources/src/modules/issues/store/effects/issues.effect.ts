@@ -66,7 +66,6 @@ export class IssuesEffect {
             this.issuesService.watch(payload).pipe(
                 map(() => {
 
-                    console.log('payload', payload);
                     return new ItemUpdateSuccessAction({
                         id: payload.id,
                         is_watcheble: !payload.is_watcheble,

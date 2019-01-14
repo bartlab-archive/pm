@@ -1,14 +1,3 @@
-::ng-deep .mat-card-header-text {
-  width: 100%;
-}
-
-mat-progress-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-}
-
 img {
   width: 24px;
   height: 24px;
@@ -22,4 +11,9 @@ ul {
   list-style-type: none;
   padding: 0;
   margin: 4px 0;
+  .journal {
+    list-style-type: disc;
+    margin: 5px;
+    padding: 5px;
+  }
 }

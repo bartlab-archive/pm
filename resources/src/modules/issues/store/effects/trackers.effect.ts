@@ -2,7 +2,7 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {catchError, exhaustMap, map} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {normalize} from "normalizr";
+import {normalize} from 'normalizr';
 import {TrackersService} from '../../services';
 import {IssuesActionTypes} from '../actions/issues.action';
 import {
@@ -12,7 +12,7 @@ import {
     TrackersAllSuccessAction
 } from '../actions/trackers.action';
 
-import {trackersSchema} from "../schemas";
+import {trackersSchema} from '../schemas';
 
 @Injectable()
 export class TrackersEffect {

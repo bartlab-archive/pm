@@ -1,12 +1,12 @@
-import {createSelector} from "@ngrx/store";
-import {denormalize} from "normalizr";
+import {createSelector} from '@ngrx/store';
+import {denormalize} from 'normalizr';
 import {
     selectUsersEntities,
     selectTrackersEntities,
     selectStatusesEntities,
     selectIssuesState
 } from '../reducers';
-import {issuesSchema} from "../schemas";
+import {issuesSchema} from '../schemas';
 
 export const selectIssuesEntities = createSelector(selectIssuesState, state => state.entities);
 export const selectIssuesIds = createSelector(selectIssuesState, state => state.ids);

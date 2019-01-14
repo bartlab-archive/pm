@@ -5,7 +5,6 @@ import {
 } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import * as moment from 'moment';
 import {MarkdownService} from 'ngx-markdown';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ItemRequestAction, ItemUpdateRequestAction} from '../../store/actions/issues.action';
@@ -23,7 +22,6 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
     public item = null;
     private id: number = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
     public pending: boolean = false;
-    public journals: any[];
 
     public constructor(
         private store: Store<any>,
@@ -42,22 +40,13 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
 
             this.store.pipe(select(selectIssuesActive))
                 .subscribe((data) => {
-                        if (data) {
+                        if (data && data.id === this.id) {
                             this.item = Object.keys(data).reduce((acc, key) => {
                                 if (key === 'description') {
                                     acc[key] = this.markdownService.compile(data[key]);
                                 }
                                 return acc;
                             }, {...data});
-
-                            if (data.journals && data.journals.length) {
-                                this.journals = data.journals.map((journal) => {
-                                    return {
-                                        ...journal,
-                                        'format_created_on': moment(journal.created_on).fromNow()
-                                    };
-                                });
-                            }
                         }
                     }
                 )
@@ -75,6 +64,6 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
     }
 
     public watch(): void {
-        this.store.dispatch(new ItemUpdateRequestAction({id: this.id,  'is_watcheble': this.item.is_watcheble}));
+        this.store.dispatch(new ItemUpdateRequestAction({id: this.id, 'is_watcheble': this.item.is_watcheble}));
     }
 }
