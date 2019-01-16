@@ -5,7 +5,7 @@
             <img src="{{journal.user ? journal.user.avatar : journal.user.avatar}}">
             Updated by <a href="user/{{journal.user.id}}"> {{journal.user.full_name}}</a> on
             <span matTooltip="{{journal.created_on}}"
-                  matTooltipPosition="above"><strong>{{journal.format_created_on}}</strong></span>
+                  matTooltipPosition="above"><strong>{{journal.created_on | formattedDate : 'fromNow' }}</strong></span>
             <p *ngIf="journal.notes">{{journal.notes}}</p>
             <ul *ngIf="journal.details && journal.details.length" class="journal">
                 <li *ngFor="let detail of journal.details">

@@ -1,6 +1,11 @@
 import {Routes} from '@angular/router';
 import {DefaultComponent} from '../layouts/components';
-import {IssuesItemComponent, IssuesListComponent, IssuesMainComponent} from './components';
+import {
+    IssuesItemComponent,
+    IssuesListComponent,
+    IssuesMainComponent,
+    IssuesFormComponent
+} from './components';
 
 export const routes: Routes = [
     {
@@ -23,6 +28,10 @@ export const routes: Routes = [
                     {
                         path: ':id/watch',
                         component: IssuesItemComponent,
+                    },
+                    {
+                        path: ':id/edit',
+                        component: IssuesFormComponent,
                     }
                 ]
             },

@@ -13,7 +13,9 @@ import {
     MatPaginatorModule,
     MatProgressBarModule,
     MatTableModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSlideToggleModule,
+    MatSelectModule
 } from '@angular/material';
 
 import {CommonModule} from '@angular/common';
@@ -23,7 +25,8 @@ import {
     IssuesItemComponent,
     IssuesListComponent,
     IssuesMainComponent,
-    IssuesJournalsComponent
+    IssuesJournalsComponent,
+    IssuesFormComponent
 } from './components';
 import {ReactiveFormsModule} from '@angular/forms';
 import {StoreModule} from '@ngrx/store';
@@ -37,13 +40,15 @@ import {projectsIssuesRoutes, routes} from './issues.routes';
 import {APP_EVENT_INTERCEPTORS} from '../../app/providers/app.injection';
 import {IssuesEventInterceptor} from './interceptors/issues-event.interceptor';
 import {PROJECTS_ROUTERS} from '../projects/providers/projects.injection';
+import {PipesModule} from '../../app/pipes';
 
 @NgModule({
     declarations: [
         IssuesMainComponent,
         IssuesListComponent,
         IssuesItemComponent,
-        IssuesJournalsComponent
+        IssuesJournalsComponent,
+        IssuesFormComponent
     ],
     imports: [
         CommonModule,
@@ -63,11 +68,14 @@ import {PROJECTS_ROUTERS} from '../projects/providers/projects.injection';
         MatProgressBarModule,
         MatAutocompleteModule,
         MatTooltipModule,
+        MatSlideToggleModule,
+        MatSelectModule,
         // RouterModule,
         RouterModule.forChild(routes),
         StoreModule.forFeature('module.issues', reducers, {metaReducers}),
         EffectsModule.forFeature([IssuesEffect, StatusesEffect, TrackersEffect]),
         MarkdownModule.forChild(),
+        PipesModule,
     ],
 
     providers: [
