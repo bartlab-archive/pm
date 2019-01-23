@@ -7,13 +7,11 @@ import {updateStateEntities} from '../utils/ngrx-utils';
 const entities = (state = {}, action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
         case IssuesActionTypes.ALL_SUCCESS:
-            return updateStateEntities(state, action.payload.entities.issues);
-
         case IssuesActionTypes.ITEM_SUCCESS: {
             return updateStateEntities(state, action.payload.entities.issues);
         }
-
-        case IssuesActionTypes.ITEM_UPDATE_SUCCESS: {
+        case IssuesActionTypes.ITEM_UNWATCH_SUCCESS:
+        case IssuesActionTypes.ITEM_WATCH_SUCCESS: {
             return updateStateEntities(state, {
                 [action.payload.id]: action.payload,
             });
@@ -95,13 +93,16 @@ const status = (state = null, action: IssuesActionsUnion | SharedActionsUnion) =
         case IssuesActionTypes.ITEM_ERROR:
             return RequestStatus.error;
 // Update
-        case IssuesActionTypes.ITEM_UPDATE_REQUEST:
+        case IssuesActionTypes.ITEM_UNWATCH_REQUEST:
+        case IssuesActionTypes.ITEM_WATCH_REQUEST:
             return RequestStatus.pending;
 
-        case IssuesActionTypes.ITEM_UPDATE_SUCCESS:
+        case IssuesActionTypes.ITEM_WATCH_SUCCESS:
+        case IssuesActionTypes.ITEM_UNWATCH_SUCCESS:
             return RequestStatus.success;
 
-        case IssuesActionTypes.ITEM_UPDATE_ERROR:
+        case IssuesActionTypes.ITEM_WATCH_ERROR:
+        case IssuesActionTypes.ITEM_UNWATCH_ERROR:
             return RequestStatus.error;
 // Logout
         case SharedActionTypes.AUTH_LOGOUT:

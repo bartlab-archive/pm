@@ -17,14 +17,11 @@ export class IssuesService {
         return this.http.get(`/api/v1/issues/${id}`);
     }
 
-    public watch(data) {
-        const {id, is_watcheble} = data;
-
-        if (is_watcheble) {
-            return this.http.delete(`/api/v1/issues/${id}/watch`, {});
-        }
-
+    public watch(id) {
         return this.http.post(`/api/v1/issues/${id}/watch`, {});
     }
 
+    public unwatch(id) {
+        return this.http.delete(`/api/v1/issues/${id}/watch`, {});
+    }
 }

@@ -7,14 +7,23 @@ import {updateStateEntities} from '../utils/ngrx-utils';
 const entities = (state = [], action: StatusesActionsUnion | IssuesActionsUnion) => {
     switch (action.type) {
         case StatusesActionTypes.STATUSES_ALL_SUCCESS :
-            return updateStateEntities(state, action.payload.entities.statuses);
-        // case StatusesActionTypes.AUTH_LOGOUT:
-        //     return null;
         case IssuesActionTypes.ITEM_SUCCESS :
             return updateStateEntities(state, action.payload.entities.statuses);
 
         default:
             return state;
+    }
+};
+
+export const ids = (state = [], action: StatusesActionsUnion | IssuesActionsUnion) => {
+    switch (action.type) {
+        case StatusesActionTypes.STATUSES_ALL_SUCCESS: {
+            return action.payload.result;
+        }
+
+        default: {
+            return state;
+        }
     }
 };
 
@@ -55,6 +64,7 @@ const status = (state = null, action: StatusesActionsUnion) => {
 
 export const statusesReducers = combineReducers({
     entities,
+    ids,
     status,
     error
 });

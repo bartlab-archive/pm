@@ -2,14 +2,7 @@ import {combineReducers} from '@ngrx/store';
 import {RequestStatus, ResponseError} from '../../../../app/interfaces/api';
 import * as ProjectsActions from '../actions/projects.actions';
 import {Entities, Meta, Project} from '../../interfaces/projects';
-
-const normalize = (data, key = 'identifier') => {
-    if (Array.isArray(data)) {
-        return data.reduce((acc, item) => ({...acc, [item[key]]: item}), {});
-    }
-
-    return {[data[key]]: data};
-};
+import {updateStateEntities} from '../utils/ngrx-utils';
 
 export const meta = (state: Meta = null, action: ProjectsActions.ActionsUnion) => {
     switch (action.type) {
@@ -28,14 +21,14 @@ export const entities = (state: Entities<Project> = {}, action: ProjectsActions.
         case ProjectsActions.ActionTypes.LIST_SUCCESS: {
             return {
                 ...state,
-                ...normalize(action.payload.data),
+                ...updateStateEntities(state, action.payload.entities.projects)
             };
         }
 
         case ProjectsActions.ActionTypes.ONE_SUCCESS: {
             return {
                 ...state,
-                ...normalize(action.payload.data),
+                ...updateStateEntities(state, action.payload.entities.projects)
             };
         }
 
@@ -48,7 +41,7 @@ export const entities = (state: Entities<Project> = {}, action: ProjectsActions.
 export const ids = (state: Array<string> = [], action: ProjectsActions.ActionsUnion) => {
     switch (action.type) {
         case ProjectsActions.ActionTypes.LIST_SUCCESS: {
-            return action.payload.data.map((project) => project.identifier);
+            return action.payload.result;
         }
 
         default: {
@@ -60,7 +53,7 @@ export const ids = (state: Array<string> = [], action: ProjectsActions.ActionsUn
 export const activeId = (state: string = null, action: ProjectsActions.ActionsUnion) => {
     switch (action.type) {
         case ProjectsActions.ActionTypes.ONE_SUCCESS: {
-            return action.payload.data.identifier;
+            return action.payload.result;
         }
 
         case ProjectsActions.ActionTypes.RESET_ACTIVE_ID:
@@ -129,9 +122,9 @@ export const reducer = combineReducers({
     status,
 });
 
-export const getMeta = (state: State) => state.meta;
-export const getEntities = (state: State) => state.entities;
-export const getIds = (state: State) => state.ids;
-export const getActiveId = (state: State) => state.activeId;
-export const getError = (state: State) => state.error;
-export const getStatus = (state: State) => state.status;
+// export const getMeta = (state: State) => state.meta;
+// export const getEntities = (state: State) => state.entities;
+// export const getIds = (state: State) => state.ids;
+// export const getActiveId = (state: State) => state.activeId;
+// export const getError = (state: State) => state.error;
+// export const getStatus = (state: State) => state.status;

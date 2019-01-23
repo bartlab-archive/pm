@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { catchError, exhaustMap, map } from 'rxjs/operators';
-import { ProjectsService } from '../../services/projects.service';
+import {Injectable} from '@angular/core';
+import {Actions, Effect, ofType} from '@ngrx/effects';
+import {of} from 'rxjs';
+import {catchError, exhaustMap, map} from 'rxjs/operators';
+import {normalize} from 'normalizr';
+import {ProjectsService} from '../../services/projects.service';
 import * as ProjectActions from '../actions/projects.actions';
-import { ListResponse, PaginationParams, ProjectResponse } from '../../interfaces/projects';
-import { ResponseError } from '../../../../app/interfaces/api';
+import {ListResponse, PaginationParams, ProjectResponse} from '../../interfaces/projects';
+import {ResponseError} from '../../../../app/interfaces/api';
+import {projectsSchema} from '../schemas';
 
 @Injectable()
 export class ProjectsEffects {
@@ -16,7 +18,13 @@ export class ProjectsEffects {
         map((action) => action.payload),
         exhaustMap((data: PaginationParams) =>
             this.projectsService.all(data).pipe(
-                map((response: ListResponse) => new ProjectActions.ListSuccessAction(response)),
+                map((response: ListResponse) => {
+                    const payload = {
+                        meta: response.meta,
+                        ...normalize(response.data, [projectsSchema]),
+                    };
+                    return new ProjectActions.ListSuccessAction(payload);
+                }),
                 catchError((response: ResponseError) => of(new ProjectActions.ListErrorAction(response))),
             ),
         ),
@@ -29,11 +37,17 @@ export class ProjectsEffects {
         map((action) => action.payload),
         exhaustMap((identifier: string) =>
             this.projectsService.one(identifier).pipe(
-                map((response: ProjectResponse) => new ProjectActions.OneSuccessAction(response)),
+                map((response: ProjectResponse) => {
+                    const payload = {
+                        ...normalize(response.data, projectsSchema),
+                    };
+                    return new ProjectActions.OneSuccessAction(payload)
+                }),
                 catchError((response: ResponseError) => of(new ProjectActions.OneErrorAction(response))),
             ),
         ),
     );
 
-    public constructor(protected actions$: Actions, protected projectsService: ProjectsService) {}
+    public constructor(protected actions$: Actions, protected projectsService: ProjectsService) {
+    }
 }

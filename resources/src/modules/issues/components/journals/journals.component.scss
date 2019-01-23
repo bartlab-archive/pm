@@ -1,19 +1,47 @@
-img {
-  width: 24px;
-  height: 24px;
-  margin-right: 20px;
-  border-radius: 50%;
-  box-sizing: content-box;
-  float: left;
+$space: 20px;
+
+.my-0 {
+  margin-top: 0 * $space;
+  margin-bottom: 0 * $space;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 4px 0;
+.ml-1 {
+  margin-left: 1 * $space;
+}
+
+$text-muted: #ababab;
+$icon-size: 24px;
+
+.journal-list {
+  padding-left: 0;
+  list-style: none;
+
   .journal {
-    list-style-type: disc;
-    margin: 5px;
-    padding: 5px;
+    display: flex;
+    align-items: flex-end;
+
+    figure {
+      margin: 0 $space 0 0;
+      text-align: center;
+
+      img {
+        width: $icon-size;
+        height: $icon-size;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  .details {
+    padding-left: 0;
+    margin-left: $icon-size + $space;
+
+    li {
+      list-style: disc;
+
+      .label{
+        color: $text-muted;
+      }
+    }
   }
 }

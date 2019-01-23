@@ -18,7 +18,7 @@
                         <mat-icon>mode_edit</mat-icon>
                         Copy
                     </a>
-                    <a mat-menu-item (click)="watch(item.id, item.is_watcheble)">
+                    <a mat-menu-item (click)="item.is_watcheble ? unwatch(item.id) : watch(item.id)">
                         <mat-icon>{{ item.is_watcheble ? 'star' : 'star_border' }}</mat-icon>
                         {{ item.is_watcheble ? 'Unwatch' : 'Watch' }}
                     </a>
@@ -83,11 +83,10 @@
                         </ul>
                     </div>
                 </div>
-
-                <div *ngIf="item.journals && item.journals.length">
-                    <app-issues-journals fxLayoutGap="30px" [journals]="item.journals"></app-issues-journals>
+                <div fxLayout fxLayoutGap="30px" *ngIf="item.journals && item.journals.length">
+                    <mat-icon>history</mat-icon>
+                    <app-issues-journals [journals]="item.journals"></app-issues-journals>
                 </div>
-
             </mat-card-content>
         </div>
     </mat-card>

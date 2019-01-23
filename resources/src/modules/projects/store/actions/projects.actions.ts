@@ -29,7 +29,7 @@ export class ListErrorAction implements Action {
 export class ListSuccessAction implements Action {
     readonly type = ActionTypes.LIST_SUCCESS;
 
-    constructor(public payload: ListResponse) {
+    constructor(public payload: any) {
     }
 }
 
@@ -50,7 +50,7 @@ export class OneErrorAction implements Action {
 export class OneSuccessAction implements Action {
     readonly type = ActionTypes.ONE_SUCCESS;
 
-    constructor(public payload: ProjectResponse) {
+    constructor(public payload: any) {
     }
 }
 

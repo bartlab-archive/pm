@@ -7,8 +7,6 @@ import {updateStateEntities} from '../utils/ngrx-utils';
 const entities = (state = {}, action: TrackersActionsUnion | IssuesActionsUnion) => {
     switch (action.type) {
         case TrackersActionTypes.TRACKERS_ALL_SUCCESS :
-            return updateStateEntities(state, action.payload.entities.trackers);
-
         case IssuesActionTypes.ITEM_SUCCESS :
             return updateStateEntities(state, action.payload.entities.trackers);
 
@@ -17,24 +15,10 @@ const entities = (state = {}, action: TrackersActionsUnion | IssuesActionsUnion)
     }
 };
 
-// const meta = (state = null, action: TrackersActionsUnion) => {
-//     switch (action.type) {
-//         case TrackersActionTypes.ALL_SUCCESS:
-//             return action.payload.meta;
-//
-//         // case TrackersActionTypes.AUTH_LOGOUT:
-//         //     return null;
-//
-//         default:
-//             return state;
-//     }
-// };
-
 const error = (state = null, action: TrackersActionsUnion) => {
     switch (action.type) {
         case TrackersActionTypes.TRACKERS_ALL_REQUEST:
             return null;
-
 
         case TrackersActionTypes.TRACKERS_ALL_ERROR:
             return action.payload;
@@ -66,8 +50,19 @@ const status = (state = null, action: TrackersActionsUnion) => {
     }
 };
 
+const ids = (state = [], action: TrackersActionsUnion | IssuesActionsUnion) => {
+    switch (action.type) {
+        case TrackersActionTypes.TRACKERS_ALL_SUCCESS :
+            return action.payload.result;
+
+        default:
+            return state;
+    }
+};
+
 export const trackersReducers = combineReducers({
     entities,
+    ids,
     status,
     error
 });

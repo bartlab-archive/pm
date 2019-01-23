@@ -6,7 +6,11 @@ import {
 import {Subscription, combineLatest} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {ItemRequestAction, ItemUpdateRequestAction} from '../../store/actions/issues.action';
+import {
+    ItemRequestAction,
+    ItemWatchRequestAction,
+    ItemUnwatchRequestAction
+} from '../../store/actions/issues.action';
 import {selectIssuesActive, selectIssuesStatus} from '../../store/selectors/issues';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {Observable} from 'rxjs/internal/Observable';
@@ -53,7 +57,11 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
         this.store.dispatch(new ItemRequestAction(id));
     }
 
-    public watch(id, is_watcheble): void {
-        this.store.dispatch(new ItemUpdateRequestAction({id, is_watcheble}));
+    public watch(id: number): void {
+        this.store.dispatch(new ItemWatchRequestAction(id));
+    }
+
+    public unwatch(id: number): void {
+        this.store.dispatch(new ItemUnwatchRequestAction(id));
     }
 }

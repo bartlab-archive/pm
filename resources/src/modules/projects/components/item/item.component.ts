@@ -4,9 +4,10 @@ import {select, Store} from '@ngrx/store';
 import {Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Project} from '../../interfaces/projects';
-import * as fromProjects from '../../store/reducers';
 import * as projectActions from '../../store/actions/projects.actions';
 import {RequestStatus} from '../../../../app/interfaces/api';
+import {selectProjectsActive} from '../../store/selectors/projects';
+import {selectProjectsStatus} from '../../store/reducers';
 
 @Component({
     selector: 'app-projects-item',
@@ -15,9 +16,9 @@ import {RequestStatus} from '../../../../app/interfaces/api';
 })
 export class ProjectsItemComponent implements OnInit, OnDestroy {
     public subscriptions: Subscription[] = [];
-    public project$: Observable<Project> = this.store.pipe(select(fromProjects.selectProjectsActive));
+    public project$: Observable<Project> = this.store.pipe(select(selectProjectsActive));
     public pending$: Observable<boolean> = this.store.pipe(
-        select(fromProjects.selectProjectsStatus),
+        select(selectProjectsStatus),
         map((status) => status === RequestStatus.pending),
     );
 

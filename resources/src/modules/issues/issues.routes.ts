@@ -26,10 +26,6 @@ export const routes: Routes = [
                         component: IssuesItemComponent,
                     },
                     {
-                        path: ':id/watch',
-                        component: IssuesItemComponent,
-                    },
-                    {
                         path: ':id/edit',
                         component: IssuesFormComponent,
                     }

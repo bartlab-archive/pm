@@ -23,12 +23,8 @@ import {
     startWith,
 } from 'rxjs/operators';
 import {select, Store} from '@ngrx/store';
-import {
-    selectStatusesEntities,
-    selectTrackersEntities,
-} from '../../store/reducers';
-
-import {selectStatusesStatus} from '../../store/selectors/statuses';
+import {selectTrackers} from '../../store/selectors/trackers';
+import {selectStatuses} from '../../store/selectors/statuses';
 import {
     selectIssues,
     selectIssuesMeta,
@@ -37,8 +33,6 @@ import {
 
 import {IssuesAllRequestAction} from '../../store/actions/issues.action';
 import {RequestStatus} from '../../../../app/interfaces/api';
-// import {StatusesAllRequestAction} from '../../store/actions/statuses.action';
-// import {TrackersAllRequestAction} from '../../store/actions/trackers.action';
 
 @Component({
     selector: 'app-issues-list',
@@ -86,18 +80,11 @@ export class IssuesListComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             combineLatest(
                 this.store.pipe(select(selectIssuesStatus)),
-                this.store.pipe(select(selectStatusesStatus))
+                this.store.pipe(select(selectStatuses))
             )
                 .subscribe((statuses) => {
                     this.pending = statuses.some((status) => status === RequestStatus.pending);
                 }),
-
-
-            //     this.store
-            //         .pipe(select(selectIssuesStatus))
-            //         .subscribe((status) => {
-            //             this.pending = (status === RequestStatus.pending);
-            //         }),
 
             this.store
                 .pipe(
@@ -120,8 +107,8 @@ export class IssuesListComponent implements OnInit, OnDestroy {
                 }),
 
             zip(
-                this.store.pipe(select(selectStatusesEntities)),
-                this.store.pipe(select(selectTrackersEntities)),
+                this.store.pipe(select(selectStatuses)),
+                this.store.pipe(select(selectTrackers)),
             )
                 .pipe(
                     filter(([statuses, trackers]) => statuses.length > 0 && trackers.length > 0)

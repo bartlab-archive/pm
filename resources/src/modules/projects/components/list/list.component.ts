@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { FormControl } from '@angular/forms';
-import { select, Store } from '@ngrx/store';
-import { Observable, merge, Subscription, combineLatest } from 'rxjs';
-import { filter, map, mapTo, startWith, switchMap } from 'rxjs/operators';
-import { MatPaginator, MatSort, PageEvent, MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
+import {Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
+import {Router} from '@angular/router';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {FormControl} from '@angular/forms';
+import {select, Store} from '@ngrx/store';
+import {Observable, merge, Subscription, combineLatest} from 'rxjs';
+import {filter, map, mapTo, startWith, switchMap} from 'rxjs/operators';
+import {MatPaginator, MatSort, PageEvent, MatAutocompleteSelectedEvent, MatChipInputEvent} from '@angular/material';
 import {
     Meta,
     PaginationParams,
@@ -14,9 +14,10 @@ import {
     ProjectTag,
     projectStatusName,
 } from '../../interfaces/projects';
-import * as fromProjects from '../../store/reducers';
 import * as projectActions from '../../store/actions/projects.actions';
-import { RequestStatus } from '../../../../app/interfaces/api';
+import {RequestStatus} from '../../../../app/interfaces/api';
+import {selectProjects, selectProjectsMeta} from '../../store/selectors/projects';
+import {selectProjectsStatus} from '../../store/reducers';
 
 @Component({
     selector: 'app-projects-list',
@@ -54,15 +55,15 @@ export class ProjectsListComponent implements OnInit, OnDestroy {
     public displayedColumns: string[] = ['name', 'description', 'menu'];
     // public displayedColumns: string[] = ['identifier', 'labels', 'name', 'description', 'manage'];
 
-    public projects$: Observable<Project[]> = this.store.pipe(select(fromProjects.selectProjects));
-    public meta$: Observable<Meta> = this.store.pipe(select(fromProjects.selectProjectsMeta));
+    public projects$: Observable<Project[]> = this.store.pipe(select(selectProjects));
+    public meta$: Observable<Meta> = this.store.pipe(select(selectProjectsMeta));
     public pending$: Observable<boolean> = this.store.pipe(
-        select(fromProjects.selectProjectsStatus),
+        select(selectProjectsStatus),
         map((status) => status === RequestStatus.pending),
     );
 
     public success$: Observable<boolean> = this.store.pipe(
-        select(fromProjects.selectProjectsStatus),
+        select(selectProjectsStatus),
         filter((status) => status === RequestStatus.success),
         mapTo(true),
     );
@@ -204,6 +205,7 @@ export class ProjectsListComponent implements OnInit, OnDestroy {
         this.pageSize = $event.pageSize;
         // console.log($event);
     }
+
     //
     // public onSelectProject(project: Project): void {
     //     this.router.navigate(['/projects', project.identifier]);

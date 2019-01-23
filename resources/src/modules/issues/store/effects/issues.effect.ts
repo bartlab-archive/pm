@@ -12,9 +12,12 @@ import {
     ItemSuccessAction,
     ItemErrorAction,
     IssuesActionTypes,
-    ItemUpdateRequestAction,
-    ItemUpdateSuccessAction,
-    ItemUpdateErrortAction
+    ItemWatchRequestAction,
+    ItemWatchSuccessAction,
+    ItemWatchErrorAction,
+    ItemUnwatchRequestAction,
+    ItemUnwatchSuccessAction,
+    ItemUnwatchErrorAction
 } from '../actions/issues.action';
 
 import {ResponseError} from '../../../../app/interfaces/api';
@@ -60,18 +63,34 @@ export class IssuesEffect {
 
     @Effect()
     protected watch$ = this.actions$.pipe(
-        ofType<ItemUpdateRequestAction>(IssuesActionTypes.ITEM_UPDATE_REQUEST),
+        ofType<ItemWatchRequestAction>(IssuesActionTypes.ITEM_WATCH_REQUEST),
         map(action => action.payload),
-        exhaustMap((payload) =>
-            this.issuesService.watch(payload).pipe(
+        exhaustMap((id: number) =>
+            this.issuesService.watch(id).pipe(
                 map(() => {
-
-                    return new ItemUpdateSuccessAction({
-                        id: payload.id,
-                        is_watcheble: !payload.is_watcheble,
+                    return new ItemWatchSuccessAction({
+                        id,
+                        is_watcheble: true
                     });
                 }),
-                catchError((response: ResponseError) => of(new ItemUpdateErrortAction(response))),
+                catchError((response: ResponseError) => of(new ItemUnwatchErrorAction(response))),
+            ),
+        ),
+    );
+
+    @Effect()
+    protected unwatch$ = this.actions$.pipe(
+        ofType<ItemUnwatchRequestAction>(IssuesActionTypes.ITEM_UNWATCH_REQUEST),
+        map(action => action.payload),
+        exhaustMap((id: number) =>
+            this.issuesService.unwatch(id).pipe(
+                map(() => {
+                    return new ItemUnwatchSuccessAction({
+                        id,
+                        is_watcheble: false
+                    });
+                }),
+                catchError((response: ResponseError) => of(new ItemWatchErrorAction(response))),
             ),
         ),
     );

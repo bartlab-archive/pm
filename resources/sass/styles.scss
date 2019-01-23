@@ -5,3 +5,5 @@
 @import "~material-design-icons-iconfont/dist/material-design-icons.scss";
 @import "spinner";
 @import "custom";
+
+@include normalize();

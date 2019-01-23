@@ -9,9 +9,17 @@ export enum IssuesActionTypes {
     ITEM_REQUEST = '[issues] item request',
     ITEM_ERROR = '[issues] item error',
     ITEM_SUCCESS = '[issues] item success',
-    ITEM_UPDATE_REQUEST = '[issues] item update request',
-    ITEM_UPDATE_SUCCESS = '[issues] item update success',
-    ITEM_UPDATE_ERROR = '[issues] item update error',
+    // ITEM_UPDATE_REQUEST = '[issues] item update request',
+    // ITEM_UPDATE_SUCCESS = '[issues] item update success',
+    // ITEM_UPDATE_ERROR = '[issues] item update error',
+
+    ITEM_WATCH_REQUEST = '[issues] item watch request',
+    ITEM_WATCH_SUCCESS = '[issues] item watch success',
+    ITEM_WATCH_ERROR = '[issues] item watch error',
+
+    ITEM_UNWATCH_REQUEST = '[issues] item unwatch request',
+    ITEM_UNWATCH_SUCCESS = '[issues] item unwatch success',
+    ITEM_UNWATCH_ERROR = '[issues] item unwatch error',
     // shared
     // AUTH_LOGOUT = '[Auth] Logout',
 }
@@ -67,23 +75,45 @@ export class ItemSuccessAction implements Action {
     }
 }
 
-// Update
-export class ItemUpdateRequestAction implements Action {
-    readonly type = IssuesActionTypes.ITEM_UPDATE_REQUEST;
+// Watch
+export class ItemWatchRequestAction implements Action {
+    readonly type = IssuesActionTypes.ITEM_WATCH_REQUEST;
 
     constructor(public payload) {
     }
 }
 
-export class ItemUpdateErrortAction implements Action {
-    readonly type = IssuesActionTypes.ITEM_UPDATE_ERROR;
+export class ItemWatchErrorAction implements Action {
+    readonly type = IssuesActionTypes.ITEM_WATCH_ERROR;
 
     constructor(public payload: ResponseError) {
     }
 }
 
-export class ItemUpdateSuccessAction implements Action {
-    readonly type = IssuesActionTypes.ITEM_UPDATE_SUCCESS;
+export class ItemWatchSuccessAction implements Action {
+    readonly type = IssuesActionTypes.ITEM_WATCH_SUCCESS;
+
+    constructor(public payload) {
+    }
+}
+
+// Unwatch
+export class ItemUnwatchRequestAction implements Action {
+    readonly type = IssuesActionTypes.ITEM_UNWATCH_REQUEST;
+
+    constructor(public payload: number) {
+    }
+}
+
+export class ItemUnwatchErrorAction implements Action {
+    readonly type = IssuesActionTypes.ITEM_UNWATCH_ERROR;
+
+    constructor(public payload: ResponseError) {
+    }
+}
+
+export class ItemUnwatchSuccessAction implements Action {
+    readonly type = IssuesActionTypes.ITEM_UNWATCH_SUCCESS;
 
     constructor(public payload) {
     }
@@ -106,7 +136,11 @@ export type IssuesActionsUnion =
     | ItemRequestAction
     | ItemSuccessAction
 
-    | ItemUpdateRequestAction
-    | ItemUpdateSuccessAction
-    | ItemUpdateErrortAction;
+    | ItemWatchRequestAction
+    | ItemWatchErrorAction
+    | ItemWatchSuccessAction
+
+    | ItemUnwatchRequestAction
+    | ItemUnwatchErrorAction
+    | ItemUnwatchSuccessAction;
 // | IssuesLogoutSuccessAction;
