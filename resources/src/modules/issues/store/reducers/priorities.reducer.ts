@@ -4,9 +4,10 @@ import {EnumerationsActionsUnion, EnumerationsActionTypes} from '../actions/enum
 import {updateStateEntities} from '../utils/ngrx-utils';
 import {IssuesActionTypes, IssuesActionsUnion} from '../actions/issues.action';
 
-const entities = (state = [], action: EnumerationsActionsUnion | IssuesActionsUnion) => {
+const entities = (state = {}, action: EnumerationsActionsUnion | IssuesActionsUnion) => {
     switch (action.type) {
         case EnumerationsActionTypes.ENUMERATIONS_SUCCESS :
+        case IssuesActionTypes.ALL_SUCCESS:
         case IssuesActionTypes.ITEM_SUCCESS: {
             return updateStateEntities(state, action.payload.entities.priorities);
         }
@@ -57,7 +58,7 @@ const status = (state = null, action: EnumerationsActionsUnion) => {
     }
 };
 
-export const enumerationsReducers = combineReducers({
+export const prioritiesReducers = combineReducers({
     entities,
     ids,
     status,

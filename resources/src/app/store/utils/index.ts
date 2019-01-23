@@ -18,3 +18,12 @@ export const updateStateEntities = (state, entities) => {
         return acc;
     }, {...state});
 };
+
+export const getStateEntities = (state, action, key) => {
+    if(action.payload && action.payload.entities && action.payload.entities[key]) {
+        return updateStateEntities(state, action.payload.entities[key]);
+    }
+
+    return state;
+};
+

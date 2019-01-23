@@ -33,6 +33,13 @@ export const reducers: ActionReducerMap<ProjectsState> = {
 
 export const selectModuleState = createFeatureSelector<State, ProjectsState>('module.projects');
 export const selectProjectsState = createSelector(selectModuleState, (state: ProjectsState) => state.projects);
+export const selectProjectsEntities = createSelector(selectProjectsState, state => state.entities);
 
-export const selectProjectsStatus = createSelector(selectProjectsState, state => state.status);
-export const selectProjectsError = createSelector(selectProjectsState, state => state.error);
+export const selectUsersState = createSelector(selectModuleState, (state: ProjectsState) => state.users);
+export const selectUsersEntities = createSelector(selectUsersState, state => state.entities);
+
+export const selectMembersState = createSelector(selectModuleState, (state: ProjectsState) => state.members);
+export const selectMembersEntities = createSelector(selectMembersState, state => state.entities);
+
+export const selectRolesState = createSelector(selectModuleState, (state: ProjectsState) => state.roles);
+export const selectRolesEntities = createSelector(selectRolesState, state => state.entities);

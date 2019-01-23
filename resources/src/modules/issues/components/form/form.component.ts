@@ -10,7 +10,7 @@ import {
     Validators
 } from '@angular/forms';
 
-import {selectIssuesActive, selectIssuesStatus} from '../../store/selectors/issues';
+import {selectIssuesStatus} from '../../store/selectors/issues';
 import {combineLatest, Subscription} from 'rxjs/index';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs/internal/Observable';
@@ -26,6 +26,7 @@ import {selectProjects} from '../../store/selectors/projects';
 import {selectPriorities} from '../../store/selectors/priorities';
 import {selectTrackers} from '../../store/selectors/trackers';
 import {selectUsers} from '../../store/selectors/users';
+import {IssuesSelectService} from '../../services';
 
 @Component({
     selector: 'app-issues-form',
@@ -57,11 +58,12 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         public router: Router,
         private fb: FormBuilder,
+        public issuesSelectService: IssuesSelectService,
     ) {
     }
 
     public ngOnInit(): void {
-        this.item$ = combineLatest(this.store.pipe(select(selectIssuesActive)), this.params$)
+        this.item$ = combineLatest(this.issuesSelectService.issue$, this.params$)
             .pipe(
                 filter(([issue, params]) => issue && issue.id === Number(params.id)),
                 map((([issue]) => issue)),

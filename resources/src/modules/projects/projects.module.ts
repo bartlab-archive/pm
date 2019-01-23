@@ -32,10 +32,19 @@ import {ProjectsListComponent} from './components/list/list.component';
 import {ProjectsItemComponent} from './components/item/item.component';
 import {ProjectsService} from './services/projects.service';
 import {DefaultComponent} from '../layouts/components';
-import {reducers, metaReducers} from './store/reducers';
+import {
+    reducers,
+    metaReducers,
+    selectProjectsEntities,
+    selectUsersEntities,
+    selectMembersEntities,
+    selectRolesEntities,
+} from './store/reducers';
+
 import {ProjectsEffects} from './store/effects/projects.effects';
 // import {projectsIssuesRoutes} from '../issues/issues.routes';
 import {PROJECTS_ROUTERS} from './providers/projects.injection';
+import {APP_MODULES_SELECTORS} from '../../app/providers/app.injection';
 
 // const authRoutes: Routes = [
 //     {
@@ -111,7 +120,32 @@ import {PROJECTS_ROUTERS} from './providers/projects.injection';
             provide: PROJECTS_ROUTERS,
             useValue: [],
             multi: true,
-        }
+        },
+
+        {
+            provide: APP_MODULES_SELECTORS,
+            useValue: {
+                moduleProjects: {
+                    projects: {
+                        entities: selectProjectsEntities,
+                    },
+
+                    users: {
+                        entities: selectUsersEntities,
+                    },
+
+                    members: {
+                        entities: selectMembersEntities,
+                    },
+
+                    roles: {
+                        entities: selectRolesEntities,
+                    },
+                }
+            },
+
+            multi: true,
+        },
     ],
 })
 export class ProjectsModule {

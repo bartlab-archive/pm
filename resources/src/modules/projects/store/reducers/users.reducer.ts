@@ -1,26 +1,17 @@
 import {combineReducers} from '@ngrx/store';
 import {Entities, Project} from '../../interfaces/projects';
 import * as ProjectsActions from '../actions/projects.actions';
-import {updateStateEntities} from '../utils/ngrx-utils';
+import {updateStateEntities, getStateEntities} from '../../../../app/store/utils';
 
 export const entities = (state: Entities<Project> = {}, action: ProjectsActions.ActionsUnion) => {
     switch (action.type) {
+        case ProjectsActions.ActionTypes.ONE_SUCCESS:
         case ProjectsActions.ActionTypes.LIST_SUCCESS: {
-            return {
-                ...state,
-                ...updateStateEntities(state, action.payload.entities.users)
-            };
-        }
-
-        case ProjectsActions.ActionTypes.ONE_SUCCESS: {
-            return {
-                ...state,
-                ...updateStateEntities(state, action.payload.entities.users)
-            };
+            return updateStateEntities(state, action.payload.entities.users);
         }
 
         default: {
-            return state;
+            return getStateEntities(state, action, 'users');
         }
     }
 };
