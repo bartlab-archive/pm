@@ -23,7 +23,7 @@ import {
 
 import {CommonModule} from '@angular/common';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {IssuesService, StatusesService, TrackersService} from './services';
+import {IssuesService, StatusesService, TrackersService, IssuesSelectService} from './services';
 import {
     IssuesItemComponent,
     IssuesListComponent,
@@ -33,7 +33,14 @@ import {
 } from './components';
 import {ReactiveFormsModule} from '@angular/forms';
 import {StoreModule} from '@ngrx/store';
-import {reducers, metaReducers} from './store/reducers';
+import {
+    reducers,
+    metaReducers,
+    selectIssuesEntities,
+    selectStatusesEntities,
+    selectTrackersEntities,
+    selectPrioritiesEntities,
+} from './store/reducers';
 import {EffectsModule} from '@ngrx/effects';
 import {MarkdownModule} from 'ngx-markdown';
 import {IssuesEffect} from './store/effects/issues.effect';
@@ -42,7 +49,7 @@ import {TrackersEffect} from './store/effects/trackers.effect';
 import {ProjectsEffect} from './store/effects/projects.effect';
 import {EnumerationsEffect} from './store/effects/enumerations.effect';
 import {projectsIssuesRoutes, routes} from './issues.routes';
-import {APP_EVENT_INTERCEPTORS} from '../../app/providers/app.injection';
+import {APP_EVENT_INTERCEPTORS, APP_MODULES_SELECTORS} from '../../app/providers/app.injection';
 import {IssuesEventInterceptor} from './interceptors/issues-event.interceptor';
 import {PROJECTS_ROUTERS} from '../projects/providers/projects.injection';
 import {PipesModule} from '../../app/pipes';
@@ -96,6 +103,7 @@ import {PipesModule} from '../../app/pipes';
         IssuesService,
         StatusesService,
         TrackersService,
+        IssuesSelectService,
         {
             provide: APP_EVENT_INTERCEPTORS,
             useClass: IssuesEventInterceptor,
@@ -105,7 +113,30 @@ import {PipesModule} from '../../app/pipes';
             provide: PROJECTS_ROUTERS,
             useValue: projectsIssuesRoutes,
             multi: true,
-        }
+        },
+        {
+            provide: APP_MODULES_SELECTORS,
+            useValue: {
+                moduleIssues: {
+                    issues: {
+                        entities: selectIssuesEntities,
+                    },
+
+                    statuses: {
+                        entities: selectStatusesEntities,
+                    },
+
+                    trackers: {
+                        entities: selectTrackersEntities,
+                    },
+
+                    priorities: {
+                        entities: selectPrioritiesEntities,
+                    },
+                }
+            },
+            multi: true,
+        },
     ],
 })
 export class IssuesModule {

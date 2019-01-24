@@ -1,9 +1,9 @@
 import {Action} from '@ngrx/store';
 
 export enum SharedActionTypes {
-     // shared
+    // shared
     AUTH_LOGOUT = '[auth] logout',
-    LIST_SUCCESS = '[projects] list success',
+    // LIST_SUCCESS = '[projects] list success',
     // AUTH_LOGOUT = '[auth] logout',
 }
 
@@ -14,13 +14,13 @@ export class SharedAuthLogoutAction implements Action {
     }
 }
 
-export class SharedProjectListAction implements Action {
-    readonly type = SharedActionTypes.LIST_SUCCESS;
+// export class SharedProjectListAction implements Action {
+//     readonly type = SharedActionTypes.LIST_SUCCESS;
+//
+//     constructor(public payload: any) {
+//     }
+// }
 
-    constructor(public payload: any) {
-    }
-}
-
-export type SharedActionsUnion = SharedAuthLogoutAction
-    | SharedProjectListAction;
+export type SharedActionsUnion = SharedAuthLogoutAction;
+// | SharedProjectListAction;
 

@@ -16,8 +16,7 @@ import {
 } from '../../interfaces/projects';
 import * as projectActions from '../../store/actions/projects.actions';
 import {RequestStatus} from '../../../../app/interfaces/api';
-import {selectProjects, selectProjectsMeta} from '../../store/selectors/projects';
-import {selectProjectsStatus} from '../../store/reducers';
+import {selectProjects, selectProjectsMeta, selectProjectsStatus} from '../../store/selectors/projects';
 
 @Component({
     selector: 'app-projects-list',

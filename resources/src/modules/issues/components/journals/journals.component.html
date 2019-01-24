@@ -19,7 +19,7 @@
             <ul *ngIf="journal.details && journal.details.length" class="details">
                 <li *ngFor="let detail of journal.details">
                     <div *ngIf="detail.old_value;else detailText">
-                        <strong>{{detail.prop_key}}</strong><span class="label ml-1">changed</span><br/>
+                        <strong>{{detail.prop_key}}</strong><span class="badge badge-secondary ml-1">changed</span><br/>
                         <strong>from</strong> {{detail.value}}<br/>
                         <strong>to</strong> {{detail.old_value}}
                     </div>

@@ -6,7 +6,7 @@ import {
     // ActionReducer
 } from '@ngrx/store';
 import * as fromRouter from '@ngrx/router-store';
-
+import * as appReducer from './app.reducer';
 /**
  * storeFreeze prevents state from being mutated. When mutation occurs, an
  * exception will be thrown. This is useful during development mode to
@@ -41,6 +41,7 @@ export const metaReducers: Array<MetaReducer<any, any>> = !environment.productio
 
 export interface State {
     router: fromRouter.RouterReducerState;
+    'module.app': appReducer.State;
 }
 
 /**
@@ -50,4 +51,5 @@ export interface State {
  */
 export const reducers: ActionReducerMap<State> = {
     router: fromRouter.routerReducer,
+    'module.app': appReducer.reducer,
 };

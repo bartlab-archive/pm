@@ -2,7 +2,7 @@ import {combineReducers} from '@ngrx/store';
 import {RequestStatus, ResponseError} from '../../../../app/interfaces/api';
 import * as ProjectsActions from '../actions/projects.actions';
 import {Entities, Meta, Project} from '../../interfaces/projects';
-import {updateStateEntities} from '../utils/ngrx-utils';
+import {getStateEntities, updateStateEntities} from '../../../../app/store/utils';
 
 export const meta = (state: Meta = null, action: ProjectsActions.ActionsUnion) => {
     switch (action.type) {
@@ -18,22 +18,13 @@ export const meta = (state: Meta = null, action: ProjectsActions.ActionsUnion) =
 
 export const entities = (state: Entities<Project> = {}, action: ProjectsActions.ActionsUnion) => {
     switch (action.type) {
-        case ProjectsActions.ActionTypes.LIST_SUCCESS: {
-            return {
-                ...state,
-                ...updateStateEntities(state, action.payload.entities.projects)
-            };
-        }
-
+        case ProjectsActions.ActionTypes.LIST_SUCCESS:
         case ProjectsActions.ActionTypes.ONE_SUCCESS: {
-            return {
-                ...state,
-                ...updateStateEntities(state, action.payload.entities.projects)
-            };
+            return updateStateEntities(state, action.payload.entities.projects);
         }
 
         default: {
-            return state;
+            return getStateEntities(state, action, 'projects');
         }
     }
 };
@@ -121,10 +112,3 @@ export const reducer = combineReducers({
     error,
     status,
 });
-
-// export const getMeta = (state: State) => state.meta;
-// export const getEntities = (state: State) => state.entities;
-// export const getIds = (state: State) => state.ids;
-// export const getActiveId = (state: State) => state.activeId;
-// export const getError = (state: State) => state.error;
-// export const getStatus = (state: State) => state.status;

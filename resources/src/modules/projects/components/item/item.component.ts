@@ -6,8 +6,7 @@ import {map} from 'rxjs/operators';
 import {Project} from '../../interfaces/projects';
 import * as projectActions from '../../store/actions/projects.actions';
 import {RequestStatus} from '../../../../app/interfaces/api';
-import {selectProjectsActive} from '../../store/selectors/projects';
-import {selectProjectsStatus} from '../../store/reducers';
+import {selectProjectsActive, selectProjectsStatus} from '../../store/selectors/projects';
 
 @Component({
     selector: 'app-projects-item',
