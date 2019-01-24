@@ -1,16 +1,19 @@
 import {Inject, NgModule} from '@angular/core';
-
+import {EffectsModule} from "@ngrx/effects";
 import {Router, RouterModule, Routes} from '@angular/router';
 
 
 import {DefaultComponent} from '../layouts/components';
-
-
 import {UserService} from "./services/user.service";
 import {UsersListComponent} from "./components/list/list.component";
 import {USERS_ROUTERS} from "./providers/users.injection";
+import {UsersEffects} from "./store/effects/users.effects";
 
-
+import {
+    reducers,
+} from './store/reducers';
+import {StoreModule} from "@ngrx/store";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
     declarations: [
@@ -20,7 +23,9 @@ import {USERS_ROUTERS} from "./providers/users.injection";
         UsersListComponent
     ],
     imports: [
-
+        HttpClientModule,
+        StoreModule.forFeature('module.users', reducers, {}),
+        EffectsModule.forFeature([UsersEffects]),
     ],
     providers: [
         UserService,
