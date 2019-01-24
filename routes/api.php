@@ -37,7 +37,6 @@ Route::group(
                 Route::get('', 'AuthController@me');
                 Route::post('login', 'AuthController@login');
                 Route::post('register', 'AuthController@register');
-                Route::post('reset', 'AuthController@lostPassword');
 //                Route::post('password-reset', 'AuthController@sendResetPasswordToken');
 //                Route::put('password-reset', 'AuthController@resetPassword');
             }

@@ -47,12 +47,9 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 |
 */
 
-//$app->alias('request', App\Http\Request::class);
-
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
 $response = $kernel->handle(
-//    $request = App\Http\Request::capture()
     $request = Illuminate\Http\Request::capture()
 );
 

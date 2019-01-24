@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Auth\AuthLoginRequest;
 use App\Http\Requests\Auth\AuthRegisterRequest;
-use App\Http\Requests\Auth\AuthResetRequest;
 use App\Http\Resources\TokenResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -32,7 +31,6 @@ class AuthController extends BaseController
 
     public function login(AuthLoginRequest $request)
     {
-//        abort(401);
         if (!$user = $this->usersService->byLogin($request->input('login'))){
             abort(422);
         }
@@ -79,7 +77,7 @@ class AuthController extends BaseController
                     [
                         'message' => 'Account was successfully created. An email containing the instructions to activate your account was sent to <email>.'
                     ],
-                    201
+                    200
                 );
                 break;
             case 2:
@@ -88,32 +86,20 @@ class AuthController extends BaseController
                     [
                         'message' => 'Your account was created and is now pending administrator approval.'
                     ],
-                    201
+                    200
                 );
                 break;
             case 3:
                 // automatic account activation
-                if (!$token = $this->authService->session($user->id)) {
+                if (!$token = $this->authService->session($user->login)) {
                     abort(422);
                 }
-                \Auth::setUser($user);
+
                 return TokenResource::make($token);
                 break;
         }
 
         return response(null, 201);
-    }
-
-    public function lostPassword(AuthResetRequest $request)
-    {
-        // todo Add the function of sending mail after checking the e-mail belonging to one of the users
-
-        return response(
-            [
-                'message' => 'Check your email and follow the instructions in it.'
-            ],
-            200
-        );
     }
 
     public function me()
