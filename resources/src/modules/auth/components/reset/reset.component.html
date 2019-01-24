@@ -1,0 +1,10 @@
+<form [formGroup]="form" fxLayout="column" fxFlex="100" (ngSubmit)="form.valid && submit()">
+    <mat-form-field>
+        <input matInput type="email" placeholder="Email" formControlName="email" required>
+        <mat-error>{{getErrorMessage()}}</mat-error>
+    </mat-form-field>
+
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <button mat-flat-button color="primary" class="submit">Submit</button>
+    </div>
+</form>

@@ -1,0 +1,37 @@
+$space: 20px;
+$text-muted: #ababab;
+$icon-size: 24px;
+
+.journal-list {
+  padding-left: 0;
+  list-style: none;
+
+  .journal {
+    display: flex;
+    align-items: flex-end;
+
+    figure {
+      margin: 0 $space 0 0;
+      text-align: center;
+
+      img {
+        width: $icon-size;
+        height: $icon-size;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  .details {
+    padding-left: 0;
+    margin-left: $icon-size + $space;
+
+    li {
+      list-style: disc;
+
+      .label{
+        color: $text-muted;
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+<div fxFlex="100">
+    <ul class="journal-list">
+        <li *ngFor="let journal of journals">
+            <div class="journal">
+                <figure>
+                    <img src="{{journal.user ? journal.user.avatar : journal.user.avatar}}">
+                </figure>
+                <div>
+                    <p class="my-0">
+                        Updated by <a href="user/{{journal.user.id}}"> {{journal.user.full_name}}</a> on
+                        <span matTooltip="{{journal.created_on}}" matTooltipPosition="above">
+                            <strong>{{journal.created_on | formattedDate : 'fromNow' }}</strong>
+                        </span>
+                    </p>
+                    <p *ngIf="journal.notes" class="my-0">{{journal.notes}}</p>
+                </div>
+            </div>
+
+            <ul *ngIf="journal.details && journal.details.length" class="details">
+                <li *ngFor="let detail of journal.details">
+                    <div *ngIf="detail.old_value;else detailText">
+                        <strong>{{detail.prop_key}}</strong><span class="badge badge-secondary ml-1">changed</span><br/>
+                        <strong>from</strong> {{detail.value}}<br/>
+                        <strong>to</strong> {{detail.old_value}}
+                    </div>
+                    <ng-template #detailText>
+                        <div>
+                            <strong>{{detail.prop_key}}</strong><br/>
+                            {{detail.value}}
+                        </div>
+                    </ng-template>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
