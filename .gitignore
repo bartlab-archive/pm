@@ -3,6 +3,7 @@
 /public/storage
 /storage/uploads
 /public/css
+/public/pm
 /public/js
 /public/fonts
 /public/images
@@ -17,3 +18,4 @@ npm-debug.log
 .env
 .phpstorm.meta.php
 _ide_helper.php
+yarn-error.log

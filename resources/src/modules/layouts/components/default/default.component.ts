@@ -36,6 +36,11 @@ export class DefaultComponent implements OnInit, OnDestroy {
             name: 'Projects'
         },
         {
+            url: '/users',
+            icon: 'face',
+            name: 'Users'
+        },
+        {
             url: '/activity',
             icon: 'access_time',
             name: 'Overall activity'

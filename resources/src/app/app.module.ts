@@ -24,6 +24,7 @@ import * as appActions from './store/actions/app.actions';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AppInterceptor} from './interceptors/app.interceptor';
 import {selectUsersEntities, selectMembersEntities, selectRolesEntities} from './store/reducers/app.reducer';
+import {UsersModule} from "../modules/users/users.module";
 
 @NgModule({
     declarations: [AppComponent],
@@ -63,6 +64,7 @@ import {selectUsersEntities, selectMembersEntities, selectRolesEntities} from '.
         AuthModule,
         ProjectsModule,
         IssuesModule,
+        UsersModule,
         MarkdownModule.forRoot(),
     ],
     providers: [
