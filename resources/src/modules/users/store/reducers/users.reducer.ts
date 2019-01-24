@@ -6,10 +6,19 @@ import {updateStateEntities} from '../../../../app/store/utils';
 export const entities = (state: Entities<User> = {}, action: UsersActions.ActionsUnion) => {
     switch (action.type) {
         case UsersActions.ActionTypes.LIST_SUCCESS: {
-            console.log(action.payload);
-            // return updateStateEntities(state, action.payload.entities);
-            return state;
+            return updateStateEntities(state, action.payload.entities.users);
+        }
 
+        default: {
+            return state;
+        }
+    }
+};
+
+export const ids = (state: Array<string> = [], action: UsersActions.ActionsUnion) => {
+    switch (action.type) {
+        case UsersActions.ActionTypes.LIST_SUCCESS: {
+            return action.payload.result;
         }
 
         default: {
@@ -20,8 +29,10 @@ export const entities = (state: Entities<User> = {}, action: UsersActions.Action
 
 export interface State {
     entities: Entities<any>;
+    ids: Array<string>;
 }
 
 export const reducer = combineReducers({
     entities,
+    ids
 });
