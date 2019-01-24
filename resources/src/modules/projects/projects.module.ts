@@ -36,9 +36,9 @@ import {
     reducers,
     metaReducers,
     selectProjectsEntities,
-    selectUsersEntities,
-    selectMembersEntities,
-    selectRolesEntities,
+    // selectUsersEntities,
+    // selectMembersEntities,
+    // selectRolesEntities,
 } from './store/reducers';
 
 import {ProjectsEffects} from './store/effects/projects.effects';
@@ -129,18 +129,6 @@ import {APP_MODULES_SELECTORS} from '../../app/providers/app.injection';
                     projects: {
                         entities: selectProjectsEntities,
                     },
-
-                    users: {
-                        entities: selectUsersEntities,
-                    },
-
-                    members: {
-                        entities: selectMembersEntities,
-                    },
-
-                    roles: {
-                        entities: selectRolesEntities,
-                    },
                 }
             },
 
@@ -180,8 +168,5 @@ export class ProjectsModule {
     public constructor(protected router: Router, @Inject(PROJECTS_ROUTERS) private config: Array<any>) {
         this.router.config.unshift(...this.routes);
         // this.router.config.push(config);
-
     }
-
-
 }

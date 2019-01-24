@@ -57,13 +57,13 @@
                         </mat-select>
                     </mat-form-field>
 
-                    <mat-form-field class="example-full-width">
-                        <mat-select [placeholder]="item.assigned?.full_name" name="priority">
-                            <mat-option *ngFor="let user of users$ | async" [value]="user.id">
-                                {{user.full_name}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    <!--<mat-form-field class="example-full-width">-->
+                    <!--<mat-select [placeholder]="item.assigned?.full_name" name="priority">-->
+                    <!--<mat-option *ngFor="let user of users$ | async" [value]="user.id">-->
+                    <!--{{user.full_name}}-->
+                    <!--</mat-option>-->
+                    <!--</mat-select>-->
+                    <!--</mat-form-field>-->
 
                     <mat-form-field>
                         <input matInput [matDatepicker]="startDate" placeholder="Start date"
@@ -80,19 +80,22 @@
                         <mat-datepicker #dueDate></mat-datepicker>
                     </mat-form-field>
 
-
-                    <mat-form-field class="example-full-width">
-                        <div fxLayout="row" fxLayoutGap="30px">
+                    <div fxLayout="row" fxLayoutGap="30px" style="flex-wrap: wrap">
+                        <mat-form-field>
                             <input matInput placeholder="id" value="">
+                        </mat-form-field>
+                        <mat-form-field>
                             <input matInput type="number" placeholder="hour" min="10" value="0">
+                        </mat-form-field>
+                        <mat-form-field>
                             <mat-select [(value)]="selected" placeholder="%Done">
                                 <mat-option></mat-option>
                                 <mat-option value="10">10%</mat-option>
                                 <mat-option value="20">20%</mat-option>
                                 <mat-option value="30">30%</mat-option>
                             </mat-select>
-                        </div>
-                    </mat-form-field>
+                        </mat-form-field>
+                    </div>
 
                     <mat-form-field class="example-full-width">
                         <input matInput placeholder="watchers" value='watchers'>

@@ -2,7 +2,9 @@ import {Injectable} from '@angular/core';
 import {createSelector, select, Store} from '@ngrx/store';
 import {denormalize} from 'normalizr';
 import {selectIssuesActiveId, selectIssuesIds} from '../store/selectors/issues';
+import {selectProjectsMy} from '../store/selectors/projects';
 import {issuesSchema} from '../store/schemas';
+import {projectsSchema} from '../store/schemas';
 import {AppSelectService} from '../../../app/services/app-select.service';
 import {Observable} from 'rxjs/internal/Observable';
 import {Issue} from '../interfaces/issues';
@@ -11,9 +13,9 @@ import {Issue} from '../interfaces/issues';
 export class IssuesSelectService {
     public modulesSelectors = [
         'moduleProjects.projects.entities',
-        'moduleProjects.users.entities',
-        'moduleProjects.members.entities',
-        'moduleProjects.roles.entities',
+        'moduleApp.users.entities',
+        'moduleApp.members.entities',
+        'moduleApp.roles.entities',
         'moduleIssues.issues.entities',
         'moduleIssues.statuses.entities',
         'moduleIssues.priorities.entities',
@@ -22,9 +24,11 @@ export class IssuesSelectService {
 
     public selectIssues;
     public selectIssue;
+    public selectProjects;
 
     public issues$: Observable<Issue[]>;
     public issue$: Observable<Issue>;
+    public projects$: Observable<any>;
 
     public constructor(
         private store: Store<any>,
@@ -47,8 +51,15 @@ export class IssuesSelectService {
             (id, ...entities) => denormalize(id, issuesSchema, mapEntitiesToObject(...entities)),
         );
 
-        this.issues$ = this.store.pipe(select(this.selectIssues));
+        this.selectProjects = createSelector(
+            [selectProjectsMy, ...entitiesSelectors] as any,
+            (ids, ...entities) => denormalize(ids, [projectsSchema], mapEntitiesToObject(...entities)),
+        );
 
+        this.issues$ = this.store.pipe(select(this.selectIssues));
         this.issue$ = this.store.pipe(select(this.selectIssue));
+        this.projects$ = this.store.pipe(select(this.selectProjects));
+
+        // this.projects$.subscribe((data) => console.log(data));
     }
 }

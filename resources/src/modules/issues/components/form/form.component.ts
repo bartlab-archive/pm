@@ -22,10 +22,8 @@ import {EnumerationsRequestAction} from '../../store/actions/enumerations.action
 import {Issue} from '../../interfaces/issues';
 
 import {selectStatuses} from '../../store/selectors/statuses';
-import {selectProjects} from '../../store/selectors/projects';
 import {selectPriorities} from '../../store/selectors/priorities';
 import {selectTrackers} from '../../store/selectors/trackers';
-import {selectUsers} from '../../store/selectors/users';
 import {IssuesSelectService} from '../../services';
 
 @Component({
@@ -41,9 +39,8 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     public trackers$: Observable<any[]> = this.store.pipe(select(selectTrackers));
     public pending$: Observable<boolean> = this.store.pipe(select(selectIssuesStatus), map(status => status === RequestStatus.pending));
     public params$: Observable<Params> = this.activatedRoute.params;
-    public projects$: Observable<any[]> = this.store.pipe(select(selectProjects));
+    public projects$: Observable<any[]> = this.issuesSelectService.projects$;
     public priorities$: Observable<any[]> = this.store.pipe(select(selectPriorities));
-    public users$: Observable<any[]> = this.store.pipe(select(selectUsers));
     public statuses = [];
 
     public form = this.fb.group({
