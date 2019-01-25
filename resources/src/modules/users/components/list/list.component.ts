@@ -1,10 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import * as userActions from "../../../users/store/actions/users.actions";
 import {Router} from "@angular/router";
-import {Store} from "@ngrx/store";
-import {PaginationParams} from "../../interfaces/users";
+import {select, Store} from "@ngrx/store";
 import {MatPaginator} from '@angular/material';
+import {filter} from "rxjs/operators";
+
+import * as userActions from "../../../users/store/actions/users.actions";
+import {PaginationParams} from "../../interfaces/users";
 import {UsersSelectService} from "../../services/users-select.service";
+import {selectUsersMeta} from "../../store/selectors/users";
 
 @Component({
     selector: 'users-list',
@@ -19,6 +22,8 @@ export class UsersListComponent implements OnInit {
         page: 1,
         per_page: 10,
     };
+
+
     public constructor(
         private router: Router,
         private store: Store<any>,
@@ -29,12 +34,38 @@ export class UsersListComponent implements OnInit {
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
+    getPagination(): PaginationParams {
+        return {
+            page: this.paginator.pageIndex + 1,
+            per_page: this.paginator.pageSize,
+        };
+    }
+
+    public onPageChange(): void {
+        this.loadUsers(this.getPagination());
+    }
+
+    loadUsers(params) {
+        this.store.dispatch(new userActions.ListRequestAction(params));
+    }
+
     ngOnInit(): void {
         this.usersSelectService.users$
             .subscribe((users) => {
                 this.users = users;
             });
-        this.store.dispatch(new userActions.ListRequestAction(this.params));
+        this.store
+            .pipe(
+                select(selectUsersMeta),
+                filter((data) => Boolean(data))
+            )
+            .subscribe((data) => {
+                this.paginator.pageSize = data.per_page;
+                this.paginator.pageIndex = data.current_page - 1;
+                this.paginator.length = data.total;
+            });
+
+        this.loadUsers(this.params);
 
     }
 

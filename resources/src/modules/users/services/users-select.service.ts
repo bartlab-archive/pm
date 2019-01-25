@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {createSelector, select, Store} from "@ngrx/store";
-
 import {denormalize} from 'normalizr';
+import {Observable} from "rxjs/internal/Observable";
+
 import {AppSelectService} from "../../../app/services/app-select.service";
 import {usersSchema} from "../../users/store/schemas";
-import {Observable} from "rxjs/internal/Observable";
 import {User} from "../interfaces/users";
-import {selectUsersIds} from "../store/reducers";
+import {selectUsersIds} from "../store/selectors/users";
 
 @Injectable({
     providedIn: 'root',
