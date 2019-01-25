@@ -9,7 +9,6 @@ import {issuesReducers} from './issues.reducer';
 import {trackersReducers} from './trackers.reducer';
 import {statusesReducers} from './statuses.reducer';
 import {prioritiesReducers} from './priorities.reducer';
-import {projectsReducers} from './projects.reducer';
 
 export const metaReducers: Array<MetaReducer<any, any>> = [
     // localStorageSyncReducer
@@ -19,7 +18,6 @@ export const reducers: ActionReducerMap<any> = {
     statuses: statusesReducers,
     trackers: trackersReducers,
     priorities: prioritiesReducers,
-    projects: projectsReducers,
 };
 // module
 export const selectModuleSate = createFeatureSelector('module.issues');
@@ -31,9 +29,6 @@ export const selectTrackersEntities = createSelector(selectTrackersState, state 
 
 export const selectStatusesState = createSelector(selectModuleSate, (state: any) => state.statuses);
 export const selectStatusesEntities = createSelector(selectStatusesState, state => state.entities);
-
-export const selectProjectsState = createSelector(selectModuleSate, (state: any) => state.projects);
-export const selectProjectsEntities = createSelector(selectProjectsState, (state: any) => state.entities);
 
 export const selectPrioritiesState = createSelector(selectModuleSate, (state: any) => state.priorities);
 export const selectPrioritiesEntities = createSelector(selectPrioritiesState, state => state.entities);

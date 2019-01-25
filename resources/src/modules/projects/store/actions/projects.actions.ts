@@ -3,6 +3,9 @@ import {ListResponse, PaginationParams, ProjectResponse} from '../../interfaces/
 import {ResponseError} from '../../../../app/interfaces/api';
 
 export enum ActionTypes {
+    PRELOAD_REQUEST = '[projects] preload request',
+    PRELOAD_ERROR = '[projects] preload error',
+    PRELOAD_SUCCESS = '[projects] preload success',
     LIST_REQUEST = '[projects] list request',
     LIST_ERROR = '[projects] list error',
     LIST_SUCCESS = '[projects] list success',
@@ -10,6 +13,27 @@ export enum ActionTypes {
     ONE_ERROR = '[projects] one error',
     ONE_SUCCESS = '[projects] one success',
     RESET_ACTIVE_ID = '[projects] reset active id',
+}
+
+export class PreloadRequestAction implements Action {
+    readonly type = ActionTypes.PRELOAD_REQUEST;
+
+    constructor() {
+    }
+}
+
+export class PreloadErrorAction implements Action {
+    readonly type = ActionTypes.PRELOAD_ERROR;
+
+    constructor(public payload: ResponseError) {
+    }
+}
+
+export class PreloadSuccessAction implements Action {
+    readonly type = ActionTypes.PRELOAD_SUCCESS;
+
+    constructor(public payload: any) {
+    }
 }
 
 export class ListRequestAction implements Action {
@@ -68,4 +92,7 @@ export type ActionsUnion =
     | OneRequestAction
     | OneErrorAction
     | OneSuccessAction
-    | ResetActiveIdAction;
+    | ResetActiveIdAction
+    | PreloadRequestAction
+    | PreloadErrorAction
+    | PreloadSuccessAction;

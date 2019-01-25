@@ -10,7 +10,7 @@
 //     [ProjectStatus.ARCHIVE]: 'Archive',
 // };
 
-import {Project} from '../../projects/interfaces/projects';
+import {Project} from './projects';
 
 export interface FilterTag {
     name: string;

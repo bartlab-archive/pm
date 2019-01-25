@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 import {createSelector, select, Store} from '@ngrx/store';
 import {denormalize} from 'normalizr';
 import {selectIssuesActiveId, selectIssuesIds} from '../store/selectors/issues';
-import {selectProjectsMy} from '../store/selectors/projects';
 import {issuesSchema} from '../store/schemas';
 import {projectsSchema} from '../store/schemas';
 import {AppSelectService} from '../../../app/services/app-select.service';
 import {Observable} from 'rxjs/internal/Observable';
 import {Issue} from '../interfaces/issues';
+import {Project} from '../interfaces/projects';
 
 @Injectable()
 export class IssuesSelectService {
@@ -22,44 +22,58 @@ export class IssuesSelectService {
         'moduleIssues.trackers.entities',
     ];
 
+    public entitiesSelectors;
+    public mapEntitiesToObject;
+
     public selectIssues;
     public selectIssue;
-    public selectProjects;
+    public selectMyProjects;
 
     public issues$: Observable<Issue[]>;
     public issue$: Observable<Issue>;
-    public projects$: Observable<any>;
+    public myProjects$: Observable<Project[]>;
 
     public constructor(
         private store: Store<any>,
         public appSelectorsService: AppSelectService,
     ) {
+
+        this.entitiesSelectors = this.appSelectorsService.getSelectors(this.modulesSelectors);
+        this.mapEntitiesToObject = this.appSelectorsService.getMapEntitiesToObject(this.modulesSelectors);
+
         this.initSelectors();
     }
 
     public initSelectors() {
-        const entitiesSelectors = this.appSelectorsService.getSelectors(this.modulesSelectors);
-        const mapEntitiesToObject = this.appSelectorsService.getMapEntitiesToObject(this.modulesSelectors);
 
         this.selectIssues = createSelector(
-            [selectIssuesIds, ...entitiesSelectors] as any,
-            (ids, ...entities) => denormalize(ids, [issuesSchema], mapEntitiesToObject(...entities)),
+            [selectIssuesIds, ...this.entitiesSelectors] as any,
+            (ids, ...entities) => denormalize(ids, [issuesSchema], this.mapEntitiesToObject(...entities)),
         );
 
         this.selectIssue = createSelector(
-            [selectIssuesActiveId, ...entitiesSelectors] as any,
-            (id, ...entities) => denormalize(id, issuesSchema, mapEntitiesToObject(...entities)),
-        );
-
-        this.selectProjects = createSelector(
-            [selectProjectsMy, ...entitiesSelectors] as any,
-            (ids, ...entities) => denormalize(ids, [projectsSchema], mapEntitiesToObject(...entities)),
+            [selectIssuesActiveId, ...this.entitiesSelectors] as any,
+            (id, ...entities) => denormalize(id, issuesSchema, this.mapEntitiesToObject(...entities)),
         );
 
         this.issues$ = this.store.pipe(select(this.selectIssues));
         this.issue$ = this.store.pipe(select(this.selectIssue));
-        this.projects$ = this.store.pipe(select(this.selectProjects));
 
-        // this.projects$.subscribe((data) => console.log(data));
+        this.initProjectSelectors();
+    }
+
+    public initProjectSelectors() {
+        const {
+            selectors,
+        } = this.appSelectorsService;
+
+        if (!selectors.moduleProjects) {
+            return false;
+        }
+
+        this.selectMyProjects = createSelector([selectors.moduleProjects.projects.my, ...this.entitiesSelectors] as any,
+            (my, ...entities) => denormalize(my, [projectsSchema], this.mapEntitiesToObject(...entities)));
+
+        this.myProjects$ = this.store.pipe(select(this.selectMyProjects));
     }
 }

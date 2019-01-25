@@ -46,7 +46,6 @@ import {MarkdownModule} from 'ngx-markdown';
 import {IssuesEffect} from './store/effects/issues.effect';
 import {StatusesEffect} from './store/effects/statuses.effect';
 import {TrackersEffect} from './store/effects/trackers.effect';
-import {ProjectsEffect} from './store/effects/projects.effect';
 import {EnumerationsEffect} from './store/effects/enumerations.effect';
 import {projectsIssuesRoutes, routes} from './issues.routes';
 import {APP_EVENT_INTERCEPTORS, APP_MODULES_SELECTORS} from '../../app/providers/app.injection';
@@ -92,7 +91,6 @@ import {PipesModule} from '../../app/pipes';
             IssuesEffect,
             StatusesEffect,
             TrackersEffect,
-            ProjectsEffect,
             EnumerationsEffect
         ]),
         MarkdownModule.forChild(),

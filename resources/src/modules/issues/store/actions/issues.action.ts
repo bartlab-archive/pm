@@ -9,9 +9,6 @@ export enum IssuesActionTypes {
     ITEM_REQUEST = '[issues] item request',
     ITEM_ERROR = '[issues] item error',
     ITEM_SUCCESS = '[issues] item success',
-    // ITEM_UPDATE_REQUEST = '[issues] item update request',
-    // ITEM_UPDATE_SUCCESS = '[issues] item update success',
-    // ITEM_UPDATE_ERROR = '[issues] item update error',
 
     ITEM_WATCH_REQUEST = '[issues] item watch request',
     ITEM_WATCH_SUCCESS = '[issues] item watch success',

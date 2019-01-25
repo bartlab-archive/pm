@@ -1,8 +1,8 @@
 import {combineReducers} from '@ngrx/store';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {EnumerationsActionsUnion, EnumerationsActionTypes} from '../actions/enumerations.action';
-import {updateStateEntities} from '../utils/ngrx-utils';
 import {IssuesActionTypes, IssuesActionsUnion} from '../actions/issues.action';
+import {updateStateEntities} from '../../../../app/store/utils';
 
 const entities = (state = {}, action: EnumerationsActionsUnion | IssuesActionsUnion) => {
     switch (action.type) {

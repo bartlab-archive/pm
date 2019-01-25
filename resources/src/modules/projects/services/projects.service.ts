@@ -22,4 +22,7 @@ export class ProjectsService {
     public one(identifier: string): Observable<any> {
         return this.http.get<any>(`/api/v1/projects/${identifier}`);
     }
+    public getProjects() {
+        return this.all({my: true})
+    }
 }
