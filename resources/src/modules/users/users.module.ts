@@ -1,37 +1,59 @@
 import {Inject, NgModule} from '@angular/core';
 import {EffectsModule} from "@ngrx/effects";
-import {Router, RouterModule, Routes} from '@angular/router';
-
+import {Router, Routes} from '@angular/router';
+import {StoreModule} from "@ngrx/store";
+import {HttpClientModule} from "@angular/common/http";
+import {
+    MatPaginatorModule,
+    MatSortModule,
+    MatTableModule
+} from "@angular/material";
 
 import {DefaultComponent} from '../layouts/components';
-import {UserService} from "./services/user.service";
+import {UsersService} from "./services/users.service";
 import {UsersListComponent} from "./components/list/list.component";
 import {USERS_ROUTERS} from "./providers/users.injection";
 import {UsersEffects} from "./store/effects/users.effects";
 
 import {
     reducers,
+    selectUsersEntities,
 } from './store/reducers';
-import {StoreModule} from "@ngrx/store";
-import {HttpClientModule} from "@angular/common/http";
+
+import {APP_MODULES_SELECTORS} from "../../app/providers/app.injection";
 
 @NgModule({
     declarations: [
-        UsersListComponent
+        UsersListComponent,
     ],
     entryComponents: [
         UsersListComponent
     ],
     imports: [
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
         HttpClientModule,
         StoreModule.forFeature('module.users', reducers, {}),
         EffectsModule.forFeature([UsersEffects]),
     ],
     providers: [
-        UserService,
+        UsersService,
         {
             provide: USERS_ROUTERS,
             useValue: [],
+            multi: true,
+        },
+        {
+            provide: APP_MODULES_SELECTORS,
+            useValue: {
+                moduleUsers: {
+                    users: {
+                        entities: selectUsersEntities,
+                    },
+
+                }
+            },
             multi: true,
         },
     ],
@@ -66,6 +88,5 @@ export class UsersModule {
 
     public constructor(protected router: Router, @Inject(USERS_ROUTERS) private config: Array<any>) {
         this.router.config.unshift(...this.routes);
-        // this.router.config.push(config);
     }
 }

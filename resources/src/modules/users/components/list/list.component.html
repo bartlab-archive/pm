@@ -1,3 +1,33 @@
-<p>
-  users list works!
-</p>
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="users">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> No.</th>
+            <td mat-cell *matCellDef="let element"> {{element.id}}</td>
+        </ng-container>
+
+        <!--  Full name  Column -->
+        <ng-container matColumnDef="fullName">
+            <th mat-header-cell *matHeaderCellDef> Full name</th>
+            <td mat-cell *matCellDef="let element"> {{element.full_name}}</td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Status</th>
+            <td mat-cell *matCellDef="let element"> {{element.status}}</td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="created">
+            <th mat-header-cell *matHeaderCellDef> Created on</th>
+            <td mat-cell *matCellDef="let element"> {{element.created_on}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

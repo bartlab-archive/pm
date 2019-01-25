@@ -22,6 +22,7 @@ export const reducers: ActionReducerMap<any> = {
     projects: projectsReducers,
 };
 // module
+// @todo: typo in "selectModuleSate" name
 export const selectModuleSate = createFeatureSelector('module.issues');
 export const selectIssuesState = createSelector(selectModuleSate, (state: any) => state.issues);
 export const selectIssuesEntities = createSelector(selectIssuesState, (state: any) => state.entities);

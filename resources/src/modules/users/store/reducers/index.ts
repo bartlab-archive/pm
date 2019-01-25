@@ -14,3 +14,9 @@ export const reducers: ActionReducerMap<UsersState> = {
     users: fromUsers.reducer
 };
 
+// module
+export const selectModuleState = createFeatureSelector('module.users');
+export const selectUsersState = createSelector(selectModuleState, (state: any) => state.users);
+export const selectUsersEntities = createSelector(selectUsersState, (state: any) => state.entities);
+export const selectUsersIds = createSelector(selectUsersState, state => state.ids);
+
