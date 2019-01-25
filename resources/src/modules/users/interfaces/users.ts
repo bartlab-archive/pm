@@ -1,3 +1,14 @@
+export enum UsersStatus {
+    ACTIVE = 1,
+    REGISTERED = 2,
+    LOCKED = 3,
+}
+
+export const UsersStatusNames = {
+    [UsersStatus.ACTIVE]: 'Active',
+    [UsersStatus.REGISTERED]: 'Registered',
+    [UsersStatus.LOCKED]: 'Locked',
+};
 
 export interface PaginationParams {
     page: number;
