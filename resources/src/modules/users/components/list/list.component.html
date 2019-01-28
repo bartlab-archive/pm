@@ -1,4 +1,6 @@
-<users-filter></users-filter>
+<users-filter
+(onChange)="onChangeFilter($event)"
+></users-filter>
 
 <div class="mat-elevation-z8">
     <table mat-table [dataSource]="users">

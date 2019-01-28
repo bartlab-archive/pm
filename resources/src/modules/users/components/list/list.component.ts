@@ -17,6 +17,7 @@ import {selectUsersMeta} from "../../store/selectors/users";
 export class UsersListComponent implements OnInit {
     public displayedColumns: string[] = ['position', 'fullName', 'status', 'created'];
     public users;
+    protected statuses: null;
 
     params: PaginationParams = {
         page: 1,
@@ -38,6 +39,7 @@ export class UsersListComponent implements OnInit {
         return {
             page: this.paginator.pageIndex + 1,
             per_page: this.paginator.pageSize,
+            status: this.statuses
         };
     }
 
@@ -66,6 +68,17 @@ export class UsersListComponent implements OnInit {
             });
 
         this.loadUsers(this.params);
+
+    }
+
+    onChangeFilter(data): void {
+        this.statuses = data.map(({ id }) => id);
+
+        this.store.dispatch(new userActions.ListRequestAction({
+            per_page: this.paginator.pageSize,
+            page: 1,
+            status: this.statuses
+        }));
 
     }
 

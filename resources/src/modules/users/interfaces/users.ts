@@ -4,16 +4,32 @@ export enum UsersStatus {
     LOCKED = 3,
 }
 
-export const UsersStatusNames = {
-    [UsersStatus.ACTIVE]: 'Active',
-    [UsersStatus.REGISTERED]: 'Registered',
-    [UsersStatus.LOCKED]: 'Locked',
-};
+
+export const UsersStatusNames = [
+    {
+        id: UsersStatus.ACTIVE,
+        name: 'Active'
+    },
+    {
+        id: UsersStatus.REGISTERED,
+        name: 'Registered'
+    },
+    {
+        id: UsersStatus.LOCKED,
+        name: 'Locked'
+    },
+];
+
+export interface Status {
+    id: number,
+    name: string,
+}
 
 export interface PaginationParams {
     page: number;
     per_page: number;
     order?: string[];
+    status?: number[];
 }
 
 export interface Email {

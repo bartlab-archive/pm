@@ -5,11 +5,11 @@
             [selectable]="selectable"
             [removable]="removable"
             (removed)="remove(status)">
-      {{status}}
+      {{status.name}}
       <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
     </mat-chip>
     <input
-            placeholder="New fruit..."
+            placeholder="Select status..."
             #inputRef
             [formControl]="formControl"
             [matAutocomplete]="auto"
@@ -19,8 +19,8 @@
             (matChipInputTokenEnd)="add($event)">
   </mat-chip-list>
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-    <mat-option *ngFor="let status of filteredStatuses | async" [value]="status">
-      {{status}}
+    <mat-option *ngFor="let status of filteredStatuses | async" [value]="status.id">
+      {{status.name}}
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>
