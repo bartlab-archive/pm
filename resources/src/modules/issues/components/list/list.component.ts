@@ -26,13 +26,13 @@ import {select, Store} from '@ngrx/store';
 import {selectTrackers} from '../../store/selectors/trackers';
 import {selectStatuses} from '../../store/selectors/statuses';
 import {
+    selectIssues,
     selectIssuesMeta,
     selectIssuesStatus,
 } from '../../store/selectors/issues';
 
 import {IssuesAllRequestAction} from '../../store/actions/issues.action';
 import {RequestStatus} from '../../../../app/interfaces/api';
-import {IssuesSelectService} from '../../services';
 
 @Component({
     selector: 'app-issues-list',
@@ -68,7 +68,6 @@ export class IssuesListComponent implements OnInit, OnDestroy {
 
     public constructor(
         private store: Store<any>,
-        private issuesSelectService: IssuesSelectService,
     ) {
     }
 
@@ -87,7 +86,7 @@ export class IssuesListComponent implements OnInit, OnDestroy {
                     this.pending = statuses.some((status) => status === RequestStatus.pending);
                 }),
 
-            this.issuesSelectService.issues$
+            this.store.pipe(select(selectIssues))
                 .subscribe((items) => {
                     this.dataSource = items;
                 }),

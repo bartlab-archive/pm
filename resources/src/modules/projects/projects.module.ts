@@ -35,17 +35,11 @@ import {DefaultComponent} from '../layouts/components';
 import {
     reducers,
     metaReducers,
-    selectProjectsEntities,
-    selectProjectsMy,
-    // selectUsersEntities,
-    // selectMembersEntities,
-    // selectRolesEntities,
 } from './store/reducers';
 
 import {ProjectsEffects} from './store/effects/projects.effects';
-// import {projectsIssuesRoutes} from '../issues/issues.routes';
 import {PROJECTS_ROUTERS} from './providers/projects.injection';
-import {APP_EVENT_INTERCEPTORS, APP_MODULES_SELECTORS} from '../../app/providers/app.injection';
+import {APP_EVENT_INTERCEPTORS} from '../../app/providers/app.injection';
 import {ProjectsEventInterceptor} from './interceptors/projects-event.interceptor';
 
 // const authRoutes: Routes = [
@@ -121,20 +115,6 @@ import {ProjectsEventInterceptor} from './interceptors/projects-event.intercepto
         {
             provide: PROJECTS_ROUTERS,
             useValue: [],
-            multi: true,
-        },
-
-        {
-            provide: APP_MODULES_SELECTORS,
-            useValue: {
-                moduleProjects: {
-                    projects: {
-                        entities: selectProjectsEntities,
-                        my: selectProjectsMy,
-                    },
-                }
-            },
-
             multi: true,
         },
         {

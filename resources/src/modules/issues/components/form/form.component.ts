@@ -11,7 +11,7 @@ import {
     Validators
 } from '@angular/forms';
 
-import {selectIssuesStatus} from '../../store/selectors/issues';
+import {selectIssuesActive, selectIssuesStatus, selectMyProjects} from '../../store/selectors/issues';
 import {select, Store} from '@ngrx/store';
 import {combineLatest, Subscription, Observable} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
@@ -20,10 +20,10 @@ import {ItemRequestAction} from '../../store/actions/issues.action';
 import {EnumerationsRequestAction} from '../../store/actions/enumerations.action';
 import {Issue} from '../../interfaces/issues';
 
-import {selectStatuses} from '../../store/selectors/statuses';
-import {selectPriorities} from '../../store/selectors/priorities';
-import {selectTrackers} from '../../store/selectors/trackers';
-import {IssuesSelectService} from '../../services';
+// import {selectStatuses} from '../../store/selectors/statuses';
+// import {selectPriorities} from '../../store/selectors/priorities';
+// import {selectTrackers} from '../../store/selectors/trackers';
+// import {IssuesSelectService} from '../../services';
 import {Project} from '../../interfaces/projects';
 import {MatAutocompleteSelectedEvent} from '@angular/material';
 
@@ -74,13 +74,22 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         public router: Router,
         private fb: FormBuilder,
-        public issuesSelectService: IssuesSelectService,
     ) {
     }
 
     public ngOnInit(): void {
 
-        this.myProjects$ = this.issuesSelectService.myProjects$;
+        if (selectMyProjects) {
+            this.myProjects$ = this.store.pipe(select(selectMyProjects));
+
+            this.subscriptions.push(
+                this.myProjects$.subscribe(projects => {
+                    if (projects) {
+                        this.projects = projects;
+                    }
+                }),
+            );
+        }
         // this.trackers$ = this.store.pipe(select(selectTrackers));
         // this.statuses$ = this.store.pipe(select(selectStatuses));
         // this.priorities$ = this.store.pipe(select(selectPriorities));
@@ -104,17 +113,18 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.params$.subscribe(params => {
                 if (params.id) {
-                    this.load(Number(params.id))
+                    this.load(Number(params.id));
                 }
             }),
 
-            this.myProjects$.subscribe(projects => {
-                if (projects) {
-                    this.projects = projects;
-                }
-            }),
 
-            combineLatest(this.issuesSelectService.issue$, this.params$)
+            // this.myProjects$.subscribe(projects => {
+            //     if (projects) {
+            //         this.projects = projects;
+            //     }
+            // }),
+
+            combineLatest(this.store.pipe(select(selectIssuesActive)), this.params$)
                 .pipe(
                     filter(([issue, params]) => issue && issue.id === Number(params.id)),
                     map((([issue]) => {
@@ -125,7 +135,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                                 if (tag && this.watcherTags.indexOf(tag) === -1) {
                                     this.watcherTags.push(tag);
                                 }
-                            })
+                            });
                         }
                         return issue;
                     })),
