@@ -113,7 +113,7 @@ import {ProjectsEventInterceptor} from './interceptors/projects-event.intercepto
         ReactiveFormsModule,
         FlexLayoutModule,
         HttpClientModule,
-        StoreModule.forFeature('module.projects', reducers, {metaReducers}),
+        StoreModule.forFeature('moduleProjects', reducers, {metaReducers}),
         EffectsModule.forFeature([ProjectsEffects]),
     ],
     providers: [

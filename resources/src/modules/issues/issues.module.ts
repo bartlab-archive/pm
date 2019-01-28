@@ -86,7 +86,7 @@ import {PipesModule} from '../../app/pipes';
         MatNativeDateModule,
         // RouterModule,
         RouterModule.forChild(routes),
-        StoreModule.forFeature('module.issues', reducers, {metaReducers}),
+        StoreModule.forFeature('moduleIssues', reducers, {metaReducers}),
         EffectsModule.forFeature([
             IssuesEffect,
             StatusesEffect,

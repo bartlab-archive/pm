@@ -80,7 +80,7 @@ const authRoutes: Routes = [
         ReactiveFormsModule,
         FlexLayoutModule,
         HttpClientModule,
-        StoreModule.forFeature('auth', reducers, { metaReducers }),
+        StoreModule.forFeature('moduleAuth', reducers, { metaReducers }),
         EffectsModule.forFeature([AuthEffects]),
     ],
     providers: [

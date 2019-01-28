@@ -18,7 +18,7 @@ export interface AuthState {
 }
 
 export interface State extends fromRoot.State {
-    auth: AuthState;
+    moduleAuth: AuthState;
 }
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
@@ -33,7 +33,7 @@ export const reducers: ActionReducerMap<AuthState> = {
     reset: fromReset.reducer
 };
 
-export const selectAuthState = createFeatureSelector<State, AuthState>('auth');
+export const selectAuthState = createFeatureSelector<State, AuthState>('moduleAuth');
 
 export const selectAuthorizationState = createSelector(selectAuthState, (state: AuthState) => state.authorization);
 export const selectAuthData = createSelector(selectAuthorizationState, fromAuth.getData);

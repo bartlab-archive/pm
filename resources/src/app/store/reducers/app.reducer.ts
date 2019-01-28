@@ -5,8 +5,8 @@ import * as fromRoles from './roles.reducer';
 
 export interface State {
     users: fromUsers.State;
-    members: fromMembers.State,
-    roles: fromRoles.State,
+    members: fromMembers.State;
+    roles: fromRoles.State;
 }
 
 export const reducer = combineReducers({
@@ -15,7 +15,7 @@ export const reducer = combineReducers({
     roles: fromRoles.reducer,
 });
 
-export const selectModuleState = createFeatureSelector<State>('module.app');
+export const selectModuleState = createFeatureSelector<State>('app');
 export const selectUsersState = createSelector(selectModuleState, (state: State) => state.users);
 export const selectUsersEntities = createSelector(selectUsersState, state => state.entities);
 

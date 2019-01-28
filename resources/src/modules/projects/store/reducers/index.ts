@@ -14,12 +14,12 @@ export interface ProjectsState {
 }
 
 export interface State extends fromRoot.State {
-    'module.projects': ProjectsState;
+    moduleProjects: ProjectsState;
 }
 
-export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-    return localStorageSync({keys: [{projects: ['entities']}], rehydrate: true})(reducer);
-}
+// export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
+//     return localStorageSync({keys: [{projects: ['entities']}], rehydrate: true})(reducer);
+// }
 
 export const metaReducers: Array<MetaReducer<any, any>> = [
     // localStorageSyncReducer
@@ -31,7 +31,7 @@ export const reducers: ActionReducerMap<ProjectsState> = {
     // roles: fromRoles.reducer
 };
 
-export const selectModuleState = createFeatureSelector<State, ProjectsState>('module.projects');
+export const selectModuleState = createFeatureSelector<State, ProjectsState>('moduleProjects');
 export const selectProjectsState = createSelector(selectModuleState, (state: ProjectsState) => state.projects);
 export const selectProjectsEntities = createSelector(selectProjectsState, state => state.entities);
 export const selectProjectsMy = createSelector(selectProjectsState, state => state.my);
