@@ -1,23 +1,19 @@
 import {
-    Component,
-    EventEmitter,
+    Component, ElementRef,
     OnDestroy,
     OnInit,
-    Output,
     ViewChild,
 } from '@angular/core';
 
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {MatOption, MatOptionSelectionChange, MatSelect} from '@angular/material';
-
 import {
-    FormBuilder,
+    FormBuilder, FormControl,
     Validators
 } from '@angular/forms';
 
 import {selectIssuesStatus} from '../../store/selectors/issues';
 import {select, Store} from '@ngrx/store';
-import {combineLatest, Subscription, Observable, Subject, from} from 'rxjs';
+import {combineLatest, Subscription, Observable} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {ItemRequestAction} from '../../store/actions/issues.action';
@@ -29,6 +25,7 @@ import {selectPriorities} from '../../store/selectors/priorities';
 import {selectTrackers} from '../../store/selectors/trackers';
 import {IssuesSelectService} from '../../services';
 import {Project} from '../../interfaces/projects';
+import {MatAutocompleteSelectedEvent} from '@angular/material';
 
 @Component({
     selector: 'app-issues-form',
@@ -38,42 +35,38 @@ import {Project} from '../../interfaces/projects';
 
 export class IssuesFormComponent implements OnInit, OnDestroy {
     public subscriptions: Subscription[] = [];
-    public item$: Observable<Issue>;
-    public statuses$: Observable<any[]> = this.store.pipe(select(selectStatuses));
-    public trackers$: Observable<any[]> = this.store.pipe(select(selectTrackers));
+    // public item$: Observable<Issue>;
+    public item: Issue;
+    public statuses$: Observable<any[]>;
+    public trackers$: Observable<any[]>;
     public pending$: Observable<boolean> = this.store.pipe(select(selectIssuesStatus), map(status => status === RequestStatus.pending));
     public params$: Observable<Params> = this.activatedRoute.params;
-    public myProjects$: Observable<Project[]> = this.issuesSelectService.myProjects$;
-    public priorities$: Observable<any[]> = this.store.pipe(select(selectPriorities));
-    public users = [];
-    public projects = [];
-
-    public projectSelect$: Observable<MatOption>;
-
-    public membersSubject: Subject<any[]> = new Subject();
-    public members$: Observable<any[]>;
-
-    // public members$: Subject<any> = new Subject();
+    public myProjects$: Observable<Project[]>;
+    public priorities$: Observable<any[]>;
     public projectSelectSubscription: Subscription;
+    public membersOfProject: Observable<any[]>;
+    public watcherTags: any[] = [];
+    public projects: any[];
+    public tagCtrl = new FormControl();
 
-    @ViewChild('projectSelect')
-    set projectSelect(select: MatSelect) {
-        if (select) {
-            if (this.projectSelectSubscription) {
-                this.projectSelectSubscription.unsubscribe();
-            }
-
-            this.projectSelectSubscription = this.initSelectionPipe(select.optionSelectionChanges);
-        }
-    };
-
-    @Output() search = new EventEmitter<string>();
-
+    @ViewChild('watchersInput')
+    public watchersInput: ElementRef<HTMLInputElement>;
     public form = this.fb.group({
         'subject': ['', Validators.required],
-        // 'description': [''],
-        // 'project': [''],
-        // 'tracker': [''],
+        'is_private': [''],
+        'description': [''],
+        'notes': [''],
+        'project': ['', Validators.required],
+        'tracker': ['', Validators.required],
+        'status': ['', Validators.required],
+        'priority': ['', Validators.required],
+        'assigned': [''],
+        'start_date': [''],
+        'due_date': [''],
+        'parent_id': [''],
+        'estimated_hours': [''],
+        'done_ratio': [''],
+        'watchers': [''],
     });
 
     public constructor(
@@ -86,12 +79,27 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit(): void {
-        this.members$ = from(this.membersSubject);
-        this.item$ = combineLatest(this.issuesSelectService.issue$, this.params$)
-            .pipe(
-                filter(([issue, params]) => issue && issue.id === Number(params.id)),
-                map((([issue]) => issue)),
-            );
+
+        this.myProjects$ = this.issuesSelectService.myProjects$;
+        // this.trackers$ = this.store.pipe(select(selectTrackers));
+        // this.statuses$ = this.store.pipe(select(selectStatuses));
+        // this.priorities$ = this.store.pipe(select(selectPriorities));
+        // this.item$ = combineLatest(this.issuesSelectService.issue$, this.params$)
+        //     .pipe(
+        //         filter(([issue, params]) => issue && issue.id === Number(params.id)),
+        //         map((([issue]) => {
+        //             if (issue.watchers) {
+        //                 const watchers = issue.watchers;
+        //                 Object.keys(watchers).map(key => {
+        //                     const tag = watchers[key].full_name;
+        //                     if (tag && this.watcherTags.indexOf(tag) === -1) {
+        //                         this.watcherTags.push(tag);
+        //                     }
+        //                 })
+        //             }
+        //             return issue;
+        //         })),
+        //     );
 
         this.subscriptions.push(
             this.params$.subscribe(params => {
@@ -99,6 +107,66 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                     this.load(Number(params.id))
                 }
             }),
+
+            this.myProjects$.subscribe(projects => {
+                if (projects) {
+                    this.projects = projects;
+                }
+            }),
+
+            combineLatest(this.issuesSelectService.issue$, this.params$)
+                .pipe(
+                    filter(([issue, params]) => issue && issue.id === Number(params.id)),
+                    map((([issue]) => {
+                        if (issue.watchers) {
+                            const watchers = issue.watchers;
+                            Object.keys(watchers).map(key => {
+                                const tag = watchers[key].full_name;
+                                if (tag && this.watcherTags.indexOf(tag) === -1) {
+                                    this.watcherTags.push(tag);
+                                }
+                            })
+                        }
+                        return issue;
+                    })),
+                ).subscribe(data => {
+                this.item = data;
+                const {
+                    subject = '',
+                    description = '',
+                    is_private,
+                    notes = '',
+                    project = '',
+                    tracker = '',
+                    status = '',
+                    priority = '',
+                    assigned = '',
+                    start_date = '',
+                    due_date = '',
+                    parent_id = '',
+                    estimated_hours = '',
+                    done_ratio = '',
+                    watchers = ''
+                } = this.item;
+
+                this.form.setValue({
+                    subject,
+                    description,
+                    is_private,
+                    notes,
+                    project: project.identifier ? project.identifier : '',
+                    tracker: tracker.id,
+                    status: status.id,
+                    priority: priority.id,
+                    assigned: assigned && assigned.id ? assigned.id : '',
+                    start_date,
+                    due_date,
+                    parent_id,
+                    estimated_hours,
+                    done_ratio,
+                    watchers
+                });
+            })
         );
 
         this.store.dispatch(new EnumerationsRequestAction());
@@ -115,21 +183,28 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
         }
     }
 
-    public initSelectionPipe(select$: Observable<MatOptionSelectionChange>): Subscription {
-        this.projectSelect$ = select$.pipe(
-            filter(option => option.isUserInput),
-            map(option => option.source),
-        );
+    public selected(identifier: String): void {
+        Object.keys(this.projects).map(key => {
+            if (this.projects[key].identifier === identifier) {
+                this.membersOfProject = this.projects[key].members;
+            }
+        });
+    }
 
-        const members$ = combineLatest(
-            this.myProjects$,
-            this.projectSelect$,
-        ).pipe(
-            map(([myProjects, projectSelect]) => myProjects.find(myProject => myProject.identifier === projectSelect.value)),
-            filter(Boolean),
-            map(myProject => myProject.members),
-        );
+    public watched(event: MatAutocompleteSelectedEvent): void {
+        if (event.option.viewValue && this.watcherTags.indexOf(event.option.viewValue) === -1) {
+            this.watcherTags.push(event.option.viewValue);
+            this.watchersInput.nativeElement.value = '';
+            this.tagCtrl.setValue(null);
+        }
+    }
 
-        return members$.subscribe(this.membersSubject);
+    public removeTag(tag: any): void {
+        const index = this.watcherTags.indexOf(tag);
+        if (index >= 0) {
+            this.watcherTags.splice(index, 1);
+            this.tagCtrl.setValue(null);
+            this.watchersInput.nativeElement.focus();
+        }
     }
 }
