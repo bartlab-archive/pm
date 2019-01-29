@@ -16,8 +16,8 @@ export class UsersEffects {
         ofType<UserActions.ListRequestAction>(UserActions.ActionTypes.LIST_REQUEST),
         // delay(3000),
         map((action) => action.payload),
-        exhaustMap((data: PaginationParams) =>
-            this.userService.all(data).pipe(
+        exhaustMap((params: PaginationParams) =>
+            this.userService.all(params).pipe(
                 map(({ meta, data }: ListResponse) => {
                     const payload = {
                         meta,

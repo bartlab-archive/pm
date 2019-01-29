@@ -5,7 +5,7 @@ import {MatPaginator} from '@angular/material';
 import {filter} from "rxjs/operators";
 
 import * as userActions from "../../../users/store/actions/users.actions";
-import {PaginationParams} from "../../interfaces/users";
+import {PaginationParams, Status, UsersStatusNames} from "../../interfaces/users";
 import {UsersSelectService} from "../../services/users-select.service";
 import {selectUsersMeta} from "../../store/selectors/users";
 
@@ -15,7 +15,7 @@ import {selectUsersMeta} from "../../store/selectors/users";
     styleUrls: ['./list.component.scss']
 })
 export class UsersListComponent implements OnInit {
-    public displayedColumns: string[] = ['position', 'fullName', 'status', 'created'];
+    public displayedColumns: string[] = ['position', 'fullName', 'status', 'created', 'menu'];
     public users;
     protected statuses: null;
 
@@ -41,6 +41,10 @@ export class UsersListComponent implements OnInit {
             per_page: this.paginator.pageSize,
             status: this.statuses
         };
+    }
+
+    public getStatusById(status): Status {
+       return UsersStatusNames.find( item => item.id === status)
     }
 
     public onPageChange(): void {
@@ -72,7 +76,7 @@ export class UsersListComponent implements OnInit {
     }
 
     onChangeFilter(data): void {
-        this.statuses = data.map(({ id }) => id);
+        this.statuses = data.map(({id}) => id);
 
         this.store.dispatch(new userActions.ListRequestAction({
             per_page: this.paginator.pageSize,

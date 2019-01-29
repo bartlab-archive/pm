@@ -1,5 +1,5 @@
 <users-filter
-(onChange)="onChangeFilter($event)"
+        (onChange)="onChangeFilter($event)"
 ></users-filter>
 
 <div class="mat-elevation-z8">
@@ -20,13 +20,39 @@
         <!-- Status Column -->
         <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef> Status</th>
-            <td mat-cell *matCellDef="let element"> {{element.status}}</td>
+            <td mat-cell *matCellDef="let element">
+                <div class="status">
+                    <mat-chip color="primary" class="chip-{{getStatusById(element.status).name | lowercase}}">
+                        {{getStatusById(element.status).name | uppercase}}
+                    </mat-chip>
+                </div>
+            </td>
         </ng-container>
 
         <!-- Symbol Column -->
         <ng-container matColumnDef="created">
             <th mat-header-cell *matHeaderCellDef> Created on</th>
             <td mat-cell *matCellDef="let element"> {{element.created_on}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="menu">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row" class="action">
+                <mat-menu #appMenu="matMenu">
+                    <a mat-menu-item [routerLink]="['/users', row.id]">
+                        <mat-icon>open_in_browser</mat-icon>
+                        Open
+                    </a>
+                    <mat-divider></mat-divider>
+                    <button mat-menu-item>
+                        Overview
+                    </button>
+                </mat-menu>
+                <button mat-icon-button>
+                    <mat-icon [matMenuTriggerFor]="appMenu" (click)="$event.stopPropagation()">more_vert</mat-icon>
+                </button>
+
+            </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
