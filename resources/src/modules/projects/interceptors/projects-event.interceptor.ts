@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppInterceptor, AppInterceptorHandler} from '../../../app/interfaces/app';
 import {AppEventsUnion, AppPreloadEvent, EVENT_TYPE_PRELOAD} from '../../../app/events';
-import * as projectsActions from '../store/actions/projects.actions';
+import {AddCategoryAction} from '../store/actions/shared.action';
+import {PreloadRequestAction} from '../store/actions/projects.actions';
 
 @Injectable()
 export class ProjectsEventInterceptor implements AppInterceptor {
@@ -22,7 +23,15 @@ export class ProjectsEventInterceptor implements AppInterceptor {
     }
 
     public onPreload(appEvent: AppPreloadEvent, next: AppInterceptorHandler): void {
-        this.store.dispatch(new projectsActions.PreloadRequestAction());
+        this.store.dispatch(new PreloadRequestAction());
+
+        // todo: check for admin
+        this.store.dispatch(new AddCategoryAction({
+            name: 'Projects',
+            icon: 'work',
+            url: '/admin/projects'
+        }));
+
         next.handle(appEvent);
     }
 }

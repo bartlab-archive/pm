@@ -44,9 +44,8 @@ import {StatusesEffect} from './store/effects/statuses.effect';
 import {TrackersEffect} from './store/effects/trackers.effect';
 import {EnumerationsEffect} from './store/effects/enumerations.effect';
 import {projectsIssuesRoutes, routes} from './issues.routes';
-import {APP_EVENT_INTERCEPTORS} from '../../app/providers/app.injection';
+import {APP_EVENT_INTERCEPTORS, APP_MODULE_SUBROUTES} from '../../app/providers/app.injection';
 import {IssuesEventInterceptor} from './interceptors/issues-event.interceptor';
-import {PROJECTS_ROUTERS} from '../projects/providers/projects.injection';
 import {PipesModule} from '../../app/pipes';
 
 @NgModule({
@@ -103,8 +102,10 @@ import {PipesModule} from '../../app/pipes';
             multi: true,
         },
         {
-            provide: PROJECTS_ROUTERS,
-            useValue: projectsIssuesRoutes,
+            provide: APP_MODULE_SUBROUTES,
+            useValue: {
+                projects: projectsIssuesRoutes
+            },
             multi: true,
         }
     ],

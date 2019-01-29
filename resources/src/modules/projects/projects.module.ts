@@ -38,38 +38,8 @@ import {
 } from './store/reducers';
 
 import {ProjectsEffects} from './store/effects/projects.effects';
-import {PROJECTS_ROUTERS} from './providers/projects.injection';
-import {APP_EVENT_INTERCEPTORS} from '../../app/providers/app.injection';
+import {APP_EVENT_INTERCEPTORS, APP_MODULE_SUBROUTES} from '../../app/providers/app.injection';
 import {ProjectsEventInterceptor} from './interceptors/projects-event.interceptor';
-
-// const authRoutes: Routes = [
-//     {
-//         path: '',
-//         component: DefaultComponent,
-//         children: [
-//             {
-//                 path: 'projects',
-//                 component: ProjectsMainComponent,
-//                 data: {
-//                     auth: 'authorized',
-//                 },
-//                 children: [
-//                     {
-//                         path: '',
-//                         component: ProjectsListComponent,
-//                     },
-//                     {
-//                         path: ':identifier',
-//                         component: ProjectsItemComponent,
-//                         children: [
-//                             ...projectsIssuesRoutes,
-//                         ]
-//                     },
-//                 ],
-//             },
-//         ],
-//     },
-// ];
 
 @NgModule({
     declarations: [
@@ -113,7 +83,7 @@ import {ProjectsEventInterceptor} from './interceptors/projects-event.intercepto
     providers: [
         ProjectsService,
         {
-            provide: PROJECTS_ROUTERS,
+            provide: APP_MODULE_SUBROUTES,
             useValue: [],
             multi: true,
         },
@@ -145,7 +115,10 @@ export class ProjectsModule {
                         {
                             path: ':identifier',
                             component: ProjectsItemComponent,
-                            children: this.config.reduce((acc, val) => acc.concat(val), [])
+                            children: this.config
+                                .filter((value) => value.hasOwnProperty('projects'))
+                                .map((value) => value.projects)
+                                .reduce((acc, val) => acc.concat(val), [])
                         },
                     ],
                 },
@@ -153,7 +126,7 @@ export class ProjectsModule {
         },
     ];
 
-    public constructor(protected router: Router, @Inject(PROJECTS_ROUTERS) private config: Array<any>) {
+    public constructor(protected router: Router, @Inject(APP_MODULE_SUBROUTES) private config: Array<any>) {
         this.router.config.unshift(...this.routes);
         // this.router.config.push(config);
     }
