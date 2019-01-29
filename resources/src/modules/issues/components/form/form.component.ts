@@ -4,28 +4,26 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {
     FormBuilder, FormControl,
     Validators
 } from '@angular/forms';
-
-import {selectIssuesActive, selectIssuesStatus, selectMyProjects} from '../../store/selectors/issues';
 import {select, Store} from '@ngrx/store';
 import {combineLatest, Subscription, Observable} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
+import {MatAutocompleteSelectedEvent} from '@angular/material';
+
+import {Issue} from '../../interfaces/issues';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {ItemRequestAction} from '../../store/actions/issues.action';
 import {EnumerationsRequestAction} from '../../store/actions/enumerations.action';
-import {Issue} from '../../interfaces/issues';
 
-// import {selectStatuses} from '../../store/selectors/statuses';
-// import {selectPriorities} from '../../store/selectors/priorities';
-// import {selectTrackers} from '../../store/selectors/trackers';
-// import {IssuesSelectService} from '../../services';
+import {selectIssuesActive, selectIssuesStatus, selectMyProjects} from '../../store/selectors/issues';
+import {selectStatuses} from '../../store/selectors/statuses';
+import {selectPriorities} from '../../store/selectors/priorities';
+import {selectTrackers} from '../../store/selectors/trackers';
 import {Project} from '../../interfaces/projects';
-import {MatAutocompleteSelectedEvent} from '@angular/material';
 
 @Component({
     selector: 'app-issues-form',
@@ -35,7 +33,6 @@ import {MatAutocompleteSelectedEvent} from '@angular/material';
 
 export class IssuesFormComponent implements OnInit, OnDestroy {
     public subscriptions: Subscription[] = [];
-    // public item$: Observable<Issue>;
     public item: Issue;
     public statuses$: Observable<any[]>;
     public trackers$: Observable<any[]>;
@@ -43,11 +40,12 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     public params$: Observable<Params> = this.activatedRoute.params;
     public myProjects$: Observable<Project[]>;
     public priorities$: Observable<any[]>;
-    public projectSelectSubscription: Subscription;
-    public membersOfProject: Observable<any[]>;
+    public membersOfProject: any[];
     public watcherTags: any[] = [];
     public projects: any[];
     public tagCtrl = new FormControl();
+    public showDescription: boolean;
+    public isNew: boolean = false;
 
     @ViewChild('watchersInput')
     public watchersInput: ElementRef<HTMLInputElement>;
@@ -78,6 +76,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit(): void {
+        this.showDescription = this.isNew;
 
         if (selectMyProjects) {
             this.myProjects$ = this.store.pipe(select(selectMyProjects));
@@ -90,25 +89,9 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                 }),
             );
         }
-        // this.trackers$ = this.store.pipe(select(selectTrackers));
-        // this.statuses$ = this.store.pipe(select(selectStatuses));
-        // this.priorities$ = this.store.pipe(select(selectPriorities));
-        // this.item$ = combineLatest(this.issuesSelectService.issue$, this.params$)
-        //     .pipe(
-        //         filter(([issue, params]) => issue && issue.id === Number(params.id)),
-        //         map((([issue]) => {
-        //             if (issue.watchers) {
-        //                 const watchers = issue.watchers;
-        //                 Object.keys(watchers).map(key => {
-        //                     const tag = watchers[key].full_name;
-        //                     if (tag && this.watcherTags.indexOf(tag) === -1) {
-        //                         this.watcherTags.push(tag);
-        //                     }
-        //                 })
-        //             }
-        //             return issue;
-        //         })),
-        //     );
+        this.trackers$ = this.store.pipe(select(selectTrackers));
+        this.statuses$ = this.store.pipe(select(selectStatuses));
+        this.priorities$ = this.store.pipe(select(selectPriorities));
 
         this.subscriptions.push(
             this.params$.subscribe(params => {
@@ -116,13 +99,6 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                     this.load(Number(params.id));
                 }
             }),
-
-
-            // this.myProjects$.subscribe(projects => {
-            //     if (projects) {
-            //         this.projects = projects;
-            //     }
-            // }),
 
             combineLatest(this.store.pipe(select(selectIssuesActive)), this.params$)
                 .pipe(
@@ -188,9 +164,6 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy(): void {
         this.subscriptions.forEach(subscription => subscription.unsubscribe());
-        if (this.projectSelectSubscription) {
-            this.projectSelectSubscription.unsubscribe();
-        }
     }
 
     public selected(identifier: String): void {
