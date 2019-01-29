@@ -32,6 +32,9 @@
                     <span class="textareaLabel">Notes:</span>
                     <textarea matInput rows="15"></textarea>
                 </mat-form-field>
+                <div fxFlex="100" *ngIf="!isNew">
+                    <mat-slide-toggle>Private notes</mat-slide-toggle>
+                </div>
             </div>
 
             <div fxLayout="column" fxFlex="28">
@@ -83,12 +86,12 @@
                 </mat-form-field>
 
                 <mat-form-field class="example-full-width"
-                                *ngIf="membersOfProject || (item && item.project && item.project.members) ">
+                                *ngIf="membersOfProject">
                     <mat-select placeholder="Assignee"
                                 name="assigned"
                                 formControlName="assigned"
                     >
-                        <mat-option *ngFor="let member of membersOfProject || item.project.members"
+                        <mat-option *ngFor="let member of membersOfProject"
                                     [value]="member.user.id">
                             {{member.user.full_name}}
                         </mat-option>
@@ -137,7 +140,7 @@
                     </mat-form-field>
                 </div>
 
-                <mat-form-field *ngIf="membersOfProject || (item && item.project && item.project.members) ">
+                <mat-form-field *ngIf="membersOfProject">
                     <mat-chip-list #chipList>
                         <mat-chip *ngFor="let tag of watcherTags"
                                   [selectable]="false"
@@ -153,7 +156,7 @@
                                 [matChipInputFor]="chipList">
                     </mat-chip-list>
                     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="watched($event)">
-                        <mat-option matInput *ngFor="let member of membersOfProject || item.project.members"
+                        <mat-option matInput *ngFor="let member of membersOfProject"
                                     [value]="member.user.full_name">
                             {{member.user.full_name}}
                         </mat-option>
@@ -162,10 +165,6 @@
 
             </div>
         </mat-card-content>
-
-        <div fxFlex="100">
-            <mat-slide-toggle>Private notes</mat-slide-toggle>
-        </div>
 
         <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="10px" fxFlex="100">
             <button mat-raised-button color="primary">SUBMIT</button>

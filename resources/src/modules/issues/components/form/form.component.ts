@@ -40,8 +40,8 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     public params$: Observable<Params> = this.activatedRoute.params;
     public myProjects$: Observable<Project[]>;
     public priorities$: Observable<any[]>;
-    public membersOfProject: any[];
-    public watcherTags: any[] = [];
+    public membersOfProject: any[] = [];
+    public watcherTags: String[] = [];
     public projects: any[];
     public tagCtrl = new FormControl();
     public showDescription: boolean;
@@ -108,10 +108,14 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                             const watchers = issue.watchers;
                             Object.keys(watchers).map(key => {
                                 const tag = watchers[key].full_name;
-                                if (tag && this.watcherTags.indexOf(tag) === -1) {
+                                if (tag && !this.watcherTags.includes(tag)) {
                                     this.watcherTags.push(tag);
                                 }
                             });
+                        }
+
+                        if (issue.project && issue.project.members) {
+                            this.membersOfProject = issue.project.members;
                         }
                         return issue;
                     })),
@@ -175,7 +179,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     }
 
     public watched(event: MatAutocompleteSelectedEvent): void {
-        if (event.option.viewValue && this.watcherTags.indexOf(event.option.viewValue) === -1) {
+        if (event.option.viewValue && !this.watcherTags.includes(event.option.viewValue)) {
             this.watcherTags.push(event.option.viewValue);
             this.watchersInput.nativeElement.value = '';
             this.tagCtrl.setValue(null);

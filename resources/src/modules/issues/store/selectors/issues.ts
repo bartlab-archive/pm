@@ -10,8 +10,8 @@ import {awaitImport, dummyFn} from '../../../../app/helpers/import';
 import {denormalize} from 'normalizr';
 import {issuesSchema, projectsSchema} from '../schemas';
 
-const {selectProjectsEntities, selectProjectsMy} = awaitImport('modules/projects/store/reducers');
-const {selectUsersEntities, selectMembersEntities} = awaitImport('app/store/reducers/app.reducer');
+const {selectProjectsEntities, selectProjectsMy, selectMembersEntities} = awaitImport('modules/projects/store/reducers');
+const {selectUsersEntities} = awaitImport('app/store/reducers/app.reducer');
 
 export const selectIssuesIds = createSelector(selectIssuesState, state => state.ids);
 export const selectIssuesStatus = createSelector(selectIssuesState, state => state.status);

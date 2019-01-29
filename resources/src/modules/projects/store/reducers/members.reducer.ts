@@ -1,5 +1,5 @@
 import {combineReducers} from '@ngrx/store';
-import {Entities, Meta, Project} from '../../interfaces/projects';
+import {Entities, Project} from '../../interfaces/projects';
 import * as ProjectsActions from '../actions/projects.actions';
 import {getStateEntities, updateStateEntities} from '../../../../app/store/utils';
 
