@@ -7,9 +7,11 @@
 /public/fonts
 /public/images
 /public/mix-manifest.json
+/public/pm
 /storage/*.key
 /vendor
 /.idea
+.vscode
 /.vagrant
 Homestead.json
 Homestead.yaml
