@@ -18,6 +18,7 @@ export const meta = (state: Meta = null, action: ProjectsActions.ActionsUnion) =
 
 export const entities = (state: Entities<Project> = {}, action: ProjectsActions.ActionsUnion) => {
     switch (action.type) {
+        case ProjectsActions.ActionTypes.PRELOAD_SUCCESS:
         case ProjectsActions.ActionTypes.LIST_SUCCESS:
         case ProjectsActions.ActionTypes.ONE_SUCCESS: {
             return updateStateEntities(state, action.payload.entities.projects);
@@ -58,6 +59,18 @@ export const activeId = (state: string = null, action: ProjectsActions.ActionsUn
     }
 };
 
+export const my = (state: Array<string> = [], action: ProjectsActions.ActionsUnion) => {
+    switch (action.type) {
+
+        case ProjectsActions.ActionTypes.PRELOAD_SUCCESS: {
+            return action.payload.result;
+        }
+
+        default: {
+            return state;
+        }
+    }
+};
 export const error = (state: ResponseError = null, action: ProjectsActions.ActionsUnion) => {
     switch (action.type) {
         case ProjectsActions.ActionTypes.LIST_ERROR: {
@@ -100,6 +113,7 @@ export interface State {
     entities: Entities<Project>;
     ids: string[];
     activeId: string;
+    my: string[];
     error: ResponseError;
     status: RequestStatus;
 }
@@ -109,6 +123,7 @@ export const reducer = combineReducers({
     entities,
     ids,
     activeId,
+    my,
     error,
     status,
 });

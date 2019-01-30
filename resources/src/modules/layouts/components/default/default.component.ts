@@ -20,11 +20,11 @@ export class DefaultComponent implements OnInit, OnDestroy {
             icon: 'home',
             name: 'Home'
         },
-        {
-            url: '/my/page',
-            icon: 'person',
-            name: 'My page'
-        },
+        // {
+        //     url: '/my/page',
+        //     icon: 'person',
+        //     name: 'My page'
+        // },
         {
             url: '/admin',
             icon: 'settings_applications',
@@ -35,6 +35,11 @@ export class DefaultComponent implements OnInit, OnDestroy {
             icon: 'work',
             name: 'Projects'
         },
+        // {
+        //     url: '/activity',
+        //     icon: 'access_time',
+        //     name: 'Overall activity'
+        // },
         {
             url: '/users',
             icon: 'face',
@@ -50,11 +55,11 @@ export class DefaultComponent implements OnInit, OnDestroy {
             icon: 'list',
             name: 'View all issues'
         },
-        {
-            url: '/time_entries',
-            icon: 'timelapse',
-            name: 'Overall spent time'
-        }
+        // {
+        //     url: '/time_entries',
+        //     icon: 'timelapse',
+        //     name: 'Overall spent time'
+        // }
     ];
 
     public constructor(

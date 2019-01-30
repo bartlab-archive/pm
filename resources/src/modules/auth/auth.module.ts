@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { ReactiveFormsModule } from '@angular/forms';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { Store, StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { ActivationStart, Router, RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {ReactiveFormsModule} from '@angular/forms';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {Store, StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {ActivationStart, Router, RouterModule, Routes} from '@angular/router';
 import {
     MatButtonModule,
     MatCardModule,
@@ -26,15 +26,15 @@ import {
     RegistrationComponent,
     AuthMainComponent,
 } from './components';
-import { AuthService } from './services/auth.service';
-import { BlankComponent } from '../layouts/components';
-import { reducers, metaReducers } from './store/reducers';
-import { AuthEffects } from './store/effects/auth.effects';
-import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { filter } from 'rxjs/operators';
-import { LayoutsService } from '../layouts/services/layouts.service';
+import {AuthService} from './services/auth.service';
+import {BlankComponent} from '../layouts/components';
+import {reducers, metaReducers} from './store/reducers';
+import {AuthEffects} from './store/effects/auth.effects';
+import {AuthInterceptor} from './interceptors/auth.interceptor';
+import {filter} from 'rxjs/operators';
+import {LayoutsService} from '../layouts/services/layouts.service';
 import * as AuthActions from './store/actions/auth.actions';
-import { AuthEventInterceptor } from './interceptors/auth-event.interceptor';
+import {AuthEventInterceptor} from './interceptors/auth-event.interceptor';
 import {APP_EVENT_PRELOAD, APP_EVENT_INTERCEPTORS} from '../../app/providers/app.injection';
 
 const authRoutes: Routes = [
@@ -45,11 +45,11 @@ const authRoutes: Routes = [
             {
                 path: '',
                 component: AuthMainComponent,
-                data: { auth: 'guest' },
+                data: {auth: 'guest'},
                 children: [
-                    { path: 'login', component: LoginComponent },
-                    { path: 'account/register', component: RegistrationComponent },
-                    { path: 'account/lost_password', component: ResetComponent },
+                    {path: 'login', component: LoginComponent},
+                    {path: 'account/register', component: RegistrationComponent},
+                    {path: 'account/lost_password', component: ResetComponent},
                 ],
             },
         ],
@@ -57,12 +57,18 @@ const authRoutes: Routes = [
     {
         path: 'logout',
         component: LogoutComponent,
-        data: { auth: 'authorized' },
+        data: {auth: 'authorized'},
     },
 ];
 
 @NgModule({
-    declarations: [AuthMainComponent, LoginComponent, RegistrationComponent, ResetComponent, LogoutComponent],
+    declarations: [
+        AuthMainComponent,
+        LoginComponent,
+        RegistrationComponent,
+        ResetComponent,
+        LogoutComponent
+    ],
     imports: [
         CommonModule,
         RouterModule.forChild(authRoutes),
@@ -80,7 +86,7 @@ const authRoutes: Routes = [
         ReactiveFormsModule,
         FlexLayoutModule,
         HttpClientModule,
-        StoreModule.forFeature('auth', reducers, { metaReducers }),
+        StoreModule.forFeature('moduleAuth', reducers, {metaReducers}),
         EffectsModule.forFeature([AuthEffects]),
     ],
     providers: [
@@ -123,7 +129,7 @@ export class AuthModule {
 
         this.router.events
             .pipe(filter((event) => event instanceof ActivationStart))
-            .subscribe(({ snapshot }: ActivationStart) => {
+            .subscribe(({snapshot}: ActivationStart) => {
                 if (snapshot.data.hasOwnProperty('auth')) {
                     if (snapshot.data.auth === 'guest' && this.authService.isAuthorized()) {
                         return this.router.navigate(['/']);
@@ -136,8 +142,8 @@ export class AuthModule {
             });
 
         this.layoutsService
-            .addTopMenuItem({ icon: 'account_circle', path: '/users/1', title: 'Profile' })
-            .addTopMenuItem({ icon: 'settings', path: '/my/account', title: 'My account' })
-            .addTopMenuItem({ icon: 'exit_to_app', path: '/logout', title: 'Logout' });
+            .addTopMenuItem({icon: 'account_circle', path: '/users/1', title: 'Profile'})
+            .addTopMenuItem({icon: 'settings', path: '/my/account', title: 'My account'})
+            .addTopMenuItem({icon: 'exit_to_app', path: '/logout', title: 'Logout'});
     }
 }

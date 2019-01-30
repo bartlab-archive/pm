@@ -17,7 +17,7 @@ import {IssuesModule} from '../modules/issues/issues.module';
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from '@angular/material';
 import {AppService} from './services/app.service';
 import {FormService} from './services/form.service';
-import {APP_EVENT_PRELOAD, APP_EVENT_INTERCEPTORS, APP_MODULES_SELECTORS} from './providers/app.injection';
+import {APP_EVENT_PRELOAD, APP_EVENT_INTERCEPTORS} from './providers/app.injection';
 import {AppEventInterceptor} from './interceptors/app-event.interceptor';
 import {AppEffects} from './store/effects/app.effects';
 import * as appActions from './store/actions/app.actions';
@@ -25,6 +25,7 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AppInterceptor} from './interceptors/app.interceptor';
 import {selectUsersEntities, selectMembersEntities, selectRolesEntities} from './store/reducers/app.reducer';
 import {UsersModule} from "../modules/users/users.module";
+import {AdminhModule} from '../modules/admin/admin.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -56,6 +57,7 @@ import {UsersModule} from "../modules/users/users.module";
             maxAge: 25, // Retains last 25 states
         }),
 
+        MarkdownModule.forRoot(),
         MatSnackBarModule,
 
         // modules
@@ -66,6 +68,7 @@ import {UsersModule} from "../modules/users/users.module";
         IssuesModule,
         UsersModule,
         MarkdownModule.forRoot(),
+        AdminhModule
     ],
     providers: [
         AppService,
@@ -91,27 +94,6 @@ import {UsersModule} from "../modules/users/users.module";
             useValue: [
                 appActions.ActionTypes.INIT,
             ],
-            multi: true,
-        },
-        {
-            provide: APP_MODULES_SELECTORS,
-            useValue: {
-                moduleApp: {
-
-                    users: {
-                        entities: selectUsersEntities,
-                    },
-
-                    members: {
-                        entities: selectMembersEntities,
-                    },
-
-                    roles: {
-                        entities: selectRolesEntities,
-                    },
-                }
-            },
-
             multi: true,
         },
     ],

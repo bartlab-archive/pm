@@ -6,27 +6,23 @@
                     <img src="{{journal.user ? journal.user.avatar : journal.user.avatar}}">
                 </figure>
                 <div>
-                    <p class="my-0">
-                        Updated by <a href="user/{{journal.user.id}}"> {{journal.user.full_name}}</a> on
-                        <span matTooltip="{{journal.created_on}}" matTooltipPosition="above">
+                    Updated by <a href="user/{{journal.user.id}}"> {{journal.user.full_name}}</a> on
+                    <span matTooltip="{{journal.created_on}}" matTooltipPosition="above">
                             <strong>{{journal.created_on | formattedDate : 'fromNow' }}</strong>
                         </span>
-                    </p>
-                    <p *ngIf="journal.notes" class="my-0">{{journal.notes}}</p>
                 </div>
             </div>
+            <p *ngIf="journal.notes">{{journal.notes}}</p>
 
             <ul *ngIf="journal.details && journal.details.length" class="details">
                 <li *ngFor="let detail of journal.details">
                     <div *ngIf="detail.old_value;else detailText">
-                        <strong>{{detail.prop_key}}</strong><span class="badge badge-secondary ml-1">changed</span><br/>
-                        <strong>from</strong> {{detail.value}}<br/>
-                        <strong>to</strong> {{detail.old_value}}
+                        <strong>{{detail.prop_key}}</strong><span> changed </span>
+                        <strong> from </strong>...<strong> to </strong>...
                     </div>
                     <ng-template #detailText>
                         <div>
-                            <strong>{{detail.prop_key}}</strong><br/>
-                            {{detail.value}}
+                            <strong> {{detail.prop_key}} </strong>{{detail.value}}
                         </div>
                     </ng-template>
                 </li>

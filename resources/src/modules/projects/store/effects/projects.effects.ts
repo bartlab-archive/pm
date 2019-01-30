@@ -48,6 +48,23 @@ export class ProjectsEffects {
         ),
     );
 
+    @Effect()
+    protected my$ = this.actions$.pipe(
+        ofType<ProjectActions.PreloadRequestAction>(ProjectActions.ActionTypes.PRELOAD_REQUEST),
+        exhaustMap(() =>
+            this.projectsService.getProjects().pipe(
+                map((response: ProjectResponse) => {
+                    const payload = {
+                        ...normalize(response.data, [projectsSchema]),
+                    };
+
+                    return new ProjectActions.PreloadSuccessAction(payload);
+                }),
+                catchError((response: ResponseError) => of(new ProjectActions.PreloadErrorAction(response))),
+            ),
+        ),
+    );
+
     public constructor(protected actions$: Actions, protected projectsService: ProjectsService) {
     }
 }

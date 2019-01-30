@@ -31,17 +31,13 @@ import {storeFreeze} from 'ngrx-store-freeze';
 
 const environment = {production: process.env.NODE_ENV === 'production'};
 
-// export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-//     return localStorageSync({keys: ['auth'], rehydrate: true})(reducer);
-// }
-
 export const metaReducers: Array<MetaReducer<any, any>> = !environment.production
     ? [storeFreeze]
     : [];
 
 export interface State {
     router: fromRouter.RouterReducerState;
-    'module.app': appReducer.State;
+    app: appReducer.State;
 }
 
 /**
@@ -51,5 +47,5 @@ export interface State {
  */
 export const reducers: ActionReducerMap<State> = {
     router: fromRouter.routerReducer,
-    'module.app': appReducer.reducer,
+    app: appReducer.reducer,
 };

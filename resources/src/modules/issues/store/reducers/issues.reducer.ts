@@ -2,7 +2,7 @@ import {combineReducers} from '@ngrx/store';
 import {IssuesActionsUnion, IssuesActionTypes} from '../actions/issues.action';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {SharedActionsUnion, SharedActionTypes} from '../actions/shared.action';
-import {updateStateEntities} from '../utils/ngrx-utils';
+import {updateStateEntities} from '../../../../app/store/utils';
 
 const entities = (state = {}, action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {

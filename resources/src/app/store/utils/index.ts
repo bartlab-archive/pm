@@ -19,11 +19,13 @@ export const updateStateEntities = (state, entities) => {
     }, {...state});
 };
 
+/*
+    Method that picks up entities by "action-payload" and updates the state
+ */
 export const getStateEntities = (state, action, key) => {
-    if(action.payload && action.payload.entities && action.payload.entities[key]) {
+    if (action.payload && action.payload.entities && action.payload.entities[key]) {
         return updateStateEntities(state, action.payload.entities[key]);
     }
 
     return state;
 };
-

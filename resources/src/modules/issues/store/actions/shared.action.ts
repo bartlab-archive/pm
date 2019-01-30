@@ -3,8 +3,8 @@ import {Action} from '@ngrx/store';
 export enum SharedActionTypes {
     // shared
     AUTH_LOGOUT = '[auth] logout',
-    // LIST_SUCCESS = '[projects] list success',
     // AUTH_LOGOUT = '[auth] logout',
+    ADD_CATEGORY = '[admin] add category',
 }
 
 export class SharedAuthLogoutAction implements Action {
@@ -14,13 +14,14 @@ export class SharedAuthLogoutAction implements Action {
     }
 }
 
-// export class SharedProjectListAction implements Action {
-//     readonly type = SharedActionTypes.LIST_SUCCESS;
-//
-//     constructor(public payload: any) {
-//     }
-// }
+export class  SharedAddCategoryAction implements Action {
+    readonly type = SharedActionTypes.ADD_CATEGORY;
 
-export type SharedActionsUnion = SharedAuthLogoutAction;
-// | SharedProjectListAction;
+    constructor(public payload: any) {
+    }
+}
+
+export type SharedActionsUnion =
+    | SharedAuthLogoutAction
+    | SharedAddCategoryAction;
 

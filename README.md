@@ -10,6 +10,7 @@ npm install
 #### Environment Configuration
 ```bash
 cp .env.example .env
+php artisan key:generate
 ```
 
 #### Build Frontend

@@ -35,45 +35,11 @@ import {DefaultComponent} from '../layouts/components';
 import {
     reducers,
     metaReducers,
-    selectProjectsEntities,
-    // selectUsersEntities,
-    // selectMembersEntities,
-    // selectRolesEntities,
 } from './store/reducers';
 
 import {ProjectsEffects} from './store/effects/projects.effects';
-// import {projectsIssuesRoutes} from '../issues/issues.routes';
-import {PROJECTS_ROUTERS} from './providers/projects.injection';
-import {APP_MODULES_SELECTORS} from '../../app/providers/app.injection';
-
-// const authRoutes: Routes = [
-//     {
-//         path: '',
-//         component: DefaultComponent,
-//         children: [
-//             {
-//                 path: 'projects',
-//                 component: ProjectsMainComponent,
-//                 data: {
-//                     auth: 'authorized',
-//                 },
-//                 children: [
-//                     {
-//                         path: '',
-//                         component: ProjectsListComponent,
-//                     },
-//                     {
-//                         path: ':identifier',
-//                         component: ProjectsItemComponent,
-//                         children: [
-//                             ...projectsIssuesRoutes,
-//                         ]
-//                     },
-//                 ],
-//             },
-//         ],
-//     },
-// ];
+import {APP_EVENT_INTERCEPTORS, APP_MODULE_SUBROUTES} from '../../app/providers/app.injection';
+import {ProjectsEventInterceptor} from './interceptors/projects-event.interceptor';
 
 @NgModule({
     declarations: [
@@ -111,27 +77,19 @@ import {APP_MODULES_SELECTORS} from '../../app/providers/app.injection';
         ReactiveFormsModule,
         FlexLayoutModule,
         HttpClientModule,
-        StoreModule.forFeature('module.projects', reducers, {metaReducers}),
+        StoreModule.forFeature('moduleProjects', reducers, {metaReducers}),
         EffectsModule.forFeature([ProjectsEffects]),
     ],
     providers: [
         ProjectsService,
         {
-            provide: PROJECTS_ROUTERS,
+            provide: APP_MODULE_SUBROUTES,
             useValue: [],
             multi: true,
         },
-
         {
-            provide: APP_MODULES_SELECTORS,
-            useValue: {
-                moduleProjects: {
-                    projects: {
-                        entities: selectProjectsEntities,
-                    },
-                }
-            },
-
+            provide: APP_EVENT_INTERCEPTORS,
+            useClass: ProjectsEventInterceptor,
             multi: true,
         },
     ],
@@ -157,7 +115,10 @@ export class ProjectsModule {
                         {
                             path: ':identifier',
                             component: ProjectsItemComponent,
-                            children: this.config.reduce((acc, val) => acc.concat(val), [])
+                            children: this.config
+                                .filter((value) => value.hasOwnProperty('projects'))
+                                .map((value) => value.projects)
+                                .reduce((acc, val) => acc.concat(val), [])
                         },
                     ],
                 },
@@ -165,7 +126,7 @@ export class ProjectsModule {
         },
     ];
 
-    public constructor(protected router: Router, @Inject(PROJECTS_ROUTERS) private config: Array<any>) {
+    public constructor(protected router: Router, @Inject(APP_MODULE_SUBROUTES) private config: Array<any>) {
         this.router.config.unshift(...this.routes);
         // this.router.config.push(config);
     }

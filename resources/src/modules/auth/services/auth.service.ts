@@ -52,6 +52,7 @@ export class AuthService {
     }
 
     public login(data: LoginData): Observable<AuthData> {
+        console.log('data',data);
         return this.http.post<LoginResponse>('/api/v1/auth/login', data).pipe(
             map((response: LoginResponse) => {
                 const { user, value: token } = response.data;

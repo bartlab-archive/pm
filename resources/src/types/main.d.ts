@@ -1,1 +1,1 @@
-declare const process: any;
+// declare const process: any;

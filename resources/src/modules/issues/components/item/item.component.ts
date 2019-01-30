@@ -11,12 +11,11 @@ import {
     ItemWatchRequestAction,
     ItemUnwatchRequestAction
 } from '../../store/actions/issues.action';
-import {selectIssuesStatus} from '../../store/selectors/issues';
+import {selectIssuesActive, selectIssuesStatus} from '../../store/selectors/issues';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {Observable} from 'rxjs/internal/Observable';
 import {filter, map} from 'rxjs/operators';
 import {Issue} from '../../interfaces/issues';
-import {IssuesSelectService} from '../../services';
 
 @Component({
     selector: 'app-issues-item',
@@ -33,14 +32,13 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
     public constructor(
         private store: Store<any>,
         private activatedRoute: ActivatedRoute,
-        public router: Router,
-        public issuesSelectService: IssuesSelectService,
+        public router: Router
     ) {
     }
 
     public ngOnInit(): void {
         this.pending$ = this.store.pipe(select(selectIssuesStatus), map(status => status === RequestStatus.pending));
-        this.item$ = combineLatest(this.issuesSelectService.issue$, this.params$)
+        this.item$ = combineLatest(this.store.pipe(select(selectIssuesActive)), this.params$)
             .pipe(
                 filter(([issue, params]) => issue && issue.id === Number(params.id)),
                 map((([issue]) => issue)),

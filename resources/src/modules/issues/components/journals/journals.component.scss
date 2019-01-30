@@ -4,11 +4,13 @@ $icon-size: 24px;
 
 .journal-list {
   padding-left: 0;
+  margin: 0;
   list-style: none;
 
   .journal {
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
+    margin-top: 10px;
 
     figure {
       margin: 0 $space 0 0;
@@ -24,12 +26,12 @@ $icon-size: 24px;
 
   .details {
     padding-left: 0;
-    margin-left: $icon-size + $space;
+    margin-left: 60px;
 
     li {
       list-style: disc;
 
-      .label{
+      .label {
         color: $text-muted;
       }
     }
