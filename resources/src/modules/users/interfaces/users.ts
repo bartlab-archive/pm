@@ -64,7 +64,7 @@ export interface User {
     last_login_on: string;
 }
 
-export interface ProjectResponse {
+export interface UserResponse {
     data: User;
 }
 
