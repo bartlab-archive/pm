@@ -39,6 +39,6 @@ const routes: Routes = [{
     ],
     providers: [],
 })
-export class AdminhModule {
+export class AdminModule {
 
 }

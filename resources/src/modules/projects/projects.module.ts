@@ -40,6 +40,7 @@ import {
 import {ProjectsEffects} from './store/effects/projects.effects';
 import {APP_EVENT_INTERCEPTORS, APP_MODULE_SUBROUTES} from '../../app/providers/app.injection';
 import {ProjectsEventInterceptor} from './interceptors/projects-event.interceptor';
+import {propFromCollection} from '../../app/helpers/collection';
 
 @NgModule({
     declarations: [
@@ -115,10 +116,7 @@ export class ProjectsModule {
                         {
                             path: ':identifier',
                             component: ProjectsItemComponent,
-                            children: this.config
-                                .filter((value) => value.hasOwnProperty('projects'))
-                                .map((value) => value.projects)
-                                .reduce((acc, val) => acc.concat(val), [])
+                            children: propFromCollection(this.config, 'projects')
                         },
                     ],
                 },
@@ -126,7 +124,10 @@ export class ProjectsModule {
         },
     ];
 
-    public constructor(protected router: Router, @Inject(APP_MODULE_SUBROUTES) private config: Array<any>) {
+    public constructor(
+        protected router: Router,
+        @Inject(APP_MODULE_SUBROUTES) private config: Array<Routes>
+    ) {
         this.router.config.unshift(...this.routes);
         // this.router.config.push(config);
     }
