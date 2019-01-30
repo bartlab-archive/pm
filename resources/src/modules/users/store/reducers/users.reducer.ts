@@ -47,7 +47,7 @@ export const meta = (state: Array<string> = [], action: UsersActions.ActionsUnio
     }
 };
 
-export const activeId = (state: Array<string> = [], action: UsersActions.ActionsUnion) => {
+export const activeId = (state: number = null, action: UsersActions.ActionsUnion) => {
     switch (action.type) {
         case UsersActions.ActionTypes.ONE_REQUEST: {
             return action.payload;
@@ -61,7 +61,7 @@ export const activeId = (state: Array<string> = [], action: UsersActions.Actions
 
 export interface State {
     entities: Entities<any>;
-    ids: Array<string>;
+    ids: Array<number>;
     meta: Meta;
     activeId: number
 }
