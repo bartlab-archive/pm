@@ -32,7 +32,6 @@ import {
     selectUsersEntities,
 } from './store/reducers';
 
-import {APP_MODULES_SELECTORS} from "../../app/providers/app.injection";
 import {UsersFilterComponent} from "./components/list/filter/filter.component";
 import {ProfileFormComponent} from "./components/form/form.component";
 import {ProfileItemComponent} from "./components/item/item.component";
@@ -76,18 +75,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     ],
     providers: [
         UsersService,
-        {
-            provide: APP_MODULES_SELECTORS,
-            useValue: {
-                moduleUsers: {
-                    users: {
-                        entities: selectUsersEntities,
-                    },
 
-                }
-            },
-            multi: true,
-        },
     ],
 })
 export class UsersModule {

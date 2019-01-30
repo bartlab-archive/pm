@@ -6,8 +6,7 @@ import {filter} from "rxjs/operators";
 
 import * as userActions from "../../../users/store/actions/users.actions";
 import {PaginationParams, Status, UsersStatusNames} from "../../interfaces/users";
-import {UsersSelectService} from "../../services/users-select.service";
-import {selectUsersMeta} from "../../store/selectors/users";
+import {selectUsers, selectUsersMeta} from "../../store/selectors/users";
 
 @Component({
     selector: 'users-list',
@@ -28,7 +27,6 @@ export class UsersListComponent implements OnInit {
     public constructor(
         private router: Router,
         private store: Store<any>,
-        protected usersSelectService: UsersSelectService,
     ) {
 
     }
@@ -44,7 +42,7 @@ export class UsersListComponent implements OnInit {
     }
 
     public getStatusById(status): Status {
-       return UsersStatusNames.find( item => item.id === status)
+        return UsersStatusNames.find(item => item.id === status)
     }
 
     public onPageChange(): void {
@@ -56,8 +54,10 @@ export class UsersListComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.usersSelectService.users$
+        this.store.pipe(select(selectUsers))
             .subscribe((users) => {
+                console.log('users', users);
+
                 this.users = users;
             });
         this.store
