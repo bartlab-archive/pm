@@ -1,1 +1,26 @@
-<mat-card>Simple card</mat-card>
+<mat-card>
+    <div  fxLayout="row wrap" fxLayoutAlign="center start" id="profile">
+        <div [fxFlex.md]="30" [fxFlex.xs]="100" fxLayoutAlign="center center" fxLayout="column">
+            <div id="avatar">
+                <img src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+            </div>
+            <mat-card-title>David Mason</mat-card-title>
+            <button mat-stroked-button color="primary">Change avatar</button>
+        </div>
+
+        <div [fxFlex.md]="70" [fxFlex.xs]="100">
+            <form [formGroup]="form" class="example-form" fxLayoutAlign="center start" fxLayout="column">
+                <mat-form-field class="w-100">
+                    <input matInput placeholder="Full name" value="David Mason" formControlName="fullName" disabled>
+                </mat-form-field>
+
+                <mat-form-field class="w-100">
+                    <textarea matInput placeholder="Email" formControlName="email" disabled></textarea>
+                </mat-form-field>
+            </form>
+        </div>
+
+
+    </div>
+
+</mat-card>

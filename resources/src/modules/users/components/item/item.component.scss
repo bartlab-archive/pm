@@ -1,0 +1,19 @@
+mat-grid-tile {
+  box-shadow: 0 0 1px red;
+}
+
+#profile {
+  min-height: 500px;
+  #avatar {
+    padding: 5px;
+    margin: 5px;
+    img {
+      border-radius: 50%;
+      height: 150px;
+      width: 150px;
+      object-fit: cover;
+
+    }
+  }
+
+}
