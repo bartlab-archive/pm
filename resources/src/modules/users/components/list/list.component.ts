@@ -5,7 +5,7 @@ import {MatPaginator} from '@angular/material';
 import {filter} from "rxjs/operators";
 
 import * as userActions from "../../../users/store/actions/users.actions";
-import {PaginationParams, Status, UsersStatusNames} from "../../interfaces/users";
+import {PaginationParams} from "../../interfaces/users";
 import {selectUsers, selectUsersMeta} from "../../store/selectors/users";
 
 @Component({
@@ -41,10 +41,6 @@ export class UsersListComponent implements OnInit {
         };
     }
 
-    public getStatusById(status): Status {
-        return UsersStatusNames.find(item => item.id === status)
-    }
-
     public onPageChange(): void {
         this.loadUsers(this.getPagination());
     }
@@ -56,8 +52,6 @@ export class UsersListComponent implements OnInit {
     ngOnInit(): void {
         this.store.pipe(select(selectUsers))
             .subscribe((users) => {
-                console.log('users', users);
-
                 this.users = users;
             });
         this.store

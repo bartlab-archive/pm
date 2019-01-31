@@ -1,26 +1,43 @@
 <mat-card>
-    <div  fxLayout="row wrap" fxLayoutAlign="center start" id="profile">
-        <div [fxFlex.md]="30" [fxFlex.xs]="100" fxLayoutAlign="center center" fxLayout="column">
-            <div id="avatar">
-                <img src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+    <mat-progress-bar *ngIf="pending$ | async" mode="indeterminate"></mat-progress-bar>
+    <mat-toolbar-row>
+        <a mat-icon-button [routerLink]="['/users']">
+            <mat-icon class="icon">arrow_back</mat-icon>
+        </a>
+        <span class="spacer"></span>
+        <mat-icon class="icon">favorite</mat-icon>
+        <mat-icon class="icon">delete</mat-icon>
+    </mat-toolbar-row>
+    <div *ngIf="user$ | async as user">
+        <div fxLayout="row wrap" fxLayoutAlign="center start" id="profile">
+            <div [fxFlex.gt-xs]="30" [fxFlex.xs]="100" fxLayoutAlign="center center" fxLayout="column">
+                <div id="avatar">
+                    <img src={{user.avatar}} alt="{{ user.full_name }}">
+                </div>
+                <mat-card-title>{{ user.full_name }}</mat-card-title>
             </div>
-            <mat-card-title>David Mason</mat-card-title>
-            <button mat-stroked-button color="primary">Change avatar</button>
+
+            <div [fxFlex.gt-xs]="70" [fxFlex.xs]="100">
+                <form [formGroup]="form" class="example-form" fxLayoutAlign="center start" fxLayout="column">
+                    <mat-form-field>
+                        <input matInput placeholder="Login" formControlName="login" disabled>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="First name" formControlName="firstName" disabled>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="Last name" formControlName="lastName" disabled>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="Language" formControlName="language" disabled>
+                    </mat-form-field>
+
+                </form>
+            </div>
         </div>
-
-        <div [fxFlex.md]="70" [fxFlex.xs]="100">
-            <form [formGroup]="form" class="example-form" fxLayoutAlign="center start" fxLayout="column">
-                <mat-form-field class="w-100">
-                    <input matInput placeholder="Full name" value="David Mason" formControlName="fullName" disabled>
-                </mat-form-field>
-
-                <mat-form-field class="w-100">
-                    <textarea matInput placeholder="Email" formControlName="email" disabled></textarea>
-                </mat-form-field>
-            </form>
-        </div>
-
-
     </div>
 
 </mat-card>

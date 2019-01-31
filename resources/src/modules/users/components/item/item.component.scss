@@ -2,11 +2,22 @@ mat-grid-tile {
   box-shadow: 0 0 1px red;
 }
 
+mat-card-title {
+  text-align: center;
+}
+
+mat-form-field {
+  width: 100%;
+  input {
+    color: black;
+  }
+}
+
 #profile {
   min-height: 500px;
   #avatar {
     padding: 5px;
-    margin: 5px;
+    margin: 15px 5px;
     img {
       border-radius: 50%;
       height: 150px;
@@ -16,4 +27,12 @@ mat-grid-tile {
     }
   }
 
+}
+
+.icon {
+  padding: 0 14px;
+}
+
+.spacer {
+  flex: 1 1 auto;
 }

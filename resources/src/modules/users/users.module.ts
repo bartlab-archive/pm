@@ -16,6 +16,9 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
 
 import {
     MatPaginatorModule,
@@ -36,18 +39,20 @@ import {UsersFilterComponent} from "./components/list/filter/filter.component";
 import {ProfileFormComponent} from "./components/form/form.component";
 import {ProfileItemComponent} from "./components/item/item.component";
 import {FlexLayoutModule} from "@angular/flex-layout";
+import {UserStatusComponent} from "./components/status/status.component";
 
 @NgModule({
     declarations: [
         UsersListComponent,
         UsersFilterComponent,
         ProfileFormComponent,
-        ProfileItemComponent
+        ProfileItemComponent,
+        UserStatusComponent
     ],
     entryComponents: [
         UsersListComponent,
         ProfileFormComponent,
-        ProfileItemComponent
+        ProfileItemComponent,
     ],
     imports: [
         RouterModule,
@@ -70,7 +75,9 @@ import {FlexLayoutModule} from "@angular/flex-layout";
         MatButtonModule,
         MatGridListModule,
         FlexLayoutModule,
-        StoreModule.forFeature('module.users', reducers, {}),
+        MatToolbarModule,
+        MatProgressBarModule,
+        StoreModule.forFeature('moduleUsers', reducers, {}),
         EffectsModule.forFeature([UsersEffects]),
     ],
     providers: [

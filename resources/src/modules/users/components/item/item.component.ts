@@ -1,8 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {Store} from "@ngrx/store";
+import {select, Store} from "@ngrx/store";
 import * as userActions from "../../../users/store/actions/users.actions";
-import {FormBuilder, Validators} from "@angular/forms";
+import {FormBuilder} from "@angular/forms";
+import {selectUserActive, selectUsersPending} from "../../store/selectors/users";
+import {Observable} from "rxjs/internal/Observable";
+import {User} from "../../interfaces/users";
 
 @Component({
     selector: 'profile-item',
@@ -10,10 +13,15 @@ import {FormBuilder, Validators} from "@angular/forms";
     styleUrls: ['./item.component.scss']
 })
 export class ProfileItemComponent implements OnInit {
+    public user$: Observable<User>;
+    public pending$: Observable<boolean>;
+
     public form = this.fb.group({
-        'fullName': [{value: '', disabled: true}],
-        'email': [{value: '', disabled: true}],
-        // 'tracker': [''],
+        login: [{value: '', disabled: true}],
+        firstName: [{value: '', disabled: true}],
+        lastName: [{value: '', disabled: true}],
+        language: [{value: '', disabled: true}],
+        admin: [{value: '', disabled: true}],
     });
 
     public constructor(
@@ -27,7 +35,20 @@ export class ProfileItemComponent implements OnInit {
 
     ngOnInit() {
         const {id} = this.activatedRoute.snapshot.params;
-        this.store.dispatch(new userActions.OneRequestAction(+id))
+        this.store.dispatch(new userActions.OneRequestAction(+id));
+        this.user$ = this.store.pipe(select(selectUserActive));
+        this.user$.subscribe((user: User) => {
+            if (user) {
+                this.form.patchValue({
+                    login: user.login,
+                    firstName: user.firstname,
+                    lastName: user.lastname,
+                    language: user.language,
+                });
+            }
+
+        });
+        this.pending$ = this.store.pipe(select(selectUsersPending));
     }
 
 }

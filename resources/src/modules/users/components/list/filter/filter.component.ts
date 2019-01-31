@@ -16,7 +16,6 @@ const equalById = value => ({id}) => id == value;
 export class UsersFilterComponent {
     @Output() onChange = new EventEmitter<Status[]>();
 
-    selectable = true;
     removable = true;
     addOnBlur = true;
     separatorKeysCodes: number[] = [ENTER, COMMA];

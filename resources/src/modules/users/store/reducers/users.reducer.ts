@@ -22,7 +22,7 @@ export const ids = (state: Array<number> = [], action: UsersActions.ActionsUnion
             return action.payload.result;
         }
 
-        case UsersActions.ActionTypes.ONE_SUCCESS:{
+        case UsersActions.ActionTypes.ONE_SUCCESS: {
             return [
                 ...state,
                 ...action.payload.result
@@ -59,16 +59,34 @@ export const activeId = (state: number = null, action: UsersActions.ActionsUnion
     }
 };
 
+export const pending = (state: boolean = false, action: UsersActions.ActionsUnion) => {
+    switch (action.type) {
+        case UsersActions.ActionTypes.ONE_REQUEST:
+        case UsersActions.ActionTypes.LIST_REQUEST:
+            return true;
+
+        case UsersActions.ActionTypes.LIST_SUCCESS:
+        case UsersActions.ActionTypes.ONE_SUCCESS:
+            return false;
+
+        default: {
+            return state;
+        }
+    }
+};
+
 export interface State {
     entities: Entities<any>;
     ids: Array<number>;
     meta: Meta;
-    activeId: number
+    activeId: number,
+    pending: boolean,
 }
 
 export const reducer = combineReducers({
     entities,
     ids,
     meta,
-    activeId
+    activeId,
+    pending
 });
