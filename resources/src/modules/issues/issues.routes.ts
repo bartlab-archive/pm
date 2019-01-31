@@ -4,7 +4,7 @@ import {
     IssuesItemComponent,
     IssuesListComponent,
     IssuesMainComponent,
-    IssuesFormComponent
+    IssuesFormComponent, IssuesStatusesComponent, IssuesTrackersComponent
 } from './components';
 
 export const routes: Routes = [
@@ -43,7 +43,23 @@ export const projectsIssuesRoutes: Routes = [
             {
                 path: '',
                 component: IssuesListComponent,
-                data: {inner: true}
+            },
+        ]
+    }
+];
+
+export const adminIssuesRoutes: Routes = [
+    {
+        path: '',
+        component: IssuesMainComponent,
+        children: [
+            {
+                path: 'issue_statuses',
+                component: IssuesStatusesComponent,
+            },
+            {
+                path: 'trackers',
+                component: IssuesTrackersComponent,
             },
         ]
     }

@@ -8,7 +8,7 @@ export class AppEventInterceptor implements AppInterceptor {
     }
 
     on(appEvent: AppEvent, next: AppInterceptorHandler) {
-        console.log('AppEventInterceptor');
+        // console.log('AppEventInterceptor');
         next.handle(appEvent);
     }
 }

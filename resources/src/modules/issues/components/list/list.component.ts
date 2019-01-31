@@ -136,7 +136,6 @@ export class IssuesListComponent implements OnInit, OnDestroy {
         );
 
         this.load();
-        //console.log('init');
         // this.store.dispatch(new StatusesAllRequestAction());
         // this.store.dispatch(new TrackersAllRequestAction());
     }
