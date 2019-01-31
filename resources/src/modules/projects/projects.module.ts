@@ -40,7 +40,7 @@ import {
 import {ProjectsEffects} from './store/effects/projects.effects';
 import {APP_EVENT_INTERCEPTORS, APP_MODULE_SUBROUTES} from '../../app/providers/app.injection';
 import {ProjectsEventInterceptor} from './interceptors/projects-event.interceptor';
-import {propFromCollection} from '../../app/helpers/collection';
+import {findBy} from '../../app/helpers/collection';
 
 @NgModule({
     declarations: [
@@ -116,7 +116,7 @@ export class ProjectsModule {
                         {
                             path: ':identifier',
                             component: ProjectsItemComponent,
-                            children: propFromCollection(this.config, 'projects')
+                            children: findBy(this.config, 'projects')
                         },
                     ],
                 },
