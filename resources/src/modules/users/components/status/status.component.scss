@@ -1,0 +1,19 @@
+mat-chip {
+  padding: 5px 10px;
+  border-radius: 50px;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.chip-locked {
+  background: #B71C1C;
+}
+
+.chip-active {
+  background: #00695C;
+}
+
+.chip-registered {
+  background: #424242;
+}
