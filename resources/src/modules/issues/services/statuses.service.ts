@@ -13,4 +13,9 @@ export class StatusesService {
         return this.http.get('/api/v1/statuses');
     }
 
+    public one(id) {
+        return this.http.get(`/api/v1/statuses/${id}`);
+    }
+
+
 }

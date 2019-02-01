@@ -32,6 +32,7 @@ import {
     IssuesFormComponent,
     IssuesStatusesComponent,
     IssuesTrackersComponent,
+    IssuesStatusesFormComponent,
 } from './components';
 import {ReactiveFormsModule} from '@angular/forms';
 import {StoreModule} from '@ngrx/store';
@@ -58,11 +59,13 @@ import {PipesModule} from '../../app/pipes';
         IssuesJournalsComponent,
         IssuesFormComponent,
         IssuesStatusesComponent,
-        IssuesTrackersComponent
+        IssuesTrackersComponent,
+        IssuesStatusesFormComponent,
     ],
     entryComponents: [
         IssuesStatusesComponent,
         IssuesTrackersComponent,
+        IssuesStatusesFormComponent,
     ],
     imports: [
         CommonModule,

@@ -4,7 +4,7 @@ import {
     IssuesItemComponent,
     IssuesListComponent,
     IssuesMainComponent,
-    IssuesFormComponent, IssuesStatusesComponent, IssuesTrackersComponent
+    IssuesFormComponent, IssuesStatusesComponent, IssuesTrackersComponent, IssuesStatusesFormComponent
 } from './components';
 
 export const routes: Routes = [
@@ -56,6 +56,14 @@ export const adminIssuesRoutes: Routes = [
             {
                 path: 'issue_statuses',
                 component: IssuesStatusesComponent,
+            },
+            {
+                path: 'issue_statuses/new',
+                component: IssuesStatusesFormComponent,
+            },
+            {
+                path: 'issue_statuses/:id/edit',
+                component: IssuesStatusesFormComponent,
             },
             {
                 path: 'trackers',

@@ -50,7 +50,7 @@ export class IssuesEffect {
             this.issuesService.one(id).pipe(
                 map((response: any) => {
                     const payload = {
-                        meta: response.meta,
+                        // meta: response.meta,
                         ...normalize(response.data, issuesSchema),
                     };
 

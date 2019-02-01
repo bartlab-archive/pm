@@ -3,6 +3,7 @@ import {StatusesActionsUnion, StatusesActionTypes} from '../actions/statuses.act
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {IssuesActionsUnion, IssuesActionTypes} from '../actions/issues.action';
 import {updateStateEntities} from '../../../../app/store/utils';
+import {SharedActionsUnion} from '../actions/shared.action';
 
 const entities = (state = [], action: StatusesActionsUnion | IssuesActionsUnion) => {
     switch (action.type) {
@@ -46,12 +47,15 @@ const error = (state = null, action: StatusesActionsUnion) => {
 const status = (state = null, action: StatusesActionsUnion) => {
     switch (action.type) {
         case StatusesActionTypes.STATUSES_ALL_SUCCESS:
+        case StatusesActionTypes.STATUSES_ITEM_SUCCESS:
             return RequestStatus.success;
 
         case StatusesActionTypes.STATUSES_ALL_ERROR:
+        case StatusesActionTypes.STATUSES_ITEM_ERROR:
             return RequestStatus.error;
 
         case StatusesActionTypes.STATUSES_ALL_REQUEST:
+        case StatusesActionTypes.STATUSES_ITEM_REQUEST:
             return RequestStatus.pending;
 
         // case StatusesActionTypes.AUTH_LOGOUT:
@@ -62,9 +66,19 @@ const status = (state = null, action: StatusesActionsUnion) => {
     }
 };
 
+const activeId = (state = null, action: StatusesActionsUnion) => {
+    switch (action.type) {
+        case  StatusesActionTypes.STATUSES_ITEM_SUCCESS:
+            return action.payload.result;
+        default:
+            return state;
+    }
+};
+
 export const statusesReducers = combineReducers({
     entities,
     ids,
     status,
-    error
+    error,
+    activeId
 });

@@ -45,7 +45,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     public projects: any[];
     public tagCtrl = new FormControl();
     public showDescription: boolean;
-    public isNew: boolean = false;
+    public isNew = false;
 
     @ViewChild('watchersInput')
     public watchersInput: ElementRef<HTMLInputElement>;

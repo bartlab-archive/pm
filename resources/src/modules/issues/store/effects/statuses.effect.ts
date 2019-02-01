@@ -4,15 +4,21 @@ import {of} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {normalize} from 'normalizr';
 import {StatusesService} from '../../services';
-import {IssuesActionTypes} from '../actions/issues.action';
+import {
+    IssuesActionTypes,
+} from '../actions/issues.action';
 import {
     StatusesActionTypes,
     StatusesAllErrorAction,
     StatusesAllRequestAction,
-    StatusesAllSuccessAction
+    StatusesAllSuccessAction,
+    StatusesItemErrorAction,
+    StatusesItemRequestAction,
+    StatusesItemSuccessAction
 } from '../actions/statuses.action';
 
 import {statusesSchema} from '../schemas';
+import {ResponseError} from '../../../../app/interfaces/api';
 
 @Injectable()
 export class StatusesEffect {
@@ -23,16 +29,34 @@ export class StatusesEffect {
         exhaustMap(() =>
             this.statusesService.all().pipe(
                 map((response: any) => {
-                    const payload = {
+                    return new StatusesAllSuccessAction({
                         ...normalize(response.data, [statusesSchema]),
-                    };
-                    return new StatusesAllSuccessAction(payload);
+                    });
                 }),
                 catchError((response) => of(new StatusesAllErrorAction(response))),
             ),
         ),
     );
 
-    public constructor(protected actions$: Actions, protected statusesService: StatusesService) {
+    @Effect()
+    protected item$ = this.actions$.pipe(
+        ofType<StatusesItemRequestAction>(StatusesActionTypes.STATUSES_ITEM_REQUEST),
+        map(action => action.payload),
+        exhaustMap((id: number) =>
+            this.statusesService.one(id).pipe(
+                map((response: any) => {
+                    return new StatusesItemSuccessAction({
+                        ...normalize(response.data, statusesSchema),
+                    });
+                }),
+                catchError((response: ResponseError) => of(new StatusesItemErrorAction(response))),
+            ),
+        ),
+    );
+
+    public constructor(
+        protected actions$: Actions,
+        protected statusesService: StatusesService
+    ) {
     }
 }
