@@ -1,0 +1,5 @@
+<mat-error *ngFor="let validation of types">
+  <mat-error *ngIf="isInvalid(field, validation.type)" class="error-message">
+    {{validation.message}}
+  </mat-error>
+</mat-error>

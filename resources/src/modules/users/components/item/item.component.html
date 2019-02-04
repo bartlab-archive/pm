@@ -7,6 +7,9 @@
         <span class="spacer"></span>
         <mat-icon class="icon">favorite</mat-icon>
         <mat-icon class="icon">delete</mat-icon>
+        <a mat-icon-button href="" routerLink="/users/{{id}}/edit">
+            <mat-icon class="icon">edit</mat-icon>
+        </a>
     </mat-toolbar-row>
     <div *ngIf="user$ | async as user">
         <div fxLayout="row wrap" fxLayoutAlign="center start" id="profile">
@@ -29,10 +32,6 @@
 
                     <mat-form-field>
                         <input matInput placeholder="Last name" formControlName="lastName" disabled>
-                    </mat-form-field>
-
-                    <mat-form-field>
-                        <input matInput placeholder="Language" formControlName="language" disabled>
                     </mat-form-field>
 
                 </form>

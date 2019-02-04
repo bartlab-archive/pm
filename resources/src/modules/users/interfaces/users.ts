@@ -56,6 +56,7 @@ export interface User {
     language: string;
     mail_notification: string;
     emails: Email[];
+    email: string;
     firstname: string;
     lastname: string;
     status: number;

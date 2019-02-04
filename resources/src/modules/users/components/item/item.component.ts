@@ -15,13 +15,12 @@ import {User} from "../../interfaces/users";
 export class ProfileItemComponent implements OnInit {
     public user$: Observable<User>;
     public pending$: Observable<boolean>;
+    public id: number;
 
     public form = this.fb.group({
         login: [{value: '', disabled: true}],
         firstName: [{value: '', disabled: true}],
         lastName: [{value: '', disabled: true}],
-        language: [{value: '', disabled: true}],
-        admin: [{value: '', disabled: true}],
     });
 
     public constructor(
@@ -35,6 +34,7 @@ export class ProfileItemComponent implements OnInit {
 
     ngOnInit() {
         const {id} = this.activatedRoute.snapshot.params;
+        this.id = id;
         this.store.dispatch(new userActions.OneRequestAction(+id));
         this.user$ = this.store.pipe(select(selectUserActive));
         this.user$.subscribe((user: User) => {
@@ -43,7 +43,6 @@ export class ProfileItemComponent implements OnInit {
                     login: user.login,
                     firstName: user.firstname,
                     lastName: user.lastname,
-                    language: user.language,
                 });
             }
 

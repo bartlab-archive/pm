@@ -32,7 +32,6 @@ import {UsersListComponent} from "./components/list/list.component";
 import {UsersEffects} from "./store/effects/users.effects";
 import {
     reducers,
-    selectUsersEntities,
 } from './store/reducers';
 
 import {UsersFilterComponent} from "./components/list/filter/filter.component";
@@ -40,6 +39,7 @@ import {ProfileFormComponent} from "./components/form/form.component";
 import {ProfileItemComponent} from "./components/item/item.component";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {UserStatusComponent} from "./components/status/status.component";
+import {ErrorFormComponent} from "./components/error/error.component";
 
 @NgModule({
     declarations: [
@@ -47,7 +47,8 @@ import {UserStatusComponent} from "./components/status/status.component";
         UsersFilterComponent,
         ProfileFormComponent,
         ProfileItemComponent,
-        UserStatusComponent
+        UserStatusComponent,
+        ErrorFormComponent
     ],
     entryComponents: [
         UsersListComponent,
