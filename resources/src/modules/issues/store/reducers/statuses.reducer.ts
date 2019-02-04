@@ -3,7 +3,6 @@ import {StatusesActionsUnion, StatusesActionTypes} from '../actions/statuses.act
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {IssuesActionsUnion, IssuesActionTypes} from '../actions/issues.action';
 import {updateStateEntities} from '../../../../app/store/utils';
-import {SharedActionsUnion} from '../actions/shared.action';
 
 const entities = (state = [], action: StatusesActionsUnion | IssuesActionsUnion) => {
     switch (action.type) {
@@ -70,6 +69,8 @@ const activeId = (state = null, action: StatusesActionsUnion) => {
     switch (action.type) {
         case  StatusesActionTypes.STATUSES_ITEM_SUCCESS:
             return action.payload.result;
+        case StatusesActionTypes.STATUSES_ITEM_RESET:
+            return null;
         default:
             return state;
     }

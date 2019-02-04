@@ -1,13 +1,19 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {Observable, Subscription} from 'rxjs';
-import {selectStatuses, selectStatusesActive, selectStatusesStatus} from '../../store/selectors/statuses';
+import {Subscription} from 'rxjs';
+import {
+    selectStatusesActive,
+    selectStatusesStatus,
+} from '../../store/selectors/statuses';
 import {RequestStatus} from '../../../../app/interfaces/api';
-import {StatusesAllRequestAction, StatusesItemRequestAction} from '../../store/actions/statuses.action';
+import {
+    StatusesItemRequestAction,
+    StatusesItemResetAction,
+} from '../../store/actions/statuses.action';
 import {FormBuilder, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {filter, map} from 'rxjs/operators';
-import {Issue} from '../../interfaces/issues';
+import {filter} from 'rxjs/operators';
+import {Status} from '../../interfaces/statuses';
 
 @Component({
     selector: 'app-issues-statuses-form',
@@ -16,16 +22,23 @@ import {Issue} from '../../interfaces/issues';
 })
 export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
 
-    public subscriptions: Array<Subscription> = [];
-    public pending = false;
-    public statusId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
-    public isNew = !Boolean(this.statusId);
-    public item = {};
+    public item: Status = {
+        id: Number(this.activatedRoute.snapshot.paramMap.get('id')),
+        name: '',
+        is_closed: false
+    };
 
     public form = this.fb.group({
         'name': ['', Validators.required],
         'is_closed': [''],
     });
+
+    public subscriptions: Array<Subscription> = [];
+    public isNew = !Boolean(this.item.id);
+    public pending = false;
+
+    public item$ = this.store.pipe(select(selectStatusesActive), filter((item) => Boolean(item)));
+    public requestStatus$ = this.store.pipe(select(selectStatusesStatus));
 
     public constructor(
         private store: Store<any>,
@@ -37,19 +50,15 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.subscriptions.push(
-            this.store.pipe(select(selectStatusesStatus)).subscribe((status) => {
+            this.requestStatus$.subscribe((status) => {
                 this.pending = status === RequestStatus.pending;
             }),
         );
 
         if (!this.isNew) {
             this.subscriptions.push(
-                this.store.pipe(
-                    select(selectStatusesActive),
-                    filter((item) => Boolean(item))
-                ).subscribe((item) => {
-                    this.item = item;
-                    const {name, is_closed} = item;
+                this.item$.subscribe((item) => {
+                    const {name, is_closed} = Object.assign(this.item, item);
                     this.form.setValue({name, is_closed});
                 })
             );
@@ -59,11 +68,14 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
+        if (!this.isNew) {
+            this.store.dispatch(new StatusesItemResetAction());
+        }
         this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     }
 
     public load(): void {
-        this.store.dispatch(new StatusesItemRequestAction(this.statusId));
+        this.store.dispatch(new StatusesItemRequestAction(this.item.id));
     }
 
     public onSubmit(): void {

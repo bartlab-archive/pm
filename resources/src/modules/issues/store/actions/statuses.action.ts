@@ -9,6 +9,7 @@ export enum StatusesActionTypes {
     STATUSES_ITEM_REQUEST = '[statuses] item request',
     STATUSES_ITEM_ERROR = '[statuses] item error',
     STATUSES_ITEM_SUCCESS = '[statuses] item success',
+    STATUSES_ITEM_RESET = '[statuses] item reset',
 }
 
 export class StatusesAllRequestAction implements Action {
@@ -61,10 +62,18 @@ export class StatusesItemSuccessAction implements Action {
     }
 }
 
+export class StatusesItemResetAction implements Action {
+    readonly type = StatusesActionTypes.STATUSES_ITEM_RESET;
+
+    constructor() {
+    }
+}
+
 export type StatusesActionsUnion = StatusesAllRequestAction
     | StatusesAllErrorAction
     | StatusesAllSuccessAction
     | StatusesItemRequestAction
     | StatusesItemErrorAction
-    | StatusesItemSuccessAction;
+    | StatusesItemSuccessAction
+    | StatusesItemResetAction;
 // | IssuesLogoutSuccessAction;

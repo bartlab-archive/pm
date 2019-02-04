@@ -15,11 +15,11 @@ class IssuesStatuseResource extends Resource
     public function toArray($request)
     {
         return [
-            'default_done_ratio' => $this->default_done_ratio,
+//            'default_done_ratio' => $this->default_done_ratio,
             'id' => $this->id,
             'is_closed' => $this->is_closed,
             'name' => $this->name,
-            'position' => $this->position
+//            'position' => $this->position
         ];
     }
 }
