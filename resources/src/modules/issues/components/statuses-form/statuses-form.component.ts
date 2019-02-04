@@ -7,13 +7,18 @@ import {
 } from '../../store/selectors/statuses';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {
+    StatusesActionTypes,
     StatusesItemRequestAction,
     StatusesItemResetAction,
+    StatusesItemSaveRequestAction,
+    StatusesItemSaveSuccessAction,
 } from '../../store/actions/statuses.action';
 import {FormBuilder, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
 import {Status} from '../../interfaces/statuses';
+// import {StatusesEffect} from '../../store/effects/statuses.effect';
+// import {ofType} from '@ngrx/effects';
 
 @Component({
     selector: 'app-issues-statuses-form',
@@ -38,13 +43,17 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
     public pending = false;
 
     public item$ = this.store.pipe(select(selectStatusesActive), filter((item) => Boolean(item)));
+    // public errors$ = this.store.pipe(select(selectStatusesSa))
     public requestStatus$ = this.store.pipe(select(selectStatusesStatus));
+
+    // public saved$ = this.statusesEffect.save$.pipe(ofType(StatusesActionTypes.STATUSES_ITEM_SAVE_SUCCESS));
 
     public constructor(
         private store: Store<any>,
         private fb: FormBuilder,
         public activatedRoute: ActivatedRoute,
         public router: Router,
+        // public statusesEffect: StatusesEffect
     ) {
     }
 
@@ -53,6 +62,8 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
             this.requestStatus$.subscribe((status) => {
                 this.pending = status === RequestStatus.pending;
             }),
+
+            // this.saved$.subscribe(() => this.router.navigate(['/issue_statuses']))
         );
 
         if (!this.isNew) {
@@ -68,10 +79,10 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
+        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
         if (!this.isNew) {
             this.store.dispatch(new StatusesItemResetAction());
         }
-        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     }
 
     public load(): void {
@@ -79,7 +90,12 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        this.router.navigate(['/issue_statuses']);
+        this.store.dispatch(new StatusesItemSaveRequestAction({
+            id: this.item.id,
+            name: this.form.get('name').value,
+            is_closed: Boolean(this.form.get('is_closed').value),
+        }));
+        // this.router.navigate(['/issue_statuses']);
     }
 
 }

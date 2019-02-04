@@ -14,11 +14,15 @@ import {
     StatusesAllSuccessAction,
     StatusesItemErrorAction,
     StatusesItemRequestAction,
+    StatusesItemSaveErrorAction,
+    StatusesItemSaveRequestAction,
+    StatusesItemSaveSuccessAction,
     StatusesItemSuccessAction
 } from '../actions/statuses.action';
 
 import {statusesSchema} from '../schemas';
 import {ResponseError} from '../../../../app/interfaces/api';
+import {Status} from '../../interfaces/statuses';
 
 @Injectable()
 export class StatusesEffect {
@@ -51,6 +55,24 @@ export class StatusesEffect {
                 }),
                 catchError((response: ResponseError) => of(new StatusesItemErrorAction(response))),
             ),
+        ),
+    );
+
+    @Effect()
+    public save$ = this.actions$.pipe(
+        ofType<StatusesItemSaveRequestAction>(StatusesActionTypes.STATUSES_ITEM_SAVE_REQUEST),
+        map(action => action.payload),
+        exhaustMap((data: Status) =>
+            // todo: get from data only needed fields
+            (data.id ? this.statusesService.update(data.id, data) : this.statusesService.create(data))
+                .pipe(
+                    map((response: any) => {
+                        return new StatusesItemSaveSuccessAction({
+                            ...normalize(response.data, statusesSchema),
+                        });
+                    }),
+                    catchError((response: ResponseError) => of(new StatusesItemSaveErrorAction(response))),
+                ),
         ),
     );
 

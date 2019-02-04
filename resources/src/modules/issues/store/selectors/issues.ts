@@ -13,11 +13,11 @@ import {issuesSchema, projectsSchema} from '../schemas';
 const {selectProjectsEntities, selectProjectsMy, selectMembersEntities} = awaitImport('modules/projects/store/reducers');
 const {selectUsersEntities} = awaitImport('app/store/reducers/app.reducer');
 
-export const selectIssuesIds = createSelector(selectIssuesState, state => state.ids);
-export const selectIssuesStatus = createSelector(selectIssuesState, state => state.status);
-export const selectIssuesError = createSelector(selectIssuesState, state => state.error);
-export const selectIssuesActiveId = createSelector(selectIssuesState, state => state.activeId);
-export const selectIssuesMeta = createSelector(selectIssuesState, state => state.meta);
+export const selectIssuesIds = createSelector(selectIssuesState, (state: any) => state.ids);
+export const selectIssuesStatus = createSelector(selectIssuesState, (state: any) => state.status);
+export const selectIssuesError = createSelector(selectIssuesState, (state: any) => state.error);
+export const selectIssuesActiveId = createSelector(selectIssuesState, (state: any) => state.activeId);
+export const selectIssuesMeta = createSelector(selectIssuesState, (state: any) => state.meta);
 
 const selectEntities = [
     selectIssuesEntities,
