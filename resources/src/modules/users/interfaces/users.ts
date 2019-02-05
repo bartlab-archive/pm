@@ -65,6 +65,21 @@ export interface User {
     last_login_on: string;
 }
 
+export interface UserUpdate{
+    login?: string;
+    firstname?: string;
+    lastname?: string;
+    status?: number;
+    email?: string;
+    password?: string;
+    repeat_rassword?: string;
+}
+
+export interface UserUpdateRequest {
+    id: number;
+    body: UserUpdate;
+}
+
 export interface UserResponse {
     data: User;
 }

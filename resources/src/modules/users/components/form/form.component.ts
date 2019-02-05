@@ -5,7 +5,8 @@ import {FormBuilder, Validators} from "@angular/forms";
 import * as userActions from "../../store/actions/users.actions";
 import {selectUserActive, selectUsersPending} from "../../store/selectors/users";
 import {Observable} from "rxjs/internal/Observable";
-import {User} from "../../interfaces/users";
+import {User, UserUpdate} from "../../interfaces/users";
+import {Subscription} from "rxjs/index";
 
 @Component({
     selector: 'profile-form',
@@ -20,6 +21,12 @@ export class ProfileFormComponent implements OnInit {
     public id: number;
     public hide = true;
     public hideRepeat = true;
+    protected subscriptions: Subscription[] = [];
+
+    public get isSubmitInactive() {
+        const {invalid = null, status = ''} = this.form || {};
+        return invalid || status == 'DISABLED';
+    }
 
     public form = this.fb.group({
         login: [{value: '',}, [
@@ -44,7 +51,7 @@ export class ProfileFormComponent implements OnInit {
         repeatPassword: [{value: '',}],
     });
 
-    validation_messages = {
+    validationMessages = {
         'login': [
             {type: 'required', message: 'Login is required'},
             {type: 'maxlength', message: 'Login cannot be more than 30 characters long'},
@@ -75,23 +82,27 @@ export class ProfileFormComponent implements OnInit {
 
     ngOnInit() {
         const {id} = this.activatedRoute.snapshot.params;
-        this.id = id;
-        this.store.dispatch(new userActions.OneRequestAction(+id));
+        this.id = +id;
+        this.store.dispatch(new userActions.OneRequestAction(this.id));
         this.user$ = this.store.pipe(select(selectUserActive));
-        this.user$.subscribe((user: User) => {
-            if (user) {
-                this.form.patchValue({
-                    login: user.login,
-                    firstName: user.firstname,
-                    lastName: user.lastname,
-                    email: user.email,
-                    password: '',
-                    repeatPassword: '',
-                });
-            }
-
-        });
         this.pending$ = this.store.pipe(select(selectUsersPending));
+
+        this.subscriptions.push(
+            this.user$.subscribe((user: User) => {
+                if (user) {
+                    this.form.patchValue({
+                        login: user.login,
+                        firstName: user.firstname,
+                        lastName: user.lastname,
+                        email: user.email,
+                        password: '',
+                        repeatPassword: '',
+                    });
+                }
+            }),
+            this.pending$.subscribe(status => status ? this.form.disable() : this.form.enable())
+        )
+
     }
 
     onSubmit() {
@@ -101,8 +112,17 @@ export class ProfileFormComponent implements OnInit {
             Object.keys(controls).forEach(name => controls[name].markAsTouched());
             return;
         }
+        const {firstName, lastName, login, email, password, repeatPassword} = this.form.value;
 
-        console.log(this.form.value);
+        const body: UserUpdate = {
+            firstname: firstName,
+            lastname: lastName,
+            repeat_rassword: repeatPassword,
+            password,
+            login,
+            email,
+        };
+        this.store.dispatch(new userActions.UpdateRequestAction({id: this.id, body}))
     }
 
 

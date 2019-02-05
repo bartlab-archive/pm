@@ -26,8 +26,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
-        $id = (int)$this->get('id');
-
+        $id = (int)$this->route('id');
         $result = [
             'login' => [
                 'required',

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {of} from 'rxjs';
-import {catchError, exhaustMap, map} from 'rxjs/operators';
+import {catchError, delay, exhaustMap, map} from 'rxjs/operators';
 import {normalize} from 'normalizr';
 import * as UserActions from '../actions/users.actions';
 import {ListResponse, PaginationParams, UserResponse} from '../../interfaces/users';
@@ -42,6 +42,23 @@ export class UsersEffects {
                     return new UserActions.OneSuccessAction(payload);
                 }),
                 catchError((response: ResponseError) => of(new UserActions.OneErrorAction(response))),
+            ),
+        ),
+    );
+
+    @Effect()
+    protected update$ = this.actions$.pipe(
+        ofType<UserActions.UpdateRequestAction>(UserActions.ActionTypes.UPDATE_REQUEST),
+        map((action) => action.payload),
+        exhaustMap((request) =>
+            this.userService.update(request.id, request.body).pipe(
+                map(({  data }: UserResponse) => {
+                    const payload = {
+                        ...normalize([data], [usersSchema]),
+                    };
+                    return new UserActions.UpdateSuccessAction(payload);
+                }),
+                catchError((response: ResponseError) => of(new UserActions.UpdateErrorAction(response))),
             ),
         ),
     );
