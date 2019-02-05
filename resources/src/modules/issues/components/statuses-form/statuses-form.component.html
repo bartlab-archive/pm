@@ -16,7 +16,7 @@
             </mat-card-content>
 
             <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="10px" fxFlex="100">
-                <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">{{ isNew ? 'CREATE' : 'SAVE' }}</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || pending">{{ isNew ? 'CREATE' : 'SAVE' }}</button>
                 <button mat-raised-button routerLink="/issue_statuses">CANCEL</button>
             </div>
         </form>

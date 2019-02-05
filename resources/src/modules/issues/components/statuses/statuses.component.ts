@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {Subscription} from 'rxjs';
-import {selectStatuses, selectStatusesStatus} from '../../store/selectors/statuses';
+import {combineLatest, Subscription} from 'rxjs';
+import {selectStatuses, selectStatusesRequestId, selectStatusesStatus} from '../../store/selectors/statuses';
 import {RequestStatus} from '../../../../app/interfaces/api';
-import {StatusesAllRequestAction} from '../../store/actions/statuses.action';
+import {StatusesAllRequestAction, StatusesItemRemoveRequestAction} from '../../store/actions/statuses.action';
+import {filter} from 'rxjs/operators';
 
 @Component({
     selector: 'app-issues-statuses',
@@ -16,6 +17,14 @@ export class IssuesStatusesComponent implements OnInit, OnDestroy {
     public dataSource: Array<object>;
     public subscriptions: Array<Subscription> = [];
     public pending = false;
+    public removeRequestId = null;
+    public status$ = this.store.pipe(select(selectStatusesStatus));
+    public items$ = this.store.pipe(select(selectStatuses));
+    public requestId$ = this.store.pipe(select(selectStatusesRequestId));
+    public removed$ = combineLatest(this.status$, this.requestId$).pipe(
+        filter(([status, requestId]) => Boolean(status) && Boolean(requestId)),
+        filter(([status, requestId]) => status === RequestStatus.success && requestId === this.removeRequestId)
+    );
 
     public constructor(
         private store: Store<any>,
@@ -24,12 +33,16 @@ export class IssuesStatusesComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.subscriptions.push(
-            this.store.pipe(select(selectStatusesStatus)).subscribe((status) => {
+            this.status$.subscribe((status) => {
                 this.pending = status === RequestStatus.pending;
             }),
 
-            this.store.pipe(select(selectStatuses)).subscribe((items) => {
+            this.items$.subscribe((items) => {
                 this.dataSource = items;
+            }),
+
+            this.removed$.subscribe(() => {
+                this.load();
             })
         );
 
@@ -42,6 +55,12 @@ export class IssuesStatusesComponent implements OnInit, OnDestroy {
 
     public load(): void {
         this.store.dispatch(new StatusesAllRequestAction());
+    }
+
+    public remove(id): void {
+        const action = new StatusesItemRemoveRequestAction(id);
+        this.removeRequestId = action.requestId;
+        this.store.dispatch(action);
     }
 
 }

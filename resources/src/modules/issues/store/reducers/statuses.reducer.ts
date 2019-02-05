@@ -49,14 +49,20 @@ const status = (state = null, action: StatusesActionsUnion) => {
     switch (action.type) {
         case StatusesActionTypes.STATUSES_ALL_SUCCESS:
         case StatusesActionTypes.STATUSES_ITEM_SUCCESS:
+        case StatusesActionTypes.STATUSES_ITEM_SAVE_SUCCESS:
+        case StatusesActionTypes.STATUSES_ITEM_REMOVE_SUCCESS:
             return RequestStatus.success;
 
         case StatusesActionTypes.STATUSES_ALL_ERROR:
         case StatusesActionTypes.STATUSES_ITEM_ERROR:
+        case StatusesActionTypes.STATUSES_ITEM_SAVE_ERROR:
+        case StatusesActionTypes.STATUSES_ITEM_REMOVE_ERROR:
             return RequestStatus.error;
 
         case StatusesActionTypes.STATUSES_ALL_REQUEST:
         case StatusesActionTypes.STATUSES_ITEM_REQUEST:
+        case StatusesActionTypes.STATUSES_ITEM_SAVE_REQUEST:
+        case StatusesActionTypes.STATUSES_ITEM_REMOVE_REQUEST:
             return RequestStatus.pending;
 
         case StatusesActionTypes.STATUSES_ITEM_RESET:
@@ -81,10 +87,34 @@ const activeId = (state = null, action: StatusesActionsUnion) => {
     }
 };
 
+const requestId = (state = null, action: StatusesActionsUnion) => {
+    switch (action.type) {
+        case  StatusesActionTypes.STATUSES_ALL_REQUEST:
+        case  StatusesActionTypes.STATUSES_ALL_SUCCESS:
+        case  StatusesActionTypes.STATUSES_ALL_ERROR:
+        case  StatusesActionTypes.STATUSES_ITEM_REQUEST:
+        case  StatusesActionTypes.STATUSES_ITEM_SUCCESS:
+        case  StatusesActionTypes.STATUSES_ITEM_ERROR:
+        case  StatusesActionTypes.STATUSES_ITEM_SAVE_REQUEST:
+        case  StatusesActionTypes.STATUSES_ITEM_SAVE_SUCCESS:
+        case  StatusesActionTypes.STATUSES_ITEM_SAVE_ERROR:
+        case  StatusesActionTypes.STATUSES_ITEM_REMOVE_REQUEST:
+        case  StatusesActionTypes.STATUSES_ITEM_REMOVE_SUCCESS:
+        case  StatusesActionTypes.STATUSES_ITEM_REMOVE_ERROR:
+            return action.requestId;
+        // case StatusesActionTypes.STATUSES_ITEM_REQUEST:
+        case StatusesActionTypes.STATUSES_ITEM_RESET:
+            return null;
+        default:
+            return state;
+    }
+};
+
 export const statusesReducers = combineReducers({
     entities,
     ids,
     status,
+    requestId,
     error,
     activeId
 });

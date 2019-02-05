@@ -1,21 +1,21 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {Subscription} from 'rxjs';
+import {combineLatest, Subscription} from 'rxjs';
 import {
-    selectStatusesActive,
+    selectStatusesActive, selectStatusesRequestId,
     selectStatusesStatus,
 } from '../../store/selectors/statuses';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {
-    StatusesActionTypes,
+    // StatusesActionTypes,
     StatusesItemRequestAction,
     StatusesItemResetAction,
     StatusesItemSaveRequestAction,
-    StatusesItemSaveSuccessAction,
+    // StatusesItemSaveSuccessAction,
 } from '../../store/actions/statuses.action';
 import {FormBuilder, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {filter} from 'rxjs/operators';
+import {combineAll, filter} from 'rxjs/operators';
 import {Status} from '../../interfaces/statuses';
 // import {StatusesEffect} from '../../store/effects/statuses.effect';
 // import {ofType} from '@ngrx/effects';
@@ -41,12 +41,18 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
     public subscriptions: Array<Subscription> = [];
     public isNew = !Boolean(this.item.id);
     public pending = false;
-
+    public requestId = null;
     public item$ = this.store.pipe(select(selectStatusesActive), filter((item) => Boolean(item)));
     // public errors$ = this.store.pipe(select(selectStatusesSa))
     public requestStatus$ = this.store.pipe(select(selectStatusesStatus));
 
-    // public saved$ = this.statusesEffect.save$.pipe(ofType(StatusesActionTypes.STATUSES_ITEM_SAVE_SUCCESS));
+    public saved$ = combineLatest(
+        this.store.pipe(select(selectStatusesStatus)),
+        this.store.pipe(select(selectStatusesRequestId)),
+    ).pipe(
+        filter(([status, requestId]) => Boolean(status) && Boolean(requestId)),
+        filter(([status, requestId]) => status === RequestStatus.success && requestId === this.requestId)
+    );
 
     public constructor(
         private store: Store<any>,
@@ -63,7 +69,9 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
                 this.pending = status === RequestStatus.pending;
             }),
 
-            // this.saved$.subscribe(() => this.router.navigate(['/issue_statuses']))
+            this.saved$.subscribe(() => {
+                this.router.navigate(['/issue_statuses']);
+            })
         );
 
         if (!this.isNew) {
@@ -90,11 +98,13 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        this.store.dispatch(new StatusesItemSaveRequestAction({
+        const action = new StatusesItemSaveRequestAction({
             id: this.item.id,
             name: this.form.get('name').value,
             is_closed: Boolean(this.form.get('is_closed').value),
-        }));
+        });
+        this.requestId = action.requestId;
+        this.store.dispatch(action);
         // this.router.navigate(['/issue_statuses']);
     }
 
