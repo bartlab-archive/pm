@@ -1,6 +1,7 @@
 import {combineReducers} from '@ngrx/store';
 import {RequestStatus, ResponseError} from '../../../../app/interfaces/api';
 import * as ProjectsActions from '../actions/projects.actions';
+import * as SharedActions from '../actions/shared.actions';
 import {Entities, Meta, Project} from '../../interfaces/projects';
 import {getStateEntities, updateStateEntities} from '../../../../app/store/utils';
 
@@ -108,6 +109,23 @@ export const status = (state: RequestStatus = null, action: ProjectsActions.Acti
     }
 };
 
+export const registeredSubModules = (state: Array<SubModule> = [], action: SharedActions.SharedActionsUnion) => {
+    switch (action.type) {
+        case SharedActions.ActionTypes.ADD_MODULE_ID_MAPPING: {
+            return state.concat(action.payload);
+        }
+
+        default: {
+            return state;
+        }
+    }
+};
+
+interface SubModule {
+    id: string;
+    name: string;
+    path: string;
+}
 export interface State {
     meta: Meta;
     entities: Entities<Project>;
@@ -116,6 +134,7 @@ export interface State {
     my: string[];
     error: ResponseError;
     status: RequestStatus;
+    registeredSubModules: SubModule[];
 }
 
 export const reducer = combineReducers({
@@ -126,4 +145,5 @@ export const reducer = combineReducers({
     my,
     error,
     status,
+    registeredSubModules,
 });

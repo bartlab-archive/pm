@@ -96,7 +96,6 @@ import {findBy} from '../../app/helpers/collection';
     ],
 })
 export class ProjectsModule {
-
     protected routes: Routes = [
         {
             path: '',

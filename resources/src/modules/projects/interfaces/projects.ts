@@ -26,7 +26,9 @@ export interface PaginationParams {
 
 export interface Member {}
 
-export interface Module {}
+export interface Module {
+    name: string;
+}
 
 export interface Meta {
     current_page: number;
