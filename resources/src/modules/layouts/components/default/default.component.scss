@@ -47,10 +47,10 @@
     }
   }
 }
+
 .mat-tab-link {
   color: white;
 }
-
 
 mat-sidenav {
   width: 280px;
@@ -161,4 +161,21 @@ div.with-project-menu {
     }
   }
 
+}
+
+.sub-toolbar {
+  //padding: 0;
+  padding: 0 96px;
+
+  .mat-tab-link {
+    padding: 0 12px;
+    height: 63px;
+    min-width: auto;
+    opacity: 1;
+  }
+
+  .mat-tab-nav-bar {
+    //border-bottom-width: 2px;
+    //border-bottom: 2px solid red;
+  }
 }

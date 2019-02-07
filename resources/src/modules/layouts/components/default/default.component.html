@@ -39,19 +39,19 @@
                     <!--</button>-->
                 </mat-menu>
             </mat-toolbar-row>
-            <mat-toolbar-row *ngIf="topTabs">
-                    <nav mat-tab-nav-bar>
-                        <a
-                            mat-tab-link 
+            <mat-toolbar-row *ngIf="topTabs" class="sub-toolbar">
+                <nav mat-tab-nav-bar color="accent">
+                    <a
+                            mat-tab-link
                             *ngFor="let tab of topTabs"
                             [routerLink]="tab.path"
                             routerLinkActive
                             #rla="routerLinkActive"
                             [active]="rla.isActive"
-                        >
-                            {{tab.name | uppercase}}
-                        </a>
-                    </nav>
+                    >
+                        {{tab.name | uppercase}}
+                    </a>
+                </nav>
             </mat-toolbar-row>
         </mat-toolbar>
 
