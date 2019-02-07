@@ -35,7 +35,7 @@ import {
     IssuesStatusesFormComponent,
 } from './components';
 import {ReactiveFormsModule} from '@angular/forms';
-import {StoreModule} from '@ngrx/store';
+import {StoreModule, Store} from '@ngrx/store';
 import {
     reducers,
     metaReducers
@@ -50,6 +50,8 @@ import {adminIssuesRoutes, projectsIssuesRoutes, routes} from './issues.routes';
 import {APP_EVENT_INTERCEPTORS, APP_MODULE_SUBROUTES} from '../../app/providers/app.injection';
 import {IssuesEventInterceptor} from './interceptors/issues-event.interceptor';
 import {PipesModule} from '../../app/pipes';
+import {SharedAddModuleIdMappingAction} from './store/actions/shared.action';
+import {NamePathMapping} from './interfaces/issues';
 
 @NgModule({
     declarations: [
@@ -123,9 +125,15 @@ import {PipesModule} from '../../app/pipes';
     ],
 })
 export class IssuesModule {
+    private namePathMapping: NamePathMapping;
 
-    // public constructor(private router: Router) {
-    //     console.log(router);
-    // }
+    public constructor(private store: Store<any>) {
+        this.namePathMapping = {
+            id: 'issue_tracking',
+            path: projectsIssuesRoutes[0].path,
+            name: 'issues',
+        };
+        this.store.dispatch(new SharedAddModuleIdMappingAction(this.namePathMapping));
+    }
 
 }
