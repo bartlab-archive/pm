@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {select, Store} from '@ngrx/store';
 import {Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -24,7 +24,7 @@ export class ProjectsItemComponent implements OnInit, OnDestroy {
 
     public constructor(
         private activatedRoute: ActivatedRoute,
-        private store: Store<any>
+        private store: Store<any>,
         ) {
     }
 
@@ -40,19 +40,18 @@ export class ProjectsItemComponent implements OnInit, OnDestroy {
             this.store
                 .pipe(
                     select(selectActiveModulesWithMapping),
-                    map(moduleItem => {
+                    map((moduleItem) => {
                         if (!moduleItem) {
                             return null;
                         }
                         const {pathFromRoot: activatedRoutes}  =  this.activatedRoute;
-                        const urls = activatedRoutes.map(activatedRoute => activatedRoute.snapshot.url).filter(url => url.length > 0);
-                        return moduleItem.map(item => ({...item, path: `/${urls.join('/')}/${item.path}`}));
+                        const urls = activatedRoutes.map((activatedRoute) => activatedRoute.snapshot.url).filter((url) => url.length > 0);
+                        return moduleItem.map((item) => ({...item, path: `/${urls.join('/')}/${item.path}`}));
                     }),
-                    )
-
+                )
                 .subscribe((data) => {
                     this.store.dispatch(new SharedProjectModulesReceived(data));
-                })
+                }),
         );
     }
 

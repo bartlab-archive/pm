@@ -24,7 +24,7 @@ export class AppEffects {
 
     public constructor(
         protected actions$: Actions,
-        protected injector: Injector
+        protected injector: Injector,
     ) {
     }
 

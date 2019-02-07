@@ -116,5 +116,5 @@ export const statusesReducers = combineReducers({
     status,
     requestId,
     error,
-    activeId
+    activeId,
 });

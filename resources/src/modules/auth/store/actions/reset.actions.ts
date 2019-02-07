@@ -6,7 +6,7 @@ export enum ActionTypes {
     RESET_REQUEST = '[auth] reset request',
     RESET_ERROR = '[auth] reset set error',
     RESET_SUCCESS = '[auth] reset success',
-    RESET_CLEAR = '[auth] reset clear'
+    RESET_CLEAR = '[auth] reset clear',
 }
 
 export class ResetRequestAction implements Action {

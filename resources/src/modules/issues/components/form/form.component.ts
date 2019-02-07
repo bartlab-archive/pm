@@ -7,7 +7,7 @@ import {
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {
     FormBuilder, FormControl,
-    Validators
+    Validators,
 } from '@angular/forms';
 import {select, Store} from '@ngrx/store';
 import {combineLatest, Subscription, Observable} from 'rxjs';
@@ -28,7 +28,7 @@ import {Project} from '../../interfaces/projects';
 @Component({
     selector: 'app-issues-form',
     templateUrl: './form.component.html',
-    styleUrls: ['./form.component.scss']
+    styleUrls: ['./form.component.scss'],
 })
 
 export class IssuesFormComponent implements OnInit, OnDestroy {
@@ -36,7 +36,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     public item: Issue;
     public statuses$: Observable<any[]>;
     public trackers$: Observable<any[]>;
-    public pending$: Observable<boolean> = this.store.pipe(select(selectIssuesStatus), map(status => status === RequestStatus.pending));
+    public pending$: Observable<boolean> = this.store.pipe(select(selectIssuesStatus), map((status) => status === RequestStatus.pending));
     public params$: Observable<Params> = this.activatedRoute.params;
     public myProjects$: Observable<Project[]>;
     public priorities$: Observable<any[]>;
@@ -82,7 +82,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
             this.myProjects$ = this.store.pipe(select(selectMyProjects));
 
             this.subscriptions.push(
-                this.myProjects$.subscribe(projects => {
+                this.myProjects$.subscribe((projects) => {
                     if (projects) {
                         this.projects = projects;
                     }
@@ -94,7 +94,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
         this.priorities$ = this.store.pipe(select(selectPriorities));
 
         this.subscriptions.push(
-            this.params$.subscribe(params => {
+            this.params$.subscribe((params) => {
                 if (params.id) {
                     this.load(Number(params.id));
                 }
@@ -106,7 +106,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                     map((([issue]) => {
                         if (issue.watchers) {
                             const watchers = issue.watchers;
-                            Object.keys(watchers).map(key => {
+                            Object.keys(watchers).map((key) => {
                                 const tag = watchers[key].full_name;
                                 if (tag && !this.watcherTags.includes(tag)) {
                                     this.watcherTags.push(tag);
@@ -119,7 +119,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                         }
                         return issue;
                     })),
-                ).subscribe(data => {
+                ).subscribe((data) => {
                 this.item = data;
                 const {
                     subject = '',
@@ -136,7 +136,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                     parent_id = '',
                     estimated_hours = '',
                     done_ratio = '',
-                    watchers = ''
+                    watchers = '',
                 } = this.item;
 
                 this.form.setValue({
@@ -154,9 +154,9 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                     parent_id,
                     estimated_hours,
                     done_ratio,
-                    watchers
+                    watchers,
                 });
-            })
+            }),
         );
 
         this.store.dispatch(new EnumerationsRequestAction());
@@ -167,11 +167,11 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
+        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     }
 
     public selected(identifier: String): void {
-        Object.keys(this.projects).map(key => {
+        Object.keys(this.projects).map((key) => {
             if (this.projects[key].identifier === identifier) {
                 this.membersOfProject = this.projects[key].members;
             }

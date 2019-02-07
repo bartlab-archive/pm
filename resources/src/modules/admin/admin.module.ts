@@ -13,11 +13,11 @@ import {findBy} from '../../app/helpers/collection';
 @NgModule({
     declarations: [
         AdminMainComponent,
-        AdminListComponent
+        AdminListComponent,
     ],
     entryComponents: [
         AdminMainComponent,
-        AdminListComponent
+        AdminListComponent,
     ],
     imports: [
         CommonModule,
@@ -26,7 +26,7 @@ import {findBy} from '../../app/helpers/collection';
         MatCardModule,
         MatListModule,
         MatIconModule,
-        FlexLayoutModule
+        FlexLayoutModule,
     ],
     providers: [
         {
@@ -34,9 +34,9 @@ import {findBy} from '../../app/helpers/collection';
             useValue: {
                 admin: [
                     {
-                        path: 'admin', component: AdminListComponent
-                    }
-                ]
+                        path: 'admin', component: AdminListComponent,
+                    },
+                ],
             },
             multi: true,
         },
@@ -59,7 +59,7 @@ export class AdminModule {
 
     public constructor(
         protected router: Router,
-        @Inject(APP_MODULE_SUBROUTES) private config: Array<Routes>
+        @Inject(APP_MODULE_SUBROUTES) private config: Array<Routes>,
     ) {
         // todo: check for admin
         this.router.config.unshift(...this.routes);

@@ -33,7 +33,7 @@ export class AuthEventInterceptor implements AppInterceptor {
         this.store
             .pipe(
                 select(fromAuth.selectAuthStatus),
-                filter(status => status === 'success' || status === 'error'),
+                filter((status) => status === 'success' || status === 'error'),
                 first(),
             )
             .subscribe((status) => {

@@ -8,7 +8,7 @@ import {selectAdminCategories} from '../../store/reducers';
 @Component({
     selector: 'app-admin-list',
     templateUrl: './list.component.html',
-    styleUrls: ['./list.component.scss']
+    styleUrls: ['./list.component.scss'],
 })
 export class AdminListComponent implements OnInit {
 

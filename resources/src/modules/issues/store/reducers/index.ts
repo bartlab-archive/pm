@@ -2,7 +2,7 @@ import {
     ActionReducerMap,
     createFeatureSelector,
     createSelector,
-    MetaReducer
+    MetaReducer,
 } from '@ngrx/store';
 
 import {issuesReducers} from './issues.reducer';

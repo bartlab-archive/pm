@@ -23,7 +23,7 @@ export class IssuesStatusesComponent implements OnInit, OnDestroy {
     public requestId$ = this.store.pipe(select(selectStatusesRequestId));
     public removed$ = combineLatest(this.status$, this.requestId$).pipe(
         filter(([status, requestId]) => Boolean(status) && Boolean(requestId)),
-        filter(([status, requestId]) => status === RequestStatus.success && requestId === this.removeRequestId)
+        filter(([status, requestId]) => status === RequestStatus.success && requestId === this.removeRequestId),
     );
 
     public constructor(
@@ -43,7 +43,7 @@ export class IssuesStatusesComponent implements OnInit, OnDestroy {
 
             this.removed$.subscribe(() => {
                 this.load();
-            })
+            }),
         );
 
         this.load();

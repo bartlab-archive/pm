@@ -46,12 +46,12 @@ import {findBy} from '../../app/helpers/collection';
     declarations: [
         ProjectsMainComponent,
         ProjectsListComponent,
-        ProjectsItemComponent
+        ProjectsItemComponent,
     ],
     entryComponents: [
         ProjectsMainComponent,
         ProjectsListComponent,
-        ProjectsItemComponent
+        ProjectsItemComponent,
     ],
     imports: [
         CommonModule,
@@ -115,7 +115,7 @@ export class ProjectsModule {
                         {
                             path: ':identifier',
                             component: ProjectsItemComponent,
-                            children: findBy(this.config, 'projects')
+                            children: findBy(this.config, 'projects'),
                         },
                     ],
                 },
@@ -125,7 +125,7 @@ export class ProjectsModule {
 
     public constructor(
         protected router: Router,
-        @Inject(APP_MODULE_SUBROUTES) private config: Array<Routes>
+        @Inject(APP_MODULE_SUBROUTES) private config: Array<Routes>,
     ) {
         this.router.config.unshift(...this.routes);
         // this.router.config.push(config);

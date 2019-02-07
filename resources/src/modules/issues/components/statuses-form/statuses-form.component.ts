@@ -30,7 +30,7 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
     public item: Status = {
         id: Number(this.activatedRoute.snapshot.paramMap.get('id')),
         name: '',
-        is_closed: false
+        is_closed: false,
     };
 
     public form = this.fb.group({
@@ -51,7 +51,7 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
         this.store.pipe(select(selectStatusesRequestId)),
     ).pipe(
         filter(([status, requestId]) => Boolean(status) && Boolean(requestId)),
-        filter(([status, requestId]) => status === RequestStatus.success && requestId === this.requestId)
+        filter(([status, requestId]) => status === RequestStatus.success && requestId === this.requestId),
     );
 
     public constructor(
@@ -71,7 +71,7 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
 
             this.saved$.subscribe(() => {
                 this.router.navigate(['/issue_statuses']);
-            })
+            }),
         );
 
         if (!this.isNew) {
@@ -79,7 +79,7 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
                 this.item$.subscribe((item) => {
                     const {name, is_closed} = Object.assign(this.item, item);
                     this.form.setValue({name, is_closed});
-                })
+                }),
             );
 
             this.load();

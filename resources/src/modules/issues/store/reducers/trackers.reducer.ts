@@ -64,6 +64,6 @@ export const trackersReducers = combineReducers({
     entities,
     ids,
     status,
-    error
+    error,
 });
 

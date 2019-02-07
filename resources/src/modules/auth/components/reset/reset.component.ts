@@ -14,7 +14,7 @@ import {ResetData} from '../../interfaces/auth';
 @Component({
     selector: 'app-auth-reset',
     templateUrl: './reset.component.html',
-    styleUrls: ['./reset.component.scss']
+    styleUrls: ['./reset.component.scss'],
 })
 export class ResetComponent implements OnInit, OnDestroy {
     public subscriptions: Subscription[] = [];
@@ -22,8 +22,8 @@ export class ResetComponent implements OnInit, OnDestroy {
         'email': ['', [
             Validators.required,
             Validators.pattern(/^.+@.+\..+$/),
-            Validators.maxLength(60)
-        ]]
+            Validators.maxLength(60),
+        ]],
     });
 
     public constructor(
@@ -31,7 +31,7 @@ export class ResetComponent implements OnInit, OnDestroy {
         private store: Store<any>,
         private router: Router,
         private snackBar: MatSnackBar,
-        private authService: AuthService
+        private authService: AuthService,
     ) {
         this.store.dispatch(new ResetActions.ResetClearAction());
     }
@@ -41,7 +41,7 @@ export class ResetComponent implements OnInit, OnDestroy {
             this.store
                 .pipe(
                     select(fromReset.selectResetStatus),
-                    filter((status) => status === 'success')
+                    filter((status) => status === 'success'),
                 )
                 .subscribe(() => {
                     const message = this.authService.getLastMessage();
@@ -52,7 +52,7 @@ export class ResetComponent implements OnInit, OnDestroy {
             this.store
                 .pipe(
                     select(fromReset.selectResetError),
-                    filter((error) => Boolean(error))
+                    filter((error) => Boolean(error)),
                 )
                 .subscribe((error: FormResponseError) => {
                     for (const key of Object.keys(error.errors)) {
@@ -71,7 +71,7 @@ export class ResetComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
+        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     }
 
     public getErrorMessage() {
@@ -80,7 +80,7 @@ export class ResetComponent implements OnInit, OnDestroy {
         const validatorMessages = [
             {type: 'required', message: 'Email cannot be blank'},
             {type: 'pattern', message: 'Email is invalid'},
-            {type: 'maxlength', message: 'Email is too long (maximum is 60 characters)'}
+            {type: 'maxlength', message: 'Email is too long (maximum is 60 characters)'},
         ];
 
         validatorMessages.forEach((validator: ValidatorMessage) => {
@@ -98,7 +98,7 @@ export class ResetComponent implements OnInit, OnDestroy {
 
     public submit() {
         const data: ResetData = {
-            ...this.form.value
+            ...this.form.value,
         };
         // todo: set fields as in login form
 

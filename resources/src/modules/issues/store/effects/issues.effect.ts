@@ -17,7 +17,7 @@ import {
     ItemWatchErrorAction,
     ItemUnwatchRequestAction,
     ItemUnwatchSuccessAction,
-    ItemUnwatchErrorAction
+    ItemUnwatchErrorAction,
 } from '../actions/issues.action';
 
 import {ResponseError} from '../../../../app/interfaces/api';
@@ -38,14 +38,14 @@ export class IssuesEffect {
 
                 return new IssuesAllSuccessAction(payload);
             }),
-            catchError((response) => of(new IssuesAllErrorAction(response)))
-        ))
+            catchError((response) => of(new IssuesAllErrorAction(response))),
+        )),
     );
 
     @Effect()
     protected item$ = this.actions$.pipe(
         ofType<ItemRequestAction>(IssuesActionTypes.ITEM_REQUEST),
-        map(action => action.payload),
+        map((action) => action.payload),
         exhaustMap((id: number) =>
             this.issuesService.one(id).pipe(
                 map((response: any) => {
@@ -64,13 +64,13 @@ export class IssuesEffect {
     @Effect()
     protected watch$ = this.actions$.pipe(
         ofType<ItemWatchRequestAction>(IssuesActionTypes.ITEM_WATCH_REQUEST),
-        map(action => action.payload),
+        map((action) => action.payload),
         exhaustMap((id: number) =>
             this.issuesService.watch(id).pipe(
                 map(() => {
                     return new ItemWatchSuccessAction({
                         id,
-                        is_watcheble: true
+                        is_watcheble: true,
                     });
                 }),
                 catchError((response: ResponseError) => of(new ItemUnwatchErrorAction(response))),
@@ -81,13 +81,13 @@ export class IssuesEffect {
     @Effect()
     protected unwatch$ = this.actions$.pipe(
         ofType<ItemUnwatchRequestAction>(IssuesActionTypes.ITEM_UNWATCH_REQUEST),
-        map(action => action.payload),
+        map((action) => action.payload),
         exhaustMap((id: number) =>
             this.issuesService.unwatch(id).pipe(
                 map(() => {
                     return new ItemUnwatchSuccessAction({
                         id,
-                        is_watcheble: false
+                        is_watcheble: false,
                     });
                 }),
                 catchError((response: ResponseError) => of(new ItemWatchErrorAction(response))),
@@ -97,7 +97,7 @@ export class IssuesEffect {
 
     public constructor(
         protected actions$: Actions,
-        protected issuesService: IssuesService
+        protected issuesService: IssuesService,
     ) {
 
     }

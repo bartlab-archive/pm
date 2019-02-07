@@ -20,7 +20,7 @@ import {
     StatusesItemSaveErrorAction,
     StatusesItemSaveRequestAction,
     StatusesItemSaveSuccessAction,
-    StatusesItemSuccessAction
+    StatusesItemSuccessAction,
 } from '../actions/statuses.action';
 
 import {statusesSchema} from '../schemas';
@@ -56,7 +56,7 @@ export class StatusesEffect {
                     }, requestId);
                 }),
                 catchError((response: ResponseError) => of(new StatusesItemErrorAction(response, requestId))),
-            )
+            ),
         ),
     );
 
@@ -74,7 +74,7 @@ export class StatusesEffect {
                         }, requestId);
                     }),
                     catchError((response: ResponseError) => of(new StatusesItemSaveErrorAction(response, requestId))),
-                )
+                ),
         ),
     );
 
@@ -88,13 +88,13 @@ export class StatusesEffect {
                 .pipe(
                     map(() => new StatusesItemRemoveSuccessAction(requestId)),
                     catchError((response: ResponseError) => of(new StatusesItemRemoveErrorAction(response, requestId))),
-                )
+                ),
         ),
     );
 
     public constructor(
         protected actions$: Actions,
-        protected statusesService: StatusesService
+        protected statusesService: StatusesService,
     ) {
     }
 }

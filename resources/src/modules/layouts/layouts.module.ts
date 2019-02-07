@@ -20,7 +20,7 @@ const layoutsRoutes: Routes = [];
 @NgModule({
     declarations: [
         DefaultComponent,
-        BlankComponent
+        BlankComponent,
     ],
     imports: [
         CommonModule,
@@ -35,7 +35,7 @@ const layoutsRoutes: Routes = [];
         StoreModule.forFeature('moduleLayouts', layoutsReducers),
     ],
     providers: [
-        LayoutsService
+        LayoutsService,
     ],
 })
 export class LayoutsModule {

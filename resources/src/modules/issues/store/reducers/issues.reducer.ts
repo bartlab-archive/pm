@@ -128,5 +128,5 @@ export const issuesReducers = combineReducers({
     activeId,
     meta,
     status,
-    error
+    error,
 });

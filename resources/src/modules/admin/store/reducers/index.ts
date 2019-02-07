@@ -4,7 +4,7 @@ import {
     ActionReducerMap,
     createFeatureSelector,
     createSelector,
-    MetaReducer
+    MetaReducer,
 } from '@ngrx/store';
 import {categories, CategoriesState} from './categories.reducer';
 

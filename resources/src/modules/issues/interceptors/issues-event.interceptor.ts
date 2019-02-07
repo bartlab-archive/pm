@@ -29,14 +29,14 @@ export class IssuesEventInterceptor implements AppInterceptor {
         this.store.dispatch(new SharedAddCategoryAction({
             name: 'Trackers',
             icon: 'timelapse',
-            url: '/trackers'
+            url: '/trackers',
         }));
 
         // todo: check for admin
         this.store.dispatch(new SharedAddCategoryAction({
             name: 'Issues statuses',
             icon: 'done',
-            url: '/issue_statuses'
+            url: '/issue_statuses',
         }));
 
         next.handle(appEvent);

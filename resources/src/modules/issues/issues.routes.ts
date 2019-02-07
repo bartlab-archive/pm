@@ -4,7 +4,7 @@ import {
     IssuesItemComponent,
     IssuesListComponent,
     IssuesMainComponent,
-    IssuesFormComponent, IssuesStatusesComponent, IssuesTrackersComponent, IssuesStatusesFormComponent
+    IssuesFormComponent, IssuesStatusesComponent, IssuesTrackersComponent, IssuesStatusesFormComponent,
 } from './components';
 
 export const routes: Routes = [
@@ -28,10 +28,10 @@ export const routes: Routes = [
                     {
                         path: ':id/edit',
                         component: IssuesFormComponent,
-                    }
-                ]
+                    },
+                ],
             },
-        ]
+        ],
     },
 ];
 
@@ -44,8 +44,8 @@ export const projectsIssuesRoutes: Routes = [
                 path: '',
                 component: IssuesListComponent,
             },
-        ]
-    }
+        ],
+    },
 ];
 
 export const adminIssuesRoutes: Routes = [
@@ -69,6 +69,6 @@ export const adminIssuesRoutes: Routes = [
                 path: 'trackers',
                 component: IssuesTrackersComponent,
             },
-        ]
-    }
+        ],
+    },
 ];

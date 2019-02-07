@@ -6,14 +6,14 @@ import {MatSnackBar} from '@angular/material';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
 
     public constructor(
         private snackBar: MatSnackBar,
         private router: Router,
-        private appService: AppService
+        private appService: AppService,
     ) {
     }
 

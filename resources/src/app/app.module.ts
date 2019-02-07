@@ -64,7 +64,7 @@ import {AdminModule} from '../modules/admin/admin.module';
         AuthModule,
         ProjectsModule,
         IssuesModule,
-        AdminModule
+        AdminModule,
     ],
     providers: [
         AppService,
@@ -72,7 +72,7 @@ import {AdminModule} from '../modules/admin/admin.module';
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AppInterceptor,
-            multi: true
+            multi: true,
         },
         {
             provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,

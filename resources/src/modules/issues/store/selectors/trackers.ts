@@ -1,10 +1,10 @@
 import {createSelector} from '@ngrx/store';
 import {selectTrackersState, selectTrackersEntities} from '../reducers';
-import {trackersSchema} from '../schemas'
+import {trackersSchema} from '../schemas';
 import {denormalize} from 'normalizr';
 
 export const selectTrackersIds = createSelector(selectTrackersState, (state: any) => state.ids);
 export const selectTrackers = createSelector(
     [selectTrackersIds, selectTrackersEntities],
-    (ids, entities) => denormalize(ids, [trackersSchema], {trackers: entities})
+    (ids, entities) => denormalize(ids, [trackersSchema], {trackers: entities}),
 );

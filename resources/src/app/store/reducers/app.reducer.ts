@@ -14,7 +14,7 @@ export const reducer = combineReducers({
 
 export const selectModuleState = createFeatureSelector<State>('app');
 export const selectUsersState = createSelector(selectModuleState, (state: State) => state.users);
-export const selectUsersEntities = createSelector(selectUsersState, state => state.entities);
+export const selectUsersEntities = createSelector(selectUsersState, (state) => state.entities);
 
 export const selectRolesState = createSelector(selectModuleState, (state: State) => state.roles);
-export const selectRolesEntities = createSelector(selectRolesState, state => state.entities);
+export const selectRolesEntities = createSelector(selectRolesState, (state) => state.entities);

@@ -6,13 +6,13 @@ const {selectUsersEntities} = awaitImport('app/store/reducers/app.reducer');
 
 const user = new schema.Entity('users');
 const member = new schema.Entity('members', {
-    user
+    user,
 });
 
 const project = new schema.Entity('projects', {
-    members: [member]
+    members: [member],
 }, {
-    idAttribute: 'identifier'
+    idAttribute: 'identifier',
 });
 
 const tracker = new schema.Entity('trackers');
@@ -27,7 +27,7 @@ const definition = {
     tracker: tracker,
     trackers: [tracker],
     priority,
-    status
+    status,
 };
 
 if (!selectProjectsEntities) {

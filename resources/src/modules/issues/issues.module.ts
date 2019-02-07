@@ -38,7 +38,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {StoreModule, Store} from '@ngrx/store';
 import {
     reducers,
-    metaReducers
+    metaReducers,
 } from './store/reducers';
 import {EffectsModule} from '@ngrx/effects';
 import {MarkdownModule} from 'ngx-markdown';
@@ -99,7 +99,7 @@ import {NamePathMapping} from './interfaces/issues';
             IssuesEffect,
             StatusesEffect,
             TrackersEffect,
-            EnumerationsEffect
+            EnumerationsEffect,
         ]),
         MarkdownModule.forChild(),
         PipesModule,
@@ -121,7 +121,7 @@ import {NamePathMapping} from './interfaces/issues';
                 admin: adminIssuesRoutes,
             },
             multi: true,
-        }
+        },
     ],
 })
 export class IssuesModule {

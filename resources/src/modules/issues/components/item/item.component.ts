@@ -1,7 +1,7 @@
 import {
     Component,
     OnDestroy,
-    OnInit
+    OnInit,
 } from '@angular/core';
 import {Subscription, combineLatest} from 'rxjs';
 import {select, Store} from '@ngrx/store';
@@ -9,7 +9,7 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
 import {
     ItemRequestAction,
     ItemWatchRequestAction,
-    ItemUnwatchRequestAction
+    ItemUnwatchRequestAction,
 } from '../../store/actions/issues.action';
 import {selectIssuesActive, selectIssuesStatus} from '../../store/selectors/issues';
 import {RequestStatus} from '../../../../app/interfaces/api';
@@ -20,7 +20,7 @@ import {Issue} from '../../interfaces/issues';
 @Component({
     selector: 'app-issues-item',
     templateUrl: './item.component.html',
-    styleUrls: ['./item.component.scss']
+    styleUrls: ['./item.component.scss'],
 })
 export class IssuesItemComponent implements OnInit, OnDestroy {
 
@@ -32,12 +32,12 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
     public constructor(
         private store: Store<any>,
         private activatedRoute: ActivatedRoute,
-        public router: Router
+        public router: Router,
     ) {
     }
 
     public ngOnInit(): void {
-        this.pending$ = this.store.pipe(select(selectIssuesStatus), map(status => status === RequestStatus.pending));
+        this.pending$ = this.store.pipe(select(selectIssuesStatus), map((status) => status === RequestStatus.pending));
         this.item$ = combineLatest(this.store.pipe(select(selectIssuesActive)), this.params$)
             .pipe(
                 filter(([issue, params]) => issue && issue.id === Number(params.id)),
@@ -45,12 +45,12 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
             );
 
         this.subscriptions.push(
-            this.params$.subscribe(params => this.load(Number(params.id))),
+            this.params$.subscribe((params) => this.load(Number(params.id))),
         );
     }
 
     public ngOnDestroy(): void {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
+        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     }
 
     public load(id: number): void {

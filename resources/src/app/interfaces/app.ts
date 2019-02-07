@@ -10,7 +10,7 @@ export interface AppInterceptor {
 export class AppInterceptorHandler {
     constructor(
         private next: AppInterceptorHandler,
-        private interceptor: AppInterceptor
+        private interceptor: AppInterceptor,
     ) {
     }
 

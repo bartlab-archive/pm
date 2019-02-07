@@ -33,13 +33,13 @@ export interface Issue {
     updated_on: string;
     start_date: string;
     done_ratio: null;
-    estimated_hours: null
-    parent_id: null
+    estimated_hours: null;
+    parent_id: null;
     // root_id: number
     is_private: boolean;
     closed_on: null;
     attachments: any[];
-    tracker: any
+    tracker: any;
     project: any;
     watchers: any[];
     notes_private: boolean;

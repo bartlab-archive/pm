@@ -10,8 +10,8 @@ import {
     EnumerationsRequestAction,
     EnumerationsSuccessAction,
     EnumerationsErrorAction,
-    EnumerationsActionTypes
-} from '../actions/enumerations.action'
+    EnumerationsActionTypes,
+} from '../actions/enumerations.action';
 
 @Injectable()
 export class EnumerationsEffect {
@@ -34,7 +34,7 @@ export class EnumerationsEffect {
 
     public constructor(
         protected actions$: Actions,
-        protected enumerationsService: EnumerationsService
+        protected enumerationsService: EnumerationsService,
     ) {
 
     }

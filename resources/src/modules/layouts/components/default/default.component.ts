@@ -60,7 +60,7 @@ export class DefaultComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.store.pipe(select(selectTopTabs)).subscribe((tabs) => {
                 setTimeout(() => (this.topTabs = tabs));
-            })
+            }),
         );
     }
 

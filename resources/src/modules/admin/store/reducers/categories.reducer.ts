@@ -8,7 +8,7 @@ export const categories = (state = [], action: ActionsUnion | SharedActionsUnion
         case ActionTypes.ADD_CATEGORY: {
             return [
                 ...state,
-                action.payload
+                action.payload,
             ];
         }
 

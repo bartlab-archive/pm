@@ -41,15 +41,15 @@ const mapEntitiesToObject = (issues?, projects?, users?, trackers?, statuses?, p
 
 export const selectIssuesActive = createSelector(
     [selectIssuesActiveId, ...selectEntities] as any,
-    (activeId, ...entities) => denormalize(activeId, issuesSchema, mapEntitiesToObject(...entities))
+    (activeId, ...entities) => denormalize(activeId, issuesSchema, mapEntitiesToObject(...entities)),
 );
 
 export const selectIssues = createSelector(
     [selectIssuesIds, ...selectEntities] as any,
-    (ids, ...entities) => denormalize(ids, [issuesSchema], mapEntitiesToObject(...entities))
+    (ids, ...entities) => denormalize(ids, [issuesSchema], mapEntitiesToObject(...entities)),
 );
 
 export const selectMyProjects = selectProjectsMy ? createSelector(
     [selectProjectsMy, ...selectEntities] as any,
-    (my, ...entities) => denormalize(my, [projectsSchema], mapEntitiesToObject(...entities))
+    (my, ...entities) => denormalize(my, [projectsSchema], mapEntitiesToObject(...entities)),
 ) : null;
