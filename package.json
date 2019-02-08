@@ -30,7 +30,7 @@
         "@types/uuid": "^3.4.4",
         "core-js": "^2.6.3",
         "hammerjs": "^2.0.8",
-        "material-design-icons-iconfont": "^3.0.3",
+        "material-design-icons-iconfont": "^4.0.4",
         "moment": "^2.24.0",
         "ngrx-store-freeze": "^0.2.4",
         "ngrx-store-localstorage": "^5.1.1",

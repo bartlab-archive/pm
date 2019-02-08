@@ -1,12 +1,21 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {combineLatest, Subscription} from 'rxjs';
-import {selectStatuses, selectStatusesRequestId, selectStatusesStatus} from '../../store/selectors/statuses';
-import {RequestStatus} from '../../../../app/interfaces/api';
-import {StatusesAllRequestAction, StatusesItemRemoveRequestAction} from '../../store/actions/statuses.action';
 import {filter} from 'rxjs/operators';
 import {MatDialog} from '@angular/material';
+import {
+    selectStatuses,
+    selectStatusesRequestId,
+    selectStatusesStatus,
+} from '../../store/selectors/statuses';
+import {RequestStatus} from '../../../../app/interfaces/api';
+import {
+    StatusesAllRequestAction,
+    StatusesItemRemoveRequestAction,
+} from '../../store/actions/statuses.action';
 import {AppConfirmDialogComponent} from '../../../../app/components/confirm-dialog/confirm-dialog.component';
+
+// todo: get admin url if module exists
 
 @Component({
     selector: 'app-issues-statuses',

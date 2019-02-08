@@ -99,6 +99,10 @@ export class AuthService {
         return Boolean(this.data);
     }
 
+    public isAdmin(): boolean {
+        return Boolean(this.data.user.request);
+    }
+
     public getToken(): string {
         if (this.data) {
             return this.data.token;

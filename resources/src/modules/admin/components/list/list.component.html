@@ -12,6 +12,8 @@
                 <mat-list-item *ngFor="let category of categories$ | async" [routerLink]="category.url">
                     <mat-icon mat-list-icon>{{category.icon}}</mat-icon>
                     <h4 mat-line>{{category.name}}</h4>
+                    <div fxFlex="100"></div>
+                    <mat-icon>arrow_right</mat-icon>
                     <!--<p mat-line> {{folder.updated | date}} </p>-->
                 </mat-list-item>
             </mat-nav-list>

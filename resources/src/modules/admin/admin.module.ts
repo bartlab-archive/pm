@@ -63,7 +63,6 @@ export class AdminModule {
     ) {
         // todo: check for admin
         this.router.config.unshift(...this.routes);
-        // console.log(this.config);
     }
 
 }

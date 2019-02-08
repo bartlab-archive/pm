@@ -5,6 +5,7 @@ export interface User {
     full_name: string;
     created_on: string;
     last_login_on: string;
+    request?: boolean;
 }
 
 export interface LoginData {

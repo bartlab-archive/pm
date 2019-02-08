@@ -138,6 +138,10 @@ export class AuthModule {
                     if (snapshot.data.auth === 'authorized' && !this.authService.isAuthorized()) {
                         return this.router.navigate(['/login']);
                     }
+
+                    if (snapshot.data.auth === 'admin' && (!this.authService.isAuthorized() || !this.authService.isAdmin())) {
+                        return this.router.navigate(['/']);
+                    }
                 }
             });
 
