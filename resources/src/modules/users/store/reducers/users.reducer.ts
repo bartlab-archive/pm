@@ -2,7 +2,7 @@ import {combineReducers} from '@ngrx/store';
 import {Entities, Meta, User} from '../../interfaces/users';
 import * as UsersActions from '../actions/users.actions';
 import {updateStateEntities} from '../../../../app/store/utils';
-import {ActionTypes} from "../actions/users.actions";
+import {ActionTypes} from '../actions/users.actions';
 
 export const entities = (state: Entities<User> = {}, action: UsersActions.ActionsUnion) => {
     switch (action.type) {
@@ -59,22 +59,6 @@ export const activeId = (state: number = null, action: UsersActions.ActionsUnion
     }
 };
 
-export const editId = (state: number = null, action: UsersActions.ActionsUnion) => {
-    switch (action.type) {
-        case ActionTypes.UPDATE_REQUEST: {
-            return action.payload.id;
-        }
-
-        case ActionTypes.UPDATE_SUCCESS: {
-            return null;
-        }
-
-        default: {
-            return state;
-        }
-    }
-};
-
 export const pending = (state: boolean = false, action: UsersActions.ActionsUnion) => {
     switch (action.type) {
         case ActionTypes.ONE_REQUEST:
@@ -98,9 +82,8 @@ export interface State {
     entities: Entities<any>;
     ids: Array<number>;
     meta: Meta;
-    activeId: number,
-    editId: number,
-    pending: boolean,
+    activeId: number;
+    pending: boolean;
 }
 
 export const reducer = combineReducers({
@@ -108,6 +91,5 @@ export const reducer = combineReducers({
     ids,
     meta,
     activeId,
-    editId,
-    pending
+    pending,
 });

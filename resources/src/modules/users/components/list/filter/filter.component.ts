@@ -4,14 +4,14 @@ import {FormControl} from '@angular/forms';
 import {MatAutocompleteSelectedEvent, MatChipInputEvent, MatAutocomplete} from '@angular/material';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import {Status, UsersStatusNames} from "../../../interfaces/users";
+import {Status, UsersStatusNames} from '../../../interfaces/users';
 
-const equalById = value => ({id}) => id == value;
+const equalById = (value) => ({id}) => id == value;
 
 @Component({
     selector: 'users-filter',
     templateUrl: './filter.component.html',
-    styleUrls: ['./filter.component.scss']
+    styleUrls: ['./filter.component.scss'],
 })
 export class UsersFilterComponent {
     @Output() onChange = new EventEmitter<Status[]>();
@@ -74,7 +74,7 @@ export class UsersFilterComponent {
             return this.allStatuses.slice();
         }
         const filterValue = String(value).toLowerCase();
-        return this.allStatuses.filter(status => status.name.toLowerCase().indexOf(filterValue) === 0);
+        return this.allStatuses.filter((status) => status.name.toLowerCase().indexOf(filterValue) === 0);
     }
 
 }

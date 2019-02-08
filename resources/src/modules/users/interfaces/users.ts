@@ -8,24 +8,24 @@ export enum UsersStatus {
 export const UsersStatusNames = [
     {
         id: UsersStatus.ACTIVE,
-        name: 'Active'
+        name: 'Active',
     },
     {
         id: UsersStatus.REGISTERED,
-        name: 'Registered'
+        name: 'Registered',
     },
     {
         id: UsersStatus.LOCKED,
-        name: 'Locked'
+        name: 'Locked',
     },
 ];
 
 export interface Status {
-    id: number,
-    name: string,
+    id: number;
+    name: string;
 }
 
-export interface PaginationParams {
+export interface ListRequestParams {
     page: number;
     per_page: number;
     order?: string[];
@@ -65,7 +65,7 @@ export interface User {
     last_login_on: string;
 }
 
-export interface UserUpdate{
+export interface UserUpdate {
     login?: string;
     firstname?: string;
     lastname?: string;

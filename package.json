@@ -4,7 +4,7 @@
         "watch": "npm run dev -- --watch",
         "dev": "rimraf ./public/pm && cross-env NODE_ENV=development webpack --progress",
         "prod": "rimraf ./public/pm && cross-env NODE_ENV=production webpack --no-progress",
-        "lint": "tslint --project tsconfig.json --config tslint.json --format stylish --force"
+        "lint": "tslint --project tsconfig.json --config tslint.json --format stylish --force --fix"
     },
     "dependencies": {
         "@angular-devkit/build-angular": "^0.12.3",

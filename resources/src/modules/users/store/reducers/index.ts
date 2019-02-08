@@ -11,7 +11,7 @@ export interface State extends fromRoot.State {
 }
 
 export const reducers: ActionReducerMap<UsersState> = {
-    users: fromUsers.reducer
+    users: fromUsers.reducer,
 };
 
 // module

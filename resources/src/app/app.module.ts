@@ -23,7 +23,7 @@ import {AppEffects} from './store/effects/app.effects';
 import * as appActions from './store/actions/app.actions';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AppInterceptor} from './interceptors/app.interceptor';
-import {UsersModule} from "../modules/users/users.module";
+import {UsersModule} from '../modules/users/users.module';
 import {AdminModule} from '../modules/admin/admin.module';
 
 @NgModule({
