@@ -77,7 +77,8 @@
                     <div fxFlex="100">
                         <ul>
                             <li *ngFor="let item of item.attachments">
-                                {{item.filename}} ({{item.filesize}}) <a href="user/{{item.author.id}}">{{item.author.full_name}}</a>,
+                                {{item.filename}} ({{item.filesize}})
+                                <a href="user/{{item.author.id}}">{{item.author.full_name}}</a>,
                                 {{item.author.created_on}}
                             </li>
                         </ul>

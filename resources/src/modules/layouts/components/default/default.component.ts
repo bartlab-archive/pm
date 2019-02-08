@@ -42,12 +42,12 @@ export class DefaultComponent implements OnInit, OnDestroy {
         {
             url: '/users',
             icon: 'face',
-            name: 'Users'
+            name: 'Users',
         },
         {
             url: '/activity',
             icon: 'access_time',
-            name: 'Overall activity'
+            name: 'Overall activity',
         },
         {
             url: '/issues',
@@ -62,14 +62,22 @@ export class DefaultComponent implements OnInit, OnDestroy {
     ];
     public topTabs = null;
     private subscriptions: Subscription[] = [];
-    public constructor(private layoutsService: LayoutsService, private store: Store<any>, private router: Router) {}
+
+    public constructor(
+        private layoutsService: LayoutsService,
+        private store: Store<any>,
+        private router: Router,
+    ) {
+    }
 
     public ngOnInit() {
         this.store.dispatch(new LayoutsDefaultInitAction());
 
         this.subscriptions.push(
             this.store.pipe(select(selectTopTabs)).subscribe((tabs) => {
-                setTimeout(() => (this.topTabs = tabs));
+                // setTimeout(() => (
+                this.topTabs = tabs;
+                // ));
             }),
         );
     }

@@ -44,6 +44,7 @@ export interface Issue {
     watchers: any[];
     notes_private: boolean;
 }
+
 export interface NamePathMapping {
     id: string;
     path: string;

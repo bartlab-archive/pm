@@ -19,6 +19,7 @@ import {
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatDialogModule,
 } from '@angular/material';
 
 import {CommonModule} from '@angular/common';
@@ -92,6 +93,7 @@ import {NamePathMapping} from './interfaces/issues';
         MatFormFieldModule,
         MatDatepickerModule,
         MatNativeDateModule,
+        MatDialogModule,
         // RouterModule,
         RouterModule.forChild(routes),
         StoreModule.forFeature('moduleIssues', reducers, {metaReducers}),

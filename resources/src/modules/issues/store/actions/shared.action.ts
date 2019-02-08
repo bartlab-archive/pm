@@ -15,13 +15,14 @@ export class SharedAuthLogoutAction implements Action {
     }
 }
 
-export class  SharedAddCategoryAction implements Action {
+export class SharedAddCategoryAction implements Action {
     readonly type = SharedActionTypes.ADD_CATEGORY;
 
     constructor(public payload: any) {
     }
 }
-export class  SharedAddModuleIdMappingAction implements Action {
+
+export class SharedAddModuleIdMappingAction implements Action {
     readonly type = SharedActionTypes.ADD_MODULE_ID_MAPPING;
 
     constructor(public payload: any) {
