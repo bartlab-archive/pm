@@ -20,6 +20,7 @@ export const reducers: ActionReducerMap<any> = {
     priorities: prioritiesReducers,
 };
 // module
+// @todo: typo in "selectModuleSate" name
 export const selectModuleSate = createFeatureSelector('moduleIssues');
 
 export const selectIssuesState = createSelector(selectModuleSate, (state: any) => state.issues);

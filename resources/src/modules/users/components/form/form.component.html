@@ -1,0 +1,87 @@
+<mat-card>
+    <mat-progress-bar *ngIf="pending$ | async" mode="indeterminate"></mat-progress-bar>
+    <mat-toolbar-row>
+        <a mat-icon-button [routerLink]="['/users']">
+            <mat-icon class="icon">arrow_back</mat-icon>
+        </a>
+        <span class="spacer"></span>
+        <mat-icon class="icon">favorite</mat-icon>
+        <mat-icon class="icon">delete</mat-icon>
+
+    </mat-toolbar-row>
+    <div *ngIf="user$ | async as user">
+        <div fxLayout="row wrap" fxLayoutAlign="center start" id="profile">
+            <div [fxFlex.gt-xs]="30" [fxFlex.xs]="100" fxLayoutAlign="center center" fxLayout="column">
+                <div id="avatar">
+                    <img src={{user.avatar}} alt="{{ user.full_name }}">
+                </div>
+                <mat-card-title>{{ user.full_name }}</mat-card-title>
+            </div>
+
+            <div [fxFlex.gt-xs]="70" [fxFlex.xs]="100">
+                <form [formGroup]="form" class="example-form" fxLayoutAlign="center start" fxLayout="column">
+                    <mat-form-field>
+                        <input matInput placeholder="Login" formControlName="login">
+                        <mat-error
+                                list-error
+                                [form]="form"
+                                [field]="'login'"
+                                [types]="validationMessages.login"
+                        ></mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="First name" formControlName="firstName">
+                        <mat-error
+                                list-error
+                                [form]="form"
+                                [field]="'firstName'"
+                                [types]="validationMessages.firstName"
+                        ></mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="Last name" formControlName="lastName">
+                        <mat-error
+                                list-error
+                                [form]="form"
+                                [field]="'lastName'"
+                                [types]="validationMessages.lastName"
+                        ></mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="Email" formControlName="email">
+                        <mat-error
+                                list-error
+                                [form]="form"
+                                [field]="'email'"
+                                [types]="validationMessages.email"
+                        ></mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="Enter your password" formControlName="password"
+                               [type]="hide ? 'password' : 'text'">
+                        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <input matInput placeholder="Repeat your password" formControlName="repeatPassword"
+                               [type]="hideRepeat ? 'password' : 'text'">
+                        <mat-icon matSuffix (click)="hideRepeat = !hideRepeat">{{hideRepeat ? 'visibility_off' :
+                            'visibility'}}
+                        </mat-icon>
+                    </mat-form-field>
+                    <button
+                            mat-raised-button color="primary"
+                            [disabled]="isSubmitInactive"
+                            (click)="onSubmit()">
+                        Save
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</mat-card>

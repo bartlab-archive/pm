@@ -1,0 +1,16 @@
+table {
+  width: 100%;
+}
+
+.action {
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px;
+}
+
+.card-scroll-container {
+  margin: 0 -16px 16px -16px;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
