@@ -58,10 +58,20 @@ body {
       overflow-y: auto;
       overflow-x: hidden;
     }
+
     //}
   }
 }
 
 .mat-menu-panel {
   min-width: 192px !important;
+}
+
+.mat-fab {
+  &.fab-fixed {
+    //color: #fff;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+  }
 }

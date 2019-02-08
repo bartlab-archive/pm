@@ -39,9 +39,24 @@
                     <!--</button>-->
                 </mat-menu>
             </mat-toolbar-row>
+            <mat-toolbar-row *ngIf="topTabs" class="sub-toolbar">
+                <nav mat-tab-nav-bar color="accent">
+                    <a
+                            disableRipple="true"
+                            mat-tab-link
+                            *ngFor="let tab of topTabs"
+                            [routerLink]="tab.path"
+                            routerLinkActive
+                            #rla="routerLinkActive"
+                            [active]="rla.isActive"
+                    >
+                        {{tab.name | uppercase}}
+                    </a>
+                </nav>
+            </mat-toolbar-row>
         </mat-toolbar>
 
-        <div class="q-nav-container">
+        <div class="q-nav-container" [ngClass]="{'with-project-menu': topTabs}">
             <div class="q-nav">
                 <div class="q-nav-items">
                     <div class="q-nav-item" *ngFor="let item of sideItems">
@@ -63,7 +78,5 @@
                 Powered by MaybeWorks
             </footer>
         </div>
-
-
     </mat-sidenav-content>
 </mat-sidenav-container>

@@ -9,5 +9,5 @@ export {
     statusesSchema,
     trackersSchema,
     prioritiesSchema,
-    projectsSchema
-}
+    projectsSchema,
+};

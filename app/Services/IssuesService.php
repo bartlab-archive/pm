@@ -330,7 +330,7 @@ class IssuesService
 
     public function statuses()
     {
-        return IssueStatus::query()->get();
+        return IssueStatus::query()->orderBy('position')->get();
     }
 
     public function status($id)

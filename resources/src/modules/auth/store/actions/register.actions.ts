@@ -7,7 +7,7 @@ export enum ActionTypes {
     REGISTER_ERROR = '[auth] register set error',
     REGISTER_SUCCESS_MESSAGE = '[auth] register success message',
     REGISTER_SUCCESS_AUTH = '[auth] register success login',
-    REGISTER_CLEAR = '[auth] register clear'
+    REGISTER_CLEAR = '[auth] register clear',
 }
 
 export class RegisterRequestAction implements Action {

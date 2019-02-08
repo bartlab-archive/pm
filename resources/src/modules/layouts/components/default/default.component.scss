@@ -48,6 +48,10 @@
   }
 }
 
+.mat-tab-link {
+  color: white;
+}
+
 mat-sidenav {
   width: 280px;
 }
@@ -73,7 +77,9 @@ footer {
     display: none;
   }
 }
-
+div.with-project-menu {
+  top: 128px;
+}
 .q-nav-container {
   @media ($mat-small) {
     display: none;
@@ -84,11 +90,6 @@ footer {
   position: fixed;
   z-index: 1;
   bottom: 90px;
-
-  //.with-project-menu{
-  //    top: 112px;
-  //@extend: section
-  //}
 
   .q-nav {
     height: calc(100% - 16px);
@@ -160,4 +161,21 @@ footer {
     }
   }
 
+}
+
+.sub-toolbar {
+  //padding: 0;
+  padding: 0 96px;
+
+  .mat-tab-link {
+    padding: 0 12px;
+    height: 63px;
+    min-width: auto;
+    opacity: 1;
+  }
+
+  .mat-tab-nav-bar {
+    //border-bottom-width: 2px;
+    //border-bottom: 2px solid red;
+  }
 }

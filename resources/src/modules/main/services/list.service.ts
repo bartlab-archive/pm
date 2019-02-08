@@ -54,7 +54,7 @@ export class ListService {
         {id: 'zh-TW', name: 'Traditional Chinese (繁體中文)'},
         {id: 'tr', name: 'Turkish (Türkçe)'},
         {id: 'uk', name: 'Ukrainian (Українська)'},
-        {id: 'vi', name: 'Vietnamese (Tiếng Việt)'}
+        {id: 'vi', name: 'Vietnamese (Tiếng Việt)'},
     ];
 
     public static timeZone = [

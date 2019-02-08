@@ -15,16 +15,16 @@ const mainRoutes: Routes = [
         path: '',
         component: DefaultComponent,
         children: [
-            {path: '', component: MainIndexComponent, data: {auth: 'authorized'}}
-        ]
+            {path: '', component: MainIndexComponent, data: {auth: 'authorized'}},
+        ],
     },
     {
         path: '',
         component: BlankComponent,
         children: [
             {path: '404', component: Main404Component},
-            {path: '500', component: Main500Component}
-        ]
+            {path: '500', component: Main500Component},
+        ],
     },
 ];
 
@@ -39,10 +39,10 @@ const mainRoutes: Routes = [
         FlexLayoutModule,
         MatCardModule,
         MatButtonModule,
-        RouterModule.forChild(mainRoutes)
+        RouterModule.forChild(mainRoutes),
     ],
     providers: [
-        ListService
+        ListService,
     ],
 })
 export class MainModule {

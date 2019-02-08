@@ -25,7 +25,7 @@ export class AuthEventInterceptor implements AppInterceptor {
     }
 
     public onPreload(appEvent: AppPreloadEvent, next: AppInterceptorHandler): void {
-        console.log('AuthEventInterceptor');
+        // console.log('AuthEventInterceptor');
         if (!this.authService.isAuthorized()) {
             return;
         }
@@ -33,7 +33,7 @@ export class AuthEventInterceptor implements AppInterceptor {
         this.store
             .pipe(
                 select(fromAuth.selectAuthStatus),
-                filter(status => status === 'success' || status === 'error'),
+                filter((status) => status === 'success' || status === 'error'),
                 first(),
             )
             .subscribe((status) => {

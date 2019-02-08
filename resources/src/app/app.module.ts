@@ -24,7 +24,7 @@ import * as appActions from './store/actions/app.actions';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AppInterceptor} from './interceptors/app.interceptor';
 import {UsersModule} from "../modules/users/users.module";
-import {AdminhModule} from '../modules/admin/admin.module';
+import {AdminModule} from '../modules/admin/admin.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -65,9 +65,8 @@ import {AdminhModule} from '../modules/admin/admin.module';
         AuthModule,
         ProjectsModule,
         IssuesModule,
+        AdminModule,
         UsersModule,
-        MarkdownModule.forRoot(),
-        AdminhModule
     ],
     providers: [
         AppService,
@@ -75,7 +74,7 @@ import {AdminhModule} from '../modules/admin/admin.module';
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AppInterceptor,
-            multi: true
+            multi: true,
         },
         {
             provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,

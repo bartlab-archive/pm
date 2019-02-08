@@ -9,7 +9,7 @@ import {
     TrackersActionTypes,
     TrackersAllErrorAction,
     TrackersAllRequestAction,
-    TrackersAllSuccessAction
+    TrackersAllSuccessAction,
 } from '../actions/trackers.action';
 
 import {trackersSchema} from '../schemas';
@@ -24,7 +24,7 @@ export class TrackersEffect {
             this.trackersService.all(data).pipe(
                 map((response: any) => {
                     const payload = {
-                        ...normalize(response.data, [trackersSchema])
+                        ...normalize(response.data, [trackersSchema]),
                     };
                     return new TrackersAllSuccessAction(payload);
                 }),

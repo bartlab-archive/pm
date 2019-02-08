@@ -67,7 +67,7 @@ const authRoutes: Routes = [
         LoginComponent,
         RegistrationComponent,
         ResetComponent,
-        LogoutComponent
+        LogoutComponent,
     ],
     imports: [
         CommonModule,

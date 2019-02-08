@@ -8,6 +8,6 @@ import {Component, OnInit} from '@angular/core';
 export class ProjectsMainComponent implements OnInit {
 
     public ngOnInit() {
-        console.log('ProjectsMainComponent');
+        // console.log('ProjectsMainComponent');
     }
 }

@@ -3,13 +3,13 @@ import {
     ElementRef,
     OnDestroy,
     OnInit,
-    ViewChild
+    ViewChild,
 } from '@angular/core';
 import {
     MatAutocompleteSelectedEvent,
     MatPaginator,
     MatSort,
-    PageEvent
+    PageEvent,
 } from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 import {FilterTag} from '../../interfaces/issues';
@@ -37,7 +37,7 @@ import {RequestStatus} from '../../../../app/interfaces/api';
 @Component({
     selector: 'app-issues-list',
     templateUrl: './list.component.html',
-    styleUrls: ['./list.component.scss']
+    styleUrls: ['./list.component.scss'],
 })
 export class IssuesListComponent implements OnInit, OnDestroy {
 
@@ -80,7 +80,7 @@ export class IssuesListComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             combineLatest(
                 this.store.pipe(select(selectIssuesStatus)),
-                this.store.pipe(select(selectStatuses))
+                this.store.pipe(select(selectStatuses)),
             )
                 .subscribe((statuses) => {
                     this.pending = statuses.some((status) => status === RequestStatus.pending);
@@ -94,7 +94,7 @@ export class IssuesListComponent implements OnInit, OnDestroy {
             this.store
                 .pipe(
                     select(selectIssuesMeta),
-                    filter((data) => Boolean(data))
+                    filter((data) => Boolean(data)),
                 )
                 .subscribe((data) => {
                     this.paginator.pageSize = data.per_page;
@@ -108,7 +108,7 @@ export class IssuesListComponent implements OnInit, OnDestroy {
                 this.store.pipe(select(selectTrackers)),
             )
                 .pipe(
-                    filter(([statuses, trackers]) => statuses.length > 0 && trackers.length > 0)
+                    filter(([statuses, trackers]) => statuses.length > 0 && trackers.length > 0),
                 )
                 .subscribe(([statuses, trackers]) => {
                     this.allTags.push(
@@ -122,7 +122,7 @@ export class IssuesListComponent implements OnInit, OnDestroy {
 
                         ...trackers.map((tracker) => {
                             return {name: tracker.name, id: tracker.id, type: 'tracker'};
-                        })
+                        }),
                     );
 
                     this.tagInput.nativeElement.value = '';
@@ -136,7 +136,6 @@ export class IssuesListComponent implements OnInit, OnDestroy {
         );
 
         this.load();
-        //console.log('init');
         // this.store.dispatch(new StatusesAllRequestAction());
         // this.store.dispatch(new TrackersAllRequestAction());
     }
@@ -151,7 +150,7 @@ export class IssuesListComponent implements OnInit, OnDestroy {
             per_page: this.paginator.pageSize || this.pageSizeOptions[0],
             page: this.paginator.pageIndex + 1,
             'status_ids[]': this.getTagsId('status'),
-            'tracker_ids[]': this.getTagsId('tracker')
+            'tracker_ids[]': this.getTagsId('tracker'),
         }));
     }
 

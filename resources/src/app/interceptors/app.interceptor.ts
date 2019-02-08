@@ -14,7 +14,7 @@ import {AppHttpUrlEncodingCodec} from '../common/http';
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
     public constructor(
-        private appService: AppService
+        private appService: AppService,
     ) {
     }
 
@@ -24,9 +24,9 @@ export class AppInterceptor implements HttpInterceptor {
                 req.clone({
                     params: new HttpParams({
                         encoder: new AppHttpUrlEncodingCodec(),
-                        fromString: req.params.toString()
-                    })
-                })
+                        fromString: req.params.toString(),
+                    }),
+                }),
             )
             .pipe(
                 tap(
@@ -34,7 +34,7 @@ export class AppInterceptor implements HttpInterceptor {
                     },
                     (error) => {
                         this.appService.onHttpError(error);
-                    })
+                    }),
             );
     }
 }

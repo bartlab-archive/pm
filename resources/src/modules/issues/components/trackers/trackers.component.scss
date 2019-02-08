@@ -1,0 +1,12 @@
+:host ::ng-deep .mat-card-header-text {
+  margin: 0;
+  white-space: nowrap;
+}
+
+table {
+  width: 100%;
+}
+
+mat-card-content {
+  margin: 0 -16px 16px -16px;
+}

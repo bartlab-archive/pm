@@ -8,7 +8,7 @@ const member = new schema.Entity('members', {
 });
 
 export default new schema.Entity('projects', {
-    members: [member]
+    members: [member],
 }, {
-    idAttribute: 'identifier'
+    idAttribute: 'identifier',
 });

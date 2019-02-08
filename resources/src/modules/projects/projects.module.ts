@@ -40,17 +40,18 @@ import {
 import {ProjectsEffects} from './store/effects/projects.effects';
 import {APP_EVENT_INTERCEPTORS, APP_MODULE_SUBROUTES} from '../../app/providers/app.injection';
 import {ProjectsEventInterceptor} from './interceptors/projects-event.interceptor';
+import {findBy} from '../../app/helpers/collection';
 
 @NgModule({
     declarations: [
         ProjectsMainComponent,
         ProjectsListComponent,
-        ProjectsItemComponent
+        ProjectsItemComponent,
     ],
     entryComponents: [
         ProjectsMainComponent,
         ProjectsListComponent,
-        ProjectsItemComponent
+        ProjectsItemComponent,
     ],
     imports: [
         CommonModule,
@@ -95,7 +96,6 @@ import {ProjectsEventInterceptor} from './interceptors/projects-event.intercepto
     ],
 })
 export class ProjectsModule {
-
     protected routes: Routes = [
         {
             path: '',
@@ -115,10 +115,7 @@ export class ProjectsModule {
                         {
                             path: ':identifier',
                             component: ProjectsItemComponent,
-                            children: this.config
-                                .filter((value) => value.hasOwnProperty('projects'))
-                                .map((value) => value.projects)
-                                .reduce((acc, val) => acc.concat(val), [])
+                            children: findBy(this.config, 'projects'),
                         },
                     ],
                 },
@@ -126,7 +123,10 @@ export class ProjectsModule {
         },
     ];
 
-    public constructor(protected router: Router, @Inject(APP_MODULE_SUBROUTES) private config: Array<any>) {
+    public constructor(
+        protected router: Router,
+        @Inject(APP_MODULE_SUBROUTES) private config: Array<Routes>,
+    ) {
         this.router.config.unshift(...this.routes);
         // this.router.config.push(config);
     }

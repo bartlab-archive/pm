@@ -1,4 +1,5 @@
-// import {combineReducers} from '@ngrx/store';
+import {combineReducers} from '@ngrx/store';
+import {ActionTypes} from '../actions/shared.action';
 // import {LayoutsActionsUnion, LayoutsActionTypes} from '../actions/default.action';
 
 // const entities = (state = null, action: LayoutsActionsUnion) => {
@@ -14,6 +15,16 @@
 //     }
 // };
 //
-// export const layoutsReducers = combineReducers({
-//     entities,
-// });
+const topTabs = (state = null, action) => {
+  switch (action.type) {
+    case ActionTypes.PROJECT_MODULES_RECEIVED:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const layoutsReducers = combineReducers({
+    // entities,
+    topTabs,
+});

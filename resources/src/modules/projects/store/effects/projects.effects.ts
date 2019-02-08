@@ -41,7 +41,7 @@ export class ProjectsEffects {
                     const payload = {
                         ...normalize(response.data, projectsSchema),
                     };
-                    return new ProjectActions.OneSuccessAction(payload)
+                    return new ProjectActions.OneSuccessAction(payload);
                 }),
                 catchError((response: ResponseError) => of(new ProjectActions.OneErrorAction(response))),
             ),

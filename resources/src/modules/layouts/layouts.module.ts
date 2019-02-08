@@ -7,17 +7,20 @@ import {
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTabsModule,
 } from '@angular/material';
 import {LayoutsService} from './services/layouts.service';
 import {CommonModule} from '@angular/common';
+import {StoreModule} from '@ngrx/store';
+import {layoutsReducers} from './store/reducers/default.reducer';
 
 const layoutsRoutes: Routes = [];
 
 @NgModule({
     declarations: [
         DefaultComponent,
-        BlankComponent
+        BlankComponent,
     ],
     imports: [
         CommonModule,
@@ -27,10 +30,12 @@ const layoutsRoutes: Routes = [];
         MatButtonModule,
         MatSidenavModule,
         MatListModule,
-        MatMenuModule
+        MatMenuModule,
+        MatTabsModule,
+        StoreModule.forFeature('moduleLayouts', layoutsReducers),
     ],
     providers: [
-        LayoutsService
+        LayoutsService,
     ],
 })
 export class LayoutsModule {

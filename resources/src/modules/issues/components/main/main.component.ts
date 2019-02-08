@@ -8,7 +8,7 @@ import {Component, OnInit} from '@angular/core';
 export class IssuesMainComponent implements OnInit {
 
     ngOnInit() {
-        console.log('IssuesMainComponent init');
+        // console.log('IssuesMainComponent init');
     }
 
 }

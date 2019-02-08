@@ -4,7 +4,7 @@ import {
     IssuesItemComponent,
     IssuesListComponent,
     IssuesMainComponent,
-    IssuesFormComponent
+    IssuesFormComponent, IssuesStatusesComponent, IssuesTrackersComponent, IssuesStatusesFormComponent,
 } from './components';
 
 export const routes: Routes = [
@@ -28,10 +28,10 @@ export const routes: Routes = [
                     {
                         path: ':id/edit',
                         component: IssuesFormComponent,
-                    }
-                ]
+                    },
+                ],
             },
-        ]
+        ],
     },
 ];
 
@@ -43,8 +43,32 @@ export const projectsIssuesRoutes: Routes = [
             {
                 path: '',
                 component: IssuesListComponent,
-                data: {inner: true}
             },
-        ]
-    }
+        ],
+    },
+];
+
+export const adminIssuesRoutes: Routes = [
+    {
+        path: '',
+        component: IssuesMainComponent,
+        children: [
+            {
+                path: 'issue_statuses',
+                component: IssuesStatusesComponent,
+            },
+            {
+                path: 'issue_statuses/new',
+                component: IssuesStatusesFormComponent,
+            },
+            {
+                path: 'issue_statuses/:id/edit',
+                component: IssuesStatusesFormComponent,
+            },
+            {
+                path: 'trackers',
+                component: IssuesTrackersComponent,
+            },
+        ],
+    },
 ];

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 
 @Component({
-    template: ''
+    template: '',
 })
 export class LogoutComponent {
 

@@ -23,6 +23,6 @@ export class ProjectsService {
         return this.http.get<any>(`/api/v1/projects/${identifier}`);
     }
     public getProjects() {
-        return this.all({my: true})
+        return this.all({my: true});
     }
 }

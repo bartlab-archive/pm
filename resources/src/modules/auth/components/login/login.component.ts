@@ -13,7 +13,7 @@ import {AuthService} from '../../services/auth.service';
 @Component({
     selector: 'app-auth-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss']
+    styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
     public subscriptions: Subscription[] = [];
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.store
                 .pipe(
                     select(fromAuth.selectAuthStatus),
-                    filter((status) => status === 'success')
+                    filter((status) => status === 'success'),
                 )
                 .subscribe(() => {
                     const user = this.authService.getUser();
@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.store
                 .pipe(
                     select(fromAuth.selectAuthError),
-                    filter((error) => Boolean(error))
+                    filter((error) => Boolean(error)),
                 )
                 .subscribe((error: FormResponseError) => {
                     for (const key of Object.keys(error.errors)) {
@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
+        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     }
 
     public getLoginErrorMessage() {

@@ -4,7 +4,7 @@ import {
     ActionReducerMap,
     createFeatureSelector,
     createSelector,
-    MetaReducer
+    MetaReducer,
 } from '@ngrx/store';
 import * as fromAuth from './auth.reducer';
 import * as fromRegister from './register.reducer';
@@ -30,7 +30,7 @@ export const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReduc
 export const reducers: ActionReducerMap<AuthState> = {
     authorization: fromAuth.reducer,
     registration: fromRegister.reducer,
-    reset: fromReset.reducer
+    reset: fromReset.reducer,
 };
 
 export const selectAuthState = createFeatureSelector<State, AuthState>('moduleAuth');

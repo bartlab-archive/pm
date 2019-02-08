@@ -62,5 +62,5 @@ export const prioritiesReducers = combineReducers({
     entities,
     ids,
     status,
-    error
+    error,
 });

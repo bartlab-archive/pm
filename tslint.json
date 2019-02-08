@@ -139,6 +139,9 @@
       "element",
       "app",
       "kebab-case"
-    ]
+    ],
+    "trailing-comma": [true, {"multiline": "always", "singleline": "never"}],
+    "arrow-parens": true,
+    "align": [true, "parameters", "statements"]
   }
 }
