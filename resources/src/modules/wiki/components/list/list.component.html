@@ -1,0 +1,8 @@
+<div fxLayout="row" fxLayoutAlign="center start">
+    <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.gt-md]="100" class="card-scroll">
+        <mat-progress-bar mode="indeterminate" *ngIf="pending"></mat-progress-bar>
+        <div class="card-scroll-container" #scrollContainer>
+        </div>
+        <mat-paginator [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)"></mat-paginator>
+    </mat-card>
+</div>

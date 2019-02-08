@@ -1,0 +1,4 @@
+<mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.gt-md]="100">
+    <mat-progress-bar mode="indeterminate" *ngIf="(pending$ | async)"></mat-progress-bar>
+    <textarea *mde="{}" (onChange)="onMDEChange($event)"></textarea>
+</mat-card>
