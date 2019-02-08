@@ -5,6 +5,8 @@ import {selectStatuses, selectStatusesRequestId, selectStatusesStatus} from '../
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {StatusesAllRequestAction, StatusesItemRemoveRequestAction} from '../../store/actions/statuses.action';
 import {filter} from 'rxjs/operators';
+import {MatDialog} from '@angular/material';
+import {AppConfirmDialogComponent} from '../../../../app/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-issues-statuses',
@@ -28,6 +30,7 @@ export class IssuesStatusesComponent implements OnInit, OnDestroy {
 
     public constructor(
         private store: Store<any>,
+        public dialog: MatDialog,
     ) {
     }
 
@@ -57,10 +60,21 @@ export class IssuesStatusesComponent implements OnInit, OnDestroy {
         this.store.dispatch(new StatusesAllRequestAction());
     }
 
-    public remove(id): void {
-        const action = new StatusesItemRemoveRequestAction(id);
-        this.removeRequestId = action.requestId;
-        this.store.dispatch(action);
+    public remove(item): void {
+        const dialogRef = this.dialog.open((AppConfirmDialogComponent), {
+            width: '500px',
+            data: {text: `Do you want to delete "${item.name}" issue status?`},
+        });
+
+        dialogRef.afterClosed()
+            .pipe(
+                filter((result) => Boolean(result)),
+            )
+            .subscribe(() => {
+                const action = new StatusesItemRemoveRequestAction(item.id);
+                this.removeRequestId = action.requestId;
+                this.store.dispatch(action);
+            });
     }
 
 }

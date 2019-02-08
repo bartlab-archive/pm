@@ -1,0 +1,7 @@
+<div mat-dialog-content>
+    {{data.text}}
+</div>
+<div mat-dialog-actions>
+    <button mat-button cdkFocusInitial [mat-dialog-close]="true">DELETE</button>
+    <button mat-button (click)="cancel()">CANCEL</button>
+</div>

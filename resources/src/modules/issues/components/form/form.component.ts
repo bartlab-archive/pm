@@ -30,7 +30,6 @@ import {Project} from '../../interfaces/projects';
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.scss'],
 })
-
 export class IssuesFormComponent implements OnInit, OnDestroy {
     public subscriptions: Subscription[] = [];
     public item: Issue;

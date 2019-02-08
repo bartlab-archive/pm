@@ -14,7 +14,12 @@ import {AuthModule} from '../modules/auth/auth.module';
 import {ProjectsModule} from '../modules/projects/projects.module';
 import {LayoutsModule} from '../modules/layouts/layouts.module';
 import {IssuesModule} from '../modules/issues/issues.module';
-import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from '@angular/material';
+import {
+    MAT_SNACK_BAR_DEFAULT_OPTIONS,
+    MatButtonModule,
+    MatDialogModule,
+    MatSnackBarModule,
+} from '@angular/material';
 import {AppService} from './services/app.service';
 import {FormService} from './services/form.service';
 import {APP_EVENT_PRELOAD, APP_EVENT_INTERCEPTORS} from './providers/app.injection';
@@ -23,11 +28,18 @@ import {AppEffects} from './store/effects/app.effects';
 import * as appActions from './store/actions/app.actions';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AppInterceptor} from './interceptors/app.interceptor';
-import {UsersModule} from "../modules/users/users.module";
+import {UsersModule} from '../modules/users/users.module';
 import {AdminModule} from '../modules/admin/admin.module';
+import {AppConfirmDialogComponent} from './components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [
+        AppComponent,
+        AppConfirmDialogComponent,
+    ],
+    entryComponents: [
+        AppConfirmDialogComponent,
+    ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
@@ -58,6 +70,8 @@ import {AdminModule} from '../modules/admin/admin.module';
 
         MarkdownModule.forRoot(),
         MatSnackBarModule,
+        MatDialogModule,
+        MatButtonModule,
 
         // modules
         MainModule,
