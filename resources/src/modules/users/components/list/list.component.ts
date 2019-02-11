@@ -3,11 +3,10 @@ import {Router} from '@angular/router';
 import {select, Store} from '@ngrx/store';
 import {MatPaginator} from '@angular/material';
 import {filter} from 'rxjs/operators';
-
 import * as userActions from '../../../users/store/actions/users.actions';
 import {ListRequestParams} from '../../interfaces/users';
 import {selectUsers, selectUsersMeta} from '../../store/selectors/users';
-import {Subscription} from 'rxjs/index';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-users-list',
@@ -18,21 +17,21 @@ export class UsersListComponent implements OnInit, OnDestroy {
     public displayedColumns: string[] = ['position', 'fullName', 'status', 'created', 'menu'];
     public users;
     protected statuses: null;
-    protected subscriptions: Subscription[] = [];
+    protected subscriptions: Array<Subscription> = [];
 
-    params: ListRequestParams = {
+    public params: ListRequestParams = {
         page: 1,
         per_page: 10,
     };
+
+    @ViewChild(MatPaginator)
+    public paginator: MatPaginator;
 
     public constructor(
         private router: Router,
         private store: Store<any>,
     ) {
-
     }
-
-    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     private getPagination(): ListRequestParams {
         return {
@@ -50,7 +49,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
         this.store.dispatch(new userActions.ListRequestAction(params));
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.subscriptions.push(
             this.store.pipe(select(selectUsers))
                 .subscribe((users) => {
@@ -81,11 +80,11 @@ export class UsersListComponent implements OnInit, OnDestroy {
         this.loadUsers(this.params);
     }
 
-    onChangeFilter(data): void {
+    public onChangeFilter(data): void {
         this.loadUsers({
             per_page: this.paginator.pageSize,
             page: 1,
-            status:  data.map(({id}) => id),
+            status: data.map(({id}) => id),
         });
     }
 

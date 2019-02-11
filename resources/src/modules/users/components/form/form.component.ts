@@ -6,7 +6,7 @@ import * as userActions from '../../store/actions/users.actions';
 import {selectUserActive, selectUsersPending} from '../../store/selectors/users';
 import {Observable} from 'rxjs/internal/Observable';
 import {User, UserUpdate} from '../../interfaces/users';
-import {Subscription} from 'rxjs/index';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-profile-form',
@@ -25,33 +25,33 @@ export class ProfileFormComponent implements OnInit {
 
     public get isSubmitInactive() {
         const {invalid = null, status = ''} = this.form || {};
-        return invalid || status == 'DISABLED';
+        return invalid || status === 'DISABLED';
     }
 
     public form = this.fb.group({
-        login: [{value: '' }, [
+        login: [{value: ''}, [
             Validators.required,
             Validators.maxLength(60),
         ]],
-        firstName: [{value: '' }, [
+        firstName: [{value: ''}, [
             Validators.required,
             Validators.maxLength(30),
         ]],
-        lastName: [{value: '' }, [
+        lastName: [{value: ''}, [
             Validators.required,
             Validators.maxLength(30),
         ]],
-        email: [{value: '' }, [
+        email: [{value: ''}, [
             Validators.required,
             Validators.email,
             Validators.maxLength(60),
         ]],
-        admin: [{value: '' }, []],
-        password: [{value: '' }],
-        repeatPassword: [{value: '' }],
+        admin: [{value: ''}, []],
+        password: [{value: ''}],
+        repeatPassword: [{value: ''}],
     });
 
-    validationMessages = {
+    public validationMessages = {
         'login': [
             {type: 'required', message: 'Login is required'},
             {type: 'maxlength', message: 'Login cannot be more than 30 characters long'},
@@ -124,6 +124,5 @@ export class ProfileFormComponent implements OnInit {
         };
         this.store.dispatch(new userActions.UpdateRequestAction({id: this.id, body}));
     }
-
 
 }

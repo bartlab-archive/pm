@@ -7,12 +7,13 @@ import {Status, UsersStatusNames} from '../../interfaces/users';
     styleUrls: ['./status.component.scss'],
 })
 export class UserStatusComponent {
-    @Input() value: number;
+    @Input()
+    public value: number;
 
     constructor() {
     }
 
-    get name(): string {
+    public get name(): string {
         return this.getStatusById(this.value).name;
     }
 

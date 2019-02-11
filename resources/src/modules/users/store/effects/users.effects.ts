@@ -11,13 +11,14 @@ import {UsersService} from '../../services/users.service';
 
 @Injectable()
 export class UsersEffects {
+
     @Effect()
     protected list$ = this.actions$.pipe(
         ofType<UserActions.ListRequestAction>(UserActions.ActionTypes.LIST_REQUEST),
         map((action) => action.payload),
         exhaustMap((params: ListRequestParams) =>
             this.userService.all(params).pipe(
-                map(({ meta, data }: ListResponse) => {
+                map(({meta, data}: ListResponse) => {
                     const payload = {
                         meta,
                         ...normalize(data, [usersSchema]),
@@ -35,7 +36,7 @@ export class UsersEffects {
         map((action) => action.payload),
         exhaustMap((id: number) =>
             this.userService.one(id).pipe(
-                map(({  data }: UserResponse) => {
+                map(({data}: UserResponse) => {
                     const payload = {
                         ...normalize([data], [usersSchema]),
                     };
@@ -52,7 +53,7 @@ export class UsersEffects {
         map((action) => action.payload),
         exhaustMap((request) =>
             this.userService.update(request.id, request.body).pipe(
-                map(({  data }: UserResponse) => {
+                map(({data}: UserResponse) => {
                     const payload = {
                         ...normalize([data], [usersSchema]),
                     };
@@ -63,7 +64,9 @@ export class UsersEffects {
         ),
     );
 
-
-    public constructor(protected actions$: Actions, protected userService: UsersService) {
+    public constructor(
+        protected actions$: Actions,
+        protected userService: UsersService,
+    ) {
     }
 }

@@ -6,7 +6,7 @@ import {FormBuilder} from '@angular/forms';
 import {selectUserActive, selectUsersPending} from '../../store/selectors/users';
 import {Observable} from 'rxjs/internal/Observable';
 import {User} from '../../interfaces/users';
-import {Subscription} from 'rxjs/index';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-profile-item',
@@ -17,7 +17,7 @@ export class ProfileItemComponent implements OnInit, OnDestroy {
     public user$: Observable<User>;
     public pending$: Observable<boolean>;
     public id: number;
-    protected subscriptions: Subscription[] = [];
+    protected subscriptions: Array<Subscription> = [];
 
     public form = this.fb.group({
         login: [{value: '', disabled: true}],
@@ -34,8 +34,9 @@ export class ProfileItemComponent implements OnInit, OnDestroy {
 
     }
 
-    ngOnInit() {
+    public ngOnInit() {
         const {id} = this.activatedRoute.snapshot.params;
+        
         this.id = id;
         this.store.dispatch(new userActions.OneRequestAction(+id));
         this.user$ = this.store.pipe(select(selectUserActive));
@@ -52,7 +53,6 @@ export class ProfileItemComponent implements OnInit, OnDestroy {
 
             }),
         );
-
 
     }
 

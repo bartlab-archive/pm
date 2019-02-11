@@ -6,9 +6,11 @@ export enum ActionTypes {
     LIST_REQUEST = '[users] list request',
     LIST_ERROR = '[users] list error',
     LIST_SUCCESS = '[users] list success',
+
     ONE_REQUEST = '[users] one request',
     ONE_ERROR = '[users] one error',
     ONE_SUCCESS = '[users] one success',
+
     UPDATE_REQUEST = '[users] update request',
     UPDATE_SUCCESS = '[users] update success',
     UPDATE_ERROR = '[users] update error',

@@ -1,7 +1,5 @@
 <mat-card>
-    <users-filter
-            (onChange)="onChangeFilter($event)"
-    ></users-filter>
+    <app-users-filter (change)="onChangeFilter($event)"></app-users-filter>
     <div class="card-scroll-container" #scrollContainer>
         <table mat-table [dataSource]="users">
 
