@@ -1,0 +1,55 @@
+:host ::ng-deep {
+    .mat-card {
+        box-shadow: none;
+        padding: 0;
+
+        .mat-card-title {
+            margin-bottom: 0;
+            border-top: 1px solid #ddd;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+
+            .mat-list-base {
+                padding-top: 0;
+
+                .mat-list-item {
+                    .mat-list-item-content {
+                        padding: 0;
+
+                        .mat-button {
+                            color: #919191;
+                            border-radius: 0;
+                            min-width: 48px;
+                        }
+                    }
+                }
+            }
+
+            .mat-divider {
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            &:hover {
+                .mat-list-base {
+                    .mat-list-item {
+                        .mat-list-item-content {
+                            .mat-button {
+                                color: #787878;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .fullscreen {
+        .mat-card {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+    }
+}
