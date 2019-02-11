@@ -41,17 +41,20 @@ import {ProjectsEffects} from './store/effects/projects.effects';
 import {APP_EVENT_INTERCEPTORS, APP_MODULE_SUBROUTES} from '../../app/providers/app.injection';
 import {ProjectsEventInterceptor} from './interceptors/projects-event.interceptor';
 import {findBy} from '../../app/helpers/collection';
+import { ProjectsOverviewComponent } from './components/overview/overview.component';
 
 @NgModule({
     declarations: [
         ProjectsMainComponent,
         ProjectsListComponent,
         ProjectsItemComponent,
+        ProjectsOverviewComponent,
     ],
     entryComponents: [
         ProjectsMainComponent,
         ProjectsListComponent,
         ProjectsItemComponent,
+        ProjectsOverviewComponent,
     ],
     imports: [
         CommonModule,
@@ -115,7 +118,12 @@ export class ProjectsModule {
                         {
                             path: ':identifier',
                             component: ProjectsItemComponent,
-                            children: findBy(this.config, 'projects'),
+                            children: [
+                                {
+                                    path: '',
+                                    component: ProjectsOverviewComponent,
+                                },
+                            ].concat(findBy(this.config, 'projects')),
                         },
                     ],
                 },

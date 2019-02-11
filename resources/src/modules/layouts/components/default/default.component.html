@@ -45,10 +45,13 @@
                             disableRipple="true"
                             mat-tab-link
                             *ngFor="let tab of topTabs"
+                            
                             [routerLink]="tab.path"
                             routerLinkActive
+                            [routerLinkActiveOptions]="{ exact: true }"
                             #rla="routerLinkActive"
                             [active]="rla.isActive"
+                            [disabled]="tab.id === null"
                     >
                         {{tab.name | uppercase}}
                     </a>

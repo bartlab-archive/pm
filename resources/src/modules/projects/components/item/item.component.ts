@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {select, Store} from '@ngrx/store';
 import {Observable, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Project} from '../../interfaces/projects';
+import {Project, NamePathMapping} from '../../interfaces/projects';
 import * as projectActions from '../../store/actions/projects.actions';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {selectProjectsActive, selectProjectsStatus, selectActiveModulesWithMapping} from '../../store/selectors/projects';
@@ -16,11 +16,27 @@ import {SharedProjectModulesReceived} from '../../store/actions/shared.actions';
 })
 export class ProjectsItemComponent implements OnInit, OnDestroy {
     public subscriptions: Subscription[] = [];
-    public project$: Observable<Project> = this.store.pipe(select(selectProjectsActive));
     public pending$: Observable<boolean> = this.store.pipe(
         select(selectProjectsStatus),
         map((status) => status === RequestStatus.pending),
     );
+    private defaultSubModulesTabs: NamePathMapping[] = [
+        {
+            name: 'overview',
+            path: '',
+            id: 'overview',
+        },
+        {
+            name: 'activities',
+            path: '',
+            id: null,
+        },
+        {
+            name: 'settings',
+            path: '',
+            id: null,
+        },
+    ];
 
     public constructor(
         private activatedRoute: ActivatedRoute,
@@ -46,7 +62,8 @@ export class ProjectsItemComponent implements OnInit, OnDestroy {
                         }
                         const {pathFromRoot: activatedRoutes}  =  this.activatedRoute;
                         const urls = activatedRoutes.map((activatedRoute) => activatedRoute.snapshot.url).filter((url) => url.length > 0);
-                        return moduleItem.map((item) => ({...item, path: `/${urls.join('/')}/${item.path}`}));
+                        const allItems = this.defaultSubModulesTabs.concat(moduleItem);
+                        return allItems.map((item: NamePathMapping) => ({...item, path: `/${urls.join('/')}/${item.path}`}));
                     }),
                 )
                 .subscribe((data) => {

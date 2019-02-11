@@ -66,3 +66,9 @@ export interface ListResponse {
 export interface Entities<T> {
     [key: string]: T;
 }
+
+export interface NamePathMapping {
+    id: string;
+    path: string;
+    name: string;
+}
