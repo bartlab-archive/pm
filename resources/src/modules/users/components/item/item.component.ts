@@ -1,17 +1,17 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {select, Store} from "@ngrx/store";
-import * as userActions from "../../../users/store/actions/users.actions";
-import {FormBuilder} from "@angular/forms";
-import {selectUserActive, selectUsersPending} from "../../store/selectors/users";
-import {Observable} from "rxjs/internal/Observable";
-import {User} from "../../interfaces/users";
-import {Subscription} from "rxjs/index";
+import {ActivatedRoute, Router} from '@angular/router';
+import {select, Store} from '@ngrx/store';
+import * as userActions from '../../../users/store/actions/users.actions';
+import {FormBuilder} from '@angular/forms';
+import {selectUserActive, selectUsersPending} from '../../store/selectors/users';
+import {Observable} from 'rxjs/internal/Observable';
+import {User} from '../../interfaces/users';
+import {Subscription} from 'rxjs/index';
 
 @Component({
-    selector: 'profile-item',
+    selector: 'app-profile-item',
     templateUrl: './item.component.html',
-    styleUrls: ['./item.component.scss']
+    styleUrls: ['./item.component.scss'],
 })
 export class ProfileItemComponent implements OnInit, OnDestroy {
     public user$: Observable<User>;
@@ -39,6 +39,7 @@ export class ProfileItemComponent implements OnInit, OnDestroy {
         this.id = id;
         this.store.dispatch(new userActions.OneRequestAction(+id));
         this.user$ = this.store.pipe(select(selectUserActive));
+        this.pending$ = this.store.pipe(select(selectUsersPending));
         this.subscriptions.push(
             this.user$.subscribe((user: User) => {
                 if (user) {
@@ -49,10 +50,10 @@ export class ProfileItemComponent implements OnInit, OnDestroy {
                     });
                 }
 
-            })
+            }),
         );
 
-        this.pending$ = this.store.pipe(select(selectUsersPending));
+
     }
 
     public ngOnDestroy(): void {

@@ -1,10 +1,10 @@
 import {Component, Input} from '@angular/core';
-import {Status, UsersStatusNames} from "../../interfaces/users";
+import {Status, UsersStatusNames} from '../../interfaces/users';
 
 @Component({
-    selector: 'user-status',
+    selector: 'app-user-status',
     templateUrl: './status.component.html',
-    styleUrls: ['./status.component.scss']
+    styleUrls: ['./status.component.scss'],
 })
 export class UserStatusComponent {
     @Input() value: number;
@@ -17,7 +17,7 @@ export class UserStatusComponent {
     }
 
     public getStatusById(status): Status {
-        return UsersStatusNames.find(item => item.id === status)
+        return UsersStatusNames.find((item) => item.id === status);
     }
 
 }

@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {PaginationParams, UserUpdateRequest} from '../../interfaces/users';
+import {ListRequestParams, UserUpdateRequest} from '../../interfaces/users';
 import {ResponseError} from '../../../../app/interfaces/api';
 
 export enum ActionTypes {
@@ -17,7 +17,7 @@ export enum ActionTypes {
 export class ListRequestAction implements Action {
     readonly type = ActionTypes.LIST_REQUEST;
 
-    constructor(public payload: PaginationParams) {
+    constructor(public payload: ListRequestParams) {
     }
 }
 

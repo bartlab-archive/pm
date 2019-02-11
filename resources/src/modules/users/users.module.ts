@@ -1,10 +1,10 @@
 import {Inject, NgModule} from '@angular/core';
-import {EffectsModule} from "@ngrx/effects";
+import {EffectsModule} from '@ngrx/effects';
 import {Router, Routes, RouterModule} from '@angular/router';
-import {StoreModule} from "@ngrx/store";
+import {StoreModule} from '@ngrx/store';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientModule} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 import {BrowserModule} from '@angular/platform-browser';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -23,23 +23,23 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {
     MatPaginatorModule,
     MatSortModule,
-    MatTableModule
-} from "@angular/material";
+    MatTableModule,
+} from '@angular/material';
 
 import {DefaultComponent} from '../layouts/components';
-import {UsersService} from "./services/users.service";
-import {UsersListComponent} from "./components/list/list.component";
-import {UsersEffects} from "./store/effects/users.effects";
+import {UsersService} from './services/users.service';
+import {UsersListComponent} from './components/list/list.component';
+import {UsersEffects} from './store/effects/users.effects';
 import {
     reducers,
 } from './store/reducers';
 
-import {UsersFilterComponent} from "./components/list/filter/filter.component";
-import {ProfileFormComponent} from "./components/form/form.component";
-import {ProfileItemComponent} from "./components/item/item.component";
-import {FlexLayoutModule} from "@angular/flex-layout";
-import {UserStatusComponent} from "./components/status/status.component";
-import {ErrorFormComponent} from "./components/error/error.component";
+import {UsersFilterComponent} from './components/list/filter/filter.component';
+import {ProfileFormComponent} from './components/form/form.component';
+import {ProfileItemComponent} from './components/item/item.component';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {UserStatusComponent} from './components/status/status.component';
+import {ErrorFormComponent} from './components/error/error.component';
 
 @NgModule({
     declarations: [
@@ -48,7 +48,7 @@ import {ErrorFormComponent} from "./components/error/error.component";
         ProfileFormComponent,
         ProfileItemComponent,
         UserStatusComponent,
-        ErrorFormComponent
+        ErrorFormComponent,
     ],
     entryComponents: [
         UsersListComponent,
@@ -110,7 +110,7 @@ export class UsersModule {
                         {
                             path: ':id/edit',
                             component: ProfileFormComponent,
-                        }
+                        },
                     ],
                 },
             ],
