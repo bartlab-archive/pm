@@ -1,9 +1,7 @@
 require('dotenv').load();
 
 const path = require('path');
-const {
-    DefinePlugin,
-} = require('webpack');
+const {DefinePlugin} = require('webpack');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const {AngularCompilerPlugin} = require('@ngtools/webpack');
@@ -37,11 +35,7 @@ const getEnv = (prefix) => {
     return env;
 };
 
-const {
-    NODE_ENV,
-    BROWSER_PORT,
-    APP_URL,
-} = process.env;
+const {NODE_ENV, BROWSER_PORT, APP_URL} = process.env;
 
 const isDevMode = NODE_ENV === 'development';
 
@@ -49,10 +43,10 @@ const config = {
     context: PATHS.root,
     target: 'web',
     entry: {
-        'polyfills': './src/polyfills.ts',
-        'vendor': './src/vendor.ts',
-        'app': './src/main.ts',
-        'styles': './sass/styles.scss',
+        polyfills: './src/polyfills.ts',
+        vendor: './src/vendor.ts',
+        app: './src/main.ts',
+        styles: './sass/styles.scss',
     },
     output: {
         path: PATHS.dist,
@@ -66,28 +60,28 @@ const config = {
     },
     mode: NODE_ENV,
     // stats: 'errors-only',
-    stats: !isDevMode ? 'errors-only' : {
-        all: undefined,
-        entrypoints: false,
-        children: false,
+    stats: !isDevMode
+        ? 'errors-only'
+        : {
+              all: undefined,
+              entrypoints: false,
+              children: false,
 
-        // chunks: false,
-        // chunkGroups: false,
-        // chunkModules: false,
-        // chunkOrigins: false,
+              // chunks: false,
+              // chunkGroups: false,
+              // chunkModules: false,
+              // chunkOrigins: false,
 
-        reasons: false,
-        modules: false,
-        warnings: false,
-    },
+              reasons: false,
+              modules: false,
+              warnings: false,
+          },
     module: {
         rules: [
             {
                 test: /\.ts$/,
                 loader: '@ngtools/webpack',
-                exclude: [
-                    /node_modules/,
-                ],
+                exclude: [/node_modules/],
             },
             {
                 test: /\.json$/,
@@ -104,9 +98,7 @@ const config = {
                     context: PATHS.assets,
                     name: 'assets/[path][name].[ext]',
                 },
-                exclude: [
-                    /node_modules/,
-                ],
+                exclude: [/node_modules/],
             },
             {
                 test: /\.(eot|woff|woff2|ttf|png|jpg|gif|svg|ico)(\?v=\d+\.\d+\.\d+)?$/,
@@ -115,18 +107,12 @@ const config = {
                     context: PATHS.node_modules,
                     name: 'assets/[path][name].[ext]',
                 },
-                include: [
-                    /node_modules/,
-                ],
+                include: [/node_modules/],
             },
             {
                 test: /\.(scss|sass)$/,
                 exclude: [PATHS.app, PATHS.modules],
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    'sass-loader',
-                ],
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
             },
             {
                 test: /\.(scss|sass)$/,
@@ -134,7 +120,7 @@ const config = {
                 use: [
                     {
                         // creates style nodes from JS strings
-                        loader: 'raw-loader'
+                        loader: 'raw-loader',
                     },
                     {
                         // compiles Sass to CSS
@@ -142,32 +128,36 @@ const config = {
                         options: {
                             sourceMap: true,
                         },
-                    }
-                ]
-            }
-        ]
+                    },
+                ],
+            },
+        ],
     },
     optimization: {
         minimize: !isDevMode,
         // minimizer: [],
-        minimizer: [].concat(!isDevMode ? [
-            new UglifyJsPlugin({
-                uglifyOptions: {
-                    keep_fnames: true,
-                },
-            }),
+        minimizer: [].concat(
+            !isDevMode
+                ? [
+                      new UglifyJsPlugin({
+                          uglifyOptions: {
+                              keep_fnames: true,
+                          },
+                      }),
 
-            new OptimizeCSSAssetsPlugin({})
-        ] : []),
+                      new OptimizeCSSAssetsPlugin({}),
+                  ]
+                : [],
+        ),
         splitChunks: {
             cacheGroups: {
                 commons: {
                     test: /[\\/]node_modules[\\/]/,
                     name: 'vendors',
                     chunks: 'all',
-                }
-            }
-        }
+                },
+            },
+        },
     },
     plugins: [
         new MiniCssExtractPlugin({
@@ -196,7 +186,7 @@ const config = {
             publicPath: '/',
             // fileName: root('public', 'mix-manifest.json'),
             fileName: 'mix-manifest.json',
-            filter: (fd) => !fd.isAsset
+            filter: (fd) => !fd.isAsset,
         }),
 
         new BrowserSyncPlugin(
@@ -209,6 +199,7 @@ const config = {
                 // (which should be serving on http://localhost:3100/)
                 // through BrowserSync
                 proxy: APP_URL,
+                open: false,
             },
 
             // plugin options
@@ -216,9 +207,9 @@ const config = {
                 // prevent BrowserSync from reloading the page
                 // and let Webpack Dev Server take care of this
                 // reload: false,
-            }
-        )
-    ]
+            },
+        ),
+    ],
 };
 
 // if (isDevMode) {

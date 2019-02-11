@@ -1,8 +1,12 @@
+declare global {
+    interface Window { mdeSavedOverflow: any; }
+}
+
 /**
  * MDE Actions
  */
 export default class MDEActions {
-    static getState(cm, pos) {
+    static getState(cm, pos?) {
         pos = pos || cm.getCursor('start');
         let stat = cm.getTokenAt(pos);
         if (!stat.type) {
@@ -11,7 +15,7 @@ export default class MDEActions {
 
         let types = stat.type.split(' ');
 
-        let ret = {},
+        let ret: any = {},
             data,
             text;
         for (let i = 0; i < types.length; i++) {
@@ -248,7 +252,7 @@ export default class MDEActions {
             return token.state.base.base || token.state.base;
         }
 
-        function code_type(cm, line_num, line, firstTok, lastTok) {
+        function code_type(cm, line_num, line?, firstTok?, lastTok?) {
             /*
              * Return "single", "indented", "fenced" or false
              *
@@ -719,7 +723,7 @@ export default class MDEActions {
         cm.focus();
     }
 
-    static _replaceSelection(cm, active, startEnd, url) {
+    static _replaceSelection(cm, active, startEnd, url?) {
         if (/editor-preview-active/.test(cm.getWrapperElement().lastChild.className)) {
             return;
         }
@@ -756,7 +760,7 @@ export default class MDEActions {
         cm.focus();
     }
 
-    static _toggleHeading(cm, direction, size) {
+    static _toggleHeading(cm, direction, size?) {
         if (/editor-preview-active/.test(cm.getWrapperElement().lastChild.className)) {
             return;
         }
@@ -878,7 +882,7 @@ export default class MDEActions {
         cm.focus();
     }
 
-    static _toggleBlock(editor, type, start_chars, end_chars) {
+    static _toggleBlock(editor, type, start_chars, end_chars?) {
         if (/editor-preview-active/.test(editor.codemirror.getWrapperElement().lastChild.className)) {
             return;
         }
