@@ -9,6 +9,7 @@ import {ProjectsMainComponent} from './components/main/main.component';
 import {ProjectsListComponent} from './components/list/list.component';
 import {ProjectsItemComponent} from './components/item/item.component';
 import {ProjectsService} from './services/projects.service';
+import {ModulesService} from './services/modules.service';
 import {DefaultComponent} from '../layouts/components';
 import {reducers, metaReducers} from './store/reducers';
 import {MainModule} from '../main/main.module';
@@ -58,6 +59,7 @@ import {ProjectsModulesComponent} from './components/modules/modules.component';
     ],
     providers: [
         ProjectsService,
+        ModulesService,
         {
             provide: APP_MODULE_SUBROUTES,
             useValue: [],

@@ -1,22 +1,15 @@
 <form [formGroup]="informationForm" (ngSubmit)="onSubmit($event)">
-    <mat-progress-bar
-        mode="indeterminate"
-        *ngIf="(pending$ | async)"
-    ></mat-progress-bar>
     <mat-form-field>
         <input matInput required placeholder="Name" formControlName="name" />
-        <mat-error>{{ getNameError() }}</mat-error>
+        <mat-error validation-error formControlName="name"></mat-error>
     </mat-form-field>
-    <!--<mat-form-field>-->
-    <textarea
-        matInput
-        required
-        placeholder="Description"
-        formControlName="description"
-        *mde="informationForm.get('description')"
-    ></textarea>
-    <mat-error>{{ getDescriptionError() }}</mat-error>
-    <!--</mat-form-field>-->
+    <div class="form-group">
+        <app-main-md-editor
+            formControlName="description"
+            [attrs]="{placeholder: 'Description'}"
+        ></app-main-md-editor>
+        <mat-error validation-error formControlName="description"></mat-error>
+    </div>
     <mat-form-field>
         <input
             matInput
@@ -29,27 +22,42 @@
             numbers, dashes and underscores are allowed, must start with a lower
             case letter. Once saved, the identifier cannot be changed.
         </mat-hint>
-        <mat-error>{{ getIdentifierError() }}</mat-error>
+        <mat-error validation-error formControlName="identifier"></mat-error>
     </mat-form-field>
-    <mat-form-field>
-        <input matInput placeholder="Homepage" formControlName="homepage" />
-        <mat-error>{{ getHomepageError() }}</mat-error>
-    </mat-form-field>
-    <div>
-        <mat-checkbox formControlName="isPublic">
+    <div class="form-group">
+        <mat-form-field>
+            <input
+                matInput
+                placeholder="Homepage"
+                formControlName="homepage"
+                type="url"
+            />
+            <mat-error validation-error formControlName="homepage"></mat-error>
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-checkbox formControlName="is_public">
             Public
         </mat-checkbox>
     </div>
     <mat-form-field>
-        <mat-select placeholder="Subproject" formControlName="subproject">
-            <mat-option *ngFor="let project of (projects$ | async)">
+        <mat-select
+            placeholder="Subproject"
+            formControlName="subproject"
+            (selectionChange)="onSubprojectChange($event)"
+        >
+            <mat-option>None</mat-option>
+            <mat-option
+                *ngFor="let project of (projects$ | async)"
+                [value]="project.identifier"
+            >
                 {{ project.name }}
             </mat-option>
         </mat-select>
-        <mat-error>{{ getSubprojectError() }}</mat-error>
+        <mat-error validation-error formControlName="subproject"></mat-error>
     </mat-form-field>
     <div class="form-group">
-        <mat-checkbox formControlName="inheritMembers">
+        <mat-checkbox formControlName="inherit_members">
             Inherit members
         </mat-checkbox>
     </div>

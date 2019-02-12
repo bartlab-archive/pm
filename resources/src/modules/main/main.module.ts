@@ -1,12 +1,12 @@
 import {NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule, FormControlName} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {Main404Component} from './components/404/404.component';
 import {Main500Component} from './components/500/500.component';
 import {MainIndexComponent} from './components/index/index.component';
-import {MainMDEComponent} from './components/mde/mde.component';
-import {MDEDirective} from './directives';
+import {MainMDEditorComponent} from './components/md-editor/md-editor.component';
+import {ValidationErrorComponent} from './components/validation-error/validation-error.component';
 import {DefaultComponent} from '../layouts/components';
 import {BlankComponent} from '../layouts/components';
 import {ListService} from './services/list.service';
@@ -39,10 +39,9 @@ const mainRoutes: Routes = [
         Main404Component,
         Main500Component,
         MainIndexComponent,
-        MainMDEComponent,
-        MDEDirective,
+        MainMDEditorComponent,
+        ValidationErrorComponent,
     ],
-    entryComponents: [MainMDEComponent],
     imports: [
         CommonModule,
         MaterialModule,
@@ -50,7 +49,12 @@ const mainRoutes: Routes = [
         ReactiveFormsModule,
         RouterModule.forChild(mainRoutes),
     ],
-    providers: [FormControlName, ListService],
-    exports: [MDEDirective, FormsModule, ReactiveFormsModule],
+    providers: [ListService],
+    exports: [
+        MainMDEditorComponent,
+        ValidationErrorComponent,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
 })
 export class MainModule {}

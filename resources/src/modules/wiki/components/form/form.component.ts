@@ -1,4 +1,10 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
@@ -9,7 +15,11 @@ import {MatAutocompleteSelectedEvent} from '@angular/material';
 import {Wiki, Project} from '../../interfaces/wiki';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {ItemRequestAction} from '../../store/actions/wiki.action';
-import {selectWikiActive, selectWikiStatus, selectMyProjects} from '../../store/selectors/wiki';
+import {
+    selectWikiActive,
+    selectWikiStatus,
+    selectMyProjects,
+} from '../../store/selectors/wiki';
 
 @Component({
     selector: 'app-wiki-form',
@@ -34,7 +44,7 @@ export class WikiFormComponent implements OnInit, OnDestroy {
 
     @ViewChild('watchersInput')
     public watchersInput: ElementRef<HTMLInputElement>;
-    public form = this.fb.group({
+    public wikiForm = this.fb.group({
         subject: ['', Validators.required],
         is_private: [''],
         description: [''],
@@ -57,8 +67,7 @@ export class WikiFormComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         public router: Router,
         private fb: FormBuilder,
-    ) {
-    }
+    ) {}
 
     public ngOnInit(): void {
         this.showDescription = this.isNew;
@@ -82,9 +91,15 @@ export class WikiFormComponent implements OnInit, OnDestroy {
                 }
             }),
 
-            combineLatest(this.store.pipe(select(selectWikiActive)), this.params$)
+            combineLatest(
+                this.store.pipe(select(selectWikiActive)),
+                this.params$,
+            )
                 .pipe(
-                    filter(([issue, params]) => issue && issue.id === Number(params.id)),
+                    filter(
+                        ([issue, params]) =>
+                            issue && issue.id === Number(params.id),
+                    ),
                     map(([issue]) => {
                         if (issue.watchers) {
                             const watchers = issue.watchers;
@@ -122,7 +137,7 @@ export class WikiFormComponent implements OnInit, OnDestroy {
                         watchers = '',
                     } = this.item;
 
-                    this.form.setValue({
+                    this.wikiForm.setValue({
                         subject,
                         description,
                         is_private,
@@ -148,7 +163,9 @@ export class WikiFormComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+        this.subscriptions.forEach((subscription) =>
+            subscription.unsubscribe(),
+        );
     }
 
     public selected(identifier: String): void {
@@ -160,7 +177,10 @@ export class WikiFormComponent implements OnInit, OnDestroy {
     }
 
     public watched(event: MatAutocompleteSelectedEvent): void {
-        if (event.option.viewValue && !this.watcherTags.includes(event.option.viewValue)) {
+        if (
+            event.option.viewValue &&
+            !this.watcherTags.includes(event.option.viewValue)
+        ) {
             this.watcherTags.push(event.option.viewValue);
             this.watchersInput.nativeElement.value = '';
             this.tagCtrl.setValue(null);
@@ -174,9 +194,5 @@ export class WikiFormComponent implements OnInit, OnDestroy {
             this.tagCtrl.setValue(null);
             this.watchersInput.nativeElement.focus();
         }
-    }
-
-    public onMDEChange($event: string) {
-        console.log($event);
     }
 }

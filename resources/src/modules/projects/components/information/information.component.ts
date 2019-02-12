@@ -1,14 +1,13 @@
-import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {select, Store} from '@ngrx/store';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
 import {filter, map, withLatestFrom} from 'rxjs/operators';
-import {selectProjectsStatus} from '../../store/selectors/projects';
-import {RequestStatus} from '../../../../app/interfaces/api';
 import * as fromProjects from '../../store/selectors/projects';
 import * as projectActions from '../../store/actions/projects.actions';
 import {Project} from '../../interfaces/projects';
+import {ResponseError} from '../../../../app/interfaces/api';
 
 @Component({
     selector: 'app-projects-information',
@@ -17,12 +16,14 @@ import {Project} from '../../interfaces/projects';
 })
 export class ProjectsInformationComponent implements OnInit, OnDestroy {
     public subscriptions: Subscription[] = [];
-    public pending$: Observable<boolean> = this.store.pipe(
-        select(selectProjectsStatus),
-        map((status) => status === RequestStatus.pending),
+    public error$: Observable<ResponseError> = this.store.pipe(
+        select(fromProjects.selectProjectsError),
     );
 
-    public project$: Observable<Project> = this.store.pipe(select(fromProjects.selectProjectsActive));
+    public project$: Observable<Project> = this.store.pipe(
+        select(fromProjects.selectProjectsActive),
+    );
+
     public projects$: Observable<Project[]>;
     public informationForm: FormGroup;
 
@@ -32,20 +33,41 @@ export class ProjectsInformationComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
     ) {
         this.informationForm = this.formBuilder.group({
-            name: [null, Validators.compose([Validators.required, Validators.minLength(3)])],
-            description: [null, Validators.compose([Validators.required, Validators.minLength(3)])],
+            name: [
+                null,
+                Validators.compose([
+                    Validators.required,
+                    Validators.minLength(3),
+                ]),
+            ],
+
+            description: [
+                null,
+                Validators.compose([
+                    Validators.required,
+                    Validators.minLength(3),
+                    Validators.maxLength(255),
+                ]),
+            ],
+
             identifier: [
                 {value: null, disabled: true},
-                Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(100)]),
+                Validators.compose([
+                    Validators.required,
+                    Validators.minLength(1),
+                    Validators.maxLength(100),
+                ]),
             ],
 
             homepage: [null, Validators.compose([Validators.minLength(3)])],
-            isPublic: [false],
+            is_public: [false],
             subproject: [null, Validators.compose([])],
-            inheritMembers: [{value: false, disabled: true}],
+            inherit_members: [{value: false, disabled: true}],
         });
 
-        const isActive = (project) => (item) => project && project.identifier === item.identifier;
+        const isActive = (project) => (item) =>
+            project && project.identifier === item.identifier;
+
         const notActive = (project) => (item) => !isActive(project)(item);
 
         this.projects$ = this.store.pipe(
@@ -55,87 +77,72 @@ export class ProjectsInformationComponent implements OnInit, OnDestroy {
         );
     }
 
-    public load(): void {
-        const {pathFromRoot: activatedRoutes} = this.activatedRoute;
-        const params = activatedRoutes
-            .map((activatedRoute) => activatedRoute.snapshot.params)
-            .filter((params) => Object.keys(params).length > 0)
-            .reduce((acc, params) => ({...acc, params}), {});
-
-        if (params.identifier) {
-            this.store.dispatch(new projectActions.OneRequestAction(params.identifier));
-        }
-    }
-
     public ngOnInit(): void {
-        // this.store.dispatch(new projectActions.ListRequestAction({page: 0, per_page: 500}));
         this.subscriptions.push(
+            this.error$.pipe(filter(Boolean)).subscribe((responseError) => {
+                if (responseError.error) {
+                    const {errors} = responseError.error;
+                    Object.keys(errors).forEach((name) => {
+                        this.informationForm.get(name).setErrors({
+                            custom: errors[name][0],
+                        });
+                    });
+                }
+            }),
+
             this.project$.pipe(filter(Boolean)).subscribe((project) => {
-                this.informationForm.controls.name.setValue(project.name);
-                this.informationForm.controls.description.setValue(project.description);
-                this.informationForm.controls.identifier.setValue(project.identifier);
-                this.informationForm.controls.homepage.setValue(project.homepage);
-                this.informationForm.controls.isPublic.setValue(project.is_public);
+                const {
+                    name = null,
+                    description = null,
+                    identifier = null,
+                    homepage = null,
+                    subproject = null,
+                    is_public = null,
+                    inherit_members = null,
+                } = project;
+
+                this.informationForm.setValue({
+                    name,
+                    description,
+                    identifier,
+                    homepage,
+                    subproject,
+                    is_public,
+                    inherit_members,
+                });
             }),
         );
 
-        this.load();
+        setTimeout(() => {
+            this.store.dispatch(
+                new projectActions.ListRequestAction({page: 0, per_page: 500}),
+            );
+        });
     }
 
     public ngOnDestroy(): void {
-        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
-    }
-
-    public getNameError() {
-        const field = this.informationForm.get('name');
-        if (field.hasError('required')) {
-            return 'Name cannot be blank';
-        }
-
-        return '';
-    }
-
-    public getDescriptionError() {
-        const field = this.informationForm.get('description');
-        if (field.hasError('required')) {
-            return 'Description cannot be blank';
-        }
-
-        return '';
-    }
-
-    public getIdentifierError() {
-        const field = this.informationForm.get('identifier');
-        if (field.hasError('required')) {
-            return 'Identifier cannot be blank';
-        }
-
-        return '';
-    }
-
-    public getHomepageError() {
-        const field = this.informationForm.get('homepage');
-        if (field.hasError('required')) {
-            return 'Homepage cannot be blank';
-        }
-
-        return '';
-    }
-
-    public getSubprojectError() {
-        const field = this.informationForm.get('name');
-        if (field.hasError('required')) {
-            return 'Subproject cannot be blank';
-        }
-
-        return '';
+        this.subscriptions.forEach((subscription) =>
+            subscription.unsubscribe(),
+        );
     }
 
     public onSubprojectChange($event: any) {
-        console.log($event);
+        const field = this.informationForm.get('inherit_members');
+        if ($event.value) {
+            field.enable();
+        } else {
+            field.disable();
+        }
     }
 
-    public onSubmit($event: any) {
-        console.log(this.informationForm);
+    public onSubmit() {
+        if (this.informationForm.valid) {
+            this.store.dispatch(
+                new projectActions.UpdateRequestAction({
+                    identifier: this.informationForm.get('identifier').value,
+                    ...this.informationForm.value,
+                }),
+            );
+        }
     }
 }

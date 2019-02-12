@@ -5,7 +5,9 @@
                 <mat-list-item>
                     <button
                         mat-button
-                        (click)="onButtonClick($event, mdeActionsEnum.toggleBold)"
+                        (click)="
+                            onButtonClick($event, mdeActionsEnum.toggleBold)
+                        "
                         title="Bold(Ctrl-B)"
                         type="button"
                     >
@@ -15,7 +17,9 @@
                 <mat-list-item>
                     <button
                         mat-button
-                        (click)="onButtonClick($event, mdeActionsEnum.toggleItalic)"
+                        (click)="
+                            onButtonClick($event, mdeActionsEnum.toggleItalic)
+                        "
                         title="Italic(Ctrl-I)"
                         type="button"
                     >
@@ -25,7 +29,12 @@
                 <mat-list-item>
                     <button
                         mat-button
-                        (click)="onButtonClick($event, mdeActionsEnum.toggleHeadingSmaller)"
+                        (click)="
+                            onButtonClick(
+                                $event,
+                                mdeActionsEnum.toggleHeadingSmaller
+                            )
+                        "
                         title="Heading(Ctrl-H)"
                         type="button"
                     >
@@ -38,7 +47,12 @@
                 <mat-list-item>
                     <button
                         mat-button
-                        (click)="onButtonClick($event, mdeActionsEnum.toggleCodeBlock)"
+                        (click)="
+                            onButtonClick(
+                                $event,
+                                mdeActionsEnum.toggleCodeBlock
+                            )
+                        "
                         title="Code(Ctrl-Alt-C)"
                         type="button"
                     >
@@ -48,7 +62,12 @@
                 <mat-list-item>
                     <button
                         mat-button
-                        (click)="onButtonClick($event, mdeActionsEnum.toggleBlockquote)"
+                        (click)="
+                            onButtonClick(
+                                $event,
+                                mdeActionsEnum.toggleBlockquote
+                            )
+                        "
                         title="Quote(Ctrl-')"
                         type="button"
                     >
@@ -58,7 +77,12 @@
                 <mat-list-item>
                     <button
                         mat-button
-                        (click)="onButtonClick($event, mdeActionsEnum.toggleUnorderedList)"
+                        (click)="
+                            onButtonClick(
+                                $event,
+                                mdeActionsEnum.toggleUnorderedList
+                            )
+                        "
                         title="Generic List(Ctrl-L)"
                         type="button"
                     >
@@ -68,7 +92,12 @@
                 <mat-list-item>
                     <button
                         mat-button
-                        (click)="onButtonClick($event, mdeActionsEnum.toggleUnorderedList)"
+                        (click)="
+                            onButtonClick(
+                                $event,
+                                mdeActionsEnum.toggleUnorderedList
+                            )
+                        "
                         title="Numbered List(Ctrl-Alt-L)"
                         type="button"
                     >
@@ -91,7 +120,9 @@
                 <mat-list-item>
                     <button
                         mat-button
-                        (click)="onButtonClick($event, mdeActionsEnum.drawImage)"
+                        (click)="
+                            onButtonClick($event, mdeActionsEnum.drawImage)
+                        "
                         title="Insert Image(Ctrl-Alt-I)"
                         type="button"
                     >
@@ -104,7 +135,9 @@
                 <mat-list-item>
                     <button
                         mat-button
-                        (click)="onButtonClick($event, mdeActionsEnum.togglePreview)"
+                        (click)="
+                            onButtonClick($event, mdeActionsEnum.togglePreview)
+                        "
                         title="Toggle Preview(Ctrl-P)"
                         type="button"
                     >
@@ -114,7 +147,12 @@
                 <mat-list-item>
                     <button
                         mat-button
-                        (click)="onButtonClick($event, mdeActionsEnum.toggleSideBySide)"
+                        (click)="
+                            onButtonClick(
+                                $event,
+                                mdeActionsEnum.toggleSideBySide
+                            )
+                        "
                         title="Toggle Side by Side(F9)"
                         type="button"
                     >
@@ -124,7 +162,12 @@
                 <mat-list-item>
                     <button
                         mat-button
-                        (click)="onButtonClick($event, mdeActionsEnum.toggleFullScreen)"
+                        (click)="
+                            onButtonClick(
+                                $event,
+                                mdeActionsEnum.toggleFullScreen
+                            )
+                        "
                         title="Fullscreen(F11)"
                         type="button"
                     >
@@ -157,6 +200,6 @@
             </mat-list>
         </mat-card-title>
 
-        <ng-container #viewContainer></ng-container>
+        <textarea #mdElement [placeholder]="placeholder"></textarea>
     </mat-card>
 </div>

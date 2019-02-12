@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {ListResponse, PaginationParams, ProjectResponse} from '../../interfaces/projects';
+import {PaginationParams} from '../../interfaces/projects';
 import {ResponseError} from '../../../../app/interfaces/api';
 
 export enum ActionTypes {
@@ -13,76 +13,87 @@ export enum ActionTypes {
     ONE_ERROR = '[projects] one error',
     ONE_SUCCESS = '[projects] one success',
     RESET_ACTIVE_ID = '[projects] reset active id',
+    UPDATE_REQUEST = '[projects] update request',
+    UPDATE_ERROR = '[projects] update error',
+    UPDATE_SUCCESS = '[projects] update success',
 }
 
 export class PreloadRequestAction implements Action {
     readonly type = ActionTypes.PRELOAD_REQUEST;
 
-    constructor() {
-    }
+    constructor() {}
 }
 
 export class PreloadErrorAction implements Action {
     readonly type = ActionTypes.PRELOAD_ERROR;
 
-    constructor(public payload: ResponseError) {
-    }
+    constructor(public payload: ResponseError) {}
 }
 
 export class PreloadSuccessAction implements Action {
     readonly type = ActionTypes.PRELOAD_SUCCESS;
 
-    constructor(public payload: any) {
-    }
+    constructor(public payload: any) {}
 }
 
 export class ListRequestAction implements Action {
     readonly type = ActionTypes.LIST_REQUEST;
 
-    constructor(public payload: PaginationParams) {
-    }
+    constructor(public payload: PaginationParams) {}
 }
 
 export class ListErrorAction implements Action {
     readonly type = ActionTypes.LIST_ERROR;
 
-    constructor(public payload: ResponseError) {
-    }
+    constructor(public payload: ResponseError) {}
 }
 
 export class ListSuccessAction implements Action {
     readonly type = ActionTypes.LIST_SUCCESS;
 
-    constructor(public payload: any) {
-    }
+    constructor(public payload: any) {}
 }
 
 export class OneRequestAction implements Action {
     readonly type = ActionTypes.ONE_REQUEST;
 
-    constructor(public payload: string) {
-    }
+    constructor(public payload: string) {}
 }
 
 export class OneErrorAction implements Action {
     readonly type = ActionTypes.ONE_ERROR;
 
-    constructor(public payload: ResponseError) {
-    }
+    constructor(public payload: ResponseError) {}
 }
 
 export class OneSuccessAction implements Action {
     readonly type = ActionTypes.ONE_SUCCESS;
 
-    constructor(public payload: any) {
-    }
+    constructor(public payload: any) {}
 }
 
 export class ResetActiveIdAction implements Action {
     readonly type = ActionTypes.RESET_ACTIVE_ID;
 
-    constructor() {
-    }
+    constructor() {}
+}
+
+export class UpdateRequestAction implements Action {
+    readonly type = ActionTypes.UPDATE_REQUEST;
+
+    constructor(public payload: any) {}
+}
+
+export class UpdateErrorAction implements Action {
+    readonly type = ActionTypes.UPDATE_ERROR;
+
+    constructor(public payload: ResponseError) {}
+}
+
+export class UpdateSuccessAction implements Action {
+    readonly type = ActionTypes.UPDATE_SUCCESS;
+
+    constructor(public payload: any) {}
 }
 
 export type ActionsUnion =
@@ -95,4 +106,7 @@ export type ActionsUnion =
     | ResetActiveIdAction
     | PreloadRequestAction
     | PreloadErrorAction
-    | PreloadSuccessAction;
+    | PreloadSuccessAction
+    | UpdateRequestAction
+    | UpdateErrorAction
+    | UpdateSuccessAction;
