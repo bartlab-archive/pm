@@ -72,6 +72,6 @@ export enum MDEActions {
 }
 
 export interface MDEClickEvent {
-    mouseEvent: MouseEvent,
-    type: MDEActions,
+    mouseEvent: MouseEvent;
+    type: MDEActions;
 }

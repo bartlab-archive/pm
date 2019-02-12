@@ -14,10 +14,16 @@ import {AuthModule} from '../modules/auth/auth.module';
 import {ProjectsModule} from '../modules/projects/projects.module';
 import {LayoutsModule} from '../modules/layouts/layouts.module';
 import {IssuesModule} from '../modules/issues/issues.module';
-import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from '@angular/material';
+import {
+    MAT_SNACK_BAR_DEFAULT_OPTIONS,
+    MatSnackBarModule,
+} from '@angular/material';
 import {AppService} from './services/app.service';
 import {FormService} from './services/form.service';
-import {APP_EVENT_PRELOAD, APP_EVENT_INTERCEPTORS} from './providers/app.injection';
+import {
+    APP_EVENT_PRELOAD,
+    APP_EVENT_INTERCEPTORS,
+} from './providers/app.injection';
 import {AppEventInterceptor} from './interceptors/app-event.interceptor';
 import {AppEffects} from './store/effects/app.effects';
 import * as appActions from './store/actions/app.actions';

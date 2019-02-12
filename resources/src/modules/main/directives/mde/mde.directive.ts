@@ -9,11 +9,14 @@ import {
     TemplateRef,
     ViewContainerRef,
 } from '@angular/core';
-
 import MDE from '../../pluigins/mde';
 import MDEActions from '../../pluigins/mde.actions';
-import {MDEOptions, MDEActions as MDEActionsEnum, MDEClickEvent} from '../../interfaces/mde.directive';
+import {
+    MDEActions as MDEActionsEnum,
+    MDEClickEvent,
+} from '../../interfaces/mde.directive';
 import {MainMDEComponent} from '../../components/mde/mde.component';
+import {FormControl} from '@angular/forms';
 
 const mdeActions = {
     [MDEActionsEnum.toggleBold]: MDEActions.toggleBold,
@@ -44,11 +47,11 @@ const mdeActions = {
     selector: '[mde]',
 })
 export class MDEDirective implements OnInit {
-    @Input() mde: MDEOptions;
+    @Input() mde: FormControl;
     @Output() onChange = new EventEmitter<string>();
 
-    private mdeContainer: ComponentRef<MainMDEComponent>;
-    private mdEditor: MDE = null;
+    public mdeContainer: ComponentRef<MainMDEComponent>;
+    public mdEditor: MDE = null;
 
     constructor(
         private templateRef: TemplateRef<any>,
@@ -57,20 +60,42 @@ export class MDEDirective implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        const containerFactory = this.componentFactoryResolver.resolveComponentFactory(MainMDEComponent);
-        this.mdeContainer = this.viewContainerRef.createComponent(containerFactory);
-        const rootRef = this.mdeContainer.instance.viewContainer.createEmbeddedView(this.templateRef);
+        const containerFactory = this.componentFactoryResolver.resolveComponentFactory(
+            MainMDEComponent,
+        );
+
+        this.mdeContainer = this.viewContainerRef.createComponent(
+            containerFactory,
+        );
+
+        const viewRef = this.mdeContainer.instance.viewContainer.createEmbeddedView(
+            this.templateRef,
+        );
 
         this.mdEditor = new MDE({
-            element: rootRef.rootNodes[0],
+            element: viewRef.rootNodes[0],
             toolbar: [],
-            ...this.mde,
         });
 
-        this.mdEditor.codemirror.on('change', () => this.onChange.emit(this.mdEditor.value()));
         this.mdeContainer.instance.onClick.subscribe((event: MDEClickEvent) => {
             if (mdeActions[event.type]) {
                 mdeActions[event.type](this.mdEditor);
+            }
+        });
+
+        let value = this.mde.value;
+        if (value) {
+            this.mdEditor.value(value);
+        }
+
+        this.mdEditor.codemirror.on('change', () => {
+            value = this.mdEditor.value();
+            this.mde.setValue(value);
+        });
+
+        this.mde.valueChanges.subscribe((valueChange) => {
+            if (valueChange !== value) {
+                this.mdEditor.value(valueChange);
             }
         });
     }

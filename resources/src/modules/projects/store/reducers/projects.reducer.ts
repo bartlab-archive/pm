@@ -33,8 +33,9 @@ export const entities = (state: Entities<Project> = {}, action: ProjectsActions.
 
 export const ids = (state: Array<string> = [], action: ProjectsActions.ActionsUnion) => {
     switch (action.type) {
+        case ProjectsActions.ActionTypes.PRELOAD_SUCCESS:
         case ProjectsActions.ActionTypes.LIST_SUCCESS: {
-            return action.payload.result;
+            return [...new Set([...state, ...action.payload.result])];
         }
 
         default: {
@@ -62,7 +63,6 @@ export const activeId = (state: string = null, action: ProjectsActions.ActionsUn
 
 export const my = (state: Array<string> = [], action: ProjectsActions.ActionsUnion) => {
     switch (action.type) {
-
         case ProjectsActions.ActionTypes.PRELOAD_SUCCESS: {
             return action.payload.result;
         }

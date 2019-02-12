@@ -1,4 +1,5 @@
 import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule, FormControlName} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {Main404Component} from './components/404/404.component';
@@ -15,20 +16,41 @@ const mainRoutes: Routes = [
     {
         path: '',
         component: DefaultComponent,
-        children: [{path: '', component: MainIndexComponent, data: {auth: 'authorized'}}],
+        children: [
+            {
+                path: '',
+                component: MainIndexComponent,
+                data: {auth: 'authorized'},
+            },
+        ],
     },
     {
         path: '',
         component: BlankComponent,
-        children: [{path: '404', component: Main404Component}, {path: '500', component: Main500Component}],
+        children: [
+            {path: '404', component: Main404Component},
+            {path: '500', component: Main500Component},
+        ],
     },
 ];
 
 @NgModule({
-    declarations: [Main404Component, Main500Component, MainIndexComponent, MainMDEComponent, MDEDirective],
+    declarations: [
+        Main404Component,
+        Main500Component,
+        MainIndexComponent,
+        MainMDEComponent,
+        MDEDirective,
+    ],
     entryComponents: [MainMDEComponent],
-    imports: [CommonModule, MaterialModule, RouterModule.forChild(mainRoutes)],
-    providers: [ListService],
-    exports: [MDEDirective],
+    imports: [
+        CommonModule,
+        MaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule.forChild(mainRoutes),
+    ],
+    providers: [FormControlName, ListService],
+    exports: [MDEDirective, FormsModule, ReactiveFormsModule],
 })
 export class MainModule {}

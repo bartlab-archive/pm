@@ -33,8 +33,8 @@ export class ProjectsItemComponent implements OnInit, OnDestroy {
         },
         {
             name: 'settings',
-            path: '',
-            id: null,
+            path: '/settings',
+            id: 'settings',
         },
     ];
 

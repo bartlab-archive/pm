@@ -1,0 +1,6 @@
+<div fxLayout="row" fxLayoutAlign="center start">
+    Modules
+    <mat-progress-bar mode="indeterminate" *ngIf="pending$ | async"></mat-progress-bar>
+    
+    <router-outlet></router-outlet>
+</div>

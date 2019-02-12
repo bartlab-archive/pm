@@ -1,0 +1,59 @@
+<form [formGroup]="informationForm" (ngSubmit)="onSubmit($event)">
+    <mat-progress-bar
+        mode="indeterminate"
+        *ngIf="(pending$ | async)"
+    ></mat-progress-bar>
+    <mat-form-field>
+        <input matInput required placeholder="Name" formControlName="name" />
+        <mat-error>{{ getNameError() }}</mat-error>
+    </mat-form-field>
+    <!--<mat-form-field>-->
+    <textarea
+        matInput
+        required
+        placeholder="Description"
+        formControlName="description"
+        *mde="informationForm.get('description')"
+    ></textarea>
+    <mat-error>{{ getDescriptionError() }}</mat-error>
+    <!--</mat-form-field>-->
+    <mat-form-field>
+        <input
+            matInput
+            required
+            placeholder="Identifier"
+            formControlName="identifier"
+        />
+        <mat-hint>
+            Length between 1 and 100 characters. Only lower case letters (a-z),
+            numbers, dashes and underscores are allowed, must start with a lower
+            case letter. Once saved, the identifier cannot be changed.
+        </mat-hint>
+        <mat-error>{{ getIdentifierError() }}</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Homepage" formControlName="homepage" />
+        <mat-error>{{ getHomepageError() }}</mat-error>
+    </mat-form-field>
+    <div>
+        <mat-checkbox formControlName="isPublic">
+            Public
+        </mat-checkbox>
+    </div>
+    <mat-form-field>
+        <mat-select placeholder="Subproject" formControlName="subproject">
+            <mat-option *ngFor="let project of (projects$ | async)">
+                {{ project.name }}
+            </mat-option>
+        </mat-select>
+        <mat-error>{{ getSubprojectError() }}</mat-error>
+    </mat-form-field>
+    <div class="form-group">
+        <mat-checkbox formControlName="inheritMembers">
+            Inherit members
+        </mat-checkbox>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center" class="form-group">
+        <button mat-button mat-raised-button color="primary">Save</button>
+    </div>
+</form>
