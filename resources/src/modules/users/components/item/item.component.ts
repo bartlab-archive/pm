@@ -36,7 +36,6 @@ export class ProfileItemComponent implements OnInit, OnDestroy {
 
     public ngOnInit() {
         const {id} = this.activatedRoute.snapshot.params;
-        
         this.id = id;
         this.store.dispatch(new userActions.OneRequestAction(+id));
         this.user$ = this.store.pipe(select(selectUserActive));

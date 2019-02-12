@@ -10,7 +10,7 @@ export class UserStatusComponent {
     @Input()
     public value: number;
 
-    constructor() {
+    public constructor() {
     }
 
     public get name(): string {

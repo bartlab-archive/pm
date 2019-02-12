@@ -22,42 +22,46 @@
                 <form [formGroup]="form" class="example-form" fxLayoutAlign="center start" fxLayout="column">
                     <mat-form-field>
                         <input matInput placeholder="Login" formControlName="login">
-                        <mat-error
-                                list-error
-                                [form]="form"
-                                [field]="'login'"
-                                [types]="validationMessages.login"
-                        ></mat-error>
+                        <mat-error>
+                            <app-form-error
+                                    [form]="form"
+                                    [field]="'login'"
+                                    [types]="validationMessages.login">
+                            </app-form-error>
+                        </mat-error>
                     </mat-form-field>
 
                     <mat-form-field>
                         <input matInput placeholder="First name" formControlName="firstName">
-                        <mat-error
-                                list-error
-                                [form]="form"
-                                [field]="'firstName'"
-                                [types]="validationMessages.firstName"
-                        ></mat-error>
+                        <mat-error>
+                            <app-form-error
+                                    [form]="form"
+                                    [field]="'firstName'"
+                                    [types]="validationMessages.firstName">
+                            </app-form-error>
+                        </mat-error>
                     </mat-form-field>
 
                     <mat-form-field>
                         <input matInput placeholder="Last name" formControlName="lastName">
-                        <mat-error
-                                list-error
-                                [form]="form"
-                                [field]="'lastName'"
-                                [types]="validationMessages.lastName"
-                        ></mat-error>
+                        <mat-error>
+                            <app-form-error
+                                    [form]="form"
+                                    [field]="'lastName'"
+                                    [types]="validationMessages.lastName">
+                            </app-form-error>
+                        </mat-error>
                     </mat-form-field>
 
                     <mat-form-field>
                         <input matInput placeholder="Email" formControlName="email">
-                        <mat-error
-                                list-error
-                                [form]="form"
-                                [field]="'email'"
-                                [types]="validationMessages.email"
-                        ></mat-error>
+                        <mat-error>
+                            <app-form-error
+                                    [form]="form"
+                                    [field]="'email'"
+                                    [types]="validationMessages.email">
+                            </app-form-error>
+                        </mat-error>
                     </mat-form-field>
 
                     <mat-form-field>

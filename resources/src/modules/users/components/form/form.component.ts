@@ -21,7 +21,7 @@ export class ProfileFormComponent implements OnInit {
     public id: number;
     public hide = true;
     public hideRepeat = true;
-    protected subscriptions: Subscription[] = [];
+    protected subscriptions: Array<Subscription> = [];
 
     public get isSubmitInactive() {
         const {invalid = null, status = ''} = this.form || {};
@@ -77,7 +77,6 @@ export class ProfileFormComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private fb: FormBuilder,
     ) {
-
     }
 
     public ngOnInit() {

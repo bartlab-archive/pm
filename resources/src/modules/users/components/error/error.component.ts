@@ -7,15 +7,17 @@ interface ValidationMessage {
 }
 
 @Component({
-    selector: '[list-error]',
+    selector: 'app-form-error',
     templateUrl: './error.component.html',
     styleUrls: ['./error.component.scss'],
 })
-
 export class ErrorFormComponent {
-    @Input() types: ValidationMessage[];
+    @Input() types: Array<ValidationMessage>;
     @Input() form: FormGroup;
     @Input() field: string;
+
+    public constructor() {
+    }
 
     public isInvalid(controlName: string, type: string): boolean {
         const control = this.form.controls[controlName];
@@ -24,8 +26,4 @@ export class ErrorFormComponent {
         }
         return control.errors[type] || false;
     }
-
-    constructor() {
-    }
-
 }
