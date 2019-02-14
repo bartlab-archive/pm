@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\ModuleResource;
+use App\Http\Resources\ProjectResource;
 use App\Services\EnabledModulesService;
 use App\Services\ProjectsService;
 use Illuminate\Http\Request;
@@ -35,6 +36,7 @@ class EnabledModulesController extends Controller
         }
 
         $this->enabledModulesService->update($project->id, $request->all());
-        response(null, 204);
+//        response(null, 204);
+        return ProjectResource::make($project);
     }
 }
