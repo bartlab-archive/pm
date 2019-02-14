@@ -31,7 +31,7 @@ class EnabledModulesController extends Controller
 
     public function update(Request $request, $identifier)
     {
-        if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier, ['enabledModules'])) {
             abort(404);
         }
 
