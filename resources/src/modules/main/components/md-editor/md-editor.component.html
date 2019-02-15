@@ -1,205 +1,216 @@
 <div [className]="isFullscreen ? 'fullscreen' : ''">
     <mat-card>
-        <mat-card-title fxLayout>
-            <mat-list fxLayout>
-                <mat-list-item>
-                    <button
-                        mat-button
-                        (click)="
-                            onButtonClick($event, mdeActionsEnum.toggleBold)
-                        "
-                        title="Bold(Ctrl-B)"
-                        type="button"
-                    >
-                        B
-                    </button>
-                </mat-list-item>
-                <mat-list-item>
-                    <button
-                        mat-button
-                        (click)="
-                            onButtonClick($event, mdeActionsEnum.toggleItalic)
-                        "
-                        title="Italic(Ctrl-I)"
-                        type="button"
-                    >
-                        I
-                    </button>
-                </mat-list-item>
-                <mat-list-item>
-                    <button
-                        mat-button
-                        (click)="
-                            onButtonClick(
-                                $event,
-                                mdeActionsEnum.toggleHeadingSmaller
-                            )
-                        "
-                        title="Heading(Ctrl-H)"
-                        type="button"
-                    >
-                        T
-                    </button>
-                </mat-list-item>
-            </mat-list>
-            <mat-divider [vertical]="true"></mat-divider>
-            <mat-list fxLayout>
-                <mat-list-item>
-                    <button
-                        mat-button
-                        (click)="
-                            onButtonClick(
-                                $event,
-                                mdeActionsEnum.toggleCodeBlock
-                            )
-                        "
-                        title="Code(Ctrl-Alt-C)"
-                        type="button"
-                    >
-                        <mat-icon>code</mat-icon>
-                    </button>
-                </mat-list-item>
-                <mat-list-item>
-                    <button
-                        mat-button
-                        (click)="
-                            onButtonClick(
-                                $event,
-                                mdeActionsEnum.toggleBlockquote
-                            )
-                        "
-                        title="Quote(Ctrl-')"
-                        type="button"
-                    >
-                        <mat-icon>format_quote</mat-icon>
-                    </button>
-                </mat-list-item>
-                <mat-list-item>
-                    <button
-                        mat-button
-                        (click)="
-                            onButtonClick(
-                                $event,
-                                mdeActionsEnum.toggleUnorderedList
-                            )
-                        "
-                        title="Generic List(Ctrl-L)"
-                        type="button"
-                    >
-                        <mat-icon>format_list_bulleted</mat-icon>
-                    </button>
-                </mat-list-item>
-                <mat-list-item>
-                    <button
-                        mat-button
-                        (click)="
-                            onButtonClick(
-                                $event,
-                                mdeActionsEnum.toggleUnorderedList
-                            )
-                        "
-                        title="Numbered List(Ctrl-Alt-L)"
-                        type="button"
-                    >
-                        <mat-icon>format_list_numbered</mat-icon>
-                    </button>
-                </mat-list-item>
-            </mat-list>
-            <mat-divider [vertical]="true"></mat-divider>
-            <mat-list fxLayout>
-                <mat-list-item>
-                    <button
-                        mat-button
-                        (click)="onButtonClick($event, mdeActionsEnum.drawLink)"
-                        title="Create Link(Ctrl-K)"
-                        type="button"
-                    >
-                        <mat-icon>insert_link</mat-icon>
-                    </button>
-                </mat-list-item>
-                <mat-list-item>
-                    <button
-                        mat-button
-                        (click)="
-                            onButtonClick($event, mdeActionsEnum.drawImage)
-                        "
-                        title="Insert Image(Ctrl-Alt-I)"
-                        type="button"
-                    >
-                        <mat-icon>insert_photo</mat-icon>
-                    </button>
-                </mat-list-item>
-            </mat-list>
-            <mat-divider [vertical]="true"></mat-divider>
-            <mat-list fxLayout>
-                <mat-list-item>
-                    <button
-                        mat-button
-                        (click)="
-                            onButtonClick($event, mdeActionsEnum.togglePreview)
-                        "
-                        title="Toggle Preview(Ctrl-P)"
-                        type="button"
-                    >
-                        <mat-icon>visibility</mat-icon>
-                    </button>
-                </mat-list-item>
-                <mat-list-item>
-                    <button
-                        mat-button
-                        (click)="
-                            onButtonClick(
-                                $event,
-                                mdeActionsEnum.toggleSideBySide
-                            )
-                        "
-                        title="Toggle Side by Side(F9)"
-                        type="button"
-                    >
-                        <mat-icon>pageview</mat-icon>
-                    </button>
-                </mat-list-item>
-                <mat-list-item>
-                    <button
-                        mat-button
-                        (click)="
-                            onButtonClick(
-                                $event,
-                                mdeActionsEnum.toggleFullScreen
-                            )
-                        "
-                        title="Fullscreen(F11)"
-                        type="button"
-                    >
-                        <mat-icon>fullscreen</mat-icon>
-                    </button>
-                </mat-list-item>
-            </mat-list>
-            <mat-divider [vertical]="true"></mat-divider>
-            <mat-list fxLayout>
-                <mat-list-item>
-                    <button
-                        mat-button
-                        (click)="onButtonClick($event, mdeActionsEnum.undo)"
-                        title="Undo(Ctrl-Z)"
-                        type="button"
-                    >
-                        <mat-icon>undo</mat-icon>
-                    </button>
-                </mat-list-item>
-                <mat-list-item>
-                    <button
-                        mat-button
-                        (click)="onButtonClick($event, mdeActionsEnum.redo)"
-                        title="Redo(Ctrl-Shift-Z)"
-                        type="button"
-                    >
-                        <mat-icon>redo</mat-icon>
-                    </button>
-                </mat-list-item>
-            </mat-list>
+        <mat-card-title>
+            <div class="d-flex flex-nowrap justify-content-start">
+                <mat-list class="d-flex">
+                    <mat-list-item>
+                        <button
+                            mat-button
+                            (click)="
+                                onButtonClick($event, mdeActionsEnum.toggleBold)
+                            "
+                            title="Bold(Ctrl-B)"
+                            type="button"
+                        >
+                            B
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <button
+                            mat-button
+                            (click)="
+                                onButtonClick(
+                                    $event,
+                                    mdeActionsEnum.toggleItalic
+                                )
+                            "
+                            title="Italic(Ctrl-I)"
+                            type="button"
+                        >
+                            I
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <button
+                            mat-button
+                            (click)="
+                                onButtonClick(
+                                    $event,
+                                    mdeActionsEnum.toggleHeadingSmaller
+                                )
+                            "
+                            title="Heading(Ctrl-H)"
+                            type="button"
+                        >
+                            T
+                        </button>
+                    </mat-list-item>
+                </mat-list>
+                <mat-divider [vertical]="true"></mat-divider>
+                <mat-list class="d-flex">
+                    <mat-list-item>
+                        <button
+                            mat-button
+                            (click)="
+                                onButtonClick(
+                                    $event,
+                                    mdeActionsEnum.toggleCodeBlock
+                                )
+                            "
+                            title="Code(Ctrl-Alt-C)"
+                            type="button"
+                        >
+                            <mat-icon>code</mat-icon>
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <button
+                            mat-button
+                            (click)="
+                                onButtonClick(
+                                    $event,
+                                    mdeActionsEnum.toggleBlockquote
+                                )
+                            "
+                            title="Quote(Ctrl-')"
+                            type="button"
+                        >
+                            <mat-icon>format_quote</mat-icon>
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <button
+                            mat-button
+                            (click)="
+                                onButtonClick(
+                                    $event,
+                                    mdeActionsEnum.toggleUnorderedList
+                                )
+                            "
+                            title="Generic List(Ctrl-L)"
+                            type="button"
+                        >
+                            <mat-icon>format_list_bulleted</mat-icon>
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <button
+                            mat-button
+                            (click)="
+                                onButtonClick(
+                                    $event,
+                                    mdeActionsEnum.toggleUnorderedList
+                                )
+                            "
+                            title="Numbered List(Ctrl-Alt-L)"
+                            type="button"
+                        >
+                            <mat-icon>format_list_numbered</mat-icon>
+                        </button>
+                    </mat-list-item>
+                </mat-list>
+                <mat-divider [vertical]="true"></mat-divider>
+                <mat-list class="d-flex">
+                    <mat-list-item>
+                        <button
+                            mat-button
+                            (click)="
+                                onButtonClick($event, mdeActionsEnum.drawLink)
+                            "
+                            title="Create Link(Ctrl-K)"
+                            type="button"
+                        >
+                            <mat-icon>insert_link</mat-icon>
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <button
+                            mat-button
+                            (click)="
+                                onButtonClick($event, mdeActionsEnum.drawImage)
+                            "
+                            title="Insert Image(Ctrl-Alt-I)"
+                            type="button"
+                        >
+                            <mat-icon>insert_photo</mat-icon>
+                        </button>
+                    </mat-list-item>
+                </mat-list>
+                <mat-divider [vertical]="true"></mat-divider>
+                <mat-list class="d-flex">
+                    <mat-list-item>
+                        <button
+                            mat-button
+                            (click)="
+                                onButtonClick(
+                                    $event,
+                                    mdeActionsEnum.togglePreview
+                                )
+                            "
+                            title="Toggle Preview(Ctrl-P)"
+                            type="button"
+                        >
+                            <mat-icon>visibility</mat-icon>
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <button
+                            mat-button
+                            (click)="
+                                onButtonClick(
+                                    $event,
+                                    mdeActionsEnum.toggleSideBySide
+                                )
+                            "
+                            title="Toggle Side by Side(F9)"
+                            type="button"
+                        >
+                            <mat-icon>pageview</mat-icon>
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <button
+                            mat-button
+                            (click)="
+                                onButtonClick(
+                                    $event,
+                                    mdeActionsEnum.toggleFullScreen
+                                )
+                            "
+                            title="Fullscreen(F11)"
+                            type="button"
+                        >
+                            <mat-icon>fullscreen</mat-icon>
+                        </button>
+                    </mat-list-item>
+                </mat-list>
+                <mat-divider [vertical]="true"></mat-divider>
+                <mat-list class="d-flex">
+                    <mat-list-item>
+                        <button
+                            mat-button
+                            (click)="onButtonClick($event, mdeActionsEnum.undo)"
+                            title="Undo(Ctrl-Z)"
+                            type="button"
+                        >
+                            <mat-icon>undo</mat-icon>
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item>
+                        <button
+                            mat-button
+                            (click)="onButtonClick($event, mdeActionsEnum.redo)"
+                            title="Redo(Ctrl-Shift-Z)"
+                            type="button"
+                        >
+                            <mat-icon>redo</mat-icon>
+                        </button>
+                    </mat-list-item>
+                </mat-list>
+            </div>
         </mat-card-title>
-
-        <textarea #mdElement [placeholder]="placeholder"></textarea>
+        <mat-card-content>
+            <textarea #mdElement [placeholder]="placeholder"></textarea>
+        </mat-card-content>
     </mat-card>
 </div>

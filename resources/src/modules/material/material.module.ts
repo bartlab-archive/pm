@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {FlexLayoutModule} from '@angular/flex-layout';
 import {
     MatAutocompleteModule,
     MatButtonModule,
@@ -22,11 +21,12 @@ import {
     MatDatepickerModule,
     MatNativeDateModule,
     MatTabsModule,
+    MatToolbarModule,
+    MatSidenavModule,
 } from '@angular/material';
 
 @NgModule({
     imports: [
-        FlexLayoutModule,
         MatAutocompleteModule,
         MatButtonModule,
         MatCardModule,
@@ -48,10 +48,11 @@ import {
         MatDatepickerModule,
         MatNativeDateModule,
         MatTabsModule,
+        MatToolbarModule,
+        MatSidenavModule,
     ],
 
     exports: [
-        FlexLayoutModule,
         MatAutocompleteModule,
         MatButtonModule,
         MatCardModule,
@@ -73,6 +74,8 @@ import {
         MatDatepickerModule,
         MatNativeDateModule,
         MatTabsModule,
+        MatToolbarModule,
+        MatSidenavModule,
     ],
 })
 export class MaterialModule {}

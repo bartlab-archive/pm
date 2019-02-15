@@ -1,30 +1,31 @@
-<users-filter
-        (onChange)="onChangeFilter($event)"
-></users-filter>
-
-<mat-card>
-    <div class="card-scroll-container" #scrollContainer>
+<mat-card class="content-card mt-3">
+    <mat-card-header>
+        <users-filter
+            class="flex-grow-1"
+            (onChange)="onChangeFilter($event)"
+        ></users-filter>
+    </mat-card-header>
+    <mat-card-content>
         <table mat-table [dataSource]="users">
-
             <!-- Position Column -->
             <ng-container matColumnDef="position">
-                <th mat-header-cell *matHeaderCellDef> No.</th>
-                <td mat-cell *matCellDef="let element"> {{element.id}}</td>
+                <th mat-header-cell *matHeaderCellDef>No.</th>
+                <td mat-cell *matCellDef="let element">{{ element.id }}</td>
             </ng-container>
 
             <!--  Full name  Column -->
             <ng-container matColumnDef="fullName">
-                <th mat-header-cell *matHeaderCellDef> Full name</th>
+                <th mat-header-cell *matHeaderCellDef>Full name</th>
                 <td mat-cell *matCellDef="let element">
                     <a mat-menu-item [routerLink]="['/users', element.id]">
-                        {{element.full_name}}
+                        {{ element.full_name }}
                     </a>
                 </td>
             </ng-container>
 
             <!-- Status Column -->
             <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef> Status</th>
+                <th mat-header-cell *matHeaderCellDef>Status</th>
                 <td mat-cell *matCellDef="let element">
                     <user-status [value]="element.status"></user-status>
                 </td>
@@ -32,38 +33,48 @@
 
             <!-- Symbol Column -->
             <ng-container matColumnDef="created">
-                <th mat-header-cell *matHeaderCellDef> Created on</th>
-                <td mat-cell *matCellDef="let element"> {{element.created_on}}</td>
+                <th mat-header-cell *matHeaderCellDef>Created on</th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element.created_on }}
+                </td>
             </ng-container>
 
             <ng-container matColumnDef="menu">
                 <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let row" class="action">
-                    <mat-menu #appMenu="matMenu">
-                        <a mat-menu-item [routerLink]="['/users', row.id]">
-                            <mat-icon>open_in_browser</mat-icon>
-                            Open
-                        </a>
-                        <mat-divider></mat-divider>
-                        <button mat-menu-item>
-                            Overview
+                <td mat-cell *matCellDef="let row">
+                    <div class="d-flex justify-content-end">
+                        <mat-menu #appMenu="matMenu">
+                            <a mat-menu-item [routerLink]="['/users', row.id]">
+                                <mat-icon>open_in_browser</mat-icon>
+                                Open
+                            </a>
+                            <mat-divider></mat-divider>
+                            <button mat-menu-item>
+                                Overview
+                            </button>
+                        </mat-menu>
+                        <button mat-icon-button>
+                            <mat-icon
+                                [matMenuTriggerFor]="appMenu"
+                                (click)="$event.stopPropagation()"
+                                >more_vert</mat-icon
+                            >
                         </button>
-                    </mat-menu>
-                    <button mat-icon-button>
-                        <mat-icon [matMenuTriggerFor]="appMenu" (click)="$event.stopPropagation()">more_vert</mat-icon>
-                    </button>
-
+                    </div>
                 </td>
             </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr
+                mat-header-row
+                *matHeaderRowDef="displayedColumns; sticky: true"
+            ></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
-
-    </div>
-
-    <mat-paginator
+    </mat-card-content>
+    <mat-card-footer>
+        <mat-paginator
             [pageSizeOptions]="[5, 10, 20]"
             (page)="onPageChange($event)"
             showFirstLastButtons
-    ></mat-paginator>
+        ></mat-paginator>
+    </mat-card-footer>
 </mat-card>

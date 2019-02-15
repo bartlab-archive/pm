@@ -40,7 +40,6 @@ import {RequestStatus} from '../../../../app/interfaces/api';
     styleUrls: ['./list.component.scss'],
 })
 export class IssuesListComponent implements OnInit, OnDestroy {
-
     public displayedColumns: Array<string> = ['select', 'subject', 'menu'];
     public dataSource: Array<object>;
     public selection = new SelectionModel<any>(true, []);
@@ -55,9 +54,6 @@ export class IssuesListComponent implements OnInit, OnDestroy {
     @ViewChild(MatSort)
     public sort: MatSort;
 
-    @ViewChild('scrollContainer')
-    public scrollContainer: ElementRef<HTMLElement>;
-
     @ViewChild('tagInput')
     public tagInput: ElementRef<HTMLInputElement>;
     public allTags: Array<FilterTag> = [];
@@ -66,10 +62,7 @@ export class IssuesListComponent implements OnInit, OnDestroy {
     public separatorKeysCodes: Array<number> = [ENTER, COMMA];
     public filteredTags: Observable<Array<FilterTag>>;
 
-    public constructor(
-        private store: Store<any>,
-    ) {
-    }
+    public constructor(private store: Store<any>) {}
 
     public ngOnInit(): void {
         this.filteredTags = this.tagCtrl.valueChanges.pipe(
@@ -81,15 +74,15 @@ export class IssuesListComponent implements OnInit, OnDestroy {
             combineLatest(
                 this.store.pipe(select(selectIssuesStatus)),
                 this.store.pipe(select(selectStatuses)),
-            )
-                .subscribe((statuses) => {
-                    this.pending = statuses.some((status) => status === RequestStatus.pending);
-                }),
+            ).subscribe((statuses) => {
+                this.pending = statuses.some(
+                    (status) => status === RequestStatus.pending,
+                );
+            }),
 
-            this.store.pipe(select(selectIssues))
-                .subscribe((items) => {
-                    this.dataSource = items;
-                }),
+            this.store.pipe(select(selectIssues)).subscribe((items) => {
+                this.dataSource = items;
+            }),
 
             this.store
                 .pipe(
@@ -108,12 +101,19 @@ export class IssuesListComponent implements OnInit, OnDestroy {
                 this.store.pipe(select(selectTrackers)),
             )
                 .pipe(
-                    filter(([statuses, trackers]) => statuses.length > 0 && trackers.length > 0),
+                    filter(
+                        ([statuses, trackers]) =>
+                            statuses.length > 0 && trackers.length > 0,
+                    ),
                 )
                 .subscribe(([statuses, trackers]) => {
                     this.allTags.push(
                         ...statuses.map((status) => {
-                            const nStatus = {name: status.name, id: status.id, type: 'status'};
+                            const nStatus = {
+                                name: status.name,
+                                id: status.id,
+                                type: 'status',
+                            };
                             if (!status.is_closed) {
                                 this.tags.push(nStatus);
                             }
@@ -121,7 +121,11 @@ export class IssuesListComponent implements OnInit, OnDestroy {
                         }),
 
                         ...trackers.map((tracker) => {
-                            return {name: tracker.name, id: tracker.id, type: 'tracker'};
+                            return {
+                                name: tracker.name,
+                                id: tracker.id,
+                                type: 'tracker',
+                            };
                         }),
                     );
 
@@ -141,17 +145,20 @@ export class IssuesListComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+        this.subscriptions.forEach((subscription) =>
+            subscription.unsubscribe(),
+        );
     }
 
     public load(): void {
-        this.scrollContainer.nativeElement.scroll(0, 0);
-        this.store.dispatch(new IssuesAllRequestAction({
-            per_page: this.paginator.pageSize || this.pageSizeOptions[0],
-            page: this.paginator.pageIndex + 1,
-            'status_ids[]': this.getTagsId('status'),
-            'tracker_ids[]': this.getTagsId('tracker'),
-        }));
+        this.store.dispatch(
+            new IssuesAllRequestAction({
+                per_page: this.paginator.pageSize || this.pageSizeOptions[0],
+                page: this.paginator.pageIndex + 1,
+                'status_ids[]': this.getTagsId('status'),
+                'tracker_ids[]': this.getTagsId('tracker'),
+            }),
+        );
     }
 
     public getTagsId(type: string) {
@@ -168,9 +175,9 @@ export class IssuesListComponent implements OnInit, OnDestroy {
      * Selects all rows if they are not all selected; otherwise clear selection.
      */
     public masterToggle(): void {
-        this.isAllSelected() ?
-            this.selection.clear() :
-            this.dataSource.forEach((row: any) => this.selection.select(row));
+        this.isAllSelected()
+            ? this.selection.clear()
+            : this.dataSource.forEach((row: any) => this.selection.select(row));
     }
 
     public refresh(): void {
@@ -195,7 +202,9 @@ export class IssuesListComponent implements OnInit, OnDestroy {
     }
 
     public selected(event: MatAutocompleteSelectedEvent): void {
-        const tag = this.allTags.find((tagItem) => this.getTagLabel(tagItem) === event.option.viewValue);
+        const tag = this.allTags.find(
+            (tagItem) => this.getTagLabel(tagItem) === event.option.viewValue,
+        );
         if (tag && this.tags.indexOf(tag) === -1) {
             this.tags.push(tag);
             this.tagInput.nativeElement.value = '';
@@ -207,14 +216,19 @@ export class IssuesListComponent implements OnInit, OnDestroy {
 
     private filter(label: string): Array<FilterTag> {
         const ids = this.tags.map((tag) => tag.id);
-        const restTags = this.allTags.filter((tag) => ids.indexOf(tag.id) === -1);
+        const restTags = this.allTags.filter(
+            (tag) => ids.indexOf(tag.id) === -1,
+        );
         if (!label) {
             return restTags;
         }
 
         const filterLabel = label.toLowerCase();
-        return restTags.filter((tag) =>
-            this.getTagLabel(tag).toLowerCase().indexOf(filterLabel) !== -1,
+        return restTags.filter(
+            (tag) =>
+                this.getTagLabel(tag)
+                    .toLowerCase()
+                    .indexOf(filterLabel) !== -1,
         );
     }
 

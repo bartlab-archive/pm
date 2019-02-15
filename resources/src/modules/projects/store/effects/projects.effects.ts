@@ -81,7 +81,7 @@ export class ProjectsEffects {
 
     @Effect()
     protected update$ = this.actions$.pipe(
-        ofType<ProjectActions.OneRequestAction>(
+        ofType<ProjectActions.UpdateRequestAction>(
             ProjectActions.ActionTypes.UPDATE_REQUEST,
         ),
         map((action) => action.payload),
@@ -95,6 +95,30 @@ export class ProjectsEffects {
                 }),
                 catchError((response: ResponseError) =>
                     of(new ProjectActions.UpdateErrorAction(response)),
+                ),
+            ),
+        ),
+    );
+
+    @Effect()
+    protected updateModules$ = this.actions$.pipe(
+        ofType<ProjectActions.UpdateModulesRequestAction>(
+            ProjectActions.ActionTypes.UPDATE_MODULES_REQUEST,
+        ),
+        map((action) => action.payload),
+        exhaustMap((data) =>
+            this.projectsService.updateModules(data).pipe(
+                map((response: ProjectResponse) => {
+                    const payload = {
+                        ...normalize(response.data, projectsSchema),
+                    };
+
+                    return new ProjectActions.UpdateModulesSuccessAction(
+                        payload,
+                    );
+                }),
+                catchError((response: ResponseError) =>
+                   console.log(response) as any || of(new ProjectActions.UpdateModulesErrorAction(response)),
                 ),
             ),
         ),

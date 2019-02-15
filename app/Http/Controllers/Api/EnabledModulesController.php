@@ -31,12 +31,14 @@ class EnabledModulesController extends Controller
 
     public function update(Request $request, $identifier)
     {
-        if (!$project = $this->projectsService->oneByIdentifier($identifier, ['enabledModules'])) {
+        if (!$project = $this->projectsService->oneByIdentifier($identifier)) {
             abort(404);
         }
 
         $this->enabledModulesService->update($project->id, $request->all());
 //        response(null, 204);
-        return ProjectResource::make($project);
+        return ProjectResource::make(
+            $this->projectsService->oneByIdentifier($identifier, ['enabledModules'])
+        );
     }
 }

@@ -29,7 +29,7 @@ export class ProjectsEventInterceptor implements AppInterceptor {
         this.store.dispatch(new AddCategoryAction({
             name: 'Projects',
             icon: 'work',
-            url: '/admin/projects',
+            url: 'projects',
         }));
 
         next.handle(appEvent);

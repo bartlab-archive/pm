@@ -1,12 +1,17 @@
-<mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.gt-md]="100">      
-  <div *ngIf="project$ | async as project">
-    <mat-card-header>
-        <mat-card-title>{{project.name}}</mat-card-title>
-        <mat-card-subtitle>Administrator</mat-card-subtitle>
-    </mat-card-header>
-  
-    <mat-card-content>
-        {{project.description}}
-    </mat-card-content>
-  </div>
-  </mat-card>
+<div class="container">
+    <mat-card class="content-card mt-3">
+        <mat-progress-bar
+            mode="indeterminate"
+            *ngIf="(pending$ | async)"
+        ></mat-progress-bar>
+        <ng-container *ngIf="(project$ | async) as project">
+            <mat-card-header>
+                <mat-card-title>{{ project.name }}</mat-card-title>
+                <mat-card-subtitle>Administrator</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                {{ project.description }}
+            </mat-card-content>
+        </ng-container>
+    </mat-card>
+</div>

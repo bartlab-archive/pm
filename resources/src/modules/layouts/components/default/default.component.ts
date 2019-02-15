@@ -1,10 +1,22 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {
+    ActivatedRoute,
+    NavigationEnd,
+    Router,
+    RouterEvent,
+} from '@angular/router';
 import {Store, select} from '@ngrx/store';
+import {combineLatest, Observable, Subscription} from 'rxjs';
+import {filter, startWith} from 'rxjs/operators';
 import {LayoutsService} from '../../services/layouts.service';
-import {LayoutsDefaultDestroyAction, LayoutsDefaultInitAction} from '../../store/actions/default.action';
-import {selectTopTabs} from '../../store/selectors/layouts.selector';
-import {Subscription} from 'rxjs';
+import {
+    LayoutsDefaultDestroyAction,
+    LayoutsDefaultInitAction,
+} from '../../store/actions/default.action';
+
+import {selectTabs} from '../../store/selectors/menus.selector';
+
+export const flat = (arr) => arr.reduce((acc, val) => acc.concat(val), []);
 
 @Component({
     selector: 'app-layouts-default',
@@ -42,12 +54,12 @@ export class DefaultComponent implements OnInit, OnDestroy {
         {
             url: '/users',
             icon: 'face',
-            name: 'Users'
+            name: 'Users',
         },
         {
             url: '/activity',
             icon: 'access_time',
-            name: 'Overall activity'
+            name: 'Overall activity',
         },
         {
             url: '/issues',
@@ -60,22 +72,80 @@ export class DefaultComponent implements OnInit, OnDestroy {
         //     name: 'Overall spent time'
         // }
     ];
-    public topTabs = null;
+
+    public activeTab: Tab;
+    public tabs$: Observable<Tab[]> = this.store.pipe(select(selectTabs));
+    public tabs: Tab[] = [];
+    public navigationEnd$: Observable<RouterEvent> = this.router.events.pipe(
+        filter((event: RouterEvent) => event instanceof NavigationEnd),
+    );
+
     private subscriptions: Subscription[] = [];
-    public constructor(private layoutsService: LayoutsService, private store: Store<any>, private router: Router) {}
+
+    public constructor(
+        private layoutsService: LayoutsService,
+        private store: Store<any>,
+        private router: Router,
+    ) {}
 
     public ngOnInit() {
         this.store.dispatch(new LayoutsDefaultInitAction());
-
         this.subscriptions.push(
-            this.store.pipe(select(selectTopTabs)).subscribe((tabs) => {
-                setTimeout(() => (this.topTabs = tabs));
+            combineLatest(
+                this.tabs$,
+                this.navigationEnd$.pipe(startWith(null)),
+            ).subscribe(([tabs]) => {
+                const activePath = this.getFullPath(
+                    this.router.routerState.root,
+                );
+
+                this.tabs = tabs;
+                this.activeTab = tabs.reduce((acc, tab) => {
+                    if (activePath.startsWith(tab.path)) {
+                        if (acc) {
+                            return tab.path.length > acc.path.length
+                                ? tab
+                                : acc;
+                        }
+
+                        return tab;
+                    }
+
+                    return acc;
+                }, null);
             }),
         );
     }
 
     public ngOnDestroy() {
         this.store.dispatch(new LayoutsDefaultDestroyAction());
-        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+        this.subscriptions.forEach((subscription) =>
+            subscription.unsubscribe(),
+        );
+    }
+
+    public getPathFromRoot(route: ActivatedRoute): ActivatedRoute[] {
+        if (route.firstChild) {
+            return this.getPathFromRoot(route.firstChild);
+        }
+
+        return route.pathFromRoot;
+    }
+
+    public getFullPath(route: ActivatedRoute): string {
+        const pathFromRoot = this.getPathFromRoot(route);
+        const urls = pathFromRoot
+            .map(
+                (activatedRoute) =>
+                    activatedRoute.snapshot && activatedRoute.snapshot.url,
+            )
+            .filter(Boolean);
+
+        const paths = flat(urls).map((url) => url.path);
+        return `/${paths.join('/')}`;
+    }
+
+    public isActiveTab(tab: Tab): boolean {
+        return this.activeTab === tab;
     }
 }

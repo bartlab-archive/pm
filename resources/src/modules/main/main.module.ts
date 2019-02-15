@@ -4,7 +4,6 @@ import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {Main404Component} from './components/404/404.component';
 import {Main500Component} from './components/500/500.component';
-import {MainIndexComponent} from './components/index/index.component';
 import {MainMDEditorComponent} from './components/md-editor/md-editor.component';
 import {ValidationErrorComponent} from './components/validation-error/validation-error.component';
 import {DefaultComponent} from '../layouts/components';
@@ -16,13 +15,7 @@ const mainRoutes: Routes = [
     {
         path: '',
         component: DefaultComponent,
-        children: [
-            {
-                path: '',
-                component: MainIndexComponent,
-                data: {auth: 'authorized'},
-            },
-        ],
+        children: [],
     },
     {
         path: '',
@@ -38,7 +31,6 @@ const mainRoutes: Routes = [
     declarations: [
         Main404Component,
         Main500Component,
-        MainIndexComponent,
         MainMDEditorComponent,
         ValidationErrorComponent,
     ],

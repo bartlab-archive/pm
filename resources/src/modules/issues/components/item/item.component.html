@@ -1,16 +1,17 @@
-<div fxLayout="row" fxLayoutAlign="center start">
-    <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.gt-md]="100">
-        <mat-progress-bar mode="indeterminate" *ngIf="pending$ | async"></mat-progress-bar>
-        <div *ngIf="item$ | async as item">
+<div class="container mt-3">
+    <mat-card class="content-card">
+        <mat-progress-bar
+            mode="indeterminate"
+            *ngIf="(pending$ | async)"
+        ></mat-progress-bar>
+        <div *ngIf="(item$ | async) as item">
             <mat-card-header>
-                <mat-card-title>{{item.subject}}</mat-card-title>
-                <div fxFlex="100"></div>
+                <mat-card-title>{{ item.subject }}</mat-card-title>
                 <button mat-icon-button (click)="load(item.id)">
                     <mat-icon>refresh</mat-icon>
                 </button>
-
                 <mat-menu #appMenu="matMenu">
-                    <a mat-menu-item routerLink="/issues/{{item.id}}/edit">
+                    <a mat-menu-item routerLink="/issues/{{ item.id }}/edit">
                         <mat-icon>open_in_browser</mat-icon>
                         Edit
                     </a>
@@ -18,8 +19,17 @@
                         <mat-icon>mode_edit</mat-icon>
                         Copy
                     </a>
-                    <a mat-menu-item (click)="item.is_watcheble ? unwatch(item.id) : watch(item.id)">
-                        <mat-icon>{{ item.is_watcheble ? 'star' : 'star_border' }}</mat-icon>
+                    <a
+                        mat-menu-item
+                        (click)="
+                            item.is_watcheble
+                                ? unwatch(item.id)
+                                : watch(item.id)
+                        "
+                    >
+                        <mat-icon>{{
+                            item.is_watcheble ? 'star' : 'star_border'
+                        }}</mat-icon>
                         {{ item.is_watcheble ? 'Unwatch' : 'Watch' }}
                     </a>
                     <a mat-menu-item>
@@ -31,61 +41,70 @@
                     <mat-icon>more_vert</mat-icon>
                 </button>
             </mat-card-header>
-            <mat-card-content fxLayout="column" fxLayoutGap="10px">
-                <div fxLayoutGap="30px">
+            <mat-card-content>
+                <div>
                     <mat-icon>info</mat-icon>
-                    <div fxFlex="100">{{item.tracker.name}} #{{item.id}}</div>
+                    <div>{{ item.tracker.name }} #{{ item.id }}</div>
                 </div>
 
-                <div fxLayoutGap="30px">
+                <div>
                     <mat-icon>sort</mat-icon>
-                    <div fxFlex="100">{{item.priority.name}}</div>
+                    <div>{{ item.priority.name }}</div>
                 </div>
 
-                <div fxLayoutGap="30px" *ngIf="item.author">
+                <div *ngIf="item.author">
                     <mat-icon>create</mat-icon>
-                    <div fxFlex="100">
-                        <img src="{{item.author ? item.author.avatar : item.author.avatar}}">
-                        <a href="user/{{item.author.id}}">{{item.author.full_name}}</a>
+                    <div>
+                        <img src="{{ item.author.avatar }}" />
+                        <a href="user/{{ item.author.id }}">
+                            {{ item.author.full_name }}
+                        </a>
                     </div>
                 </div>
 
-                <div fxLayoutGap="30px" *ngIf="item.assigned">
+                <div *ngIf="item.assigned">
                     <mat-icon>people</mat-icon>
-                    <div fxFlex="100">
-                        <img src="{{item.assigned ? item.assigned.avatar : item.assigned.avatar}}">
-                        <a href="user/{{item.assigned.id}}">{{item.assigned.full_name}}</a>
+                    <div>
+                        <img src="{{ item.assigned.avatar }}" />
+                        <a href="user/{{ item.assigned.id }}">
+                            {{ item.assigned.full_name }}
+                        </a>
                     </div>
                 </div>
 
-                <div fxLayoutGap="30px">
+                <div>
                     <mat-icon>date_range</mat-icon>
-                    <div fxFlex="100">
-                        {{item.created_on}}
+                    <div>
+                        {{ item.created_on }}
                     </div>
                 </div>
 
-                <div fxLayoutGap="30px" *ngIf="item.description">
+                <div *ngIf="item.description">
                     <mat-icon>short_text</mat-icon>
-                    <div fxFlex="100">
+                    <div>
                         <markdown [data]="item.description"></markdown>
                     </div>
                 </div>
 
-                <div fxLayoutGap="30px" *ngIf="item.attachments && item.attachments.length">
+                <div *ngIf="item.attachments && item.attachments.length">
                     <mat-icon>attachment</mat-icon>
-                    <div fxFlex="100">
+                    <div>
                         <ul>
                             <li *ngFor="let item of item.attachments">
-                                {{item.filename}} ({{item.filesize}}) <a href="user/{{item.author.id}}">{{item.author.full_name}}</a>,
-                                {{item.author.created_on}}
+                                {{ item.filename }} ({{ item.filesize }})
+                                <a href="user/{{ item.author.id }}">
+                                    {{ item.author.full_name }} </a
+                                >,
+                                {{ item.author.created_on }}
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div fxLayout fxLayoutGap="30px" *ngIf="item.journals && item.journals.length">
+                <div *ngIf="item.journals && item.journals.length">
                     <mat-icon>history</mat-icon>
-                    <app-issues-journals [journals]="item.journals"></app-issues-journals>
+                    <app-issues-journals
+                        [journals]="item.journals"
+                    ></app-issues-journals>
                 </div>
             </mat-card-content>
         </div>

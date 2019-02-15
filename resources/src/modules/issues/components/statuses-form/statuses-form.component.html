@@ -1,23 +1,44 @@
-<div fxLayout="row" fxLayoutAlign="center start">
-    <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.gt-md]="50">
-        <mat-progress-bar mode="indeterminate" *ngIf="pending"></mat-progress-bar>
-        <form [formGroup]="form" fxFlex="100" fxLayout="row wrap" (ngSubmit)="form.valid && onSubmit()">
+<div class="container mt-3">
+    <mat-card class="content-card">
+        <mat-progress-bar
+            mode="indeterminate"
+            *ngIf="pending"
+        ></mat-progress-bar>
+        <form [formGroup]="form" (ngSubmit)="form.valid && onSubmit()">
             <mat-card-header>
-                <mat-card-title>{{ isNew ? 'New status' : item.name }}</mat-card-title>
+                <mat-card-title>{{
+                    isNew ? 'New status' : item.name
+                }}</mat-card-title>
                 <mat-card-subtitle>Issue statuses</mat-card-subtitle>
             </mat-card-header>
 
-            <mat-card-content fxLayout="column" fxFlex="100">
+            <mat-card-content>
                 <mat-form-field>
-                    <input matInput placeholder="Name" formControlName="name" required>
+                    <input
+                        matInput
+                        placeholder="Name"
+                        formControlName="name"
+                        required
+                    />
                 </mat-form-field>
 
-                <mat-checkbox formControlName="is_closed">Issue closed</mat-checkbox>
+                <mat-checkbox formControlName="is_closed"
+                    >Issue closed</mat-checkbox
+                >
             </mat-card-content>
 
-            <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="10px" fxFlex="100">
-                <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || pending">{{ isNew ? 'CREATE' : 'SAVE' }}</button>
-                <button mat-raised-button routerLink="/issue_statuses">CANCEL</button>
+            <div>
+                <button
+                    mat-raised-button
+                    color="primary"
+                    type="submit"
+                    [disabled]="form.invalid || pending"
+                >
+                    {{ isNew ? 'CREATE' : 'SAVE' }}
+                </button>
+                <button mat-raised-button routerLink="/issue_statuses">
+                    CANCEL
+                </button>
             </div>
         </form>
     </mat-card>

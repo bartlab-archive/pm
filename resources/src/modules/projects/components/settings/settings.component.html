@@ -1,9 +1,9 @@
-<div fxLayout="row" fxLayoutAlign="center start">
-    <mat-progress-bar
-        mode="indeterminate"
-        *ngIf="(pending$ | async)"
-    ></mat-progress-bar>
-    <mat-card>
+<div class="container">
+    <mat-card class="content-card mt-3">
+        <mat-progress-bar
+            mode="indeterminate"
+            *ngIf="(pending$ | async)"
+        ></mat-progress-bar>
         <mat-card-title>
             <nav mat-tab-nav-bar>
                 <a
@@ -14,11 +14,10 @@
                     #rla="routerLinkActive"
                     [active]="rla.isActive"
                 >
-                    {{ link.label }}
+                    {{ link.title }}
                 </a>
             </nav>
         </mat-card-title>
-
         <mat-card-content>
             <router-outlet></router-outlet>
         </mat-card-content>

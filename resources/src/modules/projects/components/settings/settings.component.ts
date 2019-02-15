@@ -1,15 +1,14 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, Inject} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {select, Store} from '@ngrx/store';
 import {Observable, Subscription} from 'rxjs';
 import {selectProjectsStatus} from '../../store/selectors/projects';
-import {map} from 'rxjs/operators';
+import {filter, map, mapTo} from 'rxjs/operators';
 import {RequestStatus} from '../../../../app/interfaces/api';
-
-interface SettingsTab {
-    label: string;
-    path: string;
-}
+import {ModulesService} from '../../services/modules.service';
+import {Project} from '../../interfaces/projects';
+import * as fromProjects from '../../store/selectors/projects';
+import {ModuleSettings} from '../../../../app/interfaces/module';
 
 @Component({
     selector: 'app-projects-settings',
@@ -18,47 +17,37 @@ interface SettingsTab {
 })
 export class ProjectsSettingsComponent implements OnInit, OnDestroy {
     public subscriptions: Subscription[] = [];
+    public project$: Observable<Project> = this.store.pipe(
+        select(fromProjects.selectProjectsActive),
+    );
+
     public pending$: Observable<boolean> = this.store.pipe(
         select(selectProjectsStatus),
         map((status) => status === RequestStatus.pending),
+        // mapTo(true),
     );
 
-    public projectsLinks: SettingsTab[] = [
-        {
-            label: 'Information',
-            path: '/information',
-        },
-
-        {
-            label: 'Modules',
-            path: '/modules',
-        },
-    ];
-
-    public navLinks: SettingsTab[] = [];
+    public navLinks: ModuleSettings[] = [];
 
     public constructor(
+        private modulesService: ModulesService,
         private activatedRoute: ActivatedRoute,
         private store: Store<any>,
     ) {}
 
-    public getActivatedPath() {
-        const {pathFromRoot: activatedRoutes} = this.activatedRoute;
-        const urls = activatedRoutes
-            .map((activatedRoute) => activatedRoute.snapshot.url)
-            .filter((url) => url.length > 0);
-
-        return `/${urls.join('/')}`;
-    }
-
     public ngOnInit(): void {
-        const activatedPath = this.getActivatedPath();
-        this.navLinks = this.projectsLinks.map((projectsLink) => ({
-            ...projectsLink,
-            path: `${activatedPath}/${projectsLink.path}`,
-        }));
+        this.subscriptions.push(
+            this.project$.pipe(filter(Boolean)).subscribe((project) => {
+                const projectModules = this.modulesService.getProjectModules(
+                    project,
+                    this.modulesService.modules,
+                );
 
-        this.subscriptions.push();
+                this.navLinks = this.modulesService.getModuleSettings(
+                    projectModules,
+                );
+            }),
+        );
     }
 
     public ngOnDestroy(): void {

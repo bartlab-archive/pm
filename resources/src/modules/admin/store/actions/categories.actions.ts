@@ -7,9 +7,7 @@ export enum ActionTypes {
 export class AddCategoryAction implements Action {
     readonly type = ActionTypes.ADD_CATEGORY;
 
-    constructor(public payload: any) {
-    }
+    constructor(public payload: any) {}
 }
 
-export type ActionsUnion =
-    | AddCategoryAction;
+export type ActionsUnion = AddCategoryAction;

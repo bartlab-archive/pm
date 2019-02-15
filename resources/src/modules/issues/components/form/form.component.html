@@ -1,176 +1,255 @@
-<mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="100" [fxFlex.gt-md]="100">
-    <mat-progress-bar mode="indeterminate" *ngIf="pending$ | async"></mat-progress-bar>
-    <form [formGroup]="form" fxFlex="100" fxLayout="row wrap">
+<div class="container mt-3">
+    <mat-card class="content-card">
+        <mat-progress-bar
+            mode="indeterminate"
+            *ngIf="(pending$ | async)"
+        ></mat-progress-bar>
+        <form [formGroup]="form">
+            <mat-card-header>
+                <mat-card-title>{{
+                    item && item.subject ? item.subject : ''
+                }}</mat-card-title>
+                <div>
+                    <mat-slide-toggle formControlName="is_private">
+                        Private
+                    </mat-slide-toggle>
+                </div>
+            </mat-card-header>
+            <mat-card-content>
+                <div>
+                    <mat-form-field>
+                        <input
+                            matInput
+                            placeholder="Subject"
+                            formControlName="subject"
+                            required
+                        />
+                    </mat-form-field>
 
-        <mat-card-header fxFlex="100">
-            <mat-card-title>{{ item && item.subject ? item.subject : ''}}</mat-card-title>
-            <div fxFlex="100"></div>
-            <div fxLayout="row" fxLayoutAlign="right center">
-                <mat-slide-toggle formControlName="is_private">Private
-                </mat-slide-toggle>
-            </div>
-        </mat-card-header>
+                    <mat-form-field floatLabel="never" *ngIf="showDescription">
+                        <span class="textareaLabel">Description:</span>
+                        <textarea
+                            matInput
+                            rows="15"
+                            formControlName="description"
+                        ></textarea>
+                    </mat-form-field>
 
-        <mat-card-content fxFlex="100" fxLayout="row wrap" fxLayoutGap="20px">
-            <div fxLayout="column" fxFlex="70">
-                <mat-form-field>
-                    <input matInput placeholder="Subject" formControlName="subject" required>
-                </mat-form-field>
+                    <div *ngIf="!isNew">
+                        <button
+                            mat-icon-button
+                            (click)="showDescription = !showDescription"
+                            matTooltip="Description"
+                        >
+                            <mat-icon>{{
+                                showDescription ? 'expand_less' : 'expand_more'
+                            }}</mat-icon>
+                        </button>
+                    </div>
 
-                <mat-form-field floatLabel="never" *ngIf="showDescription">
-                    <span class="textareaLabel">Description:</span>
-                    <textarea matInput rows="15" formControlName="description"></textarea>
-                </mat-form-field>
-
-                <div fxLayoutAlign="center center" *ngIf="!isNew">
-                    <button mat-icon-button (click)="showDescription = !showDescription" matTooltip="Description">
-                        <mat-icon>{{ showDescription ? 'expand_less': 'expand_more'}}</mat-icon>
-                    </button>
+                    <mat-form-field floatLabel="never" *ngIf="!isNew">
+                        <span class="textareaLabel">Notes:</span>
+                        <textarea matInput rows="15"></textarea>
+                    </mat-form-field>
+                    <div *ngIf="!isNew">
+                        <mat-slide-toggle>Private notes</mat-slide-toggle>
+                    </div>
                 </div>
 
-                <mat-form-field floatLabel="never" *ngIf="!isNew">
-                    <span class="textareaLabel">Notes:</span>
-                    <textarea matInput rows="15"></textarea>
-                </mat-form-field>
-                <div fxFlex="100" *ngIf="!isNew">
-                    <mat-slide-toggle>Private notes</mat-slide-toggle>
-                </div>
-            </div>
-
-            <div fxLayout="column" fxFlex="28">
-                <mat-form-field *ngIf="projects">
-                    <mat-select placeholder="Project"
-                                name="project"
-                                formControlName="project"
-                                required
-                                #projectSelect
-                                (selectionChange)="selected($event.value)">
-                        <mat-option matInput *ngFor="let project of projects"
-                                    [value]="project.identifier">
-                            {{project.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-select placeholder="Tracker"
-                                name="tracker"
-                                required
-                                formControlName="tracker">
-                        <mat-option matInput *ngFor="let tracker  of trackers$ | async "
-                                    [value]="tracker.id">
-                            {{tracker.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <mat-select placeholder="Status"
-                                name="status"
-                                required
-                                formControlName="status">
-                        <mat-option *ngFor="let status of statuses$ | async" [value]="status.id">
-                            {{status.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <mat-select placeholder="Priority"
-                                name="priority"
-                                required
-                                formControlName="priority">
-                        <mat-option *ngFor="let priority of priorities$ | async" [value]="priority.id">
-                            {{priority.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <mat-form-field class="example-full-width"
-                                *ngIf="membersOfProject">
-                    <mat-select placeholder="Assignee"
-                                name="assigned"
-                                formControlName="assigned"
-                    >
-                        <mat-option *ngFor="let member of membersOfProject"
-                                    [value]="member.user.id">
-                            {{member.user.full_name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <div fxLayout="row" fxLayoutAlign="space-between">
-                    <mat-form-field [fxFlex.lg]="40" [fxFlex.xl]="40">
-                        <input matInput [matDatepicker]="startDate" placeholder="Start date"
-                               formControlName="start_date">
-                        <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
-                        <mat-datepicker #startDate></mat-datepicker>
-                    </mat-form-field>
-                </div>
-                <div fxLayout="row" fxLayoutAlign="space-between">
-                    <mat-form-field [fxFlex.lg]="40" [fxFlex.xl]="40">
-                        <input matInput [matDatepicker]="dueDate" placeholder="Due date"
-                               formControlName="due_date">
-                        <mat-datepicker-toggle matSuffix [for]="dueDate"></mat-datepicker-toggle>
-                        <mat-datepicker #dueDate></mat-datepicker>
-                    </mat-form-field>
-                </div>
-
-                <div fxLayout.lt-lg="column" fxLayout.lg="row" fxLayoutAlign="space-between">
-                    <mat-form-field [fxFlex.lg]="30" [fxFlex.xl]="30">
-                        <input matInput placeholder="Parent task (id)" value="" formControlName="parent_id">
-                    </mat-form-field>
-                    <mat-form-field [fxFlex.lg]="30" [fxFlex.xl]="30">
-                        <input matInput type="number" placeholder="Estimated time (hours)" min="0" value=""
-                               formControlName="estimated_hours">
-                    </mat-form-field>
-                    <mat-form-field [fxFlex.lg]="30" [fxFlex.xl]="30">
-                        <mat-select placeholder="Done (%)" formControlName="done_ratio">
-                            <mat-option value="0">0%</mat-option>
-                            <mat-option value="10">10%</mat-option>
-                            <mat-option value="20">20%</mat-option>
-                            <mat-option value="30">30%</mat-option>
-                            <mat-option value="40">40%</mat-option>
-                            <mat-option value="50">50%</mat-option>
-                            <mat-option value="60">60%</mat-option>
-                            <mat-option value="70">70%</mat-option>
-                            <mat-option value="80">80%</mat-option>
-                            <mat-option value="90">90%</mat-option>
-                            <mat-option value="100">100%</mat-option>
+                <div>
+                    <mat-form-field *ngIf="projects">
+                        <mat-select
+                            placeholder="Project"
+                            name="project"
+                            formControlName="project"
+                            required
+                            (selectionChange)="selected($event.value)"
+                        >
+                            <mat-option
+                                matInput
+                                *ngFor="let project of projects"
+                                [value]="project.identifier"
+                            >
+                                {{ project.name }}
+                            </mat-option>
                         </mat-select>
                     </mat-form-field>
-                </div>
+                    <mat-form-field>
+                        <mat-select
+                            placeholder="Tracker"
+                            name="tracker"
+                            required
+                            formControlName="tracker"
+                        >
+                            <mat-option
+                                matInput
+                                *ngFor="let tracker of (trackers$ | async)"
+                                [value]="tracker.id"
+                            >
+                                {{ tracker.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
 
-                <mat-form-field *ngIf="membersOfProject">
-                    <mat-chip-list #chipList>
-                        <mat-chip *ngFor="let tag of watcherTags"
-                                  [selectable]="false"
-                                  [removable]="true"
-                                  (removed)="removeTag(tag)">
-                            {{tag}}
-                            <mat-icon matChipRemove>cancel</mat-icon>
-                        </mat-chip>
-                        <input
-                                matInput placeholder="Watchers..."
+                    <mat-form-field>
+                        <mat-select
+                            placeholder="Status"
+                            name="status"
+                            required
+                            formControlName="status"
+                        >
+                            <mat-option
+                                *ngFor="let status of (statuses$ | async)"
+                                [value]="status.id"
+                            >
+                                {{ status.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-select
+                            placeholder="Priority"
+                            name="priority"
+                            required
+                            formControlName="priority"
+                        >
+                            <mat-option
+                                *ngFor="let priority of (priorities$ | async)"
+                                [value]="priority.id"
+                            >
+                                {{ priority.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field
+                        class="example-full-width"
+                        *ngIf="membersOfProject"
+                    >
+                        <mat-select
+                            placeholder="Assignee"
+                            name="assigned"
+                            formControlName="assigned"
+                        >
+                            <mat-option
+                                *ngFor="let member of membersOfProject"
+                                [value]="member.user.id"
+                            >
+                                {{ member.user.full_name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div>
+                        <mat-form-field>
+                            <input
+                                matInput
+                                [matDatepicker]="startDate"
+                                placeholder="Start date"
+                                formControlName="start_date"
+                            />
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="startDate"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker #startDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field>
+                            <input
+                                matInput
+                                [matDatepicker]="dueDate"
+                                placeholder="Due date"
+                                formControlName="due_date"
+                            />
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="dueDate"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker #dueDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <mat-form-field>
+                            <input
+                                matInput
+                                placeholder="Parent task (id)"
+                                value=""
+                                formControlName="parent_id"
+                            />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input
+                                matInput
+                                type="number"
+                                placeholder="Estimated time (hours)"
+                                min="0"
+                                value=""
+                                formControlName="estimated_hours"
+                            />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select
+                                placeholder="Done (%)"
+                                formControlName="done_ratio"
+                            >
+                                <mat-option value="0">0%</mat-option>
+                                <mat-option value="10">10%</mat-option>
+                                <mat-option value="20">20%</mat-option>
+                                <mat-option value="30">30%</mat-option>
+                                <mat-option value="40">40%</mat-option>
+                                <mat-option value="50">50%</mat-option>
+                                <mat-option value="60">60%</mat-option>
+                                <mat-option value="70">70%</mat-option>
+                                <mat-option value="80">80%</mat-option>
+                                <mat-option value="90">90%</mat-option>
+                                <mat-option value="100">100%</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-form-field *ngIf="membersOfProject">
+                        <mat-chip-list #chipList>
+                            <mat-chip
+                                *ngFor="let tag of watcherTags"
+                                [selectable]="false"
+                                [removable]="true"
+                                (removed)="removeTag(tag)"
+                            >
+                                {{ tag }}
+                                <mat-icon matChipRemove>cancel</mat-icon>
+                            </mat-chip>
+                            <input
+                                matInput
+                                placeholder="Watchers..."
                                 [matAutocomplete]="auto"
                                 #watchersInput
-                                [matChipInputFor]="chipList">
-                    </mat-chip-list>
-                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="watched($event)">
-                        <mat-option matInput *ngFor="let member of membersOfProject"
-                                    [value]="member.user.full_name">
-                            {{member.user.full_name}}
-                        </mat-option>
-                    </mat-autocomplete>
-                </mat-form-field>
-
+                                [matChipInputFor]="chipList"
+                            />
+                        </mat-chip-list>
+                        <mat-autocomplete
+                            #auto="matAutocomplete"
+                            (optionSelected)="watched($event)"
+                        >
+                            <mat-option
+                                matInput
+                                *ngFor="let member of membersOfProject"
+                                [value]="member.user.full_name"
+                            >
+                                {{ member.user.full_name }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+            </mat-card-content>
+            <div>
+                <button mat-raised-button color="primary">SUBMIT</button>
+                <button mat-raised-button>PREVIEW</button>
+                <button mat-raised-button>CANCEL</button>
             </div>
-        </mat-card-content>
-
-        <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="10px" fxFlex="100">
-            <button mat-raised-button color="primary">SUBMIT</button>
-            <button mat-raised-button>PREVIEW</button>
-            <button mat-raised-button>CANCEL</button>
-        </div>
-    </form>
-
-</mat-card>
+        </form>
+    </mat-card>
+</div>

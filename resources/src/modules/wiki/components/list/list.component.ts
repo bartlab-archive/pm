@@ -1,17 +1,28 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {MatAutocompleteSelectedEvent, MatPaginator, MatSort, PageEvent} from '@angular/material';
+import {
+    Component,
+    ElementRef,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
+import {
+    MatAutocompleteSelectedEvent,
+    MatPaginator,
+    MatSort,
+    PageEvent,
+} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 import {FilterTag} from '../../interfaces/wiki';
 import {FormControl} from '@angular/forms';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Observable, Subscription, zip, combineLatest} from 'rxjs';
-import {
-    filter,
-    map,
-    startWith,
-} from 'rxjs/operators';
+import {filter, map, startWith} from 'rxjs/operators';
 import {select, Store} from '@ngrx/store';
-import {selectWiki, selectWikiMeta, selectWikiStatus} from '../../store/selectors/wiki';
+import {
+    selectWiki,
+    selectWikiMeta,
+    selectWikiStatus,
+} from '../../store/selectors/wiki';
 
 import {WikiListRequestAction} from '../../store/actions/wiki.action';
 import {RequestStatus} from '../../../../app/interfaces/api';
@@ -36,9 +47,6 @@ export class WikiListComponent implements OnInit, OnDestroy {
     @ViewChild(MatSort)
     public sort: MatSort;
 
-    @ViewChild('scrollContainer')
-    public scrollContainer: ElementRef<HTMLElement>;
-
     @ViewChild('tagInput')
     public tagInput: ElementRef<HTMLInputElement>;
     public allTags: Array<FilterTag> = [];
@@ -47,8 +55,7 @@ export class WikiListComponent implements OnInit, OnDestroy {
     public separatorKeysCodes: Array<number> = [ENTER, COMMA];
     public filteredTags: Observable<Array<FilterTag>>;
 
-    public constructor(private store: Store<any>) {
-    }
+    public constructor(private store: Store<any>) {}
 
     public ngOnInit(): void {
         this.filteredTags = this.tagCtrl.valueChanges.pipe(
@@ -57,9 +64,13 @@ export class WikiListComponent implements OnInit, OnDestroy {
         );
 
         this.subscriptions.push(
-            combineLatest(this.store.pipe(select(selectWikiStatus))).subscribe((statuses) => {
-                this.pending = statuses.some((status) => status === RequestStatus.pending);
-            }),
+            combineLatest(this.store.pipe(select(selectWikiStatus))).subscribe(
+                (statuses) => {
+                    this.pending = statuses.some(
+                        (status) => status === RequestStatus.pending,
+                    );
+                },
+            ),
 
             this.store.pipe(select(selectWiki)).subscribe((items) => {
                 this.dataSource = items;
@@ -82,11 +93,12 @@ export class WikiListComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+        this.subscriptions.forEach((subscription) =>
+            subscription.unsubscribe(),
+        );
     }
 
     public load(): void {
-        this.scrollContainer.nativeElement.scroll(0, 0);
         // this.store.dispatch(
         //     new WikiListRequestAction({
         //         per_page: this.paginator.pageSize || this.pageSizeOptions[0],
@@ -98,7 +110,9 @@ export class WikiListComponent implements OnInit, OnDestroy {
     }
 
     public getTagsId(type: string) {
-        return this.tags.filter((tag) => tag.type === type).map((tag) => tag.id);
+        return this.tags
+            .filter((tag) => tag.type === type)
+            .map((tag) => tag.id);
     }
 
     public isAllSelected(): boolean {
@@ -136,7 +150,9 @@ export class WikiListComponent implements OnInit, OnDestroy {
     }
 
     public selected(event: MatAutocompleteSelectedEvent): void {
-        const tag = this.allTags.find((tagItem) => this.getTagLabel(tagItem) === event.option.viewValue);
+        const tag = this.allTags.find(
+            (tagItem) => this.getTagLabel(tagItem) === event.option.viewValue,
+        );
         if (tag && this.tags.indexOf(tag) === -1) {
             this.tags.push(tag);
             this.tagInput.nativeElement.value = '';
@@ -148,7 +164,9 @@ export class WikiListComponent implements OnInit, OnDestroy {
 
     private filter(label: string): Array<FilterTag> {
         const ids = this.tags.map((tag) => tag.id);
-        const restTags = this.allTags.filter((tag) => ids.indexOf(tag.id) === -1);
+        const restTags = this.allTags.filter(
+            (tag) => ids.indexOf(tag.id) === -1,
+        );
         if (!label) {
             return restTags;
         }

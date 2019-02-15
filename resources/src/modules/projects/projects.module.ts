@@ -17,6 +17,7 @@ import {MaterialModule} from '../material/material.module';
 import {ProjectsEffects} from './store/effects/projects.effects';
 import {
     APP_EVENT_INTERCEPTORS,
+    APP_MODULE_META,
     APP_MODULE_SUBROUTES,
 } from '../../app/providers/app.injection';
 import {ProjectsEventInterceptor} from './interceptors/projects-event.interceptor';
@@ -25,6 +26,7 @@ import {ProjectsOverviewComponent} from './components/overview/overview.componen
 import {ProjectsSettingsComponent} from './components/settings/settings.component';
 import {ProjectsInformationComponent} from './components/information/information.component';
 import {ProjectsModulesComponent} from './components/modules/modules.component';
+import {meta} from './projects.meta';
 
 @NgModule({
     declarations: [
@@ -60,6 +62,11 @@ import {ProjectsModulesComponent} from './components/modules/modules.component';
     providers: [
         ProjectsService,
         ModulesService,
+        {
+            provide: APP_MODULE_META,
+            useValue: meta,
+            multi: true,
+        },
         {
             provide: APP_MODULE_SUBROUTES,
             useValue: [],

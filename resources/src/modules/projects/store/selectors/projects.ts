@@ -14,21 +14,5 @@ export const selectProjectsActive = createSelector(
     (entities, activeId) => entities[activeId],
 );
 
-export const selectActiveModules = createSelector(
-    selectProjectsActive,
-    (project) => project && project.modules && project.modules.map(({name}) => name),
-);
-
-export const selectRegisteredSubModules = createSelector(
-    selectProjectsState,
-    (state) => state.registeredSubModules,
-);
-
-export const selectActiveModulesWithMapping = createSelector(
-    selectRegisteredSubModules,
-    selectActiveModules,
-    (subModules, activeModules) => activeModules && subModules && subModules.filter((sm) => activeModules.includes(sm.id)),
-);
-
 export const selectProjectsStatus = createSelector(selectProjectsState, (state) => state.status);
 export const selectProjectsError = createSelector(selectProjectsState, (state) => state.error);

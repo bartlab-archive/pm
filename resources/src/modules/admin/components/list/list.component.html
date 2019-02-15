@@ -1,21 +1,22 @@
-<div fxLayout="row" fxLayoutAlign="center start">
-    <mat-card [fxFlex.xs]="100" [fxFlex.sm]="100" [fxFlex.md]="70" [fxFlex.gt-md]="50">
+<div class="container mt-3">
+    <mat-card class="content-card">
         <mat-card-header>
             <!--<div mat-card-avatar class="example-header-image"></div>-->
             <mat-card-title>Administration</mat-card-title>
             <mat-card-subtitle>Categories</mat-card-subtitle>
-
         </mat-card-header>
 
         <mat-card-content>
             <mat-nav-list>
-                <mat-list-item *ngFor="let category of categories$ | async" [routerLink]="category.url">
-                    <mat-icon mat-list-icon>{{category.icon}}</mat-icon>
-                    <h4 mat-line>{{category.name}}</h4>
+                <mat-list-item
+                    *ngFor="let category of (categories$ | async)"
+                    [routerLink]="category.url"
+                >
+                    <mat-icon mat-list-icon>{{ category.icon }}</mat-icon>
+                    <h4 mat-line>{{ category.name }}</h4>
                     <!--<p mat-line> {{folder.updated | date}} </p>-->
                 </mat-list-item>
             </mat-nav-list>
         </mat-card-content>
     </mat-card>
 </div>
-

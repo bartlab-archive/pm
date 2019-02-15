@@ -16,6 +16,9 @@ export enum ActionTypes {
     UPDATE_REQUEST = '[projects] update request',
     UPDATE_ERROR = '[projects] update error',
     UPDATE_SUCCESS = '[projects] update success',
+    UPDATE_MODULES_REQUEST = '[projects] update modules request',
+    UPDATE_MODULES_ERROR = '[projects] update modules error',
+    UPDATE_MODULES_SUCCESS = '[projects] update modules success',
 }
 
 export class PreloadRequestAction implements Action {
@@ -96,6 +99,24 @@ export class UpdateSuccessAction implements Action {
     constructor(public payload: any) {}
 }
 
+export class UpdateModulesRequestAction implements Action {
+    readonly type = ActionTypes.UPDATE_MODULES_REQUEST;
+
+    constructor(public payload: any) {}
+}
+
+export class UpdateModulesErrorAction implements Action {
+    readonly type = ActionTypes.UPDATE_MODULES_ERROR;
+
+    constructor(public payload: ResponseError) {}
+}
+
+export class UpdateModulesSuccessAction implements Action {
+    readonly type = ActionTypes.UPDATE_MODULES_SUCCESS;
+
+    constructor(public payload: any) {}
+}
+
 export type ActionsUnion =
     | ListRequestAction
     | ListErrorAction
@@ -109,4 +130,7 @@ export type ActionsUnion =
     | PreloadSuccessAction
     | UpdateRequestAction
     | UpdateErrorAction
-    | UpdateSuccessAction;
+    | UpdateSuccessAction
+    | UpdateModulesRequestAction
+    | UpdateModulesErrorAction
+    | UpdateModulesSuccessAction;

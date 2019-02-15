@@ -1,11 +1,10 @@
-@import "variables";
-@import "theming";
-@import "~normalize-scss/sass/normalize";
-@import "~roboto-fontface/css/roboto/sass/roboto-fontface";
-@import "~material-design-icons-iconfont/dist/material-design-icons.scss";
-@import "spinner";
-@import "custom";
+@import 'variables';
+@import 'bootstrap';
+@import 'theming';
+@import '~roboto-fontface/css/roboto/sass/roboto-fontface';
+@import '~material-design-icons-iconfont/dist/material-design-icons.scss';
+@import 'spinner';
+@import 'custom';
 
-@include normalize();
 @include mat-core();
 @include angular-material-theme($candy-app-theme);

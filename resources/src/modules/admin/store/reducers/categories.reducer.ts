@@ -1,15 +1,14 @@
-// import {ActionReducer, combineReducers} from '@ngrx/store';
 import {ActionsUnion, ActionTypes} from '../actions/categories.actions';
 import {SharedActionTypes} from '../actions/shared.action';
 import {SharedActionsUnion} from '../actions/shared.action';
 
-export const categories = (state = [], action: ActionsUnion | SharedActionsUnion) => {
+export const categories = (
+    state = [],
+    action: ActionsUnion | SharedActionsUnion,
+) => {
     switch (action.type) {
         case ActionTypes.ADD_CATEGORY: {
-            return [
-                ...state,
-                action.payload,
-            ];
+            return [...state, action.payload];
         }
 
         case SharedActionTypes.AUTH_LOGOUT: {
@@ -21,7 +20,6 @@ export const categories = (state = [], action: ActionsUnion | SharedActionsUnion
         }
     }
 };
-
 
 export interface CategoriesState {
     categories: Array<any>;

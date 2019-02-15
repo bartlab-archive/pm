@@ -32,6 +32,7 @@ import {AppInterceptor} from './interceptors/app.interceptor';
 import {UsersModule} from '../modules/users/users.module';
 import {AdminModule} from '../modules/admin/admin.module';
 import {WikiModule} from '../modules/wiki/wiki.module';
+import {RouteSerializer} from './serializers/route-serializer';
 
 @NgModule({
     declarations: [AppComponent],
@@ -57,7 +58,9 @@ import {WikiModule} from '../modules/wiki/wiki.module';
 
         // store
         StoreModule.forRoot(reducers, {metaReducers}),
-        StoreRouterConnectingModule.forRoot(),
+        StoreRouterConnectingModule.forRoot({
+            serializer: RouteSerializer,
+        }),
         EffectsModule.forRoot([AppEffects]),
         StoreDevtoolsModule.instrument({
             maxAge: 25, // Retains last 25 states

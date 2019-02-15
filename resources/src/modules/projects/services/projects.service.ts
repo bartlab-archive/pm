@@ -30,4 +30,8 @@ export class ProjectsService {
     public update(data): Observable<any> {
         return this.http.put<any>(`/api/v1/projects/${data.identifier}`, data);
     }
+
+    public updateModules({identifier, modules}) {
+        return this.http.put(`/api/v1/projects/${identifier}/modules`, modules);
+    }
 }
