@@ -8,14 +8,14 @@
 
         <mat-card-content>
             <mat-nav-list>
-                <mat-list-item
+                <a mat-list-item
                     *ngFor="let category of (categories$ | async)"
                     [routerLink]="category.url"
                 >
                     <mat-icon mat-list-icon>{{ category.icon }}</mat-icon>
                     <h4 mat-line>{{ category.name }}</h4>
                     <!--<p mat-line> {{folder.updated | date}} </p>-->
-                </mat-list-item>
+                </a>
             </mat-nav-list>
         </mat-card-content>
     </mat-card>
