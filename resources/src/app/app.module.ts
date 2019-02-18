@@ -16,6 +16,8 @@ import {LayoutsModule} from '../modules/layouts/layouts.module';
 import {IssuesModule} from '../modules/issues/issues.module';
 import {
     MAT_SNACK_BAR_DEFAULT_OPTIONS,
+    MatButtonModule,
+    MatDialogModule,
     MatSnackBarModule,
 } from '@angular/material';
 import {AppService} from './services/app.service';
@@ -31,11 +33,18 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AppInterceptor} from './interceptors/app.interceptor';
 import {UsersModule} from '../modules/users/users.module';
 import {AdminModule} from '../modules/admin/admin.module';
+import {AppConfirmDialogComponent} from './components/confirm-dialog/confirm-dialog.component';
 import {WikiModule} from '../modules/wiki/wiki.module';
 import {RouteSerializer} from './serializers/route-serializer';
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [
+        AppComponent,
+        AppConfirmDialogComponent,
+    ],
+    entryComponents: [
+        AppConfirmDialogComponent,
+    ],
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
@@ -68,6 +77,8 @@ import {RouteSerializer} from './serializers/route-serializer';
 
         MarkdownModule.forRoot(),
         MatSnackBarModule,
+        MatDialogModule,
+        MatButtonModule,
 
         // modules
         MainModule,

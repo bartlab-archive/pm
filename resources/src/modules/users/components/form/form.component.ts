@@ -1,17 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {select, Store} from "@ngrx/store";
-import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, Validators} from "@angular/forms";
-import * as userActions from "../../store/actions/users.actions";
-import {selectUserActive, selectUsersPending} from "../../store/selectors/users";
-import {Observable} from "rxjs/internal/Observable";
-import {User, UserUpdate} from "../../interfaces/users";
-import {Subscription} from "rxjs/index";
+import {select, Store} from '@ngrx/store';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, Validators} from '@angular/forms';
+import * as userActions from '../../store/actions/users.actions';
+import {selectUserActive, selectUsersPending} from '../../store/selectors/users';
+import {Observable} from 'rxjs/internal/Observable';
+import {User, UserUpdate} from '../../interfaces/users';
+import {Subscription} from 'rxjs';
 
 @Component({
-    selector: 'profile-form',
+    selector: 'app-profile-form',
     templateUrl: './form.component.html',
-    styleUrls: ['./form.component.scss']
+    styleUrls: ['./form.component.scss'],
 })
 
 export class ProfileFormComponent implements OnInit {
@@ -21,46 +21,46 @@ export class ProfileFormComponent implements OnInit {
     public id: number;
     public hide = true;
     public hideRepeat = true;
-    protected subscriptions: Subscription[] = [];
+    protected subscriptions: Array<Subscription> = [];
 
     public get isSubmitInactive() {
         const {invalid = null, status = ''} = this.form || {};
-        return invalid || status == 'DISABLED';
+        return invalid || status === 'DISABLED';
     }
 
     public form = this.fb.group({
-        login: [{value: '',}, [
+        login: [{value: ''}, [
             Validators.required,
-            Validators.maxLength(60)
+            Validators.maxLength(60),
         ]],
-        firstName: [{value: '',}, [
+        firstName: [{value: ''}, [
             Validators.required,
-            Validators.maxLength(30)
+            Validators.maxLength(30),
         ]],
-        lastName: [{value: '',}, [
+        lastName: [{value: ''}, [
             Validators.required,
-            Validators.maxLength(30)
+            Validators.maxLength(30),
         ]],
-        email: [{value: '',}, [
+        email: [{value: ''}, [
             Validators.required,
             Validators.email,
-            Validators.maxLength(60)
+            Validators.maxLength(60),
         ]],
-        admin: [{value: '',}, []],
-        password: [{value: '',}],
-        repeatPassword: [{value: '',}],
+        admin: [{value: ''}, []],
+        password: [{value: ''}],
+        repeatPassword: [{value: ''}],
     });
 
-    validationMessages = {
+    public validationMessages = {
         'login': [
             {type: 'required', message: 'Login is required'},
             {type: 'maxlength', message: 'Login cannot be more than 30 characters long'},
             {type: 'pattern', message: 'Your login must contain only numbers and letters'},
-            {type: 'validUsername', message: 'Your username has already been taken'}
+            {type: 'validUsername', message: 'Your username has already been taken'},
         ],
         'email': [
             {type: 'required', message: 'Email is required'},
-            {type: 'email', message: 'Enter a valid email'}
+            {type: 'email', message: 'Enter a valid email'},
         ],
         'firstName': [
             {type: 'required', message: 'First name is required'},
@@ -77,10 +77,9 @@ export class ProfileFormComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private fb: FormBuilder,
     ) {
-
     }
 
-    ngOnInit() {
+    public ngOnInit() {
         const {id} = this.activatedRoute.snapshot.params;
         this.id = +id;
         this.store.dispatch(new userActions.OneRequestAction(this.id));
@@ -100,16 +99,16 @@ export class ProfileFormComponent implements OnInit {
                     });
                 }
             }),
-            this.pending$.subscribe(status => status ? this.form.disable() : this.form.enable())
-        )
+            this.pending$.subscribe((status) => status ? this.form.disable() : this.form.enable()),
+        );
 
     }
 
-    onSubmit() {
+    public onSubmit() {
         const controls = this.form.controls;
 
         if (this.form.invalid) {
-            Object.keys(controls).forEach(name => controls[name].markAsTouched());
+            Object.keys(controls).forEach((name) => controls[name].markAsTouched());
             return;
         }
         const {firstName, lastName, login, email, password, repeatPassword} = this.form.value;
@@ -122,8 +121,7 @@ export class ProfileFormComponent implements OnInit {
             login,
             email,
         };
-        this.store.dispatch(new userActions.UpdateRequestAction({id: this.id, body}))
+        this.store.dispatch(new userActions.UpdateRequestAction({id: this.id, body}));
     }
-
 
 }

@@ -1,23 +1,23 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {select, Store} from "@ngrx/store";
-import * as userActions from "../../../users/store/actions/users.actions";
-import {FormBuilder} from "@angular/forms";
-import {selectUserActive, selectUsersPending} from "../../store/selectors/users";
-import {Observable} from "rxjs/internal/Observable";
-import {User} from "../../interfaces/users";
-import {Subscription} from "rxjs/index";
+import {ActivatedRoute, Router} from '@angular/router';
+import {select, Store} from '@ngrx/store';
+import * as userActions from '../../../users/store/actions/users.actions';
+import {FormBuilder} from '@angular/forms';
+import {selectUserActive, selectUsersPending} from '../../store/selectors/users';
+import {Observable} from 'rxjs/internal/Observable';
+import {User} from '../../interfaces/users';
+import {Subscription} from 'rxjs';
 
 @Component({
-    selector: 'profile-item',
+    selector: 'app-profile-item',
     templateUrl: './item.component.html',
-    styleUrls: ['./item.component.scss']
+    styleUrls: ['./item.component.scss'],
 })
 export class ProfileItemComponent implements OnInit, OnDestroy {
     public user$: Observable<User>;
     public pending$: Observable<boolean>;
     public id: number;
-    protected subscriptions: Subscription[] = [];
+    protected subscriptions: Array<Subscription> = [];
 
     public form = this.fb.group({
         login: [{value: '', disabled: true}],
@@ -34,11 +34,12 @@ export class ProfileItemComponent implements OnInit, OnDestroy {
 
     }
 
-    ngOnInit() {
+    public ngOnInit() {
         const {id} = this.activatedRoute.snapshot.params;
         this.id = id;
         this.store.dispatch(new userActions.OneRequestAction(+id));
         this.user$ = this.store.pipe(select(selectUserActive));
+        this.pending$ = this.store.pipe(select(selectUsersPending));
         this.subscriptions.push(
             this.user$.subscribe((user: User) => {
                 if (user) {
@@ -49,10 +50,9 @@ export class ProfileItemComponent implements OnInit, OnDestroy {
                     });
                 }
 
-            })
+            }),
         );
 
-        this.pending$ = this.store.pipe(select(selectUsersPending));
     }
 
     public ngOnDestroy(): void {

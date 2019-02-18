@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from "rxjs/index";
-import {UserUpdate} from "../interfaces/users";
+import {Observable} from 'rxjs/index';
+import {UserUpdate} from '../interfaces/users';
 
 @Injectable({
     providedIn: 'root',
@@ -11,7 +11,7 @@ export class UsersService {
     public constructor(private http: HttpClient) {
     }
 
-    public all({ status = [], ...params }): Observable<any>{
+    public all({ status = [], ...params }): Observable<any> {
         if (Array.isArray(status) && status.length) {
             params['status[]'] = [...status];
         }

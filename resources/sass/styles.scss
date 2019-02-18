@@ -6,5 +6,6 @@
 @import 'spinner';
 @import 'custom';
 
+@include normalize();
 @include mat-core();
 @include angular-material-theme($candy-app-theme);

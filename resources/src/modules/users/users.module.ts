@@ -3,6 +3,11 @@ import {EffectsModule} from '@ngrx/effects';
 import {Router, Routes, RouterModule} from '@angular/router';
 import {StoreModule} from '@ngrx/store';
 import {HttpClientModule} from '@angular/common/http';
+import {NgModule} from '@angular/core';
+import {EffectsModule} from '@ngrx/effects';
+import {RouterModule} from '@angular/router';
+import {StoreModule} from '@ngrx/store';
+import {HttpClientModule} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -19,6 +24,7 @@ import {UserStatusComponent} from './components/status/status.component';
 import {ErrorFormComponent} from './components/error/error.component';
 import {APP_MODULE_META} from '../../app/providers/app.injection';
 import {meta} from './users.meta';
+import {routes} from './users.routes';
 
 @NgModule({
     declarations: [
@@ -35,7 +41,7 @@ import {meta} from './users.meta';
         ProfileItemComponent,
     ],
     imports: [
-        RouterModule,
+        RouterModule.forChild(routes),
         HttpClientModule,
         CommonModule,
         BrowserModule,
@@ -55,36 +61,7 @@ import {meta} from './users.meta';
     ],
 })
 export class UsersModule {
-    protected routes: Routes = [
-        {
-            path: '',
-            component: DefaultComponent,
-            children: [
-                {
-                    path: 'users',
-                    data: {
-                        auth: 'authorized',
-                    },
-                    children: [
-                        {
-                            path: '',
-                            component: UsersListComponent,
-                        },
-                        {
-                            path: ':id',
-                            component: ProfileItemComponent,
-                        },
-                        {
-                            path: ':id/edit',
-                            component: ProfileFormComponent,
-                        },
-                    ],
-                },
-            ],
-        },
-    ];
 
-    public constructor(protected router: Router) {
-        this.router.config.unshift(...this.routes);
+    public constructor() {
     }
 }

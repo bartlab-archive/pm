@@ -1,14 +1,16 @@
 import {Action} from '@ngrx/store';
-import {PaginationParams, UserUpdateRequest} from '../../interfaces/users';
+import {ListRequestParams, UserUpdateRequest} from '../../interfaces/users';
 import {ResponseError} from '../../../../app/interfaces/api';
 
 export enum ActionTypes {
     LIST_REQUEST = '[users] list request',
     LIST_ERROR = '[users] list error',
     LIST_SUCCESS = '[users] list success',
+
     ONE_REQUEST = '[users] one request',
     ONE_ERROR = '[users] one error',
     ONE_SUCCESS = '[users] one success',
+
     UPDATE_REQUEST = '[users] update request',
     UPDATE_SUCCESS = '[users] update success',
     UPDATE_ERROR = '[users] update error',
@@ -17,7 +19,7 @@ export enum ActionTypes {
 export class ListRequestAction implements Action {
     readonly type = ActionTypes.LIST_REQUEST;
 
-    constructor(public payload: PaginationParams) {
+    constructor(public payload: ListRequestParams) {
     }
 }
 
