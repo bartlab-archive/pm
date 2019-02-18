@@ -16,7 +16,7 @@ import {MainModule} from '../main/main.module';
 import {MaterialModule} from '../material/material.module';
 import {ProjectsEffects} from './store/effects/projects.effects';
 import {
-    APP_EVENT_INTERCEPTORS,
+    APP_EVENT_INTERCEPTORS, APP_MODULE_ADMIN,
     APP_MODULE_META,
     APP_MODULE_SUBROUTES,
 } from '../../app/providers/app.injection';
@@ -50,7 +50,6 @@ import {meta} from './projects.meta';
     imports: [
         CommonModule,
         RouterModule,
-        // RouterModule.forChild(authRoutes),
         MaterialModule,
         MainModule,
         FormsModule,
@@ -62,6 +61,15 @@ import {meta} from './projects.meta';
     providers: [
         ProjectsService,
         ModulesService,
+        {
+            provide: APP_MODULE_ADMIN,
+            useValue: {
+                name: 'Projects',
+                icon: 'work',
+                url: 'projects',
+            },
+            multi: true,
+        },
         {
             provide: APP_MODULE_META,
             useValue: meta,
@@ -136,6 +144,5 @@ export class ProjectsModule {
         @Inject(APP_MODULE_SUBROUTES) private config: Array<Routes>,
     ) {
         this.router.config.unshift(...this.routes);
-        // this.router.config.push(config);
     }
 }

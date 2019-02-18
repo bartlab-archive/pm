@@ -1,7 +1,6 @@
 <div class="container mt-3">
     <mat-card class="content-card">
         <mat-card-header>
-            <!--<div mat-card-avatar class="example-header-image"></div>-->
             <mat-card-title>Administration</mat-card-title>
             <mat-card-subtitle>Categories</mat-card-subtitle>
         </mat-card-header>
@@ -9,12 +8,11 @@
         <mat-card-content>
             <mat-nav-list>
                 <a mat-list-item
-                    *ngFor="let category of (categories$ | async)"
+                    *ngFor="let category of categories"
                     [routerLink]="category.url"
                 >
                     <mat-icon mat-list-icon>{{ category.icon }}</mat-icon>
                     <h4 mat-line>{{ category.name }}</h4>
-                    <!--<p mat-line> {{folder.updated | date}} </p>-->
                     <mat-icon>arrow_right</mat-icon>
                 </a>
             </mat-nav-list>

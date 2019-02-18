@@ -1,11 +1,27 @@
 <mat-card class="content-card mt-3">
     <mat-card-header>
-        <users-filter
-            class="flex-grow-1"
-            (onChange)="onChangeFilter($event)"
-        ></users-filter>
+        <div mat-card-avatar>
+            <a mat-icon-button [routerLink]="['/admin']">
+                <mat-icon>arrow_back</mat-icon>
+            </a>
+        </div>
+
+        <mat-card-title>Users</mat-card-title>
+        <mat-card-subtitle>Administration</mat-card-subtitle>
+
+        <span class="flex-grow-1"></span>
+
+        <button mat-icon-button (click)="refresh()">
+            <mat-icon>refresh</mat-icon>
+        </button>
     </mat-card-header>
+
     <mat-card-content>
+        <app-users-filter
+                class="flex-grow-1"
+                (onChange)="onChangeFilter($event)"
+        ></app-users-filter>
+
         <table mat-table [dataSource]="users">
             <!-- Position Column -->
             <ng-container matColumnDef="position">

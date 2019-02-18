@@ -2,11 +2,9 @@
     <mat-sidenav #sidenav mode="'over'" fixedInViewport="true">
         <mat-toolbar color="primary">Menu</mat-toolbar>
         <mat-nav-list>
-            <a mat-list-item routerLink="/404" (click)="sidenav.toggle()">
-                404
-            </a>
-            <a mat-list-item routerLink="/500" (click)="sidenav.toggle()">
-                500
+            <a mat-list-item [routerLink]="item.url" (click)="sidenav.toggle()" *ngFor="let item of sideItems">
+                <mat-icon>{{ item.icon }}</mat-icon>
+                <span>{{ item.name }}</span>
             </a>
         </mat-nav-list>
     </mat-sidenav>
@@ -62,8 +60,8 @@
             </mat-toolbar-row>
         </mat-toolbar>
         <div class="d-flex">
-            <div>
-                <div class="q-nav-container">
+            <!--<div>-->
+                <div class="q-nav-container overflow-hidden">
                     <div class="q-nav">
                         <div class="q-nav-items">
                             <div
@@ -78,8 +76,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="flex-grow-1">
+            <!--</div>-->
+            <div class="flex-grow-1 overflow-auto">
                 <router-outlet></router-outlet>
                 <footer>Powered by MaybeWorks</footer>
             </div>

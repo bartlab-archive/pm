@@ -3,7 +3,7 @@ import {Store} from '@ngrx/store';
 import {AppInterceptor, AppInterceptorHandler} from '../../../app/interfaces/app';
 import {IssuesPreloadRequestAction} from '../store/actions/issues.action';
 import {AppEventsUnion, AppPreloadEvent, EVENT_TYPE_PRELOAD} from '../../../app/events';
-import {SharedAddCategoryAction} from '../store/actions/shared.action';
+// import {SharedAddCategoryAction} from '../store/actions/shared.action';
 
 @Injectable()
 export class IssuesEventInterceptor implements AppInterceptor {
@@ -24,21 +24,6 @@ export class IssuesEventInterceptor implements AppInterceptor {
 
     public onPreload(appEvent: AppPreloadEvent, next: AppInterceptorHandler): void {
         this.store.dispatch(new IssuesPreloadRequestAction());
-
-        // todo: check for admin
-        this.store.dispatch(new SharedAddCategoryAction({
-            name: 'Trackers',
-            icon: 'timelapse',
-            url: '/trackers',
-        }));
-
-        // todo: check for admin
-        this.store.dispatch(new SharedAddCategoryAction({
-            name: 'Issues statuses',
-            icon: 'done',
-            url: '/issue_statuses',
-        }));
-
         next.handle(appEvent);
     }
 }

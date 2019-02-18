@@ -99,7 +99,7 @@ export class AuthService {
         return Boolean(this.data);
     }
 
-    public isAdmin(): boolean {
+    public isAdministrator(): boolean {
         return Boolean(this.data.user.request);
     }
 

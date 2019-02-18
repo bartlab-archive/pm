@@ -2,7 +2,7 @@ import {Action} from '@ngrx/store';
 
 export enum SharedActionTypes {
     AUTH_LOGOUT = '[auth] logout',
-    ADD_CATEGORY = '[admin] add category',
+    // ADD_CATEGORY = '[admin] add category',
 }
 
 export class SharedAuthLogoutAction implements Action {
@@ -12,11 +12,13 @@ export class SharedAuthLogoutAction implements Action {
     }
 }
 
-export class SharedAddCategoryAction implements Action {
-    readonly type = SharedActionTypes.ADD_CATEGORY;
+// export class SharedAddCategoryAction implements Action {
+//     readonly type = SharedActionTypes.ADD_CATEGORY;
+//
+//     constructor(public payload: any) {
+//     }
+// }
 
-    constructor(public payload: any) {
-    }
-}
-
-export type SharedActionsUnion = SharedAuthLogoutAction | SharedAddCategoryAction;
+export type SharedActionsUnion =
+    | SharedAuthLogoutAction;
+// | SharedAddCategoryAction;

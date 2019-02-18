@@ -1,11 +1,10 @@
-<div class="container mt-3">
+<div class="container-fluid mt-3">
     <mat-card class="content-card">
         <mat-progress-bar
             mode="indeterminate"
             *ngIf="pending"
         ></mat-progress-bar>
         <mat-card-header>
-            <!--<div mat-card-avatar class="example-header-image"></div>-->
             <mat-card-title>Issues</mat-card-title>
             <mat-card-subtitle>All projects</mat-card-subtitle>
 
@@ -31,7 +30,6 @@
                 <mat-icon>more_vert</mat-icon>
             </button>
         </mat-card-header>
-        <!--<img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">-->
         <mat-card-content>
             <mat-form-field class="filter-input">
                 <mat-chip-list #chipList>
@@ -107,12 +105,6 @@
                     <!--{{row.id}}-->
                 </td>
             </ng-container>
-
-            <!-- Progress Column -->
-            <!--<ng-container matColumnDef="progress">-->
-            <!--<th mat-header-cell *matHeaderCellDef mat-sort-header> Progress</th>-->
-            <!--<td mat-cell *matCellDef="let row"> {{row.progress}}%</td>-->
-            <!--</ng-container>-->
 
             <!-- Name Column -->
             <ng-container matColumnDef="subject">

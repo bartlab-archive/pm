@@ -1,10 +1,5 @@
 import {NgModule} from '@angular/core';
 import {EffectsModule} from '@ngrx/effects';
-import {Router, Routes, RouterModule} from '@angular/router';
-import {StoreModule} from '@ngrx/store';
-import {HttpClientModule} from '@angular/common/http';
-import {NgModule} from '@angular/core';
-import {EffectsModule} from '@ngrx/effects';
 import {RouterModule} from '@angular/router';
 import {StoreModule} from '@ngrx/store';
 import {HttpClientModule} from '@angular/common/http';
@@ -12,17 +7,18 @@ import {CommonModule} from '@angular/common';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MaterialModule} from '../material/material.module';
-import {DefaultComponent} from '../layouts/components';
 import {UsersService} from './services/users.service';
-import {UsersListComponent} from './components/list/list.component';
+import {
+    UsersListComponent,
+    UsersFilterComponent,
+    ProfileFormComponent,
+    ProfileItemComponent,
+    UserStatusComponent,
+    ErrorFormComponent,
+} from './components';
 import {UsersEffects} from './store/effects/users.effects';
 import {reducers} from './store/reducers';
-import {UsersFilterComponent} from './components/list/filter/filter.component';
-import {ProfileFormComponent} from './components/form/form.component';
-import {ProfileItemComponent} from './components/item/item.component';
-import {UserStatusComponent} from './components/status/status.component';
-import {ErrorFormComponent} from './components/error/error.component';
-import {APP_MODULE_META} from '../../app/providers/app.injection';
+import {APP_MODULE_ADMIN, APP_MODULE_META} from '../../app/providers/app.injection';
 import {meta} from './users.meta';
 import {routes} from './users.routes';
 
@@ -53,6 +49,15 @@ import {routes} from './users.routes';
     ],
     providers: [
         UsersService,
+        {
+            provide: APP_MODULE_ADMIN,
+            useValue: {
+                name: 'Users',
+                icon: 'person',
+                url: '/users',
+            },
+            multi: true,
+        },
         {
             provide: APP_MODULE_META,
             useValue: meta,

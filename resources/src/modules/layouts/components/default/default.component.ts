@@ -51,11 +51,11 @@ export class DefaultComponent implements OnInit, OnDestroy {
         //     icon: 'access_time',
         //     name: 'Overall activity'
         // },
-        {
-            url: '/users',
-            icon: 'face',
-            name: 'Users',
-        },
+        // {
+        //     url: '/users',
+        //     icon: 'face',
+        //     name: 'Users',
+        // },
         {
             url: '/activity',
             icon: 'access_time',

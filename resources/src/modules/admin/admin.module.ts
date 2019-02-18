@@ -3,9 +3,7 @@ import {CommonModule} from '@angular/common';
 import {Router, RouterModule, Routes} from '@angular/router';
 import {AdminMainComponent, AdminListComponent} from './components';
 import {DefaultComponent} from '../layouts/components';
-import {StoreModule} from '@ngrx/store';
 import {MaterialModule} from '../material/material.module';
-import {metaReducers, reducers} from './store/reducers';
 import {APP_MODULE_SUBROUTES} from '../../app/providers/app.injection';
 import {findBy} from '../../app/helpers/collection';
 
@@ -16,7 +14,6 @@ import {findBy} from '../../app/helpers/collection';
         CommonModule,
         RouterModule,
         MaterialModule,
-        StoreModule.forFeature('moduleAdmin', reducers, {metaReducers}),
     ],
     providers: [
         {

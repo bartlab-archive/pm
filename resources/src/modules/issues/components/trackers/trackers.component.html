@@ -1,13 +1,17 @@
 <div class="container mt-3">
     <mat-card class="content-card">
-        <mat-progress-bar
-            mode="indeterminate"
-            *ngIf="(pending$ | async)"
-        ></mat-progress-bar>
+        <mat-progress-bar mode="indeterminate" *ngIf="(pending$ | async)"></mat-progress-bar>
         <mat-card-header>
-            <!--<div mat-card-avatar class="example-header-image"></div>-->
+            <div mat-card-avatar>
+                <a mat-icon-button [routerLink]="['/admin']">
+                    <mat-icon>arrow_back</mat-icon>
+                </a>
+            </div>
+
             <mat-card-title>Trackers</mat-card-title>
             <mat-card-subtitle>Administration</mat-card-subtitle>
+
+            <span class="flex-grow-1"></span>
 
             <button mat-icon-button (click)="refresh()">
                 <mat-icon>refresh</mat-icon>
@@ -23,3 +27,7 @@
         </mat-card-content>
     </mat-card>
 </div>
+
+<a mat-fab class="fab-fixed" routerLink="/trackers/new">
+    <mat-icon>add</mat-icon>
+</a>

@@ -24,7 +24,7 @@ import {TrackersEffect} from './store/effects/trackers.effect';
 import {EnumerationsEffect} from './store/effects/enumerations.effect';
 import {adminIssuesRoutes, projectsIssuesRoutes, routes} from './issues.routes';
 import {
-    APP_EVENT_INTERCEPTORS,
+    APP_EVENT_INTERCEPTORS, APP_MODULE_ADMIN,
     APP_MODULE_META,
     APP_MODULE_SUBROUTES,
 } from '../../app/providers/app.injection';
@@ -70,6 +70,24 @@ import {meta} from './issues.meta';
         StatusesService,
         TrackersService,
         {
+            provide: APP_MODULE_ADMIN,
+            useValue: {
+                name: 'Trackers',
+                icon: 'timelapse',
+                url: '/trackers',
+            },
+            multi: true,
+        },
+        {
+            provide: APP_MODULE_ADMIN,
+            useValue: {
+                name: 'Issues statuses',
+                icon: 'done',
+                url: '/issue_statuses',
+            },
+            multi: true,
+        },
+        {
             provide: APP_MODULE_META,
             useValue: meta,
             multi: true,
@@ -89,4 +107,6 @@ import {meta} from './issues.meta';
         },
     ],
 })
-export class IssuesModule {}
+export class IssuesModule {
+
+}
