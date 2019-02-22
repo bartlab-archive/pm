@@ -1,18 +1,16 @@
-<ul class="journal-list">
+<ul class="journal-list p-0 ml-4">
     <li *ngFor="let journal of journals">
-        <div class="journal">
-            <figure>
-                <img *ngIf="journal.user" src="{{ journal.user.avatar }}" />
-            </figure>
-            <div>
+        <div class="d-flex">
+            <img  *ngIf="journal.user" src="{{ journal.user.avatar }}"/>
+            <div class="p-0 ml-4">
                 Updated by
                 <a href="user/{{ journal.user.id }}">
                     {{ journal.user.full_name }}
                 </a>
                 on
                 <span
-                    matTooltip="{{ journal.created_on }}"
-                    matTooltipPosition="above"
+                        matTooltip="{{ journal.created_on }}"
+                        matTooltipPosition="above"
                 >
                     <strong>
                         {{ journal.created_on | formattedDate: 'fromNow' }}
@@ -22,12 +20,12 @@
         </div>
         <p *ngIf="journal.notes">{{ journal.notes }}</p>
         <ul *ngIf="journal.details && journal.details.length" class="details">
-            <li *ngFor="let detail of journal.details">
+            <li *ngFor="let detail of journal.details" class="p-0 ml-4">
                 <div *ngIf="detail.old_value; else detailText">
                     <strong>{{ detail.prop_key }}</strong
                     ><span> changed </span> <strong> from </strong>...<strong>
-                        to </strong
-                    >...
+                    to </strong
+                >...
                 </div>
                 <ng-template #detailText>
                     <div>

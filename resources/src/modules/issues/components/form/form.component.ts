@@ -11,10 +11,10 @@ import {
 } from '@angular/forms';
 import {select, Store} from '@ngrx/store';
 import {combineLatest, Subscription, Observable} from 'rxjs';
-import {filter, map} from 'rxjs/operators';
+import {filter, map, startWith} from 'rxjs/operators';
 import {MatAutocompleteSelectedEvent} from '@angular/material';
-
-import {Issue} from '../../interfaces/issues';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {FilterTag, Issue} from '../../interfaces/issues';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {ItemRequestAction} from '../../store/actions/issues.action';
 import {EnumerationsRequestAction} from '../../store/actions/enumerations.action';
@@ -39,15 +39,18 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     public params$: Observable<Params> = this.activatedRoute.params;
     public myProjects$: Observable<Project[]>;
     public priorities$: Observable<any[]>;
-    public membersOfProject: any[] = [];
-    public watcherTags: String[] = [];
     public projects: any[];
-    public tagCtrl = new FormControl();
     public showDescription: boolean;
     public isNew = false;
 
-    @ViewChild('watchersInput')
-    public watchersInput: ElementRef<HTMLInputElement>;
+    @ViewChild('tagInput')
+    public tagInput: ElementRef<HTMLInputElement>;
+    public allTags: Array<FilterTag> = [];
+    public tags: Array<FilterTag> = [];
+    public tagCtrl = new FormControl();
+    public separatorKeysCodes: Array<number> = [ENTER, COMMA];
+    public filteredTags: Observable<Array<FilterTag>>;
+
     public form = this.fb.group({
         'subject': ['', Validators.required],
         'is_private': [''],
@@ -76,23 +79,23 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         this.showDescription = this.isNew;
-
-        if (selectMyProjects) {
-            this.myProjects$ = this.store.pipe(select(selectMyProjects));
-
-            this.subscriptions.push(
-                this.myProjects$.subscribe((projects) => {
-                    if (projects) {
-                        this.projects = projects;
-                    }
-                }),
-            );
-        }
+        this.myProjects$ = this.store.pipe(select(selectMyProjects));
         this.trackers$ = this.store.pipe(select(selectTrackers));
         this.statuses$ = this.store.pipe(select(selectStatuses));
         this.priorities$ = this.store.pipe(select(selectPriorities));
 
+        this.filteredTags = this.tagCtrl.valueChanges.pipe(
+            startWith(null),
+            map((label: string) => this.filter(label)),
+        );
+
         this.subscriptions.push(
+            this.myProjects$.subscribe((projects) => {
+                if (projects) {
+                    this.projects = projects;
+                }
+            }),
+
             this.params$.subscribe((params) => {
                 if (params.id) {
                     this.load(Number(params.id));
@@ -102,23 +105,19 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
             combineLatest(this.store.pipe(select(selectIssuesActive)), this.params$)
                 .pipe(
                     filter(([issue, params]) => issue && issue.id === Number(params.id)),
-                    map((([issue]) => {
-                        if (issue.watchers) {
-                            const watchers = issue.watchers;
-                            Object.keys(watchers).map((key) => {
-                                const tag = watchers[key].full_name;
-                                if (tag && !this.watcherTags.includes(tag)) {
-                                    this.watcherTags.push(tag);
-                                }
-                            });
-                        }
-
-                        if (issue.project && issue.project.members) {
-                            this.membersOfProject = issue.project.members;
-                        }
-                        return issue;
-                    })),
+                    map((([issue]) => issue)),
                 ).subscribe((data) => {
+                if (data && data.project && data.project.members && data.watchers) {
+                    this.tags = [];
+                    this.allTags = data.project.members.map((member) => {
+                        const tag = {name: member.user.full_name, id: member.user.id};
+                        if (data.watchers.some(watcher => watcher.id === tag.id)) {
+                            this.tags.push(tag);
+                        }
+                        return tag;
+                    });
+                }
+
                 this.item = data;
                 const {
                     subject = '',
@@ -145,7 +144,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                     notes,
                     project: project.identifier ? project.identifier : '',
                     tracker: tracker.id,
-                    status: status.id,
+                    status: status.id ? status.id : '',
                     priority: priority.id,
                     assigned: assigned && assigned.id ? assigned.id : '',
                     start_date,
@@ -155,6 +154,9 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                     done_ratio,
                     watchers,
                 });
+
+                this.tagInput.nativeElement.value = '';
+                this.tagCtrl.setValue(null);
             }),
         );
 
@@ -169,28 +171,38 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     }
 
-    public selected(identifier: String): void {
-        Object.keys(this.projects).map((key) => {
-            if (this.projects[key].identifier === identifier) {
-                this.membersOfProject = this.projects[key].members;
-            }
-        });
-    }
-
-    public watched(event: MatAutocompleteSelectedEvent): void {
-        if (event.option.viewValue && !this.watcherTags.includes(event.option.viewValue)) {
-            this.watcherTags.push(event.option.viewValue);
-            this.watchersInput.nativeElement.value = '';
+    public selected(event: MatAutocompleteSelectedEvent): void {
+        const tag = this.allTags.find((tagItem) => this.getTagLabel(tagItem) === event.option.viewValue);
+        if (tag && this.tags.indexOf(tag) === -1) {
+            this.tags.push(tag);
+            this.tagInput.nativeElement.value = '';
             this.tagCtrl.setValue(null);
         }
     }
 
-    public removeTag(tag: any): void {
-        const index = this.watcherTags.indexOf(tag);
+    public getTagLabel(tag: FilterTag): string {
+        return tag.name.trim();
+    }
+
+    public removeTag(tag: FilterTag): void {
+        const index = this.tags.indexOf(tag);
         if (index >= 0) {
-            this.watcherTags.splice(index, 1);
+            this.tags.splice(index, 1);
             this.tagCtrl.setValue(null);
-            this.watchersInput.nativeElement.focus();
+            this.tagInput.nativeElement.focus();
         }
+    }
+
+    private filter(label: string): Array<FilterTag> {
+        const ids = this.tags.map((tag) => tag.id);
+        const restTags = this.allTags.filter((tag) => ids.indexOf(tag.id) === -1);
+        if (!label) {
+            return restTags;
+        }
+
+        const filterLabel = label.toLowerCase();
+        return restTags.filter((tag) =>
+            this.getTagLabel(tag).toLowerCase().indexOf(filterLabel) !== -1,
+        );
     }
 }

@@ -133,9 +133,9 @@ export class AuthModule {
                         return this.router.navigate(['/login']);
                     }
 
-                    if (snapshot.data.auth === 'admin' && (!this.authService.isAuthorized() || !this.authService.isAdministrator())) {
-                        return this.router.navigate(['/']);
-                    }
+                    // if (snapshot.data.auth === 'admin' && (!this.authService.isAuthorized() || !this.authService.isAdministrator())) {
+                    //     return this.router.navigate(['']);
+                    // }
                 }
             });
 

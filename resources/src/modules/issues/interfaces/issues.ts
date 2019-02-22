@@ -1,6 +1,6 @@
 export interface FilterTag {
     name: string;
-    type: string;
+    type?: string;
     id: number;
 }
 
