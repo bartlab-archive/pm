@@ -1,24 +1,11 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FlexLayoutModule} from '@angular/flex-layout';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {Store, StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {ActivationStart, Router, RouterModule, Routes} from '@angular/router';
-import {
-    MatButtonModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatSnackBarModule,
-    MatTabsModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatCheckboxModule,
-    MatProgressBarModule,
-} from '@angular/material';
+import {MaterialModule} from '../material/material.module';
 import {
     ResetComponent,
     LoginComponent,
@@ -35,7 +22,10 @@ import {filter} from 'rxjs/operators';
 import {LayoutsService} from '../layouts/services/layouts.service';
 import * as AuthActions from './store/actions/auth.actions';
 import {AuthEventInterceptor} from './interceptors/auth-event.interceptor';
-import {APP_EVENT_PRELOAD, APP_EVENT_INTERCEPTORS} from '../../app/providers/app.injection';
+import {
+    APP_EVENT_PRELOAD,
+    APP_EVENT_INTERCEPTORS,
+} from '../../app/providers/app.injection';
 
 const authRoutes: Routes = [
     {
@@ -47,9 +37,18 @@ const authRoutes: Routes = [
                 component: AuthMainComponent,
                 data: {auth: 'guest'},
                 children: [
-                    {path: 'login', component: LoginComponent},
-                    {path: 'account/register', component: RegistrationComponent},
-                    {path: 'account/lost_password', component: ResetComponent},
+                    {
+                        path: 'login',
+                        component: LoginComponent,
+                    },
+                    {
+                        path: 'account/register',
+                        component: RegistrationComponent,
+                    },
+                    {
+                        path: 'account/lost_password',
+                        component: ResetComponent,
+                    },
                 ],
             },
         ],
@@ -72,19 +71,8 @@ const authRoutes: Routes = [
     imports: [
         CommonModule,
         RouterModule.forChild(authRoutes),
-        MatInputModule,
-        MatCardModule,
-        MatButtonModule,
-        MatIconModule,
-        MatTabsModule,
-        MatFormFieldModule,
-        MatSnackBarModule,
-        MatSelectModule,
-        MatSlideToggleModule,
-        MatCheckboxModule,
-        MatProgressBarModule,
+        MaterialModule,
         ReactiveFormsModule,
-        FlexLayoutModule,
         HttpClientModule,
         StoreModule.forFeature('moduleAuth', reducers, {metaReducers}),
         EffectsModule.forFeature([AuthEffects]),
@@ -131,23 +119,41 @@ export class AuthModule {
             .pipe(filter((event) => event instanceof ActivationStart))
             .subscribe(({snapshot}: ActivationStart) => {
                 if (snapshot.data.hasOwnProperty('auth')) {
-                    if (snapshot.data.auth === 'guest' && this.authService.isAuthorized()) {
+                    if (
+                        snapshot.data.auth === 'guest' &&
+                        this.authService.isAuthorized()
+                    ) {
                         return this.router.navigate(['/']);
                     }
 
-                    if (snapshot.data.auth === 'authorized' && !this.authService.isAuthorized()) {
+                    if (
+                        snapshot.data.auth === 'authorized' &&
+                        !this.authService.isAuthorized()
+                    ) {
                         return this.router.navigate(['/login']);
                     }
 
-                    if (snapshot.data.auth === 'admin' && (!this.authService.isAuthorized() || !this.authService.isAdmin())) {
-                        return this.router.navigate(['/']);
-                    }
+                    // if (snapshot.data.auth === 'admin' && (!this.authService.isAuthorized() || !this.authService.isAdministrator())) {
+                    //     return this.router.navigate(['']);
+                    // }
                 }
             });
 
         this.layoutsService
-            .addTopMenuItem({icon: 'account_circle', path: '/users/1', title: 'Profile'})
-            .addTopMenuItem({icon: 'settings', path: '/my/account', title: 'My account'})
-            .addTopMenuItem({icon: 'exit_to_app', path: '/logout', title: 'Logout'});
+            .addTopMenuItem({
+                icon: 'account_circle',
+                path: '/users/1',
+                title: 'Profile',
+            })
+            .addTopMenuItem({
+                icon: 'settings',
+                path: '/my/account',
+                title: 'My account',
+            })
+            .addTopMenuItem({
+                icon: 'exit_to_app',
+                path: '/logout',
+                title: 'Logout',
+            });
     }
 }

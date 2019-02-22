@@ -31,9 +31,9 @@ import {storeFreeze} from 'ngrx-store-freeze';
 
 const environment = {production: process.env.NODE_ENV === 'production'};
 
-export const metaReducers: Array<MetaReducer<any, any>> = !environment.production
-    ? [storeFreeze]
-    : [];
+export const metaReducers: Array<MetaReducer<any, any>> = environment.production
+    ? []
+    : [storeFreeze];
 
 export interface State {
     router: fromRouter.RouterReducerState;

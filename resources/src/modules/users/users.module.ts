@@ -4,40 +4,23 @@ import {RouterModule} from '@angular/router';
 import {StoreModule} from '@ngrx/store';
 import {HttpClientModule} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
-import {
-    FormsModule,
-    ReactiveFormsModule,
-} from '@angular/forms';
-import {
-    MatProgressBarModule,
-    MatToolbarModule,
-    MatGridListModule,
-    MatButtonModule,
-    MatDividerModule,
-    MatMenuModule,
-    MatCardModule,
-    MatAutocompleteModule,
-    MatChipsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatTableModule,
-} from '@angular/material';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MaterialModule} from '../material/material.module';
 import {UsersService} from './services/users.service';
-import {UsersEffects} from './store/effects/users.effects';
-import {reducers} from './store/reducers';
-import {routes} from './users.routes';
 import {
-    ErrorFormComponent,
+    UsersListComponent,
+    UsersFilterComponent,
     ProfileFormComponent,
     ProfileItemComponent,
-    UsersFilterComponent,
-    UsersListComponent,
     UserStatusComponent,
+    ErrorFormComponent,
 } from './components';
+import {UsersEffects} from './store/effects/users.effects';
+import {reducers} from './store/reducers';
+import {APP_MODULE_ADMIN, APP_MODULE_META} from '../../app/providers/app.injection';
+import {meta} from './users.meta';
+import {routes} from './users.routes';
 
 @NgModule({
     declarations: [
@@ -54,32 +37,32 @@ import {
         ProfileItemComponent,
     ],
     imports: [
+        RouterModule.forChild(routes),
+        HttpClientModule,
         CommonModule,
+        BrowserModule,
+        MaterialModule,
         FormsModule,
         ReactiveFormsModule,
-        HttpClientModule,
-        RouterModule.forChild(routes),
         StoreModule.forFeature('moduleUsers', reducers, {}),
         EffectsModule.forFeature([UsersEffects]),
-        FlexLayoutModule,
-        MatTableModule,
-        MatSortModule,
-        MatPaginatorModule,
-        MatChipsModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatCardModule,
-        MatAutocompleteModule,
-        MatDividerModule,
-        MatMenuModule,
-        MatButtonModule,
-        MatGridListModule,
-        MatToolbarModule,
-        MatProgressBarModule,
     ],
     providers: [
         UsersService,
+        {
+            provide: APP_MODULE_ADMIN,
+            useValue: {
+                name: 'Users',
+                icon: 'person',
+                url: '/users',
+            },
+            multi: true,
+        },
+        {
+            provide: APP_MODULE_META,
+            useValue: meta,
+            multi: true,
+        },
     ],
 })
 export class UsersModule {

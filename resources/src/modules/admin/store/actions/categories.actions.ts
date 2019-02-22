@@ -1,15 +1,13 @@
-import {Action} from '@ngrx/store';
+// import {Action} from '@ngrx/store';
 
-export enum ActionTypes {
-    ADD_CATEGORY = '[admin] add category',
-}
+// export enum ActionTypes {
+    // ADD_CATEGORY = '[admin] add category',
+// }
 
-export class AddCategoryAction implements Action {
-    readonly type = ActionTypes.ADD_CATEGORY;
+// export class AddCategoryAction implements Action {
+//     readonly type = ActionTypes.ADD_CATEGORY;
+//
+//     constructor(public payload: any) {}
+// }
 
-    constructor(public payload: any) {
-    }
-}
-
-export type ActionsUnion =
-    | AddCategoryAction;
+// export type ActionsUnion = AddCategoryAction;

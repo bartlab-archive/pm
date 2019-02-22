@@ -1,0 +1,67 @@
+<form [formGroup]="informationForm" (ngSubmit)="onSubmit($event)">
+    <mat-form-field>
+        <input matInput required placeholder="Name" formControlName="name" />
+        <mat-error validation-error formControlName="name"></mat-error>
+    </mat-form-field>
+    <div class="form-group">
+        <app-main-md-editor
+            formControlName="description"
+            [attrs]="{placeholder: 'Description'}"
+        ></app-main-md-editor>
+        <mat-error validation-error formControlName="description"></mat-error>
+    </div>
+    <mat-form-field>
+        <input
+            matInput
+            required
+            placeholder="Identifier"
+            formControlName="identifier"
+        />
+        <mat-hint>
+            Length between 1 and 100 characters. Only lower case letters (a-z),
+            numbers, dashes and underscores are allowed, must start with a lower
+            case letter. Once saved, the identifier cannot be changed.
+        </mat-hint>
+        <mat-error validation-error formControlName="identifier"></mat-error>
+    </mat-form-field>
+    <div class="form-group">
+        <mat-form-field>
+            <input
+                matInput
+                placeholder="Homepage"
+                formControlName="homepage"
+                type="url"
+            />
+            <mat-error validation-error formControlName="homepage"></mat-error>
+        </mat-form-field>
+    </div>
+    <div class="form-group">
+        <mat-checkbox formControlName="is_public">
+            Public
+        </mat-checkbox>
+    </div>
+    <mat-form-field>
+        <mat-select
+            placeholder="Subproject"
+            formControlName="subproject"
+            (selectionChange)="onSubprojectChange($event)"
+        >
+            <mat-option>None</mat-option>
+            <mat-option
+                *ngFor="let project of (projects$ | async)"
+                [value]="project.identifier"
+            >
+                {{ project.name }}
+            </mat-option>
+        </mat-select>
+        <mat-error validation-error formControlName="subproject"></mat-error>
+    </mat-form-field>
+    <div class="form-group">
+        <mat-checkbox formControlName="inherit_members">
+            Inherit members
+        </mat-checkbox>
+    </div>
+    <div class="form-group">
+        <button mat-button mat-raised-button color="primary">Save</button>
+    </div>
+</form>

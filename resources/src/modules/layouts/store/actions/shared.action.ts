@@ -1,13 +1,13 @@
 import {Action} from '@ngrx/store';
 
 export enum ActionTypes {
-    PROJECT_MODULES_RECEIVED = '[projects] active modules received',
-}
-export class SharedProjectModulesReceived implements Action {
-  readonly type = ActionTypes.PROJECT_MODULES_RECEIVED;
-
-  constructor(public payload: any) {
-  }
+    SET_TABS = '[layout] set tabs',
 }
 
-export type SharedActionsUnion = SharedProjectModulesReceived;
+export class SetTabs implements Action {
+    readonly type = ActionTypes.SET_TABS;
+
+    constructor(public payload: Tab[]) {}
+}
+
+export type SharedActionsUnion = SetTabs;

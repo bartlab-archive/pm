@@ -22,7 +22,10 @@ import {
 } from '@angular/material';
 import {AppService} from './services/app.service';
 import {FormService} from './services/form.service';
-import {APP_EVENT_PRELOAD, APP_EVENT_INTERCEPTORS} from './providers/app.injection';
+import {
+    APP_EVENT_PRELOAD,
+    APP_EVENT_INTERCEPTORS,
+} from './providers/app.injection';
 import {AppEventInterceptor} from './interceptors/app-event.interceptor';
 import {AppEffects} from './store/effects/app.effects';
 import * as appActions from './store/actions/app.actions';
@@ -31,6 +34,8 @@ import {AppInterceptor} from './interceptors/app.interceptor';
 import {UsersModule} from '../modules/users/users.module';
 import {AdminModule} from '../modules/admin/admin.module';
 import {AppConfirmDialogComponent} from './components/confirm-dialog/confirm-dialog.component';
+import {WikiModule} from '../modules/wiki/wiki.module';
+import {RouteSerializer} from './serializers/route-serializer';
 
 @NgModule({
     declarations: [
@@ -62,7 +67,9 @@ import {AppConfirmDialogComponent} from './components/confirm-dialog/confirm-dia
 
         // store
         StoreModule.forRoot(reducers, {metaReducers}),
-        StoreRouterConnectingModule.forRoot(),
+        StoreRouterConnectingModule.forRoot({
+            serializer: RouteSerializer,
+        }),
         EffectsModule.forRoot([AppEffects]),
         StoreDevtoolsModule.instrument({
             maxAge: 25, // Retains last 25 states
@@ -81,6 +88,7 @@ import {AppConfirmDialogComponent} from './components/confirm-dialog/confirm-dia
         IssuesModule,
         AdminModule,
         UsersModule,
+        WikiModule,
     ],
     providers: [
         AppService,
@@ -103,9 +111,7 @@ import {AppConfirmDialogComponent} from './components/confirm-dialog/confirm-dia
         },
         {
             provide: APP_EVENT_PRELOAD,
-            useValue: [
-                appActions.ActionTypes.INIT,
-            ],
+            useValue: [appActions.ActionTypes.INIT],
             multi: true,
         },
     ],

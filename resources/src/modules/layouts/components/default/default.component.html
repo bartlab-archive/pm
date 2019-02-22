@@ -1,31 +1,37 @@
 <mat-sidenav-container>
-    <mat-sidenav #snav mode="'over'" fixedInViewport="true">
+    <mat-sidenav #sidenav mode="'over'" fixedInViewport="true">
         <mat-toolbar color="primary">Menu</mat-toolbar>
         <mat-nav-list>
-            <a mat-list-item routerLink="/404" (click)="snav.toggle()">404</a>
-            <a mat-list-item routerLink="/500" (click)="snav.toggle()">500</a>
-            <a mat-list-item routerLink="/" (click)="snav.toggle()">index</a>
-            <a mat-list-item routerLink="/login" (click)="snav.toggle()">login</a>
-            <a mat-list-item routerLink="/account/register" (click)="snav.toggle()">registration</a>
-            <a mat-list-item routerLink="/account/lost_password" (click)="snav.toggle()">reset</a>
-            <a mat-list-item routerLink="/issues" (click)="snav.toggle()">View all issues</a>
-            <a mat-list-item routerLink="/projects" (click)="snav.toggle()">Projects</a>
+            <a mat-list-item [routerLink]="item.url" (click)="sidenav.toggle()" *ngFor="let item of sideItems">
+                <mat-icon>{{ item.icon }}</mat-icon>
+                <span>{{ item.name }}</span>
+            </a>
         </mat-nav-list>
     </mat-sidenav>
-
     <mat-sidenav-content>
-        <mat-toolbar color="primary">
+        <mat-toolbar
+            color="primary"
+            [ngClass]="{'multiple-toolbars': tabs.length > 0}"
+        >
             <mat-toolbar-row>
-                <button mat-icon-button (click)="snav.toggle()">
+                <button mat-icon-button (click)="sidenav.toggle()">
                     <mat-icon>menu</mat-icon>
                 </button>
                 <span>PM</span>
                 <span class="spacer"></span>
-                <button mat-icon-button [matMenuTriggerFor]="topMenu" *ngIf="topMenuItems.length">
+                <button
+                    mat-icon-button
+                    [matMenuTriggerFor]="topMenu"
+                    *ngIf="topMenuItems.length"
+                >
                     <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #topMenu="matMenu">
-                    <a [routerLink]="item.path" mat-menu-item *ngFor="let item of topMenuItems">
+                    <a
+                        [routerLink]="item.path"
+                        mat-menu-item
+                        *ngFor="let item of topMenuItems"
+                    >
                         <mat-icon>{{ item.icon }}</mat-icon>
                         <span>{{ item.title }}</span>
                     </a>
@@ -39,44 +45,42 @@
                     <!--</button>-->
                 </mat-menu>
             </mat-toolbar-row>
-            <mat-toolbar-row *ngIf="topTabs" class="sub-toolbar">
+            <mat-toolbar-row *ngIf="tabs.length > 0" class="sub-toolbar">
                 <nav mat-tab-nav-bar color="accent">
                     <a
-                            disableRipple="true"
-                            mat-tab-link
-                            *ngFor="let tab of topTabs"
-                            [routerLink]="tab.path"
-                            routerLinkActive
-                            #rla="routerLinkActive"
-                            [active]="rla.isActive"
+                        mat-tab-link
+                        disableRipple="true"
+                        *ngFor="let tab of tabs"
+                        [routerLink]="tab.path"
+                        [active]="isActiveTab(tab)"
                     >
-                        {{tab.name | uppercase}}
+                        {{ tab.title | uppercase }}
                     </a>
                 </nav>
             </mat-toolbar-row>
         </mat-toolbar>
-
-        <div class="q-nav-container" [ngClass]="{'with-project-menu': topTabs}">
-            <div class="q-nav">
-                <div class="q-nav-items">
-                    <div class="q-nav-item" *ngFor="let item of sideItems">
-                        <a [routerLink]="item.url">
-                            <mat-icon>{{ item.icon }}</mat-icon>
-                            <span>{{ item.name }}</span>
-                        </a>
+        <div class="d-flex">
+            <!--<div>-->
+                <div class="q-nav-container overflow-hidden">
+                    <div class="q-nav">
+                        <div class="q-nav-items">
+                            <div
+                                class="q-nav-item"
+                                *ngFor="let item of sideItems"
+                            >
+                                <a [routerLink]="item.url">
+                                    <mat-icon>{{ item.icon }}</mat-icon>
+                                    <span>{{ item.name }}</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="content-view-container">
-            <div class="content-view">
+            <!--</div>-->
+            <div class="flex-grow-1 overflow-auto">
                 <router-outlet></router-outlet>
+                <footer>Powered by MaybeWorks</footer>
             </div>
-
-            <footer>
-                Powered by MaybeWorks
-            </footer>
         </div>
     </mat-sidenav-content>
 </mat-sidenav-container>

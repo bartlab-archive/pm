@@ -1,18 +1,35 @@
-<form [formGroup]="form" fxLayout="column" fxFlex="100" (ngSubmit)="form.valid && onSubmit()">
-    <mat-form-field>
-        <input matInput placeholder="Login" formControlName="login" required>
-        <!--<mat-error>Login cannot be blank</mat-error>-->
-        <mat-error>{{getLoginErrorMessage()}}</mat-error>
-    </mat-form-field>
-
-    <mat-form-field>
-        <input matInput type="password" placeholder="Password" formControlName="password" required>
-        <!--<mat-error>Password cannot be blank</mat-error>-->
-        <mat-error>{{getPasswordErrorMessage()}}</mat-error>
-    </mat-form-field>
-
-    <div fxLayout="row" fxLayoutAlign="center center">
-        <button mat-flat-button color="primary" class="submit" [disabled]="form.invalid">Login</button>
-        <!--<button mat-flat-button color="primary" class="submit" [disabled]="form.invalid || (pending$ | async)">Login</button>-->
+<form [formGroup]="form" (ngSubmit)="form.valid && onSubmit()">
+    <div class="row flex-column">
+        <mat-form-field class="col-12">
+            <input
+                matInput
+                placeholder="Login"
+                formControlName="login"
+                required
+            />
+            <!--<mat-error>Login cannot be blank</mat-error>-->
+            <mat-error>{{ getLoginErrorMessage() }}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-12">
+            <input
+                matInput
+                type="password"
+                placeholder="Password"
+                formControlName="password"
+                required
+            />
+            <!--<mat-error>Password cannot be blank</mat-error>-->
+            <mat-error>{{ getPasswordErrorMessage() }}</mat-error>
+        </mat-form-field>
+    </div>
+    <div class="text-center">
+        <button
+            mat-flat-button
+            color="primary"
+            class="submit"
+            [disabled]="form.invalid"
+        >
+            Login
+        </button>
     </div>
 </form>

@@ -24,7 +24,7 @@ const definition = {
     assigned: user,
     watchers: [user],
     project,
-    tracker: tracker,
+    tracker,
     trackers: [tracker],
     priority,
     status,

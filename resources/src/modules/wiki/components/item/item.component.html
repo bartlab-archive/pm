@@ -1,0 +1,8 @@
+<div class="container mt-3">
+    <mat-card class="content-card">
+        <mat-progress-bar
+            mode="indeterminate"
+            *ngIf="(pending$ | async)"
+        ></mat-progress-bar>
+    </mat-card>
+</div>

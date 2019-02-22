@@ -1,0 +1,14 @@
+<form [formGroup]="modulesForm" (ngSubmit)="onSubmit($event)">
+    <mat-selection-list>
+        <mat-list-option
+            *ngFor="let module of modules"
+            [selected]="module.enabled"
+            (click)="onToggleModule(module)"
+        >
+            {{ module.title }}
+        </mat-list-option>
+    </mat-selection-list>
+    <div class="form-group">
+        <button mat-button mat-raised-button color="primary">Save</button>
+    </div>
+</form>

@@ -5,7 +5,11 @@ import {catchError, exhaustMap, map} from 'rxjs/operators';
 import {normalize} from 'normalizr';
 import {ProjectsService} from '../../services/projects.service';
 import * as ProjectActions from '../actions/projects.actions';
-import {ListResponse, PaginationParams, ProjectResponse} from '../../interfaces/projects';
+import {
+    ListResponse,
+    PaginationParams,
+    ProjectResponse,
+} from '../../interfaces/projects';
 import {ResponseError} from '../../../../app/interfaces/api';
 import {projectsSchema} from '../schemas';
 
@@ -13,8 +17,9 @@ import {projectsSchema} from '../schemas';
 export class ProjectsEffects {
     @Effect()
     protected list$ = this.actions$.pipe(
-        ofType<ProjectActions.ListRequestAction>(ProjectActions.ActionTypes.LIST_REQUEST),
-        // delay(3000),
+        ofType<ProjectActions.ListRequestAction>(
+            ProjectActions.ActionTypes.LIST_REQUEST,
+        ),
         map((action) => action.payload),
         exhaustMap((data: PaginationParams) =>
             this.projectsService.all(data).pipe(
@@ -25,15 +30,18 @@ export class ProjectsEffects {
                     };
                     return new ProjectActions.ListSuccessAction(payload);
                 }),
-                catchError((response: ResponseError) => of(new ProjectActions.ListErrorAction(response))),
+                catchError((response: ResponseError) =>
+                    of(new ProjectActions.ListErrorAction(response)),
+                ),
             ),
         ),
     );
 
     @Effect()
     protected one$ = this.actions$.pipe(
-        ofType<ProjectActions.OneRequestAction>(ProjectActions.ActionTypes.ONE_REQUEST),
-        // delay(3000),
+        ofType<ProjectActions.OneRequestAction>(
+            ProjectActions.ActionTypes.ONE_REQUEST,
+        ),
         map((action) => action.payload),
         exhaustMap((identifier: string) =>
             this.projectsService.one(identifier).pipe(
@@ -43,14 +51,18 @@ export class ProjectsEffects {
                     };
                     return new ProjectActions.OneSuccessAction(payload);
                 }),
-                catchError((response: ResponseError) => of(new ProjectActions.OneErrorAction(response))),
+                catchError((response: ResponseError) =>
+                    of(new ProjectActions.OneErrorAction(response)),
+                ),
             ),
         ),
     );
 
     @Effect()
     protected my$ = this.actions$.pipe(
-        ofType<ProjectActions.PreloadRequestAction>(ProjectActions.ActionTypes.PRELOAD_REQUEST),
+        ofType<ProjectActions.PreloadRequestAction>(
+            ProjectActions.ActionTypes.PRELOAD_REQUEST,
+        ),
         exhaustMap(() =>
             this.projectsService.getProjects().pipe(
                 map((response: ProjectResponse) => {
@@ -60,11 +72,60 @@ export class ProjectsEffects {
 
                     return new ProjectActions.PreloadSuccessAction(payload);
                 }),
-                catchError((response: ResponseError) => of(new ProjectActions.PreloadErrorAction(response))),
+                catchError((response: ResponseError) =>
+                    of(new ProjectActions.PreloadErrorAction(response)),
+                ),
             ),
         ),
     );
 
-    public constructor(protected actions$: Actions, protected projectsService: ProjectsService) {
-    }
+    @Effect()
+    protected update$ = this.actions$.pipe(
+        ofType<ProjectActions.UpdateRequestAction>(
+            ProjectActions.ActionTypes.UPDATE_REQUEST,
+        ),
+        map((action) => action.payload),
+        exhaustMap((data) =>
+            this.projectsService.update(data).pipe(
+                map((response: ProjectResponse) => {
+                    const payload = {
+                        ...normalize(response.data, projectsSchema),
+                    };
+                    return new ProjectActions.UpdateSuccessAction(payload);
+                }),
+                catchError((response: ResponseError) =>
+                    of(new ProjectActions.UpdateErrorAction(response)),
+                ),
+            ),
+        ),
+    );
+
+    @Effect()
+    protected updateModules$ = this.actions$.pipe(
+        ofType<ProjectActions.UpdateModulesRequestAction>(
+            ProjectActions.ActionTypes.UPDATE_MODULES_REQUEST,
+        ),
+        map((action) => action.payload),
+        exhaustMap((data) =>
+            this.projectsService.updateModules(data).pipe(
+                map((response: ProjectResponse) => {
+                    const payload = {
+                        ...normalize(response.data, projectsSchema),
+                    };
+
+                    return new ProjectActions.UpdateModulesSuccessAction(
+                        payload,
+                    );
+                }),
+                catchError((response: ResponseError) =>
+                   console.log(response) as any || of(new ProjectActions.UpdateModulesErrorAction(response)),
+                ),
+            ),
+        ),
+    );
+
+    public constructor(
+        protected actions$: Actions,
+        protected projectsService: ProjectsService,
+    ) {}
 }

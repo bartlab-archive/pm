@@ -7,8 +7,15 @@ export interface FormResponseError {
     message: string;
 }
 
+export interface ErrorData {
+    errors: {
+        [key: string]: string[];
+    };
+}
+
 export interface ResponseError {
     message: string;
+    error?: ErrorData;
 }
 
 export enum RequestStatus {

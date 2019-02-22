@@ -1,0 +1,17 @@
+<div class="container mt-3">
+    <mat-card class="content-card">
+        <mat-progress-bar
+            mode="indeterminate"
+            *ngIf="(pending$ | async)"
+        ></mat-progress-bar>
+        <form [formGroup]="wikiForm">
+            <app-main-md-editor
+                formControlName="description"
+            ></app-main-md-editor>
+            <mat-error
+                validation-error
+                formControlName="description"
+            ></mat-error>
+        </form>
+    </mat-card>
+</div>

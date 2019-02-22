@@ -1,39 +1,15 @@
-$space: 20px;
-$text-muted: #ababab;
 $icon-size: 24px;
 
 .journal-list {
-  padding-left: 0;
-  margin: 0;
   list-style: none;
-
-  .journal {
-    display: flex;
-    align-items: flex-start;
-    margin-top: 10px;
-
-    figure {
-      margin: 0 $space 0 0;
-      text-align: center;
-
-      img {
-        width: $icon-size;
-        height: $icon-size;
-        border-radius: 50%;
-      }
-    }
-  }
-
   .details {
-    padding-left: 0;
-    margin-left: 60px;
-
     li {
       list-style: disc;
-
-      .label {
-        color: $text-muted;
-      }
     }
+  }
+  img {
+    width: $icon-size;
+    height: $icon-size;
+    border-radius: 50%;
   }
 }

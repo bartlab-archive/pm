@@ -1,22 +1,21 @@
 import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {RouterModule, Routes} from '@angular/router';
 import {Main404Component} from './components/404/404.component';
 import {Main500Component} from './components/500/500.component';
-import {MainIndexComponent} from './components/index/index.component';
-import {RouterModule, Routes} from '@angular/router';
-import {DefaultComponent} from '../layouts/components/default/default.component';
-import {BlankComponent} from '../layouts/components/blank/blank.component';
+import {MainMDEditorComponent} from './components/md-editor/md-editor.component';
+import {ValidationErrorComponent} from './components/validation-error/validation-error.component';
+import {DefaultComponent} from '../layouts/components';
+import {BlankComponent} from '../layouts/components';
 import {ListService} from './services/list.service';
-import {MatButtonModule, MatCardModule} from '@angular/material';
-import {CommonModule} from '@angular/common';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import {MaterialModule} from '../material/material.module';
 
 const mainRoutes: Routes = [
     {
         path: '',
         component: DefaultComponent,
-        children: [
-            {path: '', component: MainIndexComponent, data: {auth: 'authorized'}},
-        ],
+        children: [],
     },
     {
         path: '',
@@ -32,18 +31,22 @@ const mainRoutes: Routes = [
     declarations: [
         Main404Component,
         Main500Component,
-        MainIndexComponent,
+        MainMDEditorComponent,
+        ValidationErrorComponent,
     ],
     imports: [
         CommonModule,
-        FlexLayoutModule,
-        MatCardModule,
-        MatButtonModule,
+        MaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
         RouterModule.forChild(mainRoutes),
     ],
-    providers: [
-        ListService,
+    providers: [ListService],
+    exports: [
+        MainMDEditorComponent,
+        ValidationErrorComponent,
+        FormsModule,
+        ReactiveFormsModule,
     ],
 })
-export class MainModule {
-}
+export class MainModule {}

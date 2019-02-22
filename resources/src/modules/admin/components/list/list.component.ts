@@ -1,9 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
-import {select, Store} from '@ngrx/store';
-import {map} from 'rxjs/operators';
-import {RequestStatus} from '../../../../app/interfaces/api';
-import {selectAdminCategories} from '../../store/reducers';
+import {Component, Inject, OnInit} from '@angular/core';
+import {APP_MODULE_ADMIN} from '../../../../app/providers/app.injection';
 
 @Component({
     selector: 'app-admin-list',
@@ -12,16 +8,8 @@ import {selectAdminCategories} from '../../store/reducers';
 })
 export class AdminListComponent implements OnInit {
 
-    // public categories = [
-    //     {name: 'Projects', icon: 'work', url: '/admin/projects'},
-    //     {name: 'Users', icon: 'person', url: '/admin/users'},
-    //     {name: 'Trackers', icon: 'timelapse', url: '/admin/trackers'},
-    //     {name: 'Issues statuses', icon: 'done', url: '/issue_statuses'},
-    // ];
-    public categories$: Observable<any> = this.store.pipe(select(selectAdminCategories));
-
     public constructor(
-        private store: Store<any>,
+        @Inject(APP_MODULE_ADMIN) private categories,
     ) {
     }
 

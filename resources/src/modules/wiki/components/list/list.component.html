@@ -1,0 +1,12 @@
+<div class="container mt-3">
+    <mat-card class="content-card">
+        <mat-progress-bar
+            mode="indeterminate"
+            *ngIf="pending"
+        ></mat-progress-bar>
+        <mat-paginator
+            [pageSizeOptions]="pageSizeOptions"
+            (page)="onPageChange($event)"
+        ></mat-paginator>
+    </mat-card>
+</div>

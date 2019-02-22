@@ -1,42 +1,22 @@
 import {NgModule} from '@angular/core';
 import {DefaultComponent, BlankComponent} from './components';
 import {RouterModule, Routes} from '@angular/router';
-import {
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatListModule,
-    MatMenuModule,
-    MatTabsModule,
-} from '@angular/material';
 import {LayoutsService} from './services/layouts.service';
 import {CommonModule} from '@angular/common';
 import {StoreModule} from '@ngrx/store';
-import {layoutsReducers} from './store/reducers/default.reducer';
+import {MaterialModule} from '../material/material.module';
+import {featureName, reducers} from './store/reducers';
 
 const layoutsRoutes: Routes = [];
 
 @NgModule({
-    declarations: [
-        DefaultComponent,
-        BlankComponent,
-    ],
+    declarations: [DefaultComponent, BlankComponent],
     imports: [
         CommonModule,
+        MaterialModule,
         RouterModule.forChild(layoutsRoutes),
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatSidenavModule,
-        MatListModule,
-        MatMenuModule,
-        MatTabsModule,
-        StoreModule.forFeature('moduleLayouts', layoutsReducers),
+        StoreModule.forFeature(featureName, reducers),
     ],
-    providers: [
-        LayoutsService,
-    ],
+    providers: [LayoutsService],
 })
-export class LayoutsModule {
-}
+export class LayoutsModule {}

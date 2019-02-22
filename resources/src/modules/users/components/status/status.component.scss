@@ -1,4 +1,4 @@
-mat-chip {
+.mat-chip {
   padding: 5px 10px;
   border-radius: 50px;
   color: white;
@@ -16,4 +16,8 @@ mat-chip {
 
 .chip-registered {
   background: #424242;
+}
+
+.chip-unknown {
+  background: #B71C1C;
 }

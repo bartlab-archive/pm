@@ -1,88 +1,80 @@
 import {Inject, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FlexLayoutModule} from '@angular/flex-layout';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {Router, RouterModule, Routes} from '@angular/router';
-import {
-    MatButtonModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatSnackBarModule,
-    MatTabsModule,
-    MatSelectModule,
-    MatSlideToggleModule,
-    MatCheckboxModule,
-    MatProgressBarModule,
-    MatMenuModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatChipsModule,
-    MatAutocompleteModule,
-    MatDividerModule,
-} from '@angular/material';
-
 import {ProjectsMainComponent} from './components/main/main.component';
 import {ProjectsListComponent} from './components/list/list.component';
 import {ProjectsItemComponent} from './components/item/item.component';
 import {ProjectsService} from './services/projects.service';
+import {ModulesService} from './services/modules.service';
 import {DefaultComponent} from '../layouts/components';
-import {
-    reducers,
-    metaReducers,
-} from './store/reducers';
-
+import {reducers, metaReducers} from './store/reducers';
+import {MainModule} from '../main/main.module';
+import {MaterialModule} from '../material/material.module';
 import {ProjectsEffects} from './store/effects/projects.effects';
-import {APP_EVENT_INTERCEPTORS, APP_MODULE_SUBROUTES} from '../../app/providers/app.injection';
+import {
+    APP_EVENT_INTERCEPTORS, APP_MODULE_ADMIN,
+    APP_MODULE_META,
+    APP_MODULE_SUBROUTES,
+} from '../../app/providers/app.injection';
 import {ProjectsEventInterceptor} from './interceptors/projects-event.interceptor';
 import {findBy} from '../../app/helpers/collection';
+import {ProjectsOverviewComponent} from './components/overview/overview.component';
+import {ProjectsSettingsComponent} from './components/settings/settings.component';
+import {ProjectsInformationComponent} from './components/information/information.component';
+import {ProjectsModulesComponent} from './components/modules/modules.component';
+import {meta} from './projects.meta';
 
 @NgModule({
     declarations: [
         ProjectsMainComponent,
         ProjectsListComponent,
         ProjectsItemComponent,
+        ProjectsOverviewComponent,
+        ProjectsSettingsComponent,
+        ProjectsInformationComponent,
+        ProjectsModulesComponent,
     ],
     entryComponents: [
         ProjectsMainComponent,
         ProjectsListComponent,
         ProjectsItemComponent,
+        ProjectsOverviewComponent,
+        ProjectsSettingsComponent,
+        ProjectsInformationComponent,
+        ProjectsModulesComponent,
     ],
     imports: [
         CommonModule,
         RouterModule,
-        // RouterModule.forChild(authRoutes),
-        MatInputModule,
-        MatCardModule,
-        MatButtonModule,
-        MatIconModule,
-        MatTabsModule,
-        MatFormFieldModule,
-        MatSnackBarModule,
-        MatSelectModule,
-        MatSlideToggleModule,
-        MatCheckboxModule,
-        MatProgressBarModule,
-        MatMenuModule,
-        MatTableModule,
-        MatSortModule,
-        MatPaginatorModule,
-        MatChipsModule,
-        MatAutocompleteModule,
-        MatDividerModule,
+        MaterialModule,
+        MainModule,
+        FormsModule,
         ReactiveFormsModule,
-        FlexLayoutModule,
         HttpClientModule,
         StoreModule.forFeature('moduleProjects', reducers, {metaReducers}),
         EffectsModule.forFeature([ProjectsEffects]),
     ],
     providers: [
         ProjectsService,
+        ModulesService,
+        {
+            provide: APP_MODULE_ADMIN,
+            useValue: {
+                name: 'Projects',
+                icon: 'work',
+                url: 'projects',
+            },
+            multi: true,
+        },
+        {
+            provide: APP_MODULE_META,
+            useValue: meta,
+            multi: true,
+        },
         {
             provide: APP_MODULE_SUBROUTES,
             useValue: [],
@@ -115,7 +107,31 @@ export class ProjectsModule {
                         {
                             path: ':identifier',
                             component: ProjectsItemComponent,
-                            children: findBy(this.config, 'projects'),
+                            children: [
+                                {
+                                    path: '',
+                                    component: ProjectsOverviewComponent,
+                                },
+                                {
+                                    path: 'settings',
+                                    component: ProjectsSettingsComponent,
+                                    children: [
+                                        {
+                                            path: '',
+                                            redirectTo: 'information',
+                                        },
+
+                                        {
+                                            path: 'information',
+                                            component: ProjectsInformationComponent,
+                                        },
+                                        {
+                                            path: 'modules',
+                                            component: ProjectsModulesComponent,
+                                        },
+                                    ],
+                                },
+                            ].concat(findBy(this.config, 'projects')),
                         },
                     ],
                 },
@@ -128,6 +144,5 @@ export class ProjectsModule {
         @Inject(APP_MODULE_SUBROUTES) private config: Array<Routes>,
     ) {
         this.router.config.unshift(...this.routes);
-        // this.router.config.push(config);
     }
 }

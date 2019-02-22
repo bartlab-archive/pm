@@ -1,24 +1,23 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Status, UsersStatusNames} from '../../interfaces/users';
 
 @Component({
-    selector: 'app-user-status',
+    selector: 'user-status',
     templateUrl: './status.component.html',
     styleUrls: ['./status.component.scss'],
 })
-export class UserStatusComponent {
-    @Input()
-    public value: number;
+export class UserStatusComponent implements OnInit {
+    @Input() value: number;
 
-    public constructor() {
+    public name: string = 'unknown';
+
+    public ngOnInit(): void {
+        const status: Status = UsersStatusNames.find(
+            (item) => item.id === this.value,
+        );
+
+        if (status) {
+            this.name = status.name;
+        }
     }
-
-    public get name(): string {
-        return this.getStatusById(this.value).name;
-    }
-
-    public getStatusById(status): Status {
-        return UsersStatusNames.find((item) => item.id === status);
-    }
-
 }
