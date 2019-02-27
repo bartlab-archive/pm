@@ -3,20 +3,21 @@ import {
     createFeatureSelector,
     createSelector,
 } from '@ngrx/store';
-import * as fromRoot from '../../../../app/store/reducers';
-import * as fromMenus from './menus.reducer';
+import {State as RootState} from '../../../../app/store/reducers';
+import {menusReducer, MenuState} from './menus.reducer';
 
 export const featureName = 'moduleLayouts';
+
 export interface LayoutsState {
-    menus: fromMenus.State;
+    menus: MenuState;
 }
 
-export interface State extends fromRoot.State {
+export interface State extends RootState {
     [featureName]: LayoutsState;
 }
 
 export const reducers: ActionReducerMap<LayoutsState> = {
-    menus: fromMenus.reducer,
+    menus: menusReducer,
 };
 
 export const selectModuleState = createFeatureSelector<State, LayoutsState>(

@@ -35,7 +35,10 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     public item: Issue;
     public statuses$: Observable<any[]>;
     public trackers$: Observable<any[]>;
-    public pending$: Observable<boolean> = this.store.pipe(select(selectIssuesStatus), map((status) => status === RequestStatus.pending));
+    public pending$: Observable<boolean> = this.store.pipe(
+        select(selectIssuesStatus),
+        map((status) => status === RequestStatus.pending),
+    );
     public params$: Observable<Params> = this.activatedRoute.params;
     public myProjects$: Observable<Project[]>;
     public priorities$: Observable<any[]>;

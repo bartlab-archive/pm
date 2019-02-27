@@ -2,7 +2,7 @@ import {Inject, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
-import {StoreModule} from '@ngrx/store';
+import {select, Store, StoreModule} from '@ngrx/store';
 import {EffectsModule} from '@ngrx/effects';
 import {Router, RouterModule, Routes} from '@angular/router';
 import {ProjectsMainComponent} from './components/main/main.component';
@@ -11,7 +11,7 @@ import {ProjectsItemComponent} from './components/item/item.component';
 import {ProjectsService} from './services/projects.service';
 import {ModulesService} from './services/modules.service';
 import {DefaultComponent} from '../layouts/components';
-import {reducers, metaReducers} from './store/reducers';
+import {reducers, metaReducers, selectProjectsMy} from './store/reducers';
 import {MainModule} from '../main/main.module';
 import {MaterialModule} from '../material/material.module';
 import {ProjectsEffects} from './store/effects/projects.effects';
@@ -27,6 +27,10 @@ import {ProjectsSettingsComponent} from './components/settings/settings.componen
 import {ProjectsInformationComponent} from './components/information/information.component';
 import {ProjectsModulesComponent} from './components/modules/modules.component';
 import {meta} from './projects.meta';
+import {Observable} from 'rxjs';
+import {selectTopItems} from '../layouts/store/selectors/menus.selector';
+import {filter} from 'rxjs/operators';
+import {SetRightItems} from './store/actions/shared.actions';
 
 @NgModule({
     declarations: [
@@ -139,10 +143,26 @@ export class ProjectsModule {
         },
     ];
 
+    protected my$: Observable<Array<any>> = this.store.pipe(
+        select(selectProjectsMy),
+        filter((items) => Boolean(items)),
+    );
+
     public constructor(
         protected router: Router,
+        protected store: Store<any>,
         @Inject(APP_MODULE_SUBROUTES) private config: Array<Routes>,
     ) {
         this.router.config.unshift(...this.routes);
+
+        this.my$.subscribe((items) => {
+            this.store.dispatch(new SetRightItems(items.map((project) => {
+                return {
+                    icon: 'work',
+                    path: ['/projects', project],
+                    title: project,
+                };
+            })));
+        });
     }
 }

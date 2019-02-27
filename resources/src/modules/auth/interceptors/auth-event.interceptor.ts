@@ -6,6 +6,8 @@ import * as authActions from '../store/actions/auth.actions';
 import {AuthService} from '../services/auth.service';
 import {AppEventsUnion, AppPreloadEvent, EVENT_TYPE_PRELOAD} from '../../../app/events';
 import {filter, first} from 'rxjs/operators';
+import {LayoutsSetTopItems} from '../store/actions/shared.action';
+import {RequestStatus} from '../../../app/interfaces/api';
 
 @Injectable()
 export class AuthEventInterceptor implements AppInterceptor {
@@ -25,7 +27,6 @@ export class AuthEventInterceptor implements AppInterceptor {
     }
 
     public onPreload(appEvent: AppPreloadEvent, next: AppInterceptorHandler): void {
-        // console.log('AuthEventInterceptor');
         if (!this.authService.isAuthorized()) {
             return;
         }
@@ -33,19 +34,47 @@ export class AuthEventInterceptor implements AppInterceptor {
         this.store
             .pipe(
                 select(fromAuth.selectAuthStatus),
-                filter((status) => status === 'success' || status === 'error'),
+                filter((status) => status === RequestStatus.success || status === RequestStatus.error),
                 first(),
             )
             .subscribe((status) => {
-                if (status === 'success' && this.authService.isAuthorized()) {
+                if (status === RequestStatus.success && this.authService.isAuthorized()) {
+                    this.addTopMenu();
                     next.handle(appEvent);
                 }
 
-                if (status === 'error') {
+                if (status === RequestStatus.error) {
                     this.authService.onUnauthorizedError(null);
                 }
             });
 
         this.store.dispatch(new authActions.PreloadRequestAction());
+    }
+
+    public addTopMenu(): void {
+        const user = this.authService.getUser();
+
+        if (!user) {
+            return;
+        }
+
+        // todo: clear by logout action
+        this.store.dispatch(new LayoutsSetTopItems([
+            {
+                icon: 'account_circle',
+                path: `/users/${user.id}`,
+                title: 'Profile',
+            },
+            {
+                icon: 'settings',
+                path: '/my/account',
+                title: 'My account',
+            },
+            {
+                icon: 'exit_to_app',
+                path: '/logout',
+                title: 'Logout',
+            },
+        ]));
     }
 }

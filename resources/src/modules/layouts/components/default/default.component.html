@@ -19,10 +19,13 @@
                 </button>
                 <span>PM</span>
                 <span class="spacer"></span>
+                <button mat-icon-button (click)="rightnav.toggle()">
+                    <mat-icon>work</mat-icon>
+                </button>
                 <button
                     mat-icon-button
                     [matMenuTriggerFor]="topMenu"
-                    *ngIf="topMenuItems.length"
+                    *ngIf="topItems.length"
                 >
                     <mat-icon>more_vert</mat-icon>
                 </button>
@@ -30,7 +33,7 @@
                     <a
                         [routerLink]="item.path"
                         mat-menu-item
-                        *ngFor="let item of topMenuItems"
+                        *ngFor="let item of topItems"
                     >
                         <mat-icon>{{ item.icon }}</mat-icon>
                         <span>{{ item.title }}</span>
@@ -64,15 +67,15 @@
                 <div class="q-nav-container overflow-hidden">
                     <div class="q-nav">
                         <div class="q-nav-items">
-                            <div
-                                class="q-nav-item"
-                                *ngFor="let item of sideItems"
-                            >
-                                <a [routerLink]="item.url">
-                                    <mat-icon>{{ item.icon }}</mat-icon>
-                                    <span>{{ item.name }}</span>
-                                </a>
-                            </div>
+                            <!--<div-->
+                                <!--class="q-nav-item"-->
+                                <!--*ngFor="let item of sideItems"-->
+                            <!--&gt;-->
+                                <!--<a [routerLink]="item.url">-->
+                                    <!--<mat-icon>{{ item.icon }}</mat-icon>-->
+                                    <!--<span>{{ item.name }}</span>-->
+                                <!--</a>-->
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>
@@ -83,4 +86,13 @@
             </div>
         </div>
     </mat-sidenav-content>
+    <mat-sidenav #rightnav mode="'over'" fixedInViewport="true" position="end">
+        <mat-toolbar color="primary">Work</mat-toolbar>
+        <mat-nav-list>
+            <a mat-list-item [routerLink]="item.path" (click)="rightnav.toggle()" *ngFor="let item of rightItems">
+                <mat-icon>{{ item.icon }}</mat-icon>
+                <span>{{ item.title }}</span>
+            </a>
+        </mat-nav-list>
+    </mat-sidenav>
 </mat-sidenav-container>

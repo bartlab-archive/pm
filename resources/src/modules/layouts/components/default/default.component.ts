@@ -14,7 +14,7 @@ import {
     LayoutsDefaultInitAction,
 } from '../../store/actions/default.action';
 
-import {selectTabs} from '../../store/selectors/menus.selector';
+import {selectRightItems, selectTabs, selectTopItems} from '../../store/selectors/menus.selector';
 
 export const flat = (arr) => arr.reduce((acc, val) => acc.concat(val), []);
 
@@ -24,58 +24,71 @@ export const flat = (arr) => arr.reduce((acc, val) => acc.concat(val), []);
     styleUrls: ['./default.component.scss'],
 })
 export class DefaultComponent implements OnInit, OnDestroy {
-    public topMenuItems = this.layoutsService.getTopMenu();
-    public sideItems = [
-        {
-            url: '/',
-            icon: 'home',
-            name: 'Home',
-        },
-        // {
-        //     url: '/my/page',
-        //     icon: 'person',
-        //     name: 'My page'
-        // },
-        {
-            url: '/admin',
-            icon: 'settings_applications',
-            name: 'Administrator',
-        },
-        {
-            url: '/projects',
-            icon: 'work',
-            name: 'Projects',
-        },
-        // {
-        //     url: '/activity',
-        //     icon: 'access_time',
-        //     name: 'Overall activity'
-        // },
-        // {
-        //     url: '/users',
-        //     icon: 'face',
-        //     name: 'Users',
-        // },
-        {
-            url: '/activity',
-            icon: 'access_time',
-            name: 'Overall activity',
-        },
-        {
-            url: '/issues',
-            icon: 'list',
-            name: 'View all issues',
-        },
-        // {
-        //     url: '/time_entries',
-        //     icon: 'timelapse',
-        //     name: 'Overall spent time'
-        // }
-    ];
+    // public topMenuItems = this.layoutsService.getTopMenu();
+    // public sideItems = [
+    //     {
+    //         url: '/',
+    //         icon: 'home',
+    //         name: 'Home',
+    //     },
+    //     // {
+    //     //     url: '/my/page',
+    //     //     icon: 'person',
+    //     //     name: 'My page'
+    //     // },
+    //     {
+    //         url: '/admin',
+    //         icon: 'settings_applications',
+    //         name: 'Administrator',
+    //     },
+    //     {
+    //         url: '/projects',
+    //         icon: 'work',
+    //         name: 'Projects',
+    //     },
+    //     // {
+    //     //     url: '/activity',
+    //     //     icon: 'access_time',
+    //     //     name: 'Overall activity'
+    //     // },
+    //     // {
+    //     //     url: '/users',
+    //     //     icon: 'face',
+    //     //     name: 'Users',
+    //     // },
+    //     {
+    //         url: '/activity',
+    //         icon: 'access_time',
+    //         name: 'Overall activity',
+    //     },
+    //     {
+    //         url: '/issues',
+    //         icon: 'list',
+    //         name: 'View all issues',
+    //     },
+    //     // {
+    //     //     url: '/time_entries',
+    //     //     icon: 'timelapse',
+    //     //     name: 'Overall spent time'
+    //     // }
+    // ];
+
+    public topItems$: Observable<Array<any>> = this.store.pipe(
+        select(selectTopItems),
+        filter((items) => Boolean(items)),
+    );
+    public topItems: Array<any>;
+
+    public rightItems$: Observable<Array<any>> = this.store.pipe(
+        select(selectRightItems),
+        filter((items) => Boolean(items)),
+    );
+    public rightItems: Array<any>;
 
     public activeTab: Tab;
     public tabs$: Observable<Tab[]> = this.store.pipe(select(selectTabs));
     public tabs: Tab[] = [];
+
     public navigationEnd$: Observable<RouterEvent> = this.router.events.pipe(
         filter((event: RouterEvent) => event instanceof NavigationEnd),
     );
@@ -86,11 +99,21 @@ export class DefaultComponent implements OnInit, OnDestroy {
         private layoutsService: LayoutsService,
         private store: Store<any>,
         private router: Router,
-    ) {}
+    ) {
+    }
 
     public ngOnInit() {
         this.store.dispatch(new LayoutsDefaultInitAction());
+
         this.subscriptions.push(
+            this.topItems$.subscribe((items) => {
+                this.topItems = items;
+            }),
+
+            this.rightItems$.subscribe((items) => {
+                this.rightItems = items;
+            }),
+
             combineLatest(
                 this.tabs$,
                 this.navigationEnd$.pipe(startWith(null)),

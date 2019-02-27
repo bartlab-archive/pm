@@ -19,7 +19,6 @@ import {reducers, metaReducers} from './store/reducers';
 import {AuthEffects} from './store/effects/auth.effects';
 import {AuthInterceptor} from './interceptors/auth.interceptor';
 import {filter} from 'rxjs/operators';
-import {LayoutsService} from '../layouts/services/layouts.service';
 import * as AuthActions from './store/actions/auth.actions';
 import {AuthEventInterceptor} from './interceptors/auth-event.interceptor';
 import {
@@ -103,7 +102,6 @@ export class AuthModule {
     public constructor(
         private authService: AuthService,
         private router: Router,
-        private layoutsService: LayoutsService,
         private store: Store<any>,
     ) {
         this.authService.unauthorized$.subscribe(() => {
@@ -139,23 +137,6 @@ export class AuthModule {
                         return this.router.navigate(['/']);
                     }
                 }
-            });
-
-        this.layoutsService
-            .addTopMenuItem({
-                icon: 'account_circle',
-                path: '/users/1',
-                title: 'Profile',
-            })
-            .addTopMenuItem({
-                icon: 'settings',
-                path: '/my/account',
-                title: 'My account',
-            })
-            .addTopMenuItem({
-                icon: 'exit_to_app',
-                path: '/logout',
-                title: 'Logout',
             });
     }
 }
