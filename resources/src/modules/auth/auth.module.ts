@@ -127,15 +127,17 @@ export class AuthModule {
                     }
 
                     if (
-                        snapshot.data.auth === 'authorized' &&
+                        (snapshot.data.auth === 'authorized' || snapshot.data.auth === 'admin') &&
                         !this.authService.isAuthorized()
                     ) {
                         return this.router.navigate(['/login']);
                     }
 
-                    // if (snapshot.data.auth === 'admin' && (!this.authService.isAuthorized() || !this.authService.isAdministrator())) {
-                    //     return this.router.navigate(['']);
-                    // }
+                    if (snapshot.data.auth === 'admin' &&
+                        !this.authService.isAdministrator()
+                    ) {
+                        return this.router.navigate(['/']);
+                    }
                 }
             });
 
