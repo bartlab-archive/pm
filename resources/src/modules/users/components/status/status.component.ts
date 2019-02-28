@@ -9,7 +9,7 @@ import {Status, UsersStatusNames} from '../../interfaces/users';
 export class UserStatusComponent implements OnInit {
     @Input() value: number;
 
-    public name: string = 'unknown';
+    public name = 'unknown';
 
     public ngOnInit(): void {
         const status: Status = UsersStatusNames.find(

@@ -114,7 +114,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                     this.tags = [];
                     this.allTags = data.project.members.map((member) => {
                         const tag = {name: member.user.full_name, id: member.user.id};
-                        if (data.watchers.some(watcher => watcher.id === tag.id)) {
+                        if (data.watchers.some((watcher) => watcher.id === tag.id)) {
                             this.tags.push(tag);
                         }
                         return tag;

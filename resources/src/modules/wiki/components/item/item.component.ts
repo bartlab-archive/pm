@@ -1,7 +1,7 @@
 import {
     Component,
     OnDestroy,
-    OnInit
+    OnInit,
 } from '@angular/core';
 import {Subscription, combineLatest} from 'rxjs';
 import {select, Store} from '@ngrx/store';
@@ -18,7 +18,7 @@ import {Wiki} from '../../interfaces/wiki';
 @Component({
     selector: 'app-wiki-item',
     templateUrl: './item.component.html',
-    styleUrls: ['./item.component.scss']
+    styleUrls: ['./item.component.scss'],
 })
 export class WikiItemComponent implements OnInit, OnDestroy {
 
@@ -30,12 +30,12 @@ export class WikiItemComponent implements OnInit, OnDestroy {
     public constructor(
         private store: Store<any>,
         private activatedRoute: ActivatedRoute,
-        public router: Router
+        public router: Router,
     ) {
     }
 
     public ngOnInit(): void {
-        this.pending$ = this.store.pipe(select(selectWikiStatus), map(status => status === RequestStatus.pending));
+        this.pending$ = this.store.pipe(select(selectWikiStatus), map((status) => status === RequestStatus.pending));
         this.item$ = combineLatest(this.store.pipe(select(selectWikiActive)), this.params$)
             .pipe(
                 filter(([issue, params]) => issue && issue.id === Number(params.id)),
@@ -43,12 +43,12 @@ export class WikiItemComponent implements OnInit, OnDestroy {
             );
 
         this.subscriptions.push(
-            this.params$.subscribe(params => this.load(Number(params.id))),
+            this.params$.subscribe((params) => this.load(Number(params.id))),
         );
     }
 
     public ngOnDestroy(): void {
-        this.subscriptions.forEach(subscription => subscription.unsubscribe());
+        this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     }
 
     public load(id: number): void {

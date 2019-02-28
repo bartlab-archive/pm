@@ -5,6 +5,7 @@ export enum SharedActionTypes {
     AUTH_LOGOUT = '[auth] logout',
     // AUTH_LOGOUT = '[auth] logout',
     // ADD_CATEGORY = '[admin] add category',
+    LAYOUTS_ADD_LEFT_ITEM = '[layout] add left item',
 }
 
 export class SharedAuthLogoutAction implements Action {
@@ -19,6 +20,14 @@ export class SharedAuthLogoutAction implements Action {
 //     constructor(public payload: any) {}
 // }
 
+export class SharedLayoutsAddLeftItem implements Action {
+    readonly type = SharedActionTypes.LAYOUTS_ADD_LEFT_ITEM;
+
+    constructor(public payload: any) {
+    }
+}
+
 export type SharedActionsUnion =
-    | SharedAuthLogoutAction;
+    | SharedAuthLogoutAction
+    | SharedLayoutsAddLeftItem;
     // | SharedAddCategoryAction;

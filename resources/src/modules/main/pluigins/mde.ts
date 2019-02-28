@@ -262,7 +262,7 @@ export default class MDE {
             toggleHeadingBigger: 'Shift-Cmd-H',
             cleanBlock: 'Cmd-E',
             drawImage: 'Cmd-Alt-I',
-            toggleBlockquote: "Cmd-'",
+            toggleBlockquote: 'Cmd-\'',
             toggleOrderedList: 'Cmd-Alt-L',
             toggleUnorderedList: 'Cmd-L',
             toggleCodeBlock: 'Cmd-Alt-C',
@@ -298,145 +298,6 @@ export default class MDE {
             italic: '*',
         };
     }
-
-    // Safari, in Private Browsing Mode, looks like it supports localStorage but all calls to setItem throw QuotaExceededError. We're going to detect this and set a variable accordingly.
-    static isLocalStorageAvailable() {
-        if (typeof localStorage === 'object') {
-            try {
-                localStorage.setItem('smde_localStorage', '1');
-                localStorage.removeItem('smde_localStorage');
-            } catch (e) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Create icon element for toolbar.
-     */
-    static createIcon(options, enableTooltips, shortcuts) {
-        options = options || {};
-        let el = document.createElement('button');
-        let self = this;
-
-        enableTooltips = enableTooltips === undefined ? true : enableTooltips;
-
-        if (options.title && enableTooltips) {
-            el.title = self.createTooltip(options.title, options.action, shortcuts);
-
-            if (self.isMac) {
-                el.title = el.title.replace('Ctrl', '⌘');
-                el.title = el.title.replace('Alt', '⌥');
-            }
-        }
-
-        el.tabIndex = -1;
-        el.className = 'md-icon-button md-button'; //options.className;
-        // el.innerHTML = options.icon;
-
-        let icon = document.createElement('i');
-        icon.className = options.className;
-        icon.innerHTML = options.icon;
-        el.appendChild(icon);
-
-        return el;
-    }
-
-    static createTooltip(title, action, shortcuts) {
-        let actionName;
-        let tooltip = title;
-        let self = this;
-
-        if (action) {
-            actionName = self.getBindingName(action);
-            if (shortcuts[actionName]) {
-                tooltip += ' (' + self.fixShortcut(shortcuts[actionName]) + ')';
-            }
-        }
-
-        return tooltip;
-    }
-
-    /**
-     * Fix shortcut. Mac use Command, others use Ctrl.
-     */
-    static fixShortcut(name) {
-        let self = this;
-        return self.isMac ? name.replace('Ctrl', 'Cmd') : name.replace('Cmd', 'Ctrl');
-    }
-
-    static isMobile() {
-        let check = false;
-        let a = navigator.userAgent || navigator.vendor; // || window.opera;
-
-        if (
-            /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series([46])0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(
-                a,
-            ) ||
-            /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br([ev])w|bumb|bw-([nu])|c55\/|capi|ccwa|cdm-|cell|chtm|cldc|cmd-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc-s|devi|dica|dmob|do([cp])o|ds(12|-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly([\-_])|g1 u|g560|gene|gf-5|g-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd-([mpt])|hei-|hi(pt|ta)|hp( i|ip)|hs-c|ht(c([\- _agpst])|tp)|hu(aw|tc)|i-(20|go|ma)|i230|iac([ \-\/])|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja([tv])a|jbro|jemu|jigs|kddi|keji|kgt([ \/])|klon|kpt |kwc-|kyo([ck])|le(no|xi)|lg( g|\/([klu])|50|54|-[a-w])|libw|lynx|m1-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t([\- ov])|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30([02])|n50([025])|n7(0([01])|10)|ne(([cm])-|on|tf|wf|wg|wt)|nok([6i])|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan([adt])|pdxg|pg(13|-([1-8]|c))|phil|pire|pl(ay|uc)|pn-2|po(ck|rt|se)|prox|psio|pt-g|qa-a|qc(07|12|21|32|60|-[2-7]|i-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h-|oo|p-)|sdk\/|se(c([\-01])|47|mc|nd|ri)|sgh-|shar|sie([\-m])|sk-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h-|v-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl-|tdg-|tel([im])|tim-|t-mo|to(pl|sh)|ts(70|m-|m3|m5)|tx-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c([\- ])|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas-|your|zeto|zte-/i.test(
-                a.substr(0, 4),
-            )
-        ) {
-            check = true;
-        }
-
-        return check;
-    }
-
-    static getBindingName(f) {
-        let self = this;
-
-        for (let key in self.bindings) {
-            if (self.bindings.hasOwnProperty(key) && self.bindings[key] === f) {
-                return key;
-            }
-        }
-
-        return null;
-    }
-
-    static createSep() {
-        let el = document.createElement('i');
-
-        el.className = 'separator';
-        el.innerHTML = '|';
-
-        return el;
-    }
-
-    /* The right word count in respect for CJK. */
-    static wordCount(data) {
-        let pattern = /[a-zA-Z0-9_\u0392-\u03c9\u0410-\u04F9]+|[\u4E00-\u9FFF\u3400-\u4dbf\uf900-\ufaff\u3040-\u309f\uac00-\ud7af]+/g;
-        let m = data.match(pattern);
-        let count = 0;
-
-        if (m === null) {
-            return count;
-        }
-
-        for (let i = 0; i < m.length; i++) {
-            if (m[i].charCodeAt(0) >= 0x4e00) {
-                count += m[i].length;
-            } else {
-                count += 1;
-            }
-        }
-
-        return count;
-    }
-
-    public codemirror;
-    public element;
-    public gui;
-    public options;
-    public toolbar;
-    public toolbarElements;
-    public autosaveTimeoutId;
-    public _rendered;
 
     constructor(options) {
         const self = this.constructor as typeof MDE;
@@ -483,7 +344,7 @@ export default class MDE {
             options.toolbar = [];
 
             // Loop over the built in buttons, to get the preferred order
-            for (let key in self.toolbarBuiltInButtons) {
+            for (const key in self.toolbarBuiltInButtons) {
                 if (self.toolbarBuiltInButtons.hasOwnProperty(key)) {
                     if (key.indexOf('separator-') !== -1) {
                         options.toolbar.push('|');
@@ -556,13 +417,152 @@ export default class MDE {
         }
     }
 
+    public codemirror;
+    public element;
+    public gui;
+    public options;
+    public toolbar;
+    public toolbarElements;
+    public autosaveTimeoutId;
+    public _rendered;
+
+    // Safari, in Private Browsing Mode, looks like it supports localStorage but all calls to setItem throw QuotaExceededError. We're going to detect this and set a variable accordingly.
+    static isLocalStorageAvailable() {
+        if (typeof localStorage === 'object') {
+            try {
+                localStorage.setItem('smde_localStorage', '1');
+                localStorage.removeItem('smde_localStorage');
+            } catch (e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Create icon element for toolbar.
+     */
+    static createIcon(options, enableTooltips, shortcuts) {
+        options = options || {};
+        const el = document.createElement('button');
+        const self = this;
+
+        enableTooltips = enableTooltips === undefined ? true : enableTooltips;
+
+        if (options.title && enableTooltips) {
+            el.title = self.createTooltip(options.title, options.action, shortcuts);
+
+            if (self.isMac) {
+                el.title = el.title.replace('Ctrl', '⌘');
+                el.title = el.title.replace('Alt', '⌥');
+            }
+        }
+
+        el.tabIndex = -1;
+        el.className = 'md-icon-button md-button'; // options.className;
+        // el.innerHTML = options.icon;
+
+        const icon = document.createElement('i');
+        icon.className = options.className;
+        icon.innerHTML = options.icon;
+        el.appendChild(icon);
+
+        return el;
+    }
+
+    static createTooltip(title, action, shortcuts) {
+        let actionName;
+        let tooltip = title;
+        const self = this;
+
+        if (action) {
+            actionName = self.getBindingName(action);
+            if (shortcuts[actionName]) {
+                tooltip += ' (' + self.fixShortcut(shortcuts[actionName]) + ')';
+            }
+        }
+
+        return tooltip;
+    }
+
+    /**
+     * Fix shortcut. Mac use Command, others use Ctrl.
+     */
+    static fixShortcut(name) {
+        const self = this;
+        return self.isMac ? name.replace('Ctrl', 'Cmd') : name.replace('Cmd', 'Ctrl');
+    }
+
+    static isMobile() {
+        let check = false;
+        const a = navigator.userAgent || navigator.vendor; // || window.opera;
+
+        if (
+            /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series([46])0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(
+                a,
+            ) ||
+            /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br([ev])w|bumb|bw-([nu])|c55\/|capi|ccwa|cdm-|cell|chtm|cldc|cmd-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc-s|devi|dica|dmob|do([cp])o|ds(12|-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly([\-_])|g1 u|g560|gene|gf-5|g-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd-([mpt])|hei-|hi(pt|ta)|hp( i|ip)|hs-c|ht(c([\- _agpst])|tp)|hu(aw|tc)|i-(20|go|ma)|i230|iac([ \-\/])|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja([tv])a|jbro|jemu|jigs|kddi|keji|kgt([ \/])|klon|kpt |kwc-|kyo([ck])|le(no|xi)|lg( g|\/([klu])|50|54|-[a-w])|libw|lynx|m1-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t([\- ov])|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30([02])|n50([025])|n7(0([01])|10)|ne(([cm])-|on|tf|wf|wg|wt)|nok([6i])|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan([adt])|pdxg|pg(13|-([1-8]|c))|phil|pire|pl(ay|uc)|pn-2|po(ck|rt|se)|prox|psio|pt-g|qa-a|qc(07|12|21|32|60|-[2-7]|i-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h-|oo|p-)|sdk\/|se(c([\-01])|47|mc|nd|ri)|sgh-|shar|sie([\-m])|sk-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h-|v-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl-|tdg-|tel([im])|tim-|t-mo|to(pl|sh)|ts(70|m-|m3|m5)|tx-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c([\- ])|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas-|your|zeto|zte-/i.test(
+                a.substr(0, 4),
+            )
+        ) {
+            check = true;
+        }
+
+        return check;
+    }
+
+    static getBindingName(f) {
+        const self = this;
+
+        for (const key in self.bindings) {
+            if (self.bindings.hasOwnProperty(key) && self.bindings[key] === f) {
+                return key;
+            }
+        }
+
+        return null;
+    }
+
+    static createSep() {
+        const el = document.createElement('i');
+
+        el.className = 'separator';
+        el.innerHTML = '|';
+
+        return el;
+    }
+
+    /* The right word count in respect for CJK. */
+    static wordCount(data) {
+        const pattern = /[a-zA-Z0-9_\u0392-\u03c9\u0410-\u04F9]+|[\u4E00-\u9FFF\u3400-\u4dbf\uf900-\ufaff\u3040-\u309f\uac00-\ud7af]+/g;
+        const m = data.match(pattern);
+        let count = 0;
+
+        if (m === null) {
+            return count;
+        }
+
+        for (let i = 0; i < m.length; i++) {
+            if (m[i].charCodeAt(0) >= 0x4e00) {
+                count += m[i].length;
+            } else {
+                count += 1;
+            }
+        }
+
+        return count;
+    }
+
     /**
      * Default markdown render.
      */
     markdown(text) {
         if (marked) {
             // Initialize
-            let markedOptions: any = {};
+            const markedOptions: any = {};
 
             // Update options
             markedOptions.breaks = !(
@@ -594,7 +594,7 @@ export default class MDE {
      * Render editor to the given element.
      */
     render(el?) {
-        let self = this.constructor as typeof MDE;
+        const self = this.constructor as typeof MDE;
 
         if (!el) {
             el = this.element || document.getElementsByTagName('textarea')[0];
@@ -606,12 +606,12 @@ export default class MDE {
         }
 
         this.element = el;
-        let options = this.options;
+        const options = this.options;
 
         // let self = this;
-        let keyMaps = {};
+        const keyMaps = {};
 
-        for (let key in options.shortcuts) {
+        for (const key in options.shortcuts) {
             // null stands for "do not bind this command"
             if (
                 options.shortcuts.hasOwnProperty(key) &&
@@ -650,7 +650,7 @@ export default class MDE {
         );
 
         let mode,
-            backdrop = undefined;
+            backdrop;
 
         if (options.spellChecker === false) {
             mode = options.parsingConfig;
@@ -697,7 +697,7 @@ export default class MDE {
         this._rendered = this.element;
 
         // Fixes CodeMirror bug (#344)
-        let temp_cm = this.codemirror;
+        const temp_cm = this.codemirror;
         setTimeout(() => {
             temp_cm.refresh();
         }, 0);
@@ -706,7 +706,7 @@ export default class MDE {
     autosave() {
         const self = this.constructor as typeof MDE;
         if (self.isLocalStorageAvailable()) {
-            let simplemde = this;
+            const simplemde = this;
 
             if (this.options.autosave.uniqueId === undefined || this.options.autosave.uniqueId === '') {
                 console.log('SimpleMDE: You must set a uniqueId to use the autosave feature');
@@ -733,10 +733,10 @@ export default class MDE {
 
             localStorage.setItem('smde_' + this.options.autosave.uniqueId, simplemde.value());
 
-            let el = document.getElementById('autosaved');
+            const el = document.getElementById('autosaved');
             if (el) {
-                let d = new Date();
-                let hh = d.getHours();
+                const d = new Date();
+                const hh = d.getHours();
                 let m: any = d.getMinutes();
                 let dd = 'am';
                 let h = hh;
@@ -779,8 +779,8 @@ export default class MDE {
     }
 
     createSideBySide() {
-        let cm = this.codemirror;
-        let wrapper = cm.getWrapperElement();
+        const cm = this.codemirror;
+        const wrapper = cm.getWrapperElement();
         let preview = wrapper.nextSibling;
 
         if (!preview || !/editor-preview-side/.test(preview.className)) {
@@ -798,8 +798,8 @@ export default class MDE {
                 return;
             }
             pScroll = true;
-            let height = v.getScrollInfo().height - v.getScrollInfo().clientHeight;
-            let ratio = parseFloat(v.getScrollInfo().top) / height;
+            const height = v.getScrollInfo().height - v.getScrollInfo().clientHeight;
+            const ratio = parseFloat(v.getScrollInfo().top) / height;
             preview.scrollTop = (preview.scrollHeight - preview.clientHeight) * ratio;
         });
 
@@ -810,16 +810,16 @@ export default class MDE {
                 return;
             }
             cScroll = true;
-            let height = preview.scrollHeight - preview.clientHeight;
-            let ratio = parseFloat(preview.scrollTop) / height;
-            let move = (cm.getScrollInfo().height - cm.getScrollInfo().clientHeight) * ratio;
+            const height = preview.scrollHeight - preview.clientHeight;
+            const ratio = parseFloat(preview.scrollTop) / height;
+            const move = (cm.getScrollInfo().height - cm.getScrollInfo().clientHeight) * ratio;
             cm.scrollTo(0, move);
         };
         return preview;
     }
 
     createToolbar(items?) {
-        let self = this.constructor as typeof MDE;
+        const self = this.constructor as typeof MDE;
         items = items || this.options.toolbar;
 
         if (!items || items.length === 0) {
@@ -833,12 +833,12 @@ export default class MDE {
             }
         }
 
-        let bar = document.createElement('div');
+        const bar = document.createElement('div');
         bar.className = 'editor-toolbar';
 
         // let self = this;
 
-        let toolbarData = {};
+        const toolbarData = {};
         this.toolbar = items;
 
         for (let i = 0; i < items.length; i++) {
@@ -876,7 +876,7 @@ export default class MDE {
 
             // Create the icon and append to the toolbar
             ((item) => {
-                let el: any =
+                const el: any =
                     item === '|'
                         ? self.createSep()
                         : self.createIcon(item, this.options.toolbarTips, this.options.shortcuts);
@@ -905,14 +905,14 @@ export default class MDE {
 
         this.toolbarElements = toolbarData;
 
-        let cm = this.codemirror;
+        const cm = this.codemirror;
         cm.on('cursorActivity', () => {
-            let stat = this.getState(); //MDEActions.getState(cm);
+            const stat = this.getState(); // MDEActions.getState(cm);
 
-            for (let key in toolbarData) {
+            for (const key in toolbarData) {
                 // ((key) => {
                 if (toolbarData.hasOwnProperty(key)) {
-                    let el = toolbarData[key];
+                    const el = toolbarData[key];
                     if (stat[key]) {
                         el.className += ' active';
                     } else if (key !== 'fullscreen' && key !== 'side-by-side') {
@@ -923,17 +923,17 @@ export default class MDE {
             }
         });
 
-        let cmWrapper = cm.getWrapperElement();
+        const cmWrapper = cm.getWrapperElement();
         cmWrapper.parentNode.insertBefore(bar, cmWrapper);
         return bar;
     }
 
     createStatusbar(status?) {
         // Initialize
-        let self = this.constructor as typeof MDE;
+        const self = this.constructor as typeof MDE;
         status = status || this.options.status;
-        let options = this.options;
-        let cm = this.codemirror;
+        const options = this.options;
+        const cm = this.codemirror;
 
         // Make sure the status variable is valid
         if (!status || status.length === 0) {
@@ -941,7 +941,7 @@ export default class MDE {
         }
 
         // Set up the built-in items
-        let items = [];
+        const items = [];
         let onUpdate, defaultValue;
 
         for (let i = 0; i < status.length; i++) {
@@ -957,7 +957,7 @@ export default class MDE {
                     onUpdate: status[i].onUpdate,
                 });
             } else {
-                let name = status[i];
+                const name = status[i];
 
                 switch (name) {
                     case 'words':
@@ -983,7 +983,7 @@ export default class MDE {
                             el.innerHTML = '0:0';
                         };
                         onUpdate = (el) => {
-                            let pos = cm.getCursor();
+                            const pos = cm.getCursor();
                             el.innerHTML = pos.line + ':' + pos.ch;
                         };
                         break;
@@ -1006,16 +1006,16 @@ export default class MDE {
         }
 
         // Create element for the status bar
-        let bar = document.createElement('div');
+        const bar = document.createElement('div');
         bar.className = 'editor-statusbar';
 
         // Create a new span for each item
         for (let i = 0; i < items.length; i++) {
             // Store in temporary variable
-            let item = items[i];
+            const item = items[i];
 
             // Create span element
-            let el = document.createElement('span');
+            const el = document.createElement('span');
             el.className = item.className;
 
             // Ensure the defaultValue is a function
@@ -1036,7 +1036,7 @@ export default class MDE {
         }
 
         // Insert the status bar into the DOM
-        let cmWrapper = this.codemirror.getWrapperElement();
+        const cmWrapper = this.codemirror.getWrapperElement();
         cmWrapper.parentNode.insertBefore(bar, cmWrapper.nextSibling);
 
         return bar;
@@ -1056,36 +1056,36 @@ export default class MDE {
     }
 
     isPreviewActive() {
-        let cm = this.codemirror;
-        let wrapper = cm.getWrapperElement();
-        let preview = wrapper.lastChild;
+        const cm = this.codemirror;
+        const wrapper = cm.getWrapperElement();
+        const preview = wrapper.lastChild;
 
         return /editor-preview-active/.test(preview.className);
     }
 
     isSideBySideActive() {
-        let cm = this.codemirror;
-        let wrapper = cm.getWrapperElement();
-        let preview = wrapper.nextSibling;
+        const cm = this.codemirror;
+        const wrapper = cm.getWrapperElement();
+        const preview = wrapper.nextSibling;
 
         return /editor-preview-active-side/.test(preview.className);
     }
 
     isFullscreenActive() {
-        let cm = this.codemirror;
+        const cm = this.codemirror;
 
         return cm.getOption('fullScreen');
     }
 
     getState() {
-        let cm = this.codemirror;
+        const cm = this.codemirror;
 
         return MDEActions.getState(cm);
     }
 
     toTextArea() {
-        let cm = this.codemirror;
-        let wrapper = cm.getWrapperElement();
+        const cm = this.codemirror;
+        const wrapper = cm.getWrapperElement();
 
         if (wrapper.parentNode) {
             if (this.gui.toolbar) {

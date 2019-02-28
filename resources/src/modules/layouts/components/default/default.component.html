@@ -2,9 +2,9 @@
     <mat-sidenav #sidenav mode="'over'" fixedInViewport="true">
         <mat-toolbar color="primary">Menu</mat-toolbar>
         <mat-nav-list>
-            <a mat-list-item [routerLink]="item.url" (click)="sidenav.toggle()" *ngFor="let item of sideItems">
-                <mat-icon>{{ item.icon }}</mat-icon>
-                <span>{{ item.name }}</span>
+            <a mat-list-item  [routerLink]="item.url" *ngFor="let item of leftItems">
+                <mat-icon matListIcon>{{ item.icon }}</mat-icon>
+                <span matLine>{{ item.name }}</span>
             </a>
         </mat-nav-list>
     </mat-sidenav>
@@ -62,37 +62,43 @@
                 </nav>
             </mat-toolbar-row>
         </mat-toolbar>
-        <div class="d-flex">
+        <div class="d-flex h-100">
             <!--<div>-->
                 <div class="q-nav-container overflow-hidden">
                     <div class="q-nav">
                         <div class="q-nav-items">
-                            <!--<div-->
-                                <!--class="q-nav-item"-->
-                                <!--*ngFor="let item of sideItems"-->
-                            <!--&gt;-->
-                                <!--<a [routerLink]="item.url">-->
-                                    <!--<mat-icon>{{ item.icon }}</mat-icon>-->
-                                    <!--<span>{{ item.name }}</span>-->
-                                <!--</a>-->
-                            <!--</div>-->
+                            <div
+                                class="q-nav-item"
+                                *ngFor="let item of leftItems"
+                            >
+                                <a [routerLink]="item.url">
+                                    <mat-icon>{{ item.icon }}</mat-icon>
+                                    <span>{{ item.name }}</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             <!--</div>-->
-            <div class="flex-grow-1 overflow-auto">
-                <router-outlet></router-outlet>
+            <div class="flex-grow-1 overflow-auto d-flex flex-column">
+                <div class="flex-fill">
+                    <router-outlet></router-outlet>
+                </div>
                 <footer>Powered by MaybeWorks</footer>
             </div>
         </div>
     </mat-sidenav-content>
     <mat-sidenav #rightnav mode="'over'" fixedInViewport="true" position="end">
-        <mat-toolbar color="primary">Work</mat-toolbar>
-        <mat-nav-list>
-            <a mat-list-item [routerLink]="item.path" (click)="rightnav.toggle()" *ngFor="let item of rightItems">
-                <mat-icon>{{ item.icon }}</mat-icon>
-                <span>{{ item.title }}</span>
-            </a>
-        </mat-nav-list>
+        <!--<div class="d-flex flex-column overflow-hidden h-100">-->
+            <mat-toolbar color="primary">Work</mat-toolbar>
+            <!--<div class="overflow-auto">-->
+                <mat-nav-list>
+                    <a mat-list-item [routerLink]="item.path" *ngFor="let item of rightItems">
+                        <mat-icon matListIcon>{{ item.icon }}</mat-icon>
+                        <span matLine>{{ item.title }}</span>
+                    </a>
+                </mat-nav-list>
+            <!--</div>-->
+        <!--</div>-->
     </mat-sidenav>
 </mat-sidenav-container>

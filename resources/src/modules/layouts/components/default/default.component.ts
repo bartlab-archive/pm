@@ -14,7 +14,7 @@ import {
     LayoutsDefaultInitAction,
 } from '../../store/actions/default.action';
 
-import {selectRightItems, selectTabs, selectTopItems} from '../../store/selectors/menus.selector';
+import {selectLeftItems, selectRightItems, selectTabs, selectTopItems} from '../../store/selectors/menus.selector';
 
 export const flat = (arr) => arr.reduce((acc, val) => acc.concat(val), []);
 
@@ -73,17 +73,14 @@ export class DefaultComponent implements OnInit, OnDestroy {
     //     // }
     // ];
 
-    public topItems$: Observable<Array<any>> = this.store.pipe(
-        select(selectTopItems),
-        filter((items) => Boolean(items)),
-    );
+    public topItems$: Observable<Array<any>> = this.store.pipe(select(selectTopItems), filter(Boolean));
     public topItems: Array<any>;
 
-    public rightItems$: Observable<Array<any>> = this.store.pipe(
-        select(selectRightItems),
-        filter((items) => Boolean(items)),
-    );
+    public rightItems$: Observable<Array<any>> = this.store.pipe(select(selectRightItems), filter(Boolean));
     public rightItems: Array<any>;
+
+    public leftItems$: Observable<Array<any>> = this.store.pipe(select(selectLeftItems), filter(Boolean));
+    public leftItems: Array<any>;
 
     public activeTab: Tab;
     public tabs$: Observable<Tab[]> = this.store.pipe(select(selectTabs));
@@ -112,6 +109,10 @@ export class DefaultComponent implements OnInit, OnDestroy {
 
             this.rightItems$.subscribe((items) => {
                 this.rightItems = items;
+            }),
+
+            this.leftItems$.subscribe((items) => {
+                this.leftItems = items;
             }),
 
             combineLatest(

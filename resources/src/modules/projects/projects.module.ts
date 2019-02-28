@@ -30,7 +30,7 @@ import {meta} from './projects.meta';
 import {Observable} from 'rxjs';
 import {selectTopItems} from '../layouts/store/selectors/menus.selector';
 import {filter} from 'rxjs/operators';
-import {SetRightItems} from './store/actions/shared.actions';
+import {AddLeftItem, SetRightItems} from './store/actions/shared.actions';
 
 @NgModule({
     declarations: [
@@ -154,6 +154,14 @@ export class ProjectsModule {
         @Inject(APP_MODULE_SUBROUTES) private config: Array<Routes>,
     ) {
         this.router.config.unshift(...this.routes);
+
+        this.store.dispatch(new AddLeftItem(
+            {
+                url: ['/projects'],
+                icon: 'work',
+                name: 'Projects',
+            },
+        ));
 
         this.my$.subscribe((items) => {
             this.store.dispatch(new SetRightItems(items.map((project) => {

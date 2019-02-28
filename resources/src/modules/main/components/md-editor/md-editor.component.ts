@@ -80,6 +80,8 @@ export class MainMDEditorComponent
     public mdEditor: MDE = null;
     public mdeActionsEnum = MDEActionsEnum;
 
+    isFullscreen = false;
+
     ngOnInit(): void {
         const element = this.mdElement.nativeElement;
         if (this.attrs) {
@@ -126,8 +128,6 @@ export class MainMDEditorComponent
     }
 
     writeValue(obj: any): void {}
-
-    isFullscreen = false;
 
     onButtonClick(event, type: MDEActionsEnum) {
         if (type === this.mdeActionsEnum.toggleFullScreen) {

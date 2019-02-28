@@ -6,6 +6,8 @@ import {DefaultComponent} from '../layouts/components';
 import {MaterialModule} from '../material/material.module';
 import {APP_MODULE_SUBROUTES} from '../../app/providers/app.injection';
 import {findBy} from '../../app/helpers/collection';
+import {SharedLayoutsAddLeftItem} from './store/actions/shared.action';
+import {Store} from '@ngrx/store';
 
 @NgModule({
     declarations: [AdminMainComponent, AdminListComponent],
@@ -48,9 +50,19 @@ export class AdminModule {
 
     public constructor(
         protected router: Router,
+        protected store: Store<any>,
         @Inject(APP_MODULE_SUBROUTES) private config: Array<Routes>,
     ) {
         // todo: check for admin
         this.router.config.unshift(...this.routes);
+
+        // todo: check for admin
+        this.store.dispatch(new SharedLayoutsAddLeftItem(
+            {
+                url: '/admin',
+                icon: 'settings_applications',
+                name: 'Administrator',
+            },
+        ));
     }
 }

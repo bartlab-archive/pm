@@ -14,7 +14,7 @@ import {
     IssuesStatusesFormComponent,
 } from './components';
 import {ReactiveFormsModule} from '@angular/forms';
-import {StoreModule} from '@ngrx/store';
+import {Store, StoreModule} from '@ngrx/store';
 import {reducers, metaReducers} from './store/reducers';
 import {EffectsModule} from '@ngrx/effects';
 import {MarkdownModule} from 'ngx-markdown';
@@ -31,6 +31,7 @@ import {
 import {IssuesEventInterceptor} from './interceptors/issues-event.interceptor';
 import {PipesModule} from '../../app/pipes';
 import {meta} from './issues.meta';
+import {SharedLayoutsAddLeftItem} from './store/actions/shared.action';
 
 @NgModule({
     declarations: [
@@ -108,5 +109,17 @@ import {meta} from './issues.meta';
     ],
 })
 export class IssuesModule {
+
+    public constructor(
+        protected store: Store<any>,
+    ) {
+        this.store.dispatch(new SharedLayoutsAddLeftItem(
+            {
+                url: '/issues',
+                icon: 'list',
+                name: 'View all issues',
+            },
+        ));
+    }
 
 }

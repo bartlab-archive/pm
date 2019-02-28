@@ -8,12 +8,12 @@ declare global {
 export default class MDEActions {
     static getState(cm, pos?) {
         pos = pos || cm.getCursor('start');
-        let stat = cm.getTokenAt(pos);
+        const stat = cm.getTokenAt(pos);
         if (!stat.type) {
             return {};
         }
 
-        let types = stat.type.split(' ');
+        const types = stat.type.split(' ');
 
         let ret: any = {},
             data,
@@ -55,8 +55,8 @@ export default class MDEActions {
      */
     static toggleFullScreen(editor) {
         // Set fullscreen
-        let self = MDEActions;
-        let cm = editor.codemirror;
+        const self = MDEActions;
+        const cm = editor.codemirror;
         cm.setOption('fullScreen', !cm.getOption('fullScreen'));
 
         // Prevent scrolling on body during fullscreen active
@@ -68,7 +68,7 @@ export default class MDEActions {
         }
 
         // Update toolbar class
-        let wrap = cm.getWrapperElement();
+        const wrap = cm.getWrapperElement();
 
         if (!/fullscreen/.test(wrap.previousSibling.className)) {
             wrap.previousSibling.className += ' fullscreen';
@@ -78,7 +78,7 @@ export default class MDEActions {
 
         if (editor.toolbarElements) {
             // Update toolbar button
-            let toolbarButton = editor.toolbarElements.fullscreen;
+            const toolbarButton = editor.toolbarElements.fullscreen;
             if (!/active/.test(toolbarButton.className)) {
                 toolbarButton.className += ' active';
             } else {
@@ -87,7 +87,7 @@ export default class MDEActions {
         }
 
         // Hide side by side if needed
-        let sidebyside = cm.getWrapperElement().nextSibling;
+        const sidebyside = cm.getWrapperElement().nextSibling;
         if (/editor-preview-active-side/.test(sidebyside.className)) {
             self.toggleSideBySide(editor);
         }
@@ -97,14 +97,14 @@ export default class MDEActions {
      * Toggle side by side preview
      */
     static toggleSideBySide(editor) {
-        let self = MDEActions;
-        let cm = editor.codemirror;
-        let wrapper = cm.getWrapperElement();
-        let preview = wrapper.nextSibling;
+        const self = MDEActions;
+        const cm = editor.codemirror;
+        const wrapper = cm.getWrapperElement();
+        const preview = wrapper.nextSibling;
         let useSideBySideListener = false;
 
         if (editor.toolbarElements) {
-            let toolbarButton = editor.toolbarElements['side-by-side'];
+            const toolbarButton = editor.toolbarElements['side-by-side'];
             if (/editor-preview-active-side/.test(preview.className)) {
                 toolbarButton.className = toolbarButton.className.replace(/\s*active\s*/g, '');
             } else {
@@ -130,16 +130,16 @@ export default class MDEActions {
         }
 
         // Hide normal preview if active
-        let previewNormal = wrapper.lastChild;
+        const previewNormal = wrapper.lastChild;
         if (/editor-preview-active/.test(previewNormal.className)) {
             previewNormal.className = previewNormal.className.replace(/\s*editor-preview-active\s*/g, '');
-            let toolbar = editor.toolbarElements.preview;
-            let toolbar_div = wrapper.previousSibling;
+            const toolbar = editor.toolbarElements.preview;
+            const toolbar_div = wrapper.previousSibling;
             toolbar.className = toolbar.className.replace(/\s*active\s*/g, '');
             toolbar_div.className = toolbar_div.className.replace(/\s*disabled-for-preview*/g, '');
         }
 
-        let sideBySideRenderingFunction = () => {
+        const sideBySideRenderingFunction = () => {
             preview.innerHTML = editor.options.previewRender(editor.value(), preview);
         };
 
@@ -162,11 +162,11 @@ export default class MDEActions {
      * Preview action.
      */
     static togglePreview(editor) {
-        let self = MDEActions;
-        let cm = editor.codemirror;
-        let wrapper = cm.getWrapperElement();
-        let toolbar_div = wrapper.previousSibling;
-        let toolbar = editor.options.toolbar && editor.toolbarElements ? editor.toolbarElements.preview : false;
+        const self = MDEActions;
+        const cm = editor.codemirror;
+        const wrapper = cm.getWrapperElement();
+        const toolbar_div = wrapper.previousSibling;
+        const toolbar = editor.options.toolbar && editor.toolbarElements ? editor.toolbarElements.preview : false;
         let preview = wrapper.lastChild;
 
         if (!preview || !/editor-preview/.test(preview.className)) {
@@ -199,7 +199,7 @@ export default class MDEActions {
         preview.innerHTML = editor.options.previewRender(editor.value(), preview);
 
         // Turn off side by side if needed
-        let sidebyside = cm.getWrapperElement().nextSibling;
+        const sidebyside = cm.getWrapperElement().nextSibling;
         if (/editor-preview-active-side/.test(sidebyside.className)) {
             self.toggleSideBySide(editor);
         }
@@ -209,7 +209,7 @@ export default class MDEActions {
      * Action for toggling bold.
      */
     static toggleBold(editor) {
-        let self = MDEActions;
+        const self = MDEActions;
         self._toggleBlock(editor, 'bold', editor.options.blockStyles.bold);
     }
 
@@ -217,7 +217,7 @@ export default class MDEActions {
      * Action for toggling italic.
      */
     static toggleItalic(editor) {
-        let self = MDEActions;
+        const self = MDEActions;
         self._toggleBlock(editor, 'italic', editor.options.blockStyles.italic);
     }
 
@@ -225,7 +225,7 @@ export default class MDEActions {
      * Action for toggling strikethrough.
      */
     static toggleStrikethrough(editor) {
-        let self = MDEActions;
+        const self = MDEActions;
         self._toggleBlock(editor, 'strikethrough', '~~');
     }
 
@@ -233,16 +233,16 @@ export default class MDEActions {
      * Action for toggling code block.
      */
     static toggleCodeBlock(editor) {
-        let self = MDEActions;
-        let fenceCharsToInsert = editor.options.blockStyles.code;
+        const self = MDEActions;
+        const fenceCharsToInsert = editor.options.blockStyles.code;
 
         function fencing_line(line) {
             /* return true, if this is a ``` or ~~~ line */
             if (typeof line !== 'object') {
-                throw "fencing_line() takes a 'line' object (not a line number, or line text).  Got: " +
+                throw new Error('fencing_line() takes a \'line\' object (not a line number, or line text).  Got: ' +
                     typeof line +
                     ': ' +
-                    line;
+                    line);
             }
             return line.styles && line.styles[2] && line.styles[2].indexOf('formatting-code-block') !== -1;
         }
@@ -273,7 +273,7 @@ export default class MDEActions {
                         line: line_num,
                         ch: line.text.length - 1,
                     }));
-            let types = firstTok.type ? firstTok.type.split(' ') : [];
+            const types = firstTok.type ? firstTok.type.split(' ') : [];
             if (lastTok && token_state(lastTok).indentedCode) {
                 // have to check last char, since first chars of first line aren"t marked as indented
                 return 'indented';
@@ -328,7 +328,7 @@ export default class MDEActions {
 
         if (is_code === 'single') {
             // similar to some SimpleMDE _toggleBlock logic
-            let start = line.text.slice(0, cur_start.ch).replace('`', ''),
+            const start = line.text.slice(0, cur_start.ch).replace('`', ''),
                 end = line.text.slice(cur_start.ch).replace('`', '');
 
             cm.replaceRange(
@@ -361,11 +361,11 @@ export default class MDEActions {
                         break;
                     }
                 }
-                let fencedTok = cm.getTokenAt({
+                const fencedTok = cm.getTokenAt({
                     line: block_start,
                     ch: 1,
                 });
-                let fence_chars = token_state(fencedTok).fencedChars;
+                const fence_chars = token_state(fencedTok).fencedChars;
                 let start_text, start_line;
                 let end_text, end_line;
                 // check for selection going up against fenced lines, in which case we don't want to add more fencing
@@ -526,7 +526,7 @@ export default class MDEActions {
             }
             // if we are going to un-indent based on a selected set of lines, and the next line is indented too, we need to
             // insert a blank line so that the next line(s) continue to be indented code
-            let next_line = cm.getLineHandle(block_end + 1),
+            const next_line = cm.getLineHandle(block_end + 1),
                 next_line_last_tok =
                     next_line &&
                     cm.getTokenAt({
@@ -549,9 +549,9 @@ export default class MDEActions {
             cm.focus();
         } else {
             // insert code formatting
-            let no_sel_and_starting_of_line =
+            const no_sel_and_starting_of_line =
                 cur_start.line === cur_end.line && cur_start.ch === cur_end.ch && cur_start.ch === 0;
-            let sel_multi = cur_start.line !== cur_end.line;
+            const sel_multi = cur_start.line !== cur_end.line;
 
             if (no_sel_and_starting_of_line || sel_multi) {
                 insertFencingAtSelection(cm, cur_start, cur_end, fenceCharsToInsert);
@@ -565,8 +565,8 @@ export default class MDEActions {
      * Action for toggling blockquote.
      */
     static toggleBlockquote(editor) {
-        let cm = editor.codemirror;
-        let self = MDEActions;
+        const cm = editor.codemirror;
+        const self = MDEActions;
         self._toggleLine(cm, 'quote');
     }
 
@@ -574,8 +574,8 @@ export default class MDEActions {
      * Action for toggling heading size: normal -> h1 -> h2 -> h3 -> h4 -> h5 -> h6 -> normal
      */
     static toggleHeadingSmaller(editor) {
-        let cm = editor.codemirror;
-        let self = MDEActions;
+        const cm = editor.codemirror;
+        const self = MDEActions;
         self._toggleHeading(cm, 'smaller');
     }
 
@@ -583,8 +583,8 @@ export default class MDEActions {
      * Action for toggling heading size: normal -> h6 -> h5 -> h4 -> h3 -> h2 -> h1 -> normal
      */
     static toggleHeadingBigger(editor) {
-        let cm = editor.codemirror;
-        let self = MDEActions;
+        const cm = editor.codemirror;
+        const self = MDEActions;
         self._toggleHeading(cm, 'bigger');
     }
 
@@ -592,8 +592,8 @@ export default class MDEActions {
      * Action for toggling heading size 1
      */
     static toggleHeading1(editor) {
-        let cm = editor.codemirror;
-        let self = MDEActions;
+        const cm = editor.codemirror;
+        const self = MDEActions;
         self._toggleHeading(cm, undefined, 1);
     }
 
@@ -601,8 +601,8 @@ export default class MDEActions {
      * Action for toggling heading size 2
      */
     static toggleHeading2(editor) {
-        let cm = editor.codemirror;
-        let self = MDEActions;
+        const cm = editor.codemirror;
+        const self = MDEActions;
         self._toggleHeading(cm, undefined, 2);
     }
 
@@ -610,8 +610,8 @@ export default class MDEActions {
      * Action for toggling heading size 3
      */
     static toggleHeading3(editor) {
-        let cm = editor.codemirror;
-        let self = MDEActions;
+        const cm = editor.codemirror;
+        const self = MDEActions;
         self._toggleHeading(cm, undefined, 3);
     }
 
@@ -619,8 +619,8 @@ export default class MDEActions {
      * Action for toggling ul.
      */
     static toggleUnorderedList(editor) {
-        let cm = editor.codemirror;
-        let self = MDEActions;
+        const cm = editor.codemirror;
+        const self = MDEActions;
         self._toggleLine(cm, 'unordered-list');
     }
 
@@ -628,8 +628,8 @@ export default class MDEActions {
      * Action for toggling ol.
      */
     static toggleOrderedList(editor) {
-        let cm = editor.codemirror;
-        let self = MDEActions;
+        const cm = editor.codemirror;
+        const self = MDEActions;
         self._toggleLine(cm, 'ordered-list');
     }
 
@@ -637,8 +637,8 @@ export default class MDEActions {
      * Action for clean block (remove headline, list, blockquote code, markers)
      */
     static cleanBlock(editor) {
-        let cm = editor.codemirror;
-        let self = MDEActions;
+        const cm = editor.codemirror;
+        const self = MDEActions;
         self._cleanBlock(cm);
     }
 
@@ -646,10 +646,10 @@ export default class MDEActions {
      * Action for drawing a link.
      */
     static drawLink(editor) {
-        let self = MDEActions;
-        let cm = editor.codemirror;
-        let stat = self.getState(cm);
-        let options = editor.options;
+        const self = MDEActions;
+        const cm = editor.codemirror;
+        const stat = self.getState(cm);
+        const options = editor.options;
         let url = 'http://';
 
         if (options.promptURLs) {
@@ -665,10 +665,10 @@ export default class MDEActions {
      * Action for drawing an img.
      */
     static drawImage(editor) {
-        let self = MDEActions;
-        let cm = editor.codemirror;
-        let stat = self.getState(cm);
-        let options = Object.assign({promptURLs: false}, editor.options);
+        const self = MDEActions;
+        const cm = editor.codemirror;
+        const stat = self.getState(cm);
+        const options = Object.assign({promptURLs: false}, editor.options);
         let url = 'http://';
 
         if (options.promptURLs) {
@@ -685,10 +685,10 @@ export default class MDEActions {
      * Action for drawing a table.
      */
     static drawTable(editor) {
-        let self = MDEActions;
-        let cm = editor.codemirror;
-        let stat = self.getState(cm);
-        let options = editor.options;
+        const self = MDEActions;
+        const cm = editor.codemirror;
+        const stat = self.getState(cm);
+        const options = editor.options;
 
         self._replaceSelection(cm, stat.table, options.insertTexts.table);
     }
@@ -697,10 +697,10 @@ export default class MDEActions {
      * Action for drawing a horizontal rule.
      */
     static drawHorizontalRule(editor) {
-        let self = MDEActions;
-        let cm = editor.codemirror;
-        let stat = self.getState(cm);
-        let options = editor.options;
+        const self = MDEActions;
+        const cm = editor.codemirror;
+        const stat = self.getState(cm);
+        const options = editor.options;
 
         self._replaceSelection(cm, stat.image, options.insertTexts.horizontalRule);
     }
@@ -709,7 +709,7 @@ export default class MDEActions {
      * Undo action.
      */
     static undo(editor) {
-        let cm = editor.codemirror;
+        const cm = editor.codemirror;
         cm.undo();
         cm.focus();
     }
@@ -718,7 +718,7 @@ export default class MDEActions {
      * Redo action.
      */
     static redo(editor) {
-        let cm = editor.codemirror;
+        const cm = editor.codemirror;
         cm.redo();
         cm.focus();
     }
@@ -731,8 +731,8 @@ export default class MDEActions {
         let text;
         let start = startEnd[0];
         let end = startEnd[1];
-        let startPoint = cm.getCursor('start');
-        let endPoint = cm.getCursor('end');
+        const startPoint = cm.getCursor('start');
+        const endPoint = cm.getCursor('end');
 
         if (url) {
             end = end.replace('#url#', url);
@@ -765,13 +765,13 @@ export default class MDEActions {
             return;
         }
 
-        let startPoint = cm.getCursor('start');
-        let endPoint = cm.getCursor('end');
+        const startPoint = cm.getCursor('start');
+        const endPoint = cm.getCursor('end');
 
         for (let i = startPoint.line; i <= endPoint.line; i++) {
             ((i) => {
                 let text = cm.getLine(i);
-                let currHeadingLevel = text.search(/[^#]/);
+                const currHeadingLevel = text.search(/[^#]/);
 
                 if (direction !== undefined) {
                     if (currHeadingLevel <= 0) {
@@ -837,20 +837,20 @@ export default class MDEActions {
     }
 
     static _toggleLine(cm, name) {
-        let self = this;
+        const self = this;
         if (/editor-preview-active/.test(cm.getWrapperElement().lastChild.className)) {
             return;
         }
 
-        let stat = self.getState(cm);
-        let startPoint = cm.getCursor('start');
-        let endPoint = cm.getCursor('end');
-        let repl = {
+        const stat = self.getState(cm);
+        const startPoint = cm.getCursor('start');
+        const endPoint = cm.getCursor('end');
+        const repl = {
             quote: /^(\s*)>\s+/,
             'unordered-list': /^(\s*)([*\-+])\s+/,
             'ordered-list': /^(\s*)\d+\.\s+/,
         };
-        let map = {
+        const map = {
             quote: '> ',
             'unordered-list': '* ',
             'ordered-list': '1. ',
@@ -888,16 +888,16 @@ export default class MDEActions {
         }
 
         end_chars = typeof end_chars === 'undefined' ? start_chars : end_chars;
-        let self = this;
-        let cm = editor.codemirror;
-        let stat = self.getState(cm);
+        const self = this;
+        const cm = editor.codemirror;
+        const stat = self.getState(cm);
 
         let text;
         let start = start_chars;
         let end = end_chars;
 
-        let startPoint = cm.getCursor('start');
-        let endPoint = cm.getCursor('end');
+        const startPoint = cm.getCursor('start');
+        const endPoint = cm.getCursor('end');
 
         if (stat[type]) {
             text = cm.getLine(startPoint.line);
@@ -964,8 +964,8 @@ export default class MDEActions {
             return;
         }
 
-        let startPoint = cm.getCursor('start');
-        let endPoint = cm.getCursor('end');
+        const startPoint = cm.getCursor('start');
+        const endPoint = cm.getCursor('end');
         let text;
 
         for (let line = startPoint.line; line <= endPoint.line; line++) {
