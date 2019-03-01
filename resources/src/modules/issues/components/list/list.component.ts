@@ -40,7 +40,7 @@ import {RequestStatus} from '../../../../app/interfaces/api';
     styleUrls: ['./list.component.scss'],
 })
 export class IssuesListComponent implements OnInit, OnDestroy {
-    public displayedColumns: Array<string> = ['select', 'subject', 'menu'];
+    public displayedColumns: Array<string> = ['select', 'icon', 'subject', 'menu'];
     public dataSource: Array<object>;
     public selection = new SelectionModel<any>(true, []);
     public subscriptions: Array<Subscription> = [];
@@ -139,7 +139,7 @@ export class IssuesListComponent implements OnInit, OnDestroy {
             // })
         );
 
-        this.load();
+        // this.load();
         // this.store.dispatch(new StatusesAllRequestAction());
         // this.store.dispatch(new TrackersAllRequestAction());
     }
@@ -151,6 +151,12 @@ export class IssuesListComponent implements OnInit, OnDestroy {
     }
 
     public load(): void {
+        console.log({
+            per_page: this.paginator.pageSize || this.pageSizeOptions[0],
+            page: this.paginator.pageIndex + 1,
+            'status_ids[]': this.getTagsId('status'),
+            'tracker_ids[]': this.getTagsId('tracker'),
+        });
         this.store.dispatch(
             new IssuesAllRequestAction({
                 per_page: this.paginator.pageSize || this.pageSizeOptions[0],

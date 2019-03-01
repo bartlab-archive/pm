@@ -11,7 +11,7 @@ import {ProjectsItemComponent} from './components/item/item.component';
 import {ProjectsService} from './services/projects.service';
 import {ModulesService} from './services/modules.service';
 import {DefaultComponent} from '../layouts/components';
-import {reducers, metaReducers, selectProjectsMy} from './store/reducers';
+import {reducers, metaReducers} from './store/reducers';
 import {MainModule} from '../main/main.module';
 import {MaterialModule} from '../material/material.module';
 import {ProjectsEffects} from './store/effects/projects.effects';
@@ -27,9 +27,8 @@ import {ProjectsSettingsComponent} from './components/settings/settings.componen
 import {ProjectsInformationComponent} from './components/information/information.component';
 import {ProjectsModulesComponent} from './components/modules/modules.component';
 import {meta} from './projects.meta';
-import {Observable} from 'rxjs';
-import {selectTopItems} from '../layouts/store/selectors/menus.selector';
-import {filter, first, last, skip} from 'rxjs/operators';
+import {interval, Observable} from 'rxjs';
+import {filter, throttle} from 'rxjs/operators';
 import {AddLeftItem, SetRightItems} from './store/actions/shared.actions';
 import {selectProjectsMyList} from './store/selectors/projects';
 
@@ -147,7 +146,7 @@ export class ProjectsModule {
     protected my$: Observable<Array<any>> = this.store.pipe(
         select(selectProjectsMyList),
         filter(Boolean),
-        skip(2),
+        throttle(() => interval(100)),
     );
 
     public constructor(

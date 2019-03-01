@@ -2,15 +2,15 @@ table {
   width: 100%;
 }
 
-tr.mat-row {
+.mat-row {
   outline: none;
 
   &:hover {
     background: #f5f5f5;
-    cursor: pointer;
+    //cursor: pointer;
   }
 
-  td {
+  .mat-cell {
     line-height: 40px;
     white-space: nowrap;
 
@@ -33,11 +33,19 @@ tr.mat-row {
   white-space: nowrap;
 }
 
-.mat-column-id {
-  width: 36px;
+//.mat-column-id {
+//  width: 36px;
 
   //padding-left: 10px;
   //padding-right: 10px;
+//}
+
+.mat-column-select {
+  flex: 0 0 54px;
+}
+
+.mat-column-icon {
+  flex: 0 0 40px;
 }
 
 .mat-column-subject {
@@ -50,8 +58,18 @@ tr.mat-row {
     top: 0;
     bottom: 0;
   }
+
+  span {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 }
 
 .mat-column-menu {
-  width: 40px;
+  flex: 0 0 40px;
+
+  .mat-icon-button {
+    outline: none;
+  }
 }

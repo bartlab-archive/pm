@@ -65,10 +65,10 @@
             </mat-form-field>
         </mat-card-content>
 
-        <table mat-table [dataSource]="dataSource" matSort>
+        <mat-table [dataSource]="dataSource" matSort>
             <!-- Checkbox Column -->
             <ng-container matColumnDef="select">
-                <th mat-header-cell *matHeaderCellDef>
+                <mat-header-cell *matHeaderCellDef>
                     <mat-checkbox
                         (change)="$event ? masterToggle() : null"
                         [checked]="selection.hasValue() && isAllSelected()"
@@ -77,51 +77,33 @@
                         "
                     >
                     </mat-checkbox>
-                </th>
-                <td mat-cell *matCellDef="let row">
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
                     <mat-checkbox
                         (click)="$event.stopPropagation()"
                         (change)="$event ? selection.toggle(row) : null"
                         [checked]="selection.isSelected(row)"
                     >
                     </mat-checkbox>
-                </td>
+                </mat-cell>
             </ng-container>
 
-            <!-- ID Column -->
-            <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    ID
-                </th>
-                <td mat-cell *matCellDef="let row">
-                    <img
-                        src="{{
-                            row.assigned
-                                ? row.assigned.avatar
-                                : row.author.avatar
-                        }}"
-                    />
-                    <!--<img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp">-->
-                    <!--{{row.id}}-->
-                </td>
+            <!-- Icon Column -->
+            <ng-container matColumnDef="icon">
+                <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                <mat-cell *matCellDef="let row" class="flex-shrink-0">
+                    <img src="{{row.assigned ? row.assigned.avatar : row.author.avatar}}"/>
+                </mat-cell>
             </ng-container>
 
-            <!-- Name Column -->
+            <!-- Subject Column -->
             <ng-container matColumnDef="subject">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>
-                    Subject
-                </th>
-                <td mat-cell *matCellDef="let row">
-                    <img
-                        src="{{
-                            row.assigned
-                                ? row.assigned.avatar
-                                : row.author.avatar
-                        }}"
-                    />
-                    <a routerLink="/issues/{{ row.id }}"></a>
-                    {{ row.subject }}
-                </td>
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Subject</mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <!--<img src="{{row.assigned ? row.assigned.avatar : row.author.avatar}}"/>-->
+                    <a [routerLink]="['/issues/', row.id]"></a>
+                    <span>{{ row.subject }}</span>
+                </mat-cell>
             </ng-container>
 
             <!-- Color Column -->
@@ -130,9 +112,10 @@
             <!--<td mat-cell *matCellDef="let row">color</td>-->
             <!--</ng-container>-->
 
+            <!-- Menu Column -->
             <ng-container matColumnDef="menu">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let row" [style.color]="row.color">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let row" [style.color]="row.color">
                     <mat-menu #appMenu="matMenu">
                         <a mat-menu-item [routerLink]="['/issues', row.id]">
                             <mat-icon>open_in_browser</mat-icon>
@@ -150,23 +133,17 @@
                     >
                         <mat-icon>more_vert</mat-icon>
                     </button>
-                </td>
+                </mat-cell>
             </ng-container>
 
-            <tr
-                mat-header-row
-                *matHeaderRowDef="displayedColumns; sticky: false"
-            ></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: false"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        </mat-table>
 
         <!--</mat-card-content>-->
 
         <!--<mat-card-actions>-->
-        <mat-paginator
-            [pageSizeOptions]="pageSizeOptions"
-            (page)="onPageChange($event)"
-        ></mat-paginator>
+        <mat-paginator [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)"></mat-paginator>
         <!--</mat-card-actions>-->
         <!--<mat-card-actions>-->
         <!--<button mat-button>LIKE</button>-->
