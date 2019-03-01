@@ -1,12 +1,14 @@
 <mat-sidenav-container>
     <mat-sidenav #sidenav mode="'over'" fixedInViewport="true">
-        <mat-toolbar color="primary">Menu</mat-toolbar>
-        <mat-nav-list>
-            <a mat-list-item  [routerLink]="item.url" *ngFor="let item of leftItems">
-                <mat-icon matListIcon>{{ item.icon }}</mat-icon>
-                <span matLine>{{ item.name }}</span>
-            </a>
-        </mat-nav-list>
+        <div class="d-flex h-100 overflow-hidden flex-column">
+            <mat-toolbar color="primary">Menu</mat-toolbar>
+            <mat-nav-list class="overflow-auto flex-fill">
+                <a mat-list-item [routerLink]="item.url" *ngFor="let item of leftItems">
+                    <mat-icon matListIcon>{{ item.icon }}</mat-icon>
+                    <span matLine>{{ item.name }}</span>
+                </a>
+            </mat-nav-list>
+        </div>
     </mat-sidenav>
     <mat-sidenav-content>
         <mat-toolbar
@@ -89,16 +91,16 @@
         </div>
     </mat-sidenav-content>
     <mat-sidenav #rightnav mode="'over'" fixedInViewport="true" position="end">
-        <!--<div class="d-flex flex-column overflow-hidden h-100">-->
-            <mat-toolbar color="primary">Work</mat-toolbar>
+        <div class="d-flex h-100 overflow-hidden flex-column">
+            <mat-toolbar color="primary" class="flex-shrink-0">Work</mat-toolbar>
             <!--<div class="overflow-auto">-->
-                <mat-nav-list>
+                <mat-nav-list class="overflow-auto flex-fill">
                     <a mat-list-item [routerLink]="item.path" *ngFor="let item of rightItems">
                         <mat-icon matListIcon>{{ item.icon }}</mat-icon>
                         <span matLine>{{ item.title }}</span>
                     </a>
                 </mat-nav-list>
             <!--</div>-->
-        <!--</div>-->
+        </div>
     </mat-sidenav>
 </mat-sidenav-container>
