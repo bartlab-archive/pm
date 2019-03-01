@@ -1,5 +1,5 @@
 import {createSelector} from '@ngrx/store';
-import {selectProjectsState, selectProjectsEntities} from '../reducers';
+import {selectProjectsState, selectProjectsEntities, selectProjectsMy} from '../reducers';
 
 export const selectProjectsMeta = createSelector(selectProjectsState, (state) => state.meta);
 export const selectProjectsIds = createSelector(selectProjectsState, (state) => state.ids);
@@ -12,6 +12,10 @@ export const selectProjectsActive = createSelector(
     selectProjectsEntities,
     selectProjectsActiveId,
     (entities, activeId) => entities[activeId],
+);
+
+export const selectProjectsMyList = createSelector(selectProjectsEntities, selectProjectsMy, (entities, ids) =>
+    ids.map((id) => entities[id]),
 );
 
 export const selectProjectsStatus = createSelector(selectProjectsState, (state) => state.status);

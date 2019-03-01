@@ -29,8 +29,9 @@ import {ProjectsModulesComponent} from './components/modules/modules.component';
 import {meta} from './projects.meta';
 import {Observable} from 'rxjs';
 import {selectTopItems} from '../layouts/store/selectors/menus.selector';
-import {filter} from 'rxjs/operators';
+import {filter, first, last, skip} from 'rxjs/operators';
 import {AddLeftItem, SetRightItems} from './store/actions/shared.actions';
+import {selectProjectsMyList} from './store/selectors/projects';
 
 @NgModule({
     declarations: [
@@ -144,8 +145,9 @@ export class ProjectsModule {
     ];
 
     protected my$: Observable<Array<any>> = this.store.pipe(
-        select(selectProjectsMy),
-        filter((items) => Boolean(items)),
+        select(selectProjectsMyList),
+        filter(Boolean),
+        skip(2),
     );
 
     public constructor(
@@ -167,8 +169,8 @@ export class ProjectsModule {
             this.store.dispatch(new SetRightItems(items.map((project) => {
                 return {
                     icon: 'work',
-                    path: ['/projects', project],
-                    title: project,
+                    path: ['/projects', project.identifier],
+                    title: project.name,
                 };
             })));
         });

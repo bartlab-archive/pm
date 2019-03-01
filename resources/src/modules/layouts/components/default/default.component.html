@@ -10,11 +10,9 @@
             </mat-nav-list>
         </div>
     </mat-sidenav>
+
     <mat-sidenav-content>
-        <mat-toolbar
-            color="primary"
-            [ngClass]="{'multiple-toolbars': tabs.length > 0}"
-        >
+        <mat-toolbar color="primary" [ngClass]="{'multiple-toolbars': tabs.length > 0}">
             <mat-toolbar-row>
                 <button mat-icon-button (click)="sidenav.toggle()">
                     <mat-icon>menu</mat-icon>
@@ -24,40 +22,25 @@
                 <button mat-icon-button (click)="rightnav.toggle()">
                     <mat-icon>work</mat-icon>
                 </button>
-                <button
-                    mat-icon-button
-                    [matMenuTriggerFor]="topMenu"
-                    *ngIf="topItems.length"
-                >
+                <button mat-icon-button [matMenuTriggerFor]="topMenu" *ngIf="topItems.length">
                     <mat-icon>more_vert</mat-icon>
                 </button>
                 <mat-menu #topMenu="matMenu">
-                    <a
-                        [routerLink]="item.path"
-                        mat-menu-item
-                        *ngFor="let item of topItems"
-                    >
+                    <a [routerLink]="item.path" mat-menu-item *ngFor="let item of topItems">
                         <mat-icon>{{ item.icon }}</mat-icon>
                         <span>{{ item.title }}</span>
                     </a>
-                    <!--<button mat-menu-item disabled>-->
-                    <!--<mat-icon>voicemail</mat-icon>-->
-                    <!--<span>Check voicemail</span>-->
-                    <!--</button>-->
-                    <!--<button mat-menu-item>-->
-                    <!--<mat-icon>notifications_off</mat-icon>-->
-                    <!--<span>Disable alerts</span>-->
-                    <!--</button>-->
                 </mat-menu>
             </mat-toolbar-row>
+
             <mat-toolbar-row *ngIf="tabs.length > 0" class="sub-toolbar">
                 <nav mat-tab-nav-bar color="accent">
                     <a
-                        mat-tab-link
-                        disableRipple="true"
-                        *ngFor="let tab of tabs"
-                        [routerLink]="tab.path"
-                        [active]="isActiveTab(tab)"
+                            mat-tab-link
+                            disableRipple="true"
+                            *ngFor="let tab of tabs"
+                            [routerLink]="tab.path"
+                            [active]="isActiveTab(tab)"
                     >
                         {{ tab.title | uppercase }}
                     </a>
@@ -66,21 +49,18 @@
         </mat-toolbar>
         <div class="d-flex h-100">
             <!--<div>-->
-                <div class="q-nav-container overflow-hidden">
-                    <div class="q-nav">
-                        <div class="q-nav-items">
-                            <div
-                                class="q-nav-item"
-                                *ngFor="let item of leftItems"
-                            >
-                                <a [routerLink]="item.url">
-                                    <mat-icon>{{ item.icon }}</mat-icon>
-                                    <span>{{ item.name }}</span>
-                                </a>
-                            </div>
+            <div class="q-nav-container overflow-hidden">
+                <div class="q-nav">
+                    <div class="q-nav-items">
+                        <div class="q-nav-item" *ngFor="let item of leftItems">
+                            <a [routerLink]="item.url">
+                                <mat-icon>{{ item.icon }}</mat-icon>
+                                <span>{{ item.name }}</span>
+                            </a>
                         </div>
                     </div>
                 </div>
+            </div>
             <!--</div>-->
             <div class="flex-grow-1 overflow-auto d-flex flex-column">
                 <div class="flex-fill">
@@ -90,17 +70,16 @@
             </div>
         </div>
     </mat-sidenav-content>
+
     <mat-sidenav #rightnav mode="'over'" fixedInViewport="true" position="end">
         <div class="d-flex h-100 overflow-hidden flex-column">
             <mat-toolbar color="primary" class="flex-shrink-0">Work</mat-toolbar>
-            <!--<div class="overflow-auto">-->
-                <mat-nav-list class="overflow-auto flex-fill">
-                    <a mat-list-item [routerLink]="item.path" *ngFor="let item of rightItems">
-                        <mat-icon matListIcon>{{ item.icon }}</mat-icon>
-                        <span matLine>{{ item.title }}</span>
-                    </a>
-                </mat-nav-list>
-            <!--</div>-->
+            <mat-nav-list class="overflow-auto flex-fill">
+                <a mat-list-item [routerLink]="item.path" *ngFor="let item of rightItems">
+                    <mat-icon matListIcon>{{ item.icon }}</mat-icon>
+                    <span matLine>{{ item.title }}</span>
+                </a>
+            </mat-nav-list>
         </div>
     </mat-sidenav>
 </mat-sidenav-container>
