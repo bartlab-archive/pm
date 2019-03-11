@@ -4,7 +4,7 @@
                 mode="indeterminate"
                 *ngIf="(pending$ | async)"
         ></mat-progress-bar>
-        <form [formGroup]="form">
+        <form [formGroup]="form" (ngSubmit)="form.valid && onSubmit()">
             <mat-card-header class="d-flex">
                 <mat-card-title class="p-2">{{
                     item && item.subject ? item.subject : ''
@@ -35,7 +35,7 @@
                         ></textarea>
                     </mat-form-field>
                     <div *ngIf="!isNew">
-                        <button
+                        <button type="button"
                                 mat-icon-button
                                 (click)="showDescription = !showDescription"
                                 matTooltip="Description"
@@ -48,7 +48,10 @@
                     </div>
                     <mat-form-field floatLabel="never" *ngIf="!isNew">
                         <span class="textareaLabel">Notes:</span>
-                        <textarea matInput rows="15"></textarea>
+                        <textarea matInput
+                                  rows="15"
+                                  formControlName="notes"
+                        ></textarea>
                     </mat-form-field>
                     <div *ngIf="!isNew">
                         <mat-slide-toggle>Private notes</mat-slide-toggle>
@@ -62,6 +65,7 @@
                                 name="project"
                                 formControlName="project"
                                 required
+                                (selectionChange)="onSelection($event)"
 
                         >
                             <mat-option
@@ -216,7 +220,7 @@
                                 <mat-icon matChipRemove>cancel</mat-icon>
                             </mat-chip>
                             <input
-                                    placeholder="Filter..."
+                                    placeholder="Watchers filter..."
                                     #tagInput
                                     [formControl]="tagCtrl"
                                     [matAutocomplete]="auto"

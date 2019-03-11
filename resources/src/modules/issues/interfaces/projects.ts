@@ -1,4 +1,6 @@
 export interface Member {
+    id: number;
+    user: User;
 }
 
 export interface Module {
@@ -16,4 +18,13 @@ export interface Project {
     modules: Module[];
     name: string;
     status: number;
+}
+
+export interface User {
+    id: number;
+    full_name: string;
+    login: string;
+    avatar: string;
+    created_on: string;
+    last_login_on: string;
 }

@@ -1,11 +1,15 @@
 import {Action} from '@ngrx/store';
 import {ResponseError} from '../../../../app/interfaces/api';
+import {IssueUpdateRequest} from '../../interfaces/issues';
+
 
 export enum IssuesActionTypes {
     ALL_REQUEST = '[issues] all request',
     ALL_ERROR = '[issues] all error',
     ALL_SUCCESS = '[issues] all success',
+
     PRELOAD_REQUEST = '[issues] preload',
+
     ITEM_REQUEST = '[issues] item request',
     ITEM_ERROR = '[issues] item error',
     ITEM_SUCCESS = '[issues] item success',
@@ -17,6 +21,10 @@ export enum IssuesActionTypes {
     ITEM_UNWATCH_REQUEST = '[issues] item unwatch request',
     ITEM_UNWATCH_SUCCESS = '[issues] item unwatch success',
     ITEM_UNWATCH_ERROR = '[issues] item unwatch error',
+
+    UPDATE_REQUEST = '[issues] item update request',
+    UPDATE_ERROR = '[issues] item update error',
+    UPDATE_SUCCESS = '[issues] item update error',
     // shared
     // AUTH_LOGOUT = '[Auth] Logout',
 }
@@ -116,6 +124,28 @@ export class ItemUnwatchSuccessAction implements Action {
     }
 }
 
+
+export class UpdateRequestAction implements Action {
+    readonly type = IssuesActionTypes.UPDATE_REQUEST;
+
+    constructor(public payload: IssueUpdateRequest) {
+    }
+}
+
+export class UpdateErrorAction implements Action {
+    readonly type = IssuesActionTypes.UPDATE_ERROR;
+
+    constructor(public payload: ResponseError) {
+    }
+}
+
+export class UpdateSuccessAction implements Action {
+    readonly type = IssuesActionTypes.UPDATE_SUCCESS;
+
+    constructor(public payload: any) {
+    }
+}
+
 // export class IssuesLogoutSuccessAction implements Action {
 //     readonly type = IssuesActionTypes.AUTH_LOGOUT;
 //
@@ -139,5 +169,9 @@ export type IssuesActionsUnion =
 
     | ItemUnwatchRequestAction
     | ItemUnwatchErrorAction
-    | ItemUnwatchSuccessAction;
+    | ItemUnwatchSuccessAction
+
+    | UpdateRequestAction
+    | UpdateErrorAction
+    | UpdateSuccessAction;
 // | IssuesLogoutSuccessAction;

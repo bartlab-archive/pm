@@ -151,12 +151,6 @@ export class IssuesListComponent implements OnInit, OnDestroy {
     }
 
     public load(): void {
-        console.log({
-            per_page: this.paginator.pageSize || this.pageSizeOptions[0],
-            page: this.paginator.pageIndex + 1,
-            'status_ids[]': this.getTagsId('status'),
-            'tracker_ids[]': this.getTagsId('tracker'),
-        });
         this.store.dispatch(
             new IssuesAllRequestAction({
                 per_page: this.paginator.pageSize || this.pageSizeOptions[0],

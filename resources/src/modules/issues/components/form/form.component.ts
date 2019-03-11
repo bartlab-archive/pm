@@ -12,11 +12,11 @@ import {
 import {select, Store} from '@ngrx/store';
 import {combineLatest, Subscription, Observable} from 'rxjs';
 import {filter, map, startWith} from 'rxjs/operators';
-import {MatAutocompleteSelectedEvent} from '@angular/material';
+import {MatAutocompleteSelectedEvent, MatSelectChange} from '@angular/material';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {FilterTag, Issue} from '../../interfaces/issues';
+import {FilterTag, Issue, IssueUpdate} from '../../interfaces/issues';
 import {RequestStatus} from '../../../../app/interfaces/api';
-import {ItemRequestAction} from '../../store/actions/issues.action';
+import {ItemRequestAction, UpdateRequestAction} from '../../store/actions/issues.action';
 import {EnumerationsRequestAction} from '../../store/actions/enumerations.action';
 
 import {selectIssuesActive, selectIssuesStatus, selectMyProjects} from '../../store/selectors/issues';
@@ -33,6 +33,7 @@ import {Project} from '../../interfaces/projects';
 export class IssuesFormComponent implements OnInit, OnDestroy {
     public subscriptions: Subscription[] = [];
     public item: Issue;
+    public id: number;
     public statuses$: Observable<any[]>;
     public trackers$: Observable<any[]>;
     public pending$: Observable<boolean> = this.store.pipe(
@@ -102,6 +103,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
             this.params$.subscribe((params) => {
                 if (params.id) {
                     this.load(Number(params.id));
+                    this.id = +params.id
                 }
             }),
 
@@ -207,5 +209,66 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
         return restTags.filter((tag) =>
             this.getTagLabel(tag).toLowerCase().indexOf(filterLabel) !== -1,
         );
+    }
+
+    public onSelection($event: MatSelectChange) {
+        this.myProjects$.subscribe(projects => {
+            const [project] = projects.filter(project => project.identifier === $event.value);
+            if (project) {
+                if (project && project.members) {
+                    this.tags = [];
+                    this.allTags = project.members.map((member) => {
+                        return {name: member.user.full_name, id: member.user.id};
+                    });
+                    this.tagInput.nativeElement.value = '';
+                    this.tagCtrl.setValue(null);
+                }
+            }
+        });
+    }
+
+    public onSubmit(): void {
+        const controls = this.form.controls;
+        if (this.form.invalid) {
+            Object.keys(controls).forEach((name) => controls[name].markAsTouched());
+            return;
+        }
+        const {
+            assigned,
+            description,
+            done_ratio,
+            due_date,
+            estimated_hours,
+            is_private,
+            notes,
+            parent_id,
+            priority,
+            project,
+            start_date,
+            status,
+            subject,
+            tracker
+        } = this.form.value;
+
+        const body: IssueUpdate = {
+            assigned,
+            description,
+            done_ratio,
+            due_date,
+            estimated_hours,
+            is_private,
+            notes,
+            parent_id,
+            priority,
+            project,
+            start_date,
+            status,
+            subject,
+            tracker,
+            watchers: this.tags
+        };
+
+        // dispatch update issue
+        this.store.dispatch(new UpdateRequestAction({id: this.id, body}));
     }
 }

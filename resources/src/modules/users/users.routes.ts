@@ -12,7 +12,7 @@ export const routes: Routes = [
             {
                 path: 'users',
                 data: {
-                    auth: 'authorized',
+                    auth: 'admin',
                 },
                 children: [
                     {

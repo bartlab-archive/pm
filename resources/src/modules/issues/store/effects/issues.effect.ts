@@ -18,10 +18,14 @@ import {
     ItemUnwatchRequestAction,
     ItemUnwatchSuccessAction,
     ItemUnwatchErrorAction,
+    UpdateRequestAction,
+    UpdateSuccessAction,
+    UpdateErrorAction,
 } from '../actions/issues.action';
 
 import {ResponseError} from '../../../../app/interfaces/api';
 import {issuesSchema} from '../schemas';
+import {IssueResponse} from '../../interfaces/issues';
 
 @Injectable()
 export class IssuesEffect {
@@ -91,6 +95,24 @@ export class IssuesEffect {
                     });
                 }),
                 catchError((response: ResponseError) => of(new ItemWatchErrorAction(response))),
+            ),
+        ),
+    );
+
+    @Effect()
+    protected update$ = this.actions$.pipe(
+        ofType<UpdateRequestAction>(IssuesActionTypes.UPDATE_REQUEST),
+        map((action) => action.payload),
+
+        exhaustMap((request) =>
+            this.issuesService.update(request.id, request.body).pipe(
+                map(({data}: IssueResponse) => {
+                    const payload = {
+                        ...normalize([data], [issuesSchema]),
+                    };
+                    return new UpdateSuccessAction(payload);
+                }),
+                catchError((response: ResponseError) => of(new UpdateErrorAction(response))),
             ),
         ),
     );

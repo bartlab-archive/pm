@@ -24,6 +24,7 @@ import {Store} from '@ngrx/store';
                 admin: [
                     {
                         path: 'admin',
+                        data: {auth: 'admin'},
                         component: AdminListComponent,
                     },
                 ],
@@ -41,7 +42,6 @@ export class AdminModule {
                 {
                     path: '',
                     component: AdminMainComponent,
-                    data: {auth: 'admin'},
                     children: findBy(this.config, 'admin'),
                 },
             ],

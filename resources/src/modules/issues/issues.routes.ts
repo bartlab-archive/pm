@@ -55,18 +55,22 @@ export const adminIssuesRoutes: Routes = [
         children: [
             {
                 path: 'issue_statuses',
+                data: {auth: 'admin'},
                 component: IssuesStatusesComponent,
             },
             {
                 path: 'issue_statuses/new',
+                data: {auth: 'admin'},
                 component: IssuesStatusesFormComponent,
             },
             {
                 path: 'issue_statuses/:id/edit',
+                data: {auth: 'admin'},
                 component: IssuesStatusesFormComponent,
             },
             {
                 path: 'trackers',
+                data: {auth: 'admin'},
                 component: IssuesTrackersComponent,
             },
         ],

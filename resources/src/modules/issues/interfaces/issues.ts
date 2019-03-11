@@ -30,3 +30,30 @@ export interface Issue {
     watchers: any[];
     notes_private: boolean;
 }
+
+export interface IssueUpdateRequest {
+    id: number;
+    body: IssueUpdate;
+}
+
+export interface IssueUpdate {
+    assigned: number;
+    description: string;
+    done_ratio: string;
+    due_date: string;
+    estimated_hours: number;
+    is_private: boolean;
+    notes: string;
+    parent_id: string;
+    priority: number
+    project: string;
+    start_date: string;
+    status: number;
+    subject: string;
+    tracker: number;
+    watchers: any[];
+}
+
+export interface IssueResponse {
+    data: Issue;
+}
