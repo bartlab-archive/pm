@@ -7,18 +7,15 @@ import {
 } from '../../store/selectors/statuses';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {
-    // StatusesActionTypes,
     StatusesItemRequestAction,
     StatusesItemResetAction,
     StatusesItemSaveRequestAction,
-    // StatusesItemSaveSuccessAction,
 } from '../../store/actions/statuses.action';
 import {FormBuilder, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {combineAll, filter} from 'rxjs/operators';
+import {filter} from 'rxjs/operators';
 import {Status} from '../../interfaces/statuses';
-// import {StatusesEffect} from '../../store/effects/statuses.effect';
-// import {ofType} from '@ngrx/effects';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
     selector: 'app-issues-statuses-form',
@@ -43,7 +40,6 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
     public pending = false;
     public requestId = null;
     public item$ = this.store.pipe(select(selectStatusesActive), filter((item) => Boolean(item)));
-    // public errors$ = this.store.pipe(select(selectStatusesSa))
     public requestStatus$ = this.store.pipe(select(selectStatusesStatus));
 
     public saved$ = combineLatest(
@@ -59,7 +55,7 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
         private fb: FormBuilder,
         public activatedRoute: ActivatedRoute,
         public router: Router,
-        // public statusesEffect: StatusesEffect
+        private snackBar: MatSnackBar,
     ) {
     }
 
@@ -70,8 +66,11 @@ export class IssuesStatusesFormComponent implements OnInit, OnDestroy {
             }),
 
             this.saved$.subscribe(() => {
+                this.snackBar.open(`Successful ${this.isNew ? 'creation' : 'update'}.`);
                 this.router.navigate(['/issue_statuses']);
             }),
+
+            // todo: show snakBar for error
         );
 
         if (!this.isNew) {

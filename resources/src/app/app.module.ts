@@ -104,6 +104,7 @@ import {RouteSerializer} from './serializers/route-serializer';
             provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
             useValue: {
                 duration: 5000,
+                horizontalPosition: 'left',
             },
         },
         {

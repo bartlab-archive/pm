@@ -44,3 +44,12 @@ mat-card {
         bottom: 20px;
     }
 }
+
+.mat-checkbox-layout {
+    margin-bottom: 0;
+}
+
+.mat-menu-item,
+.mat-icon-button {
+    outline: none !important;
+}
