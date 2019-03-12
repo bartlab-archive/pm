@@ -54,7 +54,9 @@
                         ></textarea>
                     </mat-form-field>
                     <div *ngIf="!isNew">
-                        <mat-slide-toggle>Private notes</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="private_notes">
+                            Private notes
+                        </mat-slide-toggle>
                     </div>
                 </div>
 
@@ -194,17 +196,12 @@
                                     placeholder="Done (%)"
                                     formControlName="done_ratio"
                             >
-                                <mat-option value="0">0%</mat-option>
-                                <mat-option value="10">10%</mat-option>
-                                <mat-option value="20">20%</mat-option>
-                                <mat-option value="30">30%</mat-option>
-                                <mat-option value="40">40%</mat-option>
-                                <mat-option value="50">50%</mat-option>
-                                <mat-option value="60">60%</mat-option>
-                                <mat-option value="70">70%</mat-option>
-                                <mat-option value="80">80%</mat-option>
-                                <mat-option value="90">90%</mat-option>
-                                <mat-option value="100">100%</mat-option>
+                                <mat-option
+                                        *ngFor="let done of [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]"
+                                        [value]="done"
+                                >
+                                    {{ done }}%
+                                </mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -245,8 +242,8 @@
 
             <div class="d-flex justify-content-center">
                 <button mat-raised-button color="primary" class="mr-4">SUBMIT</button>
-                <button mat-raised-button class="mr-4">PREVIEW</button>
-                <button mat-raised-button>CANCEL</button>
+                <button mat-raised-button class="mr-4" type="button" (click)="preview()">PREVIEW</button>
+                <button mat-raised-button (click)="cancel()">CANCEL</button>
             </div>
         </form>
     </mat-card>

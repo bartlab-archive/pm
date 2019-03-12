@@ -24,6 +24,7 @@ import {selectStatuses} from '../../store/selectors/statuses';
 import {selectPriorities} from '../../store/selectors/priorities';
 import {selectTrackers} from '../../store/selectors/trackers';
 import {Project} from '../../interfaces/projects';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-issues-form',
@@ -34,6 +35,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     public subscriptions: Subscription[] = [];
     public item: Issue;
     public id: number;
+    public identifier: string;
     public statuses$: Observable<any[]>;
     public trackers$: Observable<any[]>;
     public pending$: Observable<boolean> = this.store.pipe(
@@ -58,6 +60,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     public form = this.fb.group({
         'subject': ['', Validators.required],
         'is_private': [''],
+        'private_notes': [''],
         'description': [''],
         'notes': [''],
         'project': ['', Validators.required],
@@ -103,7 +106,10 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
             this.params$.subscribe((params) => {
                 if (params.id) {
                     this.load(Number(params.id));
-                    this.id = +params.id
+                    this.id = Number(params.id);
+                }
+                if (params.identifier) {
+                    this.identifier = params.identifier;
                 }
             }),
 
@@ -146,6 +152,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                     subject,
                     description,
                     is_private,
+                    private_notes: false,
                     notes,
                     project: project.identifier ? project.identifier : '',
                     tracker: tracker.id,
@@ -233,25 +240,28 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
             Object.keys(controls).forEach((name) => controls[name].markAsTouched());
             return;
         }
+        const watchers = this.tags.map(tag => tag.id);
         const {
             assigned,
             description,
             done_ratio,
-            due_date,
             estimated_hours,
             is_private,
+            private_notes,
             notes,
             parent_id,
             priority,
             project,
-            start_date,
             status,
             subject,
             tracker
         } = this.form.value;
 
+        const start_date = this.form.value.start_date ? moment(this.form.value.start_date).format('YYYY-MM-DD') : '';
+        const due_date = this.form.value.due_date ? moment(this.form.value.due_date).format('YYYY-MM-DD') : '';
+
         const body: IssueUpdate = {
-            assigned,
+            assigned_to_id: assigned,
             description,
             done_ratio,
             due_date,
@@ -259,16 +269,29 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
             is_private,
             notes,
             parent_id,
-            priority,
-            project,
+            priority_id: priority,
+            private_notes,
+            project_identifier: project,
             start_date,
-            status,
+            status_id: status,
             subject,
-            tracker,
-            watchers: this.tags
+            tracker_id: tracker,
+            watchers
         };
-
-        // dispatch update issue
         this.store.dispatch(new UpdateRequestAction({id: this.id, body}));
+    }
+
+    cancel() {
+        if (this.id) {
+            this.router.navigateByUrl(`issues/${this.id}`);
+        } else if (this.identifier && this.isNew) {
+            this.router.navigateByUrl(`projects/${this.identifier}/issues`);
+        } else {
+            this.router.navigateByUrl(`issues`);
+        }
+    }
+
+    preview() {
+
     }
 }

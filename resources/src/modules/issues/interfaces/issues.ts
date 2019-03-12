@@ -37,7 +37,7 @@ export interface IssueUpdateRequest {
 }
 
 export interface IssueUpdate {
-    assigned: number;
+    assigned_to_id: number;
     description: string;
     done_ratio: string;
     due_date: string;
@@ -45,13 +45,15 @@ export interface IssueUpdate {
     is_private: boolean;
     notes: string;
     parent_id: string;
-    priority: number
-    project: string;
+    priority_id: number;
+    private_notes: boolean;
+    project_identifier : string;
     start_date: string;
-    status: number;
+    status_id: number;
     subject: string;
-    tracker: number;
+    tracker_id: number;
     watchers: any[];
+
 }
 
 export interface IssueResponse {

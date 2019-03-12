@@ -26,6 +26,7 @@ import {
 import {ResponseError} from '../../../../app/interfaces/api';
 import {issuesSchema} from '../schemas';
 import {IssueResponse} from '../../interfaces/issues';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class IssuesEffect {
@@ -110,6 +111,7 @@ export class IssuesEffect {
                     const payload = {
                         ...normalize([data], [issuesSchema]),
                     };
+                    this.router.navigateByUrl(`issues/${request.id}`);
                     return new UpdateSuccessAction(payload);
                 }),
                 catchError((response: ResponseError) => of(new UpdateErrorAction(response))),
@@ -120,6 +122,7 @@ export class IssuesEffect {
     public constructor(
         protected actions$: Actions,
         protected issuesService: IssuesService,
+        public router: Router,
     ) {
 
     }

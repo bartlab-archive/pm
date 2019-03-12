@@ -27,7 +27,6 @@ export class IssuesService {
     }
 
     public update(id, body: IssueUpdate) {
-      //console.log('Update', id, body);
         return this.http.put(`/api/v1/issues/${id}`, body);
     }
 }

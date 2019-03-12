@@ -1,7 +1,7 @@
 <ul class="journal-list p-0 ml-4">
     <li *ngFor="let journal of journals">
         <div class="d-flex">
-            <img  *ngIf="journal.user" src="{{ journal.user.avatar }}"/>
+            <img *ngIf="journal.user" src="{{ journal.user.avatar }}"/>
             <div class="p-0 ml-4">
                 Updated by
                 <a href="user/{{ journal.user.id }}">
