@@ -8,7 +8,7 @@ import {MatAutocompleteSelectedEvent, MatSelectChange, MatSnackBar} from '@angul
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {FilterTag, Issue, IssueUpdate} from '../../interfaces/issues';
 import {RequestStatus} from '../../../../app/interfaces/api';
-import {IssuesItemRequestAction, IssuesSaveRequestAction} from '../../store/actions/issues.action';
+import {IssuesItemRequestAction, IssuesItemSaveRequestAction} from '../../store/actions/issues.action';
 import {EnumerationsRequestAction} from '../../store/actions/enumerations.action';
 
 import {
@@ -274,7 +274,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
             tracker_id: tracker,
             watchers
         };
-        const action = new IssuesSaveRequestAction({id: this.id, body});
+        const action = new IssuesItemSaveRequestAction({id: this.id, body});
         this.requestId = action.requestId;
         this.store.dispatch(action);
     }

@@ -18,9 +18,12 @@ import {
     IssuesItemUnwatchRequestAction,
     IssuesItemUnwatchSuccessAction,
     IssuesItemUnwatchErrorAction,
-    IssuesSaveRequestAction,
-    IssuesSaveSuccessAction,
-    IssuesSaveErrorAction,
+    IssuesItemSaveRequestAction,
+    IssuesItemSaveSuccessAction,
+    IssuesItemSaveErrorAction,
+    IssuesItemRemoveRequestAction,
+    IssuesItemRemoveErrorAction,
+    IssuesItemRemoveSuccessAction,
 } from '../actions/issues.action';
 
 import {ResponseError} from '../../../../app/interfaces/api';
@@ -99,7 +102,7 @@ export class IssuesEffect {
 
     @Effect()
     protected save$ = this.actions$.pipe(
-        ofType<IssuesSaveRequestAction>(IssuesActionTypes.ISSUES_ITEM_SAVE_REQUEST),
+        ofType<IssuesItemSaveRequestAction>(IssuesActionTypes.ISSUES_ITEM_SAVE_REQUEST),
         exhaustMap(({payload: request, requestId}) =>
             (request.id ? this.issuesService.update(request.id, request.body) : this.issuesService.create(request.body))
                 .pipe(
@@ -108,11 +111,25 @@ export class IssuesEffect {
                             ...normalize([data], [issuesSchema]),
                         };
                         this.router.navigateByUrl(`issues/${data.id}`);
-                        return new IssuesSaveSuccessAction(payload, requestId);
+                        return new IssuesItemSaveSuccessAction(payload, requestId);
                     }),
-                    catchError((response: ResponseError) => of(new IssuesSaveErrorAction(response, requestId))),
+                    catchError((response: ResponseError) => of(new IssuesItemSaveErrorAction(response, requestId))),
                 ),
         )
+    );
+
+    @Effect()
+    protected remove$ = this.actions$.pipe(
+        ofType<IssuesItemRemoveRequestAction>(IssuesActionTypes.ISSUES_ITEM_REMOVE_REQUEST),
+        exhaustMap(({payload: id, requestId}) =>
+            this.issuesService.remove(id).pipe(
+                map((response) => {
+                    this.router.navigateByUrl(`issues`);
+                    return new IssuesItemRemoveSuccessAction(response, requestId);
+                }),
+                catchError((response: ResponseError) => of(new IssuesItemRemoveErrorAction(response, requestId)))
+            )
+        ),
     );
 
     public constructor(

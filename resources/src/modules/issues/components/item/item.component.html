@@ -1,12 +1,12 @@
 <div class="container">
     <mat-card class="content-card mt-3">
         <mat-progress-bar
-            mode="indeterminate"
-            *ngIf="(pending$ | async)"
+                mode="indeterminate"
+                *ngIf="(pending$ | async)"
         ></mat-progress-bar>
         <ng-container *ngIf="(item$ | async) as item">
             <mat-card-header class="d-flex">
-                <mat-card-title class="p-2" >{{ item.subject }}</mat-card-title>
+                <mat-card-title class="p-2">{{ item.subject }}</mat-card-title>
                 <button class="ml-auto p-2" mat-icon-button (click)="load(item.id)">
                     <mat-icon>refresh</mat-icon>
                 </button>
@@ -20,8 +20,8 @@
                         Copy
                     </a>
                     <a
-                        mat-menu-item
-                        (click)="
+                            mat-menu-item
+                            (click)="
                             item.is_watcheble
                                 ? unwatch()
                                 : watch()
@@ -29,15 +29,16 @@
                     >
                         <mat-icon>{{
                             item.is_watcheble ? 'star' : 'star_border'
-                        }}</mat-icon>
+                            }}
+                        </mat-icon>
                         {{ item.is_watcheble ? 'Unwatch' : 'Watch' }}
                     </a>
-                    <a mat-menu-item>
+                    <a mat-menu-item (click)="remove(item)">
                         <mat-icon>delete</mat-icon>
                         Delete
                     </a>
                 </mat-menu>
-                <button  class="p-2" mat-icon-button [matMenuTriggerFor]="appMenu">
+                <button class="p-2" mat-icon-button [matMenuTriggerFor]="appMenu">
                     <mat-icon>more_vert</mat-icon>
                 </button>
             </mat-card-header>
@@ -55,7 +56,7 @@
                 <div *ngIf="item.author" class="d-flex">
                     <mat-icon class="p-2">create</mat-icon>
                     <div class="p-2 ml-4">
-                        <img src="{{ item.author.avatar }}" />
+                        <img src="{{ item.author.avatar }}"/>
                         <a href="user/{{ item.author.id }}">
                             {{ item.author.full_name }}
                         </a>
@@ -65,7 +66,7 @@
                 <div *ngIf="item.assigned" class="d-flex">
                     <mat-icon class="p-2">people</mat-icon>
                     <div class="p-2 ml-4">
-                        <img src="{{ item.assigned.avatar }}" />
+                        <img src="{{ item.assigned.avatar }}"/>
                         <a href="user/{{ item.assigned.id }}">
                             {{ item.assigned.full_name }}
                         </a>
@@ -103,7 +104,7 @@
                 <div *ngIf="item.journals && item.journals.length" class="d-flex">
                     <mat-icon class="p-2">history</mat-icon>
                     <app-issues-journals class="p-2"
-                        [journals]="item.journals"
+                                         [journals]="item.journals"
                     ></app-issues-journals>
                 </div>
             </mat-card-content>

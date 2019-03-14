@@ -33,4 +33,8 @@ export class IssuesService {
     public create(body: IssueUpdate) {
         return this.http.post(`/api/v1/issues`, body);
     }
+
+    public remove(id) {
+        return this.http.delete(`/api/v1/issues/${id}`);
+    }
 }

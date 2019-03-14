@@ -34,30 +34,30 @@
             <mat-form-field class="filter-input">
                 <mat-chip-list #chipList>
                     <mat-chip
-                        *ngFor="let tag of tags"
-                        [selectable]="false"
-                        [removable]="true"
-                        (removed)="removeTag(tag)"
+                            *ngFor="let tag of tags"
+                            [selectable]="false"
+                            [removable]="true"
+                            (removed)="removeTag(tag)"
                     >
                         {{ getTagLabel(tag) }}
                         <mat-icon matChipRemove>cancel</mat-icon>
                     </mat-chip>
                     <input
-                        placeholder="Filter..."
-                        #tagInput
-                        [formControl]="tagCtrl"
-                        [matAutocomplete]="auto"
-                        [matChipInputFor]="chipList"
-                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            placeholder="Filter..."
+                            #tagInput
+                            [formControl]="tagCtrl"
+                            [matAutocomplete]="auto"
+                            [matChipInputFor]="chipList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                     />
                 </mat-chip-list>
                 <mat-autocomplete
-                    #auto="matAutocomplete"
-                    (optionSelected)="selected($event)"
+                        #auto="matAutocomplete"
+                        (optionSelected)="selected($event)"
                 >
                     <mat-option
-                        *ngFor="let tag of (filteredTags | async)"
-                        [value]="getTagLabel(tag)"
+                            *ngFor="let tag of (filteredTags | async)"
+                            [value]="getTagLabel(tag)"
                     >
                         {{ getTagLabel(tag) }}
                     </mat-option>
@@ -70,9 +70,9 @@
             <ng-container matColumnDef="select">
                 <mat-header-cell *matHeaderCellDef>
                     <mat-checkbox
-                        (change)="$event ? masterToggle() : null"
-                        [checked]="selection.hasValue() && isAllSelected()"
-                        [indeterminate]="
+                            (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="
                             selection.hasValue() && !isAllSelected()
                         "
                     >
@@ -80,9 +80,9 @@
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row">
                     <mat-checkbox
-                        (click)="$event.stopPropagation()"
-                        (change)="$event ? selection.toggle(row) : null"
-                        [checked]="selection.isSelected(row)"
+                            (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)"
                     >
                     </mat-checkbox>
                 </mat-cell>
@@ -121,15 +121,19 @@
                             <mat-icon>open_in_browser</mat-icon>
                             Open
                         </a>
+                        <a mat-menu-item (click)="remove(row)">
+                            <mat-icon>delete</mat-icon>
+                            Delete
+                        </a>
                         <mat-divider></mat-divider>
                         <button mat-menu-item>
                             Overview
                         </button>
                     </mat-menu>
                     <button
-                        mat-icon-button
-                        [matMenuTriggerFor]="appMenu"
-                        (click)="$event.stopPropagation()"
+                            mat-icon-button
+                            [matMenuTriggerFor]="appMenu"
+                            (click)="$event.stopPropagation()"
                     >
                         <mat-icon>more_vert</mat-icon>
                     </button>

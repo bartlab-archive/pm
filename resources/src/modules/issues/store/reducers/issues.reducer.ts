@@ -68,6 +68,7 @@ const status = (state = null, action: IssuesActionsUnion | SharedActionsUnion) =
         case IssuesActionTypes.ISSUES_ITEM_UNWATCH_REQUEST:
         case IssuesActionTypes.ISSUES_ITEM_WATCH_REQUEST:
         case IssuesActionTypes.ISSUES_ITEM_SAVE_REQUEST:
+        case IssuesActionTypes.ISSUES_ITEM_REMOVE_REQUEST:
             return RequestStatus.pending;
 
         case IssuesActionTypes.ISSUES_ALL_SUCCESS:
@@ -75,6 +76,7 @@ const status = (state = null, action: IssuesActionsUnion | SharedActionsUnion) =
         case IssuesActionTypes.ISSUES_ITEM_WATCH_SUCCESS:
         case IssuesActionTypes.ISSUES_ITEM_UNWATCH_SUCCESS:
         case IssuesActionTypes.ISSUES_ITEM_SAVE_SUCCESS:
+        case IssuesActionTypes.ISSUES_ITEM_REMOVE_SUCCESS:
             return RequestStatus.success;
 
         case IssuesActionTypes.ISSUES_ALL_ERROR:
@@ -82,6 +84,7 @@ const status = (state = null, action: IssuesActionsUnion | SharedActionsUnion) =
         case IssuesActionTypes.ISSUES_ITEM_WATCH_ERROR:
         case IssuesActionTypes.ISSUES_ITEM_UNWATCH_ERROR:
         case IssuesActionTypes.ISSUES_ITEM_SAVE_ERROR:
+        case IssuesActionTypes.ISSUES_ITEM_REMOVE_ERROR:
             return RequestStatus.error;
 
         case SharedActionTypes.AUTH_LOGOUT:
@@ -118,6 +121,9 @@ const requestId = (state = null, action: IssuesActionsUnion) => {
         case IssuesActionTypes.ISSUES_ITEM_WATCH_REQUEST:
         case IssuesActionTypes.ISSUES_ITEM_WATCH_SUCCESS:
         case IssuesActionTypes.ISSUES_ITEM_WATCH_ERROR:
+        case IssuesActionTypes.ISSUES_ITEM_REMOVE_REQUEST:
+        case IssuesActionTypes.ISSUES_ITEM_REMOVE_SUCCESS:
+        case IssuesActionTypes.ISSUES_ITEM_REMOVE_ERROR:
             return action.requestId;
 
         case IssuesActionTypes.ISSUES_ITEM_RESET:

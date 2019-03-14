@@ -26,6 +26,11 @@ export enum IssuesActionTypes {
     ISSUES_ITEM_SAVE_REQUEST = '[issues] item save request',
     ISSUES_ITEM_SAVE_ERROR = '[issues] item save error',
     ISSUES_ITEM_SAVE_SUCCESS = '[issues] item save success',
+
+    ISSUES_ITEM_REMOVE_REQUEST = '[issues] item remove request',
+    ISSUES_ITEM_REMOVE_SUCCESS = '[issues] item remove success',
+    ISSUES_ITEM_REMOVE_ERROR = '[issues] item remove error',
+
     // shared
     // AUTH_LOGOUT = '[Auth] Logout',
 }
@@ -138,7 +143,7 @@ export class IssuesItemUnwatchSuccessAction implements Action {
     }
 }
 
-export class IssuesSaveRequestAction implements Action {
+export class IssuesItemSaveRequestAction implements Action {
     readonly type = IssuesActionTypes.ISSUES_ITEM_SAVE_REQUEST;
     readonly requestId = v1();
 
@@ -146,15 +151,37 @@ export class IssuesSaveRequestAction implements Action {
     }
 }
 
-export class IssuesSaveErrorAction implements Action {
+export class IssuesItemSaveErrorAction implements Action {
     readonly type = IssuesActionTypes.ISSUES_ITEM_SAVE_ERROR;
 
     constructor(public payload: ResponseError, public requestId?: string) {
     }
 }
 
-export class IssuesSaveSuccessAction implements Action {
+export class IssuesItemSaveSuccessAction implements Action {
     readonly type = IssuesActionTypes.ISSUES_ITEM_SAVE_SUCCESS;
+
+    constructor(public payload: any, public requestId?: string) {
+    }
+}
+
+export class IssuesItemRemoveRequestAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_REMOVE_REQUEST;
+    readonly requestId = v1();
+
+    constructor(public payload: number) {
+    }
+}
+
+export class IssuesItemRemoveSuccessAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_REMOVE_SUCCESS;
+
+    constructor(public payload: any, public requestId?: string) {
+    }
+}
+
+export class IssuesItemRemoveErrorAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_REMOVE_ERROR;
 
     constructor(public payload: any, public requestId?: string) {
     }
@@ -185,9 +212,13 @@ export type IssuesActionsUnion =
     | IssuesItemUnwatchErrorAction
     | IssuesItemUnwatchSuccessAction
 
-    | IssuesSaveRequestAction
-    | IssuesSaveErrorAction
-    | IssuesSaveSuccessAction
+    | IssuesItemSaveRequestAction
+    | IssuesItemSaveErrorAction
+    | IssuesItemSaveSuccessAction
+
+    | IssuesItemRemoveRequestAction
+    | IssuesItemRemoveSuccessAction
+    | IssuesItemRemoveErrorAction
 
     | IssuesItemResetAction;
 // | IssuesLogoutSuccessAction;

@@ -10,9 +10,10 @@ import {
     MatPaginator,
     MatSort,
     PageEvent,
+    MatDialog,
 } from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
-import {FilterTag} from '../../interfaces/issues';
+import {FilterTag, Issue} from '../../interfaces/issues';
 import {FormControl} from '@angular/forms';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Observable, Subscription, zip, combineLatest} from 'rxjs';
@@ -28,11 +29,13 @@ import {selectStatuses} from '../../store/selectors/statuses';
 import {
     selectIssues,
     selectIssuesMeta,
+    selectIssuesRequestId,
     selectIssuesStatus,
 } from '../../store/selectors/issues';
 
-import {IssuesAllRequestAction} from '../../store/actions/issues.action';
+import {IssuesAllRequestAction, IssuesItemRemoveRequestAction} from '../../store/actions/issues.action';
 import {RequestStatus} from '../../../../app/interfaces/api';
+import {AppConfirmDialogComponent} from '../../../../app/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-issues-list',
@@ -45,6 +48,14 @@ export class IssuesListComponent implements OnInit, OnDestroy {
     public selection = new SelectionModel<any>(true, []);
     public subscriptions: Array<Subscription> = [];
     public pending = false;
+    public removeRequestId = null;
+
+    public status$ = this.store.pipe(select(selectIssuesStatus));
+    public requestId$ = this.store.pipe(select(selectIssuesRequestId));
+    public removed$ = combineLatest(this.status$, this.requestId$).pipe(
+        filter(([status, requestId]) => Boolean(status) && Boolean(requestId)),
+        filter(([status, requestId]) => status === RequestStatus.success && requestId === this.removeRequestId),
+    );
 
     @ViewChild(MatPaginator)
     public paginator: MatPaginator;
@@ -62,7 +73,8 @@ export class IssuesListComponent implements OnInit, OnDestroy {
     public separatorKeysCodes: Array<number> = [ENTER, COMMA];
     public filteredTags: Observable<Array<FilterTag>>;
 
-    public constructor(private store: Store<any>) {}
+    public constructor(private store: Store<any>, public dialog: MatDialog) {
+    }
 
     public ngOnInit(): void {
         this.filteredTags = this.tagCtrl.valueChanges.pipe(
@@ -134,14 +146,10 @@ export class IssuesListComponent implements OnInit, OnDestroy {
                     this.load();
                 }),
 
-            // this.store.pipe(select(selectProjectsActiveId), filter((id) => Boolean(id))).subscribe(() => {
-            //     console.log('subscribe');
-            // })
+            this.removed$.subscribe(() => {
+                this.load();
+            }),
         );
-
-        // this.load();
-        // this.store.dispatch(new StatusesAllRequestAction());
-        // this.store.dispatch(new TrackersAllRequestAction());
     }
 
     public ngOnDestroy(): void {
@@ -239,5 +247,22 @@ export class IssuesListComponent implements OnInit, OnDestroy {
         }
         // this.prevPageSize = $event.pageSize;
         this.load();
+    }
+
+    public remove(item: Issue) {
+        const dialogRef = this.dialog.open((AppConfirmDialogComponent), {
+            width: '500px',
+            data: {text: `Do you want to delete "${item.subject}" issue?`},
+        });
+        dialogRef.afterClosed()
+            .pipe(
+                filter((result) => Boolean(result)),
+            )
+            .subscribe(() => {
+                const action = new IssuesItemRemoveRequestAction(item.id);
+                this.removeRequestId = action.requestId;
+                this.store.dispatch(action);
+            });
+
     }
 }
