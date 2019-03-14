@@ -18,6 +18,8 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 .env
-.phpstorm.meta.php
-_ide_helper.php
 yarn-error.log
+
+/.phpstorm.meta.php
+/_ide_helper.php
+/_ide_helper_models.php
