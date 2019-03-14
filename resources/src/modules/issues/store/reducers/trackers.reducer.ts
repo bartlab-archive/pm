@@ -7,8 +7,9 @@ import {updateStateEntities} from '../../../../app/store/utils';
 const entities = (state = {}, action: TrackersActionsUnion | IssuesActionsUnion) => {
     switch (action.type) {
         case TrackersActionTypes.TRACKERS_ALL_SUCCESS :
-        case IssuesActionTypes.ITEM_SUCCESS :
+        case IssuesActionTypes.ISSUES_ITEM_SUCCESS :
             return updateStateEntities(state, action.payload.entities.trackers);
+
 
         default:
             return state;

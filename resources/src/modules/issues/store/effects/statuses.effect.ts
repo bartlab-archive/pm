@@ -30,7 +30,7 @@ import {ResponseError} from '../../../../app/interfaces/api';
 export class StatusesEffect {
     @Effect()
     protected statuses$ = this.actions$.pipe(
-        ofType<StatusesAllRequestAction>(StatusesActionTypes.STATUSES_ALL_REQUEST, IssuesActionTypes.PRELOAD_REQUEST),
+        ofType<StatusesAllRequestAction>(StatusesActionTypes.STATUSES_ALL_REQUEST, IssuesActionTypes.ISSUES_PRELOAD_REQUEST),
         // map((action) => action.payload),
         exhaustMap(({requestId}) =>
             this.statusesService.all().pipe(

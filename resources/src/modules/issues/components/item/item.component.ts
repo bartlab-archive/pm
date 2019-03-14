@@ -7,9 +7,9 @@ import {Subscription, combineLatest} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {
-    ItemRequestAction,
-    ItemWatchRequestAction,
-    ItemUnwatchRequestAction,
+    IssuesItemRequestAction,
+    IssuesItemWatchRequestAction,
+    IssuesItemUnwatchRequestAction,
 } from '../../store/actions/issues.action';
 import {selectIssuesActive, selectIssuesStatus} from '../../store/selectors/issues';
 import {RequestStatus} from '../../../../app/interfaces/api';
@@ -28,6 +28,7 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
     public item$: Observable<Issue>;
     public pending$: Observable<boolean> = this.store.pipe(select(selectIssuesStatus));
     public params$: Observable<Params> = this.activatedRoute.params;
+    public id: number = Number(this.activatedRoute.snapshot.paramMap.get('id'));
 
     public constructor(
         private store: Store<any>,
@@ -44,24 +45,22 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
                 map((([issue]) => issue)),
             );
 
-        this.subscriptions.push(
-            this.params$.subscribe((params) => this.load(Number(params.id))),
-        );
+        this.load();
     }
 
     public ngOnDestroy(): void {
         this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     }
 
-    public load(id: number): void {
-        this.store.dispatch(new ItemRequestAction(id));
+    public load(): void {
+        this.store.dispatch(new IssuesItemRequestAction(this.id));
     }
 
-    public watch(id: number): void {
-        this.store.dispatch(new ItemWatchRequestAction(id));
+    public watch(): void {
+        this.store.dispatch(new IssuesItemWatchRequestAction(this.id));
     }
 
-    public unwatch(id: number): void {
-        this.store.dispatch(new ItemUnwatchRequestAction(id));
+    public unwatch(): void {
+        this.store.dispatch(new IssuesItemUnwatchRequestAction(this.id));
     }
 }

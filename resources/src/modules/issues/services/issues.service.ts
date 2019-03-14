@@ -29,4 +29,8 @@ export class IssuesService {
     public update(id, body: IssueUpdate) {
         return this.http.put(`/api/v1/issues/${id}`, body);
     }
+
+    public create(body: IssueUpdate) {
+        return this.http.post(`/api/v1/issues`, body);
+    }
 }

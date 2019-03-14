@@ -7,8 +7,8 @@ import {updateStateEntities} from '../../../../app/store/utils';
 const entities = (state = {}, action: EnumerationsActionsUnion | IssuesActionsUnion) => {
     switch (action.type) {
         case EnumerationsActionTypes.ENUMERATIONS_SUCCESS :
-        case IssuesActionTypes.ALL_SUCCESS:
-        case IssuesActionTypes.ITEM_SUCCESS: {
+        case IssuesActionTypes.ISSUES_ALL_SUCCESS:
+        case IssuesActionTypes.ISSUES_ITEM_SUCCESS: {
             return updateStateEntities(state, action.payload.entities.priorities);
         }
 

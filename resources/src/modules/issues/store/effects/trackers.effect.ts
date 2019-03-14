@@ -18,7 +18,7 @@ import {trackersSchema} from '../schemas';
 export class TrackersEffect {
     @Effect()
     protected trackers$ = this.actions$.pipe(
-        ofType<TrackersAllRequestAction>(TrackersActionTypes.TRACKERS_ALL_REQUEST, IssuesActionTypes.PRELOAD_REQUEST),
+        ofType<TrackersAllRequestAction>(TrackersActionTypes.TRACKERS_ALL_REQUEST, IssuesActionTypes.ISSUES_PRELOAD_REQUEST),
         map((action) => action.payload),
         exhaustMap((data) =>
             this.trackersService.all(data).pipe(

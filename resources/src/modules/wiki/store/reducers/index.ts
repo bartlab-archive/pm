@@ -9,9 +9,9 @@ export const reducers: ActionReducerMap<any> = {
     wiki: wikiReducers,
 };
 
-export const selectModuleSate = createFeatureSelector('moduleWiki');
+export const selectModuleState = createFeatureSelector('moduleWiki');
 export const selectWikiState = createSelector(
-    selectModuleSate,
+    selectModuleState,
     (state: any) => state.wiki,
 );
 

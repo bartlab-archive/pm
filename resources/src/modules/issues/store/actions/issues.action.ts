@@ -1,148 +1,162 @@
 import {Action} from '@ngrx/store';
 import {ResponseError} from '../../../../app/interfaces/api';
-import {IssueUpdateRequest} from '../../interfaces/issues';
-
+import {IssueSaveRequest} from '../../interfaces/issues';
+import {v1} from 'uuid';
 
 export enum IssuesActionTypes {
-    ALL_REQUEST = '[issues] all request',
-    ALL_ERROR = '[issues] all error',
-    ALL_SUCCESS = '[issues] all success',
+    ISSUES_ALL_REQUEST = '[issues] all request',
+    ISSUES_ALL_ERROR = '[issues] all error',
+    ISSUES_ALL_SUCCESS = '[issues] all success',
 
-    PRELOAD_REQUEST = '[issues] preload',
+    ISSUES_PRELOAD_REQUEST = '[issues] preload',
+    ISSUES_ITEM_RESET = '[issues] reset',
 
-    ITEM_REQUEST = '[issues] item request',
-    ITEM_ERROR = '[issues] item error',
-    ITEM_SUCCESS = '[issues] item success',
+    ISSUES_ITEM_REQUEST = '[issues] item request',
+    ISSUES_ITEM_ERROR = '[issues] item error',
+    ISSUES_ITEM_SUCCESS = '[issues] item success',
 
-    ITEM_WATCH_REQUEST = '[issues] item watch request',
-    ITEM_WATCH_SUCCESS = '[issues] item watch success',
-    ITEM_WATCH_ERROR = '[issues] item watch error',
+    ISSUES_ITEM_WATCH_REQUEST = '[issues] item watch request',
+    ISSUES_ITEM_WATCH_SUCCESS = '[issues] item watch success',
+    ISSUES_ITEM_WATCH_ERROR = '[issues] item watch error',
 
-    ITEM_UNWATCH_REQUEST = '[issues] item unwatch request',
-    ITEM_UNWATCH_SUCCESS = '[issues] item unwatch success',
-    ITEM_UNWATCH_ERROR = '[issues] item unwatch error',
+    ISSUES_ITEM_UNWATCH_REQUEST = '[issues] item unwatch request',
+    ISSUES_ITEM_UNWATCH_SUCCESS = '[issues] item unwatch success',
+    ISSUES_ITEM_UNWATCH_ERROR = '[issues] item unwatch error',
 
-    UPDATE_REQUEST = '[issues] item update request',
-    UPDATE_ERROR = '[issues] item update error',
-    UPDATE_SUCCESS = '[issues] item update error',
+    ISSUES_ITEM_SAVE_REQUEST = '[issues] item save request',
+    ISSUES_ITEM_SAVE_ERROR = '[issues] item save error',
+    ISSUES_ITEM_SAVE_SUCCESS = '[issues] item save success',
     // shared
     // AUTH_LOGOUT = '[Auth] Logout',
 }
 
+export class IssuesItemResetAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_RESET;
+
+    constructor() {
+    }
+}
+
 // All
 export class IssuesAllRequestAction implements Action {
-    readonly type = IssuesActionTypes.ALL_REQUEST;
+    readonly type = IssuesActionTypes.ISSUES_ALL_REQUEST;
+    readonly requestId = v1();
 
     constructor(public payload) {
+
     }
 }
 
 export class IssuesAllErrorAction implements Action {
-    readonly type = IssuesActionTypes.ALL_ERROR;
+    readonly type = IssuesActionTypes.ISSUES_ALL_ERROR;
 
-    constructor(public payload) {
+    constructor(public payload, public requestId?: string) {
     }
 }
 
 export class IssuesAllSuccessAction implements Action {
-    readonly type = IssuesActionTypes.ALL_SUCCESS;
+    readonly type = IssuesActionTypes.ISSUES_ALL_SUCCESS;
 
-    constructor(public payload) {
+    constructor(public payload, public requestId?: string) {
     }
 }
 
 export class IssuesPreloadRequestAction implements Action {
-    readonly type = IssuesActionTypes.PRELOAD_REQUEST;
+    readonly type = IssuesActionTypes.ISSUES_PRELOAD_REQUEST;
+    readonly requestId = v1();
 
     constructor() {
     }
 }
 
 // Item
-export class ItemRequestAction implements Action {
-    readonly type = IssuesActionTypes.ITEM_REQUEST;
+export class IssuesItemRequestAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_REQUEST;
+    readonly requestId = v1();
 
     constructor(public payload: number) {
     }
 }
 
-export class ItemErrorAction implements Action {
-    readonly type = IssuesActionTypes.ITEM_ERROR;
+export class IssuesItemErrorAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_ERROR;
 
-    constructor(public payload: ResponseError) {
+    constructor(public payload: ResponseError, public requestId?: string) {
     }
 }
 
-export class ItemSuccessAction implements Action {
-    readonly type = IssuesActionTypes.ITEM_SUCCESS;
+export class IssuesItemSuccessAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_SUCCESS;
 
-    constructor(public payload: any) {
+    constructor(public payload: any, public requestId?: string) {
     }
 }
 
 // Watch
-export class ItemWatchRequestAction implements Action {
-    readonly type = IssuesActionTypes.ITEM_WATCH_REQUEST;
+export class IssuesItemWatchRequestAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_WATCH_REQUEST;
+    readonly requestId = v1();
 
     constructor(public payload) {
     }
 }
 
-export class ItemWatchErrorAction implements Action {
-    readonly type = IssuesActionTypes.ITEM_WATCH_ERROR;
+export class IssuesItemWatchErrorAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_WATCH_ERROR;
 
-    constructor(public payload: ResponseError) {
+    constructor(public payload: ResponseError, public requestId?: string) {
     }
 }
 
-export class ItemWatchSuccessAction implements Action {
-    readonly type = IssuesActionTypes.ITEM_WATCH_SUCCESS;
+export class IssuesItemWatchSuccessAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_WATCH_SUCCESS;
 
-    constructor(public payload) {
+    constructor(public payload, public requestId?: string) {
     }
 }
 
 // Unwatch
-export class ItemUnwatchRequestAction implements Action {
-    readonly type = IssuesActionTypes.ITEM_UNWATCH_REQUEST;
+export class IssuesItemUnwatchRequestAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_UNWATCH_REQUEST;
+    readonly requestId = v1();
 
     constructor(public payload: number) {
     }
 }
 
-export class ItemUnwatchErrorAction implements Action {
-    readonly type = IssuesActionTypes.ITEM_UNWATCH_ERROR;
+export class IssuesItemUnwatchErrorAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_UNWATCH_ERROR;
 
-    constructor(public payload: ResponseError) {
+    constructor(public payload: ResponseError, public requestId?: string) {
     }
 }
 
-export class ItemUnwatchSuccessAction implements Action {
-    readonly type = IssuesActionTypes.ITEM_UNWATCH_SUCCESS;
+export class IssuesItemUnwatchSuccessAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_UNWATCH_SUCCESS;
 
-    constructor(public payload) {
+    constructor(public payload, public requestId?: string) {
     }
 }
 
+export class IssuesSaveRequestAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_SAVE_REQUEST;
+    readonly requestId = v1();
 
-export class UpdateRequestAction implements Action {
-    readonly type = IssuesActionTypes.UPDATE_REQUEST;
-
-    constructor(public payload: IssueUpdateRequest) {
+    constructor(public payload: IssueSaveRequest) {
     }
 }
 
-export class UpdateErrorAction implements Action {
-    readonly type = IssuesActionTypes.UPDATE_ERROR;
+export class IssuesSaveErrorAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_SAVE_ERROR;
 
-    constructor(public payload: ResponseError) {
+    constructor(public payload: ResponseError, public requestId?: string) {
     }
 }
 
-export class UpdateSuccessAction implements Action {
-    readonly type = IssuesActionTypes.UPDATE_SUCCESS;
+export class IssuesSaveSuccessAction implements Action {
+    readonly type = IssuesActionTypes.ISSUES_ITEM_SAVE_SUCCESS;
 
-    constructor(public payload: any) {
+    constructor(public payload: any, public requestId?: string) {
     }
 }
 
@@ -159,19 +173,21 @@ export type IssuesActionsUnion =
     | IssuesPreloadRequestAction
     | IssuesAllSuccessAction
 
-    | ItemErrorAction
-    | ItemRequestAction
-    | ItemSuccessAction
+    | IssuesItemErrorAction
+    | IssuesItemRequestAction
+    | IssuesItemSuccessAction
 
-    | ItemWatchRequestAction
-    | ItemWatchErrorAction
-    | ItemWatchSuccessAction
+    | IssuesItemWatchRequestAction
+    | IssuesItemWatchErrorAction
+    | IssuesItemWatchSuccessAction
 
-    | ItemUnwatchRequestAction
-    | ItemUnwatchErrorAction
-    | ItemUnwatchSuccessAction
+    | IssuesItemUnwatchRequestAction
+    | IssuesItemUnwatchErrorAction
+    | IssuesItemUnwatchSuccessAction
 
-    | UpdateRequestAction
-    | UpdateErrorAction
-    | UpdateSuccessAction;
+    | IssuesSaveRequestAction
+    | IssuesSaveErrorAction
+    | IssuesSaveSuccessAction
+
+    | IssuesItemResetAction;
 // | IssuesLogoutSuccessAction;

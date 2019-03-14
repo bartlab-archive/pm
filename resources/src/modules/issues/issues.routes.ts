@@ -4,7 +4,10 @@ import {
     IssuesItemComponent,
     IssuesListComponent,
     IssuesMainComponent,
-    IssuesFormComponent, IssuesStatusesComponent, IssuesTrackersComponent, IssuesStatusesFormComponent,
+    IssuesFormComponent,
+    IssuesStatusesComponent,
+    IssuesTrackersComponent,
+    IssuesStatusesFormComponent,
 } from './components';
 
 export const routes: Routes = [
@@ -20,6 +23,10 @@ export const routes: Routes = [
                     {
                         path: '',
                         component: IssuesListComponent,
+                    },
+                    {
+                        path: 'new',
+                        component: IssuesFormComponent,
                     },
                     {
                         path: ':id',

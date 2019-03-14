@@ -6,21 +6,21 @@ import {catchError, exhaustMap, map} from 'rxjs/operators';
 import {IssuesService} from '../../services';
 import {
     IssuesAllRequestAction,
-    ItemRequestAction,
+    IssuesItemRequestAction,
     IssuesAllErrorAction,
     IssuesAllSuccessAction,
-    ItemSuccessAction,
-    ItemErrorAction,
+    IssuesItemSuccessAction,
+    IssuesItemErrorAction,
     IssuesActionTypes,
-    ItemWatchRequestAction,
-    ItemWatchSuccessAction,
-    ItemWatchErrorAction,
-    ItemUnwatchRequestAction,
-    ItemUnwatchSuccessAction,
-    ItemUnwatchErrorAction,
-    UpdateRequestAction,
-    UpdateSuccessAction,
-    UpdateErrorAction,
+    IssuesItemWatchRequestAction,
+    IssuesItemWatchSuccessAction,
+    IssuesItemWatchErrorAction,
+    IssuesItemUnwatchRequestAction,
+    IssuesItemUnwatchSuccessAction,
+    IssuesItemUnwatchErrorAction,
+    IssuesSaveRequestAction,
+    IssuesSaveSuccessAction,
+    IssuesSaveErrorAction,
 } from '../actions/issues.action';
 
 import {ResponseError} from '../../../../app/interfaces/api';
@@ -32,26 +32,25 @@ import {Router} from '@angular/router';
 export class IssuesEffect {
     @Effect()
     protected issues$ = this.actions$.pipe(
-        ofType<IssuesAllRequestAction>(IssuesActionTypes.ALL_REQUEST),
-        map((action) => action.payload),
-        exhaustMap((params) => this.issuesService.all(params).pipe(
-            map((response: any) => {
-                const payload = {
-                    meta: response.meta,
-                    ...normalize(response.data, [issuesSchema]),
-                };
+        ofType<IssuesAllRequestAction>(IssuesActionTypes.ISSUES_ALL_REQUEST),
+        exhaustMap(({payload: params, requestId}) =>
+            this.issuesService.all(params).pipe(
+                map((response: any) => {
+                    const payload = {
+                        meta: response.meta,
+                        ...normalize(response.data, [issuesSchema]),
+                    };
 
-                return new IssuesAllSuccessAction(payload);
-            }),
-            catchError((response) => of(new IssuesAllErrorAction(response))),
-        )),
+                    return new IssuesAllSuccessAction(payload, requestId);
+                }),
+                catchError((response) => of(new IssuesAllErrorAction(response, requestId))),
+            )),
     );
 
     @Effect()
     protected item$ = this.actions$.pipe(
-        ofType<ItemRequestAction>(IssuesActionTypes.ITEM_REQUEST),
-        map((action) => action.payload),
-        exhaustMap((id: number) =>
+        ofType<IssuesItemRequestAction>(IssuesActionTypes.ISSUES_ITEM_REQUEST),
+        exhaustMap(({payload: id, requestId}) =>
             this.issuesService.one(id).pipe(
                 map((response: any) => {
                     const payload = {
@@ -59,64 +58,61 @@ export class IssuesEffect {
                         ...normalize(response.data, issuesSchema),
                     };
 
-                    return new ItemSuccessAction(payload);
+                    return new IssuesItemSuccessAction(payload, requestId);
                 }),
-                catchError((response: ResponseError) => of(new ItemErrorAction(response))),
+                catchError((response: ResponseError) => of(new IssuesItemErrorAction(response, requestId))),
             ),
         ),
     );
 
     @Effect()
     protected watch$ = this.actions$.pipe(
-        ofType<ItemWatchRequestAction>(IssuesActionTypes.ITEM_WATCH_REQUEST),
-        map((action) => action.payload),
-        exhaustMap((id: number) =>
+        ofType<IssuesItemWatchRequestAction>(IssuesActionTypes.ISSUES_ITEM_WATCH_REQUEST),
+        exhaustMap(({payload: id, requestId}) =>
             this.issuesService.watch(id).pipe(
                 map(() => {
-                    return new ItemWatchSuccessAction({
+                    return new IssuesItemWatchSuccessAction({
                         id,
                         is_watcheble: true,
-                    });
+                    }, requestId);
                 }),
-                catchError((response: ResponseError) => of(new ItemUnwatchErrorAction(response))),
+                catchError((response: ResponseError) => of(new IssuesItemUnwatchErrorAction(response, requestId))),
             ),
         ),
     );
 
     @Effect()
     protected unwatch$ = this.actions$.pipe(
-        ofType<ItemUnwatchRequestAction>(IssuesActionTypes.ITEM_UNWATCH_REQUEST),
-        map((action) => action.payload),
-        exhaustMap((id: number) =>
+        ofType<IssuesItemUnwatchRequestAction>(IssuesActionTypes.ISSUES_ITEM_UNWATCH_REQUEST),
+        exhaustMap(({payload: id, requestId}) =>
             this.issuesService.unwatch(id).pipe(
                 map(() => {
-                    return new ItemUnwatchSuccessAction({
+                    return new IssuesItemUnwatchSuccessAction({
                         id,
                         is_watcheble: false,
-                    });
+                    }, requestId);
                 }),
-                catchError((response: ResponseError) => of(new ItemWatchErrorAction(response))),
+                catchError((response: ResponseError) => of(new IssuesItemWatchErrorAction(response), requestId)),
             ),
         ),
     );
 
     @Effect()
-    protected update$ = this.actions$.pipe(
-        ofType<UpdateRequestAction>(IssuesActionTypes.UPDATE_REQUEST),
-        map((action) => action.payload),
-
-        exhaustMap((request) =>
-            this.issuesService.update(request.id, request.body).pipe(
-                map(({data}: IssueResponse) => {
-                    const payload = {
-                        ...normalize([data], [issuesSchema]),
-                    };
-                    this.router.navigateByUrl(`issues/${request.id}`);
-                    return new UpdateSuccessAction(payload);
-                }),
-                catchError((response: ResponseError) => of(new UpdateErrorAction(response))),
-            ),
-        ),
+    protected save$ = this.actions$.pipe(
+        ofType<IssuesSaveRequestAction>(IssuesActionTypes.ISSUES_ITEM_SAVE_REQUEST),
+        exhaustMap(({payload: request, requestId}) =>
+            (request.id ? this.issuesService.update(request.id, request.body) : this.issuesService.create(request.body))
+                .pipe(
+                    map(({data}: IssueResponse) => {
+                        const payload = {
+                            ...normalize([data], [issuesSchema]),
+                        };
+                        this.router.navigateByUrl(`issues/${data.id}`);
+                        return new IssuesSaveSuccessAction(payload, requestId);
+                    }),
+                    catchError((response: ResponseError) => of(new IssuesSaveErrorAction(response, requestId))),
+                ),
+        )
     );
 
     public constructor(

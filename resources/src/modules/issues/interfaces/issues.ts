@@ -13,6 +13,7 @@ export interface Issue {
     status: any;
     priority: any;
     assigned: any;
+    private_notes: boolean;
     // fixed_version_id: null;
     // lock_version: number;
     created_on: string;
@@ -28,11 +29,10 @@ export interface Issue {
     tracker: any;
     project: any;
     watchers: any[];
-    notes_private: boolean;
 }
 
-export interface IssueUpdateRequest {
-    id: number;
+export interface IssueSaveRequest {
+    id?: number;
     body: IssueUpdate;
 }
 
@@ -47,7 +47,7 @@ export interface IssueUpdate {
     parent_id: string;
     priority_id: number;
     private_notes: boolean;
-    project_identifier : string;
+    project_identifier: string;
     start_date: string;
     status_id: number;
     subject: string;

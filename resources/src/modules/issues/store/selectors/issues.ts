@@ -15,6 +15,7 @@ const {selectUsersEntities} = awaitImport('app/store/reducers/app.reducer');
 
 export const selectIssuesIds = createSelector(selectIssuesState, (state: any) => state.ids);
 export const selectIssuesStatus = createSelector(selectIssuesState, (state: any) => state.status);
+export const selectIssuesRequestId = createSelector(selectIssuesState, (state: any) => state.requestId);
 export const selectIssuesError = createSelector(selectIssuesState, (state: any) => state.error);
 export const selectIssuesActiveId = createSelector(selectIssuesState, (state: any) => state.activeId);
 export const selectIssuesMeta = createSelector(selectIssuesState, (state: any) => state.meta);

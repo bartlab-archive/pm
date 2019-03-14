@@ -1,25 +1,22 @@
-import {
-    Component, ElementRef,
-    OnDestroy,
-    OnInit,
-    ViewChild,
-} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild,} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {
-    FormBuilder, FormControl,
-    Validators,
-} from '@angular/forms';
+import {FormBuilder, FormControl, Validators,} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
-import {combineLatest, Subscription, Observable} from 'rxjs';
+import {combineLatest, Observable, Subscription} from 'rxjs';
 import {filter, map, startWith} from 'rxjs/operators';
-import {MatAutocompleteSelectedEvent, MatSelectChange} from '@angular/material';
+import {MatAutocompleteSelectedEvent, MatSelectChange, MatSnackBar} from '@angular/material';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {FilterTag, Issue, IssueUpdate} from '../../interfaces/issues';
 import {RequestStatus} from '../../../../app/interfaces/api';
-import {ItemRequestAction, UpdateRequestAction} from '../../store/actions/issues.action';
+import {IssuesItemRequestAction, IssuesSaveRequestAction} from '../../store/actions/issues.action';
 import {EnumerationsRequestAction} from '../../store/actions/enumerations.action';
 
-import {selectIssuesActive, selectIssuesStatus, selectMyProjects} from '../../store/selectors/issues';
+import {
+    selectIssuesActive,
+    selectIssuesRequestId,
+    selectIssuesStatus,
+    selectMyProjects
+} from '../../store/selectors/issues';
 import {selectStatuses} from '../../store/selectors/statuses';
 import {selectPriorities} from '../../store/selectors/priorities';
 import {selectTrackers} from '../../store/selectors/trackers';
@@ -34,20 +31,26 @@ import * as moment from 'moment';
 export class IssuesFormComponent implements OnInit, OnDestroy {
     public subscriptions: Subscription[] = [];
     public item: Issue;
-    public id: number;
-    public identifier: string;
-    public statuses$: Observable<any[]>;
-    public trackers$: Observable<any[]>;
+    public id: number = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+    public identifier: string = this.activatedRoute.snapshot.paramMap.get('identifier');
+    public projects$: Observable<Project[]> = this.store.pipe(select(selectMyProjects));
+    public statuses$: Observable<any[]> = this.store.pipe(select(selectStatuses));
+    public trackers$: Observable<any[]> = this.store.pipe(select(selectTrackers));
+    public priorities$: Observable<any[]> = this.store.pipe(select(selectPriorities));
     public pending$: Observable<boolean> = this.store.pipe(
         select(selectIssuesStatus),
         map((status) => status === RequestStatus.pending),
     );
-    public params$: Observable<Params> = this.activatedRoute.params;
-    public myProjects$: Observable<Project[]>;
-    public priorities$: Observable<any[]>;
-    public projects: any[];
-    public showDescription: boolean;
-    public isNew = false;
+    public params$ = this.activatedRoute.params;
+    public showDescription: boolean = true;
+    public isNew = !Boolean(this.id);
+    public requestId = null;
+    public saved$ = combineLatest(this.store.pipe(select(selectIssuesStatus)), this.store.pipe(select(selectIssuesRequestId))).pipe(
+        filter(([status, requestId]) => Boolean(status) && Boolean(requestId)),
+        filter(([status, requestId]) => {
+            return status === RequestStatus.success && requestId === this.requestId;
+        }),
+    );
 
     @ViewChild('tagInput')
     public tagInput: ElementRef<HTMLInputElement>;
@@ -59,8 +62,8 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
 
     public form = this.fb.group({
         'subject': ['', Validators.required],
-        'is_private': [''],
-        'private_notes': [''],
+        'is_private': [false],
+        'private_notes': [false],
         'description': [''],
         'notes': [''],
         'project': ['', Validators.required],
@@ -72,7 +75,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
         'due_date': [''],
         'parent_id': [''],
         'estimated_hours': [''],
-        'done_ratio': [''],
+        'done_ratio': [0],
         'watchers': [''],
     });
 
@@ -81,102 +84,93 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         public router: Router,
         private fb: FormBuilder,
+        private snackBar: MatSnackBar,
     ) {
     }
 
     public ngOnInit(): void {
-        this.showDescription = this.isNew;
-        this.myProjects$ = this.store.pipe(select(selectMyProjects));
-        this.trackers$ = this.store.pipe(select(selectTrackers));
-        this.statuses$ = this.store.pipe(select(selectStatuses));
-        this.priorities$ = this.store.pipe(select(selectPriorities));
-
         this.filteredTags = this.tagCtrl.valueChanges.pipe(
             startWith(null),
             map((label: string) => this.filter(label)),
         );
 
-        this.subscriptions.push(
-            this.myProjects$.subscribe((projects) => {
-                if (projects) {
-                    this.projects = projects;
-                }
-            }),
+        if (!this.isNew) {
+            this.subscriptions.push(
+                combineLatest(this.store.pipe(select(selectIssuesActive)), this.params$)
+                    .pipe(
+                        filter(([issue, params]) => issue && issue.id === Number(params.id)),
+                        map((([issue]) => issue)),
+                    ).subscribe((data) => {
+                    if (data && data.project && data.project.members && data.watchers) {
+                        this.tags = [];
+                        this.allTags = data.project.members.map((member) => {
+                            const tag = {name: member.user.full_name, id: member.user.id};
+                            if (data.watchers.some((watcher) => watcher.id === tag.id)) {
+                                this.tags.push(tag);
+                            }
+                            return tag;
+                        });
+                    }
 
-            this.params$.subscribe((params) => {
-                if (params.id) {
-                    this.load(Number(params.id));
-                    this.id = Number(params.id);
-                }
-                if (params.identifier) {
-                    this.identifier = params.identifier;
-                }
-            }),
+                    this.item = data;
+                    const {
+                        subject = '',
+                        description = '',
+                        is_private = '',
+                        notes = '',
+                        project = '',
+                        tracker = '',
+                        status = '',
+                        priority = '',
+                        assigned = '',
+                        start_date = '',
+                        due_date = '',
+                        parent_id = '',
+                        estimated_hours = '',
+                        done_ratio = '',
+                        watchers = '',
+                    } = this.item;
 
-            combineLatest(this.store.pipe(select(selectIssuesActive)), this.params$)
-                .pipe(
-                    filter(([issue, params]) => issue && issue.id === Number(params.id)),
-                    map((([issue]) => issue)),
-                ).subscribe((data) => {
-                if (data && data.project && data.project.members && data.watchers) {
-                    this.tags = [];
-                    this.allTags = data.project.members.map((member) => {
-                        const tag = {name: member.user.full_name, id: member.user.id};
-                        if (data.watchers.some((watcher) => watcher.id === tag.id)) {
-                            this.tags.push(tag);
-                        }
-                        return tag;
+                    this.form.setValue({
+                        subject,
+                        description,
+                        is_private,
+                        private_notes: false,
+                        notes,
+                        project: project.identifier ? project.identifier : '',
+                        tracker: tracker.id,
+                        status: status.id ? status.id : '',
+                        priority: priority.id,
+                        assigned: assigned && assigned.id ? assigned.id : '',
+                        start_date,
+                        due_date,
+                        parent_id,
+                        estimated_hours,
+                        done_ratio,
+                        watchers,
                     });
-                }
 
-                this.item = data;
-                const {
-                    subject = '',
-                    description = '',
-                    is_private,
-                    notes = '',
-                    project = '',
-                    tracker = '',
-                    status = '',
-                    priority = '',
-                    assigned = '',
-                    start_date = '',
-                    due_date = '',
-                    parent_id = '',
-                    estimated_hours = '',
-                    done_ratio = '',
-                    watchers = '',
-                } = this.item;
+                    this.tagInput.nativeElement.value = '';
+                    this.tagCtrl.setValue(null);
+                }),
+            );
+            this.load();
+            this.showDescription = this.isNew;
+        }
 
-                this.form.setValue({
-                    subject,
-                    description,
-                    is_private,
-                    private_notes: false,
-                    notes,
-                    project: project.identifier ? project.identifier : '',
-                    tracker: tracker.id,
-                    status: status.id ? status.id : '',
-                    priority: priority.id,
-                    assigned: assigned && assigned.id ? assigned.id : '',
-                    start_date,
-                    due_date,
-                    parent_id,
-                    estimated_hours,
-                    done_ratio,
-                    watchers,
-                });
-
-                this.tagInput.nativeElement.value = '';
-                this.tagCtrl.setValue(null);
+        this.subscriptions.push(
+            this.saved$.subscribe(() => {
+                this.snackBar.open(`Successful ${this.isNew ? 'creation' : 'update'}.`);
             }),
+
+            this.pending$.subscribe(),
         );
 
         this.store.dispatch(new EnumerationsRequestAction());
     }
 
-    public load(id): void {
-        this.store.dispatch(new ItemRequestAction(id));
+    public load(): void {
+        this.store.dispatch(new IssuesItemRequestAction(this.id));
     }
 
     public ngOnDestroy(): void {
@@ -219,19 +213,21 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     }
 
     public onSelection($event: MatSelectChange) {
-        this.myProjects$.subscribe(projects => {
-            const [project] = projects.filter(project => project.identifier === $event.value);
-            if (project) {
-                if (project && project.members) {
-                    this.tags = [];
-                    this.allTags = project.members.map((member) => {
-                        return {name: member.user.full_name, id: member.user.id};
-                    });
-                    this.tagInput.nativeElement.value = '';
-                    this.tagCtrl.setValue(null);
+        this.subscriptions.push(
+            this.projects$.subscribe(projects => {
+                const [project] = projects.filter(project => project.identifier === $event.value);
+                if (project) {
+                    if (project && project.members) {
+                        this.tags = [];
+                        this.allTags = project.members.map((member) => {
+                            return {name: member.user.full_name, id: member.user.id};
+                        });
+                        this.tagInput.nativeElement.value = '';
+                        this.tagCtrl.setValue(null);
+                    }
                 }
-            }
-        });
+            })
+        );
     }
 
     public onSubmit(): void {
@@ -278,10 +274,12 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
             tracker_id: tracker,
             watchers
         };
-        this.store.dispatch(new UpdateRequestAction({id: this.id, body}));
+        const action = new IssuesSaveRequestAction({id: this.id, body});
+        this.requestId = action.requestId;
+        this.store.dispatch(action);
     }
 
-    cancel() {
+    public cancel() {
         if (this.id) {
             this.router.navigateByUrl(`issues/${this.id}`);
         } else if (this.identifier && this.isNew) {
@@ -291,7 +289,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
         }
     }
 
-    preview() {
+    public preview() {
 
     }
 }

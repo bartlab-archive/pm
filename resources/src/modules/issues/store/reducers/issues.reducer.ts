@@ -6,20 +6,18 @@ import {updateStateEntities} from '../../../../app/store/utils';
 
 const entities = (state = {}, action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
-        case IssuesActionTypes.ALL_SUCCESS:
-        case IssuesActionTypes.ITEM_SUCCESS: {
+        case IssuesActionTypes.ISSUES_ALL_SUCCESS:
+        case IssuesActionTypes.ISSUES_ITEM_SUCCESS:
             return updateStateEntities(state, action.payload.entities.issues);
-        }
-        case IssuesActionTypes.ITEM_UNWATCH_SUCCESS:
-        case IssuesActionTypes.ITEM_WATCH_SUCCESS: {
+
+        case IssuesActionTypes.ISSUES_ITEM_UNWATCH_SUCCESS:
+        case IssuesActionTypes.ISSUES_ITEM_WATCH_SUCCESS:
             return updateStateEntities(state, {
                 [action.payload.id]: action.payload,
             });
-        }
 
         case SharedActionTypes.AUTH_LOGOUT:
             return null;
-
         default:
             return state;
     }
@@ -27,24 +25,19 @@ const entities = (state = {}, action: IssuesActionsUnion | SharedActionsUnion) =
 
 export const ids = (state: Array<number> = [], action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
-        case IssuesActionTypes.ALL_SUCCESS: {
+        case IssuesActionTypes.ISSUES_ALL_SUCCESS:
             return action.payload.result;
-        }
-
-        default: {
+        default:
             return state;
-        }
     }
 };
 
 const meta = (state = null, action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
-        case IssuesActionTypes.ALL_SUCCESS:
+        case IssuesActionTypes.ISSUES_ALL_SUCCESS:
             return action.payload.meta;
-
         case SharedActionTypes.AUTH_LOGOUT:
             return null;
-
         default:
             return state;
     }
@@ -52,21 +45,16 @@ const meta = (state = null, action: IssuesActionsUnion | SharedActionsUnion) => 
 
 const error = (state = null, action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
-        case IssuesActionTypes.ALL_REQUEST:
+        case IssuesActionTypes.ISSUES_ALL_REQUEST:
             return null;
-
-        case  IssuesActionTypes.ITEM_REQUEST:
+        case  IssuesActionTypes.ISSUES_ITEM_REQUEST:
             return null;
-
-        case IssuesActionTypes.ALL_ERROR:
+        case IssuesActionTypes.ISSUES_ALL_ERROR:
             return action.payload;
-
-        case  IssuesActionTypes.ITEM_ERROR:
+        case  IssuesActionTypes.ISSUES_ITEM_ERROR:
             return action.payload;
-
         case SharedActionTypes.AUTH_LOGOUT:
             return null;
-
         default:
             return state;
     }
@@ -74,37 +62,28 @@ const error = (state = null, action: IssuesActionsUnion | SharedActionsUnion) =>
 
 const status = (state = null, action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
-// Request
-        case IssuesActionTypes.ALL_REQUEST:
+
+        case IssuesActionTypes.ISSUES_ALL_REQUEST:
+        case IssuesActionTypes.ISSUES_ITEM_REQUEST:
+        case IssuesActionTypes.ISSUES_ITEM_UNWATCH_REQUEST:
+        case IssuesActionTypes.ISSUES_ITEM_WATCH_REQUEST:
+        case IssuesActionTypes.ISSUES_ITEM_SAVE_REQUEST:
             return RequestStatus.pending;
 
-        case IssuesActionTypes.ALL_SUCCESS:
+        case IssuesActionTypes.ISSUES_ALL_SUCCESS:
+        case IssuesActionTypes.ISSUES_ITEM_SUCCESS:
+        case IssuesActionTypes.ISSUES_ITEM_WATCH_SUCCESS:
+        case IssuesActionTypes.ISSUES_ITEM_UNWATCH_SUCCESS:
+        case IssuesActionTypes.ISSUES_ITEM_SAVE_SUCCESS:
             return RequestStatus.success;
 
-        case IssuesActionTypes.ALL_ERROR:
+        case IssuesActionTypes.ISSUES_ALL_ERROR:
+        case IssuesActionTypes.ISSUES_ITEM_ERROR:
+        case IssuesActionTypes.ISSUES_ITEM_WATCH_ERROR:
+        case IssuesActionTypes.ISSUES_ITEM_UNWATCH_ERROR:
+        case IssuesActionTypes.ISSUES_ITEM_SAVE_ERROR:
             return RequestStatus.error;
-// Item
-        case IssuesActionTypes.ITEM_REQUEST:
-            return RequestStatus.pending;
 
-        case IssuesActionTypes.ITEM_SUCCESS:
-            return RequestStatus.success;
-
-        case IssuesActionTypes.ITEM_ERROR:
-            return RequestStatus.error;
-// Update
-        case IssuesActionTypes.ITEM_UNWATCH_REQUEST:
-        case IssuesActionTypes.ITEM_WATCH_REQUEST:
-            return RequestStatus.pending;
-
-        case IssuesActionTypes.ITEM_WATCH_SUCCESS:
-        case IssuesActionTypes.ITEM_UNWATCH_SUCCESS:
-            return RequestStatus.success;
-
-        case IssuesActionTypes.ITEM_WATCH_ERROR:
-        case IssuesActionTypes.ITEM_UNWATCH_ERROR:
-            return RequestStatus.error;
-// Logout
         case SharedActionTypes.AUTH_LOGOUT:
             return null;
 
@@ -115,8 +94,34 @@ const status = (state = null, action: IssuesActionsUnion | SharedActionsUnion) =
 
 const activeId = (state = null, action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
-        case  IssuesActionTypes.ITEM_SUCCESS:
+        case  IssuesActionTypes.ISSUES_ITEM_SUCCESS:
             return action.payload.result;
+        default:
+            return state;
+    }
+};
+
+const requestId = (state = null, action: IssuesActionsUnion) => {
+    switch (action.type) {
+        case IssuesActionTypes.ISSUES_ITEM_SAVE_REQUEST:
+        case IssuesActionTypes.ISSUES_ITEM_SAVE_SUCCESS:
+        case IssuesActionTypes.ISSUES_ITEM_SAVE_ERROR:
+        case IssuesActionTypes.ISSUES_ALL_REQUEST:
+        case IssuesActionTypes.ISSUES_ALL_SUCCESS:
+        case IssuesActionTypes.ISSUES_ALL_ERROR:
+        case IssuesActionTypes.ISSUES_ITEM_REQUEST:
+        case IssuesActionTypes.ISSUES_ITEM_SUCCESS:
+        case IssuesActionTypes.ISSUES_ITEM_ERROR:
+        case IssuesActionTypes.ISSUES_ITEM_UNWATCH_REQUEST:
+        case IssuesActionTypes.ISSUES_ITEM_UNWATCH_SUCCESS:
+        case IssuesActionTypes.ISSUES_ITEM_UNWATCH_ERROR:
+        case IssuesActionTypes.ISSUES_ITEM_WATCH_REQUEST:
+        case IssuesActionTypes.ISSUES_ITEM_WATCH_SUCCESS:
+        case IssuesActionTypes.ISSUES_ITEM_WATCH_ERROR:
+            return action.requestId;
+
+        case IssuesActionTypes.ISSUES_ITEM_RESET:
+            return null;
         default:
             return state;
     }
@@ -126,6 +131,7 @@ export const issuesReducers = combineReducers({
     entities,
     ids,
     activeId,
+    requestId,
     meta,
     status,
     error,
