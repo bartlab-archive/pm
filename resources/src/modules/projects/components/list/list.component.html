@@ -1,15 +1,9 @@
-<div class="container mt-3">
-    <mat-card class="content-card">
-        <mat-progress-bar
-            mode="indeterminate"
-            *ngIf="(pending$ | async)"
-        ></mat-progress-bar>
-        <div>
-            <mat-card-header>
-                <mat-card-title>Projects</mat-card-title>
-                <!--<mat-card-subtitle>All list</mat-card-subtitle>-->
-                <!--<mat-card-subtitle>Administrator</mat-card-subtitle>-->
-            </mat-card-header>
+<div class="container">
+    <mat-card class="content-card mt-3">
+        <mat-progress-bar mode="indeterminate" *ngIf="(pending$ | async)"></mat-progress-bar>
+        <mat-card-header>
+            <mat-card-title>Projects</mat-card-title>
+            <span class="flex-grow-1"></span>
             <button mat-icon-button (click)="refresh()">
                 <mat-icon>refresh</mat-icon>
             </button>
@@ -30,40 +24,40 @@
             <button mat-icon-button [matMenuTriggerFor]="appMenu">
                 <mat-icon>more_vert</mat-icon>
             </button>
-            <!--</mat-card-actions>-->
-        </div>
+        </mat-card-header>
         <mat-card-content>
             <mat-form-field class="chip-list">
                 <mat-chip-list #chipList>
                     <mat-chip
-                        *ngFor="let tag of tags"
-                        [selectable]="selectable"
-                        [removable]="removable"
-                        (removed)="remove(tag)"
+                            *ngFor="let tag of tags"
+                            [selectable]="selectable"
+                            [removable]="removable"
+                            (removed)="remove(tag)"
                     >
                         {{ getTagLabel(tag) }}
                         <mat-icon matChipRemove *ngIf="removable"
-                            >cancel</mat-icon
+                        >cancel
+                        </mat-icon
                         >
                     </mat-chip>
                     <input
-                        placeholder="Filter projects..."
-                        #tagInput
-                        [formControl]="tagCtrl"
-                        [matAutocomplete]="auto"
-                        [matChipInputFor]="chipList"
-                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                        [matChipInputAddOnBlur]="addOnBlur"
-                        (matChipInputTokenEnd)="add($event)"
+                            placeholder="Filter projects..."
+                            #tagInput
+                            [formControl]="tagCtrl"
+                            [matAutocomplete]="auto"
+                            [matChipInputFor]="chipList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            [matChipInputAddOnBlur]="addOnBlur"
+                            (matChipInputTokenEnd)="add($event)"
                     />
                 </mat-chip-list>
                 <mat-autocomplete
-                    #auto="matAutocomplete"
-                    (optionSelected)="selected($event)"
+                        #auto="matAutocomplete"
+                        (optionSelected)="selected($event)"
                 >
                     <mat-option
-                        *ngFor="let tag of (filteredTags | async)"
-                        [value]="getTagLabel(tag)"
+                            *ngFor="let tag of (filteredTags | async)"
+                            [value]="getTagLabel(tag)"
                     >
                         {{ getTagLabel(tag) }}
                     </mat-option>
@@ -100,9 +94,9 @@
                     <td mat-cell *matCellDef="let row">
                         <a routerLink="/projects/{{ row.identifier }}"></a>
                         <button
-                            mat-mini-fab
-                            color="primary"
-                            [title]="row.identifier"
+                                mat-mini-fab
+                                color="primary"
+                                [title]="row.identifier"
                         >
                             {{ row.identifier | slice: 0:1 | uppercase }}
                         </button>
@@ -124,8 +118,8 @@
                     <td mat-cell *matCellDef="let row">
                         <mat-menu #appMenu="matMenu">
                             <a
-                                mat-menu-item
-                                [routerLink]="['/projects', row.identifier]"
+                                    mat-menu-item
+                                    [routerLink]="['/projects', row.identifier]"
                             >
                                 <mat-icon>open_in_browser</mat-icon>
                                 Open
@@ -142,17 +136,21 @@
                 </ng-container>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr
-                    mat-row
-                    *matRowDef="let row; columns: displayedColumns"
+                        mat-row
+                        *matRowDef="let row; columns: displayedColumns"
                 ></tr>
             </table>
         </div>
         <mat-paginator
-            [length]="resultsLength"
-            [pageSize]="pageSize"
-            [pageSizeOptions]="pageSizeOptions"
-            (page)="onPageChange($event)"
+                [length]="resultsLength"
+                [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions"
+                (page)="onPageChange($event)"
         >
         </mat-paginator>
     </mat-card>
 </div>
+
+<a mat-fab class="fab-fixed">
+    <mat-icon>add</mat-icon>
+</a>

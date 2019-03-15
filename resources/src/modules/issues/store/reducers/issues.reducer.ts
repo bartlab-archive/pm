@@ -27,6 +27,8 @@ export const ids = (state: Array<number> = [], action: IssuesActionsUnion | Shar
     switch (action.type) {
         case IssuesActionTypes.ISSUES_ALL_SUCCESS:
             return action.payload.result;
+        case SharedActionTypes.AUTH_LOGOUT:
+            return null;
         default:
             return state;
     }
@@ -104,7 +106,7 @@ const activeId = (state = null, action: IssuesActionsUnion | SharedActionsUnion)
     }
 };
 
-const requestId = (state = null, action: IssuesActionsUnion) => {
+const requestId = (state = null, action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
         case IssuesActionTypes.ISSUES_ITEM_SAVE_REQUEST:
         case IssuesActionTypes.ISSUES_ITEM_SAVE_SUCCESS:
@@ -126,7 +128,7 @@ const requestId = (state = null, action: IssuesActionsUnion) => {
         case IssuesActionTypes.ISSUES_ITEM_REMOVE_ERROR:
             return action.requestId;
 
-        case IssuesActionTypes.ISSUES_ITEM_RESET:
+        case SharedActionTypes.AUTH_LOGOUT:
             return null;
         default:
             return state;
