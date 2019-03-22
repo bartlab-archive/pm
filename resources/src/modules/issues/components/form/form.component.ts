@@ -1,12 +1,12 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild,} from '@angular/core';
-import {ActivatedRoute, Params, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormControl, Validators,} from '@angular/forms';
 import {select, Store} from '@ngrx/store';
 import {combineLatest, Observable, Subscription} from 'rxjs';
 import {filter, map, startWith} from 'rxjs/operators';
 import {MatAutocompleteSelectedEvent, MatSelectChange, MatSnackBar} from '@angular/material';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {FilterTag, Issue, IssueUpdate} from '../../interfaces/issues';
+import {FilterTag, Issue, IssueUpdate, Priority, Tracker} from '../../interfaces/issues';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {IssuesItemRequestAction, IssuesItemSaveRequestAction} from '../../store/actions/issues.action';
 import {EnumerationsRequestAction} from '../../store/actions/enumerations.action';
@@ -22,6 +22,7 @@ import {selectPriorities} from '../../store/selectors/priorities';
 import {selectTrackers} from '../../store/selectors/trackers';
 import {Project} from '../../interfaces/projects';
 import * as moment from 'moment';
+import {Status} from '../../interfaces/statuses';
 
 @Component({
     selector: 'app-issues-form',
@@ -34,22 +35,21 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     public id: number = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     public identifier: string = this.activatedRoute.snapshot.paramMap.get('identifier');
     public projects$: Observable<Project[]> = this.store.pipe(select(selectMyProjects));
-    public statuses$: Observable<any[]> = this.store.pipe(select(selectStatuses));
-    public trackers$: Observable<any[]> = this.store.pipe(select(selectTrackers));
-    public priorities$: Observable<any[]> = this.store.pipe(select(selectPriorities));
+    public statuses$: Observable<Status[]> = this.store.pipe(select(selectStatuses));
+    public trackers$: Observable<Tracker[]> = this.store.pipe(select(selectTrackers));
+    public priorities$: Observable<Priority[]> = this.store.pipe(select(selectPriorities));
     public pending$: Observable<boolean> = this.store.pipe(
         select(selectIssuesStatus),
         map((status) => status === RequestStatus.pending),
     );
+
     public params$ = this.activatedRoute.params;
     public showDescription: boolean = true;
-    public isNew = !Boolean(this.id);
+    public isNew = !Boolean(this.id) || this.isNewIssue();
     public requestId = null;
     public saved$ = combineLatest(this.store.pipe(select(selectIssuesStatus)), this.store.pipe(select(selectIssuesRequestId))).pipe(
         filter(([status, requestId]) => Boolean(status) && Boolean(requestId)),
-        filter(([status, requestId]) => {
-            return status === RequestStatus.success && requestId === this.requestId;
-        }),
+        filter(([status, requestId]) => status === RequestStatus.success && requestId === this.requestId),
     );
 
     @ViewChild('tagInput')
@@ -66,7 +66,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
         'private_notes': [false],
         'description': [''],
         'notes': [''],
-        'project': ['', Validators.required],
+        'project': [this.identifier ? this.identifier : '', Validators.required],
         'tracker': ['', Validators.required],
         'status': ['', Validators.required],
         'priority': ['', Validators.required],
@@ -94,13 +94,21 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
             map((label: string) => this.filter(label)),
         );
 
+        if (this.identifier) {
+            this.subscriptions.push(
+                this.projects$.subscribe(projects => {
+                    this.selectProject(projects, this.identifier);
+                })
+            );
+        }
+
         if (!this.isNew) {
             this.subscriptions.push(
                 combineLatest(this.store.pipe(select(selectIssuesActive)), this.params$)
                     .pipe(
                         filter(([issue, params]) => issue && issue.id === Number(params.id)),
                         map((([issue]) => issue)),
-                    ).subscribe((data) => {
+                    ).subscribe((data: Issue) => {
                     if (data && data.project && data.project.members && data.watchers) {
                         this.tags = [];
                         this.allTags = data.project.members.map((member) => {
@@ -111,43 +119,24 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                             return tag;
                         });
                     }
-
                     this.item = data;
-                    const {
-                        subject = '',
-                        description = '',
-                        is_private = '',
-                        notes = '',
-                        project = '',
-                        tracker = '',
-                        status = '',
-                        priority = '',
-                        assigned = '',
-                        start_date = '',
-                        due_date = '',
-                        parent_id = '',
-                        estimated_hours = '',
-                        done_ratio = '',
-                        watchers = '',
-                    } = this.item;
-
                     this.form.setValue({
-                        subject,
-                        description,
-                        is_private,
+                        subject: data.subject,
                         private_notes: false,
-                        notes,
-                        project: project.identifier ? project.identifier : '',
-                        tracker: tracker.id,
-                        status: status.id ? status.id : '',
-                        priority: priority.id,
-                        assigned: assigned && assigned.id ? assigned.id : '',
-                        start_date,
-                        due_date,
-                        parent_id,
-                        estimated_hours,
-                        done_ratio,
-                        watchers,
+                        notes: '',
+                        description: data.description,
+                        is_private: data.is_private,
+                        project: data.project.identifier,
+                        tracker: data.tracker.id,
+                        status: data.status && data.status.id ? data.status.id : '',
+                        priority: data.priority.id,
+                        assigned: data.assigned.id ? data.assigned.id : '',
+                        start_date: data.start_date,
+                        due_date: data.due_date,
+                        parent_id: data.parent_id,
+                        estimated_hours: data.estimated_hours,
+                        done_ratio: data.done_ratio,
+                        watchers: data.watchers,
                     });
 
                     this.tagInput.nativeElement.value = '';
@@ -159,14 +148,23 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
         }
 
         this.subscriptions.push(
-            this.saved$.subscribe(() => {
-                this.snackBar.open(`Successful ${this.isNew ? 'creation' : 'update'}.`);
-            }),
-
-            this.pending$.subscribe(),
+            combineLatest(this.store.pipe(select(selectIssuesActive)), this.saved$).pipe(
+                map((([issue]) => issue))
+            ).subscribe(
+                (data: Issue) => {
+                    if (data && data.id) {
+                        this.snackBar.open(`Successful ${this.isNew ? 'creation' : 'update'}.`);
+                        this.router.navigate(['issues', data.id]);
+                    }
+                }
+            ),
         );
 
         this.store.dispatch(new EnumerationsRequestAction());
+    }
+
+    public isNewIssue() {
+        return Boolean(this.activatedRoute.snapshot.url.find((url) => url.path === 'new'));
     }
 
     public load(): void {
@@ -215,19 +213,23 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     public onSelection($event: MatSelectChange) {
         this.subscriptions.push(
             this.projects$.subscribe(projects => {
-                const [project] = projects.filter(project => project.identifier === $event.value);
-                if (project) {
-                    if (project && project.members) {
-                        this.tags = [];
-                        this.allTags = project.members.map((member) => {
-                            return {name: member.user.full_name, id: member.user.id};
-                        });
-                        this.tagInput.nativeElement.value = '';
-                        this.tagCtrl.setValue(null);
-                    }
-                }
+                this.selectProject(projects, $event.value);
             })
         );
+    }
+
+    public selectProject(projects: Project[], identifier: string) {
+        const [project] = projects.filter((project) => project.identifier === identifier);
+        if (project) {
+            if (project && project.members) {
+                this.tags = [];
+                this.allTags = project.members.map((member) => {
+                    return {name: member.user.full_name, id: member.user.id};
+                });
+                this.tagInput.nativeElement.value = '';
+                this.tagCtrl.setValue(null);
+            }
+        }
     }
 
     public onSubmit(): void {
@@ -236,7 +238,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
             Object.keys(controls).forEach((name) => controls[name].markAsTouched());
             return;
         }
-        const watchers = this.tags.map(tag => tag.id);
+        const watchers = this.tags.map((tag) => tag.id);
         const {
             assigned,
             description,
@@ -280,16 +282,12 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
     }
 
     public cancel() {
-        if (this.id) {
+        if (this.id && !this.identifier) {
             this.router.navigateByUrl(`issues/${this.id}`);
-        } else if (this.identifier && this.isNew) {
+        } else if (this.identifier) {
             this.router.navigateByUrl(`projects/${this.identifier}/issues`);
         } else {
             this.router.navigateByUrl(`issues`);
         }
-    }
-
-    public preview() {
-
     }
 }

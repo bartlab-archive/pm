@@ -62,7 +62,7 @@ import {RouteSerializer} from './serializers/route-serializer';
                 scrollPositionRestoration: 'top',
                 onSameUrlNavigation: 'reload',
                 // relativeLinkResolution: 'corrected',
-                // paramsInheritanceStrategy: 'always',
+                paramsInheritanceStrategy: 'always',
             },
         ),
         // RouterModule.forChild(routes),

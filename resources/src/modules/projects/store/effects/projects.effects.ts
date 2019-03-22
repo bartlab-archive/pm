@@ -64,7 +64,7 @@ export class ProjectsEffects {
             ProjectActions.ActionTypes.PRELOAD_REQUEST,
         ),
         exhaustMap(() =>
-            // todo for admin get all projects
+            // todo: for admin get all projects
             this.projectsService.getProjects().pipe(
                 map((response: ProjectResponse) => {
                     const payload = {

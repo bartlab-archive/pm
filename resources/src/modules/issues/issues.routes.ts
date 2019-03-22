@@ -29,6 +29,10 @@ export const routes: Routes = [
                         component: IssuesFormComponent,
                     },
                     {
+                        path: ':id/new',
+                        component: IssuesFormComponent,
+                    },
+                    {
                         path: ':id',
                         component: IssuesItemComponent,
                     },
@@ -50,6 +54,18 @@ export const projectsIssuesRoutes: Routes = [
             {
                 path: '',
                 component: IssuesListComponent,
+            },
+            {
+                path: 'new',
+                component: IssuesFormComponent,
+            },
+            {
+                path: ':id',
+                component: IssuesItemComponent,
+            },
+            {
+                path: ':id/edit',
+                component: IssuesFormComponent,
             },
         ],
     },

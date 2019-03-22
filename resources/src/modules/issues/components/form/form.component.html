@@ -1,57 +1,40 @@
-<div class="container">
-    <mat-card class="content-card mt-3">
-        <mat-progress-bar
-                mode="indeterminate"
-                *ngIf="(pending$ | async)"
-        ></mat-progress-bar>
+<div class="container-fluid mt-3">
+    <mat-card class="content-card">
+        <mat-progress-bar mode="indeterminate" *ngIf="(pending$ | async)"></mat-progress-bar>
         <form [formGroup]="form" (ngSubmit)="form.valid && onSubmit()">
             <mat-card-header class="d-flex">
-                <mat-card-title class="p-2">{{
-                    item && item.subject ? item.subject : ''
-                    }}
-                </mat-card-title>
-                <div class="ml-auto p-2">
-                    <mat-slide-toggle formControlName="is_private">
-                        Private
-                    </mat-slide-toggle>
+                <div mat-card-avatar>
+                    <a mat-icon-button (click)="cancel()">
+                        <mat-icon>arrow_back</mat-icon>
+                    </a>
                 </div>
+                <mat-card-title>{{item && item.subject ? item.subject : 'New issue'}}</mat-card-title>
+
+                <span class="flex-grow-1"></span>
+
+                <mat-slide-toggle formControlName="is_private">
+                    Private
+                </mat-slide-toggle>
             </mat-card-header>
+
             <mat-card-content class="d-flex">
                 <div class="d-flex flex-column w-75 p-2 mr-4">
                     <mat-form-field>
-                        <input
-                                matInput
-                                placeholder="Subject"
-                                formControlName="subject"
-                                required
-                        />
+                        <input matInput placeholder="Subject" formControlName="subject" required/>
                     </mat-form-field>
                     <mat-form-field floatLabel="never" *ngIf="showDescription">
                         <span class="textareaLabel">Description:</span>
-                        <textarea
-                                matInput
-                                rows="15"
-                                formControlName="description"
-                        ></textarea>
+                        <textarea matInput rows="15" formControlName="description"></textarea>
                     </mat-form-field>
                     <div *ngIf="!isNew">
-                        <button type="button"
-                                mat-icon-button
-                                (click)="showDescription = !showDescription"
-                                matTooltip="Description"
-                        >
-                            <mat-icon>{{
-                                showDescription ? 'expand_less' : 'expand_more'
-                                }}
-                            </mat-icon>
+                        <button type="button" mat-icon-button (click)="showDescription = !showDescription"
+                                matTooltip="Description">
+                            <mat-icon>{{showDescription ? 'expand_less' : 'expand_more'}}</mat-icon>
                         </button>
                     </div>
                     <mat-form-field floatLabel="never" *ngIf="!isNew">
                         <span class="textareaLabel">Notes:</span>
-                        <textarea matInput
-                                  rows="15"
-                                  formControlName="notes"
-                        ></textarea>
+                        <textarea matInput rows="15" formControlName="notes"></textarea>
                     </mat-form-field>
                     <div *ngIf="!isNew">
                         <mat-slide-toggle formControlName="private_notes">
@@ -60,146 +43,72 @@
                     </div>
                 </div>
 
-                <div class="d-flex flex-column  p-2 w-25">
+                <div class="d-flex flex-column p-2 w-25">
                     <mat-form-field *ngIf="projects$ | async">
-                        <mat-select
-                                placeholder="Project"
-                                name="project"
-                                formControlName="project"
-                                required
-                                (selectionChange)="onSelection($event)"
-
-                        >
-                            <mat-option
-                                    matInput
-                                    *ngFor="let project of (projects$ | async)"
-                                    [value]="project.identifier"
-                            >
+                        <mat-select placeholder="Project" name="project" formControlName="project" required
+                                    (selectionChange)="onSelection($event)">
+                            <mat-option matInput *ngFor="let project of (projects$ | async)"
+                                        [value]="project.identifier">
                                 {{ project.name }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field>
-                        <mat-select
-                                placeholder="Tracker"
-                                name="tracker"
-                                required
-                                formControlName="tracker"
-                        >
-                            <mat-option
-                                    matInput
-                                    *ngFor="let tracker of (trackers$ | async)"
-                                    [value]="tracker.id"
-                            >
+                        <mat-select placeholder="Tracker" name="tracker" required formControlName="tracker">
+                            <mat-option matInput *ngFor="let tracker of (trackers$ | async)" [value]="tracker.id">
                                 {{ tracker.name }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field>
-                        <mat-select
-                                placeholder="Status"
-                                name="status"
-                                required
-                                formControlName="status"
-                        >
-                            <mat-option
-                                    *ngFor="let status of (statuses$ | async)"
-                                    [value]="status.id"
-                            >
+                        <mat-select placeholder="Status" name="status" required formControlName="status">
+                            <mat-option *ngFor="let status of (statuses$ | async)" [value]="status.id">
                                 {{ status.name }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field>
-                        <mat-select
-                                placeholder="Priority"
-                                name="priority"
-                                required
-                                formControlName="priority"
-                        >
-                            <mat-option
-                                    *ngFor="let priority of (priorities$ | async)"
-                                    [value]="priority.id"
-                            >
+                        <mat-select placeholder="Priority" name="priority" required formControlName="priority">
+                            <mat-option *ngFor="let priority of (priorities$ | async)" [value]="priority.id">
                                 {{ priority.name }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <mat-form-field
-                            class="example-full-width"
-                            *ngIf="allTags"
-                    >
-                        <mat-select
-                                placeholder="Assignee"
-                                name="assigned"
-                                formControlName="assigned"
-                        >
-                            <mat-option
-                                    *ngFor="let member of allTags"
-                                    [value]="member.id"
-                            >
+                    <mat-form-field class="example-full-width" *ngIf="allTags">
+                        <mat-select placeholder="Assignee" name="assigned" formControlName="assigned">
+                            <mat-option *ngFor="let member of allTags" [value]="member.id">
                                 {{ member.name }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                     <div>
                         <mat-form-field>
-                            <input
-                                    matInput
-                                    [matDatepicker]="startDate"
-                                    placeholder="Start date"
-                                    formControlName="start_date"
-                            />
-                            <mat-datepicker-toggle
-                                    matSuffix
-                                    [for]="startDate"
-                            ></mat-datepicker-toggle>
+                            <input matInput [matDatepicker]="startDate" placeholder="Start date"
+                                   formControlName="start_date"/>
+                            <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
                             <mat-datepicker #startDate></mat-datepicker>
                         </mat-form-field>
                     </div>
                     <div>
                         <mat-form-field>
-                            <input
-                                    matInput
-                                    [matDatepicker]="dueDate"
-                                    placeholder="Due date"
-                                    formControlName="due_date"
-                            />
-                            <mat-datepicker-toggle
-                                    matSuffix
-                                    [for]="dueDate"
-                            ></mat-datepicker-toggle>
+                            <input matInput [matDatepicker]="dueDate" placeholder="Due date"
+                                   formControlName="due_date"/>
+                            <mat-datepicker-toggle matSuffix [for]="dueDate"></mat-datepicker-toggle>
                             <mat-datepicker #dueDate></mat-datepicker>
                         </mat-form-field>
                     </div>
                     <div>
                         <mat-form-field>
-                            <input
-                                    matInput
-                                    placeholder="Parent task (id)"
-                                    value=""
-                                    formControlName="parent_id"
-                            />
+                            <input matInput placeholder="Parent task (id)" value="" formControlName="parent_id"/>
                         </mat-form-field>
                         <mat-form-field>
-                            <input
-                                    matInput
-                                    type="number"
-                                    placeholder="Estimated time (hours)"
-                                    min="0"
-                                    value=""
-                                    formControlName="estimated_hours"
-                            />
+                            <input matInput type="number" placeholder="Estimated time (hours)" min="0" value=""
+                                   formControlName="estimated_hours"/>
                         </mat-form-field>
                         <mat-form-field>
-                            <mat-select
-                                    placeholder="Done (%)"
-                                    formControlName="done_ratio"
-                            >
-                                <mat-option
-                                        *ngFor="let done of [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]"
-                                        [value]="done"
-                                >
+                            <mat-select placeholder="Done (%)" formControlName="done_ratio">
+                                <mat-option *ngFor="let done of [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]"
+                                            [value]="done">
                                     {{ done }}%
                                 </mat-option>
                             </mat-select>
@@ -207,32 +116,17 @@
                     </div>
                     <mat-form-field class="filter-input">
                         <mat-chip-list #chipList>
-                            <mat-chip
-                                    *ngFor="let tag of tags"
-                                    [selectable]="false"
-                                    [removable]="true"
-                                    (removed)="removeTag(tag)"
-                            >
+                            <mat-chip *ngFor="let tag of tags" [selectable]="false" [removable]="true"
+                                      (removed)="removeTag(tag)">
                                 {{ getTagLabel(tag) }}
                                 <mat-icon matChipRemove>cancel</mat-icon>
                             </mat-chip>
-                            <input
-                                    placeholder="Watchers filter..."
-                                    #tagInput
-                                    [formControl]="tagCtrl"
-                                    [matAutocomplete]="auto"
-                                    [matChipInputFor]="chipList"
-                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                            />
+                            <input placeholder="Watchers filter..." #tagInput [formControl]="tagCtrl"
+                                   [matAutocomplete]="auto" [matChipInputFor]="chipList"
+                                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"/>
                         </mat-chip-list>
-                        <mat-autocomplete
-                                #auto="matAutocomplete"
-                                (optionSelected)="selected($event)"
-                        >
-                            <mat-option
-                                    *ngFor="let tag of (filteredTags | async)"
-                                    [value]="getTagLabel(tag)"
-                            >
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                            <mat-option *ngFor="let tag of (filteredTags | async)" [value]="getTagLabel(tag)">
                                 {{ getTagLabel(tag) }}
                             </mat-option>
                         </mat-autocomplete>
@@ -240,11 +134,14 @@
                 </div>
             </mat-card-content>
 
-            <div class="d-flex justify-content-center">
-                <button mat-raised-button color="primary" class="mr-4">SUBMIT</button>
-                <button mat-raised-button class="mr-4" type="button" (click)="preview()">PREVIEW</button>
-                <button mat-raised-button (click)="cancel()">CANCEL</button>
-            </div>
+            <mat-card-actions class="d-flex flex-row justify-content-center">
+                <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+                    {{ isNew ? 'CREATE' : 'SAVE' }}
+                </button>
+                <button mat-raised-button (click)="cancel()">
+                    CANCEL
+                </button>
+            </mat-card-actions>
         </form>
     </mat-card>
 </div>

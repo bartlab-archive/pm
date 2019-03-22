@@ -28,11 +28,18 @@ import {AppConfirmDialogComponent} from '../../../../app/components/confirm-dial
 export class IssuesItemComponent implements OnInit, OnDestroy {
 
     public subscriptions: Subscription[] = [];
-    public item$: Observable<Issue>;
     public pending$: Observable<boolean> = this.store.pipe(select(selectIssuesStatus));
     public params$: Observable<Params> = this.activatedRoute.params;
     public id: number = Number(this.activatedRoute.snapshot.paramMap.get('id'));
+    public identifier: string = this.activatedRoute.snapshot.paramMap.get('identifier');
+    public routerUrl: string = this.router.url;
     public removeRequestId = null;
+    public item$: Observable<Issue> = combineLatest(this.store.pipe(select(selectIssuesActive)), this.params$)
+        .pipe(
+            filter(([issue, params]) => issue && issue.id === Number(params.id)),
+            map((([issue]) => issue)),
+        );
+    public item: Issue;
 
     public constructor(
         private store: Store<any>,
@@ -44,12 +51,7 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         this.pending$ = this.store.pipe(select(selectIssuesStatus), map((status) => status === RequestStatus.pending));
-        this.item$ = combineLatest(this.store.pipe(select(selectIssuesActive)), this.params$)
-            .pipe(
-                filter(([issue, params]) => issue && issue.id === Number(params.id)),
-                map((([issue]) => issue)),
-            );
-
+        this.item$.subscribe((data) => this.item = data);
         this.load();
     }
 
@@ -83,5 +85,21 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
                 this.removeRequestId = action.requestId;
                 this.store.dispatch(action);
             });
+    }
+
+    public add() {
+        if (this.item && this.item.project) {
+            this.router.navigateByUrl(`projects/${this.item.project.identifier}/issues/new`);
+        } else {
+            this.router.navigateByUrl('new');
+        }
+    }
+
+    public goToBack() {
+        if (this.identifier) {
+            this.router.navigateByUrl(`projects/${this.identifier}/issues`);
+        } else {
+            this.router.navigateByUrl(`issues`);
+        }
     }
 }

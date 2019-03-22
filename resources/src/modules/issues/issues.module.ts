@@ -24,7 +24,8 @@ import {TrackersEffect} from './store/effects/trackers.effect';
 import {EnumerationsEffect} from './store/effects/enumerations.effect';
 import {adminIssuesRoutes, projectsIssuesRoutes, routes} from './issues.routes';
 import {
-    APP_EVENT_INTERCEPTORS, APP_MODULE_ADMIN,
+    APP_EVENT_INTERCEPTORS,
+    APP_MODULE_ADMIN,
     APP_MODULE_META,
     APP_MODULE_SUBROUTES,
 } from '../../app/providers/app.injection';

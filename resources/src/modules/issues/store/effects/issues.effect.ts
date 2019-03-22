@@ -29,7 +29,6 @@ import {
 import {ResponseError} from '../../../../app/interfaces/api';
 import {issuesSchema} from '../schemas';
 import {IssueResponse} from '../../interfaces/issues';
-import {Router} from '@angular/router';
 
 @Injectable()
 export class IssuesEffect {
@@ -55,7 +54,7 @@ export class IssuesEffect {
         ofType<IssuesItemRequestAction>(IssuesActionTypes.ISSUES_ITEM_REQUEST),
         exhaustMap(({payload: id, requestId}) =>
             this.issuesService.one(id).pipe(
-                map((response: any) => {
+                map((response: IssueResponse) => {
                     const payload = {
                         // meta: response.meta,
                         ...normalize(response.data, issuesSchema),
@@ -106,11 +105,11 @@ export class IssuesEffect {
         exhaustMap(({payload: request, requestId}) =>
             (request.id ? this.issuesService.update(request.id, request.body) : this.issuesService.create(request.body))
                 .pipe(
-                    map(({data}: IssueResponse) => {
+                    map((response: IssueResponse) => {
                         const payload = {
-                            ...normalize([data], [issuesSchema]),
+                            ...normalize(response.data, issuesSchema),
                         };
-                        this.router.navigateByUrl(`issues/${data.id}`);
+
                         return new IssuesItemSaveSuccessAction(payload, requestId);
                     }),
                     catchError((response: ResponseError) => of(new IssuesItemSaveErrorAction(response, requestId))),
@@ -124,7 +123,6 @@ export class IssuesEffect {
         exhaustMap(({payload: id, requestId}) =>
             this.issuesService.remove(id).pipe(
                 map((response) => {
-                    this.router.navigateByUrl(`issues`);
                     return new IssuesItemRemoveSuccessAction(response, requestId);
                 }),
                 catchError((response: ResponseError) => of(new IssuesItemRemoveErrorAction(response, requestId)))
@@ -135,7 +133,6 @@ export class IssuesEffect {
     public constructor(
         protected actions$: Actions,
         protected issuesService: IssuesService,
-        public router: Router,
     ) {
 
     }

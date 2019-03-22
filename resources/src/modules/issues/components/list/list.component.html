@@ -1,5 +1,5 @@
-<div class="container">
-    <mat-card class="content-card mt-3">
+<div class="container mt-3">
+    <mat-card class="content-card">
         <mat-progress-bar mode="indeterminate" *ngIf="pending"></mat-progress-bar>
 
         <mat-card-header>
@@ -50,14 +50,8 @@
                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                     />
                 </mat-chip-list>
-                <mat-autocomplete
-                        #auto="matAutocomplete"
-                        (optionSelected)="selected($event)"
-                >
-                    <mat-option
-                            *ngFor="let tag of (filteredTags | async)"
-                            [value]="getTagLabel(tag)"
-                    >
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                    <mat-option *ngFor="let tag of (filteredTags | async)" [value]="getTagLabel(tag)">
                         {{ getTagLabel(tag) }}
                     </mat-option>
                 </mat-autocomplete>
@@ -68,21 +62,14 @@
             <!-- Checkbox Column -->
             <ng-container matColumnDef="select">
                 <mat-header-cell *matHeaderCellDef>
-                    <mat-checkbox
-                            (change)="$event ? masterToggle() : null"
-                            [checked]="selection.hasValue() && isAllSelected()"
-                            [indeterminate]="
-                            selection.hasValue() && !isAllSelected()
-                        "
-                    >
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                                  [checked]="selection.hasValue() && isAllSelected()"
+                                  [indeterminate]=" selection.hasValue() && !isAllSelected()">
                     </mat-checkbox>
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                    <mat-checkbox
-                            (click)="$event.stopPropagation()"
-                            (change)="$event ? selection.toggle(row) : null"
-                            [checked]="selection.isSelected(row)"
-                    >
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                                  [checked]="selection.isSelected(row)">
                     </mat-checkbox>
                 </mat-cell>
             </ng-container>
@@ -99,8 +86,7 @@
             <ng-container matColumnDef="subject">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Subject</mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                    <!--<img src="{{row.assigned ? row.assigned.avatar : row.author.avatar}}"/>-->
-                    <a [routerLink]="['/issues/', row.id]"></a>
+                    <a [routerLink]="[routerUrl, row.id]"></a>
                     <span>{{ row.subject }}</span>
                 </mat-cell>
             </ng-container>
@@ -116,9 +102,13 @@
                 <mat-header-cell *matHeaderCellDef></mat-header-cell>
                 <mat-cell *matCellDef="let row" [style.color]="row.color">
                     <mat-menu #appMenu="matMenu">
-                        <a mat-menu-item [routerLink]="['/issues', row.id]">
+                        <a mat-menu-item [routerLink]="[routerUrl, row.id]">
                             <mat-icon>open_in_browser</mat-icon>
                             Open
+                        </a>
+                        <a mat-menu-item [routerLink]="[routerUrl + '/' + row.id + '/edit']">
+                            <mat-icon>mode_edit</mat-icon>
+                            Edit
                         </a>
                         <a mat-menu-item (click)="remove(row)">
                             <mat-icon>delete</mat-icon>
@@ -155,6 +145,6 @@
     </mat-card>
 </div>
 
-<a mat-fab class="fab-fixed" routerLink="/issues/new">
+<a mat-fab class="fab-fixed" routerLink="{{routerUrl}}/new">
     <mat-icon>add</mat-icon>
 </a>

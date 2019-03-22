@@ -36,6 +36,7 @@ import {
 import {IssuesAllRequestAction, IssuesItemRemoveRequestAction} from '../../store/actions/issues.action';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {AppConfirmDialogComponent} from '../../../../app/components/confirm-dialog/confirm-dialog.component';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
     selector: 'app-issues-list',
@@ -72,8 +73,15 @@ export class IssuesListComponent implements OnInit, OnDestroy {
     public tagCtrl = new FormControl();
     public separatorKeysCodes: Array<number> = [ENTER, COMMA];
     public filteredTags: Observable<Array<FilterTag>>;
+    public routerUrl: string = this.router.url;
+    public identifier: string = this.activatedRoute.snapshot.paramMap.get('identifier');
 
-    public constructor(private store: Store<any>, public dialog: MatDialog) {
+    public constructor(
+        private store: Store<any>,
+        public dialog: MatDialog,
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
+    ) {
     }
 
     public ngOnInit(): void {

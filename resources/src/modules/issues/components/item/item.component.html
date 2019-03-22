@@ -1,17 +1,23 @@
-<div class="container">
-    <mat-card class="content-card mt-3">
-        <mat-progress-bar
-                mode="indeterminate"
-                *ngIf="(pending$ | async)"
-        ></mat-progress-bar>
+<div class="container-fluid mt-3">
+    <mat-card class="content-card">
+        <mat-progress-bar mode="indeterminate" *ngIf="(pending$ | async)"></mat-progress-bar>
+
         <ng-container *ngIf="(item$ | async) as item">
-            <mat-card-header class="d-flex">
-                <mat-card-title class="p-2">{{ item.subject }}</mat-card-title>
-                <button class="ml-auto p-2" mat-icon-button (click)="load(item.id)">
+            <mat-card-header>
+                <div mat-card-avatar>
+                    <a mat-icon-button (click)="goToBack()">
+                        <mat-icon>arrow_back</mat-icon>
+                    </a>
+                </div>
+                <mat-card-title>{{ item.subject }}</mat-card-title>
+
+                <span class="flex-grow-1"></span>
+
+                <button mat-icon-button (click)="load(item.id)">
                     <mat-icon>refresh</mat-icon>
                 </button>
                 <mat-menu #appMenu="matMenu">
-                    <a mat-menu-item routerLink="/issues/{{ item.id }}/edit">
+                    <a mat-menu-item [routerLink]="[routerUrl + '/edit']">
                         <mat-icon>open_in_browser</mat-icon>
                         Edit
                     </a>
@@ -19,18 +25,8 @@
                         <mat-icon>mode_edit</mat-icon>
                         Copy
                     </a>
-                    <a
-                            mat-menu-item
-                            (click)="
-                            item.is_watcheble
-                                ? unwatch()
-                                : watch()
-                        "
-                    >
-                        <mat-icon>{{
-                            item.is_watcheble ? 'star' : 'star_border'
-                            }}
-                        </mat-icon>
+                    <a mat-menu-item (click)="item.is_watcheble ? unwatch() : watch()">
+                        <mat-icon>{{item.is_watcheble ? 'star' : 'star_border'}}</mat-icon>
                         {{ item.is_watcheble ? 'Unwatch' : 'Watch' }}
                     </a>
                     <a mat-menu-item (click)="remove(item)">
@@ -38,24 +34,26 @@
                         Delete
                     </a>
                 </mat-menu>
-                <button class="p-2" mat-icon-button [matMenuTriggerFor]="appMenu">
+
+                <button mat-icon-button [matMenuTriggerFor]="appMenu">
                     <mat-icon>more_vert</mat-icon>
                 </button>
             </mat-card-header>
+
             <mat-card-content>
-                <div class="d-flex">
-                    <mat-icon class="p-2">info</mat-icon>
-                    <div class="p-2 ml-4">{{ item.tracker.name }} #{{ item.id }}</div>
+                <div class="d-flex p-2">
+                    <mat-icon>info</mat-icon>
+                    <div class="ml-4">{{ item.tracker?.name }} #{{ item.id }}</div>
                 </div>
 
-                <div class="d-flex">
-                    <mat-icon class="p-2"> sort</mat-icon>
-                    <div class="p-2 ml-4">{{ item.priority.name }}</div>
+                <div class="d-flex p-2">
+                    <mat-icon> sort</mat-icon>
+                    <div class="ml-4">{{ item.priority?.name }}</div>
                 </div>
 
-                <div *ngIf="item.author" class="d-flex">
-                    <mat-icon class="p-2">create</mat-icon>
-                    <div class="p-2 ml-4">
+                <div *ngIf="item.author" class="d-flex p-2">
+                    <mat-icon>create</mat-icon>
+                    <div class="ml-4">
                         <img src="{{ item.author.avatar }}"/>
                         <a href="user/{{ item.author.id }}">
                             {{ item.author.full_name }}
@@ -63,9 +61,9 @@
                     </div>
                 </div>
 
-                <div *ngIf="item.assigned" class="d-flex">
-                    <mat-icon class="p-2">people</mat-icon>
-                    <div class="p-2 ml-4">
+                <div *ngIf="item.assigned" class="d-flex p-2">
+                    <mat-icon>people</mat-icon>
+                    <div class="ml-4">
                         <img src="{{ item.assigned.avatar }}"/>
                         <a href="user/{{ item.assigned.id }}">
                             {{ item.assigned.full_name }}
@@ -73,41 +71,42 @@
                     </div>
                 </div>
 
-                <div class="d-flex">
-                    <mat-icon class="p-2">date_range</mat-icon>
-                    <div class="p-2 ml-4">
+                <div class="d-flex p-2">
+                    <mat-icon>date_range</mat-icon>
+                    <div class="ml-4">
                         {{ item.created_on }}
                     </div>
                 </div>
 
-                <div *ngIf="item.description" class="d-flex">
-                    <mat-icon class="p-2">short_text</mat-icon>
-                    <div class="p-2 ml-4">
+                <div *ngIf="item.description" class="d-flex p-2">
+                    <mat-icon class="">short_text</mat-icon>
+                    <div class="ml-4">
                         <markdown [data]="item.description" class="d-flex flex-wrap"></markdown>
                     </div>
                 </div>
 
-                <div *ngIf="item.attachments && item.attachments.length" class="d-flex">
-                    <mat-icon class="p-2">attachment</mat-icon>
-                    <div class="p-2 ml-4">
+                <div *ngIf="item.attachments && item.attachments.length" class="d-flex p-2">
+                    <mat-icon>attachment</mat-icon>
+                    <div class="ml-4">
                         <ul>
                             <li *ngFor="let item of item.attachments">
                                 {{ item.filename }} ({{ item.filesize }})
                                 <a href="user/{{ item.author.id }}">
-                                    {{ item.author.full_name }} </a
-                                >,
+                                    {{ item.author.full_name }} </a>,
                                 {{ item.author.created_on }}
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div *ngIf="item.journals && item.journals.length" class="d-flex">
-                    <mat-icon class="p-2">history</mat-icon>
-                    <app-issues-journals class="p-2"
-                                         [journals]="item.journals"
-                    ></app-issues-journals>
+                <div *ngIf="item.journals && item.journals.length" class="d-flex p-2">
+                    <mat-icon>history</mat-icon>
+                    <app-issues-journals [journals]="item.journals"></app-issues-journals>
                 </div>
             </mat-card-content>
         </ng-container>
     </mat-card>
 </div>
+
+<a mat-fab class="fab-fixed" (click)="add()">
+    <mat-icon>add</mat-icon>
+</a>

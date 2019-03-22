@@ -10,6 +10,11 @@ const entities = (state = {}, action: IssuesActionsUnion | SharedActionsUnion) =
         case IssuesActionTypes.ISSUES_ITEM_SUCCESS:
             return updateStateEntities(state, action.payload.entities.issues);
 
+        case IssuesActionTypes.ISSUES_ITEM_SAVE_SUCCESS:
+            return updateStateEntities(state, {
+                [action.payload.result]: action.payload.entities.issues[action.payload.result],
+            });
+
         case IssuesActionTypes.ISSUES_ITEM_UNWATCH_SUCCESS:
         case IssuesActionTypes.ISSUES_ITEM_WATCH_SUCCESS:
             return updateStateEntities(state, {
@@ -100,6 +105,7 @@ const status = (state = null, action: IssuesActionsUnion | SharedActionsUnion) =
 const activeId = (state = null, action: IssuesActionsUnion | SharedActionsUnion) => {
     switch (action.type) {
         case  IssuesActionTypes.ISSUES_ITEM_SUCCESS:
+        case  IssuesActionTypes.ISSUES_ITEM_SAVE_SUCCESS:
             return action.payload.result;
         default:
             return state;
