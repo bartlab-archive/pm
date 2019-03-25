@@ -154,7 +154,11 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                 (data: Issue) => {
                     if (data && data.id) {
                         this.snackBar.open(`Successful ${this.isNew ? 'creation' : 'update'}.`);
-                        this.router.navigate(['issues', data.id]);
+                        if (this.identifier) {
+                            this.router.navigate([`projects/${this.identifier}/issues`, data.id]);
+                        } else {
+                            this.router.navigate(['issues', data.id]);
+                        }
                     }
                 }
             ),

@@ -84,6 +84,11 @@ export class IssuesItemComponent implements OnInit, OnDestroy {
                 const action = new IssuesItemRemoveRequestAction(this.id);
                 this.removeRequestId = action.requestId;
                 this.store.dispatch(action);
+                if (this.identifier) {
+                    this.router.navigateByUrl(`projects/${this.identifier}/issues`);
+                } else {
+                    this.router.navigateByUrl(`issues`);
+                }
             });
     }
 

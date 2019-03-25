@@ -33,6 +33,7 @@ import {IssuesEventInterceptor} from './interceptors/issues-event.interceptor';
 import {PipesModule} from '../../app/pipes';
 import {meta} from './issues.meta';
 import {SharedLayoutsAddLeftItem} from './store/actions/shared.action';
+import {MainModule} from '../main/main.module';
 
 @NgModule({
     declarations: [
@@ -65,6 +66,7 @@ import {SharedLayoutsAddLeftItem} from './store/actions/shared.action';
         ]),
         MarkdownModule.forChild(),
         PipesModule,
+        MainModule
     ],
 
     providers: [

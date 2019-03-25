@@ -1,17 +1,26 @@
 import {createSelector} from '@ngrx/store';
-import {
-    selectIssuesEntities,
-    selectIssuesState,
-    selectPrioritiesEntities,
-    selectStatusesEntities,
-    selectTrackersEntities,
-} from '../reducers';
-import {awaitImport, dummyFn} from '../../../../app/helpers/import';
 import {denormalize} from 'normalizr';
-import {issuesSchema, projectsSchema} from '../schemas';
 
-const {selectProjectsEntities, selectProjectsMy, selectMembersEntities} = awaitImport('modules/projects/store/reducers');
+import {awaitImport, dummyFn} from '../../../../app/helpers/import';
+import {
+    issuesSchema,
+    projectsSchema
+} from '../schemas';
+import {selectTrackersEntities} from './trackers';
+import {selectStatusesEntities} from './statuses';
+import {selectPrioritiesEntities} from './priorities';
+import {selectModuleState} from './index';
+
+const {
+    selectProjectsEntities,
+    selectProjectsMy,
+    selectMembersEntities
+} = awaitImport('modules/projects/store/reducers');
 const {selectUsersEntities} = awaitImport('app/store/reducers/app.reducer');
+
+
+export const selectIssuesState = createSelector(selectModuleState, (state: any) => state.issues);
+export const selectIssuesEntities = createSelector(selectIssuesState, (state: any) => state.entities);
 
 export const selectIssuesIds = createSelector(selectIssuesState, (state: any) => state.ids);
 export const selectIssuesStatus = createSelector(selectIssuesState, (state: any) => state.status);

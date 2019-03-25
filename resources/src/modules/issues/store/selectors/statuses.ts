@@ -1,7 +1,10 @@
 import {createSelector} from '@ngrx/store';
-import {selectStatusesState, selectStatusesEntities} from '../reducers';
 import {denormalize} from 'normalizr';
 import {statusesSchema} from '../schemas';
+import {selectModuleState} from './index';
+
+export const selectStatusesState = createSelector(selectModuleState, (state: any) => state.statuses);
+export const selectStatusesEntities = createSelector(selectStatusesState, (state: any) => state.entities);
 
 export const selectStatusesActiveId = createSelector(selectStatusesState, (state: any) => state.activeId);
 export const selectStatusesIds = createSelector(selectStatusesState, (state: any) => state.ids);
