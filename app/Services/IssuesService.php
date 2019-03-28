@@ -441,7 +441,7 @@ class IssuesService
 
     public function tracker(int $id = null)
     {
-        return Tracker::query()->where(['id' => $id]);
+        return Tracker::query()->where(['id' => $id])->first();
     }
 
     public function trackers(int $projectId = null)
