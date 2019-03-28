@@ -41,4 +41,28 @@ class TrackersController extends BaseController
             $this->issuesService->trackers($project ? $project->id : null)
         );
     }
+
+    public function store()
+    {
+        return response('', 204);
+    }
+
+    public function show($id)
+    {
+        if (!$tracker = $this->issuesService->tracker($id)) {
+            abort(404);
+        }
+
+        return TrackerResource::make($tracker);
+    }
+
+    public function update()
+    {
+        return response('', 204);
+    }
+
+    public function destroy()
+    {
+        return response('', 204);
+    }
 }

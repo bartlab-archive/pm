@@ -119,6 +119,10 @@ Route::group(
             ],
             function () {
                 Route::get('', 'TrackersController@index');
+                Route::post('', 'TrackersController@store')->middleware('admin');
+                Route::get('{id}', 'TrackersController@show');
+                Route::put('{id}', 'TrackersController@update')->middleware('admin');
+                Route::delete('{id}', 'TrackersController@destroy')->middleware('admin');
             }
         );
 

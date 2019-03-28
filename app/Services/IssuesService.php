@@ -439,6 +439,11 @@ class IssuesService
         return false;
     }
 
+    public function tracker(int $id = null)
+    {
+        return Tracker::query()->where(['id' => $id]);
+    }
+
     public function trackers(int $projectId = null)
     {
         $query = Tracker::query();
