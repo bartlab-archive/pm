@@ -6,6 +6,7 @@ use App\Http\Resources\TrackerResource;
 use App\Services\ProjectsService;
 use App\Services\IssuesService;
 use Illuminate\Routing\Controller as BaseController;
+use App\Http\Requests\Issues\StoreTrackerRequest;
 
 /**
  * Class TrackersController
@@ -42,9 +43,13 @@ class TrackersController extends BaseController
         );
     }
 
-    public function store()
+    public function store(StoreTrackerRequest $request)
     {
-        return response('', 204);
+        if (!$tracker = $this->issuesService->createTracker($request->validated())) {
+            abort(422);
+        }
+
+        return TrackerResource::make($tracker);
     }
 
     public function show($id)
@@ -56,13 +61,25 @@ class TrackersController extends BaseController
         return TrackerResource::make($tracker);
     }
 
-    public function update()
+    public function update($id, StoreTrackerRequest $request)
     {
-        return response('', 204);
+        if (!$tracker = $this->issuesService->updateTracker($id, $request->validated())) {
+            abort(422);
+        }
+
+        return TrackerResource::make($tracker);
     }
 
-    public function destroy()
+    public function destroy($id)
     {
-        return response('', 204);
+        if (!$this->issuesService->tracker($id)) {
+            abort(404);
+        }
+
+        if (!$this->issuesService->deleteTracker($id)) {
+            abort(422);
+        }
+
+        return response(null, 204);
     }
 }

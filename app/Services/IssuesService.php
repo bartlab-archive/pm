@@ -10,6 +10,7 @@ use App\Models\Journal;
 use App\Models\Tracker;
 use \Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * Class IssuesService
@@ -298,11 +299,12 @@ class IssuesService
 
             try {
                 $issue->delete();
+                return true;
             } catch (\Exception $e) {
-                return false;
+//                return false;
             }
 
-            return true;
+//            return true;
         }
 
         return false;
@@ -439,7 +441,7 @@ class IssuesService
         return false;
     }
 
-    public function tracker(int $id = null)
+    public function tracker(int $id)
     {
         return Tracker::query()->where(['id' => $id])->first();
     }
@@ -455,6 +457,45 @@ class IssuesService
         }
 
         return $query->get();
+    }
+
+    public function createTracker(array $data)
+    {
+        $tracker = Tracker::make(array_only(
+            $data,
+            ['name', 'is_in_chlog', 'position', 'is_in_roadmap', 'fields_bits', 'default_status_id']
+        ));
+
+        if ($tracker->save()) {
+            return $tracker;
+        }
+
+        return false;
+
+    }
+
+    public function updateTracker(int $id, array $data)
+    {
+        $fields = ['name', 'is_in_chlog', 'position', 'is_in_roadmap', 'fields_bits', 'default_status_id'];
+
+        if (($tracker = $this->tracker($id)) && $tracker->update(array_only($data, $fields))) {
+            return $tracker;
+        }
+
+        return false;
+    }
+
+    public function deleteTracker(int $id): bool
+    {
+        if ($tracker = $this->tracker($id)) {
+            try {
+                $tracker->delete();
+                return true;
+            } catch (\Exception $exception) {
+            }
+        }
+
+        return false;
     }
 
     public function trackersState($projectId)
