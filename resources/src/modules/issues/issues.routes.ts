@@ -1,4 +1,5 @@
 import {Routes} from '@angular/router';
+
 import {DefaultComponent} from '../layouts/components';
 import {
     IssuesItemComponent,
@@ -8,6 +9,7 @@ import {
     IssuesStatusesComponent,
     IssuesTrackersComponent,
     IssuesStatusesFormComponent,
+    IssuesTrackersFormComponent,
 } from './components';
 
 export const routes: Routes = [
@@ -95,6 +97,16 @@ export const adminIssuesRoutes: Routes = [
                 path: 'trackers',
                 data: {auth: 'admin'},
                 component: IssuesTrackersComponent,
+            },
+            {
+                path: 'trackers/new',
+                data: {auth: 'admin'},
+                component: IssuesTrackersFormComponent,
+            },
+            {
+                path: 'trackers/:id/edit',
+                data: {auth: 'admin'},
+                component: IssuesTrackersFormComponent,
             },
         ],
     },

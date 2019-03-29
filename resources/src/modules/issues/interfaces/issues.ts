@@ -1,5 +1,6 @@
 import {Project, User} from './projects';
 import {Status} from './statuses';
+import {Tracker} from './trackers';
 
 export interface FilterTag {
     name: string;
@@ -37,13 +38,6 @@ export interface Priority {
     position: number;
     is_default: boolean;
     active: boolean;
-}
-
-export interface Tracker {
-    id: number;
-    name: string;
-    fields_bits: number;
-    default_status_id: number;
 }
 
 export interface Issue {

@@ -6,3 +6,4 @@ export * from './form/form.component';
 export * from './statuses/statuses.component';
 export * from './trackers/trackers.component';
 export * from './statuses-form/statuses-form.component';
+export * from './trackers-form/trackers-form.component';

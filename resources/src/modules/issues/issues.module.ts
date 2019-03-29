@@ -1,23 +1,25 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {CommonModule} from '@angular/common';
-import {MaterialModule} from '../material/material.module';
+import {Store, StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MarkdownModule} from 'ngx-markdown';
+
 import {IssuesService, StatusesService, TrackersService} from './services';
 import {
-    IssuesItemComponent,
-    IssuesListComponent,
-    IssuesMainComponent,
-    IssuesJournalsComponent,
-    IssuesFormComponent,
-    IssuesStatusesComponent,
-    IssuesTrackersComponent,
-    IssuesStatusesFormComponent,
+IssuesItemComponent,
+IssuesListComponent,
+IssuesMainComponent,
+IssuesJournalsComponent,
+IssuesFormComponent,
+IssuesStatusesComponent,
+IssuesTrackersComponent,
+IssuesStatusesFormComponent,
+IssuesTrackersFormComponent
 } from './components';
-import {ReactiveFormsModule} from '@angular/forms';
-import {Store, StoreModule} from '@ngrx/store';
+import {MaterialModule} from '../material/material.module';
 import {reducers, metaReducers} from './store/reducers';
-import {EffectsModule} from '@ngrx/effects';
-import {MarkdownModule} from 'ngx-markdown';
 import {IssuesEffect} from './store/effects/issues.effect';
 import {StatusesEffect} from './store/effects/statuses.effect';
 import {TrackersEffect} from './store/effects/trackers.effect';
@@ -45,11 +47,13 @@ import {MainModule} from '../main/main.module';
         IssuesStatusesComponent,
         IssuesTrackersComponent,
         IssuesStatusesFormComponent,
+        IssuesTrackersFormComponent,
     ],
     entryComponents: [
         IssuesStatusesComponent,
         IssuesTrackersComponent,
         IssuesStatusesFormComponent,
+        IssuesTrackersFormComponent,
     ],
     imports: [
         CommonModule,

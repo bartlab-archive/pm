@@ -1,21 +1,23 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FormBuilder, Validators} from '@angular/forms';
+import {MatSnackBar} from '@angular/material';
 import {select, Store} from '@ngrx/store';
 import {combineLatest, Subscription} from 'rxjs';
+import {filter} from 'rxjs/operators';
+
+import {RequestStatus} from '../../../../app/interfaces/api';
+import {Status} from '../../interfaces/statuses';
 import {
-    selectStatusesActive, selectStatusesRequestId,
+    selectStatusesActive,
+    selectStatusesRequestId,
     selectStatusesStatus,
 } from '../../store/selectors/statuses';
-import {RequestStatus} from '../../../../app/interfaces/api';
 import {
     StatusesItemRequestAction,
     StatusesItemResetAction,
     StatusesItemSaveRequestAction,
 } from '../../store/actions/statuses.action';
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {filter} from 'rxjs/operators';
-import {Status} from '../../interfaces/statuses';
-import {MatSnackBar} from '@angular/material';
 
 @Component({
     selector: 'app-issues-statuses-form',

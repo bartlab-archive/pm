@@ -1,12 +1,17 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild,} from '@angular/core';
+import {select, Store} from '@ngrx/store';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormControl, Validators,} from '@angular/forms';
-import {select, Store} from '@ngrx/store';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {
+    MatAutocompleteSelectedEvent,
+    MatSelectChange,
+    MatSnackBar
+} from '@angular/material';
 import {combineLatest, Observable, Subscription} from 'rxjs';
 import {filter, map, startWith} from 'rxjs/operators';
-import {MatAutocompleteSelectedEvent, MatSelectChange, MatSnackBar} from '@angular/material';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {FilterTag, Issue, IssueUpdate, Priority, Tracker} from '../../interfaces/issues';
+
+import {FilterTag, Issue, IssueUpdate, Priority} from '../../interfaces/issues';
 import {RequestStatus} from '../../../../app/interfaces/api';
 import {IssuesItemRequestAction, IssuesItemSaveRequestAction} from '../../store/actions/issues.action';
 import {EnumerationsRequestAction} from '../../store/actions/enumerations.action';
@@ -23,6 +28,8 @@ import {selectTrackers} from '../../store/selectors/trackers';
 import {Project} from '../../interfaces/projects';
 import * as moment from 'moment';
 import {Status} from '../../interfaces/statuses';
+import {TrackersIssueRequestAction} from '../../store/actions/trackers.action';
+import {Tracker} from '../../interfaces/trackers';
 
 @Component({
     selector: 'app-issues-form',
@@ -127,8 +134,8 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                         description: data.description,
                         is_private: data.is_private,
                         project: data.project.identifier,
-                        tracker: data.tracker.id,
-                        status: data.status && data.status.id ? data.status.id : '',
+                        tracker: (data.tracker && data.tracker.id) ? data.tracker.id : '',
+                        status: (data.status && data.status.id) ? data.status.id : '',
                         priority: data.priority.id,
                         assigned: data.assigned.id ? data.assigned.id : '',
                         start_date: data.start_date,
@@ -164,6 +171,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
             ),
         );
 
+        // load priority
         this.store.dispatch(new EnumerationsRequestAction());
     }
 
@@ -232,6 +240,9 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                 });
                 this.tagInput.nativeElement.value = '';
                 this.tagCtrl.setValue(null);
+
+                // get trackers for project
+                // this.store.dispatch(new TrackersIssueRequestAction(project.identifier));
             }
         }
     }

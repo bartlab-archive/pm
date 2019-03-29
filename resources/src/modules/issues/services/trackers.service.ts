@@ -14,4 +14,20 @@ export class TrackersService {
 
         return this.http.get(`/api/v1/${prefix}trackers`);
     }
+
+    public one(id) {
+        return this.http.get(`/api/v1/trackers/${id}`);
+    }
+
+    public remove(id) {
+        return this.http.delete(`/api/v1/trackers/${id}`);
+    }
+
+    public update(id, params) {
+        return this.http.put(`/api/v1/trackers/${id}`, params);
+    }
+
+    public create(params) {
+        return this.http.post('/api/v1/trackers', params);
+    }
 }

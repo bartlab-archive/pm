@@ -18,7 +18,9 @@
                 </span>
             </div>
         </div>
-        <p *ngIf="journal.notes">{{ journal.notes }}</p>
+        <p *ngIf="journal.notes">
+            <markdown [data]="journal.notes"></markdown>
+        </p>
         <ul *ngIf="journal.details && journal.details.length" class="details">
             <li *ngFor="let detail of journal.details" class="p-0 ml-4">
                 <div *ngIf="detail.old_value; else detailText">

@@ -12,31 +12,26 @@ import {
     PageEvent,
     MatDialog,
 } from '@angular/material';
+import {select, Store} from '@ngrx/store';
 import {SelectionModel} from '@angular/cdk/collections';
-import {FilterTag, Issue} from '../../interfaces/issues';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl} from '@angular/forms';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Observable, Subscription, zip, combineLatest} from 'rxjs';
-import {
-    filter,
-    map,
-    // skip,
-    startWith,
-} from 'rxjs/operators';
-import {select, Store} from '@ngrx/store';
+import {filter, map, startWith} from 'rxjs/operators';
+
+import {RequestStatus} from '../../../../app/interfaces/api';
 import {selectTrackers} from '../../store/selectors/trackers';
 import {selectStatuses} from '../../store/selectors/statuses';
+import {FilterTag, Issue} from '../../interfaces/issues';
 import {
     selectIssues,
     selectIssuesMeta,
     selectIssuesRequestId,
     selectIssuesStatus,
 } from '../../store/selectors/issues';
-
 import {IssuesAllRequestAction, IssuesItemRemoveRequestAction} from '../../store/actions/issues.action';
-import {RequestStatus} from '../../../../app/interfaces/api';
 import {AppConfirmDialogComponent} from '../../../../app/components/confirm-dialog/confirm-dialog.component';
-import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
     selector: 'app-issues-list',
@@ -271,6 +266,5 @@ export class IssuesListComponent implements OnInit, OnDestroy {
                 this.removeRequestId = action.requestId;
                 this.store.dispatch(action);
             });
-
     }
 }

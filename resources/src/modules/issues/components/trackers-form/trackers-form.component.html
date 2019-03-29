@@ -1,0 +1,42 @@
+<div class="container mt-3">
+    <form [formGroup]="form" (ngSubmit)="form.valid && onSubmit()">
+        <mat-card class="content-card">
+            <mat-progress-bar mode="indeterminate" *ngIf="pending"></mat-progress-bar>
+            <mat-card-header>
+                <mat-card-subtitle>Issue trackers</mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-content class="d-flex flex-column">
+                <mat-form-field>
+                    <input
+                            matInput
+                            placeholder="Name"
+                            formControlName="name"
+                            required
+                    />
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select placeholder="Status" name="status" required formControlName="default_status_id">
+                        <mat-option matInput *ngFor="let status of (statuses$ | async)" [value]="status.id">
+                            {{ status.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-content>
+
+            <mat-card-actions class="d-flex flex-row justify-content-center">
+                <button
+                        mat-raised-button
+                        color="primary"
+                        type="submit"
+                        [disabled]="form.invalid || pending"
+                >
+                    {{ isNew ? 'CREATE' : 'SAVE' }}
+                </button>
+                <button mat-raised-button routerLink="/trackers">
+                    CANCEL
+                </button>
+            </mat-card-actions>
+        </mat-card>
+    </form>
+</div>
