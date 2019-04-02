@@ -8,15 +8,15 @@ import {MarkdownModule} from 'ngx-markdown';
 
 import {IssuesService, StatusesService, TrackersService} from './services';
 import {
-IssuesItemComponent,
-IssuesListComponent,
-IssuesMainComponent,
-IssuesJournalsComponent,
-IssuesFormComponent,
-IssuesStatusesComponent,
-IssuesTrackersComponent,
-IssuesStatusesFormComponent,
-IssuesTrackersFormComponent
+    IssuesItemComponent,
+    IssuesListComponent,
+    IssuesMainComponent,
+    IssuesJournalsComponent,
+    IssuesFormComponent,
+    IssuesStatusesComponent,
+    IssuesTrackersComponent,
+    IssuesStatusesFormComponent,
+    IssuesTrackersFormComponent
 } from './components';
 import {MaterialModule} from '../material/material.module';
 import {reducers, metaReducers} from './store/reducers';
@@ -24,7 +24,11 @@ import {IssuesEffect} from './store/effects/issues.effect';
 import {StatusesEffect} from './store/effects/statuses.effect';
 import {TrackersEffect} from './store/effects/trackers.effect';
 import {EnumerationsEffect} from './store/effects/enumerations.effect';
-import {adminIssuesRoutes, projectsIssuesRoutes, routes} from './issues.routes';
+import {
+    adminIssuesRoutes,
+    projectsIssuesRoutes,
+    routes
+} from './issues.routes';
 import {
     APP_EVENT_INTERCEPTORS,
     APP_MODULE_ADMIN,

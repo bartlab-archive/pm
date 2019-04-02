@@ -2,6 +2,9 @@
  Method that updates the state by entities
  */
 export const updateStateEntities = (state, entities) => {
+    if (!entities) {
+        return state;
+    }
     return Object.keys(entities).reduce((acc, id) => {
 
         // add new entity in state

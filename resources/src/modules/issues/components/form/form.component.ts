@@ -137,7 +137,7 @@ export class IssuesFormComponent implements OnInit, OnDestroy {
                         tracker: (data.tracker && data.tracker.id) ? data.tracker.id : '',
                         status: (data.status && data.status.id) ? data.status.id : '',
                         priority: data.priority.id,
-                        assigned: data.assigned.id ? data.assigned.id : '',
+                        assigned: (data.assigned && data.assigned.id) ? data.assigned.id : '',
                         start_date: data.start_date,
                         due_date: data.due_date,
                         parent_id: data.parent_id,

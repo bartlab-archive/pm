@@ -168,6 +168,7 @@ export class IssuesListComponent implements OnInit, OnDestroy {
                 page: this.paginator.pageIndex + 1,
                 'status_ids[]': this.getTagsId('status'),
                 'tracker_ids[]': this.getTagsId('tracker'),
+                'identifier': this.identifier || ''
             }),
         );
     }
